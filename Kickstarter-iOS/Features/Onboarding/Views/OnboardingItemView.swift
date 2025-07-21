@@ -24,7 +24,6 @@ struct OnboardingItemView: View {
       VStack(spacing: Constants.titleSubtitleSpacing) {
         Text(self.item.title)
           .font(Font(OnboardingStyles.title))
-          .lineLimit(1)
           .multilineTextAlignment(.center)
           .frame(maxWidth: .infinity)
 

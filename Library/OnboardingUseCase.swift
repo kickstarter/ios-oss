@@ -158,32 +158,32 @@ private func allOnboardingItems(
   // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
   return [
     makeOnboardingItem(
-      title: "Onboarding: Welcome to Kickstarter",
-      subTitle: "Onboarding: Use our app to discover and support creative projects. Browse by category, find projects near you, or explore our “Projects We Love” picks.",
+      title: "FPO: Welcome to Kickstarter",
+      subTitle: "FPO: Use our app to discover and support creative projects. Browse by category, find projects near you, or explore our “Projects We Love” picks.",
       type: .welcome,
       in: bundle
     ),
     makeOnboardingItem(
-      title: "Onboarding: Save projects for later",
-      subTitle: "Onboarding: Found a project that’s caught your eye? Tap the heart to save it and you can come back to it later on your Saved tab.",
+      title: "FPO: Save projects for later",
+      subTitle: "FPO: Found a project that’s caught your eye? Tap the heart to save it and you can come back to it later on your Saved tab.",
       type: .saveProjects,
       in: bundle
     ),
     makeOnboardingItem(
-      title: "Onboarding: Stay in the know",
-      subTitle: "Onboarding: Turn on notifications to keep track of your backed projects and discover more you’ll love. You can customize these anytime in your settings.",
+      title: "FPO: Stay in the know",
+      subTitle: "FPO: Turn on notifications to keep track of your backed projects and discover more you’ll love. You can customize these anytime in your settings.",
       type: .enableNotifications,
       in: bundle
     ),
     makeOnboardingItem(
-      title: "Onboarding: Personalize your experince",
-      subTitle: "Onboarding: Allow tracking to help us improve your in-app experience. You can change your tracking preference anytime in your device settings.",
+      title: "FPO: Personalize your experince",
+      subTitle: "FPO: Allow tracking to help us improve your in-app experience. You can change your tracking preference anytime in your device settings.",
       type: .allowTracking,
       in: bundle
     ),
     makeOnboardingItem(
-      title: "Onboarding: Join the community",
-      subTitle: "Onboarding: Log in or create an account to back projects, save favorites, and follow along as creative ideas come to life.",
+      title: "FPO: Join the community",
+      subTitle: "FPO: Log in or create an account to back projects, save favorites, and follow along as creative ideas come to life.",
       type: .loginSignUp,
       in: bundle
     )

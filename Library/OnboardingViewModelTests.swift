@@ -54,10 +54,10 @@ final class OnboardingViewModelTest: XCTestCase {
       var cancellables: [AnyCancellable] = []
 
       let expectation = expectation(description: "Waiting for action to be performed")
-      var triggeredPAppTrackingTransparencyPopup = false
+      var triggeredAppTrackingTransparencyPopup = false
       self.viewModel.triggerAppTrackingTransparencyPopup
         .sink { () in
-          triggeredPAppTrackingTransparencyPopup = true
+          triggeredAppTrackingTransparencyPopup = true
           expectation.fulfill()
         }
         .store(in: &cancellables)
@@ -65,7 +65,7 @@ final class OnboardingViewModelTest: XCTestCase {
       self.viewModel.allowTrackingTapped()
       waitForExpectations(timeout: 0.1)
 
-      XCTAssertTrue(triggeredPAppTrackingTransparencyPopup)
+      XCTAssertTrue(triggeredAppTrackingTransparencyPopup)
     }
   }
 

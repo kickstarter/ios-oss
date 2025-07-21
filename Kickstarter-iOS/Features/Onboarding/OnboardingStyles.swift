@@ -13,4 +13,8 @@ enum OnboardingStyles {
 
   static let closeImage = ImageResource.closeIconNoBackground
   static let backgroundImage = ImageResource.onboardingSquiggleBackground
+
+  static let primaryButtonBackgroundColor = Color(.black)
+  static let primaryButtonForegroundColor = Color(.white)
+  static let secondaryButtonForegroundColor = Color(.black)
 }

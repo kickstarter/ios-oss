@@ -18,7 +18,7 @@ public protocol OnboardingViewModelOutputs {
 
 // MARK: - Combined Type
 
-public typealias OnboardingViewModelType = Equatable & Hashable & Identifiable &
+public typealias OnboardingViewModelType = Equatable & Identifiable &
   ObservableObject &
   OnboardingViewModelInputs & OnboardingViewModelOutputs
 
@@ -30,10 +30,6 @@ public final class OnboardingViewModel: OnboardingViewModelType {
   public var onboardingItems: [OnboardingItem] = []
 
   @Published public private(set) var currentIndex: Int = 0
-
-  public func hash(into hasher: inout Hasher) {
-    hasher.combine(UUID())
-  }
 
   // MARK: - Init
 

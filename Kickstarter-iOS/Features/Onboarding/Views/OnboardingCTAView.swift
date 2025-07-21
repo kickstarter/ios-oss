@@ -19,20 +19,20 @@ struct CallToActionView: View {
     VStack(spacing: Constants.rootStackViewSpacing) {
       switch self.item.type {
       case .welcome, .saveProjects:
-        self.primaryButton(title: "Onboarding: Next", action: self.onPrimaryTap)
+        self.primaryButton(title: "FPO: Next", action: self.onPrimaryTap)
         /// Empty secondary button allows the primary button to be in the same position througout the onboarding flow.
         self.secondaryButton(title: "", action: {})
       case .enableNotifications:
-        self.primaryButton(title: "Onboarding: Get notified", action: self.onPrimaryTap)
-        self.secondaryButton(title: "Onboarding: Not right now", action: self.onSecondaryTap)
+        self.primaryButton(title: "FPO: Get notified", action: self.onPrimaryTap)
+        self.secondaryButton(title: "FPO: Not right now", action: self.onSecondaryTap)
 
       case .allowTracking:
-        self.primaryButton(title: "Onboarding: Allow tracking", action: self.onPrimaryTap)
-        self.secondaryButton(title: "Onboarding: Not right now", action: self.onSecondaryTap)
+        self.primaryButton(title: "FPO: Allow tracking", action: self.onPrimaryTap)
+        self.secondaryButton(title: "FPO: Not right now", action: self.onSecondaryTap)
 
       case .loginSignUp:
-        self.primaryButton(title: "Onboarding: Sign up or log in", action: self.onLoginSignup)
-        self.secondaryButton(title: "Onboarding: Explore the app", action: self.onSecondaryTap)
+        self.primaryButton(title: "FPO: Sign up or log in", action: self.onLoginSignup)
+        self.secondaryButton(title: "FPO: Explore the app", action: self.onSecondaryTap)
       }
     }
     .padding(.horizontal, Constants.rootStackViewHorizontalPadding)
@@ -46,10 +46,10 @@ struct CallToActionView: View {
     Button(action: action) {
       Text(title)
         .font(Font(OnboardingStyles.ctaFont))
-        .foregroundColor(.white)
+        .foregroundColor(OnboardingStyles.primaryButtonForegroundColor)
         .frame(maxWidth: .infinity)
         .padding()
-        .background(.black)
+        .background(OnboardingStyles.primaryButtonBackgroundColor)
         .cornerRadius(Constants.ctaCornerRadius)
     }
   }
@@ -59,7 +59,7 @@ struct CallToActionView: View {
     Button(action: action) {
       Text(title)
         .font(Font(OnboardingStyles.ctaFont))
-        .foregroundColor(.black)
+        .foregroundColor(OnboardingStyles.secondaryButtonForegroundColor)
         .frame(maxWidth: .infinity)
         .padding()
     }
