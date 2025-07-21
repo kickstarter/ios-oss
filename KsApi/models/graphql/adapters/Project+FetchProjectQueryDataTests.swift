@@ -5,15 +5,7 @@ import XCTest
 
 final class Project_FetchProjectQueryDataTests: XCTestCase {
   /// `FetchProjectQueryBySlug` returns identical data.
-
-  /*
-   I tried so hard, and got so far
-   But in the end, it doesn't even matter
-   I had to fall to lose it all
-   But in the end, I've spent two weeks fixing unit tests
-   after upgrading Apollo, and I need to take a break
-   */
-  func fixme_testFetchProjectQueryData_Success() {
+  func testFetchProjectQueryData_Success() {
     let producer = Project.projectProducer(
       from: FetchProjectQueryTemplate.valid.data,
       configCurrency: Project.Country.de.currencyCode
@@ -44,7 +36,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     /// Project
     XCTAssertEqual(project.name, "The Quiet")
     XCTAssertEqual(project.id, 904_702_116)
-    XCTAssertEqual(project.availableCardTypes, ["VISA", "MASTERCARD", "AMEX"])
+    XCTAssertEqual(project.availableCardTypes, ["VISA", "AMEX", "MASTERCARD"])
     XCTAssertEqual(
       project.blurb,
       "A photographic book about the daily life and work on board of a Russian research vessel during the MOSAiC expedition in the Arctic."
@@ -145,7 +137,6 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertEqual(project.creator.avatar.large, "image-a")
     XCTAssertEqual(project.creator.avatar.medium, "image-a")
     XCTAssertEqual(project.creator.avatar.small, "image-a")
-
     XCTAssertEqual(project.creator.id, decompose(id: "VXNlci0xNTMyMzU3OTk3"))
     XCTAssertTrue(project.creator.isEmailVerified!)
     XCTAssertFalse(project.creator.facebookConnected!)
@@ -158,7 +149,6 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertEqual(project.creator.location?.localizedName, "Las Vegas")
     XCTAssertTrue(project.creator.needsFreshFacebookToken!)
     XCTAssertTrue(project.creator.showPublicProfile!)
-
     XCTAssertTrue(project.creator.social!)
     XCTAssertEqual(project.creator.stats.createdProjectsCount, 16)
     XCTAssertNil(project.creator.stats.draftProjectsCount)
