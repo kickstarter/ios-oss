@@ -11,7 +11,7 @@ public protocol OnboardingViewModelInputs {
 
 public protocol OnboardingViewModelOutputs {
   var onboardingItems: [OnboardingItem] { get }
-  var triggerPushNotificationPermissionPopup: AnyPublisher<Void, Never> { get }
+  var triggerPushNotificationPermissionDialog: AnyPublisher<Void, Never> { get }
   var triggerAppTrackingTransparencyPopup: AnyPublisher<Void, Never> { get }
   var goToLoginSignup: AnyPublisher<LoginIntent, Never> { get }
 }
@@ -42,10 +42,16 @@ public final class OnboardingViewModel: OnboardingViewModelType {
         self?.onboardingItems = items
       }
 
-    self.useCase.outputs.triggerAppTrackingTransparencyPopup
+    self.useCase.outputs.triggerAppTrackingTransparencyDialog
       .observe(on: UIScheduler())
       .observeValues { [weak self] in
-        self?.triggerAppTrackingTransparencyPopupSubject.send()
+        self?.triggerAppTrackingTransparencyDialogSubject.send()
+      }
+
+    self.useCase.outputs.triggerPushNotificationSystemDialog
+      .observe(on: UIScheduler())
+      .observeValues { [weak self] in
+        self?.triggerPushNotificationPermissionDialogSubject.send()
       }
 
     self.useCase.uiOutputs.goToLoginSignup
@@ -59,18 +65,18 @@ public final class OnboardingViewModel: OnboardingViewModelType {
     lhs.id == rhs.id
   }
 
-  private let triggerPushNotificationPermissionPopupSubject = PassthroughSubject<Void, Never>()
-  private let triggerAppTrackingTransparencyPopupSubject = PassthroughSubject<Void, Never>()
+  private let triggerPushNotificationPermissionDialogSubject = PassthroughSubject<Void, Never>()
+  private let triggerAppTrackingTransparencyDialogSubject = PassthroughSubject<Void, Never>()
   private let goToLoginSignupSubject = PassthroughSubject<LoginIntent, Never>()
 
   // MARK: - Outputs
 
-  public var triggerPushNotificationPermissionPopup: AnyPublisher<Void, Never> {
-    self.triggerPushNotificationPermissionPopupSubject.eraseToAnyPublisher()
+  public var triggerPushNotificationPermissionDialog: AnyPublisher<Void, Never> {
+    self.triggerPushNotificationPermissionDialogSubject.eraseToAnyPublisher()
   }
 
   public var triggerAppTrackingTransparencyPopup: AnyPublisher<Void, Never> {
-    self.triggerAppTrackingTransparencyPopupSubject.eraseToAnyPublisher()
+    self.triggerAppTrackingTransparencyDialogSubject.eraseToAnyPublisher()
   }
 
   public var goToLoginSignup: AnyPublisher<LoginIntent, Never> {
@@ -80,7 +86,7 @@ public final class OnboardingViewModel: OnboardingViewModelType {
   // MARK: - Inputs
 
   public func getNotifiedTapped() {
-    self.triggerPushNotificationPermissionPopupSubject.send()
+    self.useCase.uiInputs.getNotifiedTapped()
   }
 
   public func allowTrackingTapped() {
