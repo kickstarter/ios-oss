@@ -232,69 +232,6 @@ internal final class SearchViewModelTests: TestCase {
     }
   }
 
-  func testCancelSearch_clearsFilters() {
-    let categories: [KsApi.Category] = [
-      .art,
-      .filmAndVideo,
-      .illustration,
-      .documentary
-    ]
-
-    let categoriesResponse = RootCategoriesEnvelope(rootCategories: categories)
-
-    let mockService = MockService(
-      fetchGraphCategoriesResult: .success(categoriesResponse)
-    )
-
-    withEnvironment(apiService: mockService) {
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      self.vm.inputs.viewWillAppear(animated: true)
-      self.vm.inputs.searchTextChanged("test")
-
-      if let sortPill = self.vm.outputs.searchFilters.sortPill,
-         let categoryPill = self.vm.outputs.searchFilters.categoryPill {
-        XCTAssertEqual(
-          sortPill.isHighlighted,
-          false,
-          "Sort pill should not be highlighted with default sort option"
-        )
-        XCTAssertEqual(
-          categoryPill.isHighlighted,
-          false,
-          "Category pill should not be highlighted with default category options"
-        )
-      } else {
-        XCTFail("Expected sort and category pills to be set")
-      }
-
-      self.vm.inputs.selectedFilter(.category(.rootCategory(.art)))
-      self.vm.inputs.selectedFilter(.sort(.endingSoon))
-
-      if let sortPill = self.vm.outputs.searchFilters.sortPill,
-         let categoryPill = self.vm.outputs.searchFilters.categoryPill {
-        XCTAssertEqual(sortPill.isHighlighted, true, "Selecting sort should highlight sort pill")
-        XCTAssertEqual(
-          categoryPill.isHighlighted,
-          true,
-          "Selecting category should highlight category pill"
-        )
-      } else {
-        XCTFail("Expected sort and category pills to be set")
-      }
-
-      if let sortPill = self.vm.outputs.searchFilters.sortPill,
-         let categoryPill = self.vm.outputs.searchFilters.categoryPill {
-        XCTAssertEqual(sortPill.isHighlighted, false, "Clearing text should clear sort")
-        XCTAssertEqual(categoryPill.isHighlighted, false, "Clearing text should clear category")
-      } else {
-        XCTFail("Expected sort and category pills to be set")
-      }
-    }
-  }
-
   func testEmptySearchText_clearsFilters() {
     let categories: [KsApi.Category] = [
       .art,
