@@ -310,8 +310,7 @@ public class SearchFilters: ObservableObject {
       }
 
       if featureSearchFilterByGoal() {
-        // TODO(MBL-2576): Add translated strings.
-        let goalTitle = self.goal.selectedBucket?.pillTitle ?? "FPO: Goal"
+        let goalTitle = self.goal.selectedBucket?.pillTitle ?? Strings.Goal()
         pills.append(
           SearchFilterPill(
             isHighlighted: self.hasGoal,

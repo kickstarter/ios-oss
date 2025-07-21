@@ -48,24 +48,33 @@ extension DiscoveryParams.AmountRaisedBucket {
 }
 
 extension DiscoveryParams.GoalBucket {
-  // TODO(MBL-2576): Add translated strings.
   public var title: String {
     switch self {
     case .bucket_0:
-      return "FPO: Under $1000"
+      return Strings.Goal_bucket_0()
     case .bucket_1:
-      return "FPO: $1,000 to $10,000"
+      return Strings.Goal_bucket_1()
     case .bucket_2:
-      return "FPO: $10,000 to $100,000"
+      return Strings.Goal_bucket_2()
     case .bucket_3:
-      return "FPO: $100,000 to $1,000,000"
+      return Strings.Goal_bucket_3()
     case .bucket_4:
-      return "FPO: More than $1,000,000"
+      return Strings.Goal_bucket_4()
     }
   }
 
-  // TODO(MBL-2576): Add translated strings.
   public var pillTitle: String {
-    return "FPO: Goal: \(self.title)"
+    switch self {
+    case .bucket_0:
+      return Strings.Goal_pill_bucket_0()
+    case .bucket_1:
+      return Strings.Goal_pill_bucket_1()
+    case .bucket_2:
+      return Strings.Goal_pill_bucket_2()
+    case .bucket_3:
+      return Strings.Goal_pill_bucket_3()
+    case .bucket_4:
+      return Strings.Goal_pill_bucket_4()
+    }
   }
 }

@@ -107,7 +107,7 @@ struct FilterRootView: View {
   var goalSection: some View {
     NavigationLink(value: SearchFilterModalType.goal) {
       FilterSectionButton(
-        title: "FPO: Goal", // TODO(MBL-2576): Add translated string.
+        title: Strings.Goal(),
         subtitle: self.searchFilters.goal.selectedBucket?.title
       )
     }
@@ -247,8 +247,7 @@ struct FilterRootView: View {
               .modalHeader(withTitle: Strings.Amount_raised(), onClose: self.onClose)
           case .goal:
             self.goalModal
-              // TODO(MBL-2576): Add translated string.
-              .modalHeader(withTitle: "FPO: Goal", onClose: self.onClose)
+              .modalHeader(withTitle: Strings.Goal(), onClose: self.onClose)
           default:
             EmptyView()
           }
