@@ -273,8 +273,7 @@ public class SearchFilters: ObservableObject {
         SearchFilterPill(
           isHighlighted: self.showOnly.recommended,
           filterType: .recommended,
-          // FIXME: MBL-2563 Add translations
-          buttonType: .toggle("FPO: Recommended for you")
+          buttonType: .toggle(Strings.Show_only_recommended_for_you())
         )
       )
     }
@@ -305,8 +304,7 @@ public class SearchFilters: ObservableObject {
           SearchFilterPill(
             isHighlighted: self.showOnly.projectsWeLove,
             filterType: .projectsWeLove,
-            // FIXME: MBL-2563 Add translations
-            buttonType: .toggleWithImage("FPO: Projects We Love", pwlIcon)
+            buttonType: .toggleWithImage(Strings.Show_only_projects_we_love(), pwlIcon)
           )
         )
       }
@@ -328,16 +326,14 @@ public class SearchFilters: ObservableObject {
           SearchFilterPill(
             isHighlighted: self.showOnly.savedProjects,
             filterType: .saved,
-            // FIXME: MBL-2563 Add translations
-            buttonType: .toggle("FPO: Saved")
+            buttonType: .toggle(Strings.Show_only_saved_pill_title())
           )
         )
         pills.append(
           SearchFilterPill(
             isHighlighted: self.showOnly.following,
             filterType: .following,
-            // FIXME: MBL-2563 Add translations
-            buttonType: .toggle("FPO: Following")
+            buttonType: .toggle(Strings.Show_only_following())
           )
         )
       }
