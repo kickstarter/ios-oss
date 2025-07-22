@@ -39,6 +39,9 @@ struct OnboardingView: View {
 
         VStack {
           self.ProgressBarView()
+            .accessibilityElement(children: .combine)
+            // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
+            .accessibilityLabel("FPO: Onboarding Progress Bar")
 
           ZStack {
             ForEach(Array(self.viewModel.onboardingItems.enumerated()), id: \.element.id) { index, item in
@@ -50,6 +53,9 @@ struct OnboardingView: View {
                   onSecondaryTap: { self.goToNextItem() },
                   onLoginSignup: { self.viewModel.goToLoginSignupTapped() }
                 )
+                .accessibilityElement(children: .contain)
+                // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
+                .accessibilityHint("FPO: Tap the next button to continue.")
                 .transition(.asymmetric(
                   insertion: .move(edge: .trailing).combined(with: .opacity),
                   removal: .move(edge: .leading).combined(with: .opacity)
@@ -86,6 +92,10 @@ struct OnboardingView: View {
           .foregroundColor(.black)
           .padding(Constants.closeIconPadding)
           .clipShape(Circle())
+          // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
+          .accessibilityLabel("FPO: Close onboarding modal.")
+          .accessibilityHint("FPO: Closes the onboarding view.")
+          .accessibilityAddTraits(.isButton)
       }
     }
     .padding(.top, Constants.verticalPadding)

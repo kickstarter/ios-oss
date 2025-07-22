@@ -26,12 +26,17 @@ struct OnboardingItemView: View {
           .font(Font(OnboardingStyles.title))
           .multilineTextAlignment(.center)
           .frame(maxWidth: .infinity)
+          .accessibilityAddTraits(.isHeader)
+          .accessibilityLabel(Text(self.item.title))
+          // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
+          .accessibilityHint(Text("FPO: Onboarding screen"))
 
         Text(self.item.subtitle)
           .font(Font(OnboardingStyles.subtitle))
           .lineLimit(4)
           .multilineTextAlignment(.center)
           .frame(maxWidth: .infinity)
+          .accessibilityLabel(Text(self.item.subtitle))
       }
       .padding(.horizontal, Constants.horizontalPadding)
       .fixedSize(horizontal: false, vertical: true)
@@ -39,6 +44,8 @@ struct OnboardingItemView: View {
       ResizableLottieView(onboardingItem: self.item, isVisible: true)
         .frame(maxWidth: .infinity)
         .padding(.top, Constants.lottieViewTopPadding)
+        // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
+        .accessibilityLabel(Text("FPO: An example animation for the \(self.item.type) feature."))
 
       Spacer()
 
@@ -54,5 +61,6 @@ struct OnboardingItemView: View {
     .padding(.top, Constants.rootStackViewTopPadding)
     .padding(.bottom, Constants.rootStackViewBottomPadding)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .accessibilityElement(children: .contain)
   }
 }
