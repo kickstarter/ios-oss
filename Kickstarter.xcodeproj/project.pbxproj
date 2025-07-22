@@ -665,6 +665,29 @@
 		60C996EE2AC2030C006BE4F4 /* CreateFlaggingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996ED2AC2030C006BE4F4 /* CreateFlaggingInput.swift */; };
 		60C996F12AC2043A006BE4F4 /* CreateFlaggingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996EF2AC20314006BE4F4 /* CreateFlaggingInputTests.swift */; };
 		60C996F22AC20487006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E92AC1FDE3006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift */; };
+		60CC7CA32E26A82D0055BE8F /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CC7CA22E26A82D0055BE8F /* OnboardingViewModel.swift */; };
+		60CC7CA42E26AFD70055BE8F /* onboarding-flow-welcome-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F12E1590D90030BB90 /* onboarding-flow-welcome-en.json */; };
+		60CC7CA52E26B0A30055BE8F /* onboarding-flow-save-projects-ja.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EF2E1590D90030BB90 /* onboarding-flow-save-projects-ja.json */; };
+		60CC7CA62E26B0A30055BE8F /* onboarding-flow-enable-notifications-ja.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E52E1590D90030BB90 /* onboarding-flow-enable-notifications-ja.json */; };
+		60CC7CA72E26B0A30055BE8F /* onboarding-flow-login-signup-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E72E1590D90030BB90 /* onboarding-flow-login-signup-en.json */; };
+		60CC7CA82E26B0A30055BE8F /* onboarding-flow-welcome-ja.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F42E1590D90030BB90 /* onboarding-flow-welcome-ja.json */; };
+		60CC7CA92E26B0A30055BE8F /* onboarding-flow-welcome-fr.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F32E1590D90030BB90 /* onboarding-flow-welcome-fr.json */; };
+		60CC7CAA2E26B0A30055BE8F /* onboarding-flow-save-projects-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914ED2E1590D90030BB90 /* onboarding-flow-save-projects-es.json */; };
+		60CC7CAB2E26B0A30055BE8F /* onboarding-flow-login-signup-fr.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E92E1590D90030BB90 /* onboarding-flow-login-signup-fr.json */; };
+		60CC7CAC2E26B0A30055BE8F /* onboarding-flow-enable-notifications-fr.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E42E1590D90030BB90 /* onboarding-flow-enable-notifications-fr.json */; };
+		60CC7CAD2E26B0A30055BE8F /* onboarding-flow-login-signup-de.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E62E1590D90030BB90 /* onboarding-flow-login-signup-de.json */; };
+		60CC7CAE2E26B0A30055BE8F /* onboarding-flow-activity-tracking-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 6005D3A02E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json */; };
+		60CC7CAF2E26B0A30055BE8F /* onboarding-flow-save-projects-de.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EB2E1590D90030BB90 /* onboarding-flow-save-projects-de.json */; };
+		60CC7CB02E26B0A30055BE8F /* onboarding-flow-save-projects-fr.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EE2E1590D90030BB90 /* onboarding-flow-save-projects-fr.json */; };
+		60CC7CB12E26B0A30055BE8F /* onboarding-flow-login-signup-ja.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EA2E1590D90030BB90 /* onboarding-flow-login-signup-ja.json */; };
+		60CC7CB22E26B0A30055BE8F /* onboarding-flow-enable-notifications-de.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E12E1590D90030BB90 /* onboarding-flow-enable-notifications-de.json */; };
+		60CC7CB32E26B0A30055BE8F /* onboarding-flow-enable-notifications-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E32E1590D90030BB90 /* onboarding-flow-enable-notifications-es.json */; };
+		60CC7CB42E26B0A30055BE8F /* onboarding-flow-enable-notifications-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E22E1590D90030BB90 /* onboarding-flow-enable-notifications-en.json */; };
+		60CC7CB52E26B0A30055BE8F /* onboarding-flow-welcome-de.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F02E1590D90030BB90 /* onboarding-flow-welcome-de.json */; };
+		60CC7CB62E26B0A30055BE8F /* onboarding-flow-save-projects-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EC2E1590D90030BB90 /* onboarding-flow-save-projects-en.json */; };
+		60CC7CB72E26B0A30055BE8F /* onboarding-flow-login-signup-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914E82E1590D90030BB90 /* onboarding-flow-login-signup-es.json */; };
+		60CC7CB82E26B0A30055BE8F /* onboarding-flow-welcome-es.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F22E1590D90030BB90 /* onboarding-flow-welcome-es.json */; };
+		60CC7CC62E280E2A0055BE8F /* OnboardingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CC7CC42E280E2A0055BE8F /* OnboardingViewModelTests.swift */; };
 		60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50FD28C38DDB002E2DF1 /* AlamofireImage */; };
 		60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA510E28C7E04B002E2DF1 /* Kingfisher */; };
 		60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA511328C96A65002E2DF1 /* SwiftSoup */; };
@@ -2481,6 +2504,8 @@
 		60C996EB2AC1FF0C006BE4F4 /* CreateFlagging.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateFlagging.graphql; sourceTree = "<group>"; };
 		60C996ED2AC2030C006BE4F4 /* CreateFlaggingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingInput.swift; sourceTree = "<group>"; };
 		60C996EF2AC20314006BE4F4 /* CreateFlaggingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingInputTests.swift; sourceTree = "<group>"; };
+		60CC7CA22E26A82D0055BE8F /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		60CC7CC42E280E2A0055BE8F /* OnboardingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModelTests.swift; sourceTree = "<group>"; };
 		60E1BB262C6D230A007D723B /* PledgeViewCTAContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewCTAContainerView.swift; sourceTree = "<group>"; };
 		60E1BB282C6E5C18007D723B /* PledgeRewardsSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRewardsSummaryViewController.swift; sourceTree = "<group>"; };
 		60E1BB2A2C6E5C3D007D723B /* NoShippingPledgeRewardsSummaryDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoShippingPledgeRewardsSummaryDataSource.swift; sourceTree = "<group>"; };
@@ -3622,6 +3647,10 @@
 		E1EEED2A2B686829009976D9 /* PKCETest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETest.swift; sourceTree = "<group>"; };
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		60CC7C9C2E269D270055BE8F /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		A75511381C8642B3005355CF /* Frameworks */ = {
@@ -5188,6 +5217,7 @@
 				1937A6ED28C92EC700DD732D /* MessageBanner */,
 				1937A6EE28C92ED400DD732D /* MessageDialog */,
 				19A97D2D28C7FF330031B857 /* MessageThreads */,
+				60CC7C9C2E269D270055BE8F /* Onboarding */,
 				E11835202B75799F007B42E6 /* PaginationExample */,
 				19A97D3228C8001C0031B857 /* PaymentMethods */,
 				19A97D3828C801AB0031B857 /* PillCollectionView_DEPRECATED_09_06_2022 */,
@@ -6791,6 +6821,8 @@
 				E16794292B85136900064063 /* OAuthTests.swift */,
 				609935EA2E1D7177009263C5 /* OnboardingUseCase.swift */,
 				609935EC2E1D718F009263C5 /* OnboardingUseCaseTests.swift */,
+				60CC7CA22E26A82D0055BE8F /* OnboardingViewModel.swift */,
+				60CC7CC42E280E2A0055BE8F /* OnboardingViewModelTests.swift */,
 				94C92E7B2659EDBF00A96818 /* PaddingLabel.swift */,
 				E16ECA6E2C245A12002A1D25 /* PagedContainer */,
 				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
@@ -8040,6 +8072,9 @@
 			dependencies = (
 				A76E0A4C1D00C00500EC525A /* PBXTargetDependency */,
 			);
+			fileSystemSynchronizedGroups = (
+				60CC7C9C2E269D270055BE8F /* Onboarding */,
+			);
 			name = "Kickstarter-Framework-iOS";
 			packageProductDependencies = (
 				E1F1DB3E2B7BC09C004EA80B /* Prelude */,
@@ -8420,8 +8455,29 @@
 				8A86D7F524FED02A00037A7B /* GoogleService-Info.plist in Resources */,
 				60A80F532BD7F9A00052A829 /* PrivacyInfo.xcprivacy in Resources */,
 				33F55B502D4C711C0007E50E /* Inter-Italic-VariableFont.ttf in Resources */,
+				60CC7CA42E26AFD70055BE8F /* onboarding-flow-welcome-en.json in Resources */,
 				33F55B512D4C711C0007E50E /* Inter-VariableFont.ttf in Resources */,
 				194A8E4E2A13FB010099583B /* GoogleService-Info.plist in Resources */,
+				60CC7CA52E26B0A30055BE8F /* onboarding-flow-save-projects-ja.json in Resources */,
+				60CC7CA62E26B0A30055BE8F /* onboarding-flow-enable-notifications-ja.json in Resources */,
+				60CC7CA72E26B0A30055BE8F /* onboarding-flow-login-signup-en.json in Resources */,
+				60CC7CA82E26B0A30055BE8F /* onboarding-flow-welcome-ja.json in Resources */,
+				60CC7CA92E26B0A30055BE8F /* onboarding-flow-welcome-fr.json in Resources */,
+				60CC7CAA2E26B0A30055BE8F /* onboarding-flow-save-projects-es.json in Resources */,
+				60CC7CAB2E26B0A30055BE8F /* onboarding-flow-login-signup-fr.json in Resources */,
+				60CC7CAC2E26B0A30055BE8F /* onboarding-flow-enable-notifications-fr.json in Resources */,
+				60CC7CAD2E26B0A30055BE8F /* onboarding-flow-login-signup-de.json in Resources */,
+				60CC7CAE2E26B0A30055BE8F /* onboarding-flow-activity-tracking-en.json in Resources */,
+				60CC7CAF2E26B0A30055BE8F /* onboarding-flow-save-projects-de.json in Resources */,
+				60CC7CB02E26B0A30055BE8F /* onboarding-flow-save-projects-fr.json in Resources */,
+				60CC7CB12E26B0A30055BE8F /* onboarding-flow-login-signup-ja.json in Resources */,
+				60CC7CB22E26B0A30055BE8F /* onboarding-flow-enable-notifications-de.json in Resources */,
+				60CC7CB32E26B0A30055BE8F /* onboarding-flow-enable-notifications-es.json in Resources */,
+				60CC7CB42E26B0A30055BE8F /* onboarding-flow-enable-notifications-en.json in Resources */,
+				60CC7CB52E26B0A30055BE8F /* onboarding-flow-welcome-de.json in Resources */,
+				60CC7CB62E26B0A30055BE8F /* onboarding-flow-save-projects-en.json in Resources */,
+				60CC7CB72E26B0A30055BE8F /* onboarding-flow-login-signup-es.json in Resources */,
+				60CC7CB82E26B0A30055BE8F /* onboarding-flow-welcome-es.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8715,6 +8771,7 @@
 				A75511621C8642C3005355CF /* LaunchedCountries.swift in Sources */,
 				33F55B452D4BFCB80007E50E /* InterFont.swift in Sources */,
 				A76126B71C90C94000EDCCB9 /* UICollectionView-Extensions.swift in Sources */,
+				60CC7CA32E26A82D0055BE8F /* OnboardingViewModel.swift in Sources */,
 				7748438022D8DA3800508C9B /* Instantiable.swift in Sources */,
 				A73379481D0E36CA00C91445 /* Fonts.swift in Sources */,
 				370F52B3225426C700F159B9 /* UIApplication.swift in Sources */,
@@ -9091,6 +9148,7 @@
 				D79970B723EC88CB00584911 /* ThanksCategoryCellViewModelTests.swift in Sources */,
 				8A8099F522E2143000373E66 /* RewardCardContainerViewModelTests.swift in Sources */,
 				D667C2BC2305F03300EC094A /* ExperimentName+HelpersTests.swift in Sources */,
+				60CC7CC62E280E2A0055BE8F /* OnboardingViewModelTests.swift in Sources */,
 				8A8099F622E2143400373E66 /* RewardCardViewModelTests.swift in Sources */,
 				06B9AF4F26AF79DF00735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift in Sources */,
 				D66850A323707CCC00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModelTests.swift in Sources */,

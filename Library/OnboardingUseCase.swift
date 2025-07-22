@@ -33,11 +33,11 @@ public enum OnboardingItemType {
 }
 
 public struct OnboardingItem: Identifiable, Equatable {
-  public var id: UUID = .init()
-  let title: String
-  let subTitle: String
-  var lottieView: LottieAnimationView = .init()
-  let type: OnboardingItemType
+  public let id: UUID = .init()
+  public let title: String
+  public let subtitle: String
+  public var lottieView: LottieAnimationView = .init()
+  public let type: OnboardingItemType
 }
 
 public protocol OnboardingUseCaseType {
@@ -47,9 +47,6 @@ public protocol OnboardingUseCaseType {
 }
 
 public protocol OnboardingUseCaseUIInputs {
-  /// Triggers the PN permissions system dialog.
-  func getNotifiedTapped()
-
   /// Triggers the AppTrackingTransparency system dialog.
   func allowTrackingTapped()
 
@@ -66,9 +63,6 @@ public protocol OnboardingUseCaseUIOutputs {
 }
 
 public protocol OnboardingUseCaseOutputs {
-  /// Emits when the user has finished interacting with the Push Notificaiton system dialog.
-  var completedGetNotifiedRequest: Signal<Void, Never> { get }
-
   /// Emits when the user has finished interacting with the Push Notificaiton system dialog.
   var triggerAppTrackingTransparencyPopup: Signal<Void, Never> { get }
 }
@@ -98,19 +92,13 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
   // MARK: - Initialization
 
   /// Injecting a bundle so that we can test that the correct Lottie JSON files are being loaded as expected.
-  init(for bundle: Bundle) {
+  init(for bundle: Bundle = .main) {
     let onboardingItems = allOnboardingItems(in: bundle)
 
     self.onboardingItems = SignalProducer(value: onboardingItems)
 
     self.goToLoginSignup = self.goToLoginSignupTappedSignal
       .mapConst(LoginIntent.onboarding)
-
-    self.completedGetNotifiedRequest = self.getNotifiedSignal.signal
-      .flatMap(.latest) {
-        AppEnvironment.current.pushRegistrationType.hasAuthorizedNotifications()
-          .ignoreValues()
-      }
 
     self.triggerAppTrackingTransparencyPopup = self.allowTrackingTappedSignal.signal
       .filter {
@@ -130,11 +118,6 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
 
   // MARK: - Inputs
 
-  private let (getNotifiedSignal, getNotifiedObserver) = Signal<Void, Never>.pipe()
-  public func getNotifiedTapped() {
-    self.getNotifiedObserver.send(value: ())
-  }
-
   private let (allowTrackingTappedSignal, allowTrackingTappedObserver) = Signal<Void, Never>.pipe()
   public func allowTrackingTapped() {
     self.allowTrackingTappedObserver.send(value: ())
@@ -153,7 +136,6 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
 
   // MARK: - UI Outputs
 
-  public let completedGetNotifiedRequest: Signal<Void, Never>
   public let triggerAppTrackingTransparencyPopup: Signal<Void, Never>
   public let goToLoginSignup: Signal<LoginIntent, Never>
 
@@ -176,32 +158,32 @@ private func allOnboardingItems(
   // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
   return [
     makeOnboardingItem(
-      title: "Onboarding: Welcome to Kickstarter",
-      subTitle: "Onboarding: Use our app to discover and support creative projects. Browse by category, find projects near you, or explore our “Projects We Love” picks.",
+      title: "FPO: Welcome to Kickstarter",
+      subTitle: "FPO: Use our app to discover and support creative projects. Browse by category, find projects near you, or explore our “Projects We Love” picks.",
       type: .welcome,
       in: bundle
     ),
     makeOnboardingItem(
-      title: "Onboarding: Save projects for later",
-      subTitle: "Onboarding: Found a project that’s caught your eye? Tap the heart to save it and you can come back to it later on your Saved tab.",
+      title: "FPO: Save projects for later",
+      subTitle: "FPO: Found a project that’s caught your eye? Tap the heart to save it and you can come back to it later on your Saved tab.",
       type: .saveProjects,
       in: bundle
     ),
     makeOnboardingItem(
-      title: "Onboarding: Stay in the know",
-      subTitle: "Onboarding: Turn on notifications to keep track of your backed projects and discover more you’ll love. You can customize these anytime in your settings.",
+      title: "FPO: Stay in the know",
+      subTitle: "FPO: Turn on notifications to keep track of your backed projects and discover more you’ll love. You can customize these anytime in your settings.",
       type: .enableNotifications,
       in: bundle
     ),
     makeOnboardingItem(
-      title: "Onboarding: Personalize your experince",
-      subTitle: "Onboarding: Allow tracking to help us improve your in-app experience. You can change your tracking preference anytime in your device settings.",
+      title: "FPO: Personalize your experince",
+      subTitle: "FPO: Allow tracking to help us improve your in-app experience. You can change your tracking preference anytime in your device settings.",
       type: .allowTracking,
       in: bundle
     ),
     makeOnboardingItem(
-      title: "Onboarding: Join the community",
-      subTitle: "Onboarding: Log in or create an account to back projects, save favorites, and follow along as creative ideas come to life.",
+      title: "FPO: Join the community",
+      subTitle: "FPO: Log in or create an account to back projects, save favorites, and follow along as creative ideas come to life.",
       type: .loginSignUp,
       in: bundle
     )
@@ -222,7 +204,7 @@ private func makeOnboardingItem(
 
   return OnboardingItem(
     title: title,
-    subTitle: subTitle,
+    subtitle: subTitle,
     lottieView: .init(name: lottieName, bundle: bundle),
     type: type
   )
