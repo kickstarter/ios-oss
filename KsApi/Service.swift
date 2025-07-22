@@ -141,7 +141,8 @@ public struct Service: ServiceType {
     return GraphQL.shared.client
       .fetch(query: GraphAPI.BuildPaymentPlanQuery(
         slug: projectSlug,
-        amount: pledgeAmount
+        amount: pledgeAmount,
+        includeRefundedAmount: false
       ))
   }
 
@@ -506,7 +507,8 @@ public struct Service: ServiceType {
             status: GraphQLEnum.case(status),
             withStoredCards: false,
             includeShippingRules: true,
-            includeLocalPickup: false
+            includeLocalPickup: false,
+            includeRefundedAmount: false
           )
       )
       .flatMap(ErroredBackingsEnvelope.producer(from:))
@@ -521,7 +523,8 @@ public struct Service: ServiceType {
             id: "\(id)",
             withStoredCards: withStoredCards,
             includeShippingRules: true,
-            includeLocalPickup: true
+            includeLocalPickup: true,
+            includeRefundedAmount: true
           )
       )
       .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
