@@ -3644,8 +3644,6 @@
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		60CC7C9C2E269D270055BE8F /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		E18A64692E28224A00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -3664,6 +3662,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		60CC7C9C2E269D270055BE8F /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
 		E18A645E2E28224A00BA0376 /* GraphAPI */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E18A64692E28224A00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = GraphAPI; sourceTree = "<group>"; };
 		E18A66682E28225E00BA0376 /* GraphAPITestMocks */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E18A666B2E28225E00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = GraphAPITestMocks; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */

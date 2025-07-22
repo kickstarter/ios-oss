@@ -639,7 +639,7 @@
         return .empty
       }
 
-      let query = GraphAPI.BuildPaymentPlanQuery(slug: projectSlug, amount: pledgeAmount)
+      let query = GraphAPI.BuildPaymentPlanQuery(slug: projectSlug, amount: pledgeAmount, includeRefundedAmount: false)
 
       return client.fetchWithResult(query: query, result: self.buildPaymentPlanResult)
     }

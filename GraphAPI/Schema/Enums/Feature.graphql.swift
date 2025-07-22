@@ -130,4 +130,6 @@ public enum Feature: String, EnumType {
   case shopifyKickoffSyncJob2025 = "shopify_kickoff_sync_job_2025"
   case taxCategoryImprovements = "tax_category_improvements"
   case creatorOptOutFeedback2025 = "creator_opt_out_feedback_2025"
+  case allowEditingShippingRates2025 = "allow_editing_shipping_rates_2025"
+  case pmBackerPreview2025 = "pm_backer_preview_2025"
 }
