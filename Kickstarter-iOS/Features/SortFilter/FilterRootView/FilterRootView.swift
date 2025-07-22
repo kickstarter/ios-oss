@@ -107,7 +107,7 @@ struct FilterRootView: View {
   var goalSection: some View {
     NavigationLink(value: SearchFilterModalType.goal) {
       FilterSectionButton(
-        title: "FPO: Goal", // TODO(MBL-2576): Add translated string.
+        title: Strings.Goal(),
         subtitle: self.searchFilters.goal.selectedBucket?.title
       )
     }
@@ -117,15 +117,13 @@ struct FilterRootView: View {
   @ViewBuilder
   var showOnlySection: some View {
     VStack(alignment: .leading, spacing: Constants.sectionSpacing) {
-      // FIXME: MBL-2563 Add translated strings
-      Text("FPO: Show only")
+      Text(Strings.Show_only())
         .font(InterFont.headingLG.swiftUIFont())
       Group {
-        // FIXME: MBL-2563 Add translated strings
-        Toggle("FPO: Recommended for you", isOn: self.showRecommended)
-        Toggle("FPO: Projects We Love", isOn: self.showProjectsWeLove)
-        Toggle("FPO: Saved projects", isOn: self.showSavedProjects)
-        Toggle("FPO: Following", isOn: self.showFollowing)
+        Toggle(Strings.Show_only_recommended_for_you(), isOn: self.showRecommended)
+        Toggle(Strings.Show_only_projects_we_love(), isOn: self.showProjectsWeLove)
+        Toggle(Strings.Show_only_saved_projects(), isOn: self.showSavedProjects)
+        Toggle(Strings.Show_only_following(), isOn: self.showFollowing)
       }
       .toggleStyle(.switch)
       .tint(Colors.Text.primary.swiftUIColor())
@@ -249,8 +247,7 @@ struct FilterRootView: View {
               .modalHeader(withTitle: Strings.Amount_raised(), onClose: self.onClose)
           case .goal:
             self.goalModal
-              // TODO(MBL-2576): Add translated string.
-              .modalHeader(withTitle: "FPO: Goal", onClose: self.onClose)
+              .modalHeader(withTitle: Strings.Goal(), onClose: self.onClose)
           default:
             EmptyView()
           }
