@@ -273,13 +273,12 @@ public class SearchFilters: ObservableObject {
         SearchFilterPill(
           isHighlighted: self.showOnly.recommended,
           filterType: .recommended,
-          // FIXME: MBL-2563 Add translations
-          buttonType: .toggle("FPO: Recommended for you")
+          buttonType: .toggle(Strings.Show_only_recommended_for_you())
         )
       )
     }
 
-    let percentRaisedTitle = self.percentRaised.selectedBucket?.title ?? Strings.Percentage_raised()
+    let percentRaisedTitle = self.percentRaised.selectedBucket?.pillTitle ?? Strings.Percentage_raised()
     pills.append(
       SearchFilterPill(
         isHighlighted: self.hasPercentRaised,
@@ -289,7 +288,7 @@ public class SearchFilters: ObservableObject {
     )
 
     if featureSearchFilterByAmountRaised() {
-      let amountRaisedTitle = self.amountRaised.selectedBucket?.title ?? Strings.Amount_raised()
+      let amountRaisedTitle = self.amountRaised.selectedBucket?.pillTitle ?? Strings.Amount_raised()
       pills.append(
         SearchFilterPill(
           isHighlighted: self.hasAmountRaised,
@@ -305,15 +304,13 @@ public class SearchFilters: ObservableObject {
           SearchFilterPill(
             isHighlighted: self.showOnly.projectsWeLove,
             filterType: .projectsWeLove,
-            // FIXME: MBL-2563 Add translations
-            buttonType: .toggleWithImage("FPO: Projects We Love", pwlIcon)
+            buttonType: .toggleWithImage(Strings.Show_only_projects_we_love(), pwlIcon)
           )
         )
       }
 
       if featureSearchFilterByGoal() {
-        // TODO(MBL-2576): Add translated strings.
-        let goalTitle = self.goal.selectedBucket?.pillTitle ?? "FPO: Goal"
+        let goalTitle = self.goal.selectedBucket?.pillTitle ?? Strings.Goal()
         pills.append(
           SearchFilterPill(
             isHighlighted: self.hasGoal,
@@ -328,16 +325,14 @@ public class SearchFilters: ObservableObject {
           SearchFilterPill(
             isHighlighted: self.showOnly.savedProjects,
             filterType: .saved,
-            // FIXME: MBL-2563 Add translations
-            buttonType: .toggle("FPO: Saved")
+            buttonType: .toggle(Strings.Show_only_saved_pill_title())
           )
         )
         pills.append(
           SearchFilterPill(
             isHighlighted: self.showOnly.following,
             filterType: .following,
-            // FIXME: MBL-2563 Add translations
-            buttonType: .toggle("FPO: Following")
+            buttonType: .toggle(Strings.Show_only_following())
           )
         )
       }

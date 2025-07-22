@@ -579,7 +579,7 @@ final class SearchFiltersUseCaseTests: TestCase {
 
       XCTAssertEqual(
         title,
-        DiscoveryParams.PercentRaisedBucket.bucket_2.title,
+        DiscoveryParams.PercentRaisedBucket.bucket_2.pillTitle,
         "Dropdown should have description of selected % raised option in its title"
       )
 
@@ -625,7 +625,7 @@ final class SearchFiltersUseCaseTests: TestCase {
 
         XCTAssertEqual(
           title,
-          DiscoveryParams.AmountRaisedBucket.bucket_3.title,
+          DiscoveryParams.AmountRaisedBucket.bucket_3.pillTitle,
           "Dropdown should have description of selected amount raised option in its title"
         )
 

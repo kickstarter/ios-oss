@@ -841,6 +841,91 @@ public enum Strings {
     )
   }
   /**
+   "Under $1,000 raised"
+
+   - **en**: "Under $1,000 raised"
+   - **de**: "Unter 1.000 $ gesammelt"
+   - **es**: "Menos de USD 1000 recaudados"
+   - **fr**: "Moins de 1 000 $ levés"
+   - **ja**: "資金調達額：$1,000 未満"
+  */
+  public static func Amount_raised_pill_bucket_0() -> String {
+    return localizedString(
+      key: "Amount_raised_pill_bucket_0",
+      defaultValue: "Under $1,000 raised",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "$1,000 to $10,000 raised"
+
+   - **en**: "$1,000 to $10,000 raised"
+   - **de**: "1.000 $ bis 10.000 $ gesammelt"
+   - **es**: "Entre USD 1000 y USD 10 000 recaudados"
+   - **fr**: "Entre 1 000 $ et 10 000 $ levés"
+   - **ja**: "資金調達額：$1,000 ～ $10,000"
+  */
+  public static func Amount_raised_pill_bucket_1() -> String {
+    return localizedString(
+      key: "Amount_raised_pill_bucket_1",
+      defaultValue: "$1,000 to $10,000 raised",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "$10,000 to $100,000 raised"
+
+   - **en**: "$10,000 to $100,000 raised"
+   - **de**: "10.000 $ bis 100.000 $ gesammelt"
+   - **es**: "Entre USD 10 000 y USD 100 000 recaudados"
+   - **fr**: "Entre 10 000 $ et 100 000 $ levés"
+   - **ja**: "資金調達額：$10,000 ～ $100,000"
+  */
+  public static func Amount_raised_pill_bucket_2() -> String {
+    return localizedString(
+      key: "Amount_raised_pill_bucket_2",
+      defaultValue: "$10,000 to $100,000 raised",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "$100,000 to $1,000,000 raised"
+
+   - **en**: "$100,000 to $1,000,000 raised"
+   - **de**: "100.000 $ bis 1.000.000 $ gesammelt"
+   - **es**: "Entre USD 100 000 y USD 1 000 000 recaudados"
+   - **fr**: "Entre 100 000 $ et 1 000 000 $ levés"
+   - **ja**: "資金調達額：$100,000 ～ $1,000,000"
+  */
+  public static func Amount_raised_pill_bucket_3() -> String {
+    return localizedString(
+      key: "Amount_raised_pill_bucket_3",
+      defaultValue: "$100,000 to $1,000,000 raised",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "More than $1,000,000 raised"
+
+   - **en**: "More than $1,000,000 raised"
+   - **de**: "Über 1.000.000 $ gesammelt"
+   - **es**: "Más de USD 1 000 000 recaudados"
+   - **fr**: "Plus d'1 000 000 $ levés"
+   - **ja**: "資金調達額：$1,000,000 以上"
+  */
+  public static func Amount_raised_pill_bucket_4() -> String {
+    return localizedString(
+      key: "Amount_raised_pill_bucket_4",
+      defaultValue: "More than $1,000,000 raised",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Amount: %{amount}, %{reward}"
 
    - **en**: "Amount: %{amount}, %{reward}"
@@ -1385,7 +1470,7 @@ contributeurs"
    - **de**: "Die Unterstützung eines Projekts bedeutet, eine kreative Idee zu unterstützen, unabhängig vom Ergebnis."
    - **es**: "Patrocinar un proyecto significa apoyar una idea creativa, independientemente del resultado."
    - **fr**: "S'engager, c'est soutenir le créateur d'un projet créatif, quel que soit le résultat."
-   - **ja**: "「バックすること」とは、クリエイティブなプロジェクトを、その結果に関係なく支援することを意味します。"
+   - **ja**: "「バッキング」、つまりバックすることとは、クリエイティブなプロジェクトを、その結果に関係なく支援することを意味します。"
   */
   public static func Backing_means_supporting() -> String {
     return localizedString(
@@ -1402,7 +1487,7 @@ contributeurs"
    - **de**: "Unterstützte Projekte"
    - **es**: "Contribuciones"
    - **fr**: "Engagements"
-   - **ja**: "バッキング"
+   - **ja**: "支援"
   */
   public static func Backings() -> String {
     return localizedString(
@@ -2371,7 +2456,7 @@ contributeurs"
    - **de**: "Zahlungsplan"
    - **es**: "Plan de pagos"
    - **fr**: "Type de règlement"
-   - **ja**: "集金プラン"
+   - **ja**: "資金回収プラン"
   */
   public static func Collection_plan() -> String {
     return localizedString(
@@ -3657,7 +3742,7 @@ Cliquez pour réessayer."
    - **en**: "Discover more projects."
    - **de**: "Erkunde mehr Projekte."
    - **es**: "Descubre más proyectos."
-   - **fr**: "Découvrez plus de projets."
+   - **fr**: "Découvrir plus de projets"
    - **ja**: "プロジェクトをさがす"
   */
   public static func Discover_more_projects() -> String {
@@ -5522,6 +5607,108 @@ Cliquez pour réessayer."
     )
   }
   /**
+   "Goal"
+
+   - **en**: "Goal"
+   - **de**: "Ziel"
+   - **es**: "Meta"
+   - **fr**: "Objectif"
+   - **ja**: "ファンディングゴール"
+  */
+  public static func Goal() -> String {
+    return localizedString(
+      key: "Goal",
+      defaultValue: "Goal",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Under $1,000"
+
+   - **en**: "Under $1,000"
+   - **de**: "Unter 1.000 $"
+   - **es**: "Menos de USD 1000"
+   - **fr**: "Moins de 1 000 $"
+   - **ja**: "$1,000 未満"
+  */
+  public static func Goal_bucket_0() -> String {
+    return localizedString(
+      key: "Goal_bucket_0",
+      defaultValue: "Under $1,000",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "$1,000 to $10,000"
+
+   - **en**: "$1,000 to $10,000"
+   - **de**: "1.000 $ bis 10.000 $"
+   - **es**: "Entre USD 1000 y USD 10 000"
+   - **fr**: "Entre 1 000 $ et 10 000 $"
+   - **ja**: "$1,000 ～ $10,000"
+  */
+  public static func Goal_bucket_1() -> String {
+    return localizedString(
+      key: "Goal_bucket_1",
+      defaultValue: "$1,000 to $10,000",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "$10,000 to $100,000"
+
+   - **en**: "$10,000 to $100,000"
+   - **de**: "10.000 $ bis 100.000 $"
+   - **es**: "Entre USD 10 000 y USD 100 000"
+   - **fr**: "Entre 10 000 $ et 100 000 $"
+   - **ja**: "$10,000 ～ $100,000"
+  */
+  public static func Goal_bucket_2() -> String {
+    return localizedString(
+      key: "Goal_bucket_2",
+      defaultValue: "$10,000 to $100,000",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "$100,000 to $1,000,000"
+
+   - **en**: "$100,000 to $1,000,000"
+   - **de**: "100.000 $ bis 1.000.000 $"
+   - **es**: "Entre USD 100 000 y USD 1 000 000"
+   - **fr**: "Entre 100 000 $ et 1 000 000 $"
+   - **ja**: "$100,000 ～ $1,000,000"
+  */
+  public static func Goal_bucket_3() -> String {
+    return localizedString(
+      key: "Goal_bucket_3",
+      defaultValue: "$100,000 to $1,000,000",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "More than $1,000,000"
+
+   - **en**: "More than $1,000,000"
+   - **de**: "Über 1.000.000 $"
+   - **es**: "Más de USD 1 000 000"
+   - **fr**: "Plus de 1 000 000 $"
+   - **ja**: "$1,000,000 以上"
+  */
+  public static func Goal_bucket_4() -> String {
+    return localizedString(
+      key: "Goal_bucket_4",
+      defaultValue: "More than $1,000,000",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Goal met"
 
    - **en**: "Goal met"
@@ -5534,6 +5721,91 @@ Cliquez pour réessayer."
     return localizedString(
       key: "Goal_met",
       defaultValue: "Goal met",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Goal: Under $1,000"
+
+   - **en**: "Goal: Under $1,000"
+   - **de**: "Ziel: Unter 1.000 $"
+   - **es**: "Meta: menos de USD 1000"
+   - **fr**: "Objectif : inférieur à 1 000 $"
+   - **ja**: "ゴール：$1,000 未満"
+  */
+  public static func Goal_pill_bucket_0() -> String {
+    return localizedString(
+      key: "Goal_pill_bucket_0",
+      defaultValue: "Goal: Under $1,000",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Goal: $1,000 to $10,000"
+
+   - **en**: "Goal: $1,000 to $10,000"
+   - **de**: "Ziel: 1.000 $ bis 10.000 $"
+   - **es**: "Meta: entre USD 1000 y USD 10 000"
+   - **fr**: "Objectif : entre 1 000 $ et 10 000 $"
+   - **ja**: "ゴール：$1,000 ～ $10,000"
+  */
+  public static func Goal_pill_bucket_1() -> String {
+    return localizedString(
+      key: "Goal_pill_bucket_1",
+      defaultValue: "Goal: $1,000 to $10,000",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Goal: $10,000 to $100,000"
+
+   - **en**: "Goal: $10,000 to $100,000"
+   - **de**: "Ziel: 10.000 $ bis 100.000 $"
+   - **es**: "Meta: entre USD 10 000 y USD 100 000"
+   - **fr**: "Objectif : entre 10 000 $ et 100 000 $"
+   - **ja**: "ゴール：$10,000 ～ $100,000"
+  */
+  public static func Goal_pill_bucket_2() -> String {
+    return localizedString(
+      key: "Goal_pill_bucket_2",
+      defaultValue: "Goal: $10,000 to $100,000",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Goal: $100,000 to $1,000,000"
+
+   - **en**: "Goal: $100,000 to $1,000,000"
+   - **de**: "Ziel: 100.000 $ bis 1.000.000 $"
+   - **es**: "Meta: entre USD 100 000 y USD 1 000 000"
+   - **fr**: "Objectif : entre 100 000 $ et 1 000 000 $"
+   - **ja**: "ゴール：$100,000 ～ $1,000,000"
+  */
+  public static func Goal_pill_bucket_3() -> String {
+    return localizedString(
+      key: "Goal_pill_bucket_3",
+      defaultValue: "Goal: $100,000 to $1,000,000",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Goal: More than $1,000,000"
+
+   - **en**: "Goal: More than $1,000,000"
+   - **de**: "Ziel: Über 1.000.000 $"
+   - **es**: "Meta: más de USD 1 000 000"
+   - **fr**: "Objectif : supérieur à 1 000 000 $"
+   - **ja**: "ゴール：$1,000,000 以上"
+  */
+  public static func Goal_pill_bucket_4() -> String {
+    return localizedString(
+      key: "Goal_pill_bucket_4",
+      defaultValue: "Goal: More than $1,000,000",
       count: nil,
       substitutions: [:]
     )
@@ -6107,7 +6379,7 @@ Cliquez pour réessayer."
    - **de**: "Jetzt neu: Der Tab „Meine Beiträge“"
    - **es**: "Presentamos la pestaña Contribuciones"
    - **fr**: "Bienvenue dans l'onglet Engagements"
-   - **ja**: "「バッキング」タブのご紹介"
+   - **ja**: "「支援」タブのご紹介"
   */
   public static func Introducing_the_backings_tab() -> String {
     return localizedString(
@@ -6787,9 +7059,9 @@ with friends."
 
    - **en**: "Live and unsuccessful backings can currently be viewed in the Profile tab."
    - **de**: "Derzeit findest du aktuelle und nicht erfolgreiche Beiträge auf dem Tab „Profil“."
-   - **es**: "Live and unsuccessful backings can currently be viewed in the Profile tab."
+   - **es**: "Las contribuciones a proyectos activos y no financiados aparecen actualmente en la pestaña Perfil."
    - **fr**: "Les engagements en cours et non financés sont visibles actuellement visibles dans l'onglet Profil."
-   - **ja**: "進行中のバッキングと成功しなかったバッキングは［プロフィール］タブから確認できます。"
+   - **ja**: "進行中の支援とファンディングに成功しなかった支援については［プロフィール］タブから確認できます。"
   */
   public static func Live_and_unsuccessful_backings_can_currently_be_viewed_in_the_profile_tab() -> String {
     return localizedString(
@@ -6804,9 +7076,9 @@ with friends."
 
    - **en**: "Live backings"
    - **de**: "Beiträge für laufende Projekte"
-   - **es**: "Live backings"
+   - **es**: "Contribuciones a proyectos activos"
    - **fr**: "Engagements en cours"
-   - **ja**: "進行中のバッキング"
+   - **ja**: "進行中の支援"
   */
   public static func Live_backings() -> String {
     return localizedString(
@@ -7688,9 +7960,9 @@ with friends."
 
    - **en**: "No funded backings"
    - **de**: "Keine Beiträge für finanzierte Projekte"
-   - **es**: "No funded backings"
+   - **es**: "No hay contribuciones a proyectos financiados"
    - **fr**: "Pas de contributions prélevées"
-   - **ja**: "資金調達済みのバッキングはありません"
+   - **ja**: "ファンディング成立済みの支援はありません"
   */
   public static func No_funded_backings() -> String {
     return localizedString(
@@ -8492,7 +8764,7 @@ n'ont rien soutenu."
    - **de**: "Zahlung"
    - **es**: "Pago"
    - **fr**: "Paiement"
-   - **ja**: "支払い"
+   - **ja**: "お支払い方法"
   */
   public static func Payment() -> String {
     return localizedString(
@@ -8651,6 +8923,57 @@ n'ont rien soutenu."
     return localizedString(
       key: "Percentage_raised_bucket_2",
       defaultValue: "More than 100%",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Under 75% raised"
+
+   - **en**: "Under 75% raised"
+   - **de**: "Unter 75 % gesammelt"
+   - **es**: "Menos del 75  % recaudado"
+   - **fr**: "Financé à moins de 75 %"
+   - **ja**: "資金調達達成率：75% 未満"
+  */
+  public static func Percentage_raised_pill_bucket_0() -> String {
+    return localizedString(
+      key: "Percentage_raised_pill_bucket_0",
+      defaultValue: "Under 75% raised",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "75% to 100% raised"
+
+   - **en**: "75% to 100% raised"
+   - **de**: "75–100 % gesammelt"
+   - **es**: "Entre el 75  % y el 100  % recaudado"
+   - **fr**: "Financé entre 75 % et 100 %"
+   - **ja**: "資金調達達成率：75% ～ 100%"
+  */
+  public static func Percentage_raised_pill_bucket_1() -> String {
+    return localizedString(
+      key: "Percentage_raised_pill_bucket_1",
+      defaultValue: "75% to 100% raised",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "More than 100% raised"
+
+   - **en**: "More than 100% raised"
+   - **de**: "Über 100 % gesammelt"
+   - **es**: "Más del 100  % recaudado"
+   - **fr**: "Financé à plus de 100 %"
+   - **ja**: "資金調達達成率：100%"
+  */
+  public static func Percentage_raised_pill_bucket_2() -> String {
+    return localizedString(
+      key: "Percentage_raised_pill_bucket_2",
+      defaultValue: "More than 100% raised",
       count: nil,
       substitutions: [:]
     )
@@ -11146,7 +11469,7 @@ daring ideas."
    - **en**: "Select your reward"
    - **de**: "Belohnung auswählen"
    - **es**: "Selecciona tu recompensa"
-   - **fr**: "Veuillez sélectionner votre récompense"
+   - **fr**: "Choix de récompense"
    - **ja**: "リワードの選択"
   */
   public static func Select_your_reward() -> String {
@@ -11578,6 +11901,108 @@ daring ideas."
     return localizedString(
       key: "Show_me_projects",
       defaultValue: "Show me projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Show only"
+
+   - **en**: "Show only"
+   - **de**: "Nur Folgende anzeigen"
+   - **es**: "Solo mostrar"
+   - **fr**: "Afficher seulement"
+   - **ja**: "以下のみ表示"
+  */
+  public static func Show_only() -> String {
+    return localizedString(
+      key: "Show_only",
+      defaultValue: "Show only",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Following"
+
+   - **en**: "Following"
+   - **de**: "Gefolgt"
+   - **es**: "Siguiendo"
+   - **fr**: "Abonnements"
+   - **ja**: "フォロー"
+  */
+  public static func Show_only_following() -> String {
+    return localizedString(
+      key: "Show_only_following",
+      defaultValue: "Following",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Projects We Love"
+
+   - **en**: "Projects We Love"
+   - **de**: "Team-Favoriten"
+   - **es**: "Nuestros favoritos"
+   - **fr**: "Nos coups de cœur"
+   - **ja**: "Project We Love"
+  */
+  public static func Show_only_projects_we_love() -> String {
+    return localizedString(
+      key: "Show_only_projects_we_love",
+      defaultValue: "Projects We Love",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Recommended for you"
+
+   - **en**: "Recommended for you"
+   - **de**: "Empfehlungen für dich"
+   - **es**: "Recomendaciones"
+   - **fr**: "Rien que pour vous"
+   - **ja**: "あなたにおすすめ"
+  */
+  public static func Show_only_recommended_for_you() -> String {
+    return localizedString(
+      key: "Show_only_recommended_for_you",
+      defaultValue: "Recommended for you",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Saved"
+
+   - **en**: "Saved"
+   - **de**: "Gespeichert"
+   - **es**: "Guardados"
+   - **fr**: "Projets enregistrés"
+   - **ja**: "お気に入り"
+  */
+  public static func Show_only_saved_pill_title() -> String {
+    return localizedString(
+      key: "Show_only_saved_pill_title",
+      defaultValue: "Saved",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Saved projects"
+
+   - **en**: "Saved projects"
+   - **de**: "Gespeicherte Projekte"
+   - **es**: "Proyectos guardados"
+   - **fr**: "Projets enregistrés"
+   - **ja**: "保存済みプロジェクト"
+  */
+  public static func Show_only_saved_projects() -> String {
+    return localizedString(
+      key: "Show_only_saved_projects",
+      defaultValue: "Saved projects",
       count: nil,
       substitutions: [:]
     )
@@ -12135,7 +12560,7 @@ catch your eye?"
    - **de**: "Beiträge für erfolgreich finanzierte Projekte"
    - **es**: "Contribuciones a proyectos financiados con éxito"
    - **fr**: "Projets soutenus et intégralement financés"
-   - **ja**: "資金調達に成功したバッキング"
+   - **ja**: "ファンディング成立済みの支援"
   */
   public static func Successfully_funded_backings() -> String {
     return localizedString(
@@ -12543,7 +12968,7 @@ catch your eye?"
    - **de**: "Die erste Rate wird nach erfolgreichem Ende des Projekts eingezogen. Die weiteren Raten werden alle 2 Wochen eingezogen, bis der Finanzierungsbeitrag komplett bezahlt wurde. Wenn du dich für diese Option entscheidest, kannst du keine weiteren Änderungen an deinem Beitrag vornehmen."
    - **es**: "El primer pago se hará cuando el proyecto finalice con éxito, luego cada 2 semanas hasta el monto total de la contribución. Cuando se selecciona esta opción, no se pueden realizar más modificaciones en tu contribución."
    - **fr**: "Le premier prélèvement interviendra après la fin de la campagne, si l'objectif de celle-ci est atteint. Les prélèvements suivants auront lieu toutes les deux semaines, jusqu'au règlement intégral du montant dû. Si vous sélectionnez cette option, votre engagement devient non modifiable."
-   - **ja**: "最初の請求はプロジェクトが成功に終わった時点で行われます。その後は全額が支払われるまで、2週間おきに請求が行われます。このオプションを選択すると、その後はプレッジを編集することはできなくなります。"
+   - **ja**: "最初の請求はプロジェクトが成功裏に終わった時点で行われます。その後は全額が支払われるまで、2週間おきに請求が行われます。このオプションを選択すると、その後はプレッジを編集することはできなくなります。"
   */
   public static func The_first_charge_will_occur_when_the_project_ends_successfully() -> String {
     return localizedString(
@@ -13325,7 +13750,7 @@ catch your eye?"
    - **de**: "Folge deinen unterstützten Projekten"
    - **es**: "Sigue los proyectos que has patrocinado"
    - **fr**: "Suivi de vos engagements"
-   - **ja**: "バッキングを追跡"
+   - **ja**: "支援したプロジェクトを追跡"
   */
   public static func Track_your_backings() -> String {
     return localizedString(
@@ -13493,9 +13918,9 @@ catch your eye?"
 
    - **en**: "Unsuccessful and canceled backings"
    - **de**: "Beiträge für nicht erfolgreiche und stornierte Projekte"
-   - **es**: "Unsuccessful and canceled backings"
+   - **es**: "Contribuciones a proyectos no financiados o cancelados"
    - **fr**: "Projets non financés ou annulés"
-   - **ja**: "資金調達が成功せずキャンセルされたバッキング"
+   - **ja**: "資金調達が成功せずキャンセルされた支援"
   */
   public static func Unsuccessful_and_canceled_backings() -> String {
     return localizedString(
@@ -13750,7 +14175,7 @@ catch your eye?"
    - **de**: "Du kannst deine Beiträge jetzt über unser neues Dashboard „Meine Beiträge“ sehen und verwalten. Im Laufe der Beta-Version werden wir weitere Funktionen hinzufügen."
    - **es**: "Ahora puedes ver y administrar tus contribuciones desde nuestro nuevo panel. Agregaremos más funcionalidades a medida que la versión beta evolucione."
    - **fr**: "Vos engagements sont maintenant visibles et gérables sur ce nouveau tableau de bord ! D'autres fonctionnalités seront ajoutées avec l'évolution de la version bêta."
-   - **ja**: "新しい「バッキングダッシュボード」から、自分のバックした内容を確認し管理できます！ベータ版の進展に伴い、さらに多くの機能が追加される予定です。"
+   - **ja**: "新しい「支援」ダッシュボードから、支援内容を確認し管理できます！ベータ版の進展に伴い、さらに多くの機能が追加される予定です。"
   */
   public static func View_and_manage_your_backings_from_our_new_backings_dashboard() -> String {
     return localizedString(
@@ -16471,7 +16896,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Info zur Unterstützung"
    - **es**: "Info sobre contribución"
    - **fr**: "Infos sur la contribution"
-   - **ja**: "バッカー情報"
+   - **ja**: "バック（支援）情報"
   */
   public static func activity_creator_buttons_backing_info() -> String {
     return localizedString(
@@ -16589,7 +17014,7 @@ Veuillez réessayer ultérieurement."
    - **en**: "Discover projects"
    - **de**: "Projekte entdecken"
    - **es**: "Descubre proyectos"
-   - **fr**: "Découvrez des projets"
+   - **fr**: "Découvrir des projets"
    - **ja**: "プロジェクトを探す"
   */
   public static func activity_empty_state_logged_in_button() -> String {
@@ -16640,7 +17065,7 @@ Veuillez réessayer ultérieurement."
    - **en**: "Discover projects"
    - **de**: "Projekte entdecken"
    - **es**: "Descubre proyectos"
-   - **fr**: "Découvrez des projets"
+   - **fr**: "Découvrir des projets"
    - **ja**: "プロジェクトを探す"
   */
   public static func activity_empty_state_logged_out_button() -> String {
@@ -17865,7 +18290,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Infos zur Unterstützung"
    - **es**: "Info sobre patrocinamiento"
    - **fr**: "Infos sur la contribution"
-   - **ja**: "バッカー情報"
+   - **ja**: "バック情報"
   */
   public static func dashboard_activity_backing_info() -> String {
     return localizedString(
@@ -21401,7 +21826,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -21672,7 +22097,7 @@ Veuillez réessayer ultérieurement."
    - **en**: "Discover projects"
    - **de**: "Projekte entdecken"
    - **es**: "Descubre proyectos"
-   - **fr**: "Découvrez des projets"
+   - **fr**: "Découvrir des projets"
    - **ja**: "さがす"
   */
   public static func discovery_empty_states_saved_logged_in_button() -> String {
@@ -22591,7 +23016,7 @@ Veuillez réessayer ultérieurement."
    - **en**: "Discover projects"
    - **de**: "Entdecke neue Projekte"
    - **es**: "Descubre proyectos"
-   - **fr**: "Découvrez des projets"
+   - **fr**: "Découvrir des projets"
    - **ja**: "プロジェクトをさがす"
   */
   public static func facebook_confirmation_newsletter_bold() -> String {
@@ -25000,7 +25425,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
+   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -25069,7 +25494,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
    - **en**: "Discover projects"
    - **de**: "Projekte entdecken"
    - **es**: "Descubre proyectos"
-   - **fr**: "Découvrez des projets"
+   - **fr**: "Découvrir des projets"
    - **ja**: "プロジェクトを探す"
   */
   public static func profile_projects_empty_state_button() -> String {
@@ -28179,7 +28604,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count}\n件バック済み"
+   - **ja**: "%{projects_count} \n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -29012,7 +29437,7 @@ projets enregistrés"
    - **de**: "Update Nr. %{update_number}"
    - **es**: "Actualización %{update_number}"
    - **fr**: "Actu no. %{update_number}"
-   - **ja**: "%{update_count} アップデート"
+   - **ja**: "アップデート #%{update_number}"
   */
   public static func social_update_number(update_number: String) -> String {
     return localizedString(
@@ -29131,7 +29556,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count}プロジェクト"
+   - **ja**: "%{created_count} プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(
@@ -29567,7 +29992,7 @@ projets enregistrés"
    - **de**: "Unterstützte Projekte"
    - **es**: "Contribuciones"
    - **fr**: "Engagements"
-   - **ja**: "バッキング"
+   - **ja**: "支援"
   */
   public static func tabbar_backings() -> String {
     return localizedString(
