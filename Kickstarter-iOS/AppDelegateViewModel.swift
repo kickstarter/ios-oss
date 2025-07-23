@@ -341,7 +341,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       pushNotificationsPreviouslyAuthorized.filter { isFalse($0) && featureOnboardingFlowEnabled() }
     )
     .filter { _ in
-      AppEnvironment.current.appTrackingTransparency.shouldRequestAuthorizationStatus() == true
+      let shouldRequestAppTracking = AppEnvironment.current.appTrackingTransparency
+        .shouldRequestAuthorizationStatus() == true
+      let hasNotSeenOnboarding = AppEnvironment.current.userDefaults.hasSeenOnboarding == false
+
+      return shouldRequestAppTracking && hasNotSeenOnboarding
     }
     .mapConst(())
 
