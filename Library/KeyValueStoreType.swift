@@ -9,6 +9,7 @@ public enum AppKeys: String {
   case hasCompletedCategoryPersonalizationFlow = "com.kickstarter.KeyValueStoreType.hasCompletedCategoryPersonalizationFlow"
   case hasDismissedPersonalizationCard = "com.kickstarter.KeyValueStoreType.hasDismissedPersonalizationCard"
   case hasSeenFavoriteCategoryAlert = "com.kickstarter.KeyValueStoreType.hasSeenFavoriteCategoryAlert"
+  case hasSeenOnboarding = "com.kickstarter.KeyValueStoreType.hasSeenOnboarding"
   case hasSeenSaveProjectAlert = "com.kickstarter.KeyValueStoreType.hasSeenSaveProjectAlert"
   case lastSeenActivitySampleId = "com.kickstarter.KeyValueStoreType.lastSeenActivitySampleId"
   case onboardingCategories = "com.kickstarter.KeyValueStoreType.onboardingCategories"
@@ -41,6 +42,7 @@ public protocol KeyValueStoreType: AnyObject {
   var hasSeenAppRating: Bool { get set }
   var hasSeenFavoriteCategoryAlert: Bool { get set }
   var hasSeenGamesNewsletterPrompt: Bool { get set }
+  var hasSeenOnboarding: Bool { get set }
   var hasSeenSaveProjectAlert: Bool { get set }
   var lastSeenActivitySampleId: Int { get set }
   var onboardingCategories: Data? { get set }
@@ -126,6 +128,15 @@ extension KeyValueStoreType {
     }
     set {
       self.set(newValue, forKey: AppKeys.seenGamesNewsletter.rawValue)
+    }
+  }
+
+  public var hasSeenOnboarding: Bool {
+    get {
+      return self.bool(forKey: AppKeys.hasSeenOnboarding.rawValue)
+    }
+    set {
+      self.set(newValue, forKey: AppKeys.hasSeenOnboarding.rawValue)
     }
   }
 

@@ -2410,6 +2410,90 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
+  func testTriggerOnboardingFlow_IsNotCalled_UserDefaultsHasSeenOnboardingIsTrue(
+  ) {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+    mockRemoteConfigClient.features = [
+      RemoteConfigFeature.onboardingFlow.rawValue: true
+    ]
+
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
+    MockPushRegistration.registerProducer = .init(value: true)
+
+    let appTrackingTransparency = MockAppTrackingTransparency()
+    appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
+    appTrackingTransparency.shouldRequestAuthStatus = true
+
+    userDefaults.set(true, forKey: AppKeys.hasSeenOnboarding.rawValue)
+
+    withEnvironment(
+      appTrackingTransparency: appTrackingTransparency,
+      pushRegistrationType: MockPushRegistration.self,
+      remoteConfigClient: mockRemoteConfigClient
+    ) {
+      self.triggerOnboardingFlow.assertValueCount(0)
+
+      self.pushRegistrationStarted.assertValueCount(0)
+      self.pushTokenSuccessfullyRegistered.assertValueCount(0)
+
+      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
+
+      self.vm.inputs.applicationActive(state: false)
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.applicationActive(state: true)
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.pushRegistrationStarted.assertValueCount(0)
+      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
+      self.requestATTrackingAuthorizationStatus.assertValueCount(0)
+
+      self.triggerOnboardingFlow.assertValueCount(0)
+    }
+  }
+
+  func testTriggerOnboardingFlow_WhenUserDefaultsHasSeenOnboardingIsFalse(
+  ) {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+    mockRemoteConfigClient.features = [
+      RemoteConfigFeature.onboardingFlow.rawValue: true
+    ]
+
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
+    MockPushRegistration.registerProducer = .init(value: true)
+
+    let appTrackingTransparency = MockAppTrackingTransparency()
+    appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
+    appTrackingTransparency.shouldRequestAuthStatus = true
+
+    userDefaults.set(false, forKey: AppKeys.hasSeenOnboarding.rawValue)
+
+    withEnvironment(
+      appTrackingTransparency: appTrackingTransparency,
+      pushRegistrationType: MockPushRegistration.self,
+      remoteConfigClient: mockRemoteConfigClient
+    ) {
+      self.triggerOnboardingFlow.assertValueCount(0)
+
+      self.pushRegistrationStarted.assertValueCount(0)
+      self.pushTokenSuccessfullyRegistered.assertValueCount(0)
+
+      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
+
+      self.vm.inputs.applicationActive(state: false)
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.applicationActive(state: true)
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.pushRegistrationStarted.assertValueCount(0)
+      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
+      self.requestATTrackingAuthorizationStatus.assertValueCount(0)
+
+      self.triggerOnboardingFlow.assertValueCount(1)
+    }
+  }
+
   func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOn_WhenShouldRequestAuthorizationStatusTrue_RequestDenied_DoesNotShowConsentDialogAndDoesNotUpdateAdId(
   ) {
     let appTrackingTransparency = MockAppTrackingTransparency()

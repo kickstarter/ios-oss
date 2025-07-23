@@ -95,6 +95,7 @@ public struct OnboardingView: View {
 
       Button(action: {
         withAnimation {
+          self.hasSeenOnboarding()
           self.dismiss()
         }
       }) {
@@ -134,6 +135,7 @@ public struct OnboardingView: View {
     case .welcome, .saveProjects, .enableNotifications, .allowTracking:
       self.goToNextItem()
     case .loginSignUp:
+      self.hasSeenOnboarding()
       self.dismiss()
     }
   }
@@ -148,5 +150,9 @@ public struct OnboardingView: View {
     Library.AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus {
       self.goToNextItem()
     }
+  }
+
+  private func hasSeenOnboarding() {
+    AppEnvironment.current.userDefaults.set(true, forKey: AppKeys.hasSeenOnboarding.rawValue)
   }
 }

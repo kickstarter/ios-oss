@@ -105,6 +105,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         if let onboardingView = self?.rootTabBarController?
           .presentedViewController as? UIHostingController<OnboardingView> {
           onboardingView.dismiss(animated: true)
+          AppEnvironment.current.userDefaults.set(true, forKey: AppKeys.hasSeenOnboarding.rawValue)
         }
 
         let vc = LoginToutViewController.configuredWith(loginIntent: intent)
