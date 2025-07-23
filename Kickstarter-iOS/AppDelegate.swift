@@ -101,6 +101,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.goToLoginWithIntent
       .observeForControllerAction()
       .observeValues { [weak self] intent in
+        /// Dismiss OnboardingView if present so that we can correclty present the LoginToutViewController.
+        if let onboardingView = self?.rootTabBarController?
+          .presentedViewController as? UIHostingController<OnboardingView> {
+          onboardingView.dismiss(animated: true)
+        }
+
         let vc = LoginToutViewController.configuredWith(loginIntent: intent)
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .formSheet
@@ -152,6 +158,15 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         rootTabBarController.navigationController?.isNavigationBarHidden = true
         rootTabBarController.present(onboardingVC, animated: true, completion: nil)
+      }
+
+    NotificationCenter.default
+      .addObserver(
+        forName: Notification.Name.ksr_goToLoginFromOnboarding,
+        object: nil,
+        queue: nil
+      ) { [weak self] _ in
+        self?.viewModel.inputs.goToLoginSignup(from: .onboarding)
       }
 
     self.viewModel.outputs.showAlert

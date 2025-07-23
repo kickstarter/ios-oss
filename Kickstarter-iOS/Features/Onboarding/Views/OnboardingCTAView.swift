@@ -31,7 +31,7 @@ struct CallToActionView: View {
         self.secondaryButton(title: "FPO: Not right now", action: self.onSecondaryTap)
 
       case .loginSignUp:
-        self.primaryButton(title: "FPO: Sign up or log in", action: self.onLoginSignup, for: self.item)
+        self.primaryButton(title: "FPO: Sign up or log in", action: self.onPrimaryTap, for: self.item)
         self.secondaryButton(title: "FPO: Explore the app", action: self.onSecondaryTap)
       }
     }

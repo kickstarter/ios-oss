@@ -70,6 +70,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
 
+  /// Call when the users taps 'Log in or Sign up' from the onboarding flow (`OnboardingView`).
+  func goToLoginSignup(from intent: LoginIntent)
+
   /// Call when Remote Config configuration has failed
   func remoteConfigClientConfigurationFailed()
 
@@ -539,7 +542,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.goToLoginWithIntent = Signal.merge(
       fixErroredPledgeLinkAndIsLoggedIn.filter(third >>> isFalse).mapConst(.erroredPledge),
-      goToLogin.mapConst(.generic)
+      goToLogin.mapConst(.generic),
+      self.goToLoginSignupProperty.signal.skipNil()
     )
 
     self.goToMessageThread = deepLink
@@ -889,6 +893,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   private let foundRedirectUrlProperty = MutableProperty<URL?>(nil)
   public func foundRedirectUrl(_ url: URL) {
     self.foundRedirectUrlProperty.value = url
+  }
+
+  private let goToLoginSignupProperty = MutableProperty<LoginIntent?>(nil)
+  public func goToLoginSignup(from intent: LoginIntent) {
+    self.goToLoginSignupProperty.value = intent
   }
 
   fileprivate typealias ApplicationOpenUrl = (

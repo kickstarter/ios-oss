@@ -123,7 +123,8 @@ public struct OnboardingView: View {
     case .allowTracking:
       self.viewModel.allowTrackingTapped()
     case .loginSignUp:
-      self.viewModel.goToLoginSignupTapped()
+      /// Triggers the `goToLoginFromOnboarding` notification to inform the AppDelegate to dismiss this view and launch the login/signup flow.
+      NotificationCenter.default.post(name: .ksr_goToLoginFromOnboarding, object: nil)
     }
   }
 
@@ -134,7 +135,7 @@ public struct OnboardingView: View {
   }
 
   private func presentAppTrackingPopup() {
-    AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus {
+    Library.AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus {
       self.goToNextItem()
     }
   }

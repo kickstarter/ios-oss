@@ -18,6 +18,7 @@ public enum CurrentUserNotifications {
   public static let showNotificationsDialog = "CurrentUserNotifications.showNotificationsDialog"
   public static let userUpdated = "CurrentUserNotifications.userUpdated"
   public static let blockedUser = "CurrentUserNotifications.blockedUser"
+  public static let ksr_goToLoginFromOnboarding = "CurrentUserNotifications.ksr_goToLoginFromOnboarding"
 }
 
 public enum AppStateNotifications {
@@ -63,4 +64,6 @@ extension Notification.Name {
   )
   public static let ksr_userUpdated = Notification.Name(rawValue: CurrentUserNotifications.userUpdated)
   public static let ksr_blockedUser = Notification.Name(rawValue: CurrentUserNotifications.blockedUser)
+  public static let ksr_goToLoginFromOnboarding = Notification
+    .Name(rawValue: CurrentUserNotifications.ksr_goToLoginFromOnboarding)
 }
