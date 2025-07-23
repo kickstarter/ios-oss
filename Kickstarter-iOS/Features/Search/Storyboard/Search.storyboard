@@ -197,7 +197,7 @@
                                     <outlet property="statsStackView" destination="Yh6-Kf-dJc" id="ILd-yZ-V0J"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchEmptyStateCell" rowHeight="100" id="WYW-Pu-OiW" customClass="SearchEmptyStateCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchLegacyEmptyStateCell" rowHeight="100" id="WYW-Pu-OiW" userLabel="SearchLegacyEmptyStateCell" customClass="SearchLegacyEmptyStateCell" customModule="Kickstarter_Framework" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="460" width="400" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WYW-Pu-OiW" id="eto-yV-UJW">
