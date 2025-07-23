@@ -2448,6 +2448,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(5))
 
       self.pushRegistrationStarted.assertValueCount(0)
+
       XCTAssertEqual(appTrackingTransparency.advertisingIdentifier, "advertisingIdentifier")
       self.requestATTrackingAuthorizationStatus.assertValueCount(1)
 
