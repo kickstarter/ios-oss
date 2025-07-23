@@ -12,31 +12,36 @@ public func mockPaymentIncrements() -> [PledgePaymentIncrement] {
       amount: amount,
       scheduledCollection: scheduledCollection,
       state: .collected,
-      stateReason: nil
+      stateReason: nil,
+      refundedAmount: nil
     ),
     PledgePaymentIncrement(
       amount: amount,
       scheduledCollection: scheduledCollection,
       state: .unattempted,
-      stateReason: nil
+      stateReason: nil,
+      refundedAmount: nil
     ),
     PledgePaymentIncrement(
       amount: amount,
       scheduledCollection: scheduledCollection,
       state: .cancelled,
-      stateReason: nil
+      stateReason: nil,
+      refundedAmount: nil
     ),
     PledgePaymentIncrement(
       amount: amount,
       scheduledCollection: scheduledCollection,
       state: .errored,
-      stateReason: nil
+      stateReason: nil,
+      refundedAmount: nil
     ),
     PledgePaymentIncrement(
       amount: amount,
       scheduledCollection: scheduledCollection,
       state: .errored,
-      stateReason: .requiresAction
+      stateReason: .requiresAction,
+      refundedAmount: nil
     )
   ]
 }

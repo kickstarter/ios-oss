@@ -14,12 +14,14 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
         },
         "scheduledCollection": "2025-03-31T10:29:19-04:00",
         "state": "COLLECTED",
-        "stateReason": "REQUIRES_ACTION"
+        "stateReason": "REQUIRES_ACTION",
+        "refundedAmount": null
       }
     """
 
+    let variables = ["includeRefundedAmount": false]
     let fragment: GraphAPI.BuildPaymentPlanQuery.Data.Project.PaymentPlan
-      .PaymentIncrement = try! testGraphObject(jsonString: jsonString)
+      .PaymentIncrement = try! testGraphObject(jsonString: jsonString, variables: variables)
 
     let increment = PledgePaymentIncrement(withGraphQLFragment: fragment.fragments.paymentIncrementFragment)
     XCTAssertNotNil(increment)
@@ -28,7 +30,7 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
     XCTAssertEqual(increment!.scheduledCollection, 1_743_431_359.0)
     XCTAssertEqual(increment!.state, .collected)
     XCTAssertEqual(increment!.stateReason, .requiresAction)
-    XCTAssertNotNil(increment!.refundedAmount)
+    XCTAssertNil(increment!.refundedAmount)
   }
 
   func testPaymentIncrementViewModel_fromValidFragment_refundedAmount_isCorrect() {
@@ -43,16 +45,13 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
         "scheduledCollection": "2025-03-31T10:29:19-04:00",
         "state": "COLLECTED",
         "stateReason": "REQUIRES_ACTION",
-        "refundedAmount": {
-          "__typename": "PaymentIncrementAmount",
-          "amountFormattedInProjectNativeCurrency": "$50.00",
-          "currency": "USD"
-        }
+        "refundedAmount": null
       }
     """
 
+    let variables = ["includeRefundedAmount": false]
     let fragment: GraphAPI.BuildPaymentPlanQuery.Data.Project.PaymentPlan
-      .PaymentIncrement = try! testGraphObject(jsonString: jsonString)
+      .PaymentIncrement = try! testGraphObject(jsonString: jsonString, variables: variables)
 
     let increment = PledgePaymentIncrement(withGraphQLFragment: fragment.fragments.paymentIncrementFragment)
     XCTAssertNotNil(increment)
@@ -61,8 +60,7 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
     XCTAssertEqual(increment!.scheduledCollection, 1_743_431_359.0)
     XCTAssertEqual(increment!.state, .collected)
     XCTAssertEqual(increment!.stateReason, .requiresAction)
-    XCTAssertEqual(increment!.refundedAmount.currency, "USD")
-    XCTAssertEqual(increment!.refundedAmount.amountFormattedInProjectNativeCurrency, "$50.00")
+    XCTAssertNil(increment!.refundedAmount)
   }
 
   func testPaymentIncrementViewModel_fromInvalidFragment_isNil() {
@@ -77,12 +75,14 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
 
         "scheduledCollection": "not a date :(",
         "state": "COLLECTED",
-        "stateReason": "REQUIRES ACTION"
+        "stateReason": "REQUIRES ACTION",
+        "refundedAmount": null
       }
     """
 
+    let variables = ["includeRefundedAmount": false]
     let fragment: GraphAPI.BuildPaymentPlanQuery.Data.Project.PaymentPlan
-      .PaymentIncrement = try! testGraphObject(jsonString: jsonString)
+      .PaymentIncrement = try! testGraphObject(jsonString: jsonString, variables: variables)
 
     let increment = PledgePaymentIncrement(withGraphQLFragment: fragment.fragments.paymentIncrementFragment)
     XCTAssertNil(increment)
