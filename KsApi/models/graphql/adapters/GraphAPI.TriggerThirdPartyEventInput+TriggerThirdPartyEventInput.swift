@@ -1,3 +1,5 @@
+import GraphAPI
+
 extension GraphAPI.TriggerThirdPartyEventInput {
   static func from(_ input: TriggerThirdPartyEventInput) -> GraphAPI.TriggerThirdPartyEventInput {
     return GraphAPI.TriggerThirdPartyEventInput(

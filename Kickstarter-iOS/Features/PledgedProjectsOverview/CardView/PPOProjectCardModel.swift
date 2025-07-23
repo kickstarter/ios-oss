@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 import Kingfisher
 import KsApi
 import Library
@@ -172,7 +173,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
 }
 
 extension PPOProjectCardModel.Alert {
-  init?(flag: GraphAPI.PpoCardFragment.Flag) {
+  init?(flag: GraphAPI.PPOCardFragment.Flag) {
     let alertIcon: PPOProjectCardModel.Alert.AlertIcon? = switch flag.icon {
     case "alert":
       .alert
@@ -201,7 +202,7 @@ extension PPOProjectCardModel.Alert {
 }
 
 extension GraphAPI.MoneyFragment: Equatable {
-  public static func == (lhs: KsApi.GraphAPI.MoneyFragment, rhs: KsApi.GraphAPI.MoneyFragment) -> Bool {
+  public static func == (lhs: GraphAPI.MoneyFragment, rhs: GraphAPI.MoneyFragment) -> Bool {
     return lhs.amount == rhs.amount &&
       lhs.currency == rhs.currency &&
       lhs.symbol == rhs.symbol

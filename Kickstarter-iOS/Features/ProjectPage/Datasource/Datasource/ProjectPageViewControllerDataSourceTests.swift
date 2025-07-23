@@ -1,4 +1,5 @@
 import AVFoundation
+import GraphAPI
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
@@ -1374,7 +1375,7 @@ private func createMockSimilarProjectNode(
   id: Int = 123,
   name: String = "Test Project",
   imageURL: String? = "https://example.com/image.jpg",
-  state: String = "live",
+  state stateValue: String = "live",
   isLaunched: Bool = true,
   prelaunchActivated: Bool = false,
   launchedAt: String? = "1741737648",
@@ -1384,12 +1385,13 @@ private func createMockSimilarProjectNode(
   pledged: Double = 7_500,
   isInPostCampaignPledgingPhase: Bool = false,
   isPostCampaignPledgingEnabled: Bool = false
-) -> GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node {
+) -> GraphAPI.FetchSimilarProjectsQuery.Data.Projects.Node {
+  let state = GraphAPI.ProjectState(rawValue: stateValue.uppercased())
   var resultMap: [String: Any] = [
     "__typename": "Project",
     "pid": id,
     "name": name,
-    "state": GraphAPI.ProjectState(rawValue: state) ?? GraphAPI.ProjectState.__unknown(state),
+    "state": state.isSome ? GraphQLEnum.case(state!) : GraphQLEnum.unknown(stateValue),
     "isLaunched": isLaunched,
     "prelaunchActivated": prelaunchActivated,
     "percentFunded": percentFunded,
@@ -1428,5 +1430,5 @@ private func createMockSimilarProjectNode(
     ]
   }
 
-  return testGraphObject<GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node>(data: resultMap)
+  return try! testGraphObject<GraphAPI.FetchSimilarProjectsQuery.Data.Projects.Node>(data: resultMap)
 }

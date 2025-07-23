@@ -1,3 +1,4 @@
+import GraphAPI
 import ReactiveSwift
 
 extension WatchProjectResponseEnvelope {

@@ -1,5 +1,6 @@
 import Apollo
 import Foundation
+import GraphAPI
 import Prelude
 import ReactiveSwift
 

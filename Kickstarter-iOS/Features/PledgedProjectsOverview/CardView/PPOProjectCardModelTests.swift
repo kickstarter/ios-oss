@@ -1,4 +1,5 @@
 import Combine
+import GraphAPI
 @testable import Kickstarter_Framework
 @testable import KsApi
 import XCTest
@@ -89,7 +90,7 @@ final class PPOProjectCardModelTests: XCTestCase {
 
   private func mockModel(addressJSON: String) -> PPOProjectCardModel? {
     do {
-      let node: GraphAPI.FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledge.Edge
+      let node: GraphAPI.FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge
         .Node = try testGraphObject(jsonString: """
               {
                 "__typename": "PledgeProjectOverviewItem",

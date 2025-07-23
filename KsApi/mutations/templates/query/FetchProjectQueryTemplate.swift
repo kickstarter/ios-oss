@@ -1,18 +1,16 @@
 import Apollo
 import Foundation
+import GraphAPI
 @testable import KsApi
 
 public enum FetchProjectQueryTemplate {
   case valid
-  case errored
 
   /// `FetchProjectBySlug` returns identical data.
   var data: GraphAPI.FetchProjectByIdQuery.Data {
     switch self {
     case .valid:
-      return testGraphObject<GraphAPI.FetchProjectByIdQuery.Data>(data: self.validResultMap)
-    case .errored:
-      return testGraphObject<GraphAPI.FetchProjectByIdQuery.Data>(data: self.erroredResultMap)
+      return try! testGraphObject(data: self.validResultMap)
     }
   }
 
@@ -22,10 +20,12 @@ public enum FetchProjectQueryTemplate {
     let json = """
     {
        "me":{
+          "__typename": "User",
           "chosenCurrency":"CAD"
        },
        "project":{
           "backing": {
+            "__typename": "Backing",
             "id": "QmFja2luZy0xNDgwMTQwMzQ="
           },
           "__typename":"Project",
@@ -56,19 +56,7 @@ public enum FetchProjectQueryTemplate {
           },
           "creator":{
              "__typename":"User",
-             "backings":{
-                "nodes":[
-                   {
-                      "errorReason":null
-                   },
-                   {
-                      "errorReason":"Something went wrong"
-                   },
-                   {
-                      "errorReason":null
-                   }
-                ]
-             },
+             "backings": null,
              "backingsCount": 3,
              "chosenCurrency":null,
              "email":"a@example.com",
@@ -88,94 +76,26 @@ public enum FetchProjectQueryTemplate {
              "showPublicProfile": true,
              "uid":"101",
              "location": {
+               "__typename": "Location",
                "country": "US",
                "countryName": "United States",
                "displayableName": "Las Vegas, NV",
                "id": "TG9jYXRpb24tMjQzNjcwNA==",
                "name": "Las Vegas"
              },
-             "newsletterSubscriptions": {
-                "artsCultureNewsletter": true,
-                "filmNewsletter": false,
-                "musicNewsletter": false,
-                "inventNewsletter": false,
-                "publishingNewsletter": false,
-                "promoNewsletter": false,
-                "weeklyNewsletter": false,
-                "happeningNewsletter": false,
-                "gamesNewsletter": false,
-                "alumniNewsletter": true
-             },
+             "newsletterSubscriptions": null,
              "isSocializing": true,
-             "notifications": [
-              {
-                "topic": "messages",
-                "email": true,
-                "mobile": true
-              },
-              {
-                "topic": "backings",
-                "email": false,
-                "mobile": true
-              },
-              {
-                "topic": "creator_digest",
-                "email": true,
-                "mobile": false
-              },
-              {
-                "topic": "updates",
-                "email": true,
-                "mobile": true
-              },
-              {
-                "topic": "follower",
-                "email": true,
-                "mobile": true
-              },
-              {
-                "topic": "friend_activity",
-                "email": true,
-                "mobile": false
-              },
-              {
-                "topic": "friend_signup",
-                "email": true,
-                "mobile": true
-              },
-              {
-                "topic": "comments",
-                "email": true,
-                "mobile": true
-              },
-              {
-                "topic": "comment_replies",
-                "email": true,
-                "mobile": true
-              },
-              {
-                "topic": "creator_edu",
-                "email": true,
-                "mobile": true
-              },
-              {
-                "topic": "marketing_update",
-                "email": true,
-                "mobile": false
-              },
-              {
-                "topic": "project_launch",
-                "email": true,
-                "mobile": true
-              }
-             ],
+             "notifications": [],
              "createdProjects": {
+               "__typename": "UserCreatedProjectsConnection",
                "totalCount": 16
              },
              "membershipProjects": {
+               "__typename": "UserMembershipProjectsConnection",
                "totalCount": 10
              },
              "savedProjects": {
+               "__typename": "UserSavedProjectsConnection",
                "totalCount": 11
              },
              "storedCards":{
@@ -329,86 +249,23 @@ public enum FetchProjectQueryTemplate {
 
     var updatedCountryResultMap = countryResultMap
     var updatedCreatorResultMap = creatorResultMap
-    updatedCountryResultMap["code"] = KsApi.GraphAPI.CountryCode.ca
+    updatedCountryResultMap["code"] = "CA"
     projectResultMap["country"] = updatedCountryResultMap
     projectResultMap["deadlineAt"] = "1628622000"
     projectResultMap["launchedAt"] = "1625118948"
     projectResultMap["stateChangedAt"] = "1625118950"
     projectResultMap["availableCardTypes"] = [
-      KsApi.GraphAPI.CreditCardTypes.visa,
-      KsApi.GraphAPI.CreditCardTypes.amex,
-      KsApi.GraphAPI.CreditCardTypes.mastercard
+      "VISA",
+      "AMEX",
+      "MASTERCARD"
     ]
-    projectResultMap["state"] = KsApi.GraphAPI.ProjectState.live
-    projectResultMap["currency"] = KsApi.GraphAPI.CurrencyCode.eur
-
-    updatedCreatorResultMap["notifications"] = [
-      [
-        "topic": GraphAPI.UserNotificationTopic.messages,
-        "email": true,
-        "mobile": true
-      ],
-      [
-        "topic": GraphAPI.UserNotificationTopic.backings,
-        "email": false,
-        "mobile": true
-      ],
-      [
-        "topic": GraphAPI.UserNotificationTopic.creatorDigest,
-        "email": true,
-        "mobile": false
-      ],
-      [
-        "topic": GraphAPI.UserNotificationTopic.updates,
-        "email": true,
-        "mobile": true
-      ],
-      [
-        "topic": GraphAPI.UserNotificationTopic.follower,
-        "email": true,
-        "mobile": true
-      ],
-      [
-        "topic": GraphAPI.UserNotificationTopic.friendActivity,
-        "email": true,
-        "mobile": false
-      ],
-      [
-        "topic": GraphAPI.UserNotificationTopic.friendSignup,
-        "email": true,
-        "mobile": false
-      ],
-      [
-        "topic": GraphAPI.UserNotificationTopic.comments,
-        "email": true,
-        "mobile": true
-      ],
-      [
-        "topic": GraphAPI.UserNotificationTopic.commentReplies,
-        "email": true,
-        "mobile": true
-      ],
-      [
-        "topic": GraphAPI.UserNotificationTopic.creatorEdu,
-        "email": true,
-        "mobile": true
-      ],
-      [
-        "topic": GraphAPI.UserNotificationTopic.marketingUpdate,
-        "email": true,
-        "mobile": false
-      ],
-      [
-        "topic": GraphAPI.UserNotificationTopic.projectLaunch,
-        "email": true,
-        "mobile": true
-      ]
-    ]
+    projectResultMap["state"] = "LIVE"
+    projectResultMap["currency"] = "EUR"
 
     let updatedEnvironmentalCommitments =
       [[
         "__typename": "EnvironmentalCommitment",
-        "commitmentCategory": GraphAPI.EnvironmentalCommitmentCategory.longLastingDesign,
+        "commitmentCategory": "long_lasting_design",
         "description": "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards.",
         "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"
       ]]

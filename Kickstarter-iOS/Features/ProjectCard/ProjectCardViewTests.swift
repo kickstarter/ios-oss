@@ -1,3 +1,4 @@
+import GraphAPI
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
@@ -188,7 +189,7 @@ private func createMockProjectNode(
   id: Int = 123,
   name: String = "Test Project",
   imageURL: String? = "https://example.com/image.jpg",
-  state: String = "live",
+  state stateValue: String = "live",
   isLaunched: Bool = true,
   prelaunchActivated: Bool = false,
   launchedAt: String? = "1741737648",
@@ -198,19 +199,19 @@ private func createMockProjectNode(
   pledged: Double = 7_500,
   isInPostCampaignPledgingPhase: Bool = false,
   isPostCampaignPledgingEnabled: Bool = false
-) -> GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node {
+) -> GraphAPI.FetchSimilarProjectsQuery.Data.Projects.Node {
   var resultMap: [String: Any] = [
     "__typename": "Project",
     "pid": id,
     "name": name,
-    "state": GraphAPI.ProjectState(rawValue: state) ?? GraphAPI.ProjectState.__unknown(state),
+    "state": stateValue.uppercased(),
     "isLaunched": isLaunched,
     "prelaunchActivated": prelaunchActivated,
     "percentFunded": percentFunded,
     "pledged": [
       "__typename": "Money",
       "amount": String(pledged),
-      "currency": GraphAPI.CurrencyCode.usd,
+      "currency": "USD",
       "symbol": "$"
     ],
     "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
@@ -282,13 +283,15 @@ private func createMockProjectNode(
     "location": [
       "__typename": "Location",
       "displayableName": "London, UK"
-    ]
+    ],
+    "risks": ""
   ]
 
   // Add optional fields
   if let imageURL {
     resultMap["image"] = [
       "__typename": "Photo",
+      "id": "foo",
       "url": imageURL
     ]
   }
@@ -305,10 +308,10 @@ private func createMockProjectNode(
     resultMap["goal"] = [
       "__typename": "Money",
       "amount": String(goal),
-      "currency": GraphAPI.CurrencyCode.usd,
+      "currency": "USD",
       "symbol": "$"
     ]
   }
 
-  return testGraphObject<GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node>(data: resultMap)
+  return try! testGraphObject<GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node>(data: resultMap)
 }

@@ -1,3 +1,4 @@
+import GraphAPI
 @testable import KsApi
 import XCTest
 
@@ -7,6 +8,6 @@ class GraphAPI_UpdateUserProfileInput_UpdateUserProfileInputTests: XCTestCase {
 
     let graphInput = GraphAPI.UpdateUserProfileInput.from(input)
 
-    XCTAssertEqual(graphInput.chosenCurrency, GraphAPI.CurrencyCode.dkk)
+    XCTAssertEqual(graphInput.chosenCurrency.unwrapped?.value, GraphAPI.CurrencyCode.dkk)
   }
 }

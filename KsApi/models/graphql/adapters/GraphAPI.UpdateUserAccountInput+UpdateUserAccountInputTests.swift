@@ -1,3 +1,4 @@
+import GraphAPI
 @testable import KsApi
 import XCTest
 
@@ -10,8 +11,8 @@ class GraphAPI_UpdateUserAccountInput_UpdateUserAccountInputTests: XCTestCase {
 
     let graphInput = GraphAPI.UpdateUserAccountInput.from(input)
 
-    XCTAssertEqual(graphInput.password, input.password)
-    XCTAssertEqual(graphInput.passwordConfirmation, input.passwordConfirmation)
+    XCTAssertEqual(graphInput.password.unwrapped, input.password)
+    XCTAssertEqual(graphInput.passwordConfirmation.unwrapped, input.passwordConfirmation)
   }
 
   func testChangePassword_WithCurrentAndNewPassword_Success() {
@@ -23,9 +24,9 @@ class GraphAPI_UpdateUserAccountInput_UpdateUserAccountInputTests: XCTestCase {
 
     let graphInput = GraphAPI.UpdateUserAccountInput.from(input)
 
-    XCTAssertEqual(graphInput.currentPassword, input.currentPassword)
-    XCTAssertEqual(graphInput.password, input.newPassword)
-    XCTAssertEqual(graphInput.passwordConfirmation, input.newPasswordConfirmation)
+    XCTAssertEqual(graphInput.currentPassword.unwrapped, input.currentPassword)
+    XCTAssertEqual(graphInput.password.unwrapped, input.newPassword)
+    XCTAssertEqual(graphInput.passwordConfirmation.unwrapped, input.newPasswordConfirmation)
   }
 
   func testChangeEmail_WithNewEmailAndPassword_Success() {
@@ -36,7 +37,7 @@ class GraphAPI_UpdateUserAccountInput_UpdateUserAccountInputTests: XCTestCase {
 
     let graphInput = GraphAPI.UpdateUserAccountInput.from(input)
 
-    XCTAssertEqual(graphInput.email, input.email)
-    XCTAssertEqual(graphInput.currentPassword, input.currentPassword)
+    XCTAssertEqual(graphInput.email.unwrapped, input.email)
+    XCTAssertEqual(graphInput.currentPassword.unwrapped, input.currentPassword)
   }
 }

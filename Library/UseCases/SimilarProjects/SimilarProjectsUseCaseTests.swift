@@ -1,3 +1,4 @@
+import GraphAPI
 @testable import KsApi
 @testable import Library
 import ReactiveExtensions_TestHelpers
@@ -18,7 +19,7 @@ final class SimilarProjectsUseCaseTests: TestCase {
     AppEnvironment.pushEnvironment(remoteConfigClient: remoteConfig)
 
     // Create mock data for similar projects
-    let mockProjectNodes: [GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node?] = [
+    let mockProjectNodes: [GraphAPI.FetchSimilarProjectsQuery.Data.Projects.Node?] = [
       self.createMockProjectNode(id: 1, name: "Project 1"),
       self.createMockProjectNode(id: 2, name: "Project 2"),
       self.createMockProjectNode(id: 3, name: "Project 3"),
@@ -26,7 +27,7 @@ final class SimilarProjectsUseCaseTests: TestCase {
     ]
 
     // Create mock project data
-    let mockProjects = GraphAPI.FetchSimilarProjectsQuery.Data.Project(nodes: mockProjectNodes)
+    let mockProjects = GraphAPI.FetchSimilarProjectsQuery.Data.Projects(nodes: mockProjectNodes)
 
     // Create mock query data
     let mockData = GraphAPI.FetchSimilarProjectsQuery.Data(projects: mockProjects)
@@ -308,119 +309,58 @@ final class SimilarProjectsUseCaseTests: TestCase {
     isInPostCampaignPledgingPhase: Bool = false,
     isPostCampaignPledgingEnabled: Bool = false,
     url: String = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    creatorName: String = "Test Creator",
-    creatorAvatarURL: String = "https://example.com/avatar.jpg",
-    creatorId: Int = 987,
-    isCreatorBlocked: Bool = false,
     stateChangedAt: String = "1741737000",
     backersCount: Int = 150,
-    categoryName: String = "Test Category",
-    locationName: String = "Test Location",
     fxRate: Float = 1.0,
-    usdExchangeRate: Float = 1.0,
     projectUsdExchangeRate: Float = 1.0,
-    convertedPledgedAmount: Float? = 7_500.0,
     currency: String = "USD",
-    currentCurrencyCode: String? = "USD",
     countryCode: String = "US",
-    countryName: String = "United States",
-    projectNotice: String? = nil,
-    videoHLS: String? = nil,
-    videoHigh: String? = nil
-  ) -> GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node {
-    var resultMap: [String: Any?] = [
-      "__typename": "Project",
-      "pid": id,
-      "name": name,
-      "projectDescription": projectDescription,
-      "state": GraphAPI.ProjectState(rawValue: state) ?? GraphAPI.ProjectState.__unknown(state),
-      "isLaunched": isLaunched,
-      "isWatched": false,
-      "prelaunchActivated": prelaunchActivated,
-      "percentFunded": percentFunded,
-      "pledged": [
-        "__typename": "Money",
-        "amount": String(pledged),
-        "currency": GraphAPI.CurrencyCode.usd,
-        "symbol": "$"
-      ],
-      "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
-      "postCampaignPledgingEnabled": isPostCampaignPledgingEnabled,
-      "url": url,
-      "creator": [
-        "__typename": "User",
-        "id": String(creatorId),
-        "name": creatorName,
-        "isBlocked": isCreatorBlocked,
-        "imageUrl": creatorAvatarURL,
-        "avatar": [
-          "__typename": "Avatar",
-          "small": creatorAvatarURL
-        ]
-      ],
-      "stateChangedAt": stateChangedAt,
-      "backersCount": backersCount,
-      "category": [
-        "__typename": "Category",
-        "name": categoryName
-      ],
-      "location": [
-        "__typename": "Location",
-        "displayableName": locationName
-      ],
-      "fxRate": Double(fxRate),
-      "usdExchangeRate": Double(usdExchangeRate),
-      "projectUsdExchangeRate": Double(projectUsdExchangeRate),
-      "convertedPledgedAmount": convertedPledgedAmount.flatMap(Double.init),
-      "currency": GraphAPI.CurrencyCode(rawValue: currency),
-      "currentCurrencyCode": currentCurrencyCode.flatMap(GraphAPI.CurrencyCode.init(rawValue:)),
-      "country": [
-        "__typename": "Country",
-        "code": GraphAPI.CountryCode(rawValue: countryCode) ?? GraphAPI.CountryCode.__unknown(countryCode),
-        "name": countryName
-      ]
-    ]
+    countryName: String = "United States"
+  ) -> GraphAPI.FetchSimilarProjectsQuery.Data.Projects.Node {
+    let projectState = GraphAPI.ProjectState(rawValue: state.uppercased())
+    let wrappedState = projectState.isSome ? GraphQLEnum.case(projectState!) : .unknown(state)
 
-    // Add optional fields
-    if let imageURL {
-      resultMap["image"] = [
-        "__typename": "Photo",
-        "url": imageURL
-      ]
-    }
-
-    if let launchedAt {
-      resultMap["launchedAt"] = launchedAt
-    }
-
-    if let deadlineAt {
-      resultMap["deadlineAt"] = deadlineAt
-    }
-
-    if let goal {
-      resultMap["goal"] = [
-        "__typename": "Money",
-        "amount": String(goal),
-        "currency": GraphAPI.CurrencyCode.usd,
-        "symbol": "$"
-      ]
-    }
-
-    if let projectNotice {
-      resultMap["extendedProjectProperties"] = [
-        "__typename": "ExtendedProjectProperties",
-        "projectNotice": projectNotice
-      ]
-    }
-
-    if videoHLS != nil || videoHigh != nil {
-      resultMap["video"] = [
-        "__typename": "Video",
-        "hls": videoHLS,
-        "high": videoHigh
-      ]
-    }
-
-    return testGraphObject<GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node>(data: resultMap)
+    return GraphAPI.FetchSimilarProjectsQuery.Data.Projects.Node(
+      image: imageURL.isSome ? GraphAPI.FetchSimilarProjectsQuery.Data.Projects.Node.Image(
+        id: "1",
+        url: imageURL!
+      ) : nil,
+      pid: id,
+      name: name,
+      state: wrappedState,
+      isLaunched: isLaunched,
+      deadlineAt: deadlineAt,
+      percentFunded: percentFunded,
+      prelaunchActivated: prelaunchActivated,
+      launchedAt: launchedAt,
+      isInPostCampaignPledgingPhase: isInPostCampaignPledgingPhase,
+      postCampaignPledgingEnabled: isPostCampaignPledgingEnabled,
+      url: url,
+      isWatched: false,
+      goal: goal.isSome ? GraphAPI.FetchSimilarProjectsQuery.Data.Projects.Node.Goal(
+        amount: String(goal!),
+        currency: .case(GraphAPI.CurrencyCode.usd),
+        symbol: "$"
+      ) : nil,
+      pledged: GraphAPI.FetchSimilarProjectsQuery.Data.Projects.Node.Pledged(
+        amount: String(pledged),
+        currency: GraphQLEnum.case(GraphAPI.CurrencyCode.usd),
+        symbol: "$"
+      ),
+      backersCount: backersCount,
+      commentsCount: 0,
+      country: GraphAPI.FetchSimilarProjectsQuery.Data.Projects.Node.Country(
+        code: .case(GraphAPI.CountryCode(rawValue: countryCode)!),
+        name: countryName
+      ),
+      currency: .case(GraphAPI.CurrencyCode(rawValue: currency)!),
+      isPrelaunchActivated: prelaunchActivated,
+      projectTags: [],
+      fxRate: Double(fxRate),
+      projectDescription: description,
+      stateChangedAt: stateChangedAt,
+      projectUsdExchangeRate: Double(projectUsdExchangeRate),
+      risks: ""
+    )
   }
 }

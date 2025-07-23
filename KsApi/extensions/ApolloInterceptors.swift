@@ -1,4 +1,5 @@
 import Apollo
+import ApolloAPI
 import Foundation
 
 /// This is based on `LegacyInterceptorProvider` from Apollo version 0.x.
@@ -31,12 +32,12 @@ class NetworkInterceptorProvider: InterceptorProvider {
     return [
       HeadersInterceptor(self.additionalHeaders),
       MaxRetryInterceptor(),
-      LegacyCacheReadInterceptor(store: self.store),
+      CacheReadInterceptor(store: self.store),
       NetworkFetchInterceptor(client: self.client),
       ResponseCodeInterceptor(),
-      LegacyParsingInterceptor(cacheKeyForObject: self.store.cacheKeyForObject),
+      JSONResponseParsingInterceptor(),
       AutomaticPersistedQueryInterceptor(),
-      LegacyCacheWriteInterceptor(store: self.store)
+      CacheWriteInterceptor(store: self.store)
     ]
   }
 
@@ -67,10 +68,10 @@ class HeadersInterceptor: ApolloInterceptor {
     ) -> Void
   ) {
     self.additionalHeaders().forEach(request.addHeader)
-
     chain.proceedAsync(
       request: request,
       response: response,
+      interceptor: self,
       completion: completion
     )
   }

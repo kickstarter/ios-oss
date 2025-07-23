@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 import Prelude
 
 // MARK: - Base Query Types

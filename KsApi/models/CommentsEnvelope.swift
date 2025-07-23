@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 import ReactiveSwift
 
 public struct CommentsEnvelope: Decodable {

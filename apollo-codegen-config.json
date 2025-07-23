@@ -1,0 +1,34 @@
+{
+  "schemaNamespace": "GraphAPI",
+  "input": {
+    "operationSearchPaths": [
+      "graphql/**/*.graphql"
+    ],
+    "schemaSearchPaths": [
+      "graphql/graphql-schema.json"
+    ]
+  },
+  "options": {
+    "selectionSetInitializers": {
+      "operations": true,
+      "namedFragments": true
+    }
+  },
+  "output": {
+    "testMocks": {
+      "absolute": {
+        "path": "./GraphAPITestMocks",
+        "accessModifier": "public"
+      }
+    },
+    "schemaTypes": {
+      "path": "./GraphAPI",
+      "moduleType": {
+        "other": {}
+      }
+    },
+    "operations": {
+      "inSchemaModule": {}
+    }
+  }
+}

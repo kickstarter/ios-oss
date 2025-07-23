@@ -1,3 +1,5 @@
+import GraphAPI
+
 public protocol HasProjectWebURL {
   var projectWebURL: String { get }
 }
