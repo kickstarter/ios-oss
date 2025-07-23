@@ -746,7 +746,7 @@ private func backingDictionary() -> [String: Any] {
           "currency": "USD"
         },
         "scheduledCollection": "2025-02-17T10:29:19-05:00",
-        "state": "unattempted",
+        "state": "UNATTEMPTED",
         "stateReason": "REQUIRES_ACTION",
         "refundedAmount": {
           "__typename": "PaymentIncrementAmount",
