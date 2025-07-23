@@ -1862,6 +1862,15 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
+  func testGoToLoginWithIntent_EmitsCorrectIntents() {
+    self.goToLoginWithIntent.assertDidNotEmitValue()
+
+    self.vm.inputs.goToLoginSignup(from: .generic)
+    self.vm.inputs.goToLoginSignup(from: .onboarding)
+
+    XCTAssertEqual(self.goToLoginWithIntent.values, [.generic, .onboarding])
+  }
+
   func testUserSurveyDeepLink() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
