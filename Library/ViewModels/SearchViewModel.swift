@@ -331,7 +331,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     self.showSortAndFilterHeader = self.projects
       .map { results in
-        results.count > 0
+        featureSearchNewEmptyState() || results.count > 0
       }
 
     let emptyResultsOnFirstAppearance = viewWillAppearNotAnimated
