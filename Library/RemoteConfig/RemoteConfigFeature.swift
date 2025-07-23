@@ -18,6 +18,7 @@ public enum RemoteConfigFeature: String, CaseIterable {
   case searchFilterByAmountRaised = "search_filter_by_amount_raised"
   case searchFilterByShowOnlyToggles = "search_filter_by_show_only_toggles"
   case searchFilterByGoal = "search_filter_by_goal"
+  case searchNewEmptyState = "search_new_empty_state"
 }
 
 extension RemoteConfigFeature: CustomStringConvertible {
@@ -40,6 +41,7 @@ extension RemoteConfigFeature: CustomStringConvertible {
     case .searchFilterByAmountRaised: return "Filter Search by Amount Raised"
     case .searchFilterByShowOnlyToggles: return "Filter Search by 'Show Only' Toggles"
     case .searchFilterByGoal: return "Filter Search by Goal"
+    case .searchNewEmptyState: return "Use New Empty State In Search"
     }
   }
 }
