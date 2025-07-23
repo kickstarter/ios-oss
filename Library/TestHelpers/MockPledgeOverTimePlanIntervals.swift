@@ -42,6 +42,7 @@ public func mockPaymentIncrements() -> [PledgePaymentIncrement] {
       state: .errored,
       stateReason: .requiresAction,
       refundedAmount: nil
+<<<<<<< HEAD
     ),
     PledgePaymentIncrement(
       amount: amount,
@@ -49,6 +50,8 @@ public func mockPaymentIncrements() -> [PledgePaymentIncrement] {
       state: .refunded,
       stateReason: nil,
       refundedAmount: nil
+=======
+>>>>>>> 8d3217750 (Fix unit tests)
     )
   ]
 }
