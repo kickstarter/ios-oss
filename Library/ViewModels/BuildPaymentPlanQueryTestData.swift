@@ -18,7 +18,8 @@ public func buildPaymentPlanQueryJson(eligible: Bool) -> String {
               },
               "scheduledCollection": "2025-03-31T10:29:19-04:00",
               "state": "COLLECTED",
-              "stateReason": "REQUIRES_ACTION"
+              "stateReason": "REQUIRES_ACTION",
+              "refundedAmount": null
             }
           ],
         }

@@ -4651,8 +4651,12 @@ final class PledgeViewModelTests: TestCase {
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
+    let variables = ["includeRefundedAmount": false]
     let mockQuery: GraphAPI.BuildPaymentPlanQuery
-      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
+      .Data = try! testGraphObject(
+        jsonString: buildPaymentPlanQueryJson(eligible: true),
+        variables: variables
+      )
     let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
 
     withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
@@ -4687,8 +4691,12 @@ final class PledgeViewModelTests: TestCase {
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
+    let variables = ["includeRefundedAmount": false]
     let mockQuery: GraphAPI.BuildPaymentPlanQuery
-      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
+      .Data = try! testGraphObject(
+        jsonString: buildPaymentPlanQueryJson(eligible: true),
+        variables: variables
+      )
     let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
 
     withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
@@ -4723,8 +4731,12 @@ final class PledgeViewModelTests: TestCase {
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
+    let variables = ["includeRefundedAmount": false]
     let mockQuery: GraphAPI.BuildPaymentPlanQuery
-      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
+      .Data = try! testGraphObject(
+        jsonString: buildPaymentPlanQueryJson(eligible: true),
+        variables: variables
+      )
     let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
 
     withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
@@ -4854,8 +4866,12 @@ final class PledgeViewModelTests: TestCase {
       )
     )
 
+    let variables = ["includeRefundedAmount": false]
     let buildPaymentPlan: GraphAPI.BuildPaymentPlanQuery
-      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
+      .Data = try! testGraphObject(
+        jsonString: buildPaymentPlanQueryJson(eligible: true),
+        variables: variables
+      )
 
     let mockService = MockService(
       buildPaymentPlanResult: Result.success(buildPaymentPlan),

@@ -115,8 +115,13 @@ final class PledgeOverTimeUseCaseTests: TestCase {
   }
 
   func testUseCase_sendsLoadingEvent_whenPledgeOverTimeIsEnabled() {
+    let variables = ["includeRefundedAmount": false]
+
     let queryData: GraphAPI.BuildPaymentPlanQuery
-      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
+      .Data = try! testGraphObject(
+        jsonString: buildPaymentPlanQueryJson(eligible: true),
+        variables: variables
+      )
     let mockApiService = MockService(buildPaymentPlanResult: .success(queryData))
 
     let mockConfigClient = MockRemoteConfigClient()
@@ -139,8 +144,12 @@ final class PledgeOverTimeUseCaseTests: TestCase {
   }
 
   func testUseCase_doesntLoad_whenPledgeOverTimeIsDisabled() {
+    let variables = ["includeRefundedAmount": false]
     let queryData: GraphAPI.BuildPaymentPlanQuery
-      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
+      .Data = try! testGraphObject(
+        jsonString: buildPaymentPlanQueryJson(eligible: true),
+        variables: variables
+      )
     let mockApiService = MockService(buildPaymentPlanResult: .success(queryData))
 
     let mockConfigClient = MockRemoteConfigClient()
@@ -237,8 +246,12 @@ final class PledgeOverTimeUseCaseTests: TestCase {
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
+    let variables = ["includeRefundedAmount": false]
     let result: GraphAPI.BuildPaymentPlanQuery
-      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
+      .Data = try! testGraphObject(
+        jsonString: buildPaymentPlanQueryJson(eligible: true),
+        variables: variables
+      )
     let mockService = MockService(buildPaymentPlanResult: .success(result))
 
     withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
@@ -265,8 +278,12 @@ final class PledgeOverTimeUseCaseTests: TestCase {
   }
 
   func testUseCase_EditPlotPledged_PledgeOverTime_Preselected_whenIsElegible() {
+    let variables = ["includeRefundedAmount": false]
     let queryData: GraphAPI.BuildPaymentPlanQuery
-      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: true))
+      .Data = try! testGraphObject(
+        jsonString: buildPaymentPlanQueryJson(eligible: true),
+        variables: variables
+      )
     let mockApiService = MockService(buildPaymentPlanResult: .success(queryData))
 
     let mockConfigClient = MockRemoteConfigClient()
@@ -291,8 +308,12 @@ final class PledgeOverTimeUseCaseTests: TestCase {
   }
 
   func testUseCase_EditPlotPledged_PledgeInFull_Preselected_whenIsNotElegible() {
+    let variables = ["includeRefundedAmount": false]
     let queryData: GraphAPI.BuildPaymentPlanQuery
-      .Data = try! testGraphObject(jsonString: buildPaymentPlanQueryJson(eligible: false))
+      .Data = try! testGraphObject(
+        jsonString: buildPaymentPlanQueryJson(eligible: false),
+        variables: variables
+      )
     let mockApiService = MockService(buildPaymentPlanResult: .success(queryData))
 
     let mockConfigClient = MockRemoteConfigClient()
