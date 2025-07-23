@@ -2,7 +2,7 @@
   "schemaNamespace": "GraphAPI",
   "input": {
     "operationSearchPaths": [
-      "**/*.graphql"
+      "graphql/**/*.graphql"
     ],
     "schemaSearchPaths": [
       "graphql/graphql-schema.json"

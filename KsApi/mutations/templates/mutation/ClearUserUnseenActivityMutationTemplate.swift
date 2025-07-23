@@ -25,7 +25,6 @@ public enum ClearUserUnseenActivityMutationTemplate {
     [
       "clearUserUnseenActivity": [
         "__typename": "ClearUserUnseenActivityPayload",
-        // "clientMutationId": nil,
         "activityIndicatorCount": 3
       ]
     ]

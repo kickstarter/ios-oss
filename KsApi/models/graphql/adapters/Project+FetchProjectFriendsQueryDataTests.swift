@@ -3,7 +3,7 @@ import Apollo
 import XCTest
 
 final class Project_FetchProjectFriendsQueryDataTests: XCTestCase {
-  // We dont' use the results of fetching project friends any more.
+  // We don't use the results of fetching project friends any more.
   // This test can be cleaned up.
   func disabled_testFetchProjectFriendsQueryData_Success() {
     let producer = Project.projectFriendsProducer(from: FetchProjectFriendsQueryTemplate.valid.data)

@@ -193,7 +193,7 @@ private func projectPhoto(from projectFragment: GraphAPI.ProjectFragment) -> Pro
 }
 
 private func projectState(from projectState: GraphAPI.ProjectState?) -> Project.State? {
-  guard let projectState = projectState else {
+  guard let projectState else {
     return nil
   }
   return Project.State(rawValue: projectState.rawValue.lowercased())

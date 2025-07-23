@@ -13,7 +13,7 @@ extension Project.Country {
       return nil
     }
 
-    guard let currency = currency else {
+    guard let currency else {
       return nil
     }
 
