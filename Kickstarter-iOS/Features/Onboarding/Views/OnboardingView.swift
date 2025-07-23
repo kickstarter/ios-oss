@@ -44,8 +44,6 @@ public struct OnboardingView: View {
       VStack {
         self.ProgressBarView()
           .accessibilityElement(children: .combine)
-          // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
-          .accessibilityLabel("FPO: Onboarding Progress Bar")
 
         ZStack {
           ForEach(Array(self.onboardingItems.enumerated()), id: \.element.id) { index, item in
@@ -57,8 +55,7 @@ public struct OnboardingView: View {
                 onSecondaryTap: { self.handleSecondaryTap(for: item) }
               )
               .accessibilityElement(children: .contain)
-              // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
-              .accessibilityHint("FPO: Tap the next button to continue.")
+              .accessibilityHint(Strings.project_checkout_navigation_next())
               .transition(.asymmetric(
                 insertion: .move(edge: .trailing).combined(with: .opacity),
                 removal: .move(edge: .leading).combined(with: .opacity)
@@ -111,9 +108,8 @@ public struct OnboardingView: View {
           .foregroundColor(.black)
           .padding(Constants.closeIconPadding)
           .clipShape(Circle())
-          // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
-          .accessibilityLabel("FPO: Close onboarding modal.")
-          .accessibilityHint("FPO: Closes the onboarding view.")
+          .accessibilityLabel(Strings.general_navigation_accessibility_button_close_label())
+          .accessibilityHint(Strings.general_navigation_accessibility_button_close_label())
           .accessibilityAddTraits(.isButton)
       }
     }
