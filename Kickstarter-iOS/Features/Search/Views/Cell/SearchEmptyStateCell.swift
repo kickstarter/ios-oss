@@ -4,10 +4,18 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
+protocol SearchEmptyStateCellDelegate: AnyObject {
+  func searchEmptyStateCellDidTapRemoveAllFiltersButton(
+    _ cell: SearchEmptyStateCell
+  )
+}
+
 internal final class SearchEmptyStateCell: UITableViewCell, ValueCell {
   typealias Value = SearchEmptyStateSearchData
 
   fileprivate let viewModel: SearchEmptyStateCellViewModelType = SearchEmptyStateCellViewModel()
+
+  weak var delegate: SearchEmptyStateCellDelegate?
 
   private var titleLabel: UILabel = UILabel()
   private var subtitleLabel: UILabel = UILabel()
@@ -23,12 +31,11 @@ internal final class SearchEmptyStateCell: UITableViewCell, ValueCell {
     reuseIdentifier: String?
   ) {
     self.clearFiltersButton = KSRButton(style: .filled)
-    self.clearFiltersButton.setTitle("FPO: Remove all filters", for: .normal)
 
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-    self.titleLabel.text = "temp"
-    self.subtitleLabel.text = "temp2"
+    self.clearFiltersButton.setTitle("FPO: Remove all filters", for: .normal)
+    self.clearFiltersButton.addTarget(self, action: #selector(self.onClearFiltersTapped), for: .touchUpInside)
 
     self.rootStackView.addArrangedSubviews(self.titleLabel, self.subtitleLabel, self.clearFiltersButton)
     self.contentView.addSubview(self.rootStackView)
@@ -88,5 +95,9 @@ internal final class SearchEmptyStateCell: UITableViewCell, ValueCell {
       .observeValues { [weak self] isHidden in
         self?.clearFiltersButton.isHidden = isHidden
       }
+  }
+
+  @objc private func onClearFiltersTapped() {
+    self.delegate?.searchEmptyStateCellDidTapRemoveAllFiltersButton(self)
   }
 }
