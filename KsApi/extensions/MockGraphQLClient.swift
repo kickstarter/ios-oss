@@ -1,4 +1,5 @@
 import Apollo
+import ApolloAPI
 import Combine
 import Foundation
 import ReactiveSwift

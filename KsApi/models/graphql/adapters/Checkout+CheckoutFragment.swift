@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 
 extension Checkout {
   static func from(_ checkoutFragment: GraphAPI.CheckoutFragment?) -> Checkout? {

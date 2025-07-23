@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 
 extension PledgeManager {
   init(fromFragment fragment: GraphAPI.PledgeManagerFragment) {

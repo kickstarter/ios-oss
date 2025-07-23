@@ -51,4 +51,4 @@
 
 
 # Excluded files
---exclude bin,Carthage,Frameworks,Library/Strings.swift,vendor,KsApi/GraphAPI.swift
+--exclude bin,Carthage,Frameworks,Library/Strings.swift,vendor,KsApi/GraphAPI.swift,GraphAPI,GraphAPITestMocks

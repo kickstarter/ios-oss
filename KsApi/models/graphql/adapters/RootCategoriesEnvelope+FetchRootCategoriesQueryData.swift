@@ -1,3 +1,4 @@
+import GraphAPI
 import ReactiveSwift
 
 extension RootCategoriesEnvelope {
@@ -27,11 +28,11 @@ extension RootCategoriesEnvelope {
 
   private static func subcategoryConnection(
     from subcategories: GraphAPI.FetchRootCategoriesQuery.Data
-      .RootCategory.Subcategory?
+      .RootCategory.Subcategories?
   ) -> Category.SubcategoryConnection? {
     let subcategoryConnection: Category.SubcategoryConnection? = subcategories
       .map { subcategory -> Category.SubcategoryConnection in
-        let subcategoryNodes: [GraphAPI.FetchRootCategoriesQuery.Data.RootCategory.Subcategory.Node?] =
+        let subcategoryNodes: [GraphAPI.FetchRootCategoriesQuery.Data.RootCategory.Subcategories.Node?] =
           subcategory
             .nodes ?? []
 
@@ -47,7 +48,7 @@ extension RootCategoriesEnvelope {
 
   private static func categories(from subcategoryNodes: [
     GraphAPI.FetchRootCategoriesQuery.Data.RootCategory
-      .Subcategory.Node?
+      .Subcategories.Node?
   ]) -> [Category] {
     let categories = subcategoryNodes.compactMap { node -> Category? in
       guard let existingNode = node else {

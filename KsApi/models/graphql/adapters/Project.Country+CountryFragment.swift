@@ -1,3 +1,4 @@
+import GraphAPI
 import Prelude
 
 extension Project.Country {
@@ -5,10 +6,14 @@ extension Project.Country {
     from countryFragment: GraphAPI.CountryFragment,
     minPledge: Int,
     maxPledge: Int,
-    currency: GraphAPI.CurrencyCode
+    currency: GraphAPI.CurrencyCode?
   ) -> Project.Country? {
     guard let countryWithCurrencyDefault = Project.Country.all
       .first(where: { $0.countryCode == countryFragment.code.rawValue }) else {
+      return nil
+    }
+
+    guard let currency else {
       return nil
     }
 

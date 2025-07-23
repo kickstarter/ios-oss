@@ -1,4 +1,5 @@
 import Apollo
+import GraphAPI
 @testable import KsApi
 
 public enum CreateBackingMutationTemplate {
@@ -10,15 +11,9 @@ public enum CreateBackingMutationTemplate {
     case let .valid(checkoutState, sca):
       let resultMap = self.createBackingMutationResultMap(checkoutState: checkoutState, sca: sca)
 
-      return testGraphObject<
-        GraphAPI.CreateBackingMutation
-          .Data
-      >(data: resultMap)
+      return try! testGraphObject(data: resultMap)
     case .errored:
-      return testGraphObject<
-        GraphAPI.CreateBackingMutation
-          .Data
-      >(data: self.createBackingMutationErroredResultMap)
+      return try! testGraphObject(data: self.createBackingMutationErroredResultMap)
     }
   }
 
@@ -27,7 +22,7 @@ public enum CreateBackingMutationTemplate {
   private func createBackingMutationResultMap(
     checkoutState: GraphAPI.CheckoutState,
     sca: Bool
-  ) -> [String: Any?] {
+  ) -> [String: Any] {
     [
       "createBacking": [
         "checkout": [
@@ -42,7 +37,7 @@ public enum CreateBackingMutationTemplate {
     ]
   }
 
-  private var createBackingMutationErroredResultMap: [String: Any?] {
+  private var createBackingMutationErroredResultMap: [String: Any] {
     return [:]
   }
 }

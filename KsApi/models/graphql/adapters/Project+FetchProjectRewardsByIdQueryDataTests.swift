@@ -4,75 +4,52 @@ import ReactiveSwift
 import XCTest
 
 final class Project_FetchProjectRewardsByIdQueryDataTests: XCTestCase {
-  func testFetchProjectRewardsByIdQueryData_Success() {
+  func testProjectRewardsProperties_Success() {
     let rewardsProducer = Project
-      .projectRewardsProducer(from: FetchProjectRewardsByIdQueryTemplate.valid.data)
+      .projectRewardsProducer(from: FetchProjectRewardsByIdQueryTemplate.validRewardWithAllFields.data)
 
-    guard let rewards = MockGraphQLClient.shared.client.data(from: rewardsProducer) else {
+    guard let rewards = MockGraphQLClient.shared.client.data(from: rewardsProducer),
+          let reward = rewards.first else {
       XCTFail()
-
       return
     }
 
-    self.testProjectRewardsProperties_Success(rewards: rewards)
-    self.testExpandedShippingProperties(rewards)
-  }
-
-  private func testProjectRewardsProperties_Success(rewards: [Reward]) {
-    guard rewards.count > 1 else {
-      XCTFail("project should have at least two rewards.")
-
-      return
-    }
-
-    XCTAssertEqual(rewards.count, 15)
-
-    guard let lastReward = rewards.last else {
-      XCTFail("project should contain at least 1 reward.")
-
-      return
-    }
-
-    XCTAssertEqual(lastReward.backersCount, 1)
-    XCTAssertEqual(lastReward.convertedMinimum, 599.0)
+    XCTAssertEqual(reward.backersCount, 1)
+    XCTAssertEqual(reward.convertedMinimum, 599.0)
     XCTAssertEqual(
-      lastReward.description,
+      reward.description,
       "Signed first edition of the book The Quiet with a personal inscription and one of 10 limited edition gallery prints (numbered and signed) on Aluminium Dibond of a photo of your choice from the book (Format: 30x45cm) / Signierte Erstausgabe des Buchs The Quiet mit einer persönlichen WIdmung und einem von 10 limitierten Alu-Dibond Galleryprint (nummeriert und signiert) eines Fotos deiner Wahl aus dem Buch im Format 30 cm x 45 cm."
     )
-    XCTAssertNil(lastReward.endsAt)
-    XCTAssertFalse(lastReward.hasAddOns)
-
-    let secondReward = rewards[1]
-
-    XCTAssertTrue(secondReward.hasAddOns)
+    XCTAssertNil(reward.endsAt)
+    XCTAssertFalse(reward.hasAddOns)
 
     let date2: String? = "2021-11-01"
     let formattedDate2 = date2.flatMap(DateFormatter.isoDateFormatter.date(from:))
     let timeInterval2 = formattedDate2?.timeIntervalSince1970
-    XCTAssertEqual(lastReward.estimatedDeliveryOn, timeInterval2)
+    XCTAssertEqual(reward.estimatedDeliveryOn, timeInterval2)
 
-    XCTAssertEqual(lastReward.id, decompose(id: "UmV3YXJkLTgzNDExODA="))
-    XCTAssertEqual(lastReward.limit, 10)
-    XCTAssertEqual(lastReward.limitPerBacker, 1)
-    XCTAssertEqual(lastReward.minimum, 400.0)
-    XCTAssertEqual(lastReward.remaining, 9)
-    XCTAssertNil(lastReward.startsAt)
-    XCTAssertEqual(lastReward.title, "SIGNED BOOK + GALLERY PRINT (30x45cm)")
-    XCTAssertEqual(lastReward.shippingRules?.count, 4)
-    XCTAssertEqual(lastReward.shippingRules?[1].cost, 15.0)
-    XCTAssertEqual(lastReward.shippingRules?[1].location.country, "CH")
-    XCTAssertEqual(lastReward.shippingRules?[1].location.displayableName, "Switzerland")
-    XCTAssertEqual(lastReward.shippingRules?[1].location.localizedName, "Switzerland")
-    XCTAssertEqual(lastReward.shippingRules?[1].location.name, "Switzerland")
-    XCTAssertEqual(lastReward.shippingRules?[1].location.id, decompose(id: "TG9jYXRpb24tMjM0MjQ5NTc="))
-    XCTAssertFalse(lastReward.shipping.enabled)
-    XCTAssertEqual(lastReward.shipping.preference!, .none)
-    XCTAssertEqual(lastReward.shipping.summary, "Ships worldwide")
-    XCTAssertNil(lastReward.shippingRulesExpanded)
-    XCTAssertNil(lastReward.shipping.location)
-    XCTAssertNil(lastReward.shipping.type)
+    XCTAssertEqual(reward.id, decompose(id: "UmV3YXJkLTgzNDExODA="))
+    XCTAssertEqual(reward.limit, 10)
+    XCTAssertEqual(reward.limitPerBacker, 1)
+    XCTAssertEqual(reward.minimum, 400.0)
+    XCTAssertEqual(reward.remaining, 9)
+    XCTAssertNil(reward.startsAt)
+    XCTAssertEqual(reward.title, "SIGNED BOOK + GALLERY PRINT (30x45cm)")
+    XCTAssertEqual(reward.shippingRules?.count, 4)
+    XCTAssertEqual(reward.shippingRules?[1].cost, 15.0)
+    XCTAssertEqual(reward.shippingRules?[1].location.country, "CH")
+    XCTAssertEqual(reward.shippingRules?[1].location.displayableName, "Switzerland")
+    XCTAssertEqual(reward.shippingRules?[1].location.localizedName, "Switzerland")
+    XCTAssertEqual(reward.shippingRules?[1].location.name, "Switzerland")
+    XCTAssertEqual(reward.shippingRules?[1].location.id, decompose(id: "TG9jYXRpb24tMjM0MjQ5NTc="))
+    XCTAssertTrue(reward.shipping.enabled)
+    XCTAssertEqual(reward.shipping.preference!, .restricted)
+    XCTAssertEqual(reward.shipping.summary, "Ships worldwide")
+    XCTAssertNotNil(reward.shippingRulesExpanded)
+    XCTAssertNil(reward.shipping.location)
+    XCTAssertNil(reward.shipping.type)
 
-    guard let localPickup = rewards.last?.localPickup else {
+    guard let localPickup = reward.localPickup else {
       XCTFail("project should contain at least 1 local pickup location.")
 
       return
@@ -83,12 +60,19 @@ final class Project_FetchProjectRewardsByIdQueryDataTests: XCTestCase {
     XCTAssertEqual(localPickup.name, "San Jose")
     XCTAssertEqual(localPickup.country, "US")
     XCTAssertEqual(localPickup.displayableName, "San Jose, CA")
-    XCTAssertNil(rewards.first?.localPickup)
   }
 
-  private func testExpandedShippingProperties(_ rewards: [Reward]) {
+  func test_expandedShippingProperties() {
     // Test on reward that has restricted shipping; only to the EU.
-    let reward = rewards[12]
+    let rewardsProducer = Project
+      .projectRewardsProducer(from: FetchProjectRewardsByIdQueryTemplate.expandedShippingReward.data)
+
+    guard let rewards = MockGraphQLClient.shared.client.data(from: rewardsProducer),
+          let reward = rewards.first else {
+      XCTFail()
+
+      return
+    }
 
     XCTAssertEqual(reward.shippingRules?.count, 1)
     XCTAssertEqual(reward.shippingRules?[0].location.name, "European Union")

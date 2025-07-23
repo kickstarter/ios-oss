@@ -1,5 +1,6 @@
 import Apollo
 import Foundation
+import GraphAPI
 @testable import KsApi
 
 public enum FetchBackerProjectsQueryDataTemplate {
@@ -22,7 +23,7 @@ public enum FetchBackerProjectsQueryDataTemplate {
         forResource: "FetchMySavedProjectsQuery",
         withExtension: "json"
       )
-      return try! testGraphObject<GraphAPI.FetchMySavedProjectsQuery.Data>(
+      return try! testGraphObject(
         fromResource: url!,
         variables: ["withStoredCards": false]
       )
@@ -36,7 +37,7 @@ public enum FetchBackerProjectsQueryDataTemplate {
         forResource: "FetchMyBackedProjectsQuery",
         withExtension: "json"
       )
-      return try! testGraphObject<GraphAPI.FetchMySavedProjectsQuery.Data>(
+      return try! testGraphObject(
         fromResource: url!,
         variables: ["withStoredCards": false]
       )

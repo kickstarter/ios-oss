@@ -1,3 +1,4 @@
+import GraphAPI
 import KsApi
 import ReactiveSwift
 import UIKit
@@ -399,7 +400,7 @@ public struct SearchFilterToggles {
   public var following: Bool
 }
 
-private extension GraphAPI.LocationsByTermQuery.Data.Location {}
+private extension GraphAPI.LocationsByTermQuery.Data.Locations {}
 
 private extension MutableProperty {
   /// Emits its current value when `takeInitialValueWhen` is sent, and whenever the value changes, too.

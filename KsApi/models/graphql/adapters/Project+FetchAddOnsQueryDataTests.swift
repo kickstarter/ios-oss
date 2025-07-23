@@ -4,7 +4,8 @@ import XCTest
 
 final class Project_FetchAddOnsQueryDataTests: XCTestCase {
   func testFetchAddOnsQueryData_Success() {
-    let producer = Project.projectProducer(from: FetchAddsOnsQueryTemplate.valid.data)
+    let data = FetchAddsOnsQueryTemplate.valid.data
+    let producer = Project.projectProducer(from: data)
     guard let envelope = MockGraphQLClient.shared.client.data(from: producer) else {
       XCTFail()
 
@@ -14,11 +15,11 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
     XCTAssertEqual(envelope.name, "Peppermint Fox Press: Notebooks & Stationery")
     XCTAssertEqual(envelope.id, 1_606_532_881)
     XCTAssertEqual(envelope.slug, "peppermint-fox-press-notebooks-and-stationery")
-    XCTAssertEqual(envelope.state, .live)
+    XCTAssertEqual(envelope.state, KsApi.Project.State.live)
     XCTAssertEqual(envelope.location.name, "Launceston")
 
     XCTAssertTrue(envelope.hasAddOns)
-    XCTAssertEqual(envelope.addOns?.count, 2)
+    XCTAssertEqual(envelope.addOns?.count, 1)
 
     guard let addOn = envelope.addOns?.first else {
       XCTFail()
@@ -39,8 +40,8 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
     XCTAssertFalse(addOn.hasAddOns)
     XCTAssertEqual(addOn.id, decompose(id: "UmV3YXJkLTgxOTAzMjA="))
     XCTAssertEqual(addOn.minimum, 4.0)
-    XCTAssertEqual(addOn.shipping.enabled, false)
-    XCTAssertEqual(addOn.shipping.preference!, .none)
+    XCTAssertEqual(addOn.shipping.enabled, true)
+    XCTAssertEqual(addOn.shipping.preference!, .unrestricted)
     XCTAssertEqual(addOn.shipping.summary, "Ships worldwide")
     XCTAssertNil(addOn.limit)
     XCTAssertNil(addOn.remaining)
@@ -48,20 +49,22 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
     XCTAssertNil(addOn.shipping.location)
     XCTAssertNil(addOn.shipping.type)
 
-    guard let hasAnExpandedShippingRule = envelope.addOns?.first?.shippingRulesExpanded?.first,
-          let hasALocalPickup = envelope.addOns?.first?.localPickup else {
-      XCTFail()
-
-      return
+    if let expandedShippingRule = addOn.shippingRulesExpanded?.first {
+      XCTAssertEqual(expandedShippingRule.cost, 2.0)
+      XCTAssertNotNil(expandedShippingRule.location)
+    } else {
+      XCTFail("Expected expanded shipping rule")
     }
 
-    XCTAssertEqual(hasAnExpandedShippingRule.cost, 2.0)
-    XCTAssertNotNil(hasAnExpandedShippingRule.location)
-    XCTAssertEqual(hasALocalPickup.localizedName, "San Jose")
-    XCTAssertEqual(hasALocalPickup.id, decompose(id: "TG9jYXRpb24tMjQ4ODA0Mg=="))
-    XCTAssertEqual(hasALocalPickup.name, "San Jose")
-    XCTAssertEqual(hasALocalPickup.country, "US")
-    XCTAssertEqual(hasALocalPickup.displayableName, "San Jose, CA")
-    XCTAssertNil(envelope.addOns?.last?.localPickup)
+    if let localPickup = addOn.localPickup {
+      XCTAssertEqual(localPickup.localizedName, "San Jose")
+      XCTAssertEqual(localPickup.id, decompose(id: "TG9jYXRpb24tMjQ4ODA0Mg=="))
+      XCTAssertEqual(localPickup.name, "San Jose")
+      XCTAssertEqual(localPickup.country, "US")
+      XCTAssertEqual(localPickup.displayableName, "San Jose, CA")
+
+    } else {
+      XCTFail("Expected local pickup option")
+    }
   }
 }

@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 
 extension GraphAPI.UpdateBackingInput {
   static func from(_ input: UpdateBackingInput) -> GraphAPI.UpdateBackingInput {

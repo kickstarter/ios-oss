@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 
 public struct TriggerThirdPartyEventInput: GraphMutationInput {
   let deviceId: String
