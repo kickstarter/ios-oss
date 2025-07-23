@@ -17,6 +17,7 @@ private enum Constants {
 }
 
 public struct OnboardingView: View {
+  @SwiftUI.Environment(\.dismiss) private var dismiss
   @ObservedObject var viewModel: OnboardingViewModel
   @Namespace private var animation
   @State private var currentIndex: Int = 0
@@ -53,7 +54,7 @@ public struct OnboardingView: View {
                 item: item,
                 progress: self.progress,
                 onPrimaryTap: { self.handlePrimaryTap(for: item) },
-                onSecondaryTap: { self.goToNextItem() },
+                onSecondaryTap: { self.handleSecondaryTap(for: item) },
                 onLoginSignup: { self.viewModel.goToLoginSignupTapped() }
               )
               .accessibilityElement(children: .contain)
@@ -112,7 +113,8 @@ public struct OnboardingView: View {
 
       Button(action: {
         withAnimation {
-          self.currentIndex = 0
+          self.hasSeenOnboarding()
+          self.dismiss()
         }
       }) {
         Image(OnboardingStyles.closeImage)
@@ -146,6 +148,16 @@ public struct OnboardingView: View {
     }
   }
 
+  private func handleSecondaryTap(for item: OnboardingItem) {
+    switch item.type {
+    case .welcome, .saveProjects, .enableNotifications, .allowTracking:
+      self.goToNextItem()
+    case .loginSignUp:
+      self.hasSeenOnboarding()
+      self.dismiss()
+    }
+  }
+
   private func goToNextItem() {
     guard self.currentIndex < self.onboardingItems.count - 1 else { return }
 
@@ -156,5 +168,9 @@ public struct OnboardingView: View {
     Library.AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus {
       self.goToNextItem()
     }
+  }
+
+  private func hasSeenOnboarding() {
+    AppEnvironment.current.userDefaults.set(true, forKey: AppKeys.hasSeenOnboarding.rawValue)
   }
 }
