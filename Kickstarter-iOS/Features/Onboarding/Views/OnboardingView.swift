@@ -17,6 +17,7 @@ private enum Constants {
 }
 
 public struct OnboardingView: View {
+  @SwiftUI.Environment(\.dismiss) private var dismiss
   @ObservedObject var viewModel: OnboardingViewModel
   @State private var currentIndex: Int = 0
   @Namespace private var animation
@@ -54,7 +55,7 @@ public struct OnboardingView: View {
                   item: item,
                   progress: self.progress,
                   onPrimaryTap: { self.handlePrimaryTap(for: item) },
-                  onSecondaryTap: { self.goToNextItem() },
+                  onSecondaryTap: { self.handleSecondaryTap(for: item) },
                   onLoginSignup: { self.viewModel.goToLoginSignupTapped() }
                 )
                 .accessibilityElement(children: .contain)
@@ -94,7 +95,7 @@ public struct OnboardingView: View {
 
       Button(action: {
         withAnimation {
-          self.currentIndex = 0
+          self.dismiss()
         }
       }) {
         Image(OnboardingStyles.closeImage)
@@ -125,6 +126,15 @@ public struct OnboardingView: View {
     case .loginSignUp:
       /// Triggers the `goToLoginFromOnboarding` notification to inform the AppDelegate to dismiss this view and launch the login/signup flow.
       NotificationCenter.default.post(name: .ksr_goToLoginFromOnboarding, object: nil)
+    }
+  }
+
+  private func handleSecondaryTap(for item: OnboardingItem) {
+    switch item.type {
+    case .welcome, .saveProjects, .enableNotifications, .allowTracking:
+      self.goToNextItem()
+    case .loginSignUp:
+      self.dismiss()
     }
   }
 
