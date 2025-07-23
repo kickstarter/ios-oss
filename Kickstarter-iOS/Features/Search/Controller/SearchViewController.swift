@@ -36,6 +36,7 @@ internal final class SearchViewController: UITableViewController {
 
     self.tableView.register(nib: .BackerDashboardProjectCell)
     self.tableView.registerCellClass(SearchResultsCountCell.self)
+    self.tableView.registerCellClass(SearchEmptyStateCell.self)
 
     self.viewModel.inputs.viewDidLoad()
 
@@ -156,7 +157,15 @@ internal final class SearchViewController: UITableViewController {
     self.viewModel.outputs.showEmptyState
       .observeForUI()
       .observeValues { [weak self] params, visible in
-        self?.dataSource.load(params: params, visible: visible)
+        if featureSearchNewEmptyState() {
+          let data = SearchEmptyStateSearchData(
+            query: params.query,
+            hasFilters: self?.viewModel.outputs.searchFilters.hasFilters == true
+          )
+          self?.dataSource.load(data: data, visible: visible)
+        } else {
+          self?.dataSource.load(params: params, visible: visible)
+        }
         self?.tableView.reloadData()
       }
 

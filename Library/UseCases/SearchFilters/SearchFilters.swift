@@ -66,7 +66,7 @@ public class SearchFilters: ObservableObject {
 
   public let objectWillChange = ObservableObjectPublisher()
 
-  var filterCount: Int {
+  public var filterCount: Int {
     // Note that sort is a special case and is not included in
     // reset or the filter count functionality.
     [
@@ -84,7 +84,7 @@ public class SearchFilters: ObservableObject {
     .count(where: { $0 == true })
   }
 
-  var hasFilters: Bool {
+  public var hasFilters: Bool {
     self.filterCount > 0
   }
 
