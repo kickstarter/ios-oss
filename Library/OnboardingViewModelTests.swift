@@ -34,7 +34,7 @@ final class OnboardingViewModelTest: XCTestCase {
 
       let expectation = expectation(description: "Waiting for action to be performed")
       var triggeredPushNotificationPopup = false
-      self.viewModel.triggerPushNotificationPermissionDialog
+      self.viewModel.didCompletePushNotificationSystemDialog
         .sink { () in
           triggeredPushNotificationPopup = true
           expectation.fulfill()

@@ -11,7 +11,7 @@ final class OnboardingUseCaseTests: TestCase {
   let onboardingItems = TestObserver<[OnboardingItem], Never>()
   let goToLoginSignup = TestObserver<LoginIntent, Never>()
   let triggerAppTrackingTransparencyDialog = TestObserver<Void, Never>()
-  let triggerPushNotificationDialog = TestObserver<Void, Never>()
+  let didCompletePushNotificationSystemDialog = TestObserver<Void, Never>()
 
   override func setUp() {
     super.setUp()
@@ -22,8 +22,8 @@ final class OnboardingUseCaseTests: TestCase {
     self.useCase.uiOutputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
     self.useCase.outputs.triggerAppTrackingTransparencyDialog
       .observe(self.triggerAppTrackingTransparencyDialog.observer)
-    self.useCase.outputs.triggerPushNotificationSystemDialog
-      .observe(self.triggerPushNotificationDialog.observer)
+    self.useCase.outputs.didCompletePushNotificationSystemDialog
+      .observe(self.didCompletePushNotificationSystemDialog.observer)
   }
 
   override func tearDown() {
@@ -36,29 +36,29 @@ final class OnboardingUseCaseTests: TestCase {
     XCTAssertEqual(self.onboardingItems.lastValue?.count, 5)
   }
 
-  func testUseCase_triggerPushNotificationSystemDialog_Emits_WhenNotAuthorized() {
+  func testUseCase_didCompletePushNotificationSystemDialog_Emits_WhenNotAuthorized() {
     MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
     MockPushRegistration.registerProducer = .init(value: true)
 
     withEnvironment(pushRegistrationType: MockPushRegistration.self) {
-      self.triggerPushNotificationDialog.assertDidNotEmitValue()
+      self.didCompletePushNotificationSystemDialog.assertDidNotEmitValue()
 
       self.useCase.uiInputs.getNotifiedTapped()
 
-      self.triggerPushNotificationDialog.assertValueCount(1)
+      self.didCompletePushNotificationSystemDialog.assertValueCount(1)
     }
   }
 
-  func testUseCase_triggerPushNotificationSystemDialog_DoesNotEmit_WhenAlreadyAuthorized() {
+  func testUseCase_didCompletePushNotificationSystemDialog_DoesNotEmit_WhenAlreadyAuthorized() {
     MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: true)
     MockPushRegistration.registerProducer = .init(value: true)
 
     withEnvironment(pushRegistrationType: MockPushRegistration.self) {
-      self.triggerPushNotificationDialog.assertDidNotEmitValue()
+      self.didCompletePushNotificationSystemDialog.assertDidNotEmitValue()
 
       self.useCase.uiInputs.getNotifiedTapped()
 
-      self.triggerPushNotificationDialog.assertDidNotEmitValue()
+      self.didCompletePushNotificationSystemDialog.assertDidNotEmitValue()
     }
   }
 

@@ -70,7 +70,7 @@ public protocol OnboardingUseCaseOutputs {
   var triggerAppTrackingTransparencyDialog: Signal<Void, Never> { get }
 
   /// Emits when the user should be shown the Push Notification system permission dialog
-  var triggerPushNotificationSystemDialog: Signal<Void, Never> { get }
+  var didCompletePushNotificationSystemDialog: Signal<Void, Never> { get }
 }
 
 /**
@@ -114,7 +114,7 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
       }
       .map { _ in () }
 
-    self.triggerPushNotificationSystemDialog = self.getNotifiedTappedSignal.signal
+    self.didCompletePushNotificationSystemDialog = self.getNotifiedTappedSignal.signal
       .flatMap {
         let pushRegistrationType = AppEnvironment.current.pushRegistrationType
 
@@ -167,7 +167,7 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
   // MARK: - UI Outputs
 
   public let triggerAppTrackingTransparencyDialog: Signal<Void, Never>
-  public let triggerPushNotificationSystemDialog: Signal<Void, Never>
+  public let didCompletePushNotificationSystemDialog: Signal<Void, Never>
   public let goToLoginSignup: Signal<LoginIntent, Never>
 
   // MARK: - Data Outputs

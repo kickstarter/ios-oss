@@ -11,7 +11,7 @@ public protocol OnboardingViewModelInputs {
 
 public protocol OnboardingViewModelOutputs {
   var onboardingItems: [OnboardingItem] { get }
-  var triggerPushNotificationPermissionDialog: AnyPublisher<Void, Never> { get }
+  var didCompletePushNotificationSystemDialog: AnyPublisher<Void, Never> { get }
   var triggerAppTrackingTransparencyPopup: AnyPublisher<Void, Never> { get }
   var goToLoginSignup: AnyPublisher<LoginIntent, Never> { get }
 }
@@ -45,10 +45,10 @@ public final class OnboardingViewModel: OnboardingViewModelType {
     self.useCase.outputs.triggerAppTrackingTransparencyDialog
       .observe(on: UIScheduler())
       .observeValues { [weak self] in
-        self?.triggerAppTrackingTransparencyDialogSubject.send()
+        self?.didCompletePushNotificationSystemDialogSubject.send()
       }
 
-    self.useCase.outputs.triggerPushNotificationSystemDialog
+    self.useCase.outputs.didCompletePushNotificationSystemDialog
       .observe(on: UIScheduler())
       .observeValues { [weak self] in
         self?.triggerPushNotificationPermissionDialogSubject.send()
@@ -66,17 +66,17 @@ public final class OnboardingViewModel: OnboardingViewModelType {
   }
 
   private let triggerPushNotificationPermissionDialogSubject = PassthroughSubject<Void, Never>()
-  private let triggerAppTrackingTransparencyDialogSubject = PassthroughSubject<Void, Never>()
+  private let didCompletePushNotificationSystemDialogSubject = PassthroughSubject<Void, Never>()
   private let goToLoginSignupSubject = PassthroughSubject<LoginIntent, Never>()
 
   // MARK: - Outputs
 
-  public var triggerPushNotificationPermissionDialog: AnyPublisher<Void, Never> {
+  public var didCompletePushNotificationSystemDialog: AnyPublisher<Void, Never> {
     self.triggerPushNotificationPermissionDialogSubject.eraseToAnyPublisher()
   }
 
   public var triggerAppTrackingTransparencyPopup: AnyPublisher<Void, Never> {
-    self.triggerAppTrackingTransparencyDialogSubject.eraseToAnyPublisher()
+    self.didCompletePushNotificationSystemDialogSubject.eraseToAnyPublisher()
   }
 
   public var goToLoginSignup: AnyPublisher<LoginIntent, Never> {
