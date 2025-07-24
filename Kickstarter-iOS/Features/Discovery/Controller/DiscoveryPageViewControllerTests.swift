@@ -40,9 +40,9 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
       sampleUpdate
     ]
 
-    let darkModeOn = MockRemoteConfigClient()
-    darkModeOn.features = [
-      RemoteConfigFeature.darkModeEnabled.rawValue: true
+    let newDesignSystemOn = MockRemoteConfigClient()
+    newDesignSystemOn.features = [
+      RemoteConfigFeature.newDesignSystem.rawValue: true
     ]
 
     orthogonalCombos(
@@ -56,7 +56,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         colorResolver: AppColorResolver(),
         currentUser: User.template,
         language: language,
-        remoteConfigClient: darkModeOn,
+        remoteConfigClient: newDesignSystemOn,
         userDefaults: MockKeyValueStore()
       ) {
         let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
