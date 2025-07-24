@@ -298,7 +298,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let pushTokenRegistrationStartedEvents = Signal.merge(
       self.didAcceptReceivingRemoteNotificationsProperty.signal,
       pushNotificationsPreviouslyAuthorized
-        .filter { isTrue($0) && featureOnboardingFlowEnabled() == false }
+        .filter { isPreviouslyAuthorzied in isPreviouslyAuthorzied }
         .ignoreValues()
     )
     .flatMap {
@@ -311,12 +311,19 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.pushTokenRegistrationStarted = pushTokenRegistrationStartedValues
       .ignoreValues()
 
-    self.showAlert = self.showNotificationDialogProperty.signal.skipNil()
-      .filter {
-        if let context = $0.userInfo?.values.first as? PushNotificationDialog.Context {
-          return PushNotificationDialog.canShowDialog(for: context)
-        }
-        return false
+    self.showAlert = self.showNotificationDialogProperty.signal
+      .skipNil()
+      .flatMap { showDialog in
+        AppEnvironment.current.pushRegistrationType.hasAuthorizedNotifications()
+          .filter { isAuthorized in isAuthorized == false }
+          .compactMap { _ in
+            guard let context = showDialog.userInfo?.values.first as? PushNotificationDialog.Context,
+                  PushNotificationDialog.canShowDialog(for: context) else {
+              return nil
+            }
+
+            return showDialog
+          }
       }
 
     self.unregisterForRemoteNotifications = self.userSessionEndedProperty.signal
@@ -769,6 +776,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
       .map { _ in .displayInAppMessageNow }
 
+    /// Request AppTransparencyTracking outside of onboarding.
     self.requestATTrackingAuthorizationStatus = Signal
       .combineLatest(
         self.applicationDidFinishLaunchingReturnValueProperty.signal.ignoreValues(),
@@ -777,7 +785,17 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .map(second)
       .skipRepeats()
       .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
-      .filter { isTrue($0) && featureOnboardingFlowEnabled() == false }
+      .filter { applicationIsActive in
+        /// Only attempt to request authorization outside of onboarding if the application is active and the user has seen the onboarding flow.
+        /// We don't want to request authorzation in the onboarding flow unless they've tapped the "all tracking" CTA.
+        let hasSeenOnboarding = AppEnvironment.current.userDefaults.hasSeenOnboarding == true
+
+        if featureOnboardingFlowEnabled() == true {
+          return applicationIsActive && AppEnvironment.current.userDefaults.hasSeenOnboarding == true
+        }
+
+        return applicationIsActive && !hasSeenOnboarding
+      }
       .map { _ in AppEnvironment.current.appTrackingTransparency }
       .map { appTrackingTransparency in
         if

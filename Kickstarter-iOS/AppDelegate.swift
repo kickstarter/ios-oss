@@ -101,7 +101,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.goToLoginWithIntent
       .observeForControllerAction()
       .observeValues { [weak self] intent in
-        /// Dismiss OnboardingView if present so that we can correclty present the LoginToutViewController.
+        /// Dismiss OnboardingView if present so that we can correctly present the LoginToutViewController.
         if let onboardingView = self?.rootTabBarController?
           .presentedViewController as? UIHostingController<OnboardingView> {
           onboardingView.dismiss(animated: true)
@@ -383,9 +383,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   // MARK: - Functions
 
   fileprivate func presentContextualPermissionAlert(_ notification: Notification) {
-    /// We don't need to show this alert if the onboarding flow is enabled
-    guard featureOnboardingFlowEnabled() == false else { return }
-
     guard let context = notification.userInfo?.values.first as? PushNotificationDialog.Context else {
       return
     }
