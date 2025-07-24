@@ -96,9 +96,6 @@ struct ColorsView: View {
         Text("Semantic Colors")
           .font(InterFont.heading2XL.swiftUIFont())
           .foregroundStyle(Colors.Text.primary.swiftUIColor())
-        Text("Dark mode feature flag enabled: \(featureDarkModeEnabled() ? "true" : "false")")
-          .font(InterFont.bodyLG.swiftUIFont())
-          .foregroundStyle(Colors.Text.primary.swiftUIColor())
 
         Divider()
 
