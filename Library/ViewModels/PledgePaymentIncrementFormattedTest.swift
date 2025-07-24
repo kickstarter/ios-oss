@@ -14,7 +14,8 @@ final class PledgePaymentIncrementFormattedTest: TestCase {
       amount: amount,
       scheduledCollection: TimeInterval(1_240_902_000),
       state: .collected,
-      stateReason: nil
+      stateReason: nil,
+      refundedAmount: nil
     )
 
     let incrementFormatted = PledgePaymentIncrementFormatted(from: increment, index: 0)

@@ -748,6 +748,8 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
     public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
     public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
     public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
+    /// The total amount that has been refunded on the payment increment, across potentially multiple adjustments
+    public var refundedAmount: RefundedAmount? { __data["refundedAmount"] }
 
     public struct Fragments: FragmentContainer {
       public let __data: DataDict
@@ -760,7 +762,8 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
       amount: Amount,
       scheduledCollection: GraphAPI.ISO8601DateTime,
       state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
-      stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil
+      stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil,
+      refundedAmount: RefundedAmount? = nil
     ) {
       self.init(_dataDict: DataDict(
         data: [
@@ -769,6 +772,7 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
           "scheduledCollection": scheduledCollection,
           "state": state,
           "stateReason": stateReason,
+          "refundedAmount": refundedAmount._fieldData,
         ],
         fulfilledFragments: [
           ObjectIdentifier(BackingFragment.PaymentIncrement.self),
@@ -778,6 +782,8 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
     }
 
     public typealias Amount = PaymentIncrementFragment.Amount
+
+    public typealias RefundedAmount = PaymentIncrementFragment.RefundedAmount
   }
 
   /// Project

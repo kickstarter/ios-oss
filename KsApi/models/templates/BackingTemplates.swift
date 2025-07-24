@@ -38,7 +38,8 @@ extension Backing {
       ),
       scheduledCollection: ApiMockDate().timeIntervalSince1970,
       state: .collected,
-      stateReason: nil
+      stateReason: nil,
+      refundedAmount: nil
     )]
 
   internal static let templateMadeWithPledgeManagment = Backing.template

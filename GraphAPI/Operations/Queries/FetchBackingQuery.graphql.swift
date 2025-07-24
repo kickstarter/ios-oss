@@ -7,7 +7,7 @@ public class FetchBackingQuery: GraphQLQuery {
   public static let operationName: String = "FetchBacking"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchBacking($id: ID!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment } }"#,
+      #"query FetchBacking($id: ID!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!, $includeRefundedAmount: Boolean!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment } }"#,
       fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, ProjectFragment.self, RewardFragment.self, ShippingRuleFragment.self, UserFragment.self, UserStoredCardsFragment.self]
     ))
 
@@ -15,24 +15,28 @@ public class FetchBackingQuery: GraphQLQuery {
   public var withStoredCards: Bool
   public var includeShippingRules: Bool
   public var includeLocalPickup: Bool
+  public var includeRefundedAmount: Bool
 
   public init(
     id: ID,
     withStoredCards: Bool,
     includeShippingRules: Bool,
-    includeLocalPickup: Bool
+    includeLocalPickup: Bool,
+    includeRefundedAmount: Bool
   ) {
     self.id = id
     self.withStoredCards = withStoredCards
     self.includeShippingRules = includeShippingRules
     self.includeLocalPickup = includeLocalPickup
+    self.includeRefundedAmount = includeRefundedAmount
   }
 
   public var __variables: Variables? { [
     "id": id,
     "withStoredCards": withStoredCards,
     "includeShippingRules": includeShippingRules,
-    "includeLocalPickup": includeLocalPickup
+    "includeLocalPickup": includeLocalPickup,
+    "includeRefundedAmount": includeRefundedAmount
   ] }
 
   public struct Data: GraphAPI.SelectionSet {
@@ -1195,6 +1199,8 @@ public class FetchBackingQuery: GraphQLQuery {
         public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
         public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
         public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
+        /// The total amount that has been refunded on the payment increment, across potentially multiple adjustments
+        public var refundedAmount: RefundedAmount? { __data["refundedAmount"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict
@@ -1207,7 +1213,8 @@ public class FetchBackingQuery: GraphQLQuery {
           amount: Amount,
           scheduledCollection: GraphAPI.ISO8601DateTime,
           state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
-          stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil
+          stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil,
+          refundedAmount: RefundedAmount? = nil
         ) {
           self.init(_dataDict: DataDict(
             data: [
@@ -1216,6 +1223,7 @@ public class FetchBackingQuery: GraphQLQuery {
               "scheduledCollection": scheduledCollection,
               "state": state,
               "stateReason": stateReason,
+              "refundedAmount": refundedAmount._fieldData,
             ],
             fulfilledFragments: [
               ObjectIdentifier(FetchBackingQuery.Data.Backing.PaymentIncrement.self),
@@ -1226,6 +1234,8 @@ public class FetchBackingQuery: GraphQLQuery {
         }
 
         public typealias Amount = PaymentIncrementFragment.Amount
+
+        public typealias RefundedAmount = PaymentIncrementFragment.RefundedAmount
       }
 
       /// Backing.Project

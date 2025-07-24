@@ -7,24 +7,28 @@ public class BuildPaymentPlanQuery: GraphQLQuery {
   public static let operationName: String = "BuildPaymentPlan"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query BuildPaymentPlan($slug: String!, $amount: String!) { project(slug: $slug) { __typename paymentPlan(amount: $amount) { __typename amountIsPledgeOverTimeEligible paymentIncrements { __typename ...PaymentIncrementFragment } } } }"#,
+      #"query BuildPaymentPlan($slug: String!, $amount: String!, $includeRefundedAmount: Boolean!) { project(slug: $slug) { __typename paymentPlan(amount: $amount) { __typename amountIsPledgeOverTimeEligible paymentIncrements { __typename ...PaymentIncrementFragment } } } }"#,
       fragments: [PaymentIncrementFragment.self]
     ))
 
   public var slug: String
   public var amount: String
+  public var includeRefundedAmount: Bool
 
   public init(
     slug: String,
-    amount: String
+    amount: String,
+    includeRefundedAmount: Bool
   ) {
     self.slug = slug
     self.amount = amount
+    self.includeRefundedAmount = includeRefundedAmount
   }
 
   public var __variables: Variables? { [
     "slug": slug,
-    "amount": amount
+    "amount": amount,
+    "includeRefundedAmount": includeRefundedAmount
   ] }
 
   public struct Data: GraphAPI.SelectionSet {
@@ -135,6 +139,8 @@ public class BuildPaymentPlanQuery: GraphQLQuery {
           public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
           public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
           public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
+          /// The total amount that has been refunded on the payment increment, across potentially multiple adjustments
+          public var refundedAmount: RefundedAmount? { __data["refundedAmount"] }
 
           public struct Fragments: FragmentContainer {
             public let __data: DataDict
@@ -147,7 +153,8 @@ public class BuildPaymentPlanQuery: GraphQLQuery {
             amount: Amount,
             scheduledCollection: GraphAPI.ISO8601DateTime,
             state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
-            stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil
+            stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil,
+            refundedAmount: RefundedAmount? = nil
           ) {
             self.init(_dataDict: DataDict(
               data: [
@@ -156,6 +163,7 @@ public class BuildPaymentPlanQuery: GraphQLQuery {
                 "scheduledCollection": scheduledCollection,
                 "state": state,
                 "stateReason": stateReason,
+                "refundedAmount": refundedAmount._fieldData,
               ],
               fulfilledFragments: [
                 ObjectIdentifier(BuildPaymentPlanQuery.Data.Project.PaymentPlan.PaymentIncrement.self),
@@ -165,6 +173,8 @@ public class BuildPaymentPlanQuery: GraphQLQuery {
           }
 
           public typealias Amount = PaymentIncrementFragment.Amount
+
+          public typealias RefundedAmount = PaymentIncrementFragment.RefundedAmount
         }
       }
     }

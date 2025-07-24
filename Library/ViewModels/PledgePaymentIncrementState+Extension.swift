@@ -9,6 +9,8 @@ extension PledgePaymentIncrementState {
     case .unattempted: return Strings.Scheduled()
     case .errored: return Strings.Errored_payment()
     case .cancelled: return Strings.profile_projects_status_canceled()
+    // TODO: [MBL-2644] implement translated strings.
+    case .refunded: return "FPO: Refunded"
     }
   }
 
@@ -17,7 +19,8 @@ extension PledgePaymentIncrementState {
     switch self {
     case .collected:
       return .success
-    case .unattempted, .cancelled:
+    // TODO: setup the correct color of `refunded` on [MBL-2643]
+    case .unattempted, .cancelled, .refunded:
       return .custom(
         foregroundColor: LegacyColors.ksr_support_400.uiColor(),
         backgroundColor: LegacyColors.ksr_support_200.uiColor()

@@ -21,6 +21,15 @@ extension PledgePaymentIncrement {
     if let stateReason = fragment.stateReason?.rawValue {
       self.stateReason = PledgePaymentIncrementStateReason(rawValue: stateReason)
     }
+
+    if let refundedAmount = fragment.refundedAmount {
+      self.refundedAmount = PledgePaymentIncrementAmount(
+        currency: refundedAmount.currency,
+        amountFormattedInProjectNativeCurrency: refundedAmount.amountFormattedInProjectNativeCurrency
+      )
+    } else {
+      self.refundedAmount = nil
+    }
   }
 }
 

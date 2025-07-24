@@ -7,7 +7,7 @@ public class FetchUserBackingsQuery: GraphQLQuery {
   public static let operationName: String = "FetchUserBackings"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchUserBackings($status: BackingState!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { me { __typename backings(status: $status) { __typename nodes { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment errorReason } totalCount } id imageUrl: imageUrl(blur: false, width: 1024) name uid } }"#,
+      #"query FetchUserBackings($status: BackingState!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!, $includeRefundedAmount: Boolean!) { me { __typename backings(status: $status) { __typename nodes { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment errorReason } totalCount } id imageUrl: imageUrl(blur: false, width: 1024) name uid } }"#,
       fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, ProjectFragment.self, RewardFragment.self, ShippingRuleFragment.self, UserFragment.self, UserStoredCardsFragment.self]
     ))
 
@@ -15,24 +15,28 @@ public class FetchUserBackingsQuery: GraphQLQuery {
   public var withStoredCards: Bool
   public var includeShippingRules: Bool
   public var includeLocalPickup: Bool
+  public var includeRefundedAmount: Bool
 
   public init(
     status: GraphQLEnum<BackingState>,
     withStoredCards: Bool,
     includeShippingRules: Bool,
-    includeLocalPickup: Bool
+    includeLocalPickup: Bool,
+    includeRefundedAmount: Bool
   ) {
     self.status = status
     self.withStoredCards = withStoredCards
     self.includeShippingRules = includeShippingRules
     self.includeLocalPickup = includeLocalPickup
+    self.includeRefundedAmount = includeRefundedAmount
   }
 
   public var __variables: Variables? { [
     "status": status,
     "withStoredCards": withStoredCards,
     "includeShippingRules": includeShippingRules,
-    "includeLocalPickup": includeLocalPickup
+    "includeLocalPickup": includeLocalPickup,
+    "includeRefundedAmount": includeRefundedAmount
   ] }
 
   public struct Data: GraphAPI.SelectionSet {
@@ -1287,6 +1291,8 @@ public class FetchUserBackingsQuery: GraphQLQuery {
             public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
             public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
             public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
+            /// The total amount that has been refunded on the payment increment, across potentially multiple adjustments
+            public var refundedAmount: RefundedAmount? { __data["refundedAmount"] }
 
             public struct Fragments: FragmentContainer {
               public let __data: DataDict
@@ -1299,7 +1305,8 @@ public class FetchUserBackingsQuery: GraphQLQuery {
               amount: Amount,
               scheduledCollection: GraphAPI.ISO8601DateTime,
               state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
-              stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil
+              stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil,
+              refundedAmount: RefundedAmount? = nil
             ) {
               self.init(_dataDict: DataDict(
                 data: [
@@ -1308,6 +1315,7 @@ public class FetchUserBackingsQuery: GraphQLQuery {
                   "scheduledCollection": scheduledCollection,
                   "state": state,
                   "stateReason": stateReason,
+                  "refundedAmount": refundedAmount._fieldData,
                 ],
                 fulfilledFragments: [
                   ObjectIdentifier(FetchUserBackingsQuery.Data.Me.Backings.Node.PaymentIncrement.self),
@@ -1318,6 +1326,8 @@ public class FetchUserBackingsQuery: GraphQLQuery {
             }
 
             public typealias Amount = PaymentIncrementFragment.Amount
+
+            public typealias RefundedAmount = PaymentIncrementFragment.RefundedAmount
           }
 
           /// Me.Backings.Node.Project
