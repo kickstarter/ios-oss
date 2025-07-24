@@ -975,7 +975,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testRegisterPushNotifications_PreviouslyAccepted_WhenOnboardingFlowFeatureFlagEnabled() {
+  func testRegisterPushNotifications_WhenPreviouslyAccepted_WhenOnboardingFlowFeatureFlagEnabled() {
     let segmentClient = MockTrackingClient()
     let mockRemoteConfigClient = MockRemoteConfigClient()
     mockRemoteConfigClient.features = [
@@ -998,7 +998,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: [:])
       self.vm.inputs.userSessionStarted()
 
-      self.pushRegistrationStarted.assertValueCount(0)
+      self.pushRegistrationStarted.assertValueCount(1)
 
       self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: "token".data(using: .utf8)!)
 
@@ -1897,8 +1897,13 @@ final class AppDelegateViewModelTests: TestCase {
     )
 
     userDefaults.set(["message"], forKey: "com.kickstarter.KeyValueStoreType.deniedNotificationContexts")
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
 
-    withEnvironment(currentUser: .template, userDefaults: userDefaults) {
+    withEnvironment(
+      currentUser: .template,
+      pushRegistrationType: MockPushRegistration.self,
+      userDefaults: userDefaults
+    ) {
       self.vm.inputs.applicationWillEnterForeground()
       self.vm.inputs.didReceive(remoteNotification: updatePushData)
       self.vm.inputs.showNotificationDialog(notification: notification)
@@ -2445,8 +2450,8 @@ final class AppDelegateViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(5))
 
       self.pushRegistrationStarted.assertValueCount(0)
-      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
-      self.requestATTrackingAuthorizationStatus.assertValueCount(0)
+      XCTAssertEqual(appTrackingTransparency.advertisingIdentifier, "advertisingIdentifier")
+      self.requestATTrackingAuthorizationStatus.assertValueCount(1)
 
       self.triggerOnboardingFlow.assertValueCount(0)
     }

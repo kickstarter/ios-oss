@@ -22,7 +22,6 @@ public final class OnboardingViewModel: OnboardingViewModelType {
   // MARK: - Properties
 
   private let useCase: OnboardingUseCaseType
-  public let id: UUID = .init()
 
   // MARK: - Outputs
 
