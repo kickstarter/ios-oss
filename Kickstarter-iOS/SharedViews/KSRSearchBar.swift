@@ -54,7 +54,7 @@ final class KSRSearchBar: UIView {
     super.init(coder: coder)
   }
 
-  // MARK: - Binding
+  // MARK: - ViewModel Outputs Bindings
 
   override func bindViewModel() {
     self.textField.rac.text = self.viewModel.outputs.searchFieldText
