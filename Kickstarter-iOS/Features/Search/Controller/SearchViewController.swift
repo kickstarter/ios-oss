@@ -5,25 +5,31 @@ import ReactiveSwift
 import SwiftUI
 import UIKit
 
+private enum Constants {
+  static let searchBarWidthFactor = 0.9
+  static let estimatedRowHeight = 86.0
+  static let footerViewHeight = Styles.grid(15)
+  static let searchBarHeight = Styles.grid(8)
+}
+
 internal final class SearchViewController: UITableViewController {
   internal let viewModel: SearchViewModelType = SearchViewModel()
   fileprivate let dataSource = SearchDataSource()
 
-  @IBOutlet fileprivate var cancelButton: UIButton!
-  @IBOutlet fileprivate var centeringStackView: UIStackView!
-  @IBOutlet fileprivate var innerSearchStackView: UIStackView!
   @IBOutlet fileprivate var searchBarContainerView: UIView!
-  @IBOutlet fileprivate var searchIconImageView: UIImageView!
-  @IBOutlet fileprivate var searchStackView: UIStackView!
-  @IBOutlet fileprivate var searchStackViewWidthConstraint: NSLayoutConstraint!
-  @IBOutlet fileprivate var searchTextField: UITextField!
-  @IBOutlet fileprivate var searchTextFieldHeightConstraint: NSLayoutConstraint!
+
+  private lazy var searchBar = { KSRSearchBar() }()
+  private var searchBarWidthConstraint: NSLayoutConstraint?
 
   private let backgroundView = UIView()
   private let searchLoaderIndicator = UIActivityIndicatorView()
   private let showSortAndFilterHeader = MutableProperty<Bool>(false) // Bound to the view model property
 
   private var sortAndFilterHeader: UIViewController?
+
+  private var searchBarWidth: CGFloat {
+    return self.view.bounds.width * Constants.searchBarWidthFactor
+  }
 
   internal static func instantiate() -> SearchViewController {
     return Storyboard.Search.instantiate(SearchViewController.self)
@@ -32,52 +38,12 @@ internal final class SearchViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.tableView.dataSource = self.dataSource
-
-    self.tableView.register(nib: .BackerDashboardProjectCell)
-    self.tableView.registerCellClass(SearchResultsCountCell.self)
-
-    self.viewModel.inputs.viewDidLoad()
-
-    let pillView = SelectedSearchFiltersHeaderView(
-      selectedFilters: self.viewModel.outputs.searchFilters,
-      didTapPill: { [weak self] pill in
-        self?.viewModel.inputs.tappedButton(forFilterType: pill.filterType)
-      }
-    )
-
-    let sortAndFilterHeader = UIHostingController(rootView: pillView)
-    self.addChild(sortAndFilterHeader)
-
-    self.sortAndFilterHeader = sortAndFilterHeader
+    self.configureSubviews()
+    self.setupConstraints()
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-
-    self.cancelButton.addTarget(
-      self,
-      action: #selector(SearchViewController.cancelButtonPressed),
-      for: .touchUpInside
-    )
-
-    self.searchTextField.addTarget(
-      self,
-      action: #selector(SearchViewController.searchTextChanged(_:)),
-      for: .editingChanged
-    )
-
-    self.searchTextField.addTarget(
-      self,
-      action: #selector(SearchViewController.searchTextEditingDidEnd),
-      for: .editingDidEndOnExit
-    )
-
-    self.searchBarContainerView.addGestureRecognizer(
-      UITapGestureRecognizer(target: self, action: #selector(SearchViewController.searchBarContainerTapped))
-    )
-
-    self.searchTextField.delegate = self
 
     self.viewModel.inputs.viewWillAppear(animated: animated)
   }
@@ -86,46 +52,19 @@ internal final class SearchViewController: UITableViewController {
     super.bindStyles()
 
     _ = self
-      |> baseTableControllerStyle(estimatedRowHeight: 86)
+      |> baseTableControllerStyle(estimatedRowHeight: Constants.estimatedRowHeight)
+
+    // Hides the bottom border (shadow) of the navigation bar to visually give the search bar more space
+    self.navigationController?.navigationBar.standardAppearance.shadowColor = .clear
+    self.navigationController?.navigationBar.scrollEdgeAppearance?.shadowColor = .clear
 
     _ = [self.searchLoaderIndicator]
       ||> baseActivityIndicatorStyle
 
-    _ = self.cancelButton
-      |> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_support_400.uiColor()
-      |> UIButton.lens.titleLabel.font .~ .ksr_callout(size: 15)
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.discovery_search_cancel() }
-
-    _ = self.searchBarContainerView
-      |> roundedStyle()
-      |> UIView.lens.backgroundColor .~ LegacyColors.Background.search.uiColor()
-
-    _ = self.searchIconImageView
-      |> UIImageView.lens.tintColor .~ LegacyColors.ksr_support_400.uiColor()
-      |> UIImageView.lens.image .~ image(named: "search-icon")
-
-    _ = self.searchStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(1)
-      |> UIStackView.lens.layoutMargins .~ .init(leftRight: Styles.grid(2))
-      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
-
-    _ = self.innerSearchStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(1)
-
-    _ = self.searchTextField
-      |> UITextField.lens.font .~ .ksr_body(size: 14)
-      |> UITextField.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
-
-    self.searchTextField.attributedPlaceholder = NSAttributedString(
-      string: Strings.tabbar_search(),
-      attributes: [NSAttributedString.Key.foregroundColor: LegacyColors.ksr_support_400.uiColor()]
-    )
-
     _ = self.tableView
       |> UITableView.lens.keyboardDismissMode .~ .onDrag
 
-    self.searchTextFieldHeightConstraint.constant = Styles.grid(5)
-    self.searchStackViewWidthConstraint.constant = self.view.frame.size.width * 0.8
+    self.searchBarWidthConstraint?.constant = self.searchBarWidth
 
     self.tableView.sectionHeaderTopPadding = 0
   }
@@ -148,7 +87,7 @@ internal final class SearchViewController: UITableViewController {
             x: footerView.frame.origin.x,
             y: footerView.frame.origin.y,
             width: footerView.frame.size.width,
-            height: Styles.grid(15)
+            height: Constants.footerViewHeight
           )
         }
       }
@@ -166,16 +105,7 @@ internal final class SearchViewController: UITableViewController {
         self?.goTo(projectId: projectId, refTag: refTag)
       }
 
-    self.searchTextField.rac.text = self.viewModel.outputs.searchFieldText
-    self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
-
     self.searchLoaderIndicator.rac.animating = self.viewModel.outputs.searchLoaderIndicatorIsAnimating
-
-    self.viewModel.outputs.changeSearchFieldFocus
-      .observeForControllerAction() // NB: don't change this until we figure out the deadlock problem.
-      .observeValues { [weak self] in
-        self?.changeSearchFieldFocus(focus: $0, animated: $1)
-      }
 
     self.viewModel.outputs.showFilters
       .observeForControllerAction()
@@ -196,6 +126,53 @@ internal final class SearchViewController: UITableViewController {
   fileprivate func present(sheet viewController: UIViewController, withHeight _: CGFloat) {
     let presenter = BottomSheetPresenter()
     presenter.present(viewController: viewController, from: self)
+  }
+
+  private func configureSubviews() {
+    self.tableView.dataSource = self.dataSource
+
+    self.tableView.register(nib: .BackerDashboardProjectCell)
+    self.tableView.registerCellClass(SearchResultsCountCell.self)
+
+    self.viewModel.inputs.viewDidLoad()
+
+    let pillView = SelectedSearchFiltersHeaderView(
+      selectedFilters: self.viewModel.outputs.searchFilters,
+      didTapPill: { [weak self] pill in
+        self?.viewModel.inputs.tappedButton(forFilterType: pill.filterType)
+      }
+    )
+
+    let sortAndFilterHeader = UIHostingController(rootView: pillView)
+    self.addChild(sortAndFilterHeader)
+
+    self.sortAndFilterHeader = sortAndFilterHeader
+
+    self.searchBar.onTextChange = { [weak self] query in
+      self?.viewModel.inputs.searchTextChanged(query)
+    }
+
+    self.searchBarContainerView.addSubview(self.searchBar)
+  }
+
+  private func setupConstraints() {
+    self.searchBar.translatesAutoresizingMaskIntoConstraints = false
+
+    NSLayoutConstraint.activate([
+      self.searchBar.leadingAnchor.constraint(equalTo: self.searchBarContainerView.leadingAnchor),
+      self.searchBar.trailingAnchor.constraint(equalTo: self.searchBarContainerView.trailingAnchor),
+      self.searchBar.topAnchor.constraint(equalTo: self.searchBarContainerView.topAnchor, constant: 2.0),
+      self.searchBar.bottomAnchor.constraint(equalTo: self.searchBarContainerView.bottomAnchor)
+    ])
+
+    // Set initial width based on current view bounds; updated later in `bindStyles` if needed
+    self.searchBarWidthConstraint = self.searchBar.widthAnchor
+      .constraint(equalToConstant: self.searchBarWidth)
+
+    NSLayoutConstraint.activate([
+      self.searchBar.heightAnchor.constraint(equalToConstant: Constants.searchBarHeight),
+      self.searchBarWidthConstraint!
+    ])
   }
 
   fileprivate func showSort() {
@@ -255,26 +232,6 @@ internal final class SearchViewController: UITableViewController {
     self.present(nav, animated: true, completion: nil)
   }
 
-  fileprivate func changeSearchFieldFocus(focus: Bool, animated _: Bool) {
-    if focus {
-      self.cancelButton.isHidden = false
-
-      self.centeringStackView.alignment = .fill
-
-      if !self.searchTextField.isFirstResponder {
-        self.searchTextField.becomeFirstResponder()
-      }
-    } else {
-      self.cancelButton.isHidden = true
-
-      self.centeringStackView.alignment = .center
-
-      if self.searchTextField.isFirstResponder {
-        self.searchTextField.resignFirstResponder()
-      }
-    }
-  }
-
   internal override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     if let project = self.dataSource.indexOfProject(forCellAtIndexPath: indexPath) {
       self.viewModel.inputs.tapped(projectAtIndex: project)
@@ -314,33 +271,6 @@ internal final class SearchViewController: UITableViewController {
     }
 
     return self.headerHeight ?? 0
-  }
-
-  @objc fileprivate func searchTextChanged(_ textField: UITextField) {
-    self.viewModel.inputs.searchTextChanged(textField.text ?? "")
-  }
-
-  @objc fileprivate func searchTextEditingDidEnd() {
-    self.viewModel.inputs.searchTextEditingDidEnd()
-  }
-
-  @objc fileprivate func cancelButtonPressed() {
-    self.viewModel.inputs.cancelButtonPressed()
-  }
-
-  @objc fileprivate func searchBarContainerTapped() {
-    self.viewModel.inputs.searchFieldDidBeginEditing()
-  }
-}
-
-extension SearchViewController: UITextFieldDelegate {
-  internal func textFieldDidBeginEditing(_: UITextField) {
-    self.viewModel.inputs.searchFieldDidBeginEditing()
-  }
-
-  internal func textFieldShouldClear(_: UITextField) -> Bool {
-    self.viewModel.inputs.clearSearchText()
-    return true
   }
 }
 

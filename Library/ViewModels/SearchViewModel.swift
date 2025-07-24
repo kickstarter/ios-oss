@@ -24,20 +24,8 @@ public struct SearchResults {
 }
 
 public protocol SearchViewModelInputs {
-  /// Call when the cancel button is pressed.
-  func cancelButtonPressed()
-
-  /// Call when the search clear button is tapped.
-  func clearSearchText()
-
-  /// Call when the search field begins editing.
-  func searchFieldDidBeginEditing()
-
   /// Call when the user enters a new search term.
   func searchTextChanged(_ searchText: String)
-
-  /// Call when the user taps the return key.
-  func searchTextEditingDidEnd()
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -70,21 +58,11 @@ public protocol SearchViewModelInputs {
 }
 
 public protocol SearchViewModelOutputs {
-  /// Emits booleans that determines if the search field should be focused or not, and whether that focus
-  /// should be animated.
-  var changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), Never> { get }
-
   /// Emits a project ID  and ref tag when the project page should be opened.
   var goToProject: Signal<(Int, RefTag), Never> { get }
 
   /// Used to power the datasource. Emits projects, whether or not to show the "Popular" title, and the results count. May emit an array of empty projects if the page was cleared and new results are loading.
   var searchResults: Signal<SearchResults, Never> { get }
-
-  /// Emits when the search field should resign focus.
-  var resignFirstResponder: Signal<(), Never> { get }
-
-  /// Emits a string that should be filled into the search field.
-  var searchFieldText: Signal<String, Never> { get }
 
   /// Emits when loading indicator should be hidden.
   var searchLoaderIndicatorIsAnimating: Signal<Bool, Never> { get }
@@ -132,9 +110,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     let queryText = Signal
       .merge(
         self.searchTextChangedProperty.signal,
-        viewWillAppearNotAnimated.mapConst("").take(first: 1),
-        self.cancelButtonPressedProperty.signal.mapConst(""),
-        self.clearSearchTextProperty.signal.mapConst("")
+        viewWillAppearNotAnimated.mapConst("").take(first: 1)
       )
 
     // DiscoveryParams using the users currently selected query text, sort and filters.
@@ -265,20 +241,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.showEmptyState = requestFirstPageWith
       .takePairWhen(shouldShowEmptyState)
 
-    self.changeSearchFieldFocus = Signal.merge(
-      viewWillAppearNotAnimated.mapConst((false, false)),
-      self.cancelButtonPressedProperty.signal.mapConst((false, true)),
-      self.searchFieldDidBeginEditingProperty.signal.mapConst((true, true))
-    )
-
-    self.searchFieldText = self.cancelButtonPressedProperty.signal.mapConst("")
-
-    self.resignFirstResponder = Signal
-      .merge(
-        self.searchTextEditingDidEndProperty.signal,
-        self.cancelButtonPressedProperty.signal
-      )
-
     self.goToProject = Signal.combineLatest(searchResults, queryText)
       .takePairWhen(self.tappedProjectIndexSignal)
       .map { ($0.0, $0.1, $1) } // ((a, b) c) -> (a, b, c)
@@ -395,23 +357,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     }.merge(with: emptyResultsOnFirstAppearance)
   }
 
-  fileprivate let cancelButtonPressedProperty = MutableProperty(())
-  public func cancelButtonPressed() {
-    self.cancelButtonPressedProperty.value = ()
-    self.searchFiltersUseCase.inputs.clearedQueryText()
-  }
-
-  fileprivate let clearSearchTextProperty = MutableProperty(())
-  public func clearSearchText() {
-    self.clearSearchTextProperty.value = ()
-    self.searchFiltersUseCase.inputs.clearedQueryText()
-  }
-
-  fileprivate let searchFieldDidBeginEditingProperty = MutableProperty(())
-  public func searchFieldDidBeginEditing() {
-    self.searchFieldDidBeginEditingProperty.value = ()
-  }
-
   fileprivate let searchTextChangedProperty = MutableProperty("")
   public func searchTextChanged(_ searchText: String) {
     self.searchTextChangedProperty.value = searchText
@@ -419,11 +364,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     if searchText.isEmpty {
       self.searchFiltersUseCase.inputs.clearedQueryText()
     }
-  }
-
-  fileprivate let searchTextEditingDidEndProperty = MutableProperty(())
-  public func searchTextEditingDidEnd() {
-    self.searchTextEditingDidEndProperty.value = ()
   }
 
   fileprivate let (tappedProjectIndexSignal, tappedProjectIndexObserver) = Signal<Int, Never>.pipe()
@@ -458,11 +398,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   private let searchFiltersUseCase: SearchFiltersUseCase
   private let locationsUseCase: FetchLocationsUseCase
 
-  public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), Never>
   public let goToProject: Signal<(Int, RefTag), Never>
   public let projects: Signal<[SearchResultCard], Never>
-  public let resignFirstResponder: Signal<(), Never>
-  public let searchFieldText: Signal<String, Never>
   public let searchLoaderIndicatorIsAnimating: Signal<Bool, Never>
   public let showEmptyState: Signal<(DiscoveryParams, Bool), Never>
   public let showSortAndFilterHeader: Signal<Bool, Never>
