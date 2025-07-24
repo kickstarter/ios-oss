@@ -13,6 +13,14 @@ internal final class SearchDataSource: ValueCellDataSource {
   internal func load(params: DiscoveryParams, visible: Bool) {
     self.set(
       values: visible ? [params] : [],
+      cellClass: SearchLegacyEmptyStateCell.self,
+      inSection: Section.noResults.rawValue
+    )
+  }
+
+  internal func load(data: SearchEmptyStateSearchData, visible: Bool) {
+    self.set(
+      values: visible ? [data] : [],
       cellClass: SearchEmptyStateCell.self,
       inSection: Section.noResults.rawValue
     )
@@ -112,7 +120,9 @@ internal final class SearchDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as DiscoverProjectsTitleCell, value as TitleRow):
       cell.configureWith(value: value)
-    case let (cell as SearchEmptyStateCell, value as DiscoveryParams):
+    case let (cell as SearchLegacyEmptyStateCell, value as DiscoveryParams):
+      cell.configureWith(value: value)
+    case let (cell as SearchEmptyStateCell, value as SearchEmptyStateSearchData):
       cell.configureWith(value: value)
     case let (cell as SearchResultsCountCell, value as Int):
       cell.configureWith(value: value)

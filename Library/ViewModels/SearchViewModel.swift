@@ -255,12 +255,30 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         }
       }
 
-    let shouldShowEmptyState = Signal.merge(
+    let shouldShowOldEmptyState = Signal.merge(
       queryText.mapConst(false),
       paginatedProjects.map { $0.isEmpty }
     )
     .skipRepeats()
     .skip(first: 1)
+
+    let shouldShowNewEmptyState = Signal.combineLatest(paginatedProjects, isLoading)
+      .map { projects, isLoading in
+        if isLoading { return false }
+        return projects.isEmpty
+      }
+      .skipRepeats()
+
+    let shouldShowEmptyState = Signal.merge(
+      shouldShowNewEmptyState.compactMap {
+        if featureSearchNewEmptyState() { return $0 }
+        return nil
+      },
+      shouldShowOldEmptyState.compactMap {
+        if featureSearchNewEmptyState() { return nil }
+        return $0
+      }
+    )
 
     self.showEmptyState = requestFirstPageWith
       .takePairWhen(shouldShowEmptyState)
@@ -369,7 +387,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     self.showSortAndFilterHeader = self.projects
       .map { results in
-        results.count > 0
+        featureSearchNewEmptyState() || results.count > 0
       }
 
     let emptyResultsOnFirstAppearance = viewWillAppearNotAnimated

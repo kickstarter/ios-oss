@@ -1,12 +1,24 @@
 import KsApi
 import ReactiveSwift
 
+public struct SearchEmptyStateSearchData {
+  public let query: String?
+  public let hasFilters: Bool
+
+  public init(query: String?, hasFilters: Bool) {
+    self.query = query
+    self.hasFilters = hasFilters
+  }
+}
+
 public protocol SearchEmptyStateCellViewModelInputs {
-  func configureWith(param: DiscoveryParams)
+  func configureWith(data: SearchEmptyStateSearchData)
 }
 
 public protocol SearchEmptyStateCellViewModelOutputs {
-  var searchTermNotFoundLabelText: Signal<String, Never> { get }
+  var titleText: Signal<String, Never> { get }
+  var subtitleText: Signal<String, Never> { get }
+  var hideClearFiltersButton: Signal<Bool, Never> { get }
 }
 
 public protocol SearchEmptyStateCellViewModelType {
@@ -17,17 +29,39 @@ public protocol SearchEmptyStateCellViewModelType {
 public final class SearchEmptyStateCellViewModel: SearchEmptyStateCellViewModelType,
   SearchEmptyStateCellViewModelInputs, SearchEmptyStateCellViewModelOutputs {
   public init() {
-    self.searchTermNotFoundLabelText = self.paramProperty.signal
+    self.titleText = self.searchDataProperty.signal
       .skipNil()
-      .map { param in Strings.We_couldnt_find_anything_for_search_term(search_term: param.query ?? "") }
+      .map { searchData in
+        if let query = searchData.query, query.count > 0 {
+          return "FPO: No results for \"\(query)\""
+        }
+        return "FPO: No results"
+      }
+
+    self.subtitleText = self.searchDataProperty.signal
+      .skipNil()
+      .map { searchData in
+        if searchData.hasFilters && searchData.query?.isEmpty == false {
+          return "FPO: Try rephrasing your search or adjusting the filters"
+        } else if searchData.hasFilters {
+          return "FPO: Try adjusting the filters"
+        }
+        return "FPO: Try rephrasing your search"
+      }
+
+    self.hideClearFiltersButton = self.searchDataProperty.signal
+      .skipNil()
+      .map { !$0.hasFilters }
   }
 
-  fileprivate let paramProperty = MutableProperty<DiscoveryParams?>(nil)
-  public func configureWith(param: DiscoveryParams) {
-    self.paramProperty.value = param
+  fileprivate let searchDataProperty = MutableProperty<SearchEmptyStateSearchData?>(nil)
+  public func configureWith(data: SearchEmptyStateSearchData) {
+    self.searchDataProperty.value = data
   }
 
-  public let searchTermNotFoundLabelText: Signal<String, Never>
+  public let titleText: Signal<String, Never>
+  public let subtitleText: Signal<String, Never>
+  public let hideClearFiltersButton: Signal<Bool, Never>
 
   public var inputs: SearchEmptyStateCellViewModelInputs { return self }
   public var outputs: SearchEmptyStateCellViewModelOutputs { return self }
