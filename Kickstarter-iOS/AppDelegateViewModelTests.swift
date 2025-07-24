@@ -2308,7 +2308,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testTriggerOnboardingFlow_IsNotCalled_WhenOnboardingFlowFeatureFlagEnabled_WhenUserHasDeterminedPushNotificationsOrATTPermissions(
+  func testTriggerOnboardingFlow_IsNotCalled_WhenOnboardingFlowFeatureFlagEnabled_WhenUserHasAuthorizedPushNotifications_ButNotATTPermissions(
   ) {
     let mockRemoteConfigClient = MockRemoteConfigClient()
     mockRemoteConfigClient.features = [
@@ -2317,6 +2317,37 @@ final class AppDelegateViewModelTests: TestCase {
 
     MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: true)
     MockPushRegistration.registerProducer = .init(value: true)
+
+    let appTrackingTransparency = MockAppTrackingTransparency()
+    appTrackingTransparency.requestAndSetAuthorizationStatusFlag = false
+    appTrackingTransparency.shouldRequestAuthStatus = false
+
+    withEnvironment(
+      appTrackingTransparency: appTrackingTransparency,
+      pushRegistrationType: MockPushRegistration.self,
+      remoteConfigClient: mockRemoteConfigClient
+    ) {
+      self.triggerOnboardingFlow.assertValueCount(0)
+
+      self.vm.inputs.applicationActive(state: false)
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.applicationActive(state: true)
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.triggerOnboardingFlow.assertValueCount(0)
+    }
+  }
+
+  func testTriggerOnboardingFlow_IsNotCalled_WhenOnboardingFlowFeatureFlagEnabled_WhenUserHasAuthorizedATTPermissions_ButNotPushNotifications(
+  ) {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+    mockRemoteConfigClient.features = [
+      RemoteConfigFeature.onboardingFlow.rawValue: true
+    ]
+
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
+    MockPushRegistration.registerProducer = .init(value: false)
 
     let appTrackingTransparency = MockAppTrackingTransparency()
     appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
