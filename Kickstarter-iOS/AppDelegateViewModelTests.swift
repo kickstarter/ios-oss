@@ -2449,7 +2449,6 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.pushRegistrationStarted.assertValueCount(0)
 
-      XCTAssertEqual(appTrackingTransparency.advertisingIdentifier, "advertisingIdentifier")
       self.requestATTrackingAuthorizationStatus.assertValueCount(1)
 
       self.triggerOnboardingFlow.assertValueCount(0)

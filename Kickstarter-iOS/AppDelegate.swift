@@ -369,9 +369,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   // MARK: - Functions
 
   fileprivate func presentContextualPermissionAlert(_ notification: Notification) {
-    /// We don't need to show this alert if the onboarding flow is enabled
-    guard featureOnboardingFlowEnabled() == false else { return }
-
     guard let context = notification.userInfo?.values.first as? PushNotificationDialog.Context else {
       return
     }
