@@ -96,9 +96,11 @@ private func getStateLabelText(from increment: PledgePaymentIncrement) -> String
 
 private func getBadgeStyle(from increment: PledgePaymentIncrement) -> BadgeStyle {
   let requiresAction = increment.state == .errored && increment.stateReason == .requiresAction
+
   let requiresActionBadgeStyle = BadgeStyle.custom(
-    foregroundColor: LegacyColors.Tags.Warn.foreground.uiColor(),
-    backgroundColor: LegacyColors.Tags.Warn.background.uiColor()
+    foregroundColor: Colors.Custom.Badge.Text.authentication.uiColor(),
+    backgroundColor: Colors.Custom.Badge.Background.authentication.uiColor()
   )
+
   return requiresAction ? requiresActionBadgeStyle : increment.state.badgeStyle
 }
