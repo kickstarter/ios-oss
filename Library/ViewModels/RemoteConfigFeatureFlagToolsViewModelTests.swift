@@ -63,7 +63,7 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
   func testUpdateUserDefaultsWithFeature_FeatureIsEnabled() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
-        RemoteConfigFeature.darkModeEnabled.rawValue: false
+        RemoteConfigFeature.editPledgeOverTimeEnabled.rawValue: false
       ]
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
@@ -86,7 +86,7 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
   func testUpdateUserDefaultsWithFeatures_ReloadWithData_UserDefaultsIsUpdated() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
-        RemoteConfigFeature.darkModeEnabled.rawValue: false
+        RemoteConfigFeature.editPledgeOverTimeEnabled.rawValue: false
       ]
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient, userDefaults: userDefaults) {
@@ -112,7 +112,7 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
         userDefaults
           .dictionary(forKey: "com.kickstarter.KeyValueStoreType.remoteConfigFeatureFlags") as? [String: Bool],
         [
-          RemoteConfigFeature.darkModeEnabled.rawValue: true
+          RemoteConfigFeature.editPledgeOverTimeEnabled.rawValue: true
         ]
       )
     }

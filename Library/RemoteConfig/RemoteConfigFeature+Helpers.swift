@@ -15,10 +15,6 @@ func featureEnabled(feature: RemoteConfigFeature) -> Bool {
   return false
 }
 
-public func featureDarkModeEnabled() -> Bool {
-  return featureEnabled(feature: .darkModeEnabled)
-}
-
 public func featureEditPledgeOverTimeEnabled() -> Bool {
   return featureEnabled(feature: .editPledgeOverTimeEnabled)
 }

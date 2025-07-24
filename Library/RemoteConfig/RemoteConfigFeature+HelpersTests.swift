@@ -27,22 +27,6 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
     }
   }
 
-  func testDarkMode_RemoteConfig_FeatureFlag_False() {
-    self
-      .assert(
-        featureFlagIsFalse: featureDarkModeEnabled,
-        whenRemoteConfigFeatureIsFalse: .darkModeEnabled
-      )
-  }
-
-  func testDarkMode_RemoteConfig_FeatureFlag_True() {
-    self
-      .assert(
-        featureFlagIsTrue: featureDarkModeEnabled,
-        whenRemoteConfigFeatureIsTrue: .darkModeEnabled
-      )
-  }
-
   func testPostCampaignPledge_RemoteConfig_FeatureFlag_True() {
     self
       .assert(

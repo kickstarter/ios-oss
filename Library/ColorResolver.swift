@@ -20,7 +20,7 @@ public struct AppColorResolver: ColorResolverType {
     alpha: CGFloat
   ) -> UIColor {
     let dynamicColor = UIColor { traits in
-      if traits.userInterfaceStyle == .dark && featureDarkModeEnabled() {
+      if traits.userInterfaceStyle == .dark {
         return darkModeColor
       } else {
         return lightModeColor

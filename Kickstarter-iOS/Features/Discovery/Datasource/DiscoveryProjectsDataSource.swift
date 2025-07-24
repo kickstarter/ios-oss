@@ -18,11 +18,11 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     activities.forEach { activity in
       switch activity.category {
       case .backing:
-        self.set(values: [activity], cellClass: ActivitySampleBackingCell.self, inSection: section)
+        self.appendRow(value: activity, cellClass: ActivitySampleBackingCell.self, toSection: section)
       case .follow:
-        self.set(values: [activity], cellClass: ActivitySampleFollowCell.self, inSection: section)
+        self.appendRow(value: activity, cellClass: ActivitySampleFollowCell.self, toSection: section)
       default:
-        self.set(values: [activity], cellClass: ActivitySampleProjectCell.self, inSection: section)
+        self.appendRow(value: activity, cellClass: ActivitySampleProjectCell.self, toSection: section)
       }
     }
   }
