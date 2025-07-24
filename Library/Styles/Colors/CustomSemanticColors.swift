@@ -1,5 +1,10 @@
 import UIKit
 
+// This extension contains custom semantic colors that are not part of the official Figma design set.
+// These colors are used for specific UI elements, like badges in the payment schedule component,
+// which are not yet defined in the core Design System. This structure helps organize and
+// isolate non-standard colors from the rest of the shared semantic palette.
+
 extension Colors {
   public struct Custom {
     public struct Badge {
