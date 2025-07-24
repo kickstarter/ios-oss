@@ -115,18 +115,22 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
       .map { _ in () }
 
     self.triggerPushNotificationSystemDialog = self.getNotifiedTappedSignal.signal
-      .flatMap(.latest) {
+      .flatMap {
         let pushRegistrationType = AppEnvironment.current.pushRegistrationType
 
+        /// First, check if push notifications have already been authorized.
         return pushRegistrationType.hasAuthorizedNotifications()
-          .flatMap { isAuthorized -> SignalProducer<Bool, Never> in
-            if isAuthorized {
+          .flatMap { hasAuthorized -> SignalProducer<Bool, Never> in
+            if hasAuthorized {
+              /// If already authorized, do nothing.
               return .empty
             } else {
+              /// Otherwise, trigger the system dialog to request authorization.
               return pushRegistrationType.register(for: [.alert, .sound, .badge])
             }
           }
       }
+      /// Map any output to Void, since we only care about triggering the dialog
       .mapConst(())
 
     _ = self.goToNextItemTappedSignal.signal
