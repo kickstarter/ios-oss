@@ -9,7 +9,7 @@ public protocol AppTrackingTransparencyType {
   var advertisingIdentifier: String? { get }
   var authorizationStatus: SignalProducer<AppTrackingAuthorization, Never> { get }
   func updateAdvertisingIdentifier()
-  func requestAndSetAuthorizationStatus()
+  func requestAndSetAuthorizationStatus(_ completion: (() -> Void)?)
   func shouldRequestAuthorizationStatus() -> Bool
 }
 
@@ -20,7 +20,7 @@ public class AppTrackingTransparency: AppTrackingTransparencyType {
     self.updateAdvertisingIdentifier()
   }
 
-  public func requestAndSetAuthorizationStatus() {
+  public func requestAndSetAuthorizationStatus(_ completion: (() -> Void)? = nil) {
     ATTrackingManager.requestTrackingAuthorization { [weak self] authStatus in
       self?.authorizationStatusProperty.value = authStatus
 
@@ -30,6 +30,8 @@ public class AppTrackingTransparency: AppTrackingTransparencyType {
       default:
         self?.advertisingIdentifier = nil
       }
+
+      completion?()
     }
   }
 

@@ -16,7 +16,7 @@ private enum Constants {
   static let verticalSpacing: CGFloat = 24
 }
 
-struct OnboardingView: View {
+public struct OnboardingView: View {
   @ObservedObject var viewModel: OnboardingViewModel
   @State private var currentIndex: Int = 0
   @Namespace private var animation
@@ -25,7 +25,11 @@ struct OnboardingView: View {
     Double(self.currentIndex + 1) / Double(self.viewModel.onboardingItems.count)
   }
 
-  var body: some View {
+  public init(viewModel: OnboardingViewModel) {
+    self.viewModel = viewModel
+  }
+
+  public var body: some View {
     GeometryReader { geo in
       let width = geo.size.width
 
@@ -66,6 +70,12 @@ struct OnboardingView: View {
           .animation(.easeInOut(duration: Constants.animationDuration), value: self.currentIndex)
         }
         .padding(.top)
+      }
+      .onReceive(self.viewModel.triggerAppTrackingTransparencyPopup) {
+        self.presentAppTrackingPopup()
+      }
+      .onReceive(self.viewModel.didCompletePushNotificationSystemDialog) {
+        self.goToNextItem()
       }
     }
   }
@@ -121,5 +131,11 @@ struct OnboardingView: View {
     guard self.currentIndex < self.viewModel.onboardingItems.count - 1 else { return }
 
     self.currentIndex += 1
+  }
+
+  private func presentAppTrackingPopup() {
+    AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus {
+      self.goToNextItem()
+    }
   }
 }

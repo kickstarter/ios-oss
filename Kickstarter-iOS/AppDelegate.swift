@@ -15,6 +15,7 @@ import ReactiveExtensions
 import ReactiveSwift
 import SafariServices
 import Segment
+import SwiftUI
 import UIKit
 import UserNotifications
 
@@ -139,6 +140,18 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { token in
         Analytics.shared().registeredForRemoteNotifications(withDeviceToken: token)
+      }
+
+    self.viewModel.outputs.triggerOnboardingFlow
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let rootTabBarController = self?.rootTabBarController else { return }
+
+        let onboardingVC = UIHostingController(rootView: OnboardingView(viewModel: OnboardingViewModel()))
+        onboardingVC.modalPresentationStyle = .fullScreen
+
+        rootTabBarController.navigationController?.isNavigationBarHidden = true
+        rootTabBarController.present(onboardingVC, animated: true, completion: nil)
       }
 
     self.viewModel.outputs.showAlert
