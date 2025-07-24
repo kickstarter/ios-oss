@@ -5,6 +5,13 @@ import ReactiveSwift
 import SwiftUI
 import UIKit
 
+private enum Constants {
+  static let searchBarWidthFactor = 0.9
+  static let estimatedRowHeight = 86.0
+  static let footerViewHeight = Styles.grid(15)
+  static let searchBarHeight = Styles.grid(8)
+}
+
 internal final class SearchViewController: UITableViewController {
   internal let viewModel: SearchViewModelType = SearchViewModel()
   fileprivate let dataSource = SearchDataSource()
@@ -21,7 +28,7 @@ internal final class SearchViewController: UITableViewController {
   private var sortAndFilterHeader: UIViewController?
 
   private var searchBarWidth: CGFloat {
-    return self.view.bounds.width * 0.9
+    return self.view.bounds.width * Constants.searchBarWidthFactor
   }
 
   internal static func instantiate() -> SearchViewController {
@@ -45,7 +52,7 @@ internal final class SearchViewController: UITableViewController {
     super.bindStyles()
 
     _ = self
-      |> baseTableControllerStyle(estimatedRowHeight: 86)
+      |> baseTableControllerStyle(estimatedRowHeight: Constants.estimatedRowHeight)
 
     // Hides the bottom border (shadow) of the navigation bar to visually give the search bar more space
     self.navigationController?.navigationBar.standardAppearance.shadowColor = .clear
@@ -80,7 +87,7 @@ internal final class SearchViewController: UITableViewController {
             x: footerView.frame.origin.x,
             y: footerView.frame.origin.y,
             width: footerView.frame.size.width,
-            height: Styles.grid(15)
+            height: Constants.footerViewHeight
           )
         }
       }
@@ -163,7 +170,7 @@ internal final class SearchViewController: UITableViewController {
       .constraint(equalToConstant: self.searchBarWidth)
 
     NSLayoutConstraint.activate([
-      self.searchBar.heightAnchor.constraint(equalToConstant: Styles.grid(8)),
+      self.searchBar.heightAnchor.constraint(equalToConstant: Constants.searchBarHeight),
       self.searchBarWidthConstraint!
     ])
   }

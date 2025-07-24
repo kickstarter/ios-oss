@@ -45,7 +45,7 @@ final class KSRSearchBar: UIView {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    self.setupUI()
+    self.configureSubviews()
     self.setupConstraints()
     self.bindViewModel()
   }
@@ -53,6 +53,8 @@ final class KSRSearchBar: UIView {
   required init?(coder: NSCoder) {
     super.init(coder: coder)
   }
+
+  // MARK: - Binding
 
   override func bindViewModel() {
     self.textField.rac.text = self.viewModel.outputs.searchFieldText
@@ -84,8 +86,8 @@ final class KSRSearchBar: UIView {
 
   // MARK: - Setup
 
-  private func setupUI() {
-    backgroundColor = .clear
+  private func configureSubviews() {
+    self.backgroundColor = .clear
     self.addSubview(self.rootStackView)
     self.rootStackView.addArrangedSubviews(self.textField, self.cancelButton)
 
@@ -111,10 +113,7 @@ final class KSRSearchBar: UIView {
     self.textField.returnKeyType = .search
     self.textField.spellCheckingType = .no
 
-    self.textField.attributedPlaceholder = NSAttributedString(
-      string: Strings.tabbar_search(),
-      attributes: [NSAttributedString.Key.foregroundColor: Colors.Text.placeholder.uiColor()]
-    )
+    self.textField.attributedPlaceholder = placeholderAttributeText(Strings.tabbar_search())
 
     let searchIconView = UIImageView(image: Library.image(named: "Search"))
     searchIconView.tintColor = Colors.Icon.primary.uiColor()
@@ -252,4 +251,11 @@ final class KSRPaddedTextField: UITextField {
     let original = super.rightViewRect(forBounds: bounds)
     return original.offsetBy(dx: self.rightViewHorizontalOffset, dy: 0)
   }
+}
+
+func placeholderAttributeText(_ text: String) -> NSAttributedString {
+  return NSAttributedString(
+    string: text,
+    attributes: [NSAttributedString.Key.foregroundColor: Colors.Text.placeholder.uiColor()]
+  )
 }
