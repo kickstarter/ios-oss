@@ -286,6 +286,11 @@
 		33A4392E2D93488800817A0E /* KSRButtonLegacyStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A4392D2D93487F00817A0E /* KSRButtonLegacyStyle.swift */; };
 		33A684782DAD97910025B0EE /* ViewPledgeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A684772DAD97740025B0EE /* ViewPledgeUseCase.swift */; };
 		33A6847B2DAE88E40025B0EE /* PledgeViewUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A684792DAE88A10025B0EE /* PledgeViewUseCaseTests.swift */; };
+		33AA06572E38145C002DBD60 /* OnboardingCTAView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA06502E38145C002DBD60 /* OnboardingCTAView.swift */; };
+		33AA06582E38145C002DBD60 /* OnboardingItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA06512E38145C002DBD60 /* OnboardingItemView.swift */; };
+		33AA06592E38145C002DBD60 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA06522E38145C002DBD60 /* OnboardingView.swift */; };
+		33AA065A2E38145C002DBD60 /* ResizableLottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA06532E38145C002DBD60 /* ResizableLottieView.swift */; };
+		33AA065B2E38145C002DBD60 /* OnboardingStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA06552E38145C002DBD60 /* OnboardingStyles.swift */; };
 		33AB202B2D268EE500B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */; };
 		33AB202E2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */; };
 		33AB202F2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */; };
@@ -298,7 +303,6 @@
 		33AF66CA2DDE505D00558D49 /* AddUserToSecretRewardGroupInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF66C92DDE504100558D49 /* AddUserToSecretRewardGroupInput.swift */; };
 		33AF66CC2DDE545500558D49 /* GraphAPI.AddUserToSecretRewardGroupInput+AddUserToSecretRewardGroupInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF66CB2DDE543E00558D49 /* GraphAPI.AddUserToSecretRewardGroupInput+AddUserToSecretRewardGroupInput.swift */; };
 		33AF66CF2DDE571300558D49 /* AddUserToSecretRewardGroupInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF66CD2DDE567C00558D49 /* AddUserToSecretRewardGroupInputTests.swift */; };
-		33B098762DCAF96D000CE6AE /* CommentBaseFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 33B098752DCAF968000CE6AE /* CommentBaseFragment.graphql */; };
 		33C2FB6C2E203B640083B5FB /* KSRSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C2FB6B2E203B5A0083B5FB /* KSRSearchBar.swift */; };
 		33C2FB6E2E2978E20083B5FB /* KSRSearchBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C2FB6D2E2978D20083B5FB /* KSRSearchBarViewModel.swift */; };
 		33C2FB712E2E8FE00083B5FB /* KSRSearchBarViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C2FB6F2E2E8DA40083B5FB /* KSRSearchBarViewModelTests.swift */; };
@@ -2145,6 +2149,11 @@
 		33A4392D2D93487F00817A0E /* KSRButtonLegacyStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRButtonLegacyStyle.swift; sourceTree = "<group>"; };
 		33A684772DAD97740025B0EE /* ViewPledgeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewPledgeUseCase.swift; sourceTree = "<group>"; };
 		33A684792DAE88A10025B0EE /* PledgeViewUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewUseCaseTests.swift; sourceTree = "<group>"; };
+		33AA06502E38145C002DBD60 /* OnboardingCTAView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCTAView.swift; sourceTree = "<group>"; };
+		33AA06512E38145C002DBD60 /* OnboardingItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemView.swift; sourceTree = "<group>"; };
+		33AA06522E38145C002DBD60 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		33AA06532E38145C002DBD60 /* ResizableLottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableLottieView.swift; sourceTree = "<group>"; };
+		33AA06552E38145C002DBD60 /* OnboardingStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStyles.swift; sourceTree = "<group>"; };
 		33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRewardsSummaryTotalViewControllerTests.swift; sourceTree = "<group>"; };
 		33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPledgeOverTimePlanIntervals.swift; sourceTree = "<group>"; };
 		33AF01B52D2BBCC90085A153 /* PledgeOverTimePaymentScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewController.swift; sourceTree = "<group>"; };
@@ -2156,7 +2165,6 @@
 		33AF66C92DDE504100558D49 /* AddUserToSecretRewardGroupInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUserToSecretRewardGroupInput.swift; sourceTree = "<group>"; };
 		33AF66CB2DDE543E00558D49 /* GraphAPI.AddUserToSecretRewardGroupInput+AddUserToSecretRewardGroupInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.AddUserToSecretRewardGroupInput+AddUserToSecretRewardGroupInput.swift"; sourceTree = "<group>"; };
 		33AF66CD2DDE567C00558D49 /* AddUserToSecretRewardGroupInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUserToSecretRewardGroupInputTests.swift; sourceTree = "<group>"; };
-		33B098752DCAF968000CE6AE /* CommentBaseFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CommentBaseFragment.graphql; sourceTree = "<group>"; };
 		33C2FB6B2E203B5A0083B5FB /* KSRSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRSearchBar.swift; sourceTree = "<group>"; };
 		33C2FB6D2E2978D20083B5FB /* KSRSearchBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRSearchBarViewModel.swift; sourceTree = "<group>"; };
 		33C2FB6F2E2E8DA40083B5FB /* KSRSearchBarViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRSearchBarViewModelTests.swift; sourceTree = "<group>"; };
@@ -3652,8 +3660,6 @@
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		60CC7C9C2E269D270055BE8F /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		E18A64692E28224A00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -5273,7 +5279,7 @@
 				1937A6ED28C92EC700DD732D /* MessageBanner */,
 				1937A6EE28C92ED400DD732D /* MessageDialog */,
 				19A97D2D28C7FF330031B857 /* MessageThreads */,
-				60CC7C9C2E269D270055BE8F /* Onboarding */,
+				33AA06562E38145C002DBD60 /* Onboarding */,
 				E11835202B75799F007B42E6 /* PaginationExample */,
 				19A97D3228C8001C0031B857 /* PaymentMethods */,
 				19A97D3828C801AB0031B857 /* PillCollectionView_DEPRECATED_09_06_2022 */,
@@ -6192,6 +6198,26 @@
 				33D11D452D6EFF9F00CC88A3 /* KSRButtonStyleConfiguration.swift */,
 			);
 			path = Buttons;
+			sourceTree = "<group>";
+		};
+		33AA06542E38145C002DBD60 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				33AA06502E38145C002DBD60 /* OnboardingCTAView.swift */,
+				33AA06512E38145C002DBD60 /* OnboardingItemView.swift */,
+				33AA06522E38145C002DBD60 /* OnboardingView.swift */,
+				33AA06532E38145C002DBD60 /* ResizableLottieView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		33AA06562E38145C002DBD60 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				33AA06542E38145C002DBD60 /* Views */,
+				33AA06552E38145C002DBD60 /* OnboardingStyles.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		33F55B472D4C70D40007E50E /* Resources */ = {
@@ -8179,9 +8205,6 @@
 				A76E0A4C1D00C00500EC525A /* PBXTargetDependency */,
 				E123A0842E2EC7C400D61B63 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				60CC7C9C2E269D270055BE8F /* Onboarding */,
-			);
 			name = "Kickstarter-Framework-iOS";
 			packageProductDependencies = (
 				E1F1DB3E2B7BC09C004EA80B /* Prelude */,
@@ -9619,6 +9642,11 @@
 				33AF01B62D2BBD5C0085A153 /* PledgeOverTimePaymentScheduleViewController.swift in Sources */,
 				D65BF3552334050100B15B25 /* ManagePledgePaymentMethodView.swift in Sources */,
 				94BA168E2667C37F0034CC3F /* CommentTableViewFooterView.swift in Sources */,
+				33AA06572E38145C002DBD60 /* OnboardingCTAView.swift in Sources */,
+				33AA06582E38145C002DBD60 /* OnboardingItemView.swift in Sources */,
+				33AA06592E38145C002DBD60 /* OnboardingView.swift in Sources */,
+				33AA065A2E38145C002DBD60 /* ResizableLottieView.swift in Sources */,
+				33AA065B2E38145C002DBD60 /* OnboardingStyles.swift in Sources */,
 				37E9E2A0225EABB000D29DD7 /* AmountInputView.swift in Sources */,
 				A77352ED1D5E70FC0017E239 /* DiscoverProjectsTitleCell.swift in Sources */,
 				E1BAA03C2C1A1CCD004F8B06 /* PPOContainerViewController.swift in Sources */,
