@@ -82,14 +82,27 @@ public struct PLOTPaymentScheduleItem: Equatable {
       timeStyle: .none
     )
 
-    self.amountString = increment.amount.amountFormattedInProjectNativeCurrency
+    self.amountString = getAmountString(from: increment)
     self.stateLabel = getStateLabelText(from: increment)
     self.badgeStyle = getBadgeStyle(from: increment)
   }
 }
 
+private func getAmountString(from increment: PledgePaymentIncrement) -> String {
+  if increment.state == .collected, let refundedAmount = increment.refundedAmount {
+    return refundedAmount.amountFormattedInProjectNativeCurrency
+  }
+
+  return increment.amount.amountFormattedInProjectNativeCurrency
+}
+
 private func getStateLabelText(from increment: PledgePaymentIncrement) -> String {
   let requiresAction = increment.state == .errored && increment.stateReason == .requiresAction
+
+  // TODO: [MBL-2644] implement translated strings.
+  if increment.state == .collected && increment.refundedAmount != nil {
+    return "FPO: Collected (adjusted)"
+  }
 
   return requiresAction ? Strings.Authentication_required() : increment.state.description
 }

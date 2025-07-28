@@ -35,13 +35,14 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
   }
 
   func testView_PaymentSchedule_Expanded() {
-    let increments = mockPaymentIncrements()
+    let increments = incrementsWithRefundedItems()
+
     orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = PledgeOverTimePaymentScheduleViewController.instantiate()
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 420
+        parent.view.frame.size.height = 580
 
         controller.configure(with: increments)
         controller.collapseToggle()
@@ -52,4 +53,40 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
       }
     }
   }
+}
+
+private func incrementsWithRefundedItems() -> [PledgePaymentIncrement] {
+  let amount = PledgePaymentIncrementAmount(
+    currency: "USD",
+    amountFormattedInProjectNativeCurrency: "$250.00"
+  )
+  let scheduledCollection = TimeInterval(1_553_731_200)
+
+  let adjustedRefundedAmount = PledgePaymentIncrementAmount(
+    currency: "USD",
+    amountFormattedInProjectNativeCurrency: "$55.00"
+  )
+
+  let collectedAdjustedIncrement = PledgePaymentIncrement(
+    amount: amount,
+    scheduledCollection: scheduledCollection,
+    state: .collected,
+    stateReason: nil,
+    refundedAmount: adjustedRefundedAmount
+  )
+
+  let refundedAmount = PledgePaymentIncrementAmount(
+    currency: "USD",
+    amountFormattedInProjectNativeCurrency: "$250.00"
+  )
+
+  let refundedIncrement = PledgePaymentIncrement(
+    amount: amount,
+    scheduledCollection: scheduledCollection,
+    state: .refunded,
+    stateReason: nil,
+    refundedAmount: refundedAmount
+  )
+
+  return mockPaymentIncrements() + [collectedAdjustedIncrement, refundedIncrement]
 }
