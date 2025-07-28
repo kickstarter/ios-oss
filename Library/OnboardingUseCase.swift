@@ -69,7 +69,7 @@ public protocol OnboardingUseCaseOutputs {
   /// Emits when the user has finished interacting with the Push Notificaiton system dialog.
   var triggerAppTrackingTransparencyDialog: Signal<Void, Never> { get }
 
-  /// Emits when the user should be shown the Push Notification system permission dialog
+  /// Emits when the user has finished interacting with the Push Notification system permission dialog.
   var didCompletePushNotificationSystemDialog: Signal<Void, Never> { get }
 }
 
