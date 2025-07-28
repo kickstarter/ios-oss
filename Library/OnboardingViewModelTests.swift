@@ -1,12 +1,17 @@
-import Combine
-@testable import KsApi
-@testable import Library
+import KsApi
+import Library
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
 import XCTest
 
-final class OnboardingViewModelTest: XCTestCase {
+final class OnboardingViewModelTest: TestCase {
   // MARK: Properties
 
   private var viewModel: OnboardingViewModel!
+
+  let appTrackingTransparencyDialogObserver = TestObserver<Void, Never>()
+  let didCompletePushNotificationSystemDialog = TestObserver<Void, Never>()
+  let loginIntentObserver = TestObserver<LoginIntent, Never>()
 
   // MARK: Lifecycle
 
@@ -14,81 +19,85 @@ final class OnboardingViewModelTest: XCTestCase {
     super.setUp()
 
     self.viewModel = OnboardingViewModel(with: Bundle(for: type(of: self)))
+
+    self.viewModel.triggerAppTrackingTransparencyPopup
+      .observe(self.appTrackingTransparencyDialogObserver.observer)
+    self.viewModel.didCompletePushNotificationSystemDialog
+      .observe(self.didCompletePushNotificationSystemDialog.observer)
+    self.viewModel.goToLoginSignup.observe(self.loginIntentObserver.observer)
   }
 
   func testOnboardingItems_AreReturned_OnInit() {
-    XCTAssertEqual(self.viewModel.onboardingItems.count, 5)
-    XCTAssertTrue(self.viewModel.onboardingItems.contains(where: { $0.type == .welcome }))
-    XCTAssertTrue(self.viewModel.onboardingItems.contains(where: { $0.type == .saveProjects }))
-    XCTAssertTrue(self.viewModel.onboardingItems.contains(where: { $0.type == .enableNotifications }))
-    XCTAssertTrue(self.viewModel.onboardingItems.contains(where: { $0.type == .allowTracking }))
-    XCTAssertTrue(self.viewModel.onboardingItems.contains(where: { $0.type == .loginSignUp }))
+    let expectation = expectation(description: "onboardingItems loaded")
+
+    self.viewModel.onboardingItems.startWithResult { result in
+      switch result {
+      case let .success(items):
+        XCTAssertEqual(items.count, 5)
+        XCTAssertTrue(items.contains(where: { $0.type == .welcome }))
+        XCTAssertTrue(items.contains(where: { $0.type == .saveProjects }))
+        XCTAssertTrue(items.contains(where: { $0.type == .enableNotifications }))
+        XCTAssertTrue(items.contains(where: { $0.type == .allowTracking }))
+        XCTAssertTrue(items.contains(where: { $0.type == .loginSignUp }))
+        expectation.fulfill()
+      case .failure:
+        XCTFail("Expected onboardingItems list to load.")
+      }
+    }
+
+    waitForExpectations(timeout: 1.0)
   }
 
-  func testTriggerPushNotificationPopup_IsCalled_OnGetNotifiedTapped() throws {
+  func testTriggerPushNotificationPopup_IsCalled_OnGetNotifiedTapped() {
     MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
     MockPushRegistration.registerProducer = .init(value: true)
 
     withEnvironment(pushRegistrationType: MockPushRegistration.self) {
-      var cancellables: [AnyCancellable] = []
-
-      let expectation = expectation(description: "Waiting for action to be performed")
-      var triggeredPushNotificationPopup = false
-      self.viewModel.didCompletePushNotificationSystemDialog
-        .sink { () in
-          triggeredPushNotificationPopup = true
-          expectation.fulfill()
-        }
-        .store(in: &cancellables)
-
       self.viewModel.getNotifiedTapped()
-      waitForExpectations(timeout: 0.1)
 
-      XCTAssertTrue(triggeredPushNotificationPopup)
+      XCTAssertEqual(self.didCompletePushNotificationSystemDialog.values.count, 1)
     }
   }
 
-  func testAppTrackingTransparencyPopup_IsCalled_OnAllowTrackingTapped() throws {
+  func testGetNotifiedTapped_DoesNotTriggerDialog_WhenAlreadyAuthorized() {
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: true)
+    MockPushRegistration.registerProducer = .init(value: false)
+
+    withEnvironment(pushRegistrationType: MockPushRegistration.self) {
+      self.viewModel.getNotifiedTapped()
+
+      XCTAssertEqual(self.didCompletePushNotificationSystemDialog.values.count, 0)
+    }
+  }
+
+  func testAppTrackingTransparencyPopup_IsCalled_OnAllowTrackingTapped() {
     let appTrackingTransparency = MockAppTrackingTransparency()
     appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
     appTrackingTransparency.shouldRequestAuthStatus = true
 
-    withEnvironment(
-      appTrackingTransparency: appTrackingTransparency
-    ) {
-      var cancellables: [AnyCancellable] = []
-
-      let expectation = expectation(description: "Waiting for action to be performed")
-      var triggeredAppTrackingTransparencyPopup = false
-      self.viewModel.triggerAppTrackingTransparencyPopup
-        .sink { () in
-          triggeredAppTrackingTransparencyPopup = true
-          expectation.fulfill()
-        }
-        .store(in: &cancellables)
-
+    withEnvironment(appTrackingTransparency: appTrackingTransparency) {
       self.viewModel.allowTrackingTapped()
-      waitForExpectations(timeout: 0.1)
 
-      XCTAssertTrue(triggeredAppTrackingTransparencyPopup)
+      XCTAssertEqual(self.appTrackingTransparencyDialogObserver.values.count, 1)
     }
   }
 
-  func testGoToLoginSignup_IsCalled_OnGoToLoginSignupTapped() throws {
-    var cancellables: [AnyCancellable] = []
+  func testAllowTrackingTapped_DoesNotTrigger_WhenNotRequired() {
+    let appTrackingTransparency = MockAppTrackingTransparency()
+    appTrackingTransparency.shouldRequestAuthStatus = false
 
-    let expectation = expectation(description: "Waiting for action to be performed")
-    var loginIntent: LoginIntent?
-    self.viewModel.goToLoginSignup
-      .sink { intent in
-        loginIntent = intent
-        expectation.fulfill()
-      }
-      .store(in: &cancellables)
+    withEnvironment(appTrackingTransparency: appTrackingTransparency) {
+      self.viewModel.allowTrackingTapped()
+
+      XCTAssertEqual(self.appTrackingTransparencyDialogObserver.values.count, 0)
+    }
+  }
+
+  func testGoToLoginSignup_IsCalled_OnGoToLoginSignupTapped() {
+    self.viewModel.goToLoginSignup.observe(self.loginIntentObserver.observer)
 
     self.viewModel.goToLoginSignupTapped()
-    waitForExpectations(timeout: 0.1)
 
-    XCTAssertEqual(loginIntent, .onboarding)
+    XCTAssertEqual(self.loginIntentObserver.lastValue, LoginIntent.onboarding)
   }
 }

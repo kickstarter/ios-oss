@@ -18,11 +18,13 @@ private enum Constants {
 
 public struct OnboardingView: View {
   @ObservedObject var viewModel: OnboardingViewModel
-  @State private var currentIndex: Int = 0
   @Namespace private var animation
+  @State private var currentIndex: Int = 0
+  @State private var onboardingItems: [OnboardingItem] = []
 
   private var progress: Double {
-    Double(self.currentIndex + 1) / Double(self.viewModel.onboardingItems.count)
+    let onboardingItemsCount = self.onboardingItems.isEmpty ? 1 : Double(self.onboardingItems.count)
+    return Double(self.currentIndex + 1) / onboardingItemsCount
   }
 
   public init(viewModel: OnboardingViewModel) {
@@ -30,9 +32,7 @@ public struct OnboardingView: View {
   }
 
   public var body: some View {
-    GeometryReader { geo in
-      let width = geo.size.width
-
+    GeometryReader { _ in
       ZStack {
         OnboardingStyles.backgroundColor.ignoresSafeArea()
 
@@ -48,7 +48,7 @@ public struct OnboardingView: View {
             .accessibilityLabel("FPO: Onboarding Progress Bar")
 
           ZStack {
-            ForEach(Array(self.viewModel.onboardingItems.enumerated()), id: \.element.id) { index, item in
+            ForEach(Array(self.onboardingItems.enumerated()), id: \.element.id) { index, item in
               if index == self.currentIndex {
                 OnboardingItemView(
                   item: item,
@@ -71,11 +71,21 @@ public struct OnboardingView: View {
         }
         .padding(.top)
       }
-      .onReceive(self.viewModel.triggerAppTrackingTransparencyPopup) {
-        self.presentAppTrackingPopup()
-      }
-      .onReceive(self.viewModel.didCompletePushNotificationSystemDialog) {
-        self.goToNextItem()
+      .onAppear {
+        // Bind onboarding items
+        self.viewModel.onboardingItems.startWithValues { items in
+          self.onboardingItems = items
+        }
+
+        // Handle push notification system dialog completion
+        self.viewModel.didCompletePushNotificationSystemDialog.observeValues {
+          self.goToNextItem()
+        }
+
+        // Trigger app tracking permission popup
+        self.viewModel.triggerAppTrackingTransparencyPopup.observeValues {
+          self.presentAppTrackingPopup()
+        }
       }
     }
   }
@@ -128,7 +138,7 @@ public struct OnboardingView: View {
   }
 
   private func goToNextItem() {
-    guard self.currentIndex < self.viewModel.onboardingItems.count - 1 else { return }
+    guard self.currentIndex < self.onboardingItems.count - 1 else { return }
 
     self.currentIndex += 1
   }
