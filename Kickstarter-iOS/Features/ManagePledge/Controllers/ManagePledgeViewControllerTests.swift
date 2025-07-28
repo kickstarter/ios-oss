@@ -534,7 +534,7 @@ final class ManagePledgeViewControllerTests: TestCase {
         let controller = ManagePledgeViewController.instantiate()
         controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1_300
+        parent.view.frame.size.height = 1_200
 
         // Network request completes
         self.scheduler.advance()

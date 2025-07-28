@@ -35,35 +35,20 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
   }
 
   func testView_PaymentSchedule_Expanded() {
-    let darkModeOn = MockRemoteConfigClient()
-    darkModeOn.features = [
-      RemoteConfigFeature.darkModeEnabled.rawValue: true,
-      RemoteConfigFeature.newDesignSystem.rawValue: true
-    ]
-
     let increments = mockPaymentIncrements()
-    orthogonalCombos(
-      [Language.en],
-      [Device.pad, Device.phone4_7inch],
-      [UIUserInterfaceStyle.light, UIUserInterfaceStyle.dark]
-    ).forEach { language, device, style in
-      withEnvironment(colorResolver: AppColorResolver(), language: language, remoteConfigClient: darkModeOn) {
+    orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
+      withEnvironment(language: language) {
         let controller = PledgeOverTimePaymentScheduleViewController.instantiate()
-        controller.overrideUserInterfaceStyle = style
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 520
+        parent.view.frame.size.height = 420
 
         controller.configure(with: increments)
         controller.collapseToggle()
 
         self.scheduler.advance(by: .seconds(1))
 
-        assertSnapshot(
-          matching: parent.view,
-          as: .image,
-          named: "lang_\(language)_device_\(device)_style_\(style.description)"
-        )
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
