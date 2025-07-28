@@ -530,18 +530,19 @@ public struct Service: ServiceType {
       .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
   }
 
-  /// Explicitly fetches backing details including `refundedAmount` in the `paymentIncrements`.
+  /// Fetches backing details including `refundedAmount` in the `paymentIncrements`.
+  ///
+  /// Use this method exclusively in flows that require displaying refund information,
+  /// such as the `ManagePledge` flow where the "Payment Scheduled" component
+  /// needs to reflect refunded increments.
+  ///
+  /// Fetching `refundedAmount` adds significant load to the backend.
+  /// Per the Payments team recommendation, this field should only be queried
+  /// when absolutely necessary.
   ///
   /// - Parameters:
   ///   - id: The backing ID.
   ///   - withStoredCards: Whether to include stored cards in the result.
-  ///
-  /// This function should be used **exclusively** in flows where the evaluation of
-  /// `refundedAmounts` is strictly required, such as in the `ManagePledge` flow.
-  ///
-  /// Due to backend performance considerations, this field is intentionally **excluded**
-  /// from the general-purpose backing fetch methods. Fetching `refundedAmounts` can be
-  /// resource-intensive, and its use should be avoided unless absolutely necessary.
   public func fetchBackingWithIncrementsRefundedAmount(id: Int, withStoredCards: Bool)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
