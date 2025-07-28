@@ -187,35 +187,34 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
 private func allOnboardingItems(
   in bundle: Bundle = .main
 ) -> [OnboardingItem] {
-  // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
   return [
     makeOnboardingItem(
-      title: "FPO: Welcome to Kickstarter",
-      subTitle: "FPO: Use our app to discover and support creative projects. Browse by category, find projects near you, or explore our “Projects We Love” picks.",
+      title: Strings.onboarding_welcome_to_kickstarter_title(),
+      subTitle: Strings.onboarding_welcome_to_kickstarter_subtitle(),
       type: .welcome,
       in: bundle
     ),
     makeOnboardingItem(
-      title: "FPO: Save projects for later",
-      subTitle: "FPO: Found a project that’s caught your eye? Tap the heart to save it and you can come back to it later on your Saved tab.",
+      title: Strings.onboarding_save_projects_for_later_title(),
+      subTitle: Strings.onboarding_save_projects_for_later_subtitle(),
       type: .saveProjects,
       in: bundle
     ),
     makeOnboardingItem(
-      title: "FPO: Stay in the know",
-      subTitle: "FPO: Turn on notifications to keep track of your backed projects and discover more you’ll love. You can customize these anytime in your settings.",
+      title: Strings.onboarding_stay_in_the_know_title(),
+      subTitle: Strings.onboarding_stay_in_the_know_subtitle(),
       type: .enableNotifications,
       in: bundle
     ),
     makeOnboardingItem(
-      title: "FPO: Personalize your experince",
-      subTitle: "FPO: Allow tracking to help us improve your in-app experience. You can change your tracking preference anytime in your device settings.",
+      title: Strings.onboarding_personalize_your_experience_title(),
+      subTitle: Strings.onboarding_personalize_your_experience_subtitle(),
       type: .allowTracking,
       in: bundle
     ),
     makeOnboardingItem(
-      title: "FPO: Join the community",
-      subTitle: "FPO: Log in or create an account to back projects, save favorites, and follow along as creative ideas come to life.",
+      title: Strings.onboarding_join_the_community_title(),
+      subTitle: Strings.onboarding_join_the_community_subtitle(),
       type: .loginSignUp,
       in: bundle
     )
