@@ -8,19 +8,19 @@ public typealias RootTabBarItemBadgeValueData = (String?, RootViewControllerInde
 
 public enum RootViewControllerData: Equatable {
   case discovery
-  case activities
-  case pledgedProjectsAndActivities
+  case activities(isLoggedIn: Bool)
   case search
   case profile(isLoggedIn: Bool)
+  case backings(isLoggedIn: Bool)
 
   public static func == (lhs: RootViewControllerData, rhs: RootViewControllerData) -> Bool {
     switch (lhs, rhs) {
     case (.discovery, .discovery): return true
     case (.activities, .activities): return true
-    case (.pledgedProjectsAndActivities, .pledgedProjectsAndActivities): return true
     case (.search, .search): return true
     case let (.profile(lhsIsLoggedIn), .profile(rhsIsLoggedIn)):
       return lhsIsLoggedIn == rhsIsLoggedIn
+    case (.backings, .backings): return true
     default:
       return false
     }
@@ -37,9 +37,18 @@ public enum RootViewControllerData: Equatable {
 
   var isActivity: Bool {
     switch self {
-    case .activities, .pledgedProjectsAndActivities:
+    case .activities:
       return true
-    case .discovery, .profile, .search:
+    default:
+      return false
+    }
+  }
+
+  var isBackings: Bool {
+    switch self {
+    case .backings:
+      return true
+    default:
       return false
     }
   }
@@ -55,6 +64,7 @@ public enum TabBarItem {
   case home(index: RootViewControllerIndex)
   case profile(avatarUrl: URL?, index: RootViewControllerIndex)
   case search(index: RootViewControllerIndex)
+  case backings(index: RootViewControllerIndex)
 }
 
 public protocol RootViewModelInputs {
@@ -283,8 +293,7 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       integerBadgeValueAndIndex.takeWhen(self.voiceOverStatusDidChangeProperty.signal)
     )
     .map { value, index in
-      let hasPPOAction = AppEnvironment.current.currentUserPPOSettings?.hasAction ?? false
-      return (activitiesBadgeValue(with: value, hasPPOAction: hasPPOAction), index)
+      (activitiesBadgeValue(with: value), index)
     }
 
     currentBadgeValue <~ self.setBadgeValueAtIndex.map { $0.0 }
@@ -462,11 +471,9 @@ private func generateViewControllers(isLoggedIn: Bool) -> [RootViewControllerDat
   var controllers: [RootViewControllerData] = []
   controllers.append(.discovery)
 
-  if isLoggedIn {
-    controllers.append(.pledgedProjectsAndActivities)
-  } else {
-    controllers.append(.activities)
-  }
+  controllers.append(.backings(isLoggedIn: isLoggedIn))
+
+  controllers.append(.activities(isLoggedIn: isLoggedIn))
 
   controllers.append(.search)
   controllers.append(.profile(isLoggedIn: isLoggedIn))
@@ -475,9 +482,14 @@ private func generateViewControllers(isLoggedIn: Bool) -> [RootViewControllerDat
 }
 
 private func tabData(forUser user: User?) -> TabBarItemsData {
-  let items: [TabBarItem] = [
-    .home(index: 0), .activity(index: 1), .search(index: 2),
-    .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)
+  let items: [TabBarItem]
+
+  items = [
+    .home(index: 0),
+    .backings(index: 1),
+    .activity(index: 2),
+    .search(index: 3),
+    .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 4)
   ]
 
   return TabBarItemsData(
@@ -489,12 +501,7 @@ private func tabData(forUser user: User?) -> TabBarItemsData {
 extension TabBarItemsData: Equatable {}
 extension TabBarItem: Equatable {}
 
-private func activitiesBadgeValue(with value: Int?, hasPPOAction: Bool) -> String? {
-  guard !hasPPOAction else {
-    // an empty string will show a dot as badge
-    return ""
-  }
-
+private func activitiesBadgeValue(with value: Int?) -> String? {
   let isVoiceOverRunning = AppEnvironment.current.isVoiceOverRunning()
   let badgeValue = value ?? 0
   let maxBadgeValue = !isVoiceOverRunning ? 99 : badgeValue
@@ -517,5 +524,7 @@ private func tabBarItemLabel(for tabBarItem: TabBarItem) -> KSRAnalytics.TabBarI
     return .profile
   case .search:
     return .search
+  case .backings:
+    return .backings
   }
 }
