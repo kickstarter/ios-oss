@@ -116,14 +116,21 @@ struct FilterRootView: View {
 
   @ViewBuilder
   var showOnlySection: some View {
+    // This is a modal and will be re-loaded when it's presented again.
+    // So this doesn't need to be reactive.
+    let loggedIn = AppEnvironment.current.currentUser.isSome
     VStack(alignment: .leading, spacing: Constants.sectionSpacing) {
       Text(Strings.Show_only())
         .font(InterFont.headingLG.swiftUIFont())
       Group {
-        Toggle(Strings.Show_only_recommended_for_you(), isOn: self.showRecommended)
+        if loggedIn {
+          Toggle(Strings.Show_only_recommended_for_you(), isOn: self.showRecommended)
+        }
         Toggle(Strings.Show_only_projects_we_love(), isOn: self.showProjectsWeLove)
-        Toggle(Strings.Show_only_saved_projects(), isOn: self.showSavedProjects)
-        Toggle(Strings.Show_only_following(), isOn: self.showFollowing)
+        if loggedIn {
+          Toggle(Strings.Show_only_saved_projects(), isOn: self.showSavedProjects)
+          Toggle(Strings.Show_only_following(), isOn: self.showFollowing)
+        }
       }
       .toggleStyle(.switch)
       .tint(Colors.Text.primary.swiftUIColor())
