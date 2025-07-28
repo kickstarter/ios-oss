@@ -2,6 +2,7 @@ import AlamofireImage
 import KsApi
 import Library
 import Prelude
+import SwiftUI
 import UIKit
 
 internal protocol TabBarControllerScrollable {
@@ -278,7 +279,11 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
     case .pledgedProjectsAndActivities:
       return PPOContainerViewController.instantiate()
     case .search:
-      return SearchViewController.instantiate()
+      if #available(iOS 17.0, *) {
+        return UIHostingController(rootView: SearchView().toolbar(.hidden, for: .navigationBar))
+      } else {
+        return SearchViewController.instantiate()
+      }
     case let .profile(isLoggedIn):
       return isLoggedIn
         ? BackerDashboardViewController.instantiate()
