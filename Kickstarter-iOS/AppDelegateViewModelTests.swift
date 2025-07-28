@@ -975,7 +975,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testRegisterPushNotifications_WhenPreviouslyAccepted_WhenOnboardingFlowFeatureFlagEnabled() {
+  func testRegisterPushNotifications_WhenNotPreviouslyAccepted_WhenOnboardingFlowFeatureFlagEnabled() {
     let segmentClient = MockTrackingClient()
     let mockRemoteConfigClient = MockRemoteConfigClient()
     mockRemoteConfigClient.features = [
@@ -2204,7 +2204,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOn_WhenShouldRequestAuthorizationStatusTrue_RequestAllowed__WhenOnboardingFlowFeatureFlagDisabled_ShowsConsentDialogAndUpdatesAdId(
+  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenShouldRequestAuthorizationStatusTrue_RequestAllowed__WhenOnboardingFlowFeatureFlagDisabled_ShowsConsentDialogAndUpdatesAdId(
   ) {
     let appTrackingTransparency = MockAppTrackingTransparency()
     appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
@@ -2471,8 +2471,6 @@ final class AppDelegateViewModelTests: TestCase {
     appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
     appTrackingTransparency.shouldRequestAuthStatus = true
 
-    userDefaults.set(false, forKey: AppKeys.hasSeenOnboarding.rawValue)
-
     withEnvironment(
       appTrackingTransparency: appTrackingTransparency,
       pushRegistrationType: MockPushRegistration.self,
@@ -2494,6 +2492,8 @@ final class AppDelegateViewModelTests: TestCase {
       self.pushRegistrationStarted.assertValueCount(0)
       XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
       self.requestATTrackingAuthorizationStatus.assertValueCount(0)
+
+      XCTAssertFalse(userDefaults.bool(forKey: AppKeys.hasSeenOnboarding.rawValue))
 
       self.triggerOnboardingFlow.assertValueCount(1)
     }

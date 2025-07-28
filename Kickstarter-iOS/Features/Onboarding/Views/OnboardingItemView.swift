@@ -17,7 +17,6 @@ struct OnboardingItemView: View {
   let progress: Double
   let onPrimaryTap: () -> Void
   let onSecondaryTap: () -> Void
-  let onLoginSignup: () -> Void
 
   var body: some View {
     VStack {
@@ -53,8 +52,7 @@ struct OnboardingItemView: View {
         item: self.item,
         animationDuration: Constants.animationDuration,
         onPrimaryTap: self.onPrimaryTap,
-        onSecondaryTap: self.onSecondaryTap,
-        onLoginSignup: self.onLoginSignup
+        onSecondaryTap: self.onSecondaryTap
       )
       .padding(.horizontal, Constants.horizontalPadding)
     }

@@ -54,8 +54,7 @@ public struct OnboardingView: View {
                 item: item,
                 progress: self.progress,
                 onPrimaryTap: { self.handlePrimaryTap(for: item) },
-                onSecondaryTap: { self.handleSecondaryTap(for: item) },
-                onLoginSignup: { self.viewModel.goToLoginSignupTapped() }
+                onSecondaryTap: { self.handleSecondaryTap(for: item) }
               )
               .accessibilityElement(children: .contain)
               // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)

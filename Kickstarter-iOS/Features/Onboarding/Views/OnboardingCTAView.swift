@@ -12,7 +12,6 @@ struct CallToActionView: View {
   let animationDuration: CGFloat
   let onPrimaryTap: () -> Void
   let onSecondaryTap: () -> Void
-  let onLoginSignup: () -> Void
 
   var body: some View {
     // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
