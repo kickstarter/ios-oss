@@ -219,6 +219,10 @@ public protocol ServiceType {
   func fetchBacking(id: Int, withStoredCards: Bool)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
 
+  /// Explicitly fetches backing details including `refundedAmount` in the `paymentIncrements`.
+  func fetchBackingWithIncrementsRefundedAmount(id: Int, withStoredCards: Bool)
+    -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
+
   /// Fetches all of the messages in a particular message thread.
   func fetchMessageThread(messageThreadId: Int)
     -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope>

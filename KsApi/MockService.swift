@@ -1141,6 +1141,11 @@
       return producer(for: self.fetchManagePledgeViewBackingResult)
     }
 
+    func fetchBackingWithIncrementsRefundedAmount(id _: Int, withStoredCards _: Bool)
+      -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
+      return producer(for: self.fetchManagePledgeViewBackingResult)
+    }
+
     func fetchRewardAddOnsSelectionViewRewards(slug: String, shippingEnabled: Bool, locationId: String?)
       -> SignalProducer<Project, ErrorEnvelope> {
       guard let client = self.apolloClient else {
