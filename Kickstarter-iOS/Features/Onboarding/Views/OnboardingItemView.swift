@@ -27,8 +27,8 @@ struct OnboardingItemView: View {
           .frame(maxWidth: .infinity)
           .accessibilityAddTraits(.isHeader)
           .accessibilityLabel(Text(self.item.title))
-          // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
-          .accessibilityHint(Text("FPO: Onboarding screen"))
+          // TODO: Add accessibility translations [mbl-2418]
+          .accessibilityHint(Text("Onboarding screen"))
 
         Text(self.item.subtitle)
           .font(Font(OnboardingStyles.subtitle))
@@ -43,8 +43,8 @@ struct OnboardingItemView: View {
       ResizableLottieView(onboardingItem: self.item, isVisible: true)
         .frame(maxWidth: .infinity)
         .padding(.top, Constants.lottieViewTopPadding)
-        // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
-        .accessibilityLabel(Text("FPO: An example animation for the \(self.item.type) feature."))
+        // TODO: Add accessibility translations [mbl-2418]
+        .accessibilityLabel(Text("An example animation for the \(self.item.type) feature."))
 
       Spacer()
 

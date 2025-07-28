@@ -2498,7 +2498,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.triggerOnboardingFlow.assertValueCount(1)
     }
   }
-  
+
   func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOn_WhenShouldRequestAuthorizationStatusTrue_RequestDenied_DoesNotShowConsentDialogAndDoesNotUpdateAdId(
   ) {
     let appTrackingTransparency = MockAppTrackingTransparency()
