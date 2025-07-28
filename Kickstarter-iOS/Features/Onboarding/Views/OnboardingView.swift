@@ -71,35 +71,29 @@ public struct OnboardingView: View {
       .padding(.top)
     }
     .onAppear {
-      // Bind onboarding items
+      /// Bind onboarding items
       self.viewModel.onboardingItems.startWithValues { items in
         self.onboardingItems = items
       }
 
-      // Handle push notification system dialog completion
+      /// Handle push notification system dialog completion
       self.viewModel.didCompletePushNotificationSystemDialog.observeValues {
         self.goToNextItem()
       }
 
-      // Trigger app tracking permission popup
+      /// Trigger app tracking permission popup
       self.viewModel.triggerAppTrackingTransparencyPopup.observeValues {
         self.presentAppTrackingPopup()
       }
-      .onAppear {
-        // Bind onboarding items
-        self.viewModel.onboardingItems.startWithValues { items in
-          self.onboardingItems = items
-        }
 
-        // Handle push notification system dialog completion
-        self.viewModel.didCompletePushNotificationSystemDialog.observeValues {
-          self.goToNextItem()
-        }
+      /// Handle push notification system dialog completion
+      self.viewModel.didCompletePushNotificationSystemDialog.observeValues {
+        self.goToNextItem()
+      }
 
-        // Trigger app tracking permission popup
-        self.viewModel.triggerAppTrackingTransparencyPopup.observeValues {
-          self.presentAppTrackingPopup()
-        }
+      /// Trigger app tracking permission popup
+      self.viewModel.triggerAppTrackingTransparencyPopup.observeValues {
+        self.presentAppTrackingPopup()
       }
     }
   }
