@@ -311,19 +311,13 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.pushTokenRegistrationStarted = pushTokenRegistrationStartedValues
       .ignoreValues()
 
-    self.showAlert = self.showNotificationDialogProperty.signal
-      .skipNil()
-      .flatMap { showDialog in
-        AppEnvironment.current.pushRegistrationType.hasAuthorizedNotifications()
-          .filter { isAuthorized in isAuthorized == false }
-          .compactMap { _ in
-            guard let context = showDialog.userInfo?.values.first as? PushNotificationDialog.Context,
-                  PushNotificationDialog.canShowDialog(for: context) else {
-              return nil
-            }
+    self.showAlert = self.showNotificationDialogProperty.signal.skipNil()
+      .filter {
+        if let context = $0.userInfo?.values.first as? PushNotificationDialog.Context {
+          return PushNotificationDialog.canShowDialog(for: context)
+        }
 
-            return showDialog
-          }
+        return false
       }
 
     self.unregisterForRemoteNotifications = self.userSessionEndedProperty.signal
