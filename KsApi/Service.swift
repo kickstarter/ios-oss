@@ -524,6 +524,34 @@ public struct Service: ServiceType {
             withStoredCards: withStoredCards,
             includeShippingRules: true,
             includeLocalPickup: true,
+            includeRefundedAmount: false
+          )
+      )
+      .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
+  }
+
+  /// Explicitly fetches backing details including `refundedAmount` in the `paymentIncrements`.
+  ///
+  /// - Parameters:
+  ///   - id: The backing ID.
+  ///   - withStoredCards: Whether to include stored cards in the result.
+  ///
+  /// This function should be used **exclusively** in flows where the evaluation of
+  /// `refundedAmounts` is strictly required, such as in the `ManagePledge` flow.
+  ///
+  /// Due to backend performance considerations, this field is intentionally **excluded**
+  /// from the general-purpose backing fetch methods. Fetching `refundedAmounts` can be
+  /// resource-intensive, and its use should be avoided unless absolutely necessary.
+  public func fetchBackingWithIncrementsRefundedAmount(id: Int, withStoredCards: Bool)
+    -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(
+        query: GraphAPI
+          .FetchBackingQuery(
+            id: "\(id)",
+            withStoredCards: withStoredCards,
+            includeShippingRules: true,
+            includeLocalPickup: true,
             includeRefundedAmount: true
           )
       )
