@@ -85,11 +85,21 @@ public struct OnboardingView: View {
       self.viewModel.triggerAppTrackingTransparencyPopup.observeValues {
         self.presentAppTrackingPopup()
       }
-      .onReceive(self.viewModel.triggerAppTrackingTransparencyPopup) {
-        self.presentAppTrackingPopup()
-      }
-      .onReceive(self.viewModel.didCompletePushNotificationSystemDialog) {
-        self.goToNextItem()
+      .onAppear {
+        // Bind onboarding items
+        self.viewModel.onboardingItems.startWithValues { items in
+          self.onboardingItems = items
+        }
+
+        // Handle push notification system dialog completion
+        self.viewModel.didCompletePushNotificationSystemDialog.observeValues {
+          self.goToNextItem()
+        }
+
+        // Trigger app tracking permission popup
+        self.viewModel.triggerAppTrackingTransparencyPopup.observeValues {
+          self.presentAppTrackingPopup()
+        }
       }
     }
   }
