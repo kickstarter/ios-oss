@@ -145,6 +145,7 @@
 "Closes_project" = "プロジェクトを閉じる";
 "Collaborator" = "コラボレーター（協力者）";
 "Collapses_subcategories" = "サブカテゴリーを閉じる";
+"Collected_adjusted" = "Collected (adjusted)";
 "Collection_plan" = "資金回収プラン";
 "Collections" = "コレクション";
 "Coming_soon" = "近日公開";
@@ -488,6 +489,7 @@
 "No_one_has_posted_an_update_yet" = "まだアップデートの投稿はありません。";
 "No_pledges_from_friends_yet" = "友達からのプレッジはありません。";
 "No_replay_is_available_for_this_live_stream" = "このライブ配信を再生することはできません";
+"No_results_for" = "「%{query}」の検索結果がありません";
 "No_saved_projects" = "保存済みのプロジェクトはありません";
 "No_unread_messages" = "未読メッセージはありません";
 "Not_available" = "利用できません";
@@ -620,8 +622,10 @@
 "Recommended_for_you" = "あなたにおすすめ";
 "Recorded_Live" = "配信済ライブ";
 "Recorded_live_with_creator_name" = "配信された<b>%{creator_name}</b>のライブ";
+"Refunded" = "Refunded";
 "Remember_that_delivery_dates_are_not_guaranteed" = "配送日は保証されませんのでご注意ください。";
 "Remember_this_card" = "このカードを保存する";
+"Remove_all_filters" = "すべてのフィルタを外す";
 "Remove_this_card" = "このカードを削除";
 "Replay" = "リプレイ";
 "Replay_available_for_time_more_units" = "あと%{time}%{units} リプレイ可能";
@@ -842,6 +846,8 @@
 "Track_shipment" = "配送状況を追跡";
 "Track_your_backings" = "支援したプロジェクトを追跡";
 "Tracking_number" = "追跡番号：%{number}";
+"Try_rephrasing_your_search" = "検索キーワードを変更してみてください";
+"Try_rephrasing_your_search_or_adjusting_the_filters" = "検索キーワードを変更するか、フィルターを調整してみてください";
 "Twice_a_day_summary" = "1日2回の概要";
 "Unable_to_request" = "データをリクエストできません。";
 "Unfollow_friend_name" = "%{friend_name} のフォロー解除";

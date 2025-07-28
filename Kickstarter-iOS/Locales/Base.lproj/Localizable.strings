@@ -145,6 +145,7 @@
 "Closes_project" = "Closes project.";
 "Collaborator" = "Collaborator";
 "Collapses_subcategories" = "Collapses subcategories.";
+"Collected_adjusted" = "Collected (adjusted)";
 "Collection_plan" = "Collection plan";
 "Collections" = "Collections";
 "Coming_soon" = "Coming soon";
@@ -488,6 +489,7 @@
 "No_one_has_posted_an_update_yet" = "No one has posted an update yet.";
 "No_pledges_from_friends_yet" = "No pledges\nfrom friends yet.";
 "No_replay_is_available_for_this_live_stream" = "No replay is available for this live stream.";
+"No_results_for" = "No results for “%{query}”";
 "No_saved_projects" = "No saved projects";
 "No_unread_messages" = "No unread messages";
 "Not_available" = "Not available";
@@ -620,8 +622,10 @@
 "Recommended_for_you" = "Recommended for you";
 "Recorded_Live" = "Recorded Live";
 "Recorded_live_with_creator_name" = "Recorded live with <b>%{creator_name}</b>";
+"Refunded" = "Refunded";
 "Remember_that_delivery_dates_are_not_guaranteed" = "Remember that delivery dates are not guaranteed.";
 "Remember_this_card" = "Remember this card";
+"Remove_all_filters" = "Remove all filters";
 "Remove_this_card" = "Remove this card";
 "Replay" = "Replay";
 "Replay_available_for_time_more_units" = "Replay available for %{time} more %{units}";
@@ -842,6 +846,8 @@
 "Track_shipment" = "Track shipment";
 "Track_your_backings" = "Track your backings";
 "Tracking_number" = "Tracking number: %{number}";
+"Try_rephrasing_your_search" = "Try rephrasing your search";
+"Try_rephrasing_your_search_or_adjusting_the_filters" = "Try rephrasing your search or adjusting the filters";
 "Twice_a_day_summary" = "Twice a day summary";
 "Unable_to_request" = "Unable to request data.";
 "Unfollow_friend_name" = "Unfollow %{friend_name}";
