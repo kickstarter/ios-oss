@@ -2,6 +2,7 @@ import Foundation
 import KsApi
 import Lottie
 import ReactiveSwift
+import UIKit
 
 public enum OnboardingItemType {
   case welcome, saveProjects, enableNotifications, allowTracking, loginSignUp
@@ -38,6 +39,18 @@ public struct OnboardingItem: Identifiable, Equatable {
   public let subtitle: String
   public var lottieView: LottieAnimationView = .init()
   public let type: OnboardingItemType
+
+  public init(
+    title: String,
+    subtitle: String,
+    lottieView: LottieAnimationView = .init(),
+    type: OnboardingItemType
+  ) {
+    self.title = title
+    self.subtitle = subtitle
+    self.lottieView = lottieView
+    self.type = type
+  }
 }
 
 public protocol OnboardingUseCaseType {
