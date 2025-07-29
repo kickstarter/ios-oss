@@ -5,7 +5,6 @@ import ReactiveSwift
 public protocol OnboardingViewModelInputs {
   func getNotifiedTapped()
   func allowTrackingTapped()
-  func goToLoginSignupTapped()
   func goToNextItemTapped(item: OnboardingItem)
   func onAppear()
 }
@@ -14,7 +13,6 @@ public protocol OnboardingViewModelOutputs {
   var onboardingItems: SignalProducer<[OnboardingItem], Never> { get }
   var didCompletePushNotificationSystemDialog: Signal<Void, Never> { get }
   var triggerAppTrackingTransparencyPopup: Signal<Void, Never> { get }
-  var goToLoginSignup: Signal<LoginIntent, Never> { get }
 }
 
 public typealias OnboardingViewModelType = Equatable & Identifiable & ObservableObject &
@@ -30,7 +28,6 @@ public final class OnboardingViewModel: OnboardingViewModelType {
   public let onboardingItems: SignalProducer<[OnboardingItem], Never>
   public let didCompletePushNotificationSystemDialog: Signal<Void, Never>
   public let triggerAppTrackingTransparencyPopup: Signal<Void, Never>
-  public let goToLoginSignup: Signal<LoginIntent, Never>
 
   // MARK: - Init
 
@@ -38,7 +35,6 @@ public final class OnboardingViewModel: OnboardingViewModelType {
     self.useCase = OnboardingUseCase(for: bundle)
 
     self.onboardingItems = self.useCase.uiOutputs.onboardingItems
-    self.goToLoginSignup = self.useCase.uiOutputs.goToLoginSignup
     self.didCompletePushNotificationSystemDialog = self.useCase.outputs
       .didCompletePushNotificationSystemDialog
     self.triggerAppTrackingTransparencyPopup = self.useCase.outputs.triggerAppTrackingTransparencyDialog
@@ -87,7 +83,6 @@ public final class OnboardingViewModel: OnboardingViewModelType {
   }
 
   public func goToLoginSignupTapped() {
-    self.useCase.uiInputs.goToLoginSignupTapped()
     AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(
       context: .onboardingSignUpLogIn,
       item: .loginSignUp

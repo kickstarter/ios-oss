@@ -72,7 +72,7 @@ public struct OnboardingView: View {
     }
     .onAppear {
       self.viewModel.onAppear()
-      
+
       /// Bind onboarding items
       self.viewModel.onboardingItems.startWithValues { items in
         self.onboardingItems = items
@@ -146,6 +146,7 @@ public struct OnboardingView: View {
     case .loginSignUp:
       /// Triggers the `goToLoginFromOnboarding` notification to inform the AppDelegate to dismiss this view and launch the login/signup flow.
       NotificationCenter.default.post(name: .ksr_goToLoginFromOnboarding, object: nil)
+      self.viewModel.goToLoginSignupTapped()
     }
   }
 
