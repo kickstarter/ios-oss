@@ -785,7 +785,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         let hasSeenOnboarding = AppEnvironment.current.userDefaults.hasSeenOnboarding == true
 
         if featureOnboardingFlowEnabled() == true {
-          return applicationIsActive && AppEnvironment.current.userDefaults.hasSeenOnboarding == true
+          return applicationIsActive && hasSeenOnboarding
         }
 
         return applicationIsActive && !hasSeenOnboarding
