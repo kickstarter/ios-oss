@@ -45,15 +45,13 @@ public final class OnboardingViewModel: OnboardingViewModelType {
 
     // MARK: - Analytics
 
-    _ = self.onAppearSignal.signal
-      .on(value: { _ in
-        AppEnvironment.current.ksrAnalytics.trackOnboardingPageViewed(at: .welcome)
-      })
-      .observeValues { _ in }
-
     _ = self.goToNextItemTappedSignal.signal
       .on(value: { item in
         AppEnvironment.current.ksrAnalytics.trackOnboardingPageViewed(at: item.type)
+        AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(
+          context: .onboardingNext,
+          item: item.type
+        )
       })
       .observeValues { _ in }
   }
@@ -64,25 +62,40 @@ public final class OnboardingViewModel: OnboardingViewModelType {
 
   // MARK: - Inputs
 
+  public func onAppear() {
+    AppEnvironment.current.ksrAnalytics.trackOnboardingPageViewed(at: .welcome)
+    AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(
+      context: .onboardingSignUpLogIn,
+      item: .welcome
+    )
+  }
+
   public func getNotifiedTapped() {
     self.useCase.uiInputs.getNotifiedTapped()
+    AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(
+      context: .onboardingGetNotified,
+      item: .enableNotifications
+    )
   }
 
   public func allowTrackingTapped() {
     self.useCase.uiInputs.allowTrackingTapped()
+    AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(
+      context: .onboardingAllowTracking,
+      item: .allowTracking
+    )
   }
 
   public func goToLoginSignupTapped() {
     self.useCase.uiInputs.goToLoginSignupTapped()
+    AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(
+      context: .onboardingSignUpLogIn,
+      item: .loginSignUp
+    )
   }
 
   private let (goToNextItemTappedSignal, goToNextItemTappedObserver) = Signal<OnboardingItem, Never>.pipe()
   public func goToNextItemTapped(item: OnboardingItem) {
     self.goToNextItemTappedObserver.send(value: item)
-  }
-
-  private let (onAppearSignal, onAppearObserver) = Signal<Void, Never>.pipe()
-  public func onAppear() {
-    self.onAppearObserver.send(value: ())
   }
 }
