@@ -164,6 +164,12 @@ public final class KSRAnalytics {
     case signUpSubmit
     case surveyResponseInitiate
     case watchProject
+    /// Onboarding CTA Context
+    case onboardingClose
+    case onboardingNext
+    case onboardingGetNotified
+    case onboardingAllowTracking
+    case onboardingSignUpLogIn
 
     var trackingString: String {
       switch self {
@@ -181,6 +187,11 @@ public final class KSRAnalytics {
       case .fixPledgeInitiate: return "fix_pledge_initiate"
       case .forgotPassword: return "forgot_password"
       case .messageCreatorInitiate: return "message_creator_initiate"
+      case .onboardingClose: return "close"
+      case .onboardingNext: return "next"
+      case .onboardingGetNotified: return "get_notified"
+      case .onboardingAllowTracking: return "allow_tracking"
+      case .onboardingSignUpLogIn: return "signup_login"
       case .pledgeInitiate: return "pledge_initiate"
       case .pledgeConfirm: return "pledge_confirm"
       case .pledgeSubmit: return "pledge_submit"
@@ -1255,7 +1266,7 @@ public final class KSRAnalytics {
   // MARK: - Onboarding Events
 
   /**
-   Call when an Onboarding Item  is viewed
+   Call when an Onboarding Item is viewed.
    */
   public func trackOnboardingPageViewed(at item: OnboardingItemType) {
     let section: SectionContext
@@ -1275,6 +1286,32 @@ public final class KSRAnalytics {
 
     let props = contextProperties(page: .onboarding, sectionContext: section)
     self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
+  }
+
+  /**
+   Call when one of the onboarding view's CTAs is tapped.
+   */
+  public func trackOnboardingPageButtonTapped(context: CTAContext, item: OnboardingItemType) {
+    let section: SectionContext
+
+    switch item {
+    case .welcome:
+      section = .onboardingWelcome
+    case .saveProjects:
+      section = .onboardingSaveProjects
+    case .enableNotifications:
+      section = .onboardingEnableNotifications
+    case .allowTracking:
+      section = .onboardingAllowTracking
+    case .loginSignUp:
+      section = .onboardingLoginSignup
+    }
+
+    let props = contextProperties(ctaContext: context, page: .onboarding, sectionContext: section)
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
+    )
   }
 
   // MARK: - Search Events
