@@ -71,6 +71,8 @@ public struct OnboardingView: View {
       .padding(.top)
     }
     .onAppear {
+      self.viewModel.onAppear()
+      
       /// Bind onboarding items
       self.viewModel.onboardingItems.startWithValues { items in
         self.onboardingItems = items
@@ -161,6 +163,8 @@ public struct OnboardingView: View {
     guard self.currentIndex < self.onboardingItems.count - 1 else { return }
 
     self.currentIndex += 1
+
+    self.viewModel.goToNextItemTapped(item: self.onboardingItems[self.currentIndex])
   }
 
   private func presentAppTrackingPopup() {

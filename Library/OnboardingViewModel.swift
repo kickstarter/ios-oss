@@ -6,6 +6,8 @@ public protocol OnboardingViewModelInputs {
   func getNotifiedTapped()
   func allowTrackingTapped()
   func goToLoginSignupTapped()
+  func goToNextItemTapped(item: OnboardingItem)
+  func onAppear()
 }
 
 public protocol OnboardingViewModelOutputs {
@@ -40,6 +42,20 @@ public final class OnboardingViewModel: OnboardingViewModelType {
     self.didCompletePushNotificationSystemDialog = self.useCase.outputs
       .didCompletePushNotificationSystemDialog
     self.triggerAppTrackingTransparencyPopup = self.useCase.outputs.triggerAppTrackingTransparencyDialog
+
+    // MARK: - Analytics
+
+    _ = self.onAppearSignal.signal
+      .on(value: { _ in
+        AppEnvironment.current.ksrAnalytics.trackOnboardingPageViewed(at: .welcome)
+      })
+      .observeValues { _ in }
+
+    _ = self.goToNextItemTappedSignal.signal
+      .on(value: { item in
+        AppEnvironment.current.ksrAnalytics.trackOnboardingPageViewed(at: item.type)
+      })
+      .observeValues { _ in }
   }
 
   public static func == (lhs: OnboardingViewModel, rhs: OnboardingViewModel) -> Bool {
@@ -58,5 +74,15 @@ public final class OnboardingViewModel: OnboardingViewModelType {
 
   public func goToLoginSignupTapped() {
     self.useCase.uiInputs.goToLoginSignupTapped()
+  }
+
+  private let (goToNextItemTappedSignal, goToNextItemTappedObserver) = Signal<OnboardingItem, Never>.pipe()
+  public func goToNextItemTapped(item: OnboardingItem) {
+    self.goToNextItemTappedObserver.send(value: item)
+  }
+
+  private let (onAppearSignal, onAppearObserver) = Signal<Void, Never>.pipe()
+  public func onAppear() {
+    self.onAppearObserver.send(value: ())
   }
 }
