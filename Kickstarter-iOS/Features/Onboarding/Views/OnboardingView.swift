@@ -41,7 +41,7 @@ public struct OnboardingView: View {
           .resizable()
           .scaledToFit()
           .ignoresSafeArea()
-        
+
         VStack {
           self.ProgressBarView()
             .accessibilityElement(children: .combine)
