@@ -1,4 +1,3 @@
-import Combine
 import Foundation
 import KsApi
 import ReactiveSwift
@@ -10,77 +9,48 @@ public protocol OnboardingViewModelInputs {
 }
 
 public protocol OnboardingViewModelOutputs {
-  var onboardingItems: [OnboardingItem] { get }
-  var triggerPushNotificationPermissionPopup: AnyPublisher<Void, Never> { get }
-  var triggerAppTrackingTransparencyPopup: AnyPublisher<Void, Never> { get }
-  var goToLoginSignup: AnyPublisher<LoginIntent, Never> { get }
+  var onboardingItems: SignalProducer<[OnboardingItem], Never> { get }
+  var didCompletePushNotificationSystemDialog: Signal<Void, Never> { get }
+  var triggerAppTrackingTransparencyPopup: Signal<Void, Never> { get }
+  var goToLoginSignup: Signal<LoginIntent, Never> { get }
 }
 
-// MARK: - Combined Type
-
-public typealias OnboardingViewModelType = Equatable & Identifiable &
-  ObservableObject &
+public typealias OnboardingViewModelType = Equatable & Identifiable & ObservableObject &
   OnboardingViewModelInputs & OnboardingViewModelOutputs
 
-// MARK: - ViewModel
-
 public final class OnboardingViewModel: OnboardingViewModelType {
-  private let useCase: OnboardingUseCaseType
-  private var cancellables = Set<AnyCancellable>()
-  public var onboardingItems: [OnboardingItem] = []
+  // MARK: - Properties
 
-  @Published public private(set) var currentIndex: Int = 0
+  private let useCase: OnboardingUseCaseType
+  public let id: UUID = .init()
+
+  // MARK: - Outputs
+
+  public let onboardingItems: SignalProducer<[OnboardingItem], Never>
+  public let didCompletePushNotificationSystemDialog: Signal<Void, Never>
+  public let triggerAppTrackingTransparencyPopup: Signal<Void, Never>
+  public let goToLoginSignup: Signal<LoginIntent, Never>
 
   // MARK: - Init
 
   public init(with bundle: Bundle = .main) {
     self.useCase = OnboardingUseCase(for: bundle)
 
-    self.useCase.uiOutputs.onboardingItems
-      .observe(on: UIScheduler())
-      .startWithValues { [weak self] items in
-        self?.onboardingItems = items
-      }
-
-    self.useCase.outputs.triggerAppTrackingTransparencyPopup
-      .observe(on: UIScheduler())
-      .observeValues { [weak self] in
-        self?.triggerAppTrackingTransparencyPopupSubject.send()
-      }
-
-    self.useCase.uiOutputs.goToLoginSignup
-      .observe(on: UIScheduler())
-      .observeValues { [weak self] intent in
-        self?.goToLoginSignupSubject.send(intent)
-      }
+    self.onboardingItems = self.useCase.uiOutputs.onboardingItems
+    self.goToLoginSignup = self.useCase.uiOutputs.goToLoginSignup
+    self.didCompletePushNotificationSystemDialog = self.useCase.outputs
+      .didCompletePushNotificationSystemDialog
+    self.triggerAppTrackingTransparencyPopup = self.useCase.outputs.triggerAppTrackingTransparencyDialog
   }
 
   public static func == (lhs: OnboardingViewModel, rhs: OnboardingViewModel) -> Bool {
     lhs.id == rhs.id
   }
 
-  private let triggerPushNotificationPermissionPopupSubject = PassthroughSubject<Void, Never>()
-  private let triggerAppTrackingTransparencyPopupSubject = PassthroughSubject<Void, Never>()
-  private let goToLoginSignupSubject = PassthroughSubject<LoginIntent, Never>()
-
-  // MARK: - Outputs
-
-  public var triggerPushNotificationPermissionPopup: AnyPublisher<Void, Never> {
-    self.triggerPushNotificationPermissionPopupSubject.eraseToAnyPublisher()
-  }
-
-  public var triggerAppTrackingTransparencyPopup: AnyPublisher<Void, Never> {
-    self.triggerAppTrackingTransparencyPopupSubject.eraseToAnyPublisher()
-  }
-
-  public var goToLoginSignup: AnyPublisher<LoginIntent, Never> {
-    self.goToLoginSignupSubject.eraseToAnyPublisher()
-  }
-
   // MARK: - Inputs
 
   public func getNotifiedTapped() {
-    self.triggerPushNotificationPermissionPopupSubject.send()
+    self.useCase.uiInputs.getNotifiedTapped()
   }
 
   public func allowTrackingTapped() {

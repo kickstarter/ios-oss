@@ -148,7 +148,7 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when we should register the device push token in Segment Analytics.
   var registerPushTokenInSegment: Signal<Data, Never> { get }
 
-  /// Emits when  application didFinishLaunchingWithOptions.
+  /// Emits when application didFinishLaunchingWithOptions.
   var requestATTrackingAuthorizationStatus: Signal<Void, Never> { get }
 
   /// Emits when our config updates with the enabled state for Semgent Analytics.
@@ -165,6 +165,9 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits immediately and when the user's authorization status changes
   var trackingAuthorizationStatus: SignalProducer<AppTrackingAuthorization, Never> { get }
+
+  /// Emits when application didFinishLaunchingWithOptions and the Onboarding Flow feature flag is enabled.
+  var triggerOnboardingFlow: Signal<(), Never> { get }
 
   /// Emits when we should unregister the user from notifications.
   var unregisterForRemoteNotifications: Signal<(), Never> { get }
@@ -291,7 +294,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let pushTokenRegistrationStartedEvents = Signal.merge(
       self.didAcceptReceivingRemoteNotificationsProperty.signal,
-      pushNotificationsPreviouslyAuthorized.filter(isTrue).ignoreValues()
+      pushNotificationsPreviouslyAuthorized
+        .filter { isTrue($0) && featureOnboardingFlowEnabled() == false }
+        .ignoreValues()
     )
     .flatMap {
       AppEnvironment.current.pushRegistrationType.register(for: [.alert, .sound, .badge])
@@ -324,6 +329,18 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
 
     self.registerPushTokenInSegment = self.deviceTokenDataProperty.signal
+
+    // MARK: - Onboarding Flow
+
+    /// Trigger if featureOnboardingFlowEnabled and the user hasn't authorized or denied Push Notification or AppTrackingTransparency permissions yet.
+    self.triggerOnboardingFlow = Signal.combineLatest(
+      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
+      pushNotificationsPreviouslyAuthorized.filter { isFalse($0) && featureOnboardingFlowEnabled() }
+    )
+    .filter { _ in
+      AppEnvironment.current.appTrackingTransparency.shouldRequestAuthorizationStatus() == true
+    }
+    .mapConst(())
 
     // Deep links. For more information, see
     // https://app.getguru.com/card/cyRdjqgi/How-iOS-Universal-Links-work
@@ -752,13 +769,13 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .map(second)
       .skipRepeats()
       .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
-      .filter(isTrue)
+      .filter { isTrue($0) && featureOnboardingFlowEnabled() == false }
       .map { _ in AppEnvironment.current.appTrackingTransparency }
       .map { appTrackingTransparency in
         if
           appTrackingTransparency.advertisingIdentifier == nil &&
           appTrackingTransparency.shouldRequestAuthorizationStatus() {
-          appTrackingTransparency.requestAndSetAuthorizationStatus()
+          appTrackingTransparency.requestAndSetAuthorizationStatus {}
         }
         return ()
       }
@@ -945,6 +962,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let showAlert: Signal<Notification, Never>
   public let synchronizeUbiquitousStore: Signal<(), Never>
   public let trackingAuthorizationStatus: SignalProducer<AppTrackingAuthorization, Never>
+  public let triggerOnboardingFlow: Signal<(), Never>
   public let unregisterForRemoteNotifications: Signal<(), Never>
   public let updateCurrentUserInEnvironment: Signal<User, Never>
   public let updateConfigInEnvironment: Signal<Config, Never>

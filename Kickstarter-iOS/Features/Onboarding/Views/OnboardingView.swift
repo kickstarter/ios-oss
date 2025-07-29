@@ -16,56 +16,74 @@ private enum Constants {
   static let verticalSpacing: CGFloat = 24
 }
 
-struct OnboardingView: View {
+public struct OnboardingView: View {
   @ObservedObject var viewModel: OnboardingViewModel
-  @State private var currentIndex: Int = 0
   @Namespace private var animation
+  @State private var currentIndex: Int = 0
+  @State private var onboardingItems: [OnboardingItem] = []
 
   private var progress: Double {
-    Double(self.currentIndex + 1) / Double(self.viewModel.onboardingItems.count)
+    let onboardingItemsCount = self.onboardingItems.isEmpty ? 1 : Double(self.onboardingItems.count)
+    return Double(self.currentIndex + 1) / onboardingItemsCount
   }
 
-  var body: some View {
-    GeometryReader { geo in
-      let width = geo.size.width
+  public init(viewModel: OnboardingViewModel) {
+    self.viewModel = viewModel
+  }
 
-      ZStack {
-        OnboardingStyles.backgroundColor.ignoresSafeArea()
+  public var body: some View {
+    ZStack {
+      OnboardingStyles.backgroundColor.ignoresSafeArea()
 
-        Image(OnboardingStyles.backgroundImage)
-          .resizable()
-          .scaledToFit()
-          .ignoresSafeArea()
+      Image(OnboardingStyles.backgroundImage)
+        .resizable()
+        .scaledToFit()
+        .ignoresSafeArea()
 
-        VStack {
-          self.ProgressBarView()
-            .accessibilityElement(children: .combine)
-            // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
-            .accessibilityLabel("FPO: Onboarding Progress Bar")
+      VStack {
+        self.ProgressBarView()
+          .accessibilityElement(children: .combine)
+          // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
+          .accessibilityLabel("FPO: Onboarding Progress Bar")
 
-          ZStack {
-            ForEach(Array(self.viewModel.onboardingItems.enumerated()), id: \.element.id) { index, item in
-              if index == self.currentIndex {
-                OnboardingItemView(
-                  item: item,
-                  progress: self.progress,
-                  onPrimaryTap: { self.handlePrimaryTap(for: item) },
-                  onSecondaryTap: { self.goToNextItem() },
-                  onLoginSignup: { self.viewModel.goToLoginSignupTapped() }
-                )
-                .accessibilityElement(children: .contain)
-                // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
-                .accessibilityHint("FPO: Tap the next button to continue.")
-                .transition(.asymmetric(
-                  insertion: .move(edge: .trailing).combined(with: .opacity),
-                  removal: .move(edge: .leading).combined(with: .opacity)
-                ))
-              }
+        ZStack {
+          ForEach(Array(self.onboardingItems.enumerated()), id: \.element.id) { index, item in
+            if index == self.currentIndex {
+              OnboardingItemView(
+                item: item,
+                progress: self.progress,
+                onPrimaryTap: { self.handlePrimaryTap(for: item) },
+                onSecondaryTap: { self.goToNextItem() },
+                onLoginSignup: { self.viewModel.goToLoginSignupTapped() }
+              )
+              .accessibilityElement(children: .contain)
+              // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
+              .accessibilityHint("FPO: Tap the next button to continue.")
+              .transition(.asymmetric(
+                insertion: .move(edge: .trailing).combined(with: .opacity),
+                removal: .move(edge: .leading).combined(with: .opacity)
+              ))
             }
           }
-          .animation(.easeInOut(duration: Constants.animationDuration), value: self.currentIndex)
         }
-        .padding(.top)
+        .animation(.easeInOut(duration: Constants.animationDuration), value: self.currentIndex)
+      }
+      .padding(.top)
+    }
+    .onAppear {
+      // Bind onboarding items
+      self.viewModel.onboardingItems.startWithValues { items in
+        self.onboardingItems = items
+      }
+
+      // Handle push notification system dialog completion
+      self.viewModel.didCompletePushNotificationSystemDialog.observeValues {
+        self.goToNextItem()
+      }
+
+      // Trigger app tracking permission popup
+      self.viewModel.triggerAppTrackingTransparencyPopup.observeValues {
+        self.presentAppTrackingPopup()
       }
     }
   }
@@ -118,8 +136,14 @@ struct OnboardingView: View {
   }
 
   private func goToNextItem() {
-    guard self.currentIndex < self.viewModel.onboardingItems.count - 1 else { return }
+    guard self.currentIndex < self.onboardingItems.count - 1 else { return }
 
     self.currentIndex += 1
+  }
+
+  private func presentAppTrackingPopup() {
+    AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus {
+      self.goToNextItem()
+    }
   }
 }

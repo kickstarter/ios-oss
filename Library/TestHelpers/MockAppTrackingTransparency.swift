@@ -27,9 +27,10 @@ class MockAppTrackingTransparency: AppTrackingTransparencyType {
     self.advertisingIdentifier = self.shouldRequestAuthStatus ? "advertisingIdentifer" : nil
   }
 
-  func requestAndSetAuthorizationStatus() {
+  func requestAndSetAuthorizationStatus(_ completion: (() -> Void)? = nil) {
     self.authorizationStatusProperty.value = .authorized
     self.advertisingIdentifier = self.requestAndSetAuthorizationStatusFlag ? "advertisingIdentifier" : nil
+    completion?()
   }
 
   func shouldRequestAuthorizationStatus() -> Bool {
