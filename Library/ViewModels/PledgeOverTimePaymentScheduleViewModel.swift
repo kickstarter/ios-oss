@@ -89,7 +89,8 @@ public struct PLOTPaymentScheduleItem: Equatable {
 }
 
 private func getAmountString(from increment: PledgePaymentIncrement) -> String {
-  if increment.state == .collected, let refundedAmount = increment.refundedAmount {
+  if increment.isCollectedAdjusted || increment.state == .refunded,
+     let refundedAmount = increment.refundedAmount {
     return refundedAmount.amountFormattedInProjectNativeCurrency
   }
 
@@ -97,12 +98,12 @@ private func getAmountString(from increment: PledgePaymentIncrement) -> String {
 }
 
 private func getStateLabelText(from increment: PledgePaymentIncrement) -> String {
-  let requiresAction = increment.state == .errored && increment.stateReason == .requiresAction
-
   // TODO: [MBL-2644] implement translated strings.
-  if increment.state == .collected && increment.refundedAmount != nil {
+  if increment.isCollectedAdjusted {
     return "FPO: Collected (adjusted)"
   }
+
+  let requiresAction = increment.state == .errored && increment.stateReason == .requiresAction
 
   return requiresAction ? Strings.Authentication_required() : increment.state.description
 }

@@ -46,3 +46,10 @@ public enum PledgePaymentIncrementState: String, Decodable {
 public enum PledgePaymentIncrementStateReason: String, Decodable {
   case requiresAction = "REQUIRES_ACTION"
 }
+
+extension PledgePaymentIncrement {
+  /// Indicates whether the payment increment was collected and later partially or fully refunded.
+  public var isCollectedAdjusted: Bool {
+    return self.state == .collected && self.refundedAmount != nil
+  }
+}

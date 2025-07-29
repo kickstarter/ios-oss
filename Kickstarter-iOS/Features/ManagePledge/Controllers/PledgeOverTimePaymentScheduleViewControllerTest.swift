@@ -75,9 +75,10 @@ private func incrementsWithRefundedItems() -> [PledgePaymentIncrement] {
     refundedAmount: adjustedRefundedAmount
   )
 
+  // Just making the refunded amount different to make sure it's applied properly
   let refundedAmount = PledgePaymentIncrementAmount(
     currency: "USD",
-    amountFormattedInProjectNativeCurrency: "$250.00"
+    amountFormattedInProjectNativeCurrency: "$249.99"
   )
 
   let refundedIncrement = PledgePaymentIncrement(
