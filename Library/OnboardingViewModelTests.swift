@@ -11,7 +11,6 @@ final class OnboardingViewModelTest: TestCase {
 
   let appTrackingTransparencyDialogObserver = TestObserver<Void, Never>()
   let didCompletePushNotificationSystemDialog = TestObserver<Void, Never>()
-  let loginIntentObserver = TestObserver<LoginIntent, Never>()
 
   // MARK: Lifecycle
 
@@ -24,7 +23,6 @@ final class OnboardingViewModelTest: TestCase {
       .observe(self.appTrackingTransparencyDialogObserver.observer)
     self.viewModel.didCompletePushNotificationSystemDialog
       .observe(self.didCompletePushNotificationSystemDialog.observer)
-    self.viewModel.goToLoginSignup.observe(self.loginIntentObserver.observer)
   }
 
   func testOnboardingItems_AreReturned_OnInit() {
@@ -91,13 +89,5 @@ final class OnboardingViewModelTest: TestCase {
 
       XCTAssertEqual(self.appTrackingTransparencyDialogObserver.values.count, 0)
     }
-  }
-
-  func testGoToLoginSignup_IsCalled_OnGoToLoginSignupTapped() {
-    self.viewModel.goToLoginSignup.observe(self.loginIntentObserver.observer)
-
-    self.viewModel.goToLoginSignupTapped()
-
-    XCTAssertEqual(self.loginIntentObserver.lastValue, LoginIntent.onboarding)
   }
 }

@@ -9,7 +9,6 @@ final class OnboardingUseCaseTests: TestCase {
   var useCase: OnboardingUseCase!
 
   let onboardingItems = TestObserver<[OnboardingItem], Never>()
-  let goToLoginSignup = TestObserver<LoginIntent, Never>()
   let triggerAppTrackingTransparencyDialog = TestObserver<Void, Never>()
   let didCompletePushNotificationSystemDialog = TestObserver<Void, Never>()
 
@@ -19,7 +18,6 @@ final class OnboardingUseCaseTests: TestCase {
     self.useCase = OnboardingUseCase(for: Bundle(for: type(of: self)))
 
     self.useCase.uiOutputs.onboardingItems.start(self.onboardingItems.observer)
-    self.useCase.uiOutputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
     self.useCase.outputs.triggerAppTrackingTransparencyDialog
       .observe(self.triggerAppTrackingTransparencyDialog.observer)
     self.useCase.outputs.didCompletePushNotificationSystemDialog
@@ -78,13 +76,5 @@ final class OnboardingUseCaseTests: TestCase {
 
       self.triggerAppTrackingTransparencyDialog.assertValueCount(1)
     }
-  }
-
-  func testUseCase_GoesToLoginSignup_AfterLoginSignupTapped() {
-    self.goToLoginSignup.assertDidNotEmitValue()
-
-    self.useCase.uiInputs.goToLoginSignupTapped()
-
-    self.goToLoginSignup.assertDidEmitValue()
   }
 }
