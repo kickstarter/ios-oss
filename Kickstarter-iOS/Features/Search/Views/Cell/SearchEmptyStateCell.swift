@@ -19,7 +19,7 @@ internal final class SearchEmptyStateCell: UITableViewCell, ValueCell {
 
   private var titleLabel: UILabel = UILabel()
   private var subtitleLabel: UILabel = UILabel()
-  private var clearFiltersButton: UIButton
+  private var clearFiltersButton: KSRButton
   private var rootStackView: UIStackView = UIStackView()
 
   internal func configureWith(value: SearchEmptyStateSearchData) {
@@ -74,11 +74,7 @@ internal final class SearchEmptyStateCell: UITableViewCell, ValueCell {
 
     self.titleLabel.rac.text = self.viewModel.outputs.titleText
     self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleText
-    self.viewModel.outputs.hideClearFiltersButton
-      .observeForUI()
-      .observeValues { [weak self] isHidden in
-        self?.clearFiltersButton.isHidden = isHidden
-      }
+    self.clearFiltersButton.rac.hidden = self.viewModel.outputs.hideClearFiltersButton
   }
 
   private func setupViews() {

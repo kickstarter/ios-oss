@@ -245,6 +245,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       }
       .skipRepeats()
 
+    // This pattern is a little convoluted but the logic for the new empty state needs to take
+    // filters into account (which the old empty state does not). For rollback safety, the old
+    // logic is unchanged. The `compactMap`s ensure that we're using the most recent value of the
+    // feature flag, in order to keep this and the check in the view controller in sync.
+    // This code will be cleaned up when the feature flag is deleted.
     let shouldShowEmptyState = Signal.merge(
       shouldShowNewEmptyState.compactMap {
         if featureSearchNewEmptyState() { return $0 }
