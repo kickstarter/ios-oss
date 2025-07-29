@@ -71,20 +71,20 @@ public struct OnboardingView: View {
       .padding(.top)
     }
     .onAppear {
-      self.viewModel.onAppear()
+      self.viewModel.inputs.onAppear()
 
       /// Bind onboarding items
-      self.viewModel.onboardingItems.startWithValues { items in
+      self.viewModel.outputs.onboardingItems.startWithValues { items in
         self.onboardingItems = items
       }
 
       /// Handle push notification system dialog completion
-      self.viewModel.didCompletePushNotificationSystemDialog.observeValues {
+      self.viewModel.outputs.didCompletePushNotificationSystemDialog.observeValues {
         self.goToNextItem()
       }
 
       /// Trigger app tracking permission popup
-      self.viewModel.triggerAppTrackingTransparencyPopup.observeValues {
+      self.viewModel.outputs.triggerAppTrackingTransparencyPopup.observeValues {
         self.presentAppTrackingPopup()
       }
 
@@ -114,8 +114,7 @@ public struct OnboardingView: View {
 
       Button(action: {
         withAnimation {
-          self.hasSeenOnboarding()
-          self.dismiss()
+          self.handleClose()
         }
       }) {
         Image(OnboardingStyles.closeImage)
@@ -140,13 +139,13 @@ public struct OnboardingView: View {
     case .welcome, .saveProjects:
       self.goToNextItem()
     case .enableNotifications:
-      self.viewModel.getNotifiedTapped()
+      self.viewModel.inputs.getNotifiedTapped()
     case .allowTracking:
-      self.viewModel.allowTrackingTapped()
+      self.viewModel.inputs.allowTrackingTapped()
     case .loginSignUp:
       /// Triggers the `goToLoginFromOnboarding` notification to inform the AppDelegate to dismiss this view and launch the login/signup flow.
       NotificationCenter.default.post(name: .ksr_goToLoginFromOnboarding, object: nil)
-      self.viewModel.goToLoginSignupTapped()
+      self.viewModel.inputs.goToLoginSignupTapped()
     }
   }
 
@@ -155,9 +154,14 @@ public struct OnboardingView: View {
     case .welcome, .saveProjects, .enableNotifications, .allowTracking:
       self.goToNextItem()
     case .loginSignUp:
-      self.hasSeenOnboarding()
-      self.dismiss()
+      self.handleClose()
     }
+  }
+
+  private func handleClose() {
+    self.hasSeenOnboarding()
+    self.dismiss()
+    self.viewModel.inputs.onboardingFlowEnded()
   }
 
   private func goToNextItem() {
@@ -165,7 +169,7 @@ public struct OnboardingView: View {
 
     self.currentIndex += 1
 
-    self.viewModel.goToNextItemTapped(item: self.onboardingItems[self.currentIndex])
+    self.viewModel.inputs.goToNextItemTapped(item: self.onboardingItems[self.currentIndex])
   }
 
   private func presentAppTrackingPopup() {

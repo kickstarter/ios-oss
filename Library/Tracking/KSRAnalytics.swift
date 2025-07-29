@@ -1291,8 +1291,8 @@ public final class KSRAnalytics {
   /**
    Call when one of the onboarding view's CTAs is tapped.
    */
-  public func trackOnboardingPageButtonTapped(context: CTAContext, item: OnboardingItemType) {
-    let section: SectionContext
+  public func trackOnboardingPageButtonTapped(context: CTAContext, item: OnboardingItemType? = nil) {
+    let section: SectionContext?
 
     switch item {
     case .welcome:
@@ -1305,6 +1305,8 @@ public final class KSRAnalytics {
       section = .onboardingAllowTracking
     case .loginSignUp:
       section = .onboardingLoginSignup
+    case .none:
+      section = nil
     }
 
     let props = contextProperties(ctaContext: context, page: .onboarding, sectionContext: section)

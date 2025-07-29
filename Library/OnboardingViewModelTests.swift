@@ -19,16 +19,16 @@ final class OnboardingViewModelTest: TestCase {
 
     self.viewModel = OnboardingViewModel(with: Bundle(for: type(of: self)))
 
-    self.viewModel.triggerAppTrackingTransparencyPopup
+    self.viewModel.outputs.triggerAppTrackingTransparencyPopup
       .observe(self.appTrackingTransparencyDialogObserver.observer)
-    self.viewModel.didCompletePushNotificationSystemDialog
+    self.viewModel.outputs.didCompletePushNotificationSystemDialog
       .observe(self.didCompletePushNotificationSystemDialog.observer)
   }
 
   func testOnboardingItems_AreReturned_OnInit() {
     let expectation = expectation(description: "onboardingItems loaded")
 
-    self.viewModel.onboardingItems.startWithResult { result in
+    self.viewModel.outputs.onboardingItems.startWithResult { result in
       switch result {
       case let .success(items):
         XCTAssertEqual(items.count, 5)
@@ -51,7 +51,7 @@ final class OnboardingViewModelTest: TestCase {
     MockPushRegistration.registerProducer = .init(value: true)
 
     withEnvironment(pushRegistrationType: MockPushRegistration.self) {
-      self.viewModel.getNotifiedTapped()
+      self.viewModel.inputs.getNotifiedTapped()
 
       XCTAssertEqual(self.didCompletePushNotificationSystemDialog.values.count, 1)
     }
@@ -62,7 +62,7 @@ final class OnboardingViewModelTest: TestCase {
     MockPushRegistration.registerProducer = .init(value: false)
 
     withEnvironment(pushRegistrationType: MockPushRegistration.self) {
-      self.viewModel.getNotifiedTapped()
+      self.viewModel.inputs.getNotifiedTapped()
 
       XCTAssertEqual(self.didCompletePushNotificationSystemDialog.values.count, 0)
     }
@@ -74,7 +74,7 @@ final class OnboardingViewModelTest: TestCase {
     appTrackingTransparency.shouldRequestAuthStatus = true
 
     withEnvironment(appTrackingTransparency: appTrackingTransparency) {
-      self.viewModel.allowTrackingTapped()
+      self.viewModel.inputs.allowTrackingTapped()
 
       XCTAssertEqual(self.appTrackingTransparencyDialogObserver.values.count, 1)
     }
@@ -85,7 +85,7 @@ final class OnboardingViewModelTest: TestCase {
     appTrackingTransparency.shouldRequestAuthStatus = false
 
     withEnvironment(appTrackingTransparency: appTrackingTransparency) {
-      self.viewModel.allowTrackingTapped()
+      self.viewModel.inputs.allowTrackingTapped()
 
       XCTAssertEqual(self.appTrackingTransparencyDialogObserver.values.count, 0)
     }
