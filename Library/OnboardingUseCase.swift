@@ -55,14 +55,10 @@ public protocol OnboardingUseCaseUIInputs {
 
   /// Call when a user taps on the "Next", "Not right now", or "Explore the app" buttons.
   func goToNextItemTapped(item: OnboardingItemType)
-
-  func goToLoginSignupTapped()
 }
 
 public protocol OnboardingUseCaseUIOutputs {
   var onboardingItems: SignalProducer<[OnboardingItem], Never> { get }
-
-  var goToLoginSignup: Signal<LoginIntent, Never> { get }
 }
 
 public protocol OnboardingUseCaseOutputs {
@@ -78,7 +74,6 @@ public protocol OnboardingUseCaseOutputs {
  * Outputs a list of `OnboardingItem`s.
  * Determines if user permisions have been granted or need to be presented for Push Notifications and App Tracking Transparecy.
  * Emits onboarding analytic events.
- * Initiating the login/signup flow.
 
  UI Inputs:
   * `getNotifiedTapped()` - Presents the push notifications permissions system dialog.
@@ -87,7 +82,6 @@ public protocol OnboardingUseCaseOutputs {
 
  UI Outputs:
   * `onboardingItems` - Returns a list of `OnboardingItem` used to populate the views for each section of the flow.
-  * `goToLoginSignup()` - The user tapped the login button. Triggers `goToLoginSignupTapped`.
 
  Data Outputs:
   * `completedGetNotifiedRequest` - The user has completed interacting with the notifications permission system dialog.
@@ -102,9 +96,6 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
     let onboardingItems = allOnboardingItems(in: bundle)
 
     self.onboardingItems = SignalProducer(value: onboardingItems)
-
-    self.goToLoginSignup = self.goToLoginSignupTappedSignal
-      .mapConst(LoginIntent.onboarding)
 
     self.triggerAppTrackingTransparencyDialog = self.allowTrackingTappedSignal.signal
       .filter {
@@ -153,11 +144,6 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
     self.allowTrackingTappedObserver.send(value: ())
   }
 
-  private let (goToLoginSignupTappedSignal, goToLoginSignupTappedObserver) = Signal<Void, Never>.pipe()
-  public func goToLoginSignupTapped() {
-    self.goToLoginSignupTappedObserver.send(value: ())
-  }
-
   private let (goToNextItemTappedSignal, goToNextItemTappedObserver) = Signal<OnboardingItemType, Never>
     .pipe()
   public func goToNextItemTapped(item: OnboardingItemType) {
@@ -168,7 +154,6 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
 
   public let triggerAppTrackingTransparencyDialog: Signal<Void, Never>
   public let didCompletePushNotificationSystemDialog: Signal<Void, Never>
-  public let goToLoginSignup: Signal<LoginIntent, Never>
 
   // MARK: - Data Outputs
 
