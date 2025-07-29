@@ -39,11 +39,6 @@ internal final class SearchLegacyEmptyStateCell: UITableViewCell, ValueCell {
 
     _ = self.rootStackView
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(4), leftRight: Styles.grid(4))
-
-    let filterResultsButton = UIButton(type: .custom)
-    filterResultsButton.setTitle("Remove all filters test", for: .normal)
-
-    self.rootStackView.addSubview(filterResultsButton)
   }
 
   internal override func bindViewModel() {
