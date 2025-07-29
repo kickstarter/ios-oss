@@ -793,7 +793,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         if
           appTrackingTransparency.advertisingIdentifier == nil &&
           appTrackingTransparency.shouldRequestAuthorizationStatus() {
-          appTrackingTransparency.requestAndSetAuthorizationStatus {}
+          appTrackingTransparency.requestAndSetAuthorizationStatus(nil)
         }
         return ()
       }
