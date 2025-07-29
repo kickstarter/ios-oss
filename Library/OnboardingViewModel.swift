@@ -3,10 +3,12 @@ import KsApi
 import ReactiveSwift
 
 public protocol OnboardingViewModelInputs {
-  func getNotifiedTapped()
   func allowTrackingTapped()
+  func getNotifiedTapped()
+  func goToLoginSignupTapped()
   func goToNextItemTapped(item: OnboardingItem)
   func onAppear()
+  func onboardingFlowEnded()
 }
 
 public protocol OnboardingViewModelOutputs {
@@ -15,10 +17,13 @@ public protocol OnboardingViewModelOutputs {
   var triggerAppTrackingTransparencyPopup: Signal<Void, Never> { get }
 }
 
-public typealias OnboardingViewModelType = Equatable & Identifiable & ObservableObject &
-  OnboardingViewModelInputs & OnboardingViewModelOutputs
+public protocol OnboardingViewModelType {
+  var inputs: OnboardingViewModelInputs { get }
+  var outputs: OnboardingViewModelOutputs { get }
+}
 
-public final class OnboardingViewModel: OnboardingViewModelType {
+public final class OnboardingViewModel: OnboardingViewModelType, Equatable & Identifiable & ObservableObject,
+  OnboardingViewModelOutputs, OnboardingViewModelInputs {
   // MARK: - Properties
 
   private let useCase: OnboardingUseCaseType
@@ -56,10 +61,14 @@ public final class OnboardingViewModel: OnboardingViewModelType {
     lhs.id == rhs.id
   }
 
+  public var inputs: OnboardingViewModelInputs { return self }
+  public var outputs: OnboardingViewModelOutputs { return self }
+
   // MARK: - Inputs
 
   public func onAppear() {
     AppEnvironment.current.ksrAnalytics.trackOnboardingPageViewed(at: .welcome)
+
     AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(
       context: .onboardingSignUpLogIn,
       item: .welcome
@@ -68,6 +77,7 @@ public final class OnboardingViewModel: OnboardingViewModelType {
 
   public func getNotifiedTapped() {
     self.useCase.uiInputs.getNotifiedTapped()
+
     AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(
       context: .onboardingGetNotified,
       item: .enableNotifications
@@ -76,6 +86,7 @@ public final class OnboardingViewModel: OnboardingViewModelType {
 
   public func allowTrackingTapped() {
     self.useCase.uiInputs.allowTrackingTapped()
+
     AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(
       context: .onboardingAllowTracking,
       item: .allowTracking
@@ -87,6 +98,12 @@ public final class OnboardingViewModel: OnboardingViewModelType {
       context: .onboardingSignUpLogIn,
       item: .loginSignUp
     )
+
+    AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(context: .onboardingClose)
+  }
+
+  public func onboardingFlowEnded() {
+    AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(context: .onboardingClose)
   }
 
   private let (goToNextItemTappedSignal, goToNextItemTappedObserver) = Signal<OnboardingItem, Never>.pipe()
