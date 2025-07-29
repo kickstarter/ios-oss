@@ -80,6 +80,9 @@ public struct OnboardingView: View {
 
       /// Handle push notification system dialog completion
       self.viewModel.outputs.didCompletePushNotificationSystemDialog.observeValues {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+          self.viewModel.inputs.didCompletePushNotificationsDialog(with: settings.authorizationStatus)
+        }
         self.goToNextItem()
       }
 

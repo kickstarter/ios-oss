@@ -7,6 +7,7 @@ import UserNotifications
 public protocol OnboardingViewModelInputs {
   func allowTrackingTapped()
   func didCompleteAppTrackingDialog(with authStatus: ATTrackingManager.AuthorizationStatus)
+  func didCompletePushNotificationsDialog(with authStatus: UNAuthorizationStatus)
   func getNotifiedTapped()
   func goToLoginSignupTapped()
   func goToNextItemTapped(item: OnboardingItem)
@@ -43,18 +44,9 @@ public final class OnboardingViewModel: OnboardingViewModelType, Equatable & Ide
     self.useCase = OnboardingUseCase(for: bundle)
 
     self.onboardingItems = self.useCase.uiOutputs.onboardingItems
+
     self.didCompletePushNotificationSystemDialog = self.useCase.outputs
       .didCompletePushNotificationSystemDialog
-      .map { _ in
-        UNUserNotificationCenter.current().getNotificationSettings { settings in
-          AppEnvironment.current.ksrAnalytics.trackPushNotificationPermissionsDialogInteraction(
-            .onboardingNotificationsDialog,
-            authStatus: settings.authorizationStatus
-          )
-        }
-
-        return ()
-      }
 
     self.triggerAppTrackingTransparencyPopup = self.useCase.outputs.triggerAppTrackingTransparencyDialog
       .map { _ in
@@ -108,8 +100,16 @@ public final class OnboardingViewModel: OnboardingViewModelType, Equatable & Ide
     )
   }
 
-  public func didCompleteAppTrackingDialog(with authStatus: ATTrackingManager.AuthorizationStatus) {
+  public func didCompletePushNotificationsDialog(with authStatus: UNAuthorizationStatus) {
     /// Send analytics event when the user has finished interacting with the PN system dialog. `authStatus` let's insights know whether they allowed or denied permissions.
+    AppEnvironment.current.ksrAnalytics.trackPushNotificationPermissionsDialogInteraction(
+      .onboardingNotificationsDialog,
+      authStatus: authStatus
+    )
+  }
+
+  public func didCompleteAppTrackingDialog(with authStatus: ATTrackingManager.AuthorizationStatus) {
+    /// Send analytics event when the user has finished interacting with the AppTracking  system dialog. `authStatus` let's insights know whether they allowed or denied permissions.
     AppEnvironment.current.ksrAnalytics.trackAppTrackingTransparencyPermissionsDialogInteraction(
       .onboardingAppTrackingDialog,
       authStatus: authStatus
