@@ -173,7 +173,8 @@ public struct OnboardingView: View {
   }
 
   private func presentAppTrackingPopup() {
-    Library.AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus {
+    Library.AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus { authStatus in
+      self.viewModel.inputs.didCompleteAppTrackingDialog(with: authStatus)
       self.goToNextItem()
     }
   }

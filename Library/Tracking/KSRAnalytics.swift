@@ -1,4 +1,5 @@
 import AppboySegment
+import AppTrackingTransparency
 import KsApi
 import PassKit
 import Prelude
@@ -170,6 +171,8 @@ public final class KSRAnalytics {
     case onboardingGetNotified
     case onboardingAllowTracking
     case onboardingSignUpLogIn
+    case onboardingSystemPermissionsAllowed
+    case onboardingSystemPermissionsDenied
 
     var trackingString: String {
       switch self {
@@ -192,6 +195,8 @@ public final class KSRAnalytics {
       case .onboardingGetNotified: return "get_notified"
       case .onboardingAllowTracking: return "allow_tracking"
       case .onboardingSignUpLogIn: return "signup_login"
+      case .onboardingSystemPermissionsAllowed: return "allow"
+      case .onboardingSystemPermissionsDenied: return "deny"
       case .pledgeInitiate: return "pledge_initiate"
       case .pledgeConfirm: return "pledge_confirm"
       case .pledgeSubmit: return "pledge_submit"
@@ -301,6 +306,8 @@ public final class KSRAnalytics {
     case onboardingEnableNotifications
     case onboardingAllowTracking
     case onboardingLoginSignup
+    case onboardingNotificationsDialog
+    case onboardingAppTrackingDialog
     case overview
     case updates
     case watched
@@ -316,7 +323,9 @@ public final class KSRAnalytics {
       case .onboardingSaveProjects: return "save_projects"
       case .onboardingEnableNotifications: return "enable_notifications"
       case .onboardingAllowTracking: return "activity_tracking"
-      case .onboardingLoginSignup: return "login_signup"
+      case .onboardingLoginSignup: return "signup_login"
+      case .onboardingNotificationsDialog: return "enable_notifications_prompt"
+      case .onboardingAppTrackingDialog: return "activity_tracking_prompt"
       case .overview: return "overview"
       case .updates: return "updates"
       case .watched: return "watched"
@@ -1314,6 +1323,42 @@ public final class KSRAnalytics {
       event: SegmentEvent.ctaClicked.rawValue,
       properties: props
     )
+  }
+
+  /**
+   Call when a system permissions dialog is viewed in the onboarding flow.
+   */
+  public func trackSystemPermissionsDialogViewed(on sectionContext: SectionContext) {
+    let props = contextProperties(page: .onboarding, sectionContext: sectionContext)
+    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
+  }
+
+  /**
+   Call when the user has finished interacting with the Push Notification permissions dialog that was presented in the onboarding flow..
+   */
+  public func trackPushNotificationPermissionsDialogInteraction(
+    _ sectionContext: SectionContext,
+    authStatus: UNAuthorizationStatus
+  ) {
+    let ctaContext: CTAContext = authStatus == .authorized ? .onboardingSystemPermissionsAllowed :
+      .onboardingSystemPermissionsDenied
+
+    let props = contextProperties(ctaContext: ctaContext, page: .onboarding, sectionContext: sectionContext)
+    self.track(event: SegmentEvent.ctaClicked.rawValue, properties: props)
+  }
+
+  /**
+   Call when the user has finished interacting with the AppTrackingTransparency permissions dialog that was presented in the onboarding flow..
+   */
+  public func trackAppTrackingTransparencyPermissionsDialogInteraction(
+    _ sectionContext: SectionContext,
+    authStatus: ATTrackingManager.AuthorizationStatus
+  ) {
+    let ctaContext: CTAContext = authStatus == .authorized ? .onboardingSystemPermissionsAllowed :
+      .onboardingSystemPermissionsDenied
+
+    let props = contextProperties(ctaContext: ctaContext, page: .onboarding, sectionContext: sectionContext)
+    self.track(event: SegmentEvent.ctaClicked.rawValue, properties: props)
   }
 
   // MARK: - Search Events

@@ -1,9 +1,12 @@
+import AppTrackingTransparency
 import Foundation
 import KsApi
 import ReactiveSwift
+import UserNotifications
 
 public protocol OnboardingViewModelInputs {
   func allowTrackingTapped()
+  func didCompleteAppTrackingDialog(with authStatus: ATTrackingManager.AuthorizationStatus)
   func getNotifiedTapped()
   func goToLoginSignupTapped()
   func goToNextItemTapped(item: OnboardingItem)
@@ -42,7 +45,24 @@ public final class OnboardingViewModel: OnboardingViewModelType, Equatable & Ide
     self.onboardingItems = self.useCase.uiOutputs.onboardingItems
     self.didCompletePushNotificationSystemDialog = self.useCase.outputs
       .didCompletePushNotificationSystemDialog
+      .map { _ in
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+          AppEnvironment.current.ksrAnalytics.trackPushNotificationPermissionsDialogInteraction(
+            .onboardingNotificationsDialog,
+            authStatus: settings.authorizationStatus
+          )
+        }
+
+        return ()
+      }
+
     self.triggerAppTrackingTransparencyPopup = self.useCase.outputs.triggerAppTrackingTransparencyDialog
+      .map { _ in
+        AppEnvironment.current.ksrAnalytics
+          .trackSystemPermissionsDialogViewed(on: .onboardingAppTrackingDialog)
+
+        return ()
+      }
 
     // MARK: - Analytics
 
@@ -68,11 +88,6 @@ public final class OnboardingViewModel: OnboardingViewModelType, Equatable & Ide
 
   public func onAppear() {
     AppEnvironment.current.ksrAnalytics.trackOnboardingPageViewed(at: .welcome)
-
-    AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(
-      context: .onboardingSignUpLogIn,
-      item: .welcome
-    )
   }
 
   public func getNotifiedTapped() {
@@ -90,6 +105,14 @@ public final class OnboardingViewModel: OnboardingViewModelType, Equatable & Ide
     AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(
       context: .onboardingAllowTracking,
       item: .allowTracking
+    )
+  }
+
+  public func didCompleteAppTrackingDialog(with authStatus: ATTrackingManager.AuthorizationStatus) {
+    /// Send analytics event when the user has finished interacting with the PN system dialog. `authStatus` let's insights know whether they allowed or denied permissions.
+    AppEnvironment.current.ksrAnalytics.trackAppTrackingTransparencyPermissionsDialogInteraction(
+      .onboardingAppTrackingDialog,
+      authStatus: authStatus
     )
   }
 
