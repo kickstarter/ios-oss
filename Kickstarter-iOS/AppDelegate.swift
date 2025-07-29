@@ -267,12 +267,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         enabled ? Analytics.shared().enable() : Analytics.shared().disable()
       }
 
-    self.viewModel.outputs.darkModeEnabled
-      .observeForUI()
-      .observeValues { [weak self] enabled in
-        self?.updateDarkMode(enabled)
-      }
-
     NotificationCenter.default
       .addObserver(
         forName: Notification.Name.ksr_configUpdated,
@@ -292,14 +286,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     UNUserNotificationCenter.current().delegate = self
 
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
-  }
-
-  func updateDarkMode(_ isEnabled: Bool) {
-    if isEnabled {
-      self.window?.overrideUserInterfaceStyle = .unspecified
-    } else {
-      self.window?.overrideUserInterfaceStyle = .light
-    }
   }
 
   func applicationDidBecomeActive(_: UIApplication) {

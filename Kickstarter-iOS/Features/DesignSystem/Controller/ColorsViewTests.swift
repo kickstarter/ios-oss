@@ -4,20 +4,6 @@ import SnapshotTesting
 import SwiftUI
 
 final class ColorsViewTests: TestCase {
-  override func setUp() {
-    super.setUp()
-
-    let remoteConfig = MockRemoteConfigClient()
-    remoteConfig.features[RemoteConfigFeature.darkModeEnabled.rawValue] = true
-    AppEnvironment.pushEnvironment(remoteConfigClient: remoteConfig)
-  }
-
-  override func tearDown() {
-    AppEnvironment.popEnvironment()
-
-    super.tearDown()
-  }
-
   func testView() {
     let colorsView = ColorsView()
     let height: CGFloat =
