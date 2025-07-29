@@ -40,7 +40,7 @@ public final class KSRAnalytics {
     case loginTout = "log_in_sign_up" // LoginToutViewController
     case managePledgeScreen = "manage_pledge" // ManagePledgeViewController
     case messages // MessagesViewController
-    case onboarding // CategorySelectionViewController, CuratedProjectsViewController
+    case onboarding // OnboardingView
     case pledgeAddNewCard = "pledge_add_new_card"
     case pledgeScreen = "pledge" // PledgeViewController
     case project // ProjectPageViewController
@@ -285,6 +285,11 @@ public final class KSRAnalytics {
     case backerSurvey
     case comments
     case dashboard
+    case onboardingWelcome
+    case onboardingSaveProjects
+    case onboardingEnableNotifications
+    case onboardingAllowTracking
+    case onboardingLoginSignup
     case overview
     case updates
     case watched
@@ -296,6 +301,11 @@ public final class KSRAnalytics {
       case .backerSurvey: return "backer_survey"
       case .comments: return "comments"
       case .dashboard: return "dashboard"
+      case .onboardingWelcome: return "welcome"
+      case .onboardingSaveProjects: return "save_projects"
+      case .onboardingEnableNotifications: return "enable_notifications"
+      case .onboardingAllowTracking: return "activity_tracking"
+      case .onboardingLoginSignup: return "login_signup"
       case .overview: return "overview"
       case .updates: return "updates"
       case .watched: return "watched"
@@ -1240,6 +1250,31 @@ public final class KSRAnalytics {
     }
 
     return props.withAllValuesFrom(["login_intent": intent.trackingString])
+  }
+
+  // MARK: - Onboarding Events
+
+  /**
+   Call when an Onboarding Item  is viewed
+   */
+  public func trackOnboardingPageViewed(at item: OnboardingItemType) {
+    let section: SectionContext
+
+    switch item {
+    case .welcome:
+      section = .onboardingWelcome
+    case .saveProjects:
+      section = .onboardingSaveProjects
+    case .enableNotifications:
+      section = .onboardingEnableNotifications
+    case .allowTracking:
+      section = .onboardingAllowTracking
+    case .loginSignUp:
+      section = .onboardingLoginSignup
+    }
+
+    let props = contextProperties(page: .onboarding, sectionContext: section)
+    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
   }
 
   // MARK: - Search Events
