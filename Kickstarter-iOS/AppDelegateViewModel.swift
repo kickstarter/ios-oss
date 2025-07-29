@@ -70,6 +70,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
 
+  /// Call when the users taps 'Log in or Sign up' from the onboarding flow (`OnboardingView`).
+  func goToLoginSignup(from intent: LoginIntent)
+
   /// Call when Remote Config configuration has failed
   func remoteConfigClientConfigurationFailed()
 
@@ -293,7 +296,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let pushTokenRegistrationStartedEvents = Signal.merge(
       self.didAcceptReceivingRemoteNotificationsProperty.signal,
       pushNotificationsPreviouslyAuthorized
-        .filter { isTrue($0) && featureOnboardingFlowEnabled() == false }
+        .filter { isPreviouslyAuthorzied in isPreviouslyAuthorzied }
         .ignoreValues()
     )
     .flatMap {
@@ -311,6 +314,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         if let context = $0.userInfo?.values.first as? PushNotificationDialog.Context {
           return PushNotificationDialog.canShowDialog(for: context)
         }
+
         return false
       }
 
@@ -336,7 +340,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       pushNotificationsPreviouslyAuthorized.filter { isFalse($0) && featureOnboardingFlowEnabled() }
     )
     .filter { _ in
-      AppEnvironment.current.appTrackingTransparency.shouldRequestAuthorizationStatus() == true
+      let shouldRequestAppTracking = AppEnvironment.current.appTrackingTransparency
+        .shouldRequestAuthorizationStatus() == true
+      let hasNotSeenOnboarding = AppEnvironment.current.userDefaults.hasSeenOnboarding == false
+
+      return shouldRequestAppTracking && hasNotSeenOnboarding
     }
     .mapConst(())
 
@@ -537,7 +545,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.goToLoginWithIntent = Signal.merge(
       fixErroredPledgeLinkAndIsLoggedIn.filter(third >>> isFalse).mapConst(.erroredPledge),
-      goToLogin.mapConst(.generic)
+      goToLogin.mapConst(.generic),
+      self.goToLoginSignupProperty.signal.skipNil()
     )
 
     self.goToMessageThread = deepLink
@@ -759,6 +768,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
       .map { _ in .displayInAppMessageNow }
 
+    /// Request AppTransparencyTracking outside of onboarding.
     self.requestATTrackingAuthorizationStatus = Signal
       .combineLatest(
         self.applicationDidFinishLaunchingReturnValueProperty.signal.ignoreValues(),
@@ -767,7 +777,17 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .map(second)
       .skipRepeats()
       .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
-      .filter { isTrue($0) && featureOnboardingFlowEnabled() == false }
+      .filter { applicationIsActive in
+        /// Only attempt to request authorization outside of onboarding if the application is active and the user has seen the onboarding flow.
+        /// We don't want to request authorzation in the onboarding flow unless they've tapped the "all tracking" CTA.
+        let hasSeenOnboarding = AppEnvironment.current.userDefaults.hasSeenOnboarding == true
+
+        if featureOnboardingFlowEnabled() == true {
+          return applicationIsActive && hasSeenOnboarding
+        }
+
+        return applicationIsActive && !hasSeenOnboarding
+      }
       .map { _ in AppEnvironment.current.appTrackingTransparency }
       .map { appTrackingTransparency in
         if
@@ -879,6 +899,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   private let foundRedirectUrlProperty = MutableProperty<URL?>(nil)
   public func foundRedirectUrl(_ url: URL) {
     self.foundRedirectUrlProperty.value = url
+  }
+
+  private let goToLoginSignupProperty = MutableProperty<LoginIntent?>(nil)
+  public func goToLoginSignup(from intent: LoginIntent) {
+    self.goToLoginSignupProperty.value = intent
   }
 
   fileprivate typealias ApplicationOpenUrl = (
