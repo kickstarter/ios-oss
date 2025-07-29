@@ -973,7 +973,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testRegisterPushNotifications_PreviouslyAccepted_WhenOnboardingFlowFeatureFlagEnabled() {
+  func testRegisterPushNotifications_WhenNotPreviouslyAccepted_WhenOnboardingFlowFeatureFlagEnabled() {
     let segmentClient = MockTrackingClient()
     let mockRemoteConfigClient = MockRemoteConfigClient()
     mockRemoteConfigClient.features = [
@@ -996,7 +996,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: [:])
       self.vm.inputs.userSessionStarted()
 
-      self.pushRegistrationStarted.assertValueCount(0)
+      self.pushRegistrationStarted.assertValueCount(1)
 
       self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: "token".data(using: .utf8)!)
 
@@ -1860,6 +1860,15 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
+  func testGoToLoginWithIntent_EmitsCorrectIntents() {
+    self.goToLoginWithIntent.assertDidNotEmitValue()
+
+    self.vm.inputs.goToLoginSignup(from: .generic)
+    self.vm.inputs.goToLoginSignup(from: .onboarding)
+
+    XCTAssertEqual(self.goToLoginWithIntent.values, [.generic, .onboarding])
+  }
+
   func testUserSurveyDeepLink() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
@@ -1886,8 +1895,13 @@ final class AppDelegateViewModelTests: TestCase {
     )
 
     userDefaults.set(["message"], forKey: "com.kickstarter.KeyValueStoreType.deniedNotificationContexts")
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
 
-    withEnvironment(currentUser: .template, userDefaults: userDefaults) {
+    withEnvironment(
+      currentUser: .template,
+      pushRegistrationType: MockPushRegistration.self,
+      userDefaults: userDefaults
+    ) {
       self.vm.inputs.applicationWillEnterForeground()
       self.vm.inputs.didReceive(remoteNotification: updatePushData)
       self.vm.inputs.showNotificationDialog(notification: notification)
@@ -2188,7 +2202,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOn_WhenShouldRequestAuthorizationStatusTrue_RequestAllowed__WhenOnboardingFlowFeatureFlagDisabled_ShowsConsentDialogAndUpdatesAdId(
+  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenShouldRequestAuthorizationStatusTrue_RequestAllowed__WhenOnboardingFlowFeatureFlagDisabled_ShowsConsentDialogAndUpdatesAdId(
   ) {
     let appTrackingTransparency = MockAppTrackingTransparency()
     appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
@@ -2396,6 +2410,90 @@ final class AppDelegateViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(5))
 
       self.triggerOnboardingFlow.assertValueCount(0)
+    }
+  }
+
+  func testTriggerOnboardingFlow_IsNotCalled_UserDefaultsHasSeenOnboardingIsTrue(
+  ) {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+    mockRemoteConfigClient.features = [
+      RemoteConfigFeature.onboardingFlow.rawValue: true
+    ]
+
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
+    MockPushRegistration.registerProducer = .init(value: true)
+
+    let appTrackingTransparency = MockAppTrackingTransparency()
+    appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
+    appTrackingTransparency.shouldRequestAuthStatus = true
+
+    userDefaults.set(true, forKey: AppKeys.hasSeenOnboarding.rawValue)
+
+    withEnvironment(
+      appTrackingTransparency: appTrackingTransparency,
+      pushRegistrationType: MockPushRegistration.self,
+      remoteConfigClient: mockRemoteConfigClient
+    ) {
+      self.triggerOnboardingFlow.assertValueCount(0)
+
+      self.pushRegistrationStarted.assertValueCount(0)
+      self.pushTokenSuccessfullyRegistered.assertValueCount(0)
+
+      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
+
+      self.vm.inputs.applicationActive(state: false)
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.applicationActive(state: true)
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.pushRegistrationStarted.assertValueCount(0)
+      XCTAssertEqual(appTrackingTransparency.advertisingIdentifier, "advertisingIdentifier")
+      self.requestATTrackingAuthorizationStatus.assertValueCount(1)
+
+      self.triggerOnboardingFlow.assertValueCount(0)
+    }
+  }
+
+  func testTriggerOnboardingFlow_WhenUserDefaultsHasSeenOnboardingIsFalse(
+  ) {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+    mockRemoteConfigClient.features = [
+      RemoteConfigFeature.onboardingFlow.rawValue: true
+    ]
+
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
+    MockPushRegistration.registerProducer = .init(value: true)
+
+    let appTrackingTransparency = MockAppTrackingTransparency()
+    appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
+    appTrackingTransparency.shouldRequestAuthStatus = true
+
+    withEnvironment(
+      appTrackingTransparency: appTrackingTransparency,
+      pushRegistrationType: MockPushRegistration.self,
+      remoteConfigClient: mockRemoteConfigClient
+    ) {
+      self.triggerOnboardingFlow.assertValueCount(0)
+
+      self.pushRegistrationStarted.assertValueCount(0)
+      self.pushTokenSuccessfullyRegistered.assertValueCount(0)
+
+      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
+
+      self.vm.inputs.applicationActive(state: false)
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.applicationActive(state: true)
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.pushRegistrationStarted.assertValueCount(0)
+      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
+      self.requestATTrackingAuthorizationStatus.assertValueCount(0)
+
+      XCTAssertFalse(userDefaults.bool(forKey: AppKeys.hasSeenOnboarding.rawValue))
+
+      self.triggerOnboardingFlow.assertValueCount(1)
     }
   }
 

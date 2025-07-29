@@ -17,6 +17,7 @@ private enum Constants {
 }
 
 public struct OnboardingView: View {
+  @SwiftUI.Environment(\.dismiss) private var dismiss
   @ObservedObject var viewModel: OnboardingViewModel
   @Namespace private var animation
   @State private var currentIndex: Int = 0
@@ -53,8 +54,7 @@ public struct OnboardingView: View {
                 item: item,
                 progress: self.progress,
                 onPrimaryTap: { self.handlePrimaryTap(for: item) },
-                onSecondaryTap: { self.goToNextItem() },
-                onLoginSignup: { self.viewModel.goToLoginSignupTapped() }
+                onSecondaryTap: { self.handleSecondaryTap(for: item) }
               )
               .accessibilityElement(children: .contain)
               // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
@@ -71,17 +71,27 @@ public struct OnboardingView: View {
       .padding(.top)
     }
     .onAppear {
-      // Bind onboarding items
+      /// Bind onboarding items
       self.viewModel.onboardingItems.startWithValues { items in
         self.onboardingItems = items
       }
 
-      // Handle push notification system dialog completion
+      /// Handle push notification system dialog completion
       self.viewModel.didCompletePushNotificationSystemDialog.observeValues {
         self.goToNextItem()
       }
 
-      // Trigger app tracking permission popup
+      /// Trigger app tracking permission popup
+      self.viewModel.triggerAppTrackingTransparencyPopup.observeValues {
+        self.presentAppTrackingPopup()
+      }
+
+      /// Handle push notification system dialog completion
+      self.viewModel.didCompletePushNotificationSystemDialog.observeValues {
+        self.goToNextItem()
+      }
+
+      /// Trigger app tracking permission popup
       self.viewModel.triggerAppTrackingTransparencyPopup.observeValues {
         self.presentAppTrackingPopup()
       }
@@ -102,7 +112,8 @@ public struct OnboardingView: View {
 
       Button(action: {
         withAnimation {
-          self.currentIndex = 0
+          self.hasSeenOnboarding()
+          self.dismiss()
         }
       }) {
         Image(OnboardingStyles.closeImage)
@@ -131,7 +142,18 @@ public struct OnboardingView: View {
     case .allowTracking:
       self.viewModel.allowTrackingTapped()
     case .loginSignUp:
-      self.viewModel.goToLoginSignupTapped()
+      /// Triggers the `goToLoginFromOnboarding` notification to inform the AppDelegate to dismiss this view and launch the login/signup flow.
+      NotificationCenter.default.post(name: .ksr_goToLoginFromOnboarding, object: nil)
+    }
+  }
+
+  private func handleSecondaryTap(for item: OnboardingItem) {
+    switch item.type {
+    case .welcome, .saveProjects, .enableNotifications, .allowTracking:
+      self.goToNextItem()
+    case .loginSignUp:
+      self.hasSeenOnboarding()
+      self.dismiss()
     }
   }
 
@@ -142,8 +164,12 @@ public struct OnboardingView: View {
   }
 
   private func presentAppTrackingPopup() {
-    AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus {
+    Library.AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus {
       self.goToNextItem()
     }
+  }
+
+  private func hasSeenOnboarding() {
+    AppEnvironment.current.userDefaults.set(true, forKey: AppKeys.hasSeenOnboarding.rawValue)
   }
 }
