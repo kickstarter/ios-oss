@@ -64,7 +64,7 @@ struct SearchFiltersHeaderView: View {
         }
       }
       .padding(EdgeInsets(
-        top: Styles.grid(1),
+        top: Styles.grid(3),
         leading: self.horizontalSizeClass == .compact ?
           Constants.pillLeftInsetForIPhone : Constants.pillLeftInsetForIPad,
         bottom: Styles.grid(1),

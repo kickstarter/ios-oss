@@ -50,6 +50,9 @@ public protocol OnboardingUseCaseUIInputs {
   /// Triggers the AppTrackingTransparency system dialog.
   func allowTrackingTapped()
 
+  /// Triggers the Push notifications  system dialog.
+  func getNotifiedTapped()
+
   /// Call when a user taps on the "Next", "Not right now", or "Explore the app" buttons.
   func goToNextItemTapped(item: OnboardingItemType)
 
@@ -64,7 +67,10 @@ public protocol OnboardingUseCaseUIOutputs {
 
 public protocol OnboardingUseCaseOutputs {
   /// Emits when the user has finished interacting with the Push Notificaiton system dialog.
-  var triggerAppTrackingTransparencyPopup: Signal<Void, Never> { get }
+  var triggerAppTrackingTransparencyDialog: Signal<Void, Never> { get }
+
+  /// Emits when the user has finished interacting with the Push Notification system permission dialog.
+  var didCompletePushNotificationSystemDialog: Signal<Void, Never> { get }
 }
 
 /**
@@ -100,13 +106,32 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
     self.goToLoginSignup = self.goToLoginSignupTappedSignal
       .mapConst(LoginIntent.onboarding)
 
-    self.triggerAppTrackingTransparencyPopup = self.allowTrackingTappedSignal.signal
+    self.triggerAppTrackingTransparencyDialog = self.allowTrackingTappedSignal.signal
       .filter {
         let appTrackingTransparency = AppEnvironment.current.appTrackingTransparency
         return appTrackingTransparency.advertisingIdentifier == nil && appTrackingTransparency
           .shouldRequestAuthorizationStatus()
       }
       .map { _ in () }
+
+    self.didCompletePushNotificationSystemDialog = self.getNotifiedTappedSignal.signal
+      .flatMap {
+        let pushRegistrationType = AppEnvironment.current.pushRegistrationType
+
+        /// First, check if push notifications have already been authorized.
+        return pushRegistrationType.hasAuthorizedNotifications()
+          .flatMap { hasAuthorized -> SignalProducer<Bool, Never> in
+            if hasAuthorized {
+              /// If already authorized, do nothing.
+              return .empty
+            } else {
+              /// Otherwise, trigger the system dialog to request authorization.
+              return pushRegistrationType.register(for: [.alert, .sound, .badge])
+            }
+          }
+      }
+      /// Map any output to Void, since we only care about triggering the dialog
+      .mapConst(())
 
     _ = self.goToNextItemTappedSignal.signal
       .observeValues { itemType in
@@ -117,6 +142,11 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
   }
 
   // MARK: - Inputs
+
+  private let (getNotifiedTappedSignal, getNotifiedTappedObserver) = Signal<Void, Never>.pipe()
+  public func getNotifiedTapped() {
+    self.getNotifiedTappedObserver.send(value: ())
+  }
 
   private let (allowTrackingTappedSignal, allowTrackingTappedObserver) = Signal<Void, Never>.pipe()
   public func allowTrackingTapped() {
@@ -136,7 +166,8 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
 
   // MARK: - UI Outputs
 
-  public let triggerAppTrackingTransparencyPopup: Signal<Void, Never>
+  public let triggerAppTrackingTransparencyDialog: Signal<Void, Never>
+  public let didCompletePushNotificationSystemDialog: Signal<Void, Never>
   public let goToLoginSignup: Signal<LoginIntent, Never>
 
   // MARK: - Data Outputs
