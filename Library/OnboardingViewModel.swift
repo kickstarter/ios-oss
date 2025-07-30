@@ -55,18 +55,6 @@ public final class OnboardingViewModel: OnboardingViewModelType, Equatable & Ide
 
         return ()
       }
-
-    // MARK: - Analytics
-
-    _ = self.goToNextItemTappedSignal.signal
-      .on(value: { item in
-        AppEnvironment.current.ksrAnalytics.trackOnboardingPageViewed(at: item.type)
-        AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(
-          context: .onboardingNext,
-          item: item.type
-        )
-      })
-      .observeValues { _ in }
   }
 
   public static func == (lhs: OnboardingViewModel, rhs: OnboardingViewModel) -> Bool {
@@ -129,8 +117,11 @@ public final class OnboardingViewModel: OnboardingViewModelType, Equatable & Ide
     AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(context: .onboardingClose)
   }
 
-  private let (goToNextItemTappedSignal, goToNextItemTappedObserver) = Signal<OnboardingItem, Never>.pipe()
   public func goToNextItemTapped(item: OnboardingItem) {
-    self.goToNextItemTappedObserver.send(value: item)
+    AppEnvironment.current.ksrAnalytics.trackOnboardingPageViewed(at: item.type)
+    AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(
+      context: .onboardingNext,
+      item: item.type
+    )
   }
 }

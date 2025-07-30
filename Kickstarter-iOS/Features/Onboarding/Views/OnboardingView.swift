@@ -79,12 +79,15 @@ public struct OnboardingView: View {
       }
 
       /// Handle push notification system dialog completion
-      self.viewModel.outputs.didCompletePushNotificationSystemDialog.observeValues {
-        UNUserNotificationCenter.current().getNotificationSettings { settings in
-          self.viewModel.inputs.didCompletePushNotificationsDialog(with: settings.authorizationStatus)
+      self.viewModel.outputs.didCompletePushNotificationSystemDialog
+        .observeForUI()
+        .observeValues {
+          UNUserNotificationCenter.current().getNotificationSettings { settings in
+            self.viewModel.inputs.didCompletePushNotificationsDialog(with: settings.authorizationStatus)
+          }
+
+          self.goToNextItem()
         }
-        self.goToNextItem()
-      }
 
       /// Trigger app tracking permission popup
       self.viewModel.outputs.triggerAppTrackingTransparencyPopup.observeValues {
@@ -152,9 +155,9 @@ public struct OnboardingView: View {
   }
 
   private func handleClose() {
+    self.viewModel.inputs.onboardingFlowEnded()
     self.hasSeenOnboarding()
     self.dismiss()
-    self.viewModel.inputs.onboardingFlowEnded()
   }
 
   private func goToNextItem() {

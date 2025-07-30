@@ -20,10 +20,9 @@ public class AppTrackingTransparency: AppTrackingTransparencyType {
     self.updateAdvertisingIdentifier()
   }
 
-  public func requestAndSetAuthorizationStatus(_ completion: (
-    (ATTrackingManager.AuthorizationStatus)
-      -> Void
-  )? = nil) {
+  public func requestAndSetAuthorizationStatus(
+    _ completion: ((ATTrackingManager.AuthorizationStatus) -> Void)? = nil
+  ) {
     ATTrackingManager.requestTrackingAuthorization { [weak self] authStatus in
       self?.authorizationStatusProperty.value = authStatus
 

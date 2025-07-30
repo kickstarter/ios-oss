@@ -129,10 +129,10 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
               /// If already authorized, do nothing.
               return .empty
             } else {
+              /// Otherwise, trigger the system dialog to request authorization and emit an analytics event.
               AppEnvironment.current.ksrAnalytics
                 .trackSystemPermissionsDialogViewed(on: .onboardingNotificationsDialog)
 
-              /// Otherwise, trigger the system dialog to request authorization.
               return pushRegistrationType.register(for: [.alert, .sound, .badge])
             }
           }

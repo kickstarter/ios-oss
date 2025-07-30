@@ -1334,7 +1334,7 @@ public final class KSRAnalytics {
   }
 
   /**
-   Call when the user has finished interacting with the Push Notification permissions dialog that was presented in the onboarding flow..
+   Call when the user has finished interacting with the Push Notification permissions dialog that was presented in the onboarding flow.
    */
   public func trackPushNotificationPermissionsDialogInteraction(
     _ sectionContext: SectionContext,
@@ -1348,7 +1348,7 @@ public final class KSRAnalytics {
   }
 
   /**
-   Call when the user has finished interacting with the AppTrackingTransparency permissions dialog that was presented in the onboarding flow..
+   Call when the user has finished interacting with the AppTrackingTransparency permissions dialog that was presented in the onboarding flow.
    */
   public func trackAppTrackingTransparencyPermissionsDialogInteraction(
     _ sectionContext: SectionContext,
