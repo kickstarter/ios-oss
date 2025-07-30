@@ -90,7 +90,7 @@ struct CallToActionView: View {
   private func accessibilityHint(for item: OnboardingItem) -> LocalizedStringKey {
     switch item.type {
     case .welcome, .saveProjects:
-      LocalizedStringKey(stringLiteral: "Navigate to next oboarding view.")
+      LocalizedStringKey(stringLiteral: "Navigate to the next oboarding view.")
     case .enableNotifications:
       LocalizedStringKey(stringLiteral: "Enable Push Notifications.")
     case .allowTracking:
