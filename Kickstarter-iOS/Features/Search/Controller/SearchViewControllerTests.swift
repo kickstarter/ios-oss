@@ -139,7 +139,6 @@ internal final class SearchViewContollerTests: TestCase {
     let mockRemoteConfig = MockRemoteConfigClient()
     mockRemoteConfig.features = [
       RemoteConfigFeature.searchNewEmptyState.rawValue: true,
-      RemoteConfigFeature.darkModeEnabled.rawValue: true,
       RemoteConfigFeature.newDesignSystem.rawValue: true
     ]
 
@@ -211,7 +210,6 @@ internal final class SearchViewContollerTests: TestCase {
 
     let darkModeOn = MockRemoteConfigClient()
     darkModeOn.features = [
-      RemoteConfigFeature.darkModeEnabled.rawValue: true,
       RemoteConfigFeature.newDesignSystem.rawValue: true
     ]
 

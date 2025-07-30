@@ -769,10 +769,6 @@
 		395A3BCB2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BCA2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift */; };
 		399653682E2EE98D00ED69E5 /* SearchEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399653672E2EE98D00ED69E5 /* SearchEmptyStateCell.swift */; };
 		3996536A2E2EEA2300ED69E5 /* SearchEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399653692E2EEA2300ED69E5 /* SearchEmptyStateCellViewModel.swift */; };
-		399DAD882ACD15D000238BA1 /* UpdateUserAccount.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */; };
-		399DAD892ACD162C00238BA1 /* FetchProjectFriendsById.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06BD057526F15CFB00C44E36 /* FetchProjectFriendsById.graphql */; };
-		399DAD8A2ACD163400238BA1 /* UnwatchProject.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 478E31C026C1C4C6004BF898 /* UnwatchProject.graphql */; };
-		399DAD8B2ACD163800238BA1 /* FetchProjectBySlugQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06813BA326E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql */; };
 		39B5E10E2B86C56600FFB720 /* RefInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B5E10D2B86C56600FFB720 /* RefInfo.swift */; };
 		39B5E1102B86C56E00FFB720 /* RefInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B5E10F2B86C56E00FFB720 /* RefInfoTests.swift */; };
 		39B850762C3EA5630045CBA5 /* SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B850752C3EA5620045CBA5 /* SwiftUI.swift */; };
