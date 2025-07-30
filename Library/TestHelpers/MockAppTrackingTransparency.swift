@@ -1,3 +1,4 @@
+import AppTrackingTransparency
 import Library
 import ReactiveSwift
 
@@ -27,10 +28,13 @@ class MockAppTrackingTransparency: AppTrackingTransparencyType {
     self.advertisingIdentifier = self.shouldRequestAuthStatus ? "advertisingIdentifer" : nil
   }
 
-  func requestAndSetAuthorizationStatus(_ completion: (() -> Void)? = nil) {
+  func requestAndSetAuthorizationStatus(
+    _ completion: ((ATTrackingManager.AuthorizationStatus) -> Void)? =
+      nil
+  ) {
     self.authorizationStatusProperty.value = .authorized
     self.advertisingIdentifier = self.requestAndSetAuthorizationStatusFlag ? "advertisingIdentifier" : nil
-    completion?()
+    completion?(.authorized)
   }
 
   func shouldRequestAuthorizationStatus() -> Bool {
