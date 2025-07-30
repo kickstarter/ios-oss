@@ -2,6 +2,7 @@ import Foundation
 import KsApi
 import Lottie
 import ReactiveSwift
+import UIKit
 
 public enum OnboardingItemType {
   case welcome, saveProjects, enableNotifications, allowTracking, loginSignUp
@@ -38,6 +39,18 @@ public struct OnboardingItem: Identifiable, Equatable {
   public let subtitle: String
   public var lottieView: LottieAnimationView = .init()
   public let type: OnboardingItemType
+
+  public init(
+    title: String,
+    subtitle: String,
+    lottieView: LottieAnimationView = .init(),
+    type: OnboardingItemType
+  ) {
+    self.title = title
+    self.subtitle = subtitle
+    self.lottieView = lottieView
+    self.type = type
+  }
 }
 
 public protocol OnboardingUseCaseType {
@@ -50,21 +63,23 @@ public protocol OnboardingUseCaseUIInputs {
   /// Triggers the AppTrackingTransparency system dialog.
   func allowTrackingTapped()
 
+  /// Triggers the Push notifications  system dialog.
+  func getNotifiedTapped()
+
   /// Call when a user taps on the "Next", "Not right now", or "Explore the app" buttons.
   func goToNextItemTapped(item: OnboardingItemType)
-
-  func goToLoginSignupTapped()
 }
 
 public protocol OnboardingUseCaseUIOutputs {
   var onboardingItems: SignalProducer<[OnboardingItem], Never> { get }
-
-  var goToLoginSignup: Signal<LoginIntent, Never> { get }
 }
 
 public protocol OnboardingUseCaseOutputs {
   /// Emits when the user has finished interacting with the Push Notificaiton system dialog.
-  var triggerAppTrackingTransparencyPopup: Signal<Void, Never> { get }
+  var triggerAppTrackingTransparencyDialog: Signal<Void, Never> { get }
+
+  /// Emits when the user has finished interacting with the Push Notification system permission dialog.
+  var didCompletePushNotificationSystemDialog: Signal<Void, Never> { get }
 }
 
 /**
@@ -72,7 +87,6 @@ public protocol OnboardingUseCaseOutputs {
  * Outputs a list of `OnboardingItem`s.
  * Determines if user permisions have been granted or need to be presented for Push Notifications and App Tracking Transparecy.
  * Emits onboarding analytic events.
- * Initiating the login/signup flow.
 
  UI Inputs:
   * `getNotifiedTapped()` - Presents the push notifications permissions system dialog.
@@ -81,7 +95,6 @@ public protocol OnboardingUseCaseOutputs {
 
  UI Outputs:
   * `onboardingItems` - Returns a list of `OnboardingItem` used to populate the views for each section of the flow.
-  * `goToLoginSignup()` - The user tapped the login button. Triggers `goToLoginSignupTapped`.
 
  Data Outputs:
   * `completedGetNotifiedRequest` - The user has completed interacting with the notifications permission system dialog.
@@ -97,16 +110,35 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
 
     self.onboardingItems = SignalProducer(value: onboardingItems)
 
-    self.goToLoginSignup = self.goToLoginSignupTappedSignal
-      .mapConst(LoginIntent.onboarding)
-
-    self.triggerAppTrackingTransparencyPopup = self.allowTrackingTappedSignal.signal
+    self.triggerAppTrackingTransparencyDialog = self.allowTrackingTappedSignal.signal
       .filter {
         let appTrackingTransparency = AppEnvironment.current.appTrackingTransparency
         return appTrackingTransparency.advertisingIdentifier == nil && appTrackingTransparency
           .shouldRequestAuthorizationStatus()
       }
       .map { _ in () }
+
+    self.didCompletePushNotificationSystemDialog = self.getNotifiedTappedSignal.signal
+      .flatMap {
+        let pushRegistrationType = AppEnvironment.current.pushRegistrationType
+
+        /// First, check if push notifications have already been authorized.
+        return pushRegistrationType.hasAuthorizedNotifications()
+          .flatMap { hasAuthorized -> SignalProducer<Bool, Never> in
+            if hasAuthorized {
+              /// If already authorized, do nothing.
+              return .empty
+            } else {
+              /// Otherwise, trigger the system dialog to request authorization and emit an analytics event.
+              AppEnvironment.current.ksrAnalytics
+                .trackSystemPermissionsDialogViewed(on: .onboardingNotificationsDialog)
+
+              return pushRegistrationType.register(for: [.alert, .sound, .badge])
+            }
+          }
+      }
+      /// Map any output to Void, since we only care about triggering the dialog
+      .mapConst(())
 
     _ = self.goToNextItemTappedSignal.signal
       .observeValues { itemType in
@@ -118,14 +150,14 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
 
   // MARK: - Inputs
 
+  private let (getNotifiedTappedSignal, getNotifiedTappedObserver) = Signal<Void, Never>.pipe()
+  public func getNotifiedTapped() {
+    self.getNotifiedTappedObserver.send(value: ())
+  }
+
   private let (allowTrackingTappedSignal, allowTrackingTappedObserver) = Signal<Void, Never>.pipe()
   public func allowTrackingTapped() {
     self.allowTrackingTappedObserver.send(value: ())
-  }
-
-  private let (goToLoginSignupTappedSignal, goToLoginSignupTappedObserver) = Signal<Void, Never>.pipe()
-  public func goToLoginSignupTapped() {
-    self.goToLoginSignupTappedObserver.send(value: ())
   }
 
   private let (goToNextItemTappedSignal, goToNextItemTappedObserver) = Signal<OnboardingItemType, Never>
@@ -136,8 +168,8 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
 
   // MARK: - UI Outputs
 
-  public let triggerAppTrackingTransparencyPopup: Signal<Void, Never>
-  public let goToLoginSignup: Signal<LoginIntent, Never>
+  public let triggerAppTrackingTransparencyDialog: Signal<Void, Never>
+  public let didCompletePushNotificationSystemDialog: Signal<Void, Never>
 
   // MARK: - Data Outputs
 

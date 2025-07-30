@@ -45,7 +45,7 @@ extension UIButton {
     buttonConfiguration.imagePadding = Styles.grid(1)
     buttonConfiguration.imagePlacement = .leading
 
-    buttonConfiguration.titleLineBreakMode = .byTruncatingMiddle
+    buttonConfiguration.titleLineBreakMode = .byWordWrapping
     buttonConfiguration.titleAlignment = .center
 
     self.tintColor = styleConfig.titleColor

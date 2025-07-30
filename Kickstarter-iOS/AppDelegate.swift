@@ -15,6 +15,7 @@ import ReactiveExtensions
 import ReactiveSwift
 import SafariServices
 import Segment
+import SwiftUI
 import UIKit
 import UserNotifications
 
@@ -100,6 +101,13 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.goToLoginWithIntent
       .observeForControllerAction()
       .observeValues { [weak self] intent in
+        /// Dismiss OnboardingView if present so that we can correctly present the LoginToutViewController.
+        if let onboardingView = self?.rootTabBarController?
+          .presentedViewController as? UIHostingController<OnboardingView> {
+          onboardingView.dismiss(animated: true)
+          AppEnvironment.current.userDefaults.set(true, forKey: AppKeys.hasSeenOnboarding.rawValue)
+        }
+
         let vc = LoginToutViewController.configuredWith(loginIntent: intent)
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .formSheet
@@ -139,6 +147,27 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { token in
         Analytics.shared().registeredForRemoteNotifications(withDeviceToken: token)
+      }
+
+    self.viewModel.outputs.triggerOnboardingFlow
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let rootTabBarController = self?.rootTabBarController else { return }
+
+        let onboardingVC = UIHostingController(rootView: OnboardingView(viewModel: OnboardingViewModel()))
+        onboardingVC.modalPresentationStyle = .fullScreen
+
+        rootTabBarController.navigationController?.isNavigationBarHidden = true
+        rootTabBarController.present(onboardingVC, animated: true, completion: nil)
+      }
+
+    NotificationCenter.default
+      .addObserver(
+        forName: Notification.Name.ksr_goToLoginFromOnboarding,
+        object: nil,
+        queue: nil
+      ) { [weak self] _ in
+        self?.viewModel.inputs.goToLoginSignup(from: .onboarding)
       }
 
     self.viewModel.outputs.showAlert
@@ -238,12 +267,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         enabled ? Analytics.shared().enable() : Analytics.shared().disable()
       }
 
-    self.viewModel.outputs.darkModeEnabled
-      .observeForUI()
-      .observeValues { [weak self] enabled in
-        self?.updateDarkMode(enabled)
-      }
-
     NotificationCenter.default
       .addObserver(
         forName: Notification.Name.ksr_configUpdated,
@@ -263,14 +286,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     UNUserNotificationCenter.current().delegate = self
 
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
-  }
-
-  func updateDarkMode(_ isEnabled: Bool) {
-    if isEnabled {
-      self.window?.overrideUserInterfaceStyle = .unspecified
-    } else {
-      self.window?.overrideUserInterfaceStyle = .light
-    }
   }
 
   func applicationDidBecomeActive(_: UIApplication) {

@@ -1,4 +1,5 @@
 import AppboySegment
+import AppTrackingTransparency
 import KsApi
 import PassKit
 import Prelude
@@ -40,7 +41,7 @@ public final class KSRAnalytics {
     case loginTout = "log_in_sign_up" // LoginToutViewController
     case managePledgeScreen = "manage_pledge" // ManagePledgeViewController
     case messages // MessagesViewController
-    case onboarding // CategorySelectionViewController, CuratedProjectsViewController
+    case onboarding // OnboardingView
     case pledgeAddNewCard = "pledge_add_new_card"
     case pledgeScreen = "pledge" // PledgeViewController
     case project // ProjectPageViewController
@@ -164,6 +165,14 @@ public final class KSRAnalytics {
     case signUpSubmit
     case surveyResponseInitiate
     case watchProject
+    /// Onboarding CTA Context
+    case onboardingClose
+    case onboardingNext
+    case onboardingGetNotified
+    case onboardingAllowTracking
+    case onboardingSignUpLogIn
+    case onboardingSystemPermissionsAllowed
+    case onboardingSystemPermissionsDenied
 
     var trackingString: String {
       switch self {
@@ -181,6 +190,13 @@ public final class KSRAnalytics {
       case .fixPledgeInitiate: return "fix_pledge_initiate"
       case .forgotPassword: return "forgot_password"
       case .messageCreatorInitiate: return "message_creator_initiate"
+      case .onboardingClose: return "close"
+      case .onboardingNext: return "next"
+      case .onboardingGetNotified: return "get_notified"
+      case .onboardingAllowTracking: return "allow_tracking"
+      case .onboardingSignUpLogIn: return "signup_login"
+      case .onboardingSystemPermissionsAllowed: return "allow"
+      case .onboardingSystemPermissionsDenied: return "deny"
       case .pledgeInitiate: return "pledge_initiate"
       case .pledgeConfirm: return "pledge_confirm"
       case .pledgeSubmit: return "pledge_submit"
@@ -285,6 +301,13 @@ public final class KSRAnalytics {
     case backerSurvey
     case comments
     case dashboard
+    case onboardingWelcome
+    case onboardingSaveProjects
+    case onboardingEnableNotifications
+    case onboardingAllowTracking
+    case onboardingLoginSignup
+    case onboardingNotificationsDialog
+    case onboardingAppTrackingDialog
     case overview
     case updates
     case watched
@@ -296,6 +319,13 @@ public final class KSRAnalytics {
       case .backerSurvey: return "backer_survey"
       case .comments: return "comments"
       case .dashboard: return "dashboard"
+      case .onboardingWelcome: return "welcome"
+      case .onboardingSaveProjects: return "save_projects"
+      case .onboardingEnableNotifications: return "enable_notifications"
+      case .onboardingAllowTracking: return "activity_tracking"
+      case .onboardingLoginSignup: return "signup_login"
+      case .onboardingNotificationsDialog: return "enable_notifications_prompt"
+      case .onboardingAppTrackingDialog: return "activity_tracking_prompt"
       case .overview: return "overview"
       case .updates: return "updates"
       case .watched: return "watched"
@@ -1240,6 +1270,95 @@ public final class KSRAnalytics {
     }
 
     return props.withAllValuesFrom(["login_intent": intent.trackingString])
+  }
+
+  // MARK: - Onboarding Events
+
+  /**
+   Call when an Onboarding Item is viewed.
+   */
+  public func trackOnboardingPageViewed(at item: OnboardingItemType) {
+    let section: SectionContext
+
+    switch item {
+    case .welcome:
+      section = .onboardingWelcome
+    case .saveProjects:
+      section = .onboardingSaveProjects
+    case .enableNotifications:
+      section = .onboardingEnableNotifications
+    case .allowTracking:
+      section = .onboardingAllowTracking
+    case .loginSignUp:
+      section = .onboardingLoginSignup
+    }
+
+    let props = contextProperties(page: .onboarding, sectionContext: section)
+    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
+  }
+
+  /**
+   Call when one of the onboarding view's CTAs is tapped.
+   */
+  public func trackOnboardingPageButtonTapped(context: CTAContext, item: OnboardingItemType? = nil) {
+    let section: SectionContext?
+
+    switch item {
+    case .welcome:
+      section = .onboardingWelcome
+    case .saveProjects:
+      section = .onboardingSaveProjects
+    case .enableNotifications:
+      section = .onboardingEnableNotifications
+    case .allowTracking:
+      section = .onboardingAllowTracking
+    case .loginSignUp:
+      section = .onboardingLoginSignup
+    case .none:
+      section = nil
+    }
+
+    let props = contextProperties(ctaContext: context, page: .onboarding, sectionContext: section)
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  /**
+   Call when a system permissions dialog is viewed in the onboarding flow.
+   */
+  public func trackSystemPermissionsDialogViewed(on sectionContext: SectionContext) {
+    let props = contextProperties(page: .onboarding, sectionContext: sectionContext)
+    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
+  }
+
+  /**
+   Call when the user has finished interacting with the Push Notification permissions dialog that was presented in the onboarding flow.
+   */
+  public func trackPushNotificationPermissionsDialogInteraction(
+    _ sectionContext: SectionContext,
+    authStatus: UNAuthorizationStatus
+  ) {
+    let ctaContext: CTAContext = authStatus == .authorized ? .onboardingSystemPermissionsAllowed :
+      .onboardingSystemPermissionsDenied
+
+    let props = contextProperties(ctaContext: ctaContext, page: .onboarding, sectionContext: sectionContext)
+    self.track(event: SegmentEvent.ctaClicked.rawValue, properties: props)
+  }
+
+  /**
+   Call when the user has finished interacting with the AppTrackingTransparency permissions dialog that was presented in the onboarding flow.
+   */
+  public func trackAppTrackingTransparencyPermissionsDialogInteraction(
+    _ sectionContext: SectionContext,
+    authStatus: ATTrackingManager.AuthorizationStatus
+  ) {
+    let ctaContext: CTAContext = authStatus == .authorized ? .onboardingSystemPermissionsAllowed :
+      .onboardingSystemPermissionsDenied
+
+    let props = contextProperties(ctaContext: ctaContext, page: .onboarding, sectionContext: sectionContext)
+    self.track(event: SegmentEvent.ctaClicked.rawValue, properties: props)
   }
 
   // MARK: - Search Events
