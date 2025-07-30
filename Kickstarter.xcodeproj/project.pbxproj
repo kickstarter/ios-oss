@@ -646,6 +646,8 @@
 		33AA18832E38A7B1002DBD60 /* VideoTrack+Mock.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA18172E38A7B1002DBD60 /* VideoTrack+Mock.graphql.swift */; };
 		33AA18842E38A7B1002DBD60 /* VideoTrackCue+Mock.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA18182E38A7B1002DBD60 /* VideoTrackCue+Mock.graphql.swift */; };
 		33AA18852E38A7B1002DBD60 /* WatchProjectPayload+Mock.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA18192E38A7B1002DBD60 /* WatchProjectPayload+Mock.graphql.swift */; };
+		33AA26CC2E39EE21002DBD60 /* PaymentIncrementBackingFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26CB2E39EE21002DBD60 /* PaymentIncrementBackingFragment.graphql.swift */; };
+		33AA26CE2E3A89AB002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26CD2E3A89AB002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql.swift */; };
 		33AB202B2D268EE500B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */; };
 		33AB202E2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */; };
 		33AB202F2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */; };
@@ -2867,6 +2869,10 @@
 		33AA18172E38A7B1002DBD60 /* VideoTrack+Mock.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VideoTrack+Mock.graphql.swift"; sourceTree = "<group>"; };
 		33AA18182E38A7B1002DBD60 /* VideoTrackCue+Mock.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VideoTrackCue+Mock.graphql.swift"; sourceTree = "<group>"; };
 		33AA18192E38A7B1002DBD60 /* WatchProjectPayload+Mock.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchProjectPayload+Mock.graphql.swift"; sourceTree = "<group>"; };
+		33AA26C72E39E9BD002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchBackingWithIncrementsRefundedQuery.graphql; sourceTree = "<group>"; };
+		33AA26C82E39EA00002DBD60 /* PaymentIncrementBackingFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PaymentIncrementBackingFragment.graphql; sourceTree = "<group>"; };
+		33AA26CB2E39EE21002DBD60 /* PaymentIncrementBackingFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentIncrementBackingFragment.graphql.swift; sourceTree = "<group>"; };
+		33AA26CD2E3A89AB002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchBackingWithIncrementsRefundedQuery.graphql.swift; sourceTree = "<group>"; };
 		33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRewardsSummaryTotalViewControllerTests.swift; sourceTree = "<group>"; };
 		33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPledgeOverTimePlanIntervals.swift; sourceTree = "<group>"; };
 		33AF01B52D2BBCC90085A153 /* PledgeOverTimePaymentScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewController.swift; sourceTree = "<group>"; };
@@ -4375,29 +4381,6 @@
 		E1EEED2A2B686829009976D9 /* PKCETest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETest.swift; sourceTree = "<group>"; };
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		E18A64692E28224A00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			publicHeaders = (
-				GraphAPI.h,
-			);
-			target = E18A645C2E28224A00BA0376 /* GraphAPI */;
-		};
-		E18A666B2E28225E00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			publicHeaders = (
-				GraphAPITestMocks.h,
-			);
-			target = E18A66662E28225E00BA0376 /* GraphAPITestMocks */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		60CC7C9C2E269D270055BE8F /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
-		E18A645E2E28224A00BA0376 /* GraphAPI */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E18A64692E28224A00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = GraphAPI; sourceTree = "<group>"; };
-		E18A66682E28225E00BA0376 /* GraphAPITestMocks */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E18A666B2E28225E00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = GraphAPITestMocks; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		A75511381C8642B3005355CF /* Frameworks */ = {
@@ -6954,6 +6937,7 @@
 				33AA15BE2E38A76F002DBD60 /* LocationFragment.graphql.swift */,
 				33AA15BF2E38A76F002DBD60 /* MoneyFragment.graphql.swift */,
 				33AA15C02E38A76F002DBD60 /* OrderFragment.graphql.swift */,
+				33AA26CB2E39EE21002DBD60 /* PaymentIncrementBackingFragment.graphql.swift */,
 				33AA15C12E38A76F002DBD60 /* PaymentIncrementFragment.graphql.swift */,
 				33AA15C22E38A76F002DBD60 /* PaymentSourceFragment.graphql.swift */,
 				33AA15C32E38A76F002DBD60 /* PledgeManagerFragment.graphql.swift */,
@@ -7014,6 +6998,7 @@
 				33AA15EE2E38A76F002DBD60 /* DefaultLocationsQuery.graphql.swift */,
 				33AA15EF2E38A76F002DBD60 /* FetchAddOnsQuery.graphql.swift */,
 				33AA15F02E38A76F002DBD60 /* FetchBackingQuery.graphql.swift */,
+				33AA26CD2E3A89AB002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql.swift */,
 				33AA15F12E38A76F002DBD60 /* FetchCategoryQuery.graphql.swift */,
 				33AA15F22E38A76F002DBD60 /* FetchCommentRepliesQuery.graphql.swift */,
 				33AA15F32E38A76F002DBD60 /* FetchMyBackedProjectsQuery.graphql.swift */,
@@ -9057,6 +9042,7 @@
 				E190EB252E29944E006A6DB6 /* MoneyFragment.graphql */,
 				E190EB262E29944E006A6DB6 /* OrderFragment.graphql */,
 				E190EB272E29944E006A6DB6 /* PaymentIncrementFragment.graphql */,
+				33AA26C82E39EA00002DBD60 /* PaymentIncrementBackingFragment.graphql */,
 				E190EB282E29944E006A6DB6 /* PaymentSourceFragment.graphql */,
 				E190EB292E29944E006A6DB6 /* PledgeManagerFragment.graphql */,
 				E190EB2A2E29944E006A6DB6 /* PledgeOverTimeFragment.graphql */,
@@ -9116,6 +9102,7 @@
 				E190EB542E29944E006A6DB6 /* DefaultLocationsQuery.graphql */,
 				E190EB552E29944E006A6DB6 /* FetchAddOnsQuery.graphql */,
 				E190EB562E29944E006A6DB6 /* FetchBackingQuery.graphql */,
+				33AA26C72E39E9BD002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql */,
 				E190EB572E29944E006A6DB6 /* FetchCategory.graphql */,
 				E190EB582E29944E006A6DB6 /* FetchCommentReplies.graphql */,
 				E190EB592E29944E006A6DB6 /* FetchMyBackedProjectsQuery.graphql */,
@@ -11647,6 +11634,7 @@
 				33AA16FC2E38A76F002DBD60 /* FetchProjectFriendsBySlugQuery.graphql.swift in Sources */,
 				33AA16FD2E38A76F002DBD60 /* FetchProjectRewardsByIdQuery.graphql.swift in Sources */,
 				33AA16FE2E38A76F002DBD60 /* FetchRootCategoriesQuery.graphql.swift in Sources */,
+				33AA26CE2E3A89AB002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql.swift in Sources */,
 				33AA16FF2E38A76F002DBD60 /* FetchSimilarProjectsQuery.graphql.swift in Sources */,
 				33AA17002E38A76F002DBD60 /* FetchUpdateCommentsQuery.graphql.swift in Sources */,
 				33AA17012E38A76F002DBD60 /* FetchUserBackingsQuery.graphql.swift in Sources */,
@@ -11659,6 +11647,7 @@
 				33AA17082E38A76F002DBD60 /* ValidateCheckoutQuery.graphql.swift in Sources */,
 				33AA17092E38A76F002DBD60 /* Date.swift in Sources */,
 				33AA170A2E38A76F002DBD60 /* DateTime.swift in Sources */,
+				33AA26CC2E39EE21002DBD60 /* PaymentIncrementBackingFragment.graphql.swift in Sources */,
 				33AA170B2E38A76F002DBD60 /* Email.swift in Sources */,
 				33AA170C2E38A76F002DBD60 /* HTML.swift in Sources */,
 				33AA170D2E38A76F002DBD60 /* ISO8601DateTime.swift in Sources */,

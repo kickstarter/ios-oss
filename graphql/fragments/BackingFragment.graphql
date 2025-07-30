@@ -21,9 +21,6 @@ fragment BackingFragment on Backing {
   order {
     ...OrderFragment
   }
-  paymentIncrements {
-    ...PaymentIncrementFragment
-  }
   pledgedOn
   project {
     ...ProjectFragment

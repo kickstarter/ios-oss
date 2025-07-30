@@ -3,11 +3,11 @@
 
 @_exported import ApolloAPI
 
-public class FetchBackingQuery: GraphQLQuery {
-  public static let operationName: String = "FetchBacking"
+public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
+  public static let operationName: String = "FetchBackingWithIncrementsRefunded"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchBacking($id: ID!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment paymentIncrements { __typename ...PaymentIncrementBackingFragment } } }"#,
+      #"query FetchBackingWithIncrementsRefunded($id: ID!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment paymentIncrements { __typename ...PaymentIncrementBackingFragment } } }"#,
       fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, OrderFragment.self, PaymentIncrementBackingFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, ProjectFragment.self, RewardFragment.self, ShippingRuleFragment.self, UserFragment.self, UserStoredCardsFragment.self]
     ))
 
@@ -56,7 +56,7 @@ public class FetchBackingQuery: GraphQLQuery {
           "backing": backing._fieldData,
         ],
         fulfilledFragments: [
-          ObjectIdentifier(FetchBackingQuery.Data.self)
+          ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.self)
         ]
       ))
     }
@@ -170,7 +170,7 @@ public class FetchBackingQuery: GraphQLQuery {
             "backingDetailsPageRoute": backingDetailsPageRoute,
           ],
           fulfilledFragments: [
-            ObjectIdentifier(FetchBackingQuery.Data.Backing.self),
+            ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.self),
             ObjectIdentifier(BackingFragment.self)
           ]
         ))
@@ -201,7 +201,7 @@ public class FetchBackingQuery: GraphQLQuery {
               "nodes": nodes._fieldData,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchBackingQuery.Data.Backing.AddOns.self)
+              ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.AddOns.self)
             ]
           ))
         }
@@ -344,7 +344,7 @@ public class FetchBackingQuery: GraphQLQuery {
                 "audienceData": audienceData._fieldData,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.AddOns.Node.self),
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.AddOns.Node.self),
                 ObjectIdentifier(RewardFragment.self)
               ]
             ))
@@ -386,7 +386,7 @@ public class FetchBackingQuery: GraphQLQuery {
                   "symbol": symbol,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FetchBackingQuery.Data.Backing.AddOns.Node.Amount.self),
+                  ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.AddOns.Node.Amount.self),
                   ObjectIdentifier(RewardFragment.Amount.self),
                   ObjectIdentifier(MoneyFragment.self)
                 ]
@@ -430,7 +430,7 @@ public class FetchBackingQuery: GraphQLQuery {
                   "symbol": symbol,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FetchBackingQuery.Data.Backing.AddOns.Node.ConvertedAmount.self),
+                  ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.AddOns.Node.ConvertedAmount.self),
                   ObjectIdentifier(RewardFragment.ConvertedAmount.self),
                   ObjectIdentifier(MoneyFragment.self)
                 ]
@@ -485,7 +485,7 @@ public class FetchBackingQuery: GraphQLQuery {
                   "name": name,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FetchBackingQuery.Data.Backing.AddOns.Node.LocalReceiptLocation.self),
+                  ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.AddOns.Node.LocalReceiptLocation.self),
                   ObjectIdentifier(RewardFragment.LocalReceiptLocation.self),
                   ObjectIdentifier(LocationFragment.self)
                 ]
@@ -529,7 +529,7 @@ public class FetchBackingQuery: GraphQLQuery {
                   "symbol": symbol,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FetchBackingQuery.Data.Backing.AddOns.Node.PledgeAmount.self),
+                  ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.AddOns.Node.PledgeAmount.self),
                   ObjectIdentifier(RewardFragment.PledgeAmount.self),
                   ObjectIdentifier(MoneyFragment.self)
                 ]
@@ -573,7 +573,7 @@ public class FetchBackingQuery: GraphQLQuery {
                   "symbol": symbol,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FetchBackingQuery.Data.Backing.AddOns.Node.LatePledgeAmount.self),
+                  ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.AddOns.Node.LatePledgeAmount.self),
                   ObjectIdentifier(RewardFragment.LatePledgeAmount.self),
                   ObjectIdentifier(MoneyFragment.self)
                 ]
@@ -626,7 +626,7 @@ public class FetchBackingQuery: GraphQLQuery {
                   "estimatedMax": estimatedMax._fieldData,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FetchBackingQuery.Data.Backing.AddOns.Node.ShippingRule.self),
+                  ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.AddOns.Node.ShippingRule.self),
                   ObjectIdentifier(RewardFragment.ShippingRule.self),
                   ObjectIdentifier(ShippingRuleFragment.self)
                 ]
@@ -669,7 +669,7 @@ public class FetchBackingQuery: GraphQLQuery {
                     "symbol": symbol,
                   ],
                   fulfilledFragments: [
-                    ObjectIdentifier(FetchBackingQuery.Data.Backing.AddOns.Node.ShippingRule.Cost.self),
+                    ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.AddOns.Node.ShippingRule.Cost.self),
                     ObjectIdentifier(ShippingRuleFragment.Cost.self),
                     ObjectIdentifier(MoneyFragment.self)
                   ]
@@ -720,7 +720,7 @@ public class FetchBackingQuery: GraphQLQuery {
                     "name": name,
                   ],
                   fulfilledFragments: [
-                    ObjectIdentifier(FetchBackingQuery.Data.Backing.AddOns.Node.ShippingRule.Location.self),
+                    ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.AddOns.Node.ShippingRule.Location.self),
                     ObjectIdentifier(ShippingRuleFragment.Location.self),
                     ObjectIdentifier(LocationFragment.self)
                   ]
@@ -784,7 +784,7 @@ public class FetchBackingQuery: GraphQLQuery {
               "refundedAmount": refundedAmount._fieldData,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchBackingQuery.Data.Backing.PaymentIncrement.self),
+              ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.PaymentIncrement.self),
               ObjectIdentifier(PaymentIncrementBackingFragment.self)
             ]
           ))
@@ -831,7 +831,7 @@ public class FetchBackingQuery: GraphQLQuery {
               "symbol": symbol,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchBackingQuery.Data.Backing.Amount.self),
+              ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Amount.self),
               ObjectIdentifier(BackingFragment.Amount.self),
               ObjectIdentifier(MoneyFragment.self)
             ]
@@ -982,7 +982,7 @@ public class FetchBackingQuery: GraphQLQuery {
               "uid": uid,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchBackingQuery.Data.Backing.Backer.self),
+              ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Backer.self),
               ObjectIdentifier(BackingFragment.Backer.self),
               ObjectIdentifier(UserFragment.self)
             ]
@@ -1036,7 +1036,7 @@ public class FetchBackingQuery: GraphQLQuery {
                 "name": name,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.Backer.Location.self),
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Backer.Location.self),
                 ObjectIdentifier(UserFragment.Location.self),
                 ObjectIdentifier(LocationFragment.self)
               ]
@@ -1081,7 +1081,7 @@ public class FetchBackingQuery: GraphQLQuery {
                 "totalCount": totalCount,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.Backer.StoredCards.self),
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Backer.StoredCards.self),
                 ObjectIdentifier(UserFragment.StoredCards.self),
                 ObjectIdentifier(UserStoredCardsFragment.self)
               ]
@@ -1130,7 +1130,7 @@ public class FetchBackingQuery: GraphQLQuery {
               "symbol": symbol,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchBackingQuery.Data.Backing.BonusAmount.self),
+              ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.BonusAmount.self),
               ObjectIdentifier(BackingFragment.BonusAmount.self),
               ObjectIdentifier(MoneyFragment.self)
             ]
@@ -1183,7 +1183,7 @@ public class FetchBackingQuery: GraphQLQuery {
               "name": name,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchBackingQuery.Data.Backing.Location.self),
+              ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Location.self),
               ObjectIdentifier(BackingFragment.Location.self),
               ObjectIdentifier(LocationFragment.self)
             ]
@@ -1230,7 +1230,7 @@ public class FetchBackingQuery: GraphQLQuery {
               "total": total,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchBackingQuery.Data.Backing.Order.self),
+              ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Order.self),
               ObjectIdentifier(BackingFragment.Order.self),
               ObjectIdentifier(OrderFragment.self)
             ]
@@ -1469,7 +1469,7 @@ public class FetchBackingQuery: GraphQLQuery {
               "watchesCount": watchesCount,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchBackingQuery.Data.Backing.Project.self),
+              ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Project.self),
               ObjectIdentifier(BackingFragment.Project.self),
               ObjectIdentifier(ProjectFragment.self)
             ]
@@ -1515,7 +1515,7 @@ public class FetchBackingQuery: GraphQLQuery {
                 "parentCategory": parentCategory._fieldData,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.Project.Category.self),
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Project.Category.self),
                 ObjectIdentifier(ProjectFragment.Category.self),
                 ObjectIdentifier(CategoryFragment.self)
               ]
@@ -1557,7 +1557,7 @@ public class FetchBackingQuery: GraphQLQuery {
                 "name": name,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.Project.Country.self),
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Project.Country.self),
                 ObjectIdentifier(ProjectFragment.Country.self),
                 ObjectIdentifier(CountryFragment.self)
               ]
@@ -1708,7 +1708,7 @@ public class FetchBackingQuery: GraphQLQuery {
                 "uid": uid,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.Project.Creator.self),
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Project.Creator.self),
                 ObjectIdentifier(ProjectFragment.Creator.self),
                 ObjectIdentifier(UserFragment.self)
               ]
@@ -1762,7 +1762,7 @@ public class FetchBackingQuery: GraphQLQuery {
                   "name": name,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FetchBackingQuery.Data.Backing.Project.Creator.Location.self),
+                  ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Project.Creator.Location.self),
                   ObjectIdentifier(UserFragment.Location.self),
                   ObjectIdentifier(LocationFragment.self)
                 ]
@@ -1807,7 +1807,7 @@ public class FetchBackingQuery: GraphQLQuery {
                   "totalCount": totalCount,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FetchBackingQuery.Data.Backing.Project.Creator.StoredCards.self),
+                  ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Project.Creator.StoredCards.self),
                   ObjectIdentifier(UserFragment.StoredCards.self),
                   ObjectIdentifier(UserStoredCardsFragment.self)
                 ]
@@ -1862,7 +1862,7 @@ public class FetchBackingQuery: GraphQLQuery {
                 "symbol": symbol,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.Project.Goal.self),
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Project.Goal.self),
                 ObjectIdentifier(ProjectFragment.Goal.self),
                 ObjectIdentifier(MoneyFragment.self)
               ]
@@ -1903,7 +1903,7 @@ public class FetchBackingQuery: GraphQLQuery {
                 "active": active,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.Project.LastWave.self),
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Project.LastWave.self),
                 ObjectIdentifier(ProjectFragment.LastWave.self),
                 ObjectIdentifier(LastWaveFragment.self)
               ]
@@ -1954,7 +1954,7 @@ public class FetchBackingQuery: GraphQLQuery {
                 "name": name,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.Project.Location.self),
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Project.Location.self),
                 ObjectIdentifier(ProjectFragment.Location.self),
                 ObjectIdentifier(LocationFragment.self)
               ]
@@ -1993,7 +1993,7 @@ public class FetchBackingQuery: GraphQLQuery {
                 "acceptsNewBackers": acceptsNewBackers,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.Project.PledgeManager.self),
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Project.PledgeManager.self),
                 ObjectIdentifier(ProjectFragment.PledgeManager.self),
                 ObjectIdentifier(PledgeManagerFragment.self)
               ]
@@ -2037,7 +2037,7 @@ public class FetchBackingQuery: GraphQLQuery {
                 "symbol": symbol,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.Project.Pledged.self),
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Project.Pledged.self),
                 ObjectIdentifier(ProjectFragment.Pledged.self),
                 ObjectIdentifier(MoneyFragment.self)
               ]
@@ -2186,7 +2186,7 @@ public class FetchBackingQuery: GraphQLQuery {
               "audienceData": audienceData._fieldData,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchBackingQuery.Data.Backing.Reward.self),
+              ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Reward.self),
               ObjectIdentifier(BackingFragment.Reward.self),
               ObjectIdentifier(RewardFragment.self)
             ]
@@ -2229,7 +2229,7 @@ public class FetchBackingQuery: GraphQLQuery {
                 "symbol": symbol,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.Reward.Amount.self),
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Reward.Amount.self),
                 ObjectIdentifier(RewardFragment.Amount.self),
                 ObjectIdentifier(MoneyFragment.self)
               ]
@@ -2273,7 +2273,7 @@ public class FetchBackingQuery: GraphQLQuery {
                 "symbol": symbol,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.Reward.ConvertedAmount.self),
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Reward.ConvertedAmount.self),
                 ObjectIdentifier(RewardFragment.ConvertedAmount.self),
                 ObjectIdentifier(MoneyFragment.self)
               ]
@@ -2328,7 +2328,7 @@ public class FetchBackingQuery: GraphQLQuery {
                 "name": name,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.Reward.LocalReceiptLocation.self),
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Reward.LocalReceiptLocation.self),
                 ObjectIdentifier(RewardFragment.LocalReceiptLocation.self),
                 ObjectIdentifier(LocationFragment.self)
               ]
@@ -2372,7 +2372,7 @@ public class FetchBackingQuery: GraphQLQuery {
                 "symbol": symbol,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.Reward.PledgeAmount.self),
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Reward.PledgeAmount.self),
                 ObjectIdentifier(RewardFragment.PledgeAmount.self),
                 ObjectIdentifier(MoneyFragment.self)
               ]
@@ -2416,7 +2416,7 @@ public class FetchBackingQuery: GraphQLQuery {
                 "symbol": symbol,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.Reward.LatePledgeAmount.self),
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Reward.LatePledgeAmount.self),
                 ObjectIdentifier(RewardFragment.LatePledgeAmount.self),
                 ObjectIdentifier(MoneyFragment.self)
               ]
@@ -2469,7 +2469,7 @@ public class FetchBackingQuery: GraphQLQuery {
                 "estimatedMax": estimatedMax._fieldData,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.Reward.ShippingRule.self),
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Reward.ShippingRule.self),
                 ObjectIdentifier(RewardFragment.ShippingRule.self),
                 ObjectIdentifier(ShippingRuleFragment.self)
               ]
@@ -2512,7 +2512,7 @@ public class FetchBackingQuery: GraphQLQuery {
                   "symbol": symbol,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FetchBackingQuery.Data.Backing.Reward.ShippingRule.Cost.self),
+                  ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Reward.ShippingRule.Cost.self),
                   ObjectIdentifier(ShippingRuleFragment.Cost.self),
                   ObjectIdentifier(MoneyFragment.self)
                 ]
@@ -2563,7 +2563,7 @@ public class FetchBackingQuery: GraphQLQuery {
                   "name": name,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FetchBackingQuery.Data.Backing.Reward.ShippingRule.Location.self),
+                  ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Reward.ShippingRule.Location.self),
                   ObjectIdentifier(ShippingRuleFragment.Location.self),
                   ObjectIdentifier(LocationFragment.self)
                 ]
@@ -2617,7 +2617,7 @@ public class FetchBackingQuery: GraphQLQuery {
               "symbol": symbol,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchBackingQuery.Data.Backing.RewardsAmount.self),
+              ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.RewardsAmount.self),
               ObjectIdentifier(BackingFragment.RewardsAmount.self),
               ObjectIdentifier(MoneyFragment.self)
             ]
@@ -2661,7 +2661,7 @@ public class FetchBackingQuery: GraphQLQuery {
               "symbol": symbol,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchBackingQuery.Data.Backing.ShippingAmount.self),
+              ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.ShippingAmount.self),
               ObjectIdentifier(BackingFragment.ShippingAmount.self),
               ObjectIdentifier(MoneyFragment.self)
             ]
