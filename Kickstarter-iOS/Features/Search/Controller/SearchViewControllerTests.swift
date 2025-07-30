@@ -128,7 +128,58 @@ internal final class SearchViewContollerTests: TestCase {
       }
   }
 
+  // Test all the configurations of the empty state view.
+  // This view changes based on if the search included a query, filters, or both.
   func testView_EmptyState() {
+    let emptyResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.emptyResults
+    )]
+
+    let mockRemoteConfig = MockRemoteConfigClient()
+    mockRemoteConfig.features = [
+      RemoteConfigFeature.searchNewEmptyState.rawValue: true,
+      RemoteConfigFeature.newDesignSystem.rawValue: true
+    ]
+
+    var emptyStateTypeIterator = 0
+
+    orthogonalCombos(
+      Language.allLanguages,
+      [Device.phone4_7inch, Device.phone5_8inch, Device.pad],
+      [UIUserInterfaceStyle.light, UIUserInterfaceStyle.dark]
+    )
+    .forEach { language, device, style in
+      withEnvironment(
+        apiService: MockService(fetchGraphQLResponses: emptyResponse), colorResolver: AppColorResolver(),
+        language: language, remoteConfigClient: mockRemoteConfig
+      ) {
+        let controller = Storyboard.Search.instantiate(SearchViewController.self)
+        controller.overrideUserInterfaceStyle = style
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+        if emptyStateTypeIterator % 3 > 0 {
+          controller.viewModel.inputs.searchTextChanged("abcdefgh")
+        } else {
+          controller.viewModel.inputs.searchTextChanged("")
+        }
+        if emptyStateTypeIterator % 2 == 0 {
+          controller.viewModel.inputs.selectedFilter(.recommended(true))
+        }
+        emptyStateTypeIterator += 1
+
+        self.scheduler.run()
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
+  func testView_LegacyEmptyState() {
     let emptyResponse = [(
       GraphAPI.SearchQuery.self,
       GraphAPI.SearchQuery.Data.emptyResults
