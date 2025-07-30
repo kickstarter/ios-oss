@@ -33,42 +33,39 @@ public struct OnboardingView: View {
   }
 
   public var body: some View {
-    GeometryReader { _ in
-      ZStack {
-        OnboardingStyles.backgroundColor.ignoresSafeArea()
+    ZStack {
+      OnboardingStyles.backgroundColor.ignoresSafeArea()
 
-        Image(OnboardingStyles.backgroundImage)
-          .resizable()
-          .scaledToFit()
-          .ignoresSafeArea()
+      Image(OnboardingStyles.backgroundImage)
+        .resizable()
+        .scaledToFit()
+        .ignoresSafeArea()
 
-        VStack {
-          self.ProgressBarView()
-            .accessibilityElement(children: .combine)
+      VStack {
+        self.ProgressBarView()
+          .accessibilityElement(children: .combine)
+        // TODO: Add accessibility translations [mbl-2418]
 
-          ZStack {
-            ForEach(Array(self.onboardingItems.enumerated()), id: \.element.id) { index, item in
-              if index == self.currentIndex {
-                OnboardingItemView(
-                  item: item,
-                  progress: self.progress,
-                  onPrimaryTap: { self.handlePrimaryTap(for: item) },
-                  onSecondaryTap: { self.handleSecondaryTap(for: item) }
-                )
-                .accessibilityElement(children: .contain)
-                .accessibilityHint(Strings.project_checkout_navigation_next())
-                .transition(.asymmetric(
-                  insertion: .move(edge: .trailing).combined(with: .opacity),
-                  removal: .move(edge: .leading).combined(with: .opacity)
-                ))
-              }
+        ZStack {
+          ForEach(Array(self.onboardingItems.enumerated()), id: \.element.id) { index, item in
+            if index == self.currentIndex {
+              OnboardingItemView(
+                item: item,
+                progress: self.progress,
+                onPrimaryTap: { self.handlePrimaryTap(for: item) },
+                onSecondaryTap: { self.handleSecondaryTap(for: item) }
+              )
+              .transition(.asymmetric(
+                insertion: .move(edge: .trailing).combined(with: .opacity),
+                removal: .move(edge: .leading).combined(with: .opacity)
+              ))
             }
-            .animation(.easeInOut(duration: Constants.animationDuration), value: self.currentIndex)
           }
           .animation(.easeInOut(duration: Constants.animationDuration), value: self.currentIndex)
         }
-        .padding(.top)
+        .animation(.easeInOut(duration: Constants.animationDuration), value: self.currentIndex)
       }
+      .padding(.top)
     }
     .onAppear {
       self.viewModel.inputs.onAppear()
