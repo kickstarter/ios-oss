@@ -9635,7 +9635,7 @@
 			packageReferences = (
 				06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */,
 				06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */,
-				194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */,
+				194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */,
 				60DA50F628BFA331002E2DF1 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
 				60DA510928C7DC0E002E2DF1 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				60DA511028C96865002E2DF1 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
@@ -14011,9 +14011,9 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */ = {
+		194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/stripe/stripe-ios";
+			repositoryURL = "https://github.com/stripe/stripe-ios-spm";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 23.10.0;
@@ -14124,7 +14124,7 @@
 		};
 		19338D9A2A0D4E2300075F29 /* Stripe */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
+			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
 			productName = Stripe;
 		};
 		19821C84299D392400EF312F /* AppboySegment */ = {
@@ -14139,7 +14139,7 @@
 		};
 		1996AA1E2A5F1BC400AE2ED0 /* StripePaymentSheet */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
+			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
 			productName = StripePaymentSheet;
 		};
 		1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */ = {
