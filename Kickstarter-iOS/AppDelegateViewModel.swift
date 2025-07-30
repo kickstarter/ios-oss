@@ -782,11 +782,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         /// We don't want to request authorzation in the onboarding flow unless they've tapped the "all tracking" CTA.
         let hasSeenOnboarding = AppEnvironment.current.userDefaults.hasSeenOnboarding == true
 
-        if featureOnboardingFlowEnabled() == true {
-          return applicationIsActive && hasSeenOnboarding
-        }
-
-        return applicationIsActive && !hasSeenOnboarding
+        return applicationIsActive && hasSeenOnboarding
       }
       .map { _ in AppEnvironment.current.appTrackingTransparency }
       .map { appTrackingTransparency in

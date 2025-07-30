@@ -2202,11 +2202,13 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenShouldRequestAuthorizationStatusTrue_RequestAllowed__WhenOnboardingFlowFeatureFlagDisabled_ShowsConsentDialogAndUpdatesAdId(
+  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenShouldRequestAuthorizationStatusTrue_RequestAllowed_WhenHasSeenOnboarding_ShowsConsentDialogAndUpdatesAdId(
   ) {
     let appTrackingTransparency = MockAppTrackingTransparency()
     appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
     appTrackingTransparency.shouldRequestAuthStatus = true
+
+    userDefaults.set(true, forKey: AppKeys.hasSeenOnboarding.rawValue)
 
     withEnvironment(
       appTrackingTransparency: appTrackingTransparency
@@ -2256,7 +2258,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOn_WhenShouldRequestAuthorizationStatusFalse_RequestAllowed_DoesNotShowConsentDialogAndDoesNotUpdateAdId(
+  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenShouldRequestAuthorizationStatusFalse_RequestAllowed_DoesNotShowConsentDialogAndDoesNotUpdateAdId(
   ) {
     let appTrackingTransparency = MockAppTrackingTransparency()
     appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
@@ -2276,7 +2278,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(1))
 
       XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
-      self.requestATTrackingAuthorizationStatus.assertValueCount(1)
+      self.requestATTrackingAuthorizationStatus.assertValueCount(0)
     }
   }
 
@@ -2517,7 +2519,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(1))
 
       XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
-      self.requestATTrackingAuthorizationStatus.assertValueCount(1)
+      self.requestATTrackingAuthorizationStatus.assertValueCount(0)
     }
   }
 

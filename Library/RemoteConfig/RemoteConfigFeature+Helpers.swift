@@ -9,7 +9,13 @@ func featureEnabled(feature: RemoteConfigFeature) -> Bool {
 
   if let valueFromRemoteConfig = AppEnvironment.current.remoteConfigClient?
     .isFeatureEnabled(featureKey: feature) {
+    print("RemoteConfig value \(valueFromRemoteConfig): \(feature)")
     return valueFromRemoteConfig
+  }
+
+  /// If we are unable to retrieve a value for the onboarding flow feature flag before the app finsihes launching, return a default value of true so that we can still show the onboarding flow to new users.
+  if feature == .onboardingFlow {
+    return true
   }
 
   return false
