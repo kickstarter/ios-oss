@@ -1506,7 +1506,7 @@
 		A7ED1FD21E831C5C00BFFA01 /* LoginToutViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F761E831C5C00BFFA01 /* LoginToutViewModelTests.swift */; };
 		A7ED1FD51E831C5C00BFFA01 /* FindFriendsStatsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F791E831C5C00BFFA01 /* FindFriendsStatsCellViewModelTests.swift */; };
 		A7ED1FD61E831C5C00BFFA01 /* ActivityUpdateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F7A1E831C5C00BFFA01 /* ActivityUpdateViewModelTests.swift */; };
-		A7ED1FD71E831C5C00BFFA01 /* SearchEmptyStateCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F7B1E831C5C00BFFA01 /* SearchEmptyStateCellViewModelTests.swift */; };
+		A7ED1FD71E831C5C00BFFA01 /* SearchLegacyEmptyStateCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F7B1E831C5C00BFFA01 /* SearchLegacyEmptyStateCellViewModelTests.swift */; };
 		A7ED1FDD1E831C5C00BFFA01 /* ShareViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F811E831C5C00BFFA01 /* ShareViewModelTests.swift */; };
 		A7ED1FDE1E831C5C00BFFA01 /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F821E831C5C00BFFA01 /* DiscoveryExpandableRowCellViewModelTests.swift */; };
 		A7ED1FDF1E831C5C00BFFA01 /* DiscoveryFiltersViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F831E831C5C00BFFA01 /* DiscoveryFiltersViewModelTests.swift */; };
@@ -1987,8 +1987,8 @@
 		D79F0F712102973A00D3B32C /* SettingsPrivacyDeleteOrRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F702102973A00D3B32C /* SettingsPrivacyDeleteOrRequestCell.swift */; };
 		D79F0F7321067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F7221067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift */; };
 		D79F0F7521068DC800D3B32C /* SettingsDeleteOrRequestCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F7421068DC800D3B32C /* SettingsDeleteOrRequestCellViewModel.swift */; };
-		D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */; };
-		D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */; };
+		D7A37C8F1E2EB01700EA066D /* SearchLegacyEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37C8E1E2EB01700EA066D /* SearchLegacyEmptyStateCell.swift */; };
+		D7A37CCF1E2FF93D00EA066D /* SearchLegacyEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37CCE1E2FF93D00EA066D /* SearchLegacyEmptyStateCellViewModel.swift */; };
 		D7A37D7A1E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37D781E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift */; };
 		D7A86A3B1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A86A3A1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift */; };
 		D7ADDFE722E0DAFA00157D83 /* RewardCellProjectBackingStateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ADDFE522E0DAEB00157D83 /* RewardCellProjectBackingStateType.swift */; };
@@ -3683,7 +3683,7 @@
 		A7ED1F761E831C5C00BFFA01 /* LoginToutViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginToutViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F791E831C5C00BFFA01 /* FindFriendsStatsCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsStatsCellViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F7A1E831C5C00BFFA01 /* ActivityUpdateViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityUpdateViewModelTests.swift; sourceTree = "<group>"; };
-		A7ED1F7B1E831C5C00BFFA01 /* SearchEmptyStateCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCellViewModelTests.swift; sourceTree = "<group>"; };
+		A7ED1F7B1E831C5C00BFFA01 /* SearchLegacyEmptyStateCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchLegacyEmptyStateCellViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F811E831C5C00BFFA01 /* ShareViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F821E831C5C00BFFA01 /* DiscoveryExpandableRowCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F831E831C5C00BFFA01 /* DiscoveryFiltersViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersViewModelTests.swift; sourceTree = "<group>"; };
@@ -4178,8 +4178,8 @@
 		D79F0F702102973A00D3B32C /* SettingsPrivacyDeleteOrRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyDeleteOrRequestCell.swift; sourceTree = "<group>"; };
 		D79F0F7221067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRecommendationsCellViewModel.swift; sourceTree = "<group>"; };
 		D79F0F7421068DC800D3B32C /* SettingsDeleteOrRequestCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDeleteOrRequestCellViewModel.swift; sourceTree = "<group>"; };
-		D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCell.swift; sourceTree = "<group>"; };
-		D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCellViewModel.swift; sourceTree = "<group>"; };
+		D7A37C8E1E2EB01700EA066D /* SearchLegacyEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchLegacyEmptyStateCell.swift; sourceTree = "<group>"; };
+		D7A37CCE1E2FF93D00EA066D /* SearchLegacyEmptyStateCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchLegacyEmptyStateCellViewModel.swift; sourceTree = "<group>"; };
 		D7A37D781E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MostPopularSearchProjectCellViewModel.swift; sourceTree = "<group>"; };
 		D7A86A3A1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MostPopularSearchProjectCellViewModelTests.swift; sourceTree = "<group>"; };
 		D7ADDFE522E0DAEB00157D83 /* RewardCellProjectBackingStateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellProjectBackingStateType.swift; sourceTree = "<group>"; };
@@ -5362,7 +5362,7 @@
 				A77352EC1D5E70FC0017E239 /* DiscoverProjectsTitleCell.swift */,
 				E10841712DCBD874000E4F17 /* SearchResultsCountCell.swift */,
 				A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */,
-				D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */,
+				D7A37C8E1E2EB01700EA066D /* SearchLegacyEmptyStateCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -8469,8 +8469,8 @@
 				333F4E572DEA4D3F005C4964 /* RewardsCollectionViewModelTests.swift */,
 				A775B5451CA871D700BBB587 /* RootViewModel.swift */,
 				A7ED205F1E83256700BFFA01 /* RootViewModelTests.swift */,
-				D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */,
-				A7ED1F7B1E831C5C00BFFA01 /* SearchEmptyStateCellViewModelTests.swift */,
+				D7A37CCE1E2FF93D00EA066D /* SearchLegacyEmptyStateCellViewModel.swift */,
+				A7ED1F7B1E831C5C00BFFA01 /* SearchLegacyEmptyStateCellViewModelTests.swift */,
 				A7F441AA1D005A9400FE6FC5 /* SearchViewModel.swift */,
 				E11E06A42D83713A002E81B9 /* SearchViewModel+GraphQL.swift */,
 				A7ED1FA41E831C5C00BFFA01 /* SearchViewModelTests.swift */,
@@ -9985,7 +9985,7 @@
 				80E8EAC81D3EC65A007BDA4B /* Image.swift in Sources */,
 				4751A677272B31D000F81DD5 /* ProjectTabCategoryDescriptionCellViewModel.swift in Sources */,
 				8A6C58932475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift in Sources */,
-				D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */,
+				D7A37CCF1E2FF93D00EA066D /* SearchLegacyEmptyStateCellViewModel.swift in Sources */,
 				80D73AF61D50F1A60099231F /* Navigation.swift in Sources */,
 				473DE012273C502F0033331D /* ProjectRisksCellViewModel.swift in Sources */,
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
@@ -10317,7 +10317,7 @@
 				A7ED1F351E830FDC00BFFA01 /* String+SimpleHTMLTests.swift in Sources */,
 				A7ED1FB31E831C5C00BFFA01 /* ActivitySampleBackingCellViewModelTests.swift in Sources */,
 				39B5E1102B86C56E00FFB720 /* RefInfoTests.swift in Sources */,
-				A7ED1FD71E831C5C00BFFA01 /* SearchEmptyStateCellViewModelTests.swift in Sources */,
+				A7ED1FD71E831C5C00BFFA01 /* SearchLegacyEmptyStateCellViewModelTests.swift in Sources */,
 				A7ED1F491E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift in Sources */,
 				77AA2B3D233D10D3008BBCB8 /* CreateBackingConstructorTests.swift in Sources */,
 				8AD9CF1424C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift in Sources */,
@@ -10677,7 +10677,7 @@
 				59392BEC1D7094B0001C99A4 /* ProjectUpdatesViewController.swift in Sources */,
 				8A1A93D024C601CA0012FB43 /* PledgeShippingSummaryView.swift in Sources */,
 				8AE09C3A244537BE00036043 /* PledgeDisclaimerView.swift in Sources */,
-				D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */,
+				D7A37C8F1E2EB01700EA066D /* SearchLegacyEmptyStateCell.swift in Sources */,
 				D6A45DB72319A7E1006DDB01 /* ManagePledgeViewController.swift in Sources */,
 				01940B2B1D46814E0074FCE3 /* HelpWebViewModel.swift in Sources */,
 				33F04B262D28A8090078AED1 /* PledgeOverTimeBadgeView.swift in Sources */,

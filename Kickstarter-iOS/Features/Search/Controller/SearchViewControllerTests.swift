@@ -128,7 +128,7 @@ internal final class SearchViewContollerTests: TestCase {
       }
   }
 
-  func testView_EmptyState() {
+  func testView_LegacyEmptyState() {
     let emptyResponse = [(
       GraphAPI.SearchQuery.self,
       GraphAPI.SearchQuery.Data.emptyResults

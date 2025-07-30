@@ -4,8 +4,8 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-internal final class SearchEmptyStateCell: UITableViewCell, ValueCell {
-  fileprivate let viewModel: SearchEmptyStateCellViewModelType = SearchEmptyStateCellViewModel()
+internal final class SearchLegacyEmptyStateCell: UITableViewCell, ValueCell {
+  fileprivate let viewModel: SearchLegacyEmptyStateCellViewModelType = SearchLegacyEmptyStateCellViewModel()
 
   @IBOutlet fileprivate var noResultsLabel: UILabel!
   @IBOutlet fileprivate var searchTermNotFoundLabel: UILabel!
@@ -20,8 +20,8 @@ internal final class SearchEmptyStateCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
-      |> SearchEmptyStateCell.lens.backgroundColor .~ .clear
-      |> SearchEmptyStateCell.lens.contentView.layoutMargins %~~ { _, cell in
+      |> SearchLegacyEmptyStateCell.lens.backgroundColor .~ .clear
+      |> SearchLegacyEmptyStateCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(top: Styles.grid(4), left: Styles.grid(24), bottom: Styles.grid(2), right: Styles.grid(24))
           : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(2))
