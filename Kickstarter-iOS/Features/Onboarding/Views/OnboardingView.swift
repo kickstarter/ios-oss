@@ -44,8 +44,7 @@ public struct OnboardingView: View {
       VStack {
         self.ProgressBarView()
           .accessibilityElement(children: .combine)
-          // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
-          .accessibilityLabel("FPO: Onboarding Progress Bar")
+        // TODO: Add accessibility translations [mbl-2418]
 
         ZStack {
           ForEach(Array(self.onboardingItems.enumerated()), id: \.element.id) { index, item in
@@ -56,15 +55,13 @@ public struct OnboardingView: View {
                 onPrimaryTap: { self.handlePrimaryTap(for: item) },
                 onSecondaryTap: { self.handleSecondaryTap(for: item) }
               )
-              .accessibilityElement(children: .contain)
-              // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
-              .accessibilityHint("FPO: Tap the next button to continue.")
               .transition(.asymmetric(
                 insertion: .move(edge: .trailing).combined(with: .opacity),
                 removal: .move(edge: .leading).combined(with: .opacity)
               ))
             }
           }
+          .animation(.easeInOut(duration: Constants.animationDuration), value: self.currentIndex)
         }
         .animation(.easeInOut(duration: Constants.animationDuration), value: self.currentIndex)
       }
@@ -77,7 +74,6 @@ public struct OnboardingView: View {
       self.viewModel.outputs.onboardingItems.startWithValues { items in
         self.onboardingItems = items
       }
-
       /// Handle push notification system dialog completion
       self.viewModel.outputs.didCompletePushNotificationSystemDialog
         .observeForUI()
