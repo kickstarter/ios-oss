@@ -1,57 +1,59 @@
-import Combine
+import AppTrackingTransparency
 import Foundation
 import KsApi
 import ReactiveSwift
+import UserNotifications
 
 public protocol OnboardingViewModelInputs {
-  func getNotifiedTapped()
   func allowTrackingTapped()
+  func didCompleteAppTrackingDialog(with authStatus: ATTrackingManager.AuthorizationStatus)
+  func didCompletePushNotificationsDialog(with authStatus: UNAuthorizationStatus)
+  func getNotifiedTapped()
   func goToLoginSignupTapped()
+  func goToNextItemTapped(item: OnboardingItem)
+  func onAppear()
+  func onboardingFlowEnded()
 }
 
 public protocol OnboardingViewModelOutputs {
-  var onboardingItems: [OnboardingItem] { get }
-  var triggerPushNotificationPermissionPopup: AnyPublisher<Void, Never> { get }
-  var triggerAppTrackingTransparencyPopup: AnyPublisher<Void, Never> { get }
-  var goToLoginSignup: AnyPublisher<LoginIntent, Never> { get }
+  var onboardingItems: SignalProducer<[OnboardingItem], Never> { get }
+  var didCompletePushNotificationSystemDialog: Signal<Void, Never> { get }
+  var triggerAppTrackingTransparencyPopup: Signal<Void, Never> { get }
 }
 
-// MARK: - Combined Type
+public protocol OnboardingViewModelType {
+  var inputs: OnboardingViewModelInputs { get }
+  var outputs: OnboardingViewModelOutputs { get }
+}
 
-public typealias OnboardingViewModelType = Equatable & Identifiable &
-  ObservableObject &
-  OnboardingViewModelInputs & OnboardingViewModelOutputs
+public final class OnboardingViewModel: OnboardingViewModelType, Equatable & Identifiable & ObservableObject,
+  OnboardingViewModelOutputs, OnboardingViewModelInputs {
+  // MARK: - Properties
 
-// MARK: - ViewModel
-
-public final class OnboardingViewModel: OnboardingViewModelType {
   private let useCase: OnboardingUseCaseType
-  private var cancellables = Set<AnyCancellable>()
-  public var onboardingItems: [OnboardingItem] = []
 
-  @Published public private(set) var currentIndex: Int = 0
+  // MARK: - Outputs
+
+  public let onboardingItems: SignalProducer<[OnboardingItem], Never>
+  public let didCompletePushNotificationSystemDialog: Signal<Void, Never>
+  public let triggerAppTrackingTransparencyPopup: Signal<Void, Never>
 
   // MARK: - Init
 
   public init(with bundle: Bundle = .main) {
     self.useCase = OnboardingUseCase(for: bundle)
 
-    self.useCase.uiOutputs.onboardingItems
-      .observe(on: UIScheduler())
-      .startWithValues { [weak self] items in
-        self?.onboardingItems = items
-      }
+    self.onboardingItems = self.useCase.uiOutputs.onboardingItems
 
-    self.useCase.outputs.triggerAppTrackingTransparencyPopup
-      .observe(on: UIScheduler())
-      .observeValues { [weak self] in
-        self?.triggerAppTrackingTransparencyPopupSubject.send()
-      }
+    self.didCompletePushNotificationSystemDialog = self.useCase.outputs
+      .didCompletePushNotificationSystemDialog
 
-    self.useCase.uiOutputs.goToLoginSignup
-      .observe(on: UIScheduler())
-      .observeValues { [weak self] intent in
-        self?.goToLoginSignupSubject.send(intent)
+    self.triggerAppTrackingTransparencyPopup = self.useCase.outputs.triggerAppTrackingTransparencyDialog
+      .map { _ in
+        AppEnvironment.current.ksrAnalytics
+          .trackSystemPermissionsDialogViewed(on: .onboardingAppTrackingDialog)
+
+        return ()
       }
   }
 
@@ -59,35 +61,67 @@ public final class OnboardingViewModel: OnboardingViewModelType {
     lhs.id == rhs.id
   }
 
-  private let triggerPushNotificationPermissionPopupSubject = PassthroughSubject<Void, Never>()
-  private let triggerAppTrackingTransparencyPopupSubject = PassthroughSubject<Void, Never>()
-  private let goToLoginSignupSubject = PassthroughSubject<LoginIntent, Never>()
-
-  // MARK: - Outputs
-
-  public var triggerPushNotificationPermissionPopup: AnyPublisher<Void, Never> {
-    self.triggerPushNotificationPermissionPopupSubject.eraseToAnyPublisher()
-  }
-
-  public var triggerAppTrackingTransparencyPopup: AnyPublisher<Void, Never> {
-    self.triggerAppTrackingTransparencyPopupSubject.eraseToAnyPublisher()
-  }
-
-  public var goToLoginSignup: AnyPublisher<LoginIntent, Never> {
-    self.goToLoginSignupSubject.eraseToAnyPublisher()
-  }
+  public var inputs: OnboardingViewModelInputs { return self }
+  public var outputs: OnboardingViewModelOutputs { return self }
 
   // MARK: - Inputs
 
+  public func onAppear() {
+    AppEnvironment.current.ksrAnalytics.trackOnboardingPageViewed(at: .welcome)
+  }
+
   public func getNotifiedTapped() {
-    self.triggerPushNotificationPermissionPopupSubject.send()
+    self.useCase.uiInputs.getNotifiedTapped()
+
+    AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(
+      context: .onboardingGetNotified,
+      item: .enableNotifications
+    )
   }
 
   public func allowTrackingTapped() {
     self.useCase.uiInputs.allowTrackingTapped()
+
+    AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(
+      context: .onboardingAllowTracking,
+      item: .allowTracking
+    )
+  }
+
+  public func didCompletePushNotificationsDialog(with authStatus: UNAuthorizationStatus) {
+    /// Send analytics event when the user has finished interacting with the PN system dialog. `authStatus` let's insights know whether they allowed or denied permissions.
+    AppEnvironment.current.ksrAnalytics.trackPushNotificationPermissionsDialogInteraction(
+      .onboardingNotificationsDialog,
+      authStatus: authStatus
+    )
+  }
+
+  public func didCompleteAppTrackingDialog(with authStatus: ATTrackingManager.AuthorizationStatus) {
+    /// Send analytics event when the user has finished interacting with the AppTracking  system dialog. `authStatus` let's insights know whether they allowed or denied permissions.
+    AppEnvironment.current.ksrAnalytics.trackAppTrackingTransparencyPermissionsDialogInteraction(
+      .onboardingAppTrackingDialog,
+      authStatus: authStatus
+    )
   }
 
   public func goToLoginSignupTapped() {
-    self.useCase.uiInputs.goToLoginSignupTapped()
+    AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(
+      context: .onboardingSignUpLogIn,
+      item: .loginSignUp
+    )
+
+    AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(context: .onboardingClose)
+  }
+
+  public func onboardingFlowEnded() {
+    AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(context: .onboardingClose)
+  }
+
+  public func goToNextItemTapped(item: OnboardingItem) {
+    AppEnvironment.current.ksrAnalytics.trackOnboardingPageViewed(at: item.type)
+    AppEnvironment.current.ksrAnalytics.trackOnboardingPageButtonTapped(
+      context: .onboardingNext,
+      item: item.type
+    )
   }
 }

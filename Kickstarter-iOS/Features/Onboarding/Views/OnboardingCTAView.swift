@@ -12,7 +12,6 @@ struct CallToActionView: View {
   let animationDuration: CGFloat
   let onPrimaryTap: () -> Void
   let onSecondaryTap: () -> Void
-  let onLoginSignup: () -> Void
 
   var body: some View {
     // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
@@ -31,7 +30,7 @@ struct CallToActionView: View {
         self.secondaryButton(title: "FPO: Not right now", action: self.onSecondaryTap)
 
       case .loginSignUp:
-        self.primaryButton(title: "FPO: Sign up or log in", action: self.onLoginSignup, for: self.item)
+        self.primaryButton(title: "FPO: Sign up or log in", action: self.onPrimaryTap, for: self.item)
         self.secondaryButton(title: "FPO: Explore the app", action: self.onSecondaryTap)
       }
     }

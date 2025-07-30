@@ -15,10 +15,6 @@ func featureEnabled(feature: RemoteConfigFeature) -> Bool {
   return false
 }
 
-public func featureDarkModeEnabled() -> Bool {
-  return featureEnabled(feature: .darkModeEnabled)
-}
-
 public func featureEditPledgeOverTimeEnabled() -> Bool {
   return featureEnabled(feature: .editPledgeOverTimeEnabled)
 }
@@ -31,7 +27,7 @@ public func featureUseKeychainForOAuthTokenEnabled() -> Bool {
   featureEnabled(feature: .useKeychainForOAuthToken)
 }
 
-public func onboardingFlowEnabled() -> Bool {
+public func featureOnboardingFlowEnabled() -> Bool {
   featureEnabled(feature: .onboardingFlow)
 }
 

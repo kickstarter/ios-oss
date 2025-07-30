@@ -2037,32 +2037,33 @@
     case let .failure(error): return .init(error: error)
     }
   }
+
+  private extension Result {
+    var value: Success? {
+      switch self {
+      case let .success(value): return value
+      case .failure: return nil
+      }
+    }
+
+    var error: Failure? {
+      switch self {
+      case .success: return nil
+      case let .failure(error): return error
+      }
+    }
+  }
+
+  extension GraphAPI.CompleteOnSessionCheckoutMutation.Data: Decodable {
+    public init(from _: Decoder) throws {
+      fatalError("The test code should not actually be decoding this object.")
+    }
+  }
+
+  extension GraphAPI.BuildPaymentPlanQuery.Data: Decodable {
+    public init(from _: Decoder) throws {
+      fatalError("The test code should not actually be decoding this object.")
+    }
+  }
+
 #endif
-
-private extension Result {
-  var value: Success? {
-    switch self {
-    case let .success(value): return value
-    case .failure: return nil
-    }
-  }
-
-  var error: Failure? {
-    switch self {
-    case .success: return nil
-    case let .failure(error): return error
-    }
-  }
-}
-
-extension GraphAPI.CompleteOnSessionCheckoutMutation.Data: Decodable {
-  public init(from _: Decoder) throws {
-    fatalError("The test code should not actually be decoding this object.")
-  }
-}
-
-extension GraphAPI.BuildPaymentPlanQuery.Data: Decodable {
-  public init(from _: Decoder) throws {
-    fatalError("The test code should not actually be decoding this object.")
-  }
-}

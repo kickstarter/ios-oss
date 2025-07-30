@@ -70,6 +70,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
 
+  /// Call when the users taps 'Log in or Sign up' from the onboarding flow (`OnboardingView`).
+  func goToLoginSignup(from intent: LoginIntent)
+
   /// Call when Remote Config configuration has failed
   func remoteConfigClientConfigurationFailed()
 
@@ -148,7 +151,7 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when we should register the device push token in Segment Analytics.
   var registerPushTokenInSegment: Signal<Data, Never> { get }
 
-  /// Emits when  application didFinishLaunchingWithOptions.
+  /// Emits when application didFinishLaunchingWithOptions.
   var requestATTrackingAuthorizationStatus: Signal<Void, Never> { get }
 
   /// Emits when our config updates with the enabled state for Semgent Analytics.
@@ -166,6 +169,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits immediately and when the user's authorization status changes
   var trackingAuthorizationStatus: SignalProducer<AppTrackingAuthorization, Never> { get }
 
+  /// Emits when application didFinishLaunchingWithOptions and the Onboarding Flow feature flag is enabled.
+  var triggerOnboardingFlow: Signal<(), Never> { get }
+
   /// Emits when we should unregister the user from notifications.
   var unregisterForRemoteNotifications: Signal<(), Never> { get }
 
@@ -174,8 +180,6 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits a config value that should be updated in the environment.
   var updateConfigInEnvironment: Signal<Config, Never> { get }
-
-  var darkModeEnabled: Signal<Bool, Never> { get }
 }
 
 public protocol AppDelegateViewModelType {
@@ -291,7 +295,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let pushTokenRegistrationStartedEvents = Signal.merge(
       self.didAcceptReceivingRemoteNotificationsProperty.signal,
-      pushNotificationsPreviouslyAuthorized.filter(isTrue).ignoreValues()
+      pushNotificationsPreviouslyAuthorized
+        .filter { isPreviouslyAuthorzied in isPreviouslyAuthorzied }
+        .ignoreValues()
     )
     .flatMap {
       AppEnvironment.current.pushRegistrationType.register(for: [.alert, .sound, .badge])
@@ -308,6 +314,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         if let context = $0.userInfo?.values.first as? PushNotificationDialog.Context {
           return PushNotificationDialog.canShowDialog(for: context)
         }
+
         return false
       }
 
@@ -324,6 +331,22 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
 
     self.registerPushTokenInSegment = self.deviceTokenDataProperty.signal
+
+    // MARK: - Onboarding Flow
+
+    /// Trigger if featureOnboardingFlowEnabled and the user hasn't authorized or denied Push Notification or AppTrackingTransparency permissions yet.
+    self.triggerOnboardingFlow = Signal.combineLatest(
+      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
+      pushNotificationsPreviouslyAuthorized.filter { isFalse($0) && featureOnboardingFlowEnabled() }
+    )
+    .filter { _ in
+      let shouldRequestAppTracking = AppEnvironment.current.appTrackingTransparency
+        .shouldRequestAuthorizationStatus() == true
+      let hasNotSeenOnboarding = AppEnvironment.current.userDefaults.hasSeenOnboarding == false
+
+      return shouldRequestAppTracking && hasNotSeenOnboarding
+    }
+    .mapConst(())
 
     // Deep links. For more information, see
     // https://app.getguru.com/card/cyRdjqgi/How-iOS-Universal-Links-work
@@ -522,7 +545,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.goToLoginWithIntent = Signal.merge(
       fixErroredPledgeLinkAndIsLoggedIn.filter(third >>> isFalse).mapConst(.erroredPledge),
-      goToLogin.mapConst(.generic)
+      goToLogin.mapConst(.generic),
+      self.goToLoginSignupProperty.signal.skipNil()
     )
 
     self.goToMessageThread = deepLink
@@ -744,6 +768,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
       .map { _ in .displayInAppMessageNow }
 
+    /// Request AppTransparencyTracking outside of onboarding.
     self.requestATTrackingAuthorizationStatus = Signal
       .combineLatest(
         self.applicationDidFinishLaunchingReturnValueProperty.signal.ignoreValues(),
@@ -752,13 +777,23 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .map(second)
       .skipRepeats()
       .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
-      .filter(isTrue)
+      .filter { applicationIsActive in
+        /// Only attempt to request authorization outside of onboarding if the application is active and the user has seen the onboarding flow.
+        /// We don't want to request authorzation in the onboarding flow unless they've tapped the "all tracking" CTA.
+        let hasSeenOnboarding = AppEnvironment.current.userDefaults.hasSeenOnboarding == true
+
+        if featureOnboardingFlowEnabled() == true {
+          return applicationIsActive && hasSeenOnboarding
+        }
+
+        return applicationIsActive && !hasSeenOnboarding
+      }
       .map { _ in AppEnvironment.current.appTrackingTransparency }
       .map { appTrackingTransparency in
         if
           appTrackingTransparency.advertisingIdentifier == nil &&
           appTrackingTransparency.shouldRequestAuthorizationStatus() {
-          appTrackingTransparency.requestAndSetAuthorizationStatus()
+          appTrackingTransparency.requestAndSetAuthorizationStatus(nil)
         }
         return ()
       }
@@ -771,14 +806,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .flatMap { () in
         AppEnvironment.current.appTrackingTransparency.authorizationStatus
       }
-
-    self.darkModeEnabled = Signal.merge(
-      self.applicationWillEnterForegroundProperty.signal,
-      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
-      self.didUpdateRemoteConfigClientProperty.signal.ignoreValues()
-    )
-    .map { _ in featureDarkModeEnabled() }
-    .skipRepeats(==)
   }
 
   public var inputs: AppDelegateViewModelInputs { return self }
@@ -874,6 +901,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.foundRedirectUrlProperty.value = url
   }
 
+  private let goToLoginSignupProperty = MutableProperty<LoginIntent?>(nil)
+  public func goToLoginSignup(from intent: LoginIntent) {
+    self.goToLoginSignupProperty.value = intent
+  }
+
   fileprivate typealias ApplicationOpenUrl = (
     application: UIApplication?,
     url: URL,
@@ -945,10 +977,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let showAlert: Signal<Notification, Never>
   public let synchronizeUbiquitousStore: Signal<(), Never>
   public let trackingAuthorizationStatus: SignalProducer<AppTrackingAuthorization, Never>
+  public let triggerOnboardingFlow: Signal<(), Never>
   public let unregisterForRemoteNotifications: Signal<(), Never>
   public let updateCurrentUserInEnvironment: Signal<User, Never>
   public let updateConfigInEnvironment: Signal<Config, Never>
-  public let darkModeEnabled: Signal<Bool, Never>
 }
 
 /// Handles the deeplink route with both an id and text based name for a deeplink to categories.
