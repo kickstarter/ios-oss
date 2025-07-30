@@ -17,6 +17,7 @@ private enum Constants {
 }
 
 public struct OnboardingView: View {
+  @SwiftUI.Environment(\.dismiss) private var dismiss
   @ObservedObject var viewModel: OnboardingViewModel
   @Namespace private var animation
   @State private var currentIndex: Int = 0
@@ -53,8 +54,7 @@ public struct OnboardingView: View {
                 item: item,
                 progress: self.progress,
                 onPrimaryTap: { self.handlePrimaryTap(for: item) },
-                onSecondaryTap: { self.goToNextItem() },
-                onLoginSignup: { self.viewModel.goToLoginSignupTapped() }
+                onSecondaryTap: { self.handleSecondaryTap(for: item) }
               )
               .accessibilityElement(children: .contain)
               // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
@@ -71,18 +71,26 @@ public struct OnboardingView: View {
       .padding(.top)
     }
     .onAppear {
-      // Bind onboarding items
-      self.viewModel.onboardingItems.startWithValues { items in
+      self.viewModel.inputs.onAppear()
+
+      /// Bind onboarding items
+      self.viewModel.outputs.onboardingItems.startWithValues { items in
         self.onboardingItems = items
       }
 
-      // Handle push notification system dialog completion
-      self.viewModel.didCompletePushNotificationSystemDialog.observeValues {
-        self.goToNextItem()
-      }
+      /// Handle push notification system dialog completion
+      self.viewModel.outputs.didCompletePushNotificationSystemDialog
+        .observeForUI()
+        .observeValues {
+          UNUserNotificationCenter.current().getNotificationSettings { settings in
+            self.viewModel.inputs.didCompletePushNotificationsDialog(with: settings.authorizationStatus)
+          }
 
-      // Trigger app tracking permission popup
-      self.viewModel.triggerAppTrackingTransparencyPopup.observeValues {
+          self.goToNextItem()
+        }
+
+      /// Trigger app tracking permission popup
+      self.viewModel.outputs.triggerAppTrackingTransparencyPopup.observeValues {
         self.presentAppTrackingPopup()
       }
     }
@@ -102,7 +110,7 @@ public struct OnboardingView: View {
 
       Button(action: {
         withAnimation {
-          self.currentIndex = 0
+          self.handleClose()
         }
       }) {
         Image(OnboardingStyles.closeImage)
@@ -127,23 +135,47 @@ public struct OnboardingView: View {
     case .welcome, .saveProjects:
       self.goToNextItem()
     case .enableNotifications:
-      self.viewModel.getNotifiedTapped()
+      self.viewModel.inputs.getNotifiedTapped()
     case .allowTracking:
-      self.viewModel.allowTrackingTapped()
+      self.viewModel.inputs.allowTrackingTapped()
     case .loginSignUp:
-      self.viewModel.goToLoginSignupTapped()
+      /// Triggers the `goToLoginFromOnboarding` notification to inform the AppDelegate to dismiss this view and launch the login/signup flow.
+      NotificationCenter.default.post(name: .ksr_goToLoginFromOnboarding, object: nil)
+      self.viewModel.inputs.goToLoginSignupTapped()
     }
+  }
+
+  private func handleSecondaryTap(for item: OnboardingItem) {
+    switch item.type {
+    case .welcome, .saveProjects, .enableNotifications, .allowTracking:
+      self.goToNextItem()
+    case .loginSignUp:
+      self.handleClose()
+    }
+  }
+
+  private func handleClose() {
+    self.viewModel.inputs.onboardingFlowEnded()
+    self.hasSeenOnboarding()
+    self.dismiss()
   }
 
   private func goToNextItem() {
     guard self.currentIndex < self.onboardingItems.count - 1 else { return }
 
     self.currentIndex += 1
+
+    self.viewModel.inputs.goToNextItemTapped(item: self.onboardingItems[self.currentIndex])
   }
 
   private func presentAppTrackingPopup() {
-    AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus {
+    Library.AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus { authStatus in
+      self.viewModel.inputs.didCompleteAppTrackingDialog(with: authStatus)
       self.goToNextItem()
     }
+  }
+
+  private func hasSeenOnboarding() {
+    AppEnvironment.current.userDefaults.set(true, forKey: AppKeys.hasSeenOnboarding.rawValue)
   }
 }
