@@ -334,10 +334,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     // MARK: - Onboarding Flow
 
-    /// Trigger if featureOnboardingFlowEnabled and the user hasn't authorized or denied Push Notification or AppTrackingTransparency permissions yet.
+    /// Trigger if the user hasn't authorized or denied Push Notification or AppTrackingTransparency permissions yet and hasn't seen the onboarding flow already..
     self.triggerOnboardingFlow = Signal.combineLatest(
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
-      pushNotificationsPreviouslyAuthorized.filter { isFalse($0) && featureOnboardingFlowEnabled() }
+      pushNotificationsPreviouslyAuthorized.filter { isFalse($0) }
     )
     .filter { _ in
       let shouldRequestAppTracking = AppEnvironment.current.appTrackingTransparency
@@ -782,11 +782,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         /// We don't want to request authorzation in the onboarding flow unless they've tapped the "all tracking" CTA.
         let hasSeenOnboarding = AppEnvironment.current.userDefaults.hasSeenOnboarding == true
 
-        if featureOnboardingFlowEnabled() == true {
-          return applicationIsActive && hasSeenOnboarding
-        }
-
-        return applicationIsActive && !hasSeenOnboarding
+        return applicationIsActive && hasSeenOnboarding
       }
       .map { _ in AppEnvironment.current.appTrackingTransparency }
       .map { appTrackingTransparency in
