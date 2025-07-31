@@ -90,7 +90,7 @@ internal final class SearchEmptyStateCell: UITableViewCell, ValueCell {
         .constraint(equalTo: self.contentView.layoutMarginsGuide.trailingAnchor)
     ])
 
-    self.clearFiltersButton.setTitle("FPO: Remove all filters", for: .normal)
+    self.clearFiltersButton.setTitle(Strings.Remove_all_filters(), for: .normal)
     self.clearFiltersButton.addTarget(self, action: #selector(self.onClearFiltersTapped), for: .touchUpInside)
     self.clearFiltersButton.translatesAutoresizingMaskIntoConstraints = false
 

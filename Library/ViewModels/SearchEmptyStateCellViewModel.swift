@@ -33,20 +33,20 @@ public final class SearchEmptyStateCellViewModel: SearchEmptyStateCellViewModelT
       .skipNil()
       .map { searchData in
         if let query = searchData.query, query.count > 0 {
-          return "FPO: No results for \"\(query)\""
+          return Strings.No_results_for(query: query)
         }
-        return "FPO: No results"
+        return Strings.No_results()
       }
 
     self.subtitleText = self.searchDataProperty.signal
       .skipNil()
       .map { searchData in
         if searchData.hasFilters && searchData.query?.isEmpty == false {
-          return "FPO: Try rephrasing your search or adjusting the filters"
+          return Strings.Try_rephrasing_your_search_or_adjusting_the_filters()
         } else if searchData.hasFilters {
-          return "FPO: Try adjusting the filters"
+          return Strings.Try_adjusting_the_filters()
         }
-        return "FPO: Try rephrasing your search"
+        return Strings.Try_rephrasing_your_search()
       }
 
     self.hideClearFiltersButton = self.searchDataProperty.signal
