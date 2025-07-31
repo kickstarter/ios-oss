@@ -46,7 +46,11 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
       [Device.pad, Device.phone4_7inch],
       [UIUserInterfaceStyle.light, UIUserInterfaceStyle.dark]
     ).forEach { language, device, style in
-      withEnvironment(colorResolver: AppColorResolver(), language: language, remoteConfigClient: designSystemOn) {
+      withEnvironment(
+        colorResolver: AppColorResolver(),
+        language: language,
+        remoteConfigClient: designSystemOn
+      ) {
         let controller = PledgeOverTimePaymentScheduleViewController.instantiate()
         controller.overrideUserInterfaceStyle = style
 
