@@ -10,7 +10,7 @@ query FetchUserBackings($status: BackingState!, $withStoredCards: Boolean!, $inc
         ...BackingFragment
         errorReason
         paymentIncrements {
-          ...PaymentIncrementBackingFragment
+          ...PaymentIncrementFragment
         }
       }
       totalCount

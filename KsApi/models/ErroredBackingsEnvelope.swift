@@ -26,8 +26,8 @@ extension ErroredBackingsEnvelope {
         paymentIncrements = backingIncrements
           .compactMap {
             PledgePaymentIncrement(
-              withIncrementBackingFragment: $0.fragments
-                .paymentIncrementBackingFragment
+              withGraphQLFragment: $0.fragments
+                .paymentIncrementFragment
             )
           }
       }
