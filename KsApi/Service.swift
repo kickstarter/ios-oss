@@ -141,7 +141,8 @@ public struct Service: ServiceType {
     return GraphQL.shared.client
       .fetch(query: GraphAPI.BuildPaymentPlanQuery(
         slug: projectSlug,
-        amount: pledgeAmount
+        amount: pledgeAmount,
+        includeRefundedAmount: false
       ))
   }
 
@@ -506,7 +507,8 @@ public struct Service: ServiceType {
             status: GraphQLEnum.case(status),
             withStoredCards: false,
             includeShippingRules: true,
-            includeLocalPickup: false
+            includeLocalPickup: false,
+            includeRefundedAmount: false
           )
       )
       .flatMap(ErroredBackingsEnvelope.producer(from:))
@@ -521,7 +523,37 @@ public struct Service: ServiceType {
             id: "\(id)",
             withStoredCards: withStoredCards,
             includeShippingRules: true,
-            includeLocalPickup: true
+            includeLocalPickup: true,
+            includeRefundedAmount: false
+          )
+      )
+      .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
+  }
+
+  /// Fetches backing details including `refundedAmount` in the `paymentIncrements`.
+  ///
+  /// Use this method exclusively in flows that require displaying refund information,
+  /// such as the `ManagePledge` flow where the "Payment Scheduled" component
+  /// needs to reflect refunded increments.
+  ///
+  /// Fetching `refundedAmount` adds significant load to the backend.
+  /// Per the Payments team recommendation, this field should only be queried
+  /// when absolutely necessary.
+  ///
+  /// - Parameters:
+  ///   - id: The backing ID.
+  ///   - withStoredCards: Whether to include stored cards in the result.
+  public func fetchBackingWithIncrementsRefundedAmount(id: Int, withStoredCards: Bool)
+    -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(
+        query: GraphAPI
+          .FetchBackingQuery(
+            id: "\(id)",
+            withStoredCards: withStoredCards,
+            includeShippingRules: true,
+            includeLocalPickup: true,
+            includeRefundedAmount: true
           )
       )
       .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))

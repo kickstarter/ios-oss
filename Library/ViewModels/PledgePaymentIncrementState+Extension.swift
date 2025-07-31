@@ -9,6 +9,8 @@ extension PledgePaymentIncrementState {
     case .unattempted: return Strings.Scheduled()
     case .errored: return Strings.Errored_payment()
     case .cancelled: return Strings.profile_projects_status_canceled()
+    // TODO: [MBL-2644] implement translated strings.
+    case .refunded: return "FPO: Refunded"
     }
   }
 
@@ -16,14 +18,31 @@ extension PledgePaymentIncrementState {
   public var badgeStyle: BadgeStyle {
     switch self {
     case .collected:
-      return .success
-    case .unattempted, .cancelled:
+      // TODO: Add support to apply alpha to background color for light mode only. See: [MBL-2650](https://kickstarter.atlassian.net/browse/MBL-2650)
       return .custom(
-        foregroundColor: LegacyColors.ksr_support_400.uiColor(),
-        backgroundColor: LegacyColors.ksr_support_200.uiColor()
+        foregroundColor: Colors.Custom.Badge.Text.collected.uiColor(),
+        backgroundColor: Colors.Custom.Badge.Background.collected.uiColor()
+      )
+    case .unattempted:
+      return .custom(
+        foregroundColor: Colors.Custom.Badge.Text.scheduled.uiColor(),
+        backgroundColor: Colors.Custom.Badge.Background.scheduled.uiColor()
+      )
+    case .cancelled:
+      return .custom(
+        foregroundColor: Colors.Custom.Badge.Text.canceled.uiColor(),
+        backgroundColor: Colors.Custom.Badge.Background.canceled.uiColor()
       )
     case .errored:
-      return .error
+      return .custom(
+        foregroundColor: Colors.Custom.Badge.Text.errored.uiColor(),
+        backgroundColor: Colors.Custom.Badge.Background.errored.uiColor()
+      )
+    case .refunded:
+      return .custom(
+        foregroundColor: Colors.Custom.Badge.Text.refunded.uiColor(),
+        backgroundColor: Colors.Custom.Badge.Background.refunded.uiColor()
+      )
     }
   }
 }

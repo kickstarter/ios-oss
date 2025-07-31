@@ -145,6 +145,7 @@
 "Closes_project" = "Schließt das Projekt.";
 "Collaborator" = "Mitarbeiter";
 "Collapses_subcategories" = "Reduziert die Anzeige der Unterkategorien.";
+"Collected_adjusted" = "Eingezogen (bereinigt)";
 "Collection_plan" = "Zahlungsplan";
 "Collections" = "Sammlungen";
 "Coming_soon" = "Demnächst";
@@ -488,6 +489,8 @@
 "No_one_has_posted_an_update_yet" = "Es wurden noch keine Updates gepostet.";
 "No_pledges_from_friends_yet" = "Es gibt noch keine Beiträge von Freunden.";
 "No_replay_is_available_for_this_live_stream" = "Keine Wiedergabe verügbar für diesen Live-Stream.";
+"No_results" = "Keine Ergebnisse";
+"No_results_for" = "Keine Ergebnisse für „%{query}“";
 "No_saved_projects" = "Keine gespeicherten Projekte";
 "No_unread_messages" = "Keine ungelesenen Nachrichten";
 "Not_available" = "Nicht verfügbar";
@@ -620,8 +623,10 @@
 "Recommended_for_you" = "Empfehlungen für dich";
 "Recorded_Live" = "Live aufgenommen";
 "Recorded_live_with_creator_name" = "Live aufgenommen von <b>%{creator_name}</b>";
+"Refunded" = "Beitrag rückerstattet";
 "Remember_that_delivery_dates_are_not_guaranteed" = "Denke daran, dass es keine Garantie für das Lieferdatum gibt.";
 "Remember_this_card" = "Karte speichern";
+"Remove_all_filters" = "Alle Filter entfernen";
 "Remove_this_card" = "Karte entfernen";
 "Replay" = "Wiedergabe";
 "Replay_available_for_time_more_units" = "Wiedergabe verfügbar für weitere %{time} %{units}";
@@ -842,6 +847,9 @@
 "Track_shipment" = "Sendung verfolgen";
 "Track_your_backings" = "Folge deinen unterstützten Projekten";
 "Tracking_number" = "Sendungsnummer: %{number}";
+"Try_adjusting_the_filters" = "Versuche, die Filter anzupassen";
+"Try_rephrasing_your_search" = "Versuche, deine Suche anders zu formulieren";
+"Try_rephrasing_your_search_or_adjusting_the_filters" = "Versuche, deine Suche anders zu formulieren oder die Filter anzupassen";
 "Twice_a_day_summary" = "Übersicht (zweimal täglich)";
 "Unable_to_request" = "Daten konnten nicht angefordert werden.";
 "Unfollow_friend_name" = "%{friend_name} nicht mehr folgen";

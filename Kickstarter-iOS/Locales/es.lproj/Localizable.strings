@@ -145,6 +145,7 @@
 "Closes_project" = "Cierra el proyecto.";
 "Collaborator" = "Colaborador";
 "Collapses_subcategories" = "Muestra menos subcategorías.";
+"Collected_adjusted" = "Cobrado (ajustado)";
 "Collection_plan" = "Plan de pagos";
 "Collections" = "Colecciones";
 "Coming_soon" = "Próximamente";
@@ -488,6 +489,8 @@
 "No_one_has_posted_an_update_yet" = "Todavía no se han publicado actualizaciones.";
 "No_pledges_from_friends_yet" = "Todavía no hay contribuciones de amigos.";
 "No_replay_is_available_for_this_live_stream" = "Este Live Stream no cuenta con repetición.";
+"No_results" = "Sin resultados";
+"No_results_for" = "No hay resultados para %{query}";
 "No_saved_projects" = "No hay proyectos guardados";
 "No_unread_messages" = "No hay mensajes no leídos";
 "Not_available" = "No disponible";
@@ -620,8 +623,10 @@
 "Recommended_for_you" = "Recomendaciones para ti";
 "Recorded_Live" = "Grabado en vivo";
 "Recorded_live_with_creator_name" = "Grabado en vivo por <b>%{creator_name}</b>";
+"Refunded" = "Reembolso emitido";
 "Remember_that_delivery_dates_are_not_guaranteed" = "Recuerda que las fechas de entrega no están garantizadas.";
 "Remember_this_card" = "Guarda esta tarjeta";
+"Remove_all_filters" = "Eliminar todos los filtros";
 "Remove_this_card" = "Eliminar esta tarjeta";
 "Replay" = "Repetición";
 "Replay_available_for_time_more_units" = "Repetición disponible por %{time} %{units} más";
@@ -842,6 +847,9 @@
 "Track_shipment" = "Seguir envío";
 "Track_your_backings" = "Sigue los proyectos que has patrocinado";
 "Tracking_number" = "Número de seguimiento: %{number}";
+"Try_adjusting_the_filters" = "Prueba modificar los filtros";
+"Try_rephrasing_your_search" = "Intenta reformular tu búsqueda";
+"Try_rephrasing_your_search_or_adjusting_the_filters" = "Intenta reformular tu búsqueda o ajustar los filtros";
 "Twice_a_day_summary" = "Resumen dos veces al día";
 "Unable_to_request" = "No se pueden solicitar datos.";
 "Unfollow_friend_name" = "Dejar de seguir a %{friend_name}";

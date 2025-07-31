@@ -5,17 +5,20 @@ public struct PledgePaymentIncrement: Equatable, Decodable {
   public let scheduledCollection: TimeInterval
   public var state: PledgePaymentIncrementState
   public var stateReason: PledgePaymentIncrementStateReason?
+  public let refundedAmount: PledgePaymentIncrementAmount?
 
   public init(
     amount: PledgePaymentIncrementAmount,
     scheduledCollection: TimeInterval,
     state: PledgePaymentIncrementState,
-    stateReason: PledgePaymentIncrementStateReason?
+    stateReason: PledgePaymentIncrementStateReason?,
+    refundedAmount: PledgePaymentIncrementAmount?
   ) {
     self.amount = amount
     self.scheduledCollection = scheduledCollection
     self.state = state
     self.stateReason = stateReason
+    self.refundedAmount = refundedAmount
   }
 }
 
@@ -37,6 +40,7 @@ public enum PledgePaymentIncrementState: String, Decodable {
   case errored = "ERRORED"
   case unattempted = "UNATTEMPTED"
   case cancelled = "CANCELLED"
+  case refunded = "REFUNDED"
 }
 
 public enum PledgePaymentIncrementStateReason: String, Decodable {
