@@ -2,7 +2,7 @@ import Foundation
 import GraphAPI
 import ReactiveSwift
 
-public struct ProjectAndBackingEnvelope: Equatable {
+public struct ProjectAndBackingEnvelope: Equatable, Decodable {
   public var project: Project
   public var backing: Backing
 }
@@ -23,7 +23,7 @@ extension ProjectAndBackingEnvelope {
     if let backingIncrements = data.backing?.paymentIncrements {
       paymentIncrements = backingIncrements
         .compactMap {
-          PledgePaymentIncrement(withIncrementBackingFragment: $0.fragments.paymentIncrementBackingFragment)
+          PledgePaymentIncrement(withGraphQLFragment: $0.fragments.paymentIncrementFragment)
         }
     }
 

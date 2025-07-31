@@ -7,8 +7,8 @@ public class FetchBackingQuery: GraphQLQuery {
   public static let operationName: String = "FetchBacking"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchBacking($id: ID!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment paymentIncrements { __typename ...PaymentIncrementBackingFragment } } }"#,
-      fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, OrderFragment.self, PaymentIncrementBackingFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, ProjectFragment.self, RewardFragment.self, ShippingRuleFragment.self, UserFragment.self, UserStoredCardsFragment.self]
+      #"query FetchBacking($id: ID!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment paymentIncrements { __typename ...PaymentIncrementFragment } } }"#,
+      fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, ProjectFragment.self, RewardFragment.self, ShippingRuleFragment.self, UserFragment.self, UserStoredCardsFragment.self]
     ))
 
   public var id: ID
@@ -749,7 +749,7 @@ public class FetchBackingQuery: GraphQLQuery {
         public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.PaymentIncrement }
         public static var __selections: [ApolloAPI.Selection] { [
           .field("__typename", String.self),
-          .fragment(PaymentIncrementBackingFragment.self),
+          .fragment(PaymentIncrementFragment.self),
         ] }
 
         /// The payment increment amount represented in various formats
@@ -757,22 +757,19 @@ public class FetchBackingQuery: GraphQLQuery {
         public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
         public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
         public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
-        /// The total amount that has been refunded on the payment increment, across potentially multiple adjustments
-        public var refundedAmount: RefundedAmount? { __data["refundedAmount"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict
           public init(_dataDict: DataDict) { __data = _dataDict }
 
-          public var paymentIncrementBackingFragment: PaymentIncrementBackingFragment { _toFragment() }
+          public var paymentIncrementFragment: PaymentIncrementFragment { _toFragment() }
         }
 
         public init(
           amount: Amount,
           scheduledCollection: GraphAPI.ISO8601DateTime,
           state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
-          stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil,
-          refundedAmount: RefundedAmount? = nil
+          stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil
         ) {
           self.init(_dataDict: DataDict(
             data: [
@@ -781,18 +778,15 @@ public class FetchBackingQuery: GraphQLQuery {
               "scheduledCollection": scheduledCollection,
               "state": state,
               "stateReason": stateReason,
-              "refundedAmount": refundedAmount._fieldData,
             ],
             fulfilledFragments: [
               ObjectIdentifier(FetchBackingQuery.Data.Backing.PaymentIncrement.self),
-              ObjectIdentifier(PaymentIncrementBackingFragment.self)
+              ObjectIdentifier(PaymentIncrementFragment.self)
             ]
           ))
         }
 
-        public typealias Amount = PaymentIncrementBackingFragment.Amount
-
-        public typealias RefundedAmount = PaymentIncrementBackingFragment.RefundedAmount
+        public typealias Amount = PaymentIncrementFragment.Amount
       }
 
       /// Backing.Amount
