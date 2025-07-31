@@ -24,6 +24,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   fileprivate let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
   fileprivate var disposables: [any Disposable] = []
+  
+  private var analytics: Segment.Analytics?
 
   internal var rootTabBarController: RootTabBarViewController? {
     return self.window?.rootViewController as? RootTabBarViewController
@@ -281,13 +283,15 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let middleware = BrazeDebounceMiddlewarePlugin()
         configuration.add(plugin: middleware)
+        
+        self?.analytics = configuration
 
         AppEnvironment.current.ksrAnalytics.configureSegmentClient(configuration)
       }
 
     self.viewModel.outputs.segmentIsEnabled
       .observeValues { enabled in
-        Segment.Analytics.shared().enabled = enabled
+        self.analytics?.enabled = enabled
       }
 
     NotificationCenter.default
