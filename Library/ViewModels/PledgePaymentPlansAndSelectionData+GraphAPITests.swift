@@ -31,7 +31,11 @@ final class PledgePaymentPlansAndSelectionDataGraphAPITests: TestCase {
     }
     """
 
-    let mockGraphData: GraphAPI.BuildPaymentPlanQuery.Data = try! testGraphObject(jsonString: jsonString)
+    let variables = ["includeRefundedAmount": false]
+    let mockGraphData: GraphAPI.BuildPaymentPlanQuery.Data = try! testGraphObject(
+      jsonString: jsonString,
+      variables: variables
+    )
     guard let paymentPlan = mockGraphData.project?.paymentPlan else {
       XCTFail("Unable to create mock GraphQL fragment to test with")
       return

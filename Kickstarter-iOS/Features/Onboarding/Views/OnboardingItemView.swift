@@ -26,16 +26,14 @@ struct OnboardingItemView: View {
           .multilineTextAlignment(.center)
           .frame(maxWidth: .infinity)
           .accessibilityAddTraits(.isHeader)
-          .accessibilityLabel(Text(self.item.title))
-          // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
-          .accessibilityHint(Text("FPO: Onboarding screen"))
+          .accessibilityLabel(Text(self.accessibilityLabel(for: self.item)))
 
         Text(self.item.subtitle)
           .font(Font(OnboardingStyles.subtitle))
           .lineLimit(4)
           .multilineTextAlignment(.center)
           .frame(maxWidth: .infinity)
-          .accessibilityLabel(Text(self.item.subtitle))
+          .accessibilityLabel(Text(self.accessibilityLabel(for: self.item)))
       }
       .padding(.horizontal, Constants.horizontalPadding)
       .fixedSize(horizontal: false, vertical: true)
@@ -43,8 +41,6 @@ struct OnboardingItemView: View {
       ResizableLottieView(onboardingItem: self.item, isVisible: true)
         .frame(maxWidth: .infinity)
         .padding(.top, Constants.lottieViewTopPadding)
-        // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
-        .accessibilityLabel(Text("FPO: An example animation for the \(self.item.type) feature."))
 
       Spacer()
 
@@ -60,5 +56,23 @@ struct OnboardingItemView: View {
     .padding(.bottom, Constants.rootStackViewBottomPadding)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .accessibilityElement(children: .contain)
+  }
+
+  // TODO: Add accessibility translations [mbl-2418]
+  private func accessibilityLabel(for item: OnboardingItem)
+    -> LocalizedStringKey {
+    switch item.type {
+    case .welcome, .saveProjects:
+      LocalizedStringKey(
+        stringLiteral: Strings
+          .project_checkout_navigation_next()
+      )
+    case .enableNotifications:
+      LocalizedStringKey(stringLiteral: Strings.Get_notified())
+    case .allowTracking:
+      LocalizedStringKey(stringLiteral: Strings.Allow_tracking())
+    case .loginSignUp:
+      LocalizedStringKey(stringLiteral: Strings.Sign_up_or_log_in())
+    }
   }
 }

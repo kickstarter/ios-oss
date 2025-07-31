@@ -639,7 +639,11 @@
         return .empty
       }
 
-      let query = GraphAPI.BuildPaymentPlanQuery(slug: projectSlug, amount: pledgeAmount)
+      let query = GraphAPI.BuildPaymentPlanQuery(
+        slug: projectSlug,
+        amount: pledgeAmount,
+        includeRefundedAmount: false
+      )
 
       return client.fetchWithResult(query: query, result: self.buildPaymentPlanResult)
     }
@@ -1133,6 +1137,11 @@
 
     // TODO: Refactor this test to use `self.apolloClient`, `ProjectAndBackingEnvelope` needs to be `Decodable` and tested in-app.
     func fetchBacking(id _: Int, withStoredCards _: Bool)
+      -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
+      return producer(for: self.fetchManagePledgeViewBackingResult)
+    }
+
+    func fetchBackingWithIncrementsRefundedAmount(id _: Int, withStoredCards _: Bool)
       -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
       return producer(for: self.fetchManagePledgeViewBackingResult)
     }

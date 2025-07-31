@@ -877,6 +877,24 @@
             "description": "Provides an overview of pledge projects",
             "args": [
               {
+                "name": "tierTypes",
+                "description": "tier types to include in response",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "PledgeProjectsOverviewSort",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null
+              },
+              {
                 "name": "sort",
                 "description": "Sort option as a string.",
                 "type": {
@@ -4519,6 +4537,18 @@
             "deprecationReason": null
           },
           {
+            "name": "displaySymbol",
+            "description": "Symbol of the currency in which the monetary amount appears",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "symbol",
             "description": "Symbol of the currency in which the monetary amount appears",
             "args": [],
@@ -5776,6 +5806,16 @@
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "crowdfundingAndPledgeManagement",
+                "description": "Retrieves both, pledge redemption and crowdfunding add-ons",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -7061,6 +7101,33 @@
               "kind": "SCALAR",
               "name": "Float",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "currentBackersCount",
+            "description": "Total current backers for the project",
+            "args": [
+              {
+                "name": "withNewPmBackers",
+                "description": "Whether or not to considere new pm backers in the final count.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -8958,6 +9025,16 @@
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "crowdfundingAndPledgeManagement",
+                "description": "Retrieves both, pledge redemption and crowdfunding rewards",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -16797,6 +16874,18 @@
           },
           {
             "name": "creator_opt_out_feedback_2025",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "allow_editing_shipping_rates_2025",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pm_backer_preview_2025",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -25322,6 +25411,18 @@
             "deprecationReason": null
           },
           {
+            "name": "convertedCurrencyAmounts",
+            "description": "Order amounts converted to a backer's chosen currency",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ConvertedOrderAmounts",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "crossSells",
             "description": "Add-ons selected for this order during Pledge Redemption",
             "args": [],
@@ -25540,22 +25641,6 @@
           {
             "name": "isPledgeManagerNetNewBacker",
             "description": "Whether this order is a net new order for the pledge manager",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "itemTaxIncluded",
-            "description": "Whether the rewards have tax included in the price",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -25966,6 +26051,22 @@
             "deprecationReason": null
           },
           {
+            "name": "taxIncluded",
+            "description": "Whether the rewards/shipments have tax included in the price",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "taxLocalization",
             "description": "The localized tax (VAT, Tax, HST, etc) based on order address",
             "args": [
@@ -26069,38 +26170,6 @@
         "name": "OrderOrderable",
         "description": "An orderable included in an Order, e.g. a reward.",
         "fields": [
-          {
-            "name": "amountExcludingTax",
-            "description": "The price, excluding tax",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "amountExcludingTaxFormatted",
-            "description": "The formatted price, excluding tax",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "baseAmount",
             "description": "The price of one unit of the reward",
@@ -27259,6 +27328,113 @@
       },
       {
         "kind": "OBJECT",
+        "name": "ConvertedOrderAmounts",
+        "description": "Order amounts converted to a user's chosen currency",
+        "fields": [
+          {
+            "name": "baseOrderableVoucherAmount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "orderableVoucherTotal",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "shippingBaseAmount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "shippingVoucherAmount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "surchargeAmount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "total",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalTax",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "OrderOrderableWithQuantity",
         "description": "All rewards of a particular kind included in an Order, bundled together with their quantity and price information",
         "fields": [
@@ -27602,6 +27778,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refundedAmount",
+            "description": "The total amount that has been refunded on the payment increment, across potentially multiple adjustments",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "PaymentIncrementAmount",
               "ofType": null
             },
             "isDeprecated": false,
@@ -34672,6 +34860,18 @@
             "deprecationReason": null
           },
           {
+            "name": "priceConvertedToCurrencyFormatted",
+            "description": "The price formatted for display in the user's chosen currency",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "priceFormatted",
             "description": "The price formatted for display",
             "args": [],
@@ -41141,9 +41341,13 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -41168,8 +41372,8 @@
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "ENUM",
+                "name": "OptOutReasonEnum",
                 "ofType": null
               }
             },
@@ -41201,8 +41405,20 @@
             "deprecationReason": null
           },
           {
+            "name": "placeholder",
+            "description": "Placeholder text for the follow-up question",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "prompt",
-            "description": "Whether or not the reason has a prompt",
+            "description": "Whether or not the reason has a follow-up question",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -41215,11 +41431,147 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "secondaryFollowUp",
+            "description": "An additional follow-up question for the selected reason",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "secondaryPlaceholder",
+            "description": "Placeholder text for the secondary follow-up question",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "OptOutReasonEnum",
+        "description": "Reasons for opting out of using our pledge manager",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "missing_features",
+            "description": "missing_features",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "lack_of_confidence",
+            "description": "lack_of_confidence",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ineligible",
+            "description": "ineligible",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "committed_to_another_pm",
+            "description": "committed_to_another_pm",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "other",
+            "description": "other",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "legacy",
+            "description": "legacy",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "PledgeProjectsOverviewSort",
+        "description": "Sort types for PledgedProjectsOverview dashboard.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "TIER1_ADDRESS_LOCKING_SOON",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "TIER1_PAYMENT_FAILED",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "TIER1_PAYMENT_AUTHENTICATION_REQUIRED",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "TIER1_OPEN_SURVEY",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PLEDGE_MANAGEMENT",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "SURVEY_SUBMITTED",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PLEDGE_COLLECTED",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ADDRESS_CONFIRMED",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "AWAITING_REWARD",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -47106,6 +47458,33 @@
             "type": {
               "kind": "OBJECT",
               "name": "UpdatePledgeManagementRewardPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatePledgeManagerState",
+            "description": "Update state for a Pledge Manager",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "UpdatePledgeManagerStateInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdatePledgeManagerStatePayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -59530,6 +59909,30 @@
             "defaultValue": null
           },
           {
+            "name": "optOutReason",
+            "description": "The reason for opting out",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "OptOutReasonEnum",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "optOutDetails",
+            "description": "Additional details for opting out",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "clientMutationId",
             "description": "A unique identifier for the client performing the mutation.",
             "type": {
@@ -66454,6 +66857,94 @@
               "kind": "OBJECT",
               "name": "Project",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "UpdatePledgeManagerStateInput",
+        "description": "Autogenerated input type of UpdatePledgeManagerState",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "pledgeManagerId",
+            "description": "Pledge Manager id",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "state",
+            "description": "New state for the Pledge Manager",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpdatePledgeManagerStatePayload",
+        "description": "Autogenerated return type of UpdatePledgeManagerState",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pledgeManager",
+            "description": "The updated Pledge Manager",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PledgeManager",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
