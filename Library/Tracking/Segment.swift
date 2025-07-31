@@ -1,16 +1,19 @@
-import AppboyKit
-import AppboySegment
+import BrazeKitCompat
+import SegmentBraze
+import Segment
 import KsApi
 
 public extension Analytics {
   /**
    Returns an `Analytics` and `SEGAppboyIntegrationFactory` instance, with Segment, using an `AnalyticsConfiguration`.
    */
-  static func configuredClient(withWriteKey writeKey: String) -> AnalyticsConfiguration {
-    let configuration = AnalyticsConfiguration(writeKey: writeKey)
-    configuration.trackApplicationLifecycleEvents = true
-    configuration.sourceMiddleware = [BrazeDebounceMiddleware()]
-    return configuration
+  static func configuredClient(withWriteKey writeKey: String) -> Analytics {
+    let configuration = Configuration(writeKey: writeKey)
+      .flushAt(3)
+      .flushInterval(10)
+      .setTrackedApplicationLifecycleEvents(.all)
+//    configuration.sourceMiddleware = [BrazeDebounceMiddleware()]
+    return Analytics(configuration: configuration)
   }
 }
 
@@ -20,3 +23,9 @@ public extension Analytics {
  */
 extension Analytics: IdentifyingTrackingClient {}
 extension Analytics: TrackingClientType {}
+
+//extension Analytics {
+//    (SegAnalytics)shared() {
+//        return analytics; // or whatever variable name you're using
+//    }
+//}

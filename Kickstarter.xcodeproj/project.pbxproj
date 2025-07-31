@@ -212,8 +212,6 @@
 		1965436D28C807FB00457EC6 /* PledgePaymentMethodsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */; };
 		1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
 		1965437E28C8165200457EC6 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
-		19821C85299D392400EF312F /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19821C84299D392400EF312F /* AppboySegment */; };
-		19821C87299D3E8300EF312F /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19821C86299D3E8300EF312F /* AppboySegment */; };
 		1996AA1F2A5F1BC400AE2ED0 /* StripePaymentSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 1996AA1E2A5F1BC400AE2ED0 /* StripePaymentSheet */; };
 		1996AA312A5F39CC00AE2ED0 /* PledgePaymentMethodsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6534D3D22E789B900E9D279 /* PledgePaymentMethodsViewModelTests.swift */; };
 		1996AA322A5F3A3200AE2ED0 /* Stripe+PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */; };
@@ -769,6 +767,9 @@
 		395A3BCB2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BCA2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift */; };
 		399653682E2EE98D00ED69E5 /* SearchEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399653672E2EE98D00ED69E5 /* SearchEmptyStateCell.swift */; };
 		3996536A2E2EEA2300ED69E5 /* SearchEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399653692E2EEA2300ED69E5 /* SearchEmptyStateCellViewModel.swift */; };
+		39A4CF842E3A9B8C00F43005 /* SegmentBraze in Frameworks */ = {isa = PBXBuildFile; productRef = 39A4CF832E3A9B8C00F43005 /* SegmentBraze */; };
+		39A4CF862E3A9B8C00F43005 /* SegmentBrazeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 39A4CF852E3A9B8C00F43005 /* SegmentBrazeUI */; };
+		39A4CF8B2E3AAC7D00F43005 /* BrazeKitCompat in Frameworks */ = {isa = PBXBuildFile; productRef = 39A4CF8A2E3AAC7D00F43005 /* BrazeKitCompat */; };
 		39B5E10E2B86C56600FFB720 /* RefInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B5E10D2B86C56600FFB720 /* RefInfo.swift */; };
 		39B5E1102B86C56E00FFB720 /* RefInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B5E10F2B86C56E00FFB720 /* RefInfoTests.swift */; };
 		39B850762C3EA5630045CBA5 /* SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B850752C3EA5620045CBA5 /* SwiftUI.swift */; };
@@ -779,6 +780,9 @@
 		39F48E232D543A2700090D6C /* AlertBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F48E222D543A2700090D6C /* AlertBanner.swift */; };
 		39F48E252D5521BE00090D6C /* AlertBannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F48E242D5521BE00090D6C /* AlertBannerTests.swift */; };
 		39F48E272D55222900090D6C /* RestrictedCreatorViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F48E262D55222900090D6C /* RestrictedCreatorViewControllerTests.swift */; };
+		39FDE8562E3BD48D000A3974 /* BrazeKitCompat in Frameworks */ = {isa = PBXBuildFile; productRef = 39FDE8552E3BD48D000A3974 /* BrazeKitCompat */; };
+		39FDE8582E3BD4AE000A3974 /* SegmentBraze in Frameworks */ = {isa = PBXBuildFile; productRef = 39FDE8572E3BD4AE000A3974 /* SegmentBraze */; };
+		39FDE85A2E3BD4AE000A3974 /* SegmentBrazeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 39FDE8592E3BD4AE000A3974 /* SegmentBrazeUI */; };
 		4705D8982742E20900A13BBE /* ProjectHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */; };
 		471235F7274450AC0035527F /* ProjectPamphletMainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 471235F6274450AC0035527F /* ProjectPamphletMainCell.xib */; };
 		471235F9274457460035527F /* ProjectPamphletSubpageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 471235F8274457460035527F /* ProjectPamphletSubpageCell.xib */; };
@@ -4377,8 +4381,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39A4CF862E3A9B8C00F43005 /* SegmentBrazeUI in Frameworks */,
 				19338D9B2A0D4E2300075F29 /* Stripe in Frameworks */,
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
+				39A4CF842E3A9B8C00F43005 /* SegmentBraze in Frameworks */,
+				39A4CF8B2E3AAC7D00F43005 /* BrazeKitCompat in Frameworks */,
 				6078106D2A0419170050D4F7 /* FirebasePerformance in Frameworks */,
 				E113BD912B7D615000D3A809 /* Prelude in Frameworks */,
 				60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */,
@@ -4387,7 +4394,6 @@
 				E132ADEE2E2845E500F73A76 /* ApolloAPI in Frameworks */,
 				600A0EEB2DD23BAA00954829 /* Lottie in Frameworks */,
 				6078106F2A04191C0050D4F7 /* FirebaseAnalytics in Frameworks */,
-				19821C87299D3E8300EF312F /* AppboySegment in Frameworks */,
 				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
 				6078106B2A0419130050D4F7 /* FirebaseCrashlytics in Frameworks */,
 				19A6665F2A045F2A00708F8B /* FirebaseRemoteConfig in Frameworks */,
@@ -4425,12 +4431,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39FDE8562E3BD48D000A3974 /* BrazeKitCompat in Frameworks */,
 				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
+				39FDE85A2E3BD4AE000A3974 /* SegmentBrazeUI in Frameworks */,
 				E18A64632E28224A00BA0376 /* GraphAPI.framework in Frameworks */,
-				19821C85299D392400EF312F /* AppboySegment in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
 				E123A0962E2ECD8B00D61B63 /* Apollo-Dynamic in Frameworks */,
+				39FDE8582E3BD4AE000A3974 /* SegmentBraze in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9298,7 +9306,6 @@
 				60DA510E28C7E04B002E2DF1 /* Kingfisher */,
 				606754BC28CF91D60033CD5E /* FacebookCore */,
 				606754BE28CF91DD0033CD5E /* FacebookLogin */,
-				19821C86299D3E8300EF312F /* AppboySegment */,
 				6078106A2A0419130050D4F7 /* FirebaseCrashlytics */,
 				6078106C2A0419170050D4F7 /* FirebasePerformance */,
 				6078106E2A04191C0050D4F7 /* FirebaseAnalytics */,
@@ -9309,6 +9316,9 @@
 				E1B214702BFD184500109961 /* KingfisherWebP */,
 				600A0EEA2DD23BAA00954829 /* Lottie */,
 				E132ADED2E2845E500F73A76 /* ApolloAPI */,
+				39A4CF832E3A9B8C00F43005 /* SegmentBraze */,
+				39A4CF852E3A9B8C00F43005 /* SegmentBrazeUI */,
+				39A4CF8A2E3AAC7D00F43005 /* BrazeKitCompat */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -9359,6 +9369,9 @@
 			packageProductDependencies = (
 				E1F1DB3E2B7BC09C004EA80B /* Prelude */,
 				E123A08A2E2ECB4000D61B63 /* ApolloAPI */,
+				39A4CF7D2E3A9AF300F43005 /* SegmentBraze */,
+				39A4CF7F2E3A9AF300F43005 /* SegmentBrazeUI */,
+				39A4CF8C2E3AACC000F43005 /* BrazeKitCompat */,
 			);
 			productName = "Kickstarter-iOS-Framework";
 			productReference = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */;
@@ -9386,8 +9399,10 @@
 			name = "Kickstarter-iOS";
 			packageProductDependencies = (
 				06EA2D4B280F76B700F4DE2E /* Prelude */,
-				19821C84299D392400EF312F /* AppboySegment */,
 				E123A0952E2ECD8B00D61B63 /* Apollo-Dynamic */,
+				39FDE8552E3BD48D000A3974 /* BrazeKitCompat */,
+				39FDE8572E3BD4AE000A3974 /* SegmentBraze */,
+				39FDE8592E3BD4AE000A3974 /* SegmentBrazeUI */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -9643,9 +9658,10 @@
 				19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */,
 				7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
-				19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
 				E1B2146F2BFD184500109961 /* XCRemoteSwiftPackageReference "KingfisherWebP" */,
 				600A0EE92DD23BAA00954829 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				39A4CF7C2E3A9AF300F43005 /* XCRemoteSwiftPackageReference "braze-segment-swift" */,
+				39A4CF892E3AAC7D00F43005 /* XCRemoteSwiftPackageReference "braze-swift-sdk" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -14027,20 +14043,28 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Appboy/appboy-segment-ios";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
-			};
-		};
 		19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 11.4.0;
+			};
+		};
+		39A4CF7C2E3A9AF300F43005 /* XCRemoteSwiftPackageReference "braze-segment-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/braze-inc/braze-segment-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
+		39A4CF892E3AAC7D00F43005 /* XCRemoteSwiftPackageReference "braze-swift-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/braze-inc/braze-swift-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.0.0;
 			};
 		};
 		600A0EE92DD23BAA00954829 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
@@ -14127,16 +14151,6 @@
 			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
 			productName = Stripe;
 		};
-		19821C84299D392400EF312F /* AppboySegment */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */;
-			productName = AppboySegment;
-		};
-		19821C86299D3E8300EF312F /* AppboySegment */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */;
-			productName = AppboySegment;
-		};
 		1996AA1E2A5F1BC400AE2ED0 /* StripePaymentSheet */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
@@ -14156,6 +14170,51 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseRemoteConfig;
+		};
+		39A4CF7D2E3A9AF300F43005 /* SegmentBraze */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39A4CF7C2E3A9AF300F43005 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
+			productName = SegmentBraze;
+		};
+		39A4CF7F2E3A9AF300F43005 /* SegmentBrazeUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39A4CF7C2E3A9AF300F43005 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
+			productName = SegmentBrazeUI;
+		};
+		39A4CF832E3A9B8C00F43005 /* SegmentBraze */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39A4CF7C2E3A9AF300F43005 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
+			productName = SegmentBraze;
+		};
+		39A4CF852E3A9B8C00F43005 /* SegmentBrazeUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39A4CF7C2E3A9AF300F43005 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
+			productName = SegmentBrazeUI;
+		};
+		39A4CF8A2E3AAC7D00F43005 /* BrazeKitCompat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39A4CF892E3AAC7D00F43005 /* XCRemoteSwiftPackageReference "braze-swift-sdk" */;
+			productName = BrazeKitCompat;
+		};
+		39A4CF8C2E3AACC000F43005 /* BrazeKitCompat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39A4CF892E3AAC7D00F43005 /* XCRemoteSwiftPackageReference "braze-swift-sdk" */;
+			productName = BrazeKitCompat;
+		};
+		39FDE8552E3BD48D000A3974 /* BrazeKitCompat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39A4CF892E3AAC7D00F43005 /* XCRemoteSwiftPackageReference "braze-swift-sdk" */;
+			productName = BrazeKitCompat;
+		};
+		39FDE8572E3BD4AE000A3974 /* SegmentBraze */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39A4CF7C2E3A9AF300F43005 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
+			productName = SegmentBraze;
+		};
+		39FDE8592E3BD4AE000A3974 /* SegmentBrazeUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39A4CF7C2E3A9AF300F43005 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
+			productName = SegmentBrazeUI;
 		};
 		600A0EEA2DD23BAA00954829 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
