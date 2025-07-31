@@ -37,7 +37,6 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
   func testView_PaymentSchedule_Expanded() {
     let darkModeOn = MockRemoteConfigClient()
     darkModeOn.features = [
-      RemoteConfigFeature.darkModeEnabled.rawValue: true,
       RemoteConfigFeature.newDesignSystem.rawValue: true
     ]
 
