@@ -18,13 +18,7 @@ extension PledgePaymentIncrementState {
   public var badgeStyle: BadgeStyle {
     switch self {
     case .collected:
-<<<<<<< HEAD
       // TODO: Add support to apply alpha to background color for light mode only. See: [MBL-2650](https://kickstarter.atlassian.net/browse/MBL-2650)
-=======
-      return .success
-    // TODO: setup the correct color of `refunded` on [MBL-2643]
-    case .unattempted, .cancelled, .refunded:
->>>>>>> f39dfec35 (Add refunded and refundedAmount to paymentIncrements models and fragments)
       return .custom(
         foregroundColor: Colors.Custom.Badge.Text.collected.uiColor(),
         backgroundColor: Colors.Custom.Badge.Background.collected.uiColor()

@@ -42,6 +42,13 @@ public func mockPaymentIncrements() -> [PledgePaymentIncrement] {
       state: .errored,
       stateReason: .requiresAction,
       refundStatus: .unknown
+    ),
+    PledgePaymentIncrement(
+      amount: amount,
+      scheduledCollection: scheduledCollection,
+      state: .refunded,
+      stateReason: nil,
+      refundStatus: .refunded(amount)
     )
   ]
 }
