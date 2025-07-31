@@ -501,7 +501,7 @@ private func rewardToScrollIndexPath(
 }
 
 private func firstSecretRewardIndexPath(rewards: [Reward]) -> IndexPath? {
-  return rewards.firstIndex(where: { $0.isSecretReward })
+  return rewards.firstIndex(where: { $0.isSecretReward && $0.isAvailable == true })
     .flatMap { IndexPath(row: $0, section: 0) }
 }
 
