@@ -126,7 +126,7 @@ private func testPledgePaymentIncrement() -> [PledgePaymentIncrement] {
       scheduledCollection: timeStamp,
       state: .unattempted,
       stateReason: .requiresAction,
-      refundedAmount: nil
+      refundStatus: .unknown
     ))
   }
 

@@ -19,8 +19,21 @@ extension ErroredBackingsEnvelope {
       .Data
   ) -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
     guard let envelopes = data.me?.backings?.nodes?.compactMap({ backing -> ProjectAndBackingEnvelope? in
+
+      var paymentIncrements: [PledgePaymentIncrement] = []
+
+      if let backingIncrements = backing?.paymentIncrements {
+        paymentIncrements = backingIncrements
+          .compactMap {
+            PledgePaymentIncrement(
+              withGraphQLFragment: $0.fragments
+                .paymentIncrementFragment
+            )
+          }
+      }
+
       guard let backingFragment = backing?.fragments.backingFragment,
-            let backing = Backing.backing(from: backingFragment),
+            let backing = Backing.backing(from: backingFragment, paymentIncrements: paymentIncrements),
             let projectFragment = backingFragment.project?.fragments.projectFragment,
             let project = Project.project(from: projectFragment, currentUserChosenCurrency: nil)
       else { return nil }

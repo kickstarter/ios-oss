@@ -1,0 +1,13 @@
+query FetchBackingWithIncrementsRefunded($id: ID!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) {
+  backing(id: $id) {
+    addOns {
+      nodes {
+        ...RewardFragment
+      }
+    }
+    ...BackingFragment
+    paymentIncrements {
+      ...PaymentIncrementBackingFragment
+    }
+  }
+}

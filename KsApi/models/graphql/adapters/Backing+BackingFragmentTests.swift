@@ -9,8 +9,7 @@ final class Backing_BackingFragmentTests: XCTestCase {
       let variables = [
         "withStoredCards": true,
         "includeShippingRules": true,
-        "includeLocalPickup": true,
-        "includeRefundedAmount": true
+        "includeLocalPickup": true
       ]
       let fragment: GraphAPI.BackingFragment = try testGraphObject(
         jsonObject: backingDictionary(),
@@ -38,13 +37,7 @@ final class Backing_BackingFragmentTests: XCTestCase {
       XCTAssertEqual(backing.order?.checkoutState, .notStarted)
       XCTAssertEqual(backing.order?.currency, "USD")
       XCTAssertEqual(backing.order?.total, 0)
-      XCTAssertEqual(backing.paymentIncrements.count, 1)
-      XCTAssertEqual(backing.paymentIncrements[0].scheduledCollection, 1_739_806_159.0)
-      XCTAssertEqual(
-        backing.paymentIncrements[0].refundedAmount?.amountFormattedInProjectNativeCurrency,
-        "$15.50"
-      )
-      XCTAssertEqual(backing.paymentIncrements[0].refundedAmount?.currency, "USD")
+      XCTAssertEqual(backing.paymentIncrements.count, 0)
       XCTAssertEqual(backing.paymentSource?.type, .visa)
       XCTAssertEqual(backing.pledgedAt, 1_625_613_342.0)
       XCTAssertEqual(backing.projectCountry, "US")
@@ -78,9 +71,7 @@ final class Backing_BackingFragmentTests: XCTestCase {
   func test_noReward() {
     do {
       let variables = [
-        "withStoredCards": true,
-        "includeShippingRules": true,
-        "includeRefundedAmount": true
+        "withStoredCards": true
       ]
       var dict = backingDictionary()
       dict["addOns"] = NSNull()
@@ -737,24 +728,6 @@ private func backingDictionary() -> [String: Any] {
       "id": "TG9jYXRpb24tMjM0MjQ3NzU=",
       "name": "Canada"
     },
-    "paymentIncrements": [
-      {
-        "__typename": "PaymentIncrement",
-        "amount": {
-          "__typename": "PaymentIncrementAmount",
-          "amountFormattedInProjectNativeCurrency": "$37.50",
-          "currency": "USD"
-        },
-        "scheduledCollection": "2025-02-17T10:29:19-05:00",
-        "state": "UNATTEMPTED",
-        "stateReason": "REQUIRES_ACTION",
-        "refundedAmount": {
-          "__typename": "PaymentIncrementAmount",
-          "amountFormattedInProjectNativeCurrency": "$15.50",
-          "currency": "USD"
-        }
-      }
-    ],
     "pledgedOn": 1625613342,
     "project": {
       "__typename": "Project",

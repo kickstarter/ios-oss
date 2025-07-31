@@ -6,8 +6,4 @@ fragment PaymentIncrementFragment on PaymentIncrement {
   scheduledCollection
   state
   stateReason
-  refundedAmount @include(if: $includeRefundedAmount) {
-    amountFormattedInProjectNativeCurrency
-    currency
-  }
 }

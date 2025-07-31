@@ -646,9 +646,18 @@
 		33AA18832E38A7B1002DBD60 /* VideoTrack+Mock.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA18172E38A7B1002DBD60 /* VideoTrack+Mock.graphql.swift */; };
 		33AA18842E38A7B1002DBD60 /* VideoTrackCue+Mock.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA18182E38A7B1002DBD60 /* VideoTrackCue+Mock.graphql.swift */; };
 		33AA18852E38A7B1002DBD60 /* WatchProjectPayload+Mock.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA18192E38A7B1002DBD60 /* WatchProjectPayload+Mock.graphql.swift */; };
+		33AA26CC2E39EE21002DBD60 /* PaymentIncrementBackingFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26CB2E39EE21002DBD60 /* PaymentIncrementBackingFragment.graphql.swift */; };
+		33AA26CE2E3A89AB002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26CD2E3A89AB002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql.swift */; };
+		33AA26D12E3AC568002DBD60 /* ProjectAndBackingEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26CF2E3AC55A002DBD60 /* ProjectAndBackingEnvelopeTests.swift */; };
+		33AA26D32E3ACDBC002DBD60 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 33AA26D22E3ACDBC002DBD60 /* ReactiveExtensions-TestHelpers */; };
+		33AA26DE2E3B1467002DBD60 /* LocationMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26D82E3B1337002DBD60 /* LocationMocks.swift */; };
+		33AA26DF2E3B146C002DBD60 /* UserMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26DA2E3B135F002DBD60 /* UserMocks.swift */; };
+		33AA26E02E3B1471002DBD60 /* ProjectMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26DC2E3B13A6002DBD60 /* ProjectMocks.swift */; };
+		33AA26E12E3B1476002DBD60 /* BackingMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26D62E3B1154002DBD60 /* BackingMocks.swift */; };
+		33AA26E32E3B16D8002DBD60 /* PaymentIncrementsMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26E22E3B16D1002DBD60 /* PaymentIncrementsMocks.swift */; };
 		33AB202B2D268EE500B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */; };
-		33AB202E2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */; };
-		33AB202F2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */; };
+		33AB202E2D269A8D00B8C047 /* MockPledgeOverTimePlanIncrements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIncrements.swift */; };
+		33AB202F2D269A8D00B8C047 /* MockPledgeOverTimePlanIncrements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIncrements.swift */; };
 		33AF01B62D2BBD5C0085A153 /* PledgeOverTimePaymentScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01B52D2BBCC90085A153 /* PledgeOverTimePaymentScheduleViewController.swift */; };
 		33AF01B82D2BC3570085A153 /* PledgeOverTimePaymentScheduleItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01B72D2BC3440085A153 /* PledgeOverTimePaymentScheduleItemView.swift */; };
 		33AF01BA2D2CBD870085A153 /* PledgeOverTimePaymentScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01B92D2CBD6E0085A153 /* PledgeOverTimePaymentScheduleViewModel.swift */; };
@@ -2867,8 +2876,18 @@
 		33AA18172E38A7B1002DBD60 /* VideoTrack+Mock.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VideoTrack+Mock.graphql.swift"; sourceTree = "<group>"; };
 		33AA18182E38A7B1002DBD60 /* VideoTrackCue+Mock.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VideoTrackCue+Mock.graphql.swift"; sourceTree = "<group>"; };
 		33AA18192E38A7B1002DBD60 /* WatchProjectPayload+Mock.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchProjectPayload+Mock.graphql.swift"; sourceTree = "<group>"; };
+		33AA26C72E39E9BD002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchBackingWithIncrementsRefundedQuery.graphql; sourceTree = "<group>"; };
+		33AA26C82E39EA00002DBD60 /* PaymentIncrementBackingFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PaymentIncrementBackingFragment.graphql; sourceTree = "<group>"; };
+		33AA26CB2E39EE21002DBD60 /* PaymentIncrementBackingFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentIncrementBackingFragment.graphql.swift; sourceTree = "<group>"; };
+		33AA26CD2E3A89AB002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchBackingWithIncrementsRefundedQuery.graphql.swift; sourceTree = "<group>"; };
+		33AA26CF2E3AC55A002DBD60 /* ProjectAndBackingEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAndBackingEnvelopeTests.swift; sourceTree = "<group>"; };
+		33AA26D62E3B1154002DBD60 /* BackingMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackingMocks.swift; sourceTree = "<group>"; };
+		33AA26D82E3B1337002DBD60 /* LocationMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMocks.swift; sourceTree = "<group>"; };
+		33AA26DA2E3B135F002DBD60 /* UserMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMocks.swift; sourceTree = "<group>"; };
+		33AA26DC2E3B13A6002DBD60 /* ProjectMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectMocks.swift; sourceTree = "<group>"; };
+		33AA26E22E3B16D1002DBD60 /* PaymentIncrementsMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentIncrementsMocks.swift; sourceTree = "<group>"; };
 		33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRewardsSummaryTotalViewControllerTests.swift; sourceTree = "<group>"; };
-		33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPledgeOverTimePlanIntervals.swift; sourceTree = "<group>"; };
+		33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIncrements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPledgeOverTimePlanIncrements.swift; sourceTree = "<group>"; };
 		33AF01B52D2BBCC90085A153 /* PledgeOverTimePaymentScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewController.swift; sourceTree = "<group>"; };
 		33AF01B72D2BC3440085A153 /* PledgeOverTimePaymentScheduleItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleItemView.swift; sourceTree = "<group>"; };
 		33AF01B92D2CBD6E0085A153 /* PledgeOverTimePaymentScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewModel.swift; sourceTree = "<group>"; };
@@ -4376,29 +4395,6 @@
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		E18A64692E28224A00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			publicHeaders = (
-				GraphAPI.h,
-			);
-			target = E18A645C2E28224A00BA0376 /* GraphAPI */;
-		};
-		E18A666B2E28225E00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			publicHeaders = (
-				GraphAPITestMocks.h,
-			);
-			target = E18A66662E28225E00BA0376 /* GraphAPITestMocks */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		60CC7C9C2E269D270055BE8F /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
-		E18A645E2E28224A00BA0376 /* GraphAPI */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E18A64692E28224A00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = GraphAPI; sourceTree = "<group>"; };
-		E18A66682E28225E00BA0376 /* GraphAPITestMocks */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E18A666B2E28225E00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = GraphAPITestMocks; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
-
 /* Begin PBXFrameworksBuildPhase section */
 		A75511381C8642B3005355CF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -4526,6 +4522,7 @@
 				E18A67482E28236800BA0376 /* GraphAPITestMocks.framework in Frameworks */,
 				E123A0892E2ECA3F00D61B63 /* ApolloAPI in Frameworks */,
 				E18A674E2E28236D00BA0376 /* ApolloTestSupport in Frameworks */,
+				33AA26D32E3ACDBC002DBD60 /* ReactiveExtensions-TestHelpers in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6954,6 +6951,7 @@
 				33AA15BE2E38A76F002DBD60 /* LocationFragment.graphql.swift */,
 				33AA15BF2E38A76F002DBD60 /* MoneyFragment.graphql.swift */,
 				33AA15C02E38A76F002DBD60 /* OrderFragment.graphql.swift */,
+				33AA26CB2E39EE21002DBD60 /* PaymentIncrementBackingFragment.graphql.swift */,
 				33AA15C12E38A76F002DBD60 /* PaymentIncrementFragment.graphql.swift */,
 				33AA15C22E38A76F002DBD60 /* PaymentSourceFragment.graphql.swift */,
 				33AA15C32E38A76F002DBD60 /* PledgeManagerFragment.graphql.swift */,
@@ -7014,6 +7012,7 @@
 				33AA15EE2E38A76F002DBD60 /* DefaultLocationsQuery.graphql.swift */,
 				33AA15EF2E38A76F002DBD60 /* FetchAddOnsQuery.graphql.swift */,
 				33AA15F02E38A76F002DBD60 /* FetchBackingQuery.graphql.swift */,
+				33AA26CD2E3A89AB002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql.swift */,
 				33AA15F12E38A76F002DBD60 /* FetchCategoryQuery.graphql.swift */,
 				33AA15F22E38A76F002DBD60 /* FetchCommentRepliesQuery.graphql.swift */,
 				33AA15F32E38A76F002DBD60 /* FetchMyBackedProjectsQuery.graphql.swift */,
@@ -7393,6 +7392,18 @@
 				33AA18192E38A7B1002DBD60 /* WatchProjectPayload+Mock.graphql.swift */,
 			);
 			path = GraphAPITestMocks;
+			sourceTree = "<group>";
+		};
+		33AA26D52E3B1150002DBD60 /* mocks */ = {
+			isa = PBXGroup;
+			children = (
+				33AA26E22E3B16D1002DBD60 /* PaymentIncrementsMocks.swift */,
+				33AA26DC2E3B13A6002DBD60 /* ProjectMocks.swift */,
+				33AA26DA2E3B135F002DBD60 /* UserMocks.swift */,
+				33AA26D82E3B1337002DBD60 /* LocationMocks.swift */,
+				33AA26D62E3B1154002DBD60 /* BackingMocks.swift */,
+			);
+			path = mocks;
 			sourceTree = "<group>";
 		};
 		33F55B472D4C70D40007E50E /* Resources */ = {
@@ -8205,7 +8216,7 @@
 		A7ED1F421E831BA200BFFA01 /* TestHelpers */ = {
 			isa = PBXGroup;
 			children = (
-				33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */,
+				33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIncrements.swift */,
 				A7ED1F431E831BA200BFFA01 /* AlertError+Equatable.swift */,
 				A7ED1F441E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift */,
 				77C9122A23C5079200F3D2C9 /* MockApplePayCapable.swift */,
@@ -8779,6 +8790,7 @@
 				D01587DB1EEB2ED7006E7684 /* ProjectActivityEnvelope.swift */,
 				8A2C015E2589391D00EE11E7 /* ProjectActivityEnvelopeTests.swift */,
 				8AE3F72D24DA27BE002B03C3 /* ProjectAndBackingEnvelope.swift */,
+				33AA26CF2E3AC55A002DBD60 /* ProjectAndBackingEnvelopeTests.swift */,
 				D01587DC1EEB2ED7006E7684 /* ProjectNotification.swift */,
 				D01587DD1EEB2ED7006E7684 /* ProjectsEnvelope.swift */,
 				8A4E954624525DE400A578CF /* ProjectState.swift */,
@@ -8817,6 +8829,7 @@
 				D01588251EEB2ED7006E7684 /* VoidEnvelope.swift */,
 				8ABD5B3B24CFB026002E585C /* graphql */,
 				D01587971EEB2ED6006E7684 /* lenses */,
+				33AA26D52E3B1150002DBD60 /* mocks */,
 				D01587EE1EEB2ED7006E7684 /* templates */,
 			);
 			path = models;
@@ -9057,6 +9070,7 @@
 				E190EB252E29944E006A6DB6 /* MoneyFragment.graphql */,
 				E190EB262E29944E006A6DB6 /* OrderFragment.graphql */,
 				E190EB272E29944E006A6DB6 /* PaymentIncrementFragment.graphql */,
+				33AA26C82E39EA00002DBD60 /* PaymentIncrementBackingFragment.graphql */,
 				E190EB282E29944E006A6DB6 /* PaymentSourceFragment.graphql */,
 				E190EB292E29944E006A6DB6 /* PledgeManagerFragment.graphql */,
 				E190EB2A2E29944E006A6DB6 /* PledgeOverTimeFragment.graphql */,
@@ -9116,6 +9130,7 @@
 				E190EB542E29944E006A6DB6 /* DefaultLocationsQuery.graphql */,
 				E190EB552E29944E006A6DB6 /* FetchAddOnsQuery.graphql */,
 				E190EB562E29944E006A6DB6 /* FetchBackingQuery.graphql */,
+				33AA26C72E39E9BD002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql */,
 				E190EB572E29944E006A6DB6 /* FetchCategory.graphql */,
 				E190EB582E29944E006A6DB6 /* FetchCommentReplies.graphql */,
 				E190EB592E29944E006A6DB6 /* FetchMyBackedProjectsQuery.graphql */,
@@ -9492,6 +9507,7 @@
 			packageProductDependencies = (
 				E18A674D2E28236D00BA0376 /* ApolloTestSupport */,
 				E123A0882E2ECA3F00D61B63 /* ApolloAPI */,
+				33AA26D22E3ACDBC002DBD60 /* ReactiveExtensions-TestHelpers */,
 			);
 			productName = KsApiTests;
 			productReference = D01587581EEB2DE4006E7684 /* KsApiTests.xctest */;
@@ -10528,7 +10544,7 @@
 				A7ED1FEF1E831C5C00BFFA01 /* LoginViewModelTests.swift in Sources */,
 				A7ED1FF31E831C5C00BFFA01 /* ProjectCreatorViewModelTests.swift in Sources */,
 				473DE01A273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift in Sources */,
-				33AB202E2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */,
+				33AB202E2D269A8D00B8C047 /* MockPledgeOverTimePlanIncrements.swift in Sources */,
 				A7ED1FB61E831C5C00BFFA01 /* MessageCellViewModelTests.swift in Sources */,
 				A7ED1F2F1E830FDC00BFFA01 /* LocalizedStringTests.swift in Sources */,
 				D04AACAC218BB72100CF713E /* SettingsNotificationCellViewModelTests.swift in Sources */,
@@ -11010,7 +11026,7 @@
 				392BB12C2C3C095200A5591B /* PPOEmptyStateViewTests.swift in Sources */,
 				774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */,
 				D033E2C322A05B7400464E43 /* MockApplication.swift in Sources */,
-				33AB202F2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */,
+				33AB202F2D269A8D00B8C047 /* MockPledgeOverTimePlanIncrements.swift in Sources */,
 				1611EF6A23B2773A0051CDCC /* MockUUID.swift in Sources */,
 				3751E4292335871600047E9A /* PledgeAmountViewControllerTests.swift in Sources */,
 				D6560C2A2182361800CD24BC /* PaymentMethodsDataSourceTests.swift in Sources */,
@@ -11425,6 +11441,7 @@
 				77776BCA234BA88F00A42388 /* CancelBackingInputTests.swift in Sources */,
 				33AF66CF2DDE571300558D49 /* AddUserToSecretRewardGroupInputTests.swift in Sources */,
 				0622C92827347F980039AAC9 /* FetchCategoryQueryTemplate.swift in Sources */,
+				33AA26DE2E3B1467002DBD60 /* LocationMocks.swift in Sources */,
 				19047FC52889B52100BDD1A8 /* CreateSetupIntentInputTests.swift in Sources */,
 				47A662FB26AF792A001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.DataTests.swift in Sources */,
 				D0D10C201EEB4550005EBAD0 /* User.NewsletterSubscriptionsTests.swift in Sources */,
@@ -11437,6 +11454,8 @@
 				4753C78F264EE1B100BB10B6 /* PostCommentInputTests.swift in Sources */,
 				06032A8C26CEADED0013AAB9 /* FetchProjectCommentsQueryTemplate.swift in Sources */,
 				06BD75C526C42D6600A12D4E /* ActivityCommentAuthorTests.swift in Sources */,
+				33AA26E02E3B1471002DBD60 /* ProjectMocks.swift in Sources */,
+				33AA26E32E3B16D8002DBD60 /* PaymentIncrementsMocks.swift in Sources */,
 				20A0938A2666578D00DEC258 /* CommentTests.swift in Sources */,
 				E10BE8E72B151D2700F73DC9 /* BlockUserInputTests.swift in Sources */,
 				77272D382370AB8E003B7A9C /* BackingPaymentSourceTests.swift in Sources */,
@@ -11472,7 +11491,9 @@
 				D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */,
 				D0D10C081EEB4550005EBAD0 /* ConfigTests.swift in Sources */,
 				6030C6CF2D2D869800A3033C /* PledgePaymentIncrement+GraphAPITests.swift in Sources */,
+				33AA26E12E3B1476002DBD60 /* BackingMocks.swift in Sources */,
 				E10BE8E42B151A0B00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInputTests.swift in Sources */,
+				33AA26D12E3AC568002DBD60 /* ProjectAndBackingEnvelopeTests.swift in Sources */,
 				064AEF13270CFB53006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift in Sources */,
 				06962F8F273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift in Sources */,
 				06232D3C2795EC2400A81755 /* HTMLParserTests.swift in Sources */,
@@ -11494,6 +11515,7 @@
 				E1A149272ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift in Sources */,
 				194154D328D928C9004648C8 /* CreatePaymentSourceSetupIntentInputTests.swift in Sources */,
 				8AF34C762342D1D2000B211D /* UpdateBackingInputTests.swift in Sources */,
+				33AA26DF2E3B146C002DBD60 /* UserMocks.swift in Sources */,
 				D0D10C191EEB4550005EBAD0 /* RewardTests.swift in Sources */,
 				D0D10C101EEB4550005EBAD0 /* MessageTests.swift in Sources */,
 				19047FD12889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift in Sources */,
@@ -11647,6 +11669,7 @@
 				33AA16FC2E38A76F002DBD60 /* FetchProjectFriendsBySlugQuery.graphql.swift in Sources */,
 				33AA16FD2E38A76F002DBD60 /* FetchProjectRewardsByIdQuery.graphql.swift in Sources */,
 				33AA16FE2E38A76F002DBD60 /* FetchRootCategoriesQuery.graphql.swift in Sources */,
+				33AA26CE2E3A89AB002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql.swift in Sources */,
 				33AA16FF2E38A76F002DBD60 /* FetchSimilarProjectsQuery.graphql.swift in Sources */,
 				33AA17002E38A76F002DBD60 /* FetchUpdateCommentsQuery.graphql.swift in Sources */,
 				33AA17012E38A76F002DBD60 /* FetchUserBackingsQuery.graphql.swift in Sources */,
@@ -11659,6 +11682,7 @@
 				33AA17082E38A76F002DBD60 /* ValidateCheckoutQuery.graphql.swift in Sources */,
 				33AA17092E38A76F002DBD60 /* Date.swift in Sources */,
 				33AA170A2E38A76F002DBD60 /* DateTime.swift in Sources */,
+				33AA26CC2E39EE21002DBD60 /* PaymentIncrementBackingFragment.graphql.swift in Sources */,
 				33AA170B2E38A76F002DBD60 /* Email.swift in Sources */,
 				33AA170C2E38A76F002DBD60 /* HTML.swift in Sources */,
 				33AA170D2E38A76F002DBD60 /* ISO8601DateTime.swift in Sources */,
@@ -14187,6 +14211,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseRemoteConfig;
+		};
+		33AA26D22E3ACDBC002DBD60 /* ReactiveExtensions-TestHelpers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
+			productName = "ReactiveExtensions-TestHelpers";
 		};
 		600A0EEA2DD23BAA00954829 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;

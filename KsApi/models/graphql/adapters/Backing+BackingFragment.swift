@@ -8,7 +8,8 @@ extension Backing {
    */
   static func backing(
     from backingFragment: GraphAPI.BackingFragment,
-    addOns: [Reward]? = nil
+    addOns: [Reward]? = nil,
+    paymentIncrements: [PledgePaymentIncrement] = []
   ) -> Backing? {
     guard
       let id = decompose(id: backingFragment.id),
@@ -26,13 +27,6 @@ extension Backing {
     var locationId: Int?
     if let locationGraphId = backingFragment.location?.fragments.locationFragment.id {
       locationId = decompose(id: locationGraphId)
-    }
-
-    var paymentIncrements: [PledgePaymentIncrement] = []
-
-    if let backingIncrements = backingFragment.paymentIncrements {
-      paymentIncrements = backingIncrements
-        .compactMap { PledgePaymentIncrement(withGraphQLFragment: $0.fragments.paymentIncrementFragment) }
     }
 
     var backingOrder: Order?
