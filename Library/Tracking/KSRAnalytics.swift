@@ -607,15 +607,15 @@ public final class KSRAnalytics {
   /// Configure Tracking Client's supporting user identity
   public func identify(newUser: User?) {
     guard let newUser = newUser else {
-//      self.segmentClient?.reset()
+      self.segmentClient?.reset()
       return
     }
 
     let newData = KSRAnalyticsIdentityData(newUser)
-//    self.segmentClient?.identify(
-//      "\(newData.userId)",
-//      traits: newData.allTraits
-//    )
+    self.segmentClient?.identify(
+      userId: "\(newData.userId)",
+      traits: newData.allTraits
+    )
   }
 
   // MARK: - Activity
@@ -1468,10 +1468,10 @@ public final class KSRAnalytics {
 
     self.logEventCallback?(event, props)
 
-//    self.segmentClient?.track(
-//      event,
-//      properties: props
-//    )
+    self.segmentClient?.track(
+      name: event,
+      properties: props
+    )
   }
 
   // MARK: - Session Properties

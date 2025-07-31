@@ -6,8 +6,8 @@ internal final class MockTrackingClient: TrackingClientType {
   internal var userId: String?
   internal var traits: [String: Any]?
 
-  func track(_ event: String, properties: [String: Any]?) {
-    self.tracks.append((event: event, properties: properties ?? [:]))
+  func track(name: String, properties: [String: Any]?) {
+    self.tracks.append((event: name, properties: properties ?? [:]))
   }
 
   internal var events: [String] {
@@ -34,7 +34,7 @@ internal final class MockTrackingClient: TrackingClientType {
 }
 
 extension MockTrackingClient: IdentifyingTrackingClient {
-  func identify(_ userId: String?, traits: [String: Any]?) {
+  func identify(userId: String, traits: [String: Any]?) {
     self.userId = userId
     self.traits = traits
   }
