@@ -14,24 +14,27 @@ struct CallToActionView: View {
   let onSecondaryTap: () -> Void
 
   var body: some View {
-    // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
     VStack(spacing: Constants.rootStackViewSpacing) {
       switch self.item.type {
       case .welcome, .saveProjects:
-        self.primaryButton(title: "FPO: Next", action: self.onPrimaryTap, for: self.item)
+        self.primaryButton(
+          title: Strings.project_checkout_navigation_next(),
+          action: self.onPrimaryTap,
+          for: self.item
+        )
         /// Empty secondary button allows the primary button to be in the same position througout the onboarding flow.
         self.secondaryButton(title: "", action: {})
       case .enableNotifications:
-        self.primaryButton(title: "FPO: Get notified", action: self.onPrimaryTap, for: self.item)
-        self.secondaryButton(title: "FPO: Not right now", action: self.onSecondaryTap)
+        self.primaryButton(title: Strings.Get_notified(), action: self.onPrimaryTap, for: self.item)
+        self.secondaryButton(title: Strings.Not_right_now(), action: self.onSecondaryTap)
 
       case .allowTracking:
-        self.primaryButton(title: "FPO: Allow tracking", action: self.onPrimaryTap, for: self.item)
-        self.secondaryButton(title: "FPO: Not right now", action: self.onSecondaryTap)
+        self.primaryButton(title: Strings.Allow_tracking(), action: self.onPrimaryTap, for: self.item)
+        self.secondaryButton(title: Strings.Not_right_now(), action: self.onSecondaryTap)
 
       case .loginSignUp:
-        self.primaryButton(title: "FPO: Sign up or log in", action: self.onPrimaryTap, for: self.item)
-        self.secondaryButton(title: "FPO: Explore the app", action: self.onSecondaryTap)
+        self.primaryButton(title: Strings.Sign_up_or_log_in(), action: self.onPrimaryTap, for: self.item)
+        self.secondaryButton(title: Strings.Explore_the_app(), action: self.onSecondaryTap)
       }
     }
     .padding(.horizontal, Constants.rootStackViewHorizontalPadding)
@@ -70,33 +73,30 @@ struct CallToActionView: View {
     }
   }
 
-  // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
   private func accessibilityLabel(for item: OnboardingItem) -> LocalizedStringKey {
     switch item.type {
-    case .welcome:
-      "FPO: Welcome"
-    case .saveProjects:
-      "FPO: Save Projects."
+    case .welcome, .saveProjects:
+      LocalizedStringKey(stringLiteral: Strings.project_checkout_navigation_next())
     case .enableNotifications:
-      "FPO: Push Notifications."
+      LocalizedStringKey(stringLiteral: Strings.Get_notified())
     case .allowTracking:
-      "FPO: App Tracking."
+      LocalizedStringKey(stringLiteral: Strings.Allow_tracking())
     case .loginSignUp:
-      "FPO: Login or Sign Up."
+      LocalizedStringKey(stringLiteral: Strings.Sign_up_or_log_in())
     }
   }
 
-  // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
+  // TODO: Add accessibility translations [mbl-2418]
   private func accessibilityHint(for item: OnboardingItem) -> LocalizedStringKey {
     switch item.type {
     case .welcome, .saveProjects:
-      "FPO: Navigate to next oboarding view."
+      LocalizedStringKey(stringLiteral: Strings.project_checkout_navigation_next())
     case .enableNotifications:
-      "FPO: Enable Push Notifications."
+      LocalizedStringKey(stringLiteral: Strings.Get_notified())
     case .allowTracking:
-      "FPO: Allow App Tracking."
+      LocalizedStringKey(stringLiteral: Strings.Allow_tracking())
     case .loginSignUp:
-      "FPO: Go to the Login and Sign Up screen."
+      LocalizedStringKey(stringLiteral: Strings.Sign_up_or_log_in())
     }
   }
 }
