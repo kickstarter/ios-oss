@@ -35,8 +35,8 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
   }
 
   func testView_PaymentSchedule_Expanded() {
-    let darkModeOn = MockRemoteConfigClient()
-    darkModeOn.features = [
+    let designSystemOn = MockRemoteConfigClient()
+    designSystemOn.features = [
       RemoteConfigFeature.newDesignSystem.rawValue: true
     ]
 
@@ -46,7 +46,7 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
       [Device.pad, Device.phone4_7inch],
       [UIUserInterfaceStyle.light, UIUserInterfaceStyle.dark]
     ).forEach { language, device, style in
-      withEnvironment(colorResolver: AppColorResolver(), language: language, remoteConfigClient: darkModeOn) {
+      withEnvironment(colorResolver: AppColorResolver(), language: language, remoteConfigClient: designSystemOn) {
         let controller = PledgeOverTimePaymentScheduleViewController.instantiate()
         controller.overrideUserInterfaceStyle = style
 
