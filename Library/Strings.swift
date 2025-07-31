@@ -2450,6 +2450,23 @@ contributeurs"
     )
   }
   /**
+   "Collected (adjusted)"
+
+   - **en**: "Collected (adjusted)"
+   - **de**: "Eingezogen (bereinigt)"
+   - **es**: "Cobrado (ajustado)"
+   - **fr**: "Total prélevé (réajusté)"
+   - **ja**: "請求済み（調整済み）"
+  */
+  public static func Collected_adjusted() -> String {
+    return localizedString(
+      key: "Collected_adjusted",
+      defaultValue: "Collected (adjusted)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Collection plan"
 
    - **en**: "Collection plan"
@@ -8095,6 +8112,40 @@ n'ont rien soutenu."
     )
   }
   /**
+   "No results"
+
+   - **en**: "No results"
+   - **de**: "Keine Ergebnisse"
+   - **es**: "Sin resultados"
+   - **fr**: "Pas de résultats"
+   - **ja**: "結果なし"
+  */
+  public static func No_results() -> String {
+    return localizedString(
+      key: "No_results",
+      defaultValue: "No results",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "No results for “%{query}”"
+
+   - **en**: "No results for “%{query}”"
+   - **de**: "Keine Ergebnisse für „%{query}“"
+   - **es**: "No hay resultados para %{query}"
+   - **fr**: "Aucun résultat pour « %{query} »"
+   - **ja**: "「%{query}」の検索結果がありません"
+  */
+  public static func No_results_for(query: String) -> String {
+    return localizedString(
+      key: "No_results_for",
+      defaultValue: "No results for “%{query}”",
+      count: nil,
+      substitutions: ["query": query]
+    )
+  }
+  /**
    "No saved projects"
 
    - **en**: "No saved projects"
@@ -10342,6 +10393,23 @@ daring ideas."
     )
   }
   /**
+   "Refunded"
+
+   - **en**: "Refunded"
+   - **de**: "Beitrag rückerstattet"
+   - **es**: "Reembolso emitido"
+   - **fr**: "Remboursé"
+   - **ja**: "払い戻し"
+  */
+  public static func Refunded() -> String {
+    return localizedString(
+      key: "Refunded",
+      defaultValue: "Refunded",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Remember that delivery dates are not guaranteed."
 
    - **en**: "Remember that delivery dates are not guaranteed."
@@ -10371,6 +10439,23 @@ daring ideas."
     return localizedString(
       key: "Remember_this_card",
       defaultValue: "Remember this card",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Remove all filters"
+
+   - **en**: "Remove all filters"
+   - **de**: "Alle Filter entfernen"
+   - **es**: "Eliminar todos los filtros"
+   - **fr**: "Supprimer tous les filtres"
+   - **ja**: "すべてのフィルタを外す"
+  */
+  public static func Remove_all_filters() -> String {
+    return localizedString(
+      key: "Remove_all_filters",
+      defaultValue: "Remove all filters",
       count: nil,
       substitutions: [:]
     )
@@ -13775,6 +13860,57 @@ catch your eye?"
       defaultValue: "Tracking number: %{number}",
       count: nil,
       substitutions: ["number": number]
+    )
+  }
+  /**
+   "Try adjusting the filters"
+
+   - **en**: "Try adjusting the filters"
+   - **de**: "Versuche, die Filter anzupassen"
+   - **es**: "Prueba modificar los filtros"
+   - **fr**: "Essayez de modifier les filtres"
+   - **ja**: "フィルターを調整してみてください"
+  */
+  public static func Try_adjusting_the_filters() -> String {
+    return localizedString(
+      key: "Try_adjusting_the_filters",
+      defaultValue: "Try adjusting the filters",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Try rephrasing your search"
+
+   - **en**: "Try rephrasing your search"
+   - **de**: "Versuche, deine Suche anders zu formulieren"
+   - **es**: "Intenta reformular tu búsqueda"
+   - **fr**: "Essayez de reformuler votre recherche"
+   - **ja**: "検索キーワードを変更してみてください"
+  */
+  public static func Try_rephrasing_your_search() -> String {
+    return localizedString(
+      key: "Try_rephrasing_your_search",
+      defaultValue: "Try rephrasing your search",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Try rephrasing your search or adjusting the filters"
+
+   - **en**: "Try rephrasing your search or adjusting the filters"
+   - **de**: "Versuche, deine Suche anders zu formulieren oder die Filter anzupassen"
+   - **es**: "Intenta reformular tu búsqueda o ajustar los filtros"
+   - **fr**: "Essayez de reformuler votre recherche ou de modifier les filtres"
+   - **ja**: "検索キーワードを変更するか、フィルターを調整してみてください"
+  */
+  public static func Try_rephrasing_your_search_or_adjusting_the_filters() -> String {
+    return localizedString(
+      key: "Try_rephrasing_your_search_or_adjusting_the_filters",
+      defaultValue: "Try rephrasing your search or adjusting the filters",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
