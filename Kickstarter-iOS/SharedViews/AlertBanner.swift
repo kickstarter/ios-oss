@@ -25,7 +25,7 @@ final class AlertBanner: UIView {
 
   private func configureViews() {
     self.backgroundColor = Colors.Background.Danger.subtle.uiColor()
-    self.layer.cornerRadius = Styles.cornerRadius
+    self.layer.cornerRadius = Dimension.CornerRadius.small
     self.layer.masksToBounds = true
     self.translatesAutoresizingMaskIntoConstraints = false
 
@@ -51,7 +51,7 @@ final class AlertBanner: UIView {
     self.button.setBackgroundColor(LegacyColors.ksr_support_300.uiColor(), for: .highlighted)
     self.button.layer.borderColor = LegacyColors.ksr_support_300.uiColor().cgColor
     self.button.layer.borderWidth = 1
-    self.button.layer.cornerRadius = Styles.cornerRadius
+    self.button.layer.cornerRadius = Dimension.CornerRadius.small
     self.button.configurationUpdateHandler = { button in
       switch button.state {
       case .highlighted, .selected:
@@ -76,7 +76,7 @@ final class AlertBanner: UIView {
 
     let padding = Styles.grid(3)
     NSLayoutConstraint.activate([
-      leadingEdgeBar.widthAnchor.constraint(equalToConstant: Styles.cornerRadius),
+      leadingEdgeBar.widthAnchor.constraint(equalToConstant: Dimension.CornerRadius.small),
       leadingEdgeBar.leadingAnchor.constraint(equalTo: self.leadingAnchor),
       leadingEdgeBar.topAnchor.constraint(equalTo: self.topAnchor),
       leadingEdgeBar.bottomAnchor.constraint(equalTo: self.bottomAnchor),

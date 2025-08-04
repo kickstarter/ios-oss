@@ -4,12 +4,12 @@ import UIKit
 
 private enum Constants {
   static let imageAspectRatio = CGFloat(9.0 / 16.0)
-  static let cornerRadius = 12.0
+  static let cornerRadius = Spacing_03
   static let projectImageViewHeight = 198.0
-  static let projectStatusStackViewSpacing = 8.0
-  static let daysLeftImageViewHeight = 16.0
-  static let daysLeftImageViewWidth = 16.0
-  static let daysLeftLabelLeadingSpacing = 8.0
+  static let projectStatusStackViewSpacing = Spacing_02
+  static let daysLeftImageViewHeight = Spacing_04
+  static let daysLeftImageViewWidth = Spacing_04
+  static let daysLeftLabelLeadingSpacing = Spacing_02
   static let progressBarHeight = 9.0
   static let viewSpacing = Styles.grid(3)
 }

@@ -1,7 +1,6 @@
 import Library
 import SwiftUI
 
-private let spacing01 = 4.0
 private let buttonFont = InterFont.headingMD
 
 internal struct SearchFiltersPillStyle: SwiftUI.ButtonStyle {
@@ -10,8 +9,8 @@ internal struct SearchFiltersPillStyle: SwiftUI.ButtonStyle {
   /// and needs a little extra space in the end caps. If the pill is displaying square content (i.e. an icon),
   /// set `isSquare` to `true` to remove that extra spacing.
   var isSquare: Bool = false
-  private let padding: CGFloat = spacing01 * 2
-  private let extraPadding: CGFloat = spacing01
+  private let padding: CGFloat = Spacing_02
+  private let extraPadding: CGFloat = Spacing_01
 
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
@@ -68,10 +67,10 @@ internal struct FilterBadgeView: View {
     Text("\(self.count)")
       .font(InterFont.headingXS.swiftUIFont())
       .padding(EdgeInsets(
-        top: spacing01,
-        leading: spacing01,
-        bottom: spacing01,
-        trailing: spacing01
+        top: Spacing_01,
+        leading: Spacing_01,
+        bottom: Spacing_01,
+        trailing: Spacing_01
       ))
       .foregroundStyle(Colors.Text.primary.swiftUIColor())
       .background(Colors.Background.Accent.Gray.subtle.swiftUIColor())
@@ -163,7 +162,7 @@ internal struct TogglePillButton: View {
 
   var body: some View {
     Button(action: self.action) {
-      HStack(spacing: spacing01) {
+      HStack(spacing: Spacing_01) {
         if let image = self.image {
           Image(uiImage: image)
             .aspectRatio(1.0, contentMode: .fill)

@@ -8,7 +8,7 @@ import UIKit
 // MARK: - Apple Pay
 
 public let applePayButtonStyle: ButtonStyle = { button in
-  let cornerRadius: CGFloat = featureNewDesignSystemEnabled() ? Styles.cornerRadius : Styles.grid(2)
+  let cornerRadius: CGFloat = featureNewDesignSystemEnabled() ? Dimension.CornerRadius.small : Styles.grid(2)
 
   return button
     |> roundedStyle(cornerRadius: cornerRadius)
@@ -22,7 +22,7 @@ public let applePayButtonStyle: ButtonStyle = { button in
 /// These styles are temporary for buttons that do not yet have a direct equivalent in the new system
 /// and are expected to be replaced in the future.
 public let baseButtonStyle: ButtonStyle = { button in
-  let cornerRadius: CGFloat = featureNewDesignSystemEnabled() ? Styles.cornerRadius : Styles.grid(2)
+  let cornerRadius: CGFloat = featureNewDesignSystemEnabled() ? Dimension.CornerRadius.small : Styles.grid(2)
   let font: UIFont = featureNewDesignSystemEnabled() ? .ksr_ButtonLabel() : .ksr_headline(size: 16)
 
   return button

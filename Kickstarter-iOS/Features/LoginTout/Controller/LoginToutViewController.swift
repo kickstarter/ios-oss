@@ -533,7 +533,7 @@ private let separatorViewStyle: ViewStyle = { view in
 }
 
 private func applyAppleLoginButtonStyle(_ button: AdaptiveAppleIDButton) {
-  let cornerRadius: CGFloat = featureNewDesignSystemEnabled() ? Styles.cornerRadius : Styles.grid(2)
+  let cornerRadius: CGFloat = featureNewDesignSystemEnabled() ? Dimension.CornerRadius.small : Styles.grid(2)
 
   button.cornerRadius(cornerRadius)
 }
@@ -645,8 +645,8 @@ private class AdaptiveAppleIDButton: UIView {
 
   /// Sets the corner radius for both the light and dark mode Apple ID buttons.
   ///
-  /// - Parameter cornerRadius: The radius to apply to the corners of the buttons. Defaults to `Styles.cornerRadius`.
-  func cornerRadius(_ cornerRadius: CGFloat = Styles.cornerRadius) {
+  /// - Parameter cornerRadius: The radius to apply to the corners of the buttons. Defaults to `Dimension.CornerRadius.small`.
+  func cornerRadius(_ cornerRadius: CGFloat = Dimension.CornerRadius.small) {
     self.lightModeButton.cornerRadius = cornerRadius
     self.darkModeButton.cornerRadius = cornerRadius
   }

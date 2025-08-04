@@ -36,7 +36,7 @@ struct MessageBannerView: View {
         trailing: Constants.defaultSpacing
       ))
       .background {
-        RoundedRectangle(cornerRadius: Styles.cornerRadius)
+        RoundedRectangle(cornerRadius: Dimension.CornerRadius.small)
           .foregroundColor(vm.bannerBackgroundColor)
       }
       .accessibilityElement()
