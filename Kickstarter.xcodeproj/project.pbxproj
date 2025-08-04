@@ -2101,6 +2101,8 @@
 		E1A310242D270CB00062646C /* BuildPaymentPlanQueryTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */; };
 		E1A310262D28406F0062646C /* PledgeOverTimeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310252D2840680062646C /* PledgeOverTimeUseCase.swift */; };
 		E1A310292D2845E00062646C /* PledgeOverTimeUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310272D2845CB0062646C /* PledgeOverTimeUseCaseTests.swift */; };
+		E1A9678C2E40F9B2009D99CC /* CoreSpacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A9678B2E40F9AE009D99CC /* CoreSpacing.swift */; };
+		E1A9678E2E40F9C0009D99CC /* Dimension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A9678D2E40F9BC009D99CC /* Dimension.swift */; };
 		E1AA8ABF2AEABBB100AC98BF /* Signal+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */; };
 		E1AABC2B2DD259BA00BFFACF /* ColorsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1AABC292DD2599600BFFACF /* ColorsViewTests.swift */; };
 		E1AACA872DDBB3AA005C38F1 /* LegacyColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1AACA862DDBB3AA005C38F1 /* LegacyColors.swift */; };
@@ -4351,6 +4353,8 @@
 		E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildPaymentPlanQueryTestData.swift; sourceTree = "<group>"; };
 		E1A310252D2840680062646C /* PledgeOverTimeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimeUseCase.swift; sourceTree = "<group>"; };
 		E1A310272D2845CB0062646C /* PledgeOverTimeUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimeUseCaseTests.swift; sourceTree = "<group>"; };
+		E1A9678B2E40F9AE009D99CC /* CoreSpacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSpacing.swift; sourceTree = "<group>"; };
+		E1A9678D2E40F9BC009D99CC /* Dimension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dimension.swift; sourceTree = "<group>"; };
 		E1AABC292DD2599600BFFACF /* ColorsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsViewTests.swift; sourceTree = "<group>"; };
 		E1AACA862DDBB3AA005C38F1 /* LegacyColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyColors.swift; sourceTree = "<group>"; };
 		E1AACA882DDBB48A005C38F1 /* ColorResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorResolver.swift; sourceTree = "<group>"; };
@@ -4375,29 +4379,6 @@
 		E1EEED2A2B686829009976D9 /* PKCETest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETest.swift; sourceTree = "<group>"; };
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		E18A64692E28224A00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			publicHeaders = (
-				GraphAPI.h,
-			);
-			target = E18A645C2E28224A00BA0376 /* GraphAPI */;
-		};
-		E18A666B2E28225E00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			publicHeaders = (
-				GraphAPITestMocks.h,
-			);
-			target = E18A66662E28225E00BA0376 /* GraphAPITestMocks */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		60CC7C9C2E269D270055BE8F /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
-		E18A645E2E28224A00BA0376 /* GraphAPI */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E18A64692E28224A00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = GraphAPI; sourceTree = "<group>"; };
-		E18A66682E28225E00BA0376 /* GraphAPITestMocks */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E18A666B2E28225E00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = GraphAPITestMocks; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		A75511381C8642B3005355CF /* Frameworks */ = {
@@ -7832,6 +7813,7 @@
 		A73378F91D0AE33B00C91445 /* Styles */ = {
 			isa = PBXGroup;
 			children = (
+				E1A9678A2E40F9A7009D99CC /* Spacing */,
 				338E60282D70CACB008D42F9 /* Buttons */,
 				338E601D2D6FE303008D42F9 /* Colors */,
 				33F55B552D552BEF0007E50E /* Fonts */,
@@ -9195,6 +9177,15 @@
 			path = templates;
 			sourceTree = "<group>";
 		};
+		E1A9678A2E40F9A7009D99CC /* Spacing */ = {
+			isa = PBXGroup;
+			children = (
+				E1A9678B2E40F9AE009D99CC /* CoreSpacing.swift */,
+				E1A9678D2E40F9BC009D99CC /* Dimension.swift */,
+			);
+			path = Spacing;
+			sourceTree = "<group>";
+		};
 		E1AA8ABE2AEABB1900AC98BF /* combine */ = {
 			isa = PBXGroup;
 			children = (
@@ -10055,6 +10046,7 @@
 				067E7EC927BF0F2B00F02B33 /* AudioVideoViewElementCellViewModel.swift in Sources */,
 				8AE09C3C2446330100036043 /* PledgeDisclaimerViewModel.swift in Sources */,
 				77BC00F623301BD400808E75 /* RewardCellViewModel.swift in Sources */,
+				E1A9678C2E40F9B2009D99CC /* CoreSpacing.swift in Sources */,
 				D710ADFB243FB94A00DC7199 /* PledgeViewCTAContainerViewModel.swift in Sources */,
 				3767EDB122CFFF2B0088E8E4 /* ShippingRulesViewModel.swift in Sources */,
 				33D11D422D68C57300CC88A3 /* KSRButtonStyle.swift in Sources */,
@@ -10123,6 +10115,7 @@
 				D04AAC29218BB70D00CF713E /* BetaToolsViewModel.swift in Sources */,
 				D093B49C21A86FD800910962 /* PushRegistration.swift in Sources */,
 				A7F441B31D005A9400FE6FC5 /* ActivityProjectStatusViewModel.swift in Sources */,
+				E1A9678E2E40F9C0009D99CC /* Dimension.swift in Sources */,
 				E1A310262D28406F0062646C /* PledgeOverTimeUseCase.swift in Sources */,
 				AAE7C9A42C7527E000800E03 /* PagedTabBar.swift in Sources */,
 				370BE71622541C8100B44DB2 /* UIViewController+URL.swift in Sources */,
