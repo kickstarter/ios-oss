@@ -118,7 +118,7 @@ struct RowView: View {
   @Binding var popToRoot: Bool
 
   private let contentSpacing = 10.0
-  private let contentPadding = 12.0
+  private let contentPadding = Spacing.unit_03
 
   var body: some View {
     HStack {

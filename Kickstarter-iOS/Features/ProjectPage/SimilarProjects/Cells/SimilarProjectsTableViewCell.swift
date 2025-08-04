@@ -8,7 +8,7 @@ protocol SimilarProjectsTableViewCellDelegate: AnyObject {
 
 enum SimilarProjectsCellConstants {
   static let spacing: CGFloat = Styles.grid(3)
-  static let collectionViewInteritemSpacing: CGFloat = 8.0
+  static let collectionViewInteritemSpacing: CGFloat = Spacing.unit_02
   static let collectionViewItemSize = CGSize(width: 327, height: 279)
   static let collectionViewBottomSpacing: CGFloat = -Styles.grid(6)
   static let collectionViewHeight: CGFloat = 350.0
