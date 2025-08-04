@@ -533,7 +533,7 @@ private let separatorViewStyle: ViewStyle = { view in
 }
 
 private func applyAppleLoginButtonStyle(_ button: AdaptiveAppleIDButton) {
-  let cornerRadius: CGFloat = featureNewDesignSystemEnabled() ? Styles.cornerRadius : Styles.grid(2)
+  let cornerRadius: CGFloat = Styles.cornerRadius
 
   button.cornerRadius(cornerRadius)
 }
