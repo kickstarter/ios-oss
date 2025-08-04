@@ -535,7 +535,7 @@ private func rootInsetStackViewStyle(_ stackView: UIStackView) {
   )
 }
 
-public func roundedStyle(_ view: UIView, cornerRadius: CGFloat = Styles.cornerRadius) {
+public func roundedStyle(_ view: UIView, cornerRadius: CGFloat = Dimension.CornerRadius.small) {
   view.clipsToBounds = true
   view.layer.masksToBounds = true
   view.layer.cornerRadius = cornerRadius
