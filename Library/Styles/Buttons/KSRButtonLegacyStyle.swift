@@ -70,7 +70,7 @@ public enum KSRButtonLegacyStyle: KSRButtonStyleConfiguration, CaseIterable {
   }
 
   public var cornerRadius: CGFloat {
-    Styles.cornerRadius
+    Dimension.CornerRadius.small
   }
 
   public var buttonConfiguration: UIButton.Configuration {
