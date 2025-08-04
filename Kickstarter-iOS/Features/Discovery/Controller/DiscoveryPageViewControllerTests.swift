@@ -40,11 +40,6 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
       sampleUpdate
     ]
 
-    let newDesignSystemOn = MockRemoteConfigClient()
-    newDesignSystemOn.features = [
-      RemoteConfigFeature.newDesignSystem.rawValue: true
-    ]
-
     orthogonalCombos(
       Language.allLanguages,
       [Device.phone4_7inch, Device.phone5_8inch, Device.pad],
@@ -56,7 +51,6 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         colorResolver: AppColorResolver(),
         currentUser: User.template,
         language: language,
-        remoteConfigClient: newDesignSystemOn,
         userDefaults: MockKeyValueStore()
       ) {
         let controller = DiscoveryPageViewController.configuredWith(sort: .magic)

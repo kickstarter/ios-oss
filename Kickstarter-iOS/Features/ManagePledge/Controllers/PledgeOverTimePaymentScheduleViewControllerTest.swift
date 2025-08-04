@@ -36,7 +36,6 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
 
   func testView_PaymentSchedule_Expanded() {
     let increments = mockPaymentIncrementsForManagingBacking()
-
     orthogonalCombos(
       [Language.en],
       [Device.pad, Device.phone4_7inch],

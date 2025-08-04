@@ -35,11 +35,6 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
 
-    let darkModeOn = MockRemoteConfigClient()
-    darkModeOn.features = [
-      RemoteConfigFeature.newDesignSystem.rawValue: true
-    ]
-
     orthogonalCombos(
       Language.allLanguages,
       Device.allCases,
@@ -48,8 +43,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
       withEnvironment(
         apiService: mockService,
         colorResolver: AppColorResolver(),
-        language: language,
-        remoteConfigClient: darkModeOn
+        language: language
       ) {
         let controller = RewardAddOnSelectionViewController.instantiate()
         controller.overrideUserInterfaceStyle = style

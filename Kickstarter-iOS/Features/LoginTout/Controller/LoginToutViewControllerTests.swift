@@ -24,44 +24,13 @@ internal final class LoginToutViewControllerTests: TestCase {
     }
   }
 
-  func testLoginToutView_NewDesignSystem_On() {
-    let languages = [Language.en]
-    let devices = [Device.phone4_7inch]
-    let intents = [LoginIntent.generic]
-
-    let remoteConfig = MockRemoteConfigClient()
-    remoteConfig.features = [
-      RemoteConfigFeature.newDesignSystem.rawValue: true
-    ]
-
-    orthogonalCombos(languages, devices, intents).forEach { language, device, intent in
-      withEnvironment(language: language, remoteConfigClient: remoteConfig) {
-        let controller = LoginToutViewController.configuredWith(loginIntent: intent)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-
-        self.scheduler.run()
-
-        assertSnapshot(
-          matching: parent.view,
-          as: .image,
-          named: "intent_\(intent)_lang_\(language)_device_\(device)"
-        )
-      }
-    }
-  }
-
   func testDarkMode() {
-    let darkModeOn = MockRemoteConfigClient()
-    darkModeOn.features = [
-      RemoteConfigFeature.newDesignSystem.rawValue: true
-    ]
-
     let language = Language.en
     let device = Device.phone5_8inch
     let resolver = AppColorResolver()
     let intent = LoginIntent.generic
 
-    withEnvironment(colorResolver: resolver, language: language, remoteConfigClient: darkModeOn) {
+    withEnvironment(colorResolver: resolver, language: language) {
       let controller = LoginToutViewController.configuredWith(loginIntent: intent)
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 

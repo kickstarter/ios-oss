@@ -138,8 +138,7 @@ internal final class SearchViewContollerTests: TestCase {
 
     let mockRemoteConfig = MockRemoteConfigClient()
     mockRemoteConfig.features = [
-      RemoteConfigFeature.searchNewEmptyState.rawValue: true,
-      RemoteConfigFeature.newDesignSystem.rawValue: true
+      RemoteConfigFeature.searchNewEmptyState.rawValue: true
     ]
 
     var emptyStateTypeIterator = 0
@@ -208,11 +207,6 @@ internal final class SearchViewContollerTests: TestCase {
       GraphAPI.SearchQuery.Data.activeResults
     )]
 
-    let darkModeOn = MockRemoteConfigClient()
-    darkModeOn.features = [
-      RemoteConfigFeature.newDesignSystem.rawValue: true
-    ]
-
     orthogonalCombos(
       Language.allLanguages,
       [Device.phone4_7inch, Device.phone5_8inch, Device.pad],
@@ -221,7 +215,7 @@ internal final class SearchViewContollerTests: TestCase {
     .forEach { language, device, style in
       withEnvironment(
         apiService: MockService(fetchGraphQLResponses: searchResponse), colorResolver: AppColorResolver(),
-        language: language, remoteConfigClient: darkModeOn
+        language: language
       ) {
         let controller = Storyboard.Search.instantiate(SearchViewController.self)
         controller.overrideUserInterfaceStyle = style
