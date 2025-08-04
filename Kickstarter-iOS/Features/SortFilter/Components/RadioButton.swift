@@ -24,7 +24,7 @@ struct RadioButton: View {
   }
 
   internal enum Constants {
-    static let radioButtonSize: CGFloat = Styles.grid(4)
+    static let radioButtonSize = Spacing.unit_06
     static let radioButtonOuterBorder: CGFloat = 1.0
     static let radioButtonInnerBorder: CGFloat = 8.0
   }

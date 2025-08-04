@@ -117,9 +117,9 @@ public struct LocationView: View {
   }
 
   internal enum Constants {
-    static let padding: CGFloat = 24.0
-    static let spacing: CGFloat = 24.0
-    static let buttonLabelSpacing: CGFloat = 8.0
+    static let padding = Spacing.unit_06
+    static let spacing = Spacing.unit_06
+    static let buttonLabelSpacing = Spacing.unit_02
   }
 }
 

@@ -4,7 +4,7 @@ import UIKit
 
 private enum Layout {
   enum Button {
-    static let height: CGFloat = 20.0
+    static let height: CGFloat = Spacing.unit_05
   }
 
   enum Container {

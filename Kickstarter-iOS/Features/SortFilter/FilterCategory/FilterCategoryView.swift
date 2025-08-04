@@ -115,14 +115,14 @@ struct FilterCategoryView: View {
 }
 
 private enum Constants {
-  static let headerPadding: CGFloat = 24.0
-  static let progressViewPadding: CGFloat = 24.0
-  static let radioButtonSize: CGFloat = 24.0
+  static let headerPadding = Spacing.unit_06
+  static let progressViewPadding = Spacing.unit_06
+  static let radioButtonSize = Spacing.unit_06
   static let radioButtonOuterBorder: CGFloat = 1.0
-  static let radioButtonInnerBorder: CGFloat = 8.0
+  static let radioButtonInnerBorder = Spacing.unit_02
   static let resetButtonMaxWidth: CGFloat = 130.0
-  static let rowPaddingHorizontal: CGFloat = 24.0
-  static let rowPaddingVertical: CGFloat = 20.0
+  static let rowPaddingHorizontal = Spacing.unit_06
+  static let rowPaddingVertical = Spacing.unit_05
   static let separatorHeight: CGFloat = 1.0
 }
 

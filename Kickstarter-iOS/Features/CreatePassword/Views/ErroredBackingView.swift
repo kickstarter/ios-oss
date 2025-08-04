@@ -11,7 +11,7 @@ private enum Layout {
   }
 
   enum ImageView {
-    static let minWidth: CGFloat = 16.0
+    static let minWidth: CGFloat = Spacing.unit_04
   }
 }
 

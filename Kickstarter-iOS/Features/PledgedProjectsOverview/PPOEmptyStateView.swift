@@ -5,8 +5,8 @@ struct PPOEmptyStateView: View {
   var onOpenBackedProjects: (() -> Void)? = nil
 
   private enum Constants {
-    public static let largePadding = 24.0
-    public static let horizontalPadding = 16.0
+    public static let largePadding = Spacing.unit_06
+    public static let horizontalPadding = Spacing.unit_04
   }
 
   var body: some View {

@@ -267,9 +267,14 @@ struct FilterRootView: View {
   }
 
   enum Constants {
-    static let sectionPadding: EdgeInsets = EdgeInsets(top: 24.0, leading: 24.0, bottom: 24.0, trailing: 24.0)
-    static let sectionSpacing: CGFloat = 12.0
-    static let flowLayoutSpacing: CGFloat = 8.0
+    static let sectionPadding: EdgeInsets = EdgeInsets(
+      top: Spacing.unit_06,
+      leading: Spacing.unit_06,
+      bottom: Spacing.unit_06,
+      trailing: Spacing.unit_06
+    )
+    static let sectionSpacing = Spacing.unit_03
+    static let flowLayoutSpacing = Spacing.unit_02
     static let resetButtonMaxWidth: CGFloat = 130.0
   }
 }
