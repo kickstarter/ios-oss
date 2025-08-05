@@ -5,7 +5,7 @@
 
 public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment BackingFragment on Backing { __typename amount { __typename ...MoneyFragment } backer { __typename ...UserFragment } backerCompleted bonusAmount { __typename ...MoneyFragment } cancelable paymentSource { __typename ...PaymentSourceFragment } id isLatePledge location { __typename ...LocationFragment } order { __typename ...OrderFragment } paymentIncrements { __typename ...PaymentIncrementFragment } pledgedOn project { __typename ...ProjectFragment } reward { __typename ...RewardFragment } rewardsAmount { __typename ...MoneyFragment } sequence shippingAmount { __typename ...MoneyFragment } status backingDetailsPageRoute(type: url, tab: survey_responses) }"#
+    #"fragment BackingFragment on Backing { __typename amount { __typename ...MoneyFragment } backer { __typename ...UserFragment } backerCompleted bonusAmount { __typename ...MoneyFragment } cancelable paymentSource { __typename ...PaymentSourceFragment } id isLatePledge location { __typename ...LocationFragment } order { __typename ...OrderFragment } pledgedOn project { __typename ...ProjectFragment } reward { __typename ...RewardFragment } rewardsAmount { __typename ...MoneyFragment } sequence shippingAmount { __typename ...MoneyFragment } status backingDetailsPageRoute(type: url, tab: survey_responses) }"#
   }
 
   public let __data: DataDict
@@ -24,7 +24,6 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
     .field("isLatePledge", Bool.self),
     .field("location", Location?.self),
     .field("order", Order?.self),
-    .field("paymentIncrements", [PaymentIncrement]?.self),
     .field("pledgedOn", GraphAPI.DateTime?.self),
     .field("project", Project?.self),
     .field("reward", Reward?.self),
@@ -57,8 +56,6 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
   public var location: Location? { __data["location"] }
   /// The order associated with the backing
   public var order: Order? { __data["order"] }
-  /// Scheduled incremental payments
-  public var paymentIncrements: [PaymentIncrement]? { __data["paymentIncrements"] }
   /// When the backing was created
   public var pledgedOn: GraphAPI.DateTime? { __data["pledgedOn"] }
   /// The project
@@ -87,7 +84,6 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
     isLatePledge: Bool,
     location: Location? = nil,
     order: Order? = nil,
-    paymentIncrements: [PaymentIncrement]? = nil,
     pledgedOn: GraphAPI.DateTime? = nil,
     project: Project? = nil,
     reward: Reward? = nil,
@@ -110,7 +106,6 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
         "isLatePledge": isLatePledge,
         "location": location._fieldData,
         "order": order._fieldData,
-        "paymentIncrements": paymentIncrements._fieldData,
         "pledgedOn": pledgedOn,
         "project": project._fieldData,
         "reward": reward._fieldData,
@@ -728,62 +723,6 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
         ]
       ))
     }
-  }
-
-  /// PaymentIncrement
-  ///
-  /// Parent Type: `PaymentIncrement`
-  public struct PaymentIncrement: GraphAPI.SelectionSet {
-    public let __data: DataDict
-    public init(_dataDict: DataDict) { __data = _dataDict }
-
-    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.PaymentIncrement }
-    public static var __selections: [ApolloAPI.Selection] { [
-      .field("__typename", String.self),
-      .fragment(PaymentIncrementFragment.self),
-    ] }
-
-    /// The payment increment amount represented in various formats
-    public var amount: Amount { __data["amount"] }
-    public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
-    public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
-    public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
-    /// The total amount that has been refunded on the payment increment, across potentially multiple adjustments
-    public var refundedAmount: RefundedAmount? { __data["refundedAmount"] }
-
-    public struct Fragments: FragmentContainer {
-      public let __data: DataDict
-      public init(_dataDict: DataDict) { __data = _dataDict }
-
-      public var paymentIncrementFragment: PaymentIncrementFragment { _toFragment() }
-    }
-
-    public init(
-      amount: Amount,
-      scheduledCollection: GraphAPI.ISO8601DateTime,
-      state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
-      stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil,
-      refundedAmount: RefundedAmount? = nil
-    ) {
-      self.init(_dataDict: DataDict(
-        data: [
-          "__typename": GraphAPI.Objects.PaymentIncrement.typename,
-          "amount": amount._fieldData,
-          "scheduledCollection": scheduledCollection,
-          "state": state,
-          "stateReason": stateReason,
-          "refundedAmount": refundedAmount._fieldData,
-        ],
-        fulfilledFragments: [
-          ObjectIdentifier(BackingFragment.PaymentIncrement.self),
-          ObjectIdentifier(PaymentIncrementFragment.self)
-        ]
-      ))
-    }
-
-    public typealias Amount = PaymentIncrementFragment.Amount
-
-    public typealias RefundedAmount = PaymentIncrementFragment.RefundedAmount
   }
 
   /// Project
