@@ -13,42 +13,42 @@ public func mockPaymentIncrements() -> [PledgePaymentIncrement] {
       scheduledCollection: scheduledCollection,
       state: .collected,
       stateReason: nil,
-      refundedAmount: nil
+      refundStatus: .unknown
     ),
     PledgePaymentIncrement(
       amount: amount,
       scheduledCollection: scheduledCollection,
       state: .unattempted,
       stateReason: nil,
-      refundedAmount: nil
+      refundStatus: .unknown
     ),
     PledgePaymentIncrement(
       amount: amount,
       scheduledCollection: scheduledCollection,
       state: .cancelled,
       stateReason: nil,
-      refundedAmount: nil
+      refundStatus: .unknown
     ),
     PledgePaymentIncrement(
       amount: amount,
       scheduledCollection: scheduledCollection,
       state: .errored,
       stateReason: nil,
-      refundedAmount: nil
+      refundStatus: .unknown
     ),
     PledgePaymentIncrement(
       amount: amount,
       scheduledCollection: scheduledCollection,
       state: .errored,
       stateReason: .requiresAction,
-      refundedAmount: nil
+      refundStatus: .unknown
     ),
     PledgePaymentIncrement(
       amount: amount,
       scheduledCollection: scheduledCollection,
       state: .refunded,
       stateReason: nil,
-      refundedAmount: nil
+      refundStatus: .refunded(amount)
     )
   ]
 }
