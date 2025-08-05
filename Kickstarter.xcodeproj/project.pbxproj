@@ -869,7 +869,6 @@
 		598D96CB1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598D96CA1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift */; };
 		59AE35B01D67631B00A310E6 /* DiscoveryPage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 59AE35AF1D67631B00A310E6 /* DiscoveryPage.storyboard */; };
 		59AE35E21D67643100A310E6 /* DiscoveryPostcardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */; };
-		59B0E07E1D147F340081D2DC /* DashboardStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0E07D1D147F340081D2DC /* DashboardStyles.swift */; };
 		59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E877371DC9419700BCD1F7 /* Newsletter.swift */; };
 		6005D3A12E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 6005D3A02E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json */; };
 		6005D3A52E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 6005D3A02E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json */; };
@@ -3105,7 +3104,6 @@
 		598D96CA1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySampleProjectCellViewModel.swift; sourceTree = "<group>"; };
 		59AE35AF1D67631B00A310E6 /* DiscoveryPage.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DiscoveryPage.storyboard; sourceTree = "<group>"; };
 		59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPostcardCell.swift; sourceTree = "<group>"; };
-		59B0E07D1D147F340081D2DC /* DashboardStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardStyles.swift; sourceTree = "<group>"; };
 		59E877371DC9419700BCD1F7 /* Newsletter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Newsletter.swift; sourceTree = "<group>"; };
 		6005D3A02E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-activity-tracking-en.json"; sourceTree = "<group>"; };
 		6008633329B8FBD700B87B39 /* GraphUserEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserEmail.swift; sourceTree = "<group>"; };
@@ -7854,7 +7852,6 @@
 				37280250226F878300E0ACBB /* CheckoutStyles.swift */,
 				941710B426557A6A00F5954E /* CommentCellStyles.swift */,
 				064B007927A469C8007B21FE /* HTMLViewElementStyles.swift */,
-				59B0E07D1D147F340081D2DC /* DashboardStyles.swift */,
 				A757EB2A1D1AD89E00A5C978 /* DiscoveryStyles.swift */,
 				A73378FD1D0AE36400C91445 /* LoginStyles.swift */,
 				9DC572E41D36CA9800AE209C /* ProjectActivityStyles.swift */,
@@ -10305,7 +10302,6 @@
 				598D96C21D429756003F3F66 /* ActivitySampleStyles.swift in Sources */,
 				8AE8D86623466EB9005860C6 /* UpdateBackingInput+Constructor.swift in Sources */,
 				E13D76762D41698500FB58CE /* ApplePayTokenUseCase.swift in Sources */,
-				59B0E07E1D147F340081D2DC /* DashboardStyles.swift in Sources */,
 				E17D6F9F2DD24AB400EF440D /* SemanticColor.swift in Sources */,
 				0169F8C11D6CA27500C8D5C5 /* RootCategory.swift in Sources */,
 				D04AAC21218BB70D00CF713E /* ChangePasswordViewModel.swift in Sources */,
