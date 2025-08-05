@@ -9,8 +9,7 @@ extension PledgePaymentIncrementState {
     case .unattempted: return Strings.Scheduled()
     case .errored: return Strings.Errored_payment()
     case .cancelled: return Strings.profile_projects_status_canceled()
-    // TODO: [MBL-2644] implement translated strings.
-    case .refunded: return "FPO: Refunded"
+    case .refunded: return Strings.Refunded()
     }
   }
 
