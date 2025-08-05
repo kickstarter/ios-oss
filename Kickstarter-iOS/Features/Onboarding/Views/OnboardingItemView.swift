@@ -23,6 +23,7 @@ struct OnboardingItemView: View {
       VStack(spacing: Constants.titleSubtitleSpacing) {
         Text(self.item.title)
           .font(Font(OnboardingStyles.title))
+          .foregroundStyle(OnboardingStyles.titleColor)
           .multilineTextAlignment(.center)
           .frame(maxWidth: .infinity)
           .accessibilityAddTraits(.isHeader)
@@ -30,6 +31,7 @@ struct OnboardingItemView: View {
 
         Text(self.item.subtitle)
           .font(Font(OnboardingStyles.subtitle))
+          .foregroundStyle(OnboardingStyles.subtitleColor)
           .lineLimit(4)
           .multilineTextAlignment(.center)
           .frame(maxWidth: .infinity)

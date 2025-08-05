@@ -97,7 +97,7 @@ public struct OnboardingView: View {
   private func ProgressBarView() -> some View {
     HStack {
       ProgressView(value: self.progress)
-        .background(.white)
+        .background(OnboardingStyles.progressBarBackgroundColor)
         .progressViewStyle(LinearProgressViewStyle(tint: OnboardingStyles.progressBarTintColor))
         .scaleEffect(x: 1, y: 2)
         .animation(.easeInOut(duration: Constants.animationDuration), value: self.progress)
@@ -111,12 +111,12 @@ public struct OnboardingView: View {
       }) {
         Image(OnboardingStyles.closeImage)
           .font(Font(OnboardingStyles.subtitle))
-          .foregroundColor(.black)
+          .foregroundColor(OnboardingStyles.black)
           .padding(Constants.closeIconPadding)
           .clipShape(Circle())
           // TODO: Update hardcoded strings with translations [mbl-2417](https://kickstarter.atlassian.net/browse/MBL-2417)
-          .accessibilityLabel("FPO: Close onboarding modal.")
-          .accessibilityHint("FPO: Closes the onboarding view.")
+          .accessibilityLabel("Close onboarding modal.")
+          .accessibilityHint("Closes the onboarding view.")
           .accessibilityAddTraits(.isButton)
       }
     }
