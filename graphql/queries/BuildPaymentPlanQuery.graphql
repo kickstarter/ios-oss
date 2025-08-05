@@ -1,4 +1,4 @@
-query BuildPaymentPlan($slug: String!, $amount: String!, $includeRefundedAmount: Boolean!) {
+query BuildPaymentPlan($slug: String!, $amount: String!) {
   project(slug: $slug) {
     paymentPlan(amount: $amount) {
       amountIsPledgeOverTimeEligible
