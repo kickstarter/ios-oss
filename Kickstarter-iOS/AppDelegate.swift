@@ -541,6 +541,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
   ) {
     print("INGERID: foreground notification")
+    if let braze = self.braze {
+      braze.notifications.handleForegroundNotification(notification: notification)
+    }
+    
     self.rootTabBarController?.didReceiveBadgeValue(notification.request.content.badge as? Int)
     completionHandler([.banner, .list])
   }
