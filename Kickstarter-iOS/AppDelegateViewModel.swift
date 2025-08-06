@@ -80,7 +80,7 @@ public protocol AppDelegateViewModelInputs {
   func showNotificationDialog(notification: Notification)
 
   /// Call when Braze in-app notifications send a valid URL.
-  func urlFromBrazeInAppNotification(_ url: URL?)
+  func urlFromBrazeNotification(_ url: URL?)
 
   /// Call when the controller has received a user session ended notification.
   func userSessionEnded()
@@ -356,19 +356,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
       .map(navigation(fromPushEnvelope:))
 
-    let urlFromBrazeNotification = self.remoteNotificationProperty.signal.skipNil()
-      .map(BrazePushEnvelope.decodeJSONDictionary)
-      .skipNil()
-      .map { $0.abURI }
-      .skipNil()
-      .map(URL.init(string:))
-      .skipNil()
 
-    let urlFromBraze = Signal
-      .merge(
-        urlFromBrazeNotification,
-        self.brazeInAppNotificationURLProperty.signal.skipNil()
-      )
+    let urlFromBraze = self.brazeNotificationURLProperty.signal.skipNil()
 
     let deepLinkFromBraze = urlFromBraze.map(Navigation.deepLinkMatch)
 
@@ -936,9 +925,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.userSessionStartedProperty.value = ()
   }
 
-  fileprivate let brazeInAppNotificationURLProperty = MutableProperty<URL?>(nil)
-  public func urlFromBrazeInAppNotification(_ url: URL?) {
-    self.brazeInAppNotificationURLProperty.value = url
+  fileprivate let brazeNotificationURLProperty = MutableProperty<URL?>(nil)
+  public func urlFromBrazeNotification(_ url: URL?) {
+    self.brazeNotificationURLProperty.value = url
   }
 
   fileprivate let applicationDidFinishLaunchingReturnValueProperty = MutableProperty(true)

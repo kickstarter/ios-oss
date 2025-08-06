@@ -267,7 +267,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         ) { [weak self] braze in
           guard let self else { return }
            self.braze = braze
-//           braze.delegate = self
+           braze.delegate = self
           if let userId = AppEnvironment.current.currentUser?.id {
             braze.changeUser(userId: String(userId))
           }
@@ -384,7 +384,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     didReceiveRemoteNotification userInfo: [AnyHashable: Any],
     fetchCompletionHandler completion: @escaping (UIBackgroundFetchResult) -> Void
   ) {
+    print("INGERID: it's this notif")
     // TODO: Check if I need the segment code, the braze code, or both.
+    // So far, I haven't been able to trigger this code
     self.analytics?.receivedRemoteNotification(userInfo: userInfo)
     if let braze = self.braze, braze.notifications.handleBackgroundNotification(
       userInfo: userInfo,
@@ -538,6 +540,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     willPresent notification: UNNotification,
     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
   ) {
+    print("INGERID: foreground notification")
     self.rootTabBarController?.didReceiveBadgeValue(notification.request.content.badge as? Int)
     completionHandler([.banner, .list])
   }
@@ -547,6 +550,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
+    // NOTE: Looks like this code is never called
+    print("INGERID: we saw the notification")
     if let rootTabBarController = self.rootTabBarController {
       // Handle notification, including any deeplinks.
       self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
@@ -576,8 +581,19 @@ extension AppDelegate: ABKInAppMessageControllerDelegate {
 
 extension AppDelegate: ABKURLDelegate {
   func handleAppboyURL(_ url: URL?, from _: ABKChannel, withExtras _: [AnyHashable: Any]?) -> Bool {
-    self.viewModel.inputs.urlFromBrazeInAppNotification(url)
+    self.viewModel.inputs.urlFromBrazeNotification(url)
 
     return true
   }
+}
+
+// MARK: - BrazeDelegate
+extension AppDelegate: BrazeDelegate {
+  
+  // Custom handle all urls instead of letting braze try to open them.
+  func braze(_ braze: BrazeKit.Braze, shouldOpenURL context: BrazeKit.Braze.URLContext) -> Bool {
+    self.viewModel.inputs.urlFromBrazeNotification(context.url)
+    return false
+  }
+
 }
