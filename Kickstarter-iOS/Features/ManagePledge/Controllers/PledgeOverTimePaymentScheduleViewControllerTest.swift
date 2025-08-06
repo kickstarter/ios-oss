@@ -17,7 +17,7 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
   }
 
   func testView_PaymentSchedule_Collapsed() {
-    let increments = mockPaymentIncrements()
+    let increments = mockPaymentIncrements(withRefunds: true)
     orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = PledgeOverTimePaymentScheduleViewController.instantiate()
@@ -35,12 +35,8 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
   }
 
   func testView_PaymentSchedule_Expanded() {
-    let designSystemOn = MockRemoteConfigClient()
-    designSystemOn.features = [
-      RemoteConfigFeature.newDesignSystem.rawValue: true
-    ]
+    let increments = mockPaymentIncrementsWithRefundedItems()
 
-    let increments = mockPaymentIncrements()
     orthogonalCombos(
       [Language.en],
       [Device.pad, Device.phone4_7inch],
@@ -48,14 +44,13 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
     ).forEach { language, device, style in
       withEnvironment(
         colorResolver: AppColorResolver(),
-        language: language,
-        remoteConfigClient: designSystemOn
+        language: language
       ) {
         let controller = PledgeOverTimePaymentScheduleViewController.instantiate()
         controller.overrideUserInterfaceStyle = style
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 520
+        parent.view.frame.size.height = 580
 
         controller.configure(with: increments)
         controller.collapseToggle()

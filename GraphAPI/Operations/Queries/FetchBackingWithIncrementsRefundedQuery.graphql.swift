@@ -757,6 +757,8 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
         public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
         public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
         public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
+        /// The original amount minus the refunded amount formatted in the project native currency
+        public var refundUpdatedAmountInProjectNativeCurrency: String? { __data["refundUpdatedAmountInProjectNativeCurrency"] }
         /// The total amount that has been refunded on the payment increment, across potentially multiple adjustments
         public var refundedAmount: RefundedAmount? { __data["refundedAmount"] }
 
@@ -772,6 +774,7 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
           scheduledCollection: GraphAPI.ISO8601DateTime,
           state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
           stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil,
+          refundUpdatedAmountInProjectNativeCurrency: String? = nil,
           refundedAmount: RefundedAmount? = nil
         ) {
           self.init(_dataDict: DataDict(
@@ -781,6 +784,7 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
               "scheduledCollection": scheduledCollection,
               "state": state,
               "stateReason": stateReason,
+              "refundUpdatedAmountInProjectNativeCurrency": refundUpdatedAmountInProjectNativeCurrency,
               "refundedAmount": refundedAmount._fieldData,
             ],
             fulfilledFragments: [
