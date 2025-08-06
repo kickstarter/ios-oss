@@ -50,7 +50,7 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
 
     mock.refundedAmount = Mock<GraphAPITestMocks.PaymentIncrementAmount>()
     mock.refundedAmount?.currency = "USD"
-    mock.refundedAmount?.amountFormattedInProjectNativeCurrency = "$55.50"
+    mock.refundUpdatedAmountInProjectNativeCurrency = "$55.50"
 
     let incrementFragment = GraphAPI.PaymentIncrementBackingFragment.from(mock)
     let increment = PledgePaymentIncrement(withIncrementBackingFragment: incrementFragment)

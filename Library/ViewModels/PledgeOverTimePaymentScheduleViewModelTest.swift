@@ -13,7 +13,7 @@ final class PledgeOverTimePaymentScheduleViewModelTest: TestCase {
   private var collapsed = TestObserver<Bool, Never>()
   private var paymentScheduleItems = TestObserver<[PLOTPaymentScheduleItem], Never>()
 
-  private lazy var increments = mockPaymentIncrements()
+  private lazy var increments = mockPaymentIncrements(withRefunds: true)
   private lazy var expectedItems = {
     self.increments.map { PLOTPaymentScheduleItem(with: $0) }
   }()

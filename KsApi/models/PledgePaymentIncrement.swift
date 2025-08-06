@@ -47,14 +47,27 @@ public enum PledgePaymentIncrementStateReason: String, Decodable {
   case requiresAction = "REQUIRES_ACTION"
 }
 
-// MARK: - PledgePaymentIncrement.RefundStatus
-
 extension PledgePaymentIncrement {
+  /// Indicates whether the payment increment was collected and later partially refunded.
+  public var isCollectedAdjusted: Bool {
+    switch self.refundStatus {
+    case .notRefunded:
+      return false
+    case .refunded:
+      return self.state == .collected
+    case .unknown:
+      assert(false, "isCollectedAdjusted will only return a correct value if refund data has been fetched.")
+      return false
+    }
+  }
+
   /// Represents the refund status of a payment increment.
   public enum RefundStatus: Equatable, Decodable {
     /// No refund has been issued for this payment increment.
     case notRefunded
-    /// A refund has been issued for this payment increment, with the associated amount.
+    /// A refund has been issued for this payment increment.
+    /// The associated `PledgePaymentIncrementAmount` equals the total collected amount,
+    /// i.e. the increment minus any refunds.
     case refunded(PledgePaymentIncrementAmount)
     /// The refund status could not be determined (e.g. data not fetched).
     case unknown

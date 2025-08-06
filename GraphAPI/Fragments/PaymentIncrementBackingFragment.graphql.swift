@@ -5,7 +5,7 @@
 
 public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment PaymentIncrementBackingFragment on PaymentIncrement { __typename amount { __typename amountFormattedInProjectNativeCurrency currency } scheduledCollection state stateReason refundedAmount { __typename amountFormattedInProjectNativeCurrency currency } }"#
+    #"fragment PaymentIncrementBackingFragment on PaymentIncrement { __typename amount { __typename amountFormattedInProjectNativeCurrency currency } scheduledCollection state stateReason refundUpdatedAmountInProjectNativeCurrency refundedAmount { __typename currency } }"#
   }
 
   public let __data: DataDict
@@ -18,6 +18,7 @@ public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
     .field("scheduledCollection", GraphAPI.ISO8601DateTime.self),
     .field("state", GraphQLEnum<GraphAPI.PaymentIncrementState>.self),
     .field("stateReason", GraphQLEnum<GraphAPI.PaymentIncrementStateReason>?.self),
+    .field("refundUpdatedAmountInProjectNativeCurrency", String?.self),
     .field("refundedAmount", RefundedAmount?.self),
   ] }
 
@@ -26,6 +27,8 @@ public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
   public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
   public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
   public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
+  /// The original amount minus the refunded amount formatted in the project native currency
+  public var refundUpdatedAmountInProjectNativeCurrency: String? { __data["refundUpdatedAmountInProjectNativeCurrency"] }
   /// The total amount that has been refunded on the payment increment, across potentially multiple adjustments
   public var refundedAmount: RefundedAmount? { __data["refundedAmount"] }
 
@@ -34,6 +37,7 @@ public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
     scheduledCollection: GraphAPI.ISO8601DateTime,
     state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
     stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil,
+    refundUpdatedAmountInProjectNativeCurrency: String? = nil,
     refundedAmount: RefundedAmount? = nil
   ) {
     self.init(_dataDict: DataDict(
@@ -43,6 +47,7 @@ public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
         "scheduledCollection": scheduledCollection,
         "state": state,
         "stateReason": stateReason,
+        "refundUpdatedAmountInProjectNativeCurrency": refundUpdatedAmountInProjectNativeCurrency,
         "refundedAmount": refundedAmount._fieldData,
       ],
       fulfilledFragments: [
@@ -97,23 +102,18 @@ public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
     public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.PaymentIncrementAmount }
     public static var __selections: [ApolloAPI.Selection] { [
       .field("__typename", String.self),
-      .field("amountFormattedInProjectNativeCurrency", String.self),
       .field("currency", String.self),
     ] }
 
-    /// The increment amount represented as a float with the currency symbol, ie $37.50
-    public var amountFormattedInProjectNativeCurrency: String { __data["amountFormattedInProjectNativeCurrency"] }
     /// A three-letter currency code for the increment (ie the currency of the project)
     public var currency: String { __data["currency"] }
 
     public init(
-      amountFormattedInProjectNativeCurrency: String,
       currency: String
     ) {
       self.init(_dataDict: DataDict(
         data: [
           "__typename": GraphAPI.Objects.PaymentIncrementAmount.typename,
-          "amountFormattedInProjectNativeCurrency": amountFormattedInProjectNativeCurrency,
           "currency": currency,
         ],
         fulfilledFragments: [
