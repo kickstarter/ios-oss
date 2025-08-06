@@ -9369,9 +9369,6 @@
 			packageProductDependencies = (
 				E1F1DB3E2B7BC09C004EA80B /* Prelude */,
 				E123A08A2E2ECB4000D61B63 /* ApolloAPI */,
-				39A4CF7D2E3A9AF300F43005 /* SegmentBraze */,
-				39A4CF7F2E3A9AF300F43005 /* SegmentBrazeUI */,
-				39A4CF8C2E3AACC000F43005 /* BrazeKitCompat */,
 			);
 			productName = "Kickstarter-iOS-Framework";
 			productReference = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */;
@@ -14171,16 +14168,6 @@
 			package = 19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseRemoteConfig;
 		};
-		39A4CF7D2E3A9AF300F43005 /* SegmentBraze */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 39A4CF7C2E3A9AF300F43005 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
-			productName = SegmentBraze;
-		};
-		39A4CF7F2E3A9AF300F43005 /* SegmentBrazeUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 39A4CF7C2E3A9AF300F43005 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
-			productName = SegmentBrazeUI;
-		};
 		39A4CF832E3A9B8C00F43005 /* SegmentBraze */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 39A4CF7C2E3A9AF300F43005 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
@@ -14192,11 +14179,6 @@
 			productName = SegmentBrazeUI;
 		};
 		39A4CF8A2E3AAC7D00F43005 /* BrazeKitCompat */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 39A4CF892E3AAC7D00F43005 /* XCRemoteSwiftPackageReference "braze-swift-sdk" */;
-			productName = BrazeKitCompat;
-		};
-		39A4CF8C2E3AACC000F43005 /* BrazeKitCompat */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 39A4CF892E3AAC7D00F43005 /* XCRemoteSwiftPackageReference "braze-swift-sdk" */;
 			productName = BrazeKitCompat;
