@@ -524,8 +524,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     willPresent notification: UNNotification,
     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
   ) {
-//    self.rootTabBarController?.didReceiveBadgeValue(notification.request.content.badge as? Int)
-//    completionHandler([.banner, .list])
+    self.rootTabBarController?.didReceiveBadgeValue(notification.request.content.badge as? Int)
+    completionHandler([.banner, .list])
   }
 
   func userNotificationCenter(
@@ -554,18 +554,18 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
 // MARK: - ABKInAppMessageControllerDelegate
 
-//extension AppDelegate: ABKInAppMessageControllerDelegate {
-//  func before(inAppMessageDisplayed inAppMessage: ABKInAppMessage) -> ABKInAppMessageDisplayChoice {
-//    return self.viewModel.inputs.brazeWillDisplayInAppMessage(inAppMessage)
-//  }
-//}
+extension AppDelegate: ABKInAppMessageControllerDelegate {
+  func before(inAppMessageDisplayed inAppMessage: ABKInAppMessage) -> ABKInAppMessageDisplayChoice {
+    return self.viewModel.inputs.brazeWillDisplayInAppMessage(inAppMessage)
+  }
+}
 
 // MARK: - ABKURLDelegate
 
-//extension AppDelegate: ABKURLDelegate {
-//  func handleAppboyURL(_ url: URL?, from _: ABKChannel, withExtras _: [AnyHashable: Any]?) -> Bool {
-//    self.viewModel.inputs.urlFromBrazeInAppNotification(url)
-//
-//    return true
-//  }
-//}
+extension AppDelegate: ABKURLDelegate {
+  func handleAppboyURL(_ url: URL?, from _: ABKChannel, withExtras _: [AnyHashable: Any]?) -> Bool {
+    self.viewModel.inputs.urlFromBrazeInAppNotification(url)
+
+    return true
+  }
+}
