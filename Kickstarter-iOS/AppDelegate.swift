@@ -1,4 +1,5 @@
 import BrazeKitCompat
+import BrazeKit
 import FBSDKCoreKit
 import Firebase
 import Foundation
@@ -26,6 +27,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   fileprivate var disposables: [any Disposable] = []
   
   private var analytics: Segment.Analytics?
+  private var braze: Braze?
 
   internal var rootTabBarController: RootTabBarViewController? {
     return self.window?.rootViewController as? RootTabBarViewController
@@ -264,8 +266,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           }
         ) { [weak self] braze in
           guard let self else { return }
-          // self.braze = braze
-          // braze.delegate = self
+           self.braze = braze
+//           braze.delegate = self
           if let userId = AppEnvironment.current.currentUser?.id {
             braze.changeUser(userId: String(userId))
           }
@@ -380,10 +382,17 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(
     _: UIApplication,
     didReceiveRemoteNotification userInfo: [AnyHashable: Any],
-    fetchCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void
+    fetchCompletionHandler completion: @escaping (UIBackgroundFetchResult) -> Void
   ) {
-    // TODO: handle notifications
-    SEGAppboyIntegrationFactory.instance()?.saveRemoteNotification(userInfo)
+    // TODO: Check if I need the segment code, the braze code, or both.
+    self.analytics?.receivedRemoteNotification(userInfo: userInfo)
+    if let braze = self.braze, braze.notifications.handleBackgroundNotification(
+      userInfo: userInfo,
+      fetchCompletionHandler: completion
+    ) {
+      return
+    }
+    completion(.noData)
   }
 
   internal func applicationDidReceiveMemoryWarning(_: UIApplication) {
@@ -538,22 +547,20 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
-//    // Track notification opened.
-//    // Documentation: https://github.com/Appboy/appboy-segment-ios/blob/master/CHANGELOG.md#added-6.
-//    let appBoyHelper = SEGAppboyIntegrationFactory.instance().appboyHelper
-//    if Appboy.sharedInstance() == nil {
-//      appBoyHelper?.save(center, notificationResponse: response)
-//    }
-//    appBoyHelper?.userNotificationCenter(center, receivedNotificationResponse: response)
-//
-//    guard let rootTabBarController = self.rootTabBarController else {
-//      completion()
-//      return
-//    }
-//
-//    self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
-//    rootTabBarController.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
-//    completion()
+    if let rootTabBarController = self.rootTabBarController {
+      // Handle notification, including any deeplinks.
+      self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
+      rootTabBarController.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
+    }
+    
+    // Tell braze about notification.
+    if let braze = self.braze, braze.notifications.handleUserNotification(
+      response: response,
+      withCompletionHandler: completion
+    ) {
+      return // Braze called completion.
+    }
+    completion() // Braze didn't call completion.
   }
 }
 
