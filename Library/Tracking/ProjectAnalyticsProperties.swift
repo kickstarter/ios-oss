@@ -271,7 +271,7 @@ extension GraphAPI.ProjectAnalyticsFragment: ProjectAnalyticsProperties {
   }
 
   public var statsUpdatesCount: Int? {
-    self.posts?.totalCount
+    self.posts.totalCount
   }
 
   public var tags: [String]? {
