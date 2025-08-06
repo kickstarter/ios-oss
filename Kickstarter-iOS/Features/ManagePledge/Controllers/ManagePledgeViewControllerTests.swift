@@ -439,7 +439,7 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Backing.lens.reward .~ reward
       |> Backing.lens.rewardId .~ reward.id
       |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
-      |> Backing.lens.paymentIncrements .~ mockPaymentIncrements(withRefunds: true)
+      |> Backing.lens.paymentIncrements .~ mockPaymentIncrementsForManagingBacking()
 
     let project = Project.cosmicSurgery
       |> Project.lens.personalization.backing .~ backing
@@ -504,7 +504,7 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Backing.lens.reward .~ reward
       |> Backing.lens.rewardId .~ reward.id
       |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
-      |> Backing.lens.paymentIncrements .~ mockPaymentIncrementsWithRefundedItems()
+      |> Backing.lens.paymentIncrements .~ mockPaymentIncrementsForManagingBacking()
 
     let project = Project.cosmicSurgery
       |> Project.lens.personalization.backing .~ backing

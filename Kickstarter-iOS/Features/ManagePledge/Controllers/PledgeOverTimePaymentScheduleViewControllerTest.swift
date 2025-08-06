@@ -17,7 +17,7 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
   }
 
   func testView_PaymentSchedule_Collapsed() {
-    let increments = mockPaymentIncrements(withRefunds: true)
+    let increments = mockPaymentIncrementsForManagingBacking()
     orthogonalCombos([Language.en], [Device.pad, Device.phone4_7inch]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = PledgeOverTimePaymentScheduleViewController.instantiate()
@@ -35,7 +35,7 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
   }
 
   func testView_PaymentSchedule_Expanded() {
-    let increments = mockPaymentIncrementsWithRefundedItems()
+    let increments = mockPaymentIncrementsForManagingBacking()
 
     orthogonalCombos(
       [Language.en],

@@ -1,7 +1,15 @@
 import Foundation
 import KsApi
 
-public func mockPaymentIncrements(withRefunds includeRefunds: Bool = false) -> [PledgePaymentIncrement] {
+public func mockPaymentIncrements() -> [PledgePaymentIncrement] {
+  mockPaymentIncrements(includeRefundStatus: false)
+}
+
+/// PaymentIncrements may or may not have refundStatus set, depending on if they were made with a query
+/// that explicitly fetches refunds or not. (This is for performance reasons on the backend).
+/// This method can create mock payment increments as if they came from either kind of query.
+private func mockPaymentIncrements(includeRefundStatus includeRefunds: Bool = false)
+  -> [PledgePaymentIncrement] {
   let amount = PledgePaymentIncrementAmount(
     currency: "USD",
     amountFormattedInProjectNativeCurrency: "$250.00"
@@ -46,7 +54,8 @@ public func mockPaymentIncrements(withRefunds includeRefunds: Bool = false) -> [
   ]
 }
 
-public func mockPaymentIncrementsWithRefundedItems() -> [PledgePaymentIncrement] {
+/// This includes an adjusted and a refunded payment increment
+public func mockPaymentIncrementsForManagingBacking() -> [PledgePaymentIncrement] {
   let amount = PledgePaymentIncrementAmount(
     currency: "USD",
     amountFormattedInProjectNativeCurrency: "$250.00"
@@ -79,5 +88,5 @@ public func mockPaymentIncrementsWithRefundedItems() -> [PledgePaymentIncrement]
     refundStatus: .refunded(amountAfterFullRefund)
   )
 
-  return mockPaymentIncrements(withRefunds: true) + [collectedAdjustedIncrement, refundedIncrement]
+  return mockPaymentIncrements(includeRefundStatus: true) + [collectedAdjustedIncrement, refundedIncrement]
 }
