@@ -155,6 +155,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let rootTabBarController = self?.rootTabBarController else { return }
 
         let onboardingVC = UIHostingController(rootView: OnboardingView(viewModel: OnboardingViewModel()))
+        /// Onboarding flow should not respond to light/dark mode preference.
+        onboardingVC.overrideUserInterfaceStyle = .light
         onboardingVC.modalPresentationStyle = .fullScreen
 
         rootTabBarController.navigationController?.isNavigationBarHidden = true
