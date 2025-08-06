@@ -357,6 +357,7 @@ final class SimilarProjectsUseCaseTests: TestCase {
       isPrelaunchActivated: prelaunchActivated,
       projectTags: [],
       fxRate: Double(fxRate),
+      posts: FetchSimilarProjectsQuery.Data.Projects.Node.Posts(totalCount: 0),
       projectDescription: description,
       stateChangedAt: stateChangedAt,
       projectUsdExchangeRate: Double(projectUsdExchangeRate),

@@ -48,10 +48,11 @@ extension PledgePaymentIncrement {
 
     // If we get a `refundedAmount`, it means this increment was refunded
     // so we store the amount. If not, we treat it as not refunded.
-    if let refundedAmountData = data.refundedAmount {
+    if let refundedAmountData = data.refundedAmount,
+       let formattedRefund = data.refundUpdatedAmountInProjectNativeCurrency {
       let refundedAmount = PledgePaymentIncrementAmount(
         currency: refundedAmountData.currency,
-        amountFormattedInProjectNativeCurrency: refundedAmountData.amountFormattedInProjectNativeCurrency
+        amountFormattedInProjectNativeCurrency: formattedRefund
       )
 
       self.refundStatus = .refunded(refundedAmount)

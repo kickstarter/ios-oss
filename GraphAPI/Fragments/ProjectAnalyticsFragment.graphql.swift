@@ -38,7 +38,7 @@ public struct ProjectAnalyticsFragment: GraphAPI.SelectionSet, Fragment {
     .field("pledged", Pledged.self),
     .field("fxRate", Double.self),
     .field("usdExchangeRate", Double?.self),
-    .field("posts", Posts?.self),
+    .field("posts", Posts.self),
     .field("goal", Goal?.self),
   ] }
 
@@ -91,7 +91,7 @@ public struct ProjectAnalyticsFragment: GraphAPI.SelectionSet, Fragment {
   /// Exchange rate to US Dollars (USD), null for draft projects.
   public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
   /// Project updates.
-  public var posts: Posts? { __data["posts"] }
+  public var posts: Posts { __data["posts"] }
   /// The minimum amount to raise for the project to be successful.
   public var goal: Goal? { __data["goal"] }
 
@@ -120,7 +120,7 @@ public struct ProjectAnalyticsFragment: GraphAPI.SelectionSet, Fragment {
     pledged: Pledged,
     fxRate: Double,
     usdExchangeRate: Double? = nil,
-    posts: Posts? = nil,
+    posts: Posts,
     goal: Goal? = nil
   ) {
     self.init(_dataDict: DataDict(
