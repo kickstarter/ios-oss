@@ -71,33 +71,7 @@ final class BetaToolsFooterView: UIView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.appVersionDetailTextView
-      |> appVersionDetailTextViewStyle
-
-    _ = self.appVersionStackView
-      |> appVersionStackViewStyle
-
-    _ = self.appVersionTitleLabel
-      |> appVersionTitleLabelStyle
-
-    _ = self.betaFeedbackButton
-      |> betaFeedbackButtonStyle
-
-    _ = self.deviceIdentifierDetailTextView
-      |> deviceIdentifierDetailTextViewStyle
-
-    _ = self.deviceIdentifierStackView
-      |> deviceIdentifierStackViewStyle
-
-    _ = self.deviceIdentifierTitleLabel
-      |> deviceIdentifierTitleLabelStyle
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - Selectors
 

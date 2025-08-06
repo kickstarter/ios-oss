@@ -51,32 +51,6 @@ internal final class MessageCell: UITableViewCell, ValueCell {
 
   internal override func bindStyles() {
     super.bindStyles()
-
-    _ = self
-      |> baseTableViewCellStyle()
-      |> MessageCell.lens.contentView.layoutMargins %~~ { _, cell in
-        cell.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
-          : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
-      }
-
-    _ = self.avatarImageView
-      |> ignoresInvertColorsImageViewStyle
-
-    _ = self.bodyTextView
-      |> UITextView.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
-      |> UITextView.lens.font .~ UIFont.ksr_subhead(size: 14.0)
-
-    _ = self.dividerView
-      |> separatorStyle
-
-    _ = self.nameLabel
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
-      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13.0)
-
-    _ = self.timestampLabel
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
-      |> UILabel.lens.font .~ .ksr_caption1()
   }
 
   internal override func bindViewModel() {

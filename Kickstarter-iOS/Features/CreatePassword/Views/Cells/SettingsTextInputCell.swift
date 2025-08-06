@@ -52,25 +52,5 @@ final class SettingsTextInputCell: UITableViewCell {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> \.selectionStyle .~ .none
-
-    _ = self.contentView
-      |> settingsContentViewStyle
-
-    _ = self.stackView
-      |> settingsStackViewStyle
-
-    _ = self.label
-      |> settingsLabelStyle
-      |> \.isAccessibilityElement .~ false
-      |> \.numberOfLines .~ 0
-
-    _ = self.textField
-      |> settingsTextFieldStyle
-      |> \.isSecureTextEntry .~ true
-  }
+  override func bindStyles() { super.bindStyles() }
 }

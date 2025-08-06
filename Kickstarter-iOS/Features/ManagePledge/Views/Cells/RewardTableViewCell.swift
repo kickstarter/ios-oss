@@ -40,15 +40,7 @@ final class RewardTableViewCell: UITableViewCell, ValueCell {
     self.separatorInset = .init(leftRight: self.frame.width / 2)
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.contentView
-      |> contentViewStyle
-
-    _ = self.containerView
-      |> containerViewStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   internal func configureWith(value: RewardCardViewData) {
     self.rewardCardView.configure(with: value)

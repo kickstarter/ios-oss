@@ -179,59 +179,6 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
   internal override func bindStyles() {
     super.bindStyles()
-
-    _ = self.arrowImageView
-      |> UIView.lens.tintColor .~ discoveryPrimaryColor()
-
-    _ = self.bgView
-      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
-
-    _ = self.dividerLabel
-      |> discoveryNavDividerLabelStyle
-      |> UILabel.lens.isAccessibilityElement .~ false
-      |> UILabel.lens.textColor .~ discoveryPrimaryColor()
-
-    _ = self.exploreLabel
-      |> UILabel.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
-      |> UILabel.lens.font %~~ { _, label in
-        label.traitCollection.isRegularRegular
-          ? .ksr_body(size: 18)
-          : .ksr_body(size: 17)
-      }
-      |> UILabel.lens.text %~ { _ in Strings.Explore() }
-
-    _ = self.favoriteContainerView
-      |> UIView.lens.layoutMargins .~ .init(left: Styles.grid(2))
-
-    _ = self.bookmarkImageView
-      |> UIView.lens.tintColor .~ discoveryPrimaryColor()
-
-    _ = self.bookmarkOutlineImageView
-      |> UIView.lens.tintColor .~ discoveryPrimaryColor()
-
-    _ = self.debugImageView
-      |> UIImageView.lens.image .~ image(named: "icon--debug")
-
-    _ = self.primaryLabel
-      |> UILabel.lens.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
-      |> UILabel.lens.isAccessibilityElement .~ false
-      |> UILabel.lens.textColor .~ discoveryPrimaryColor()
-
-    _ = self.secondaryLabel
-      |> UILabel.lens.font %~~ { _, label in
-        label.traitCollection.isRegularRegular
-          ? UIFont.ksr_body(size: 18).bolded
-          : UIFont.ksr_callout().bolded
-      }
-      |> UILabel.lens.isAccessibilityElement .~ false
-      |> UILabel.lens.textColor .~ discoveryPrimaryColor()
-
-    _ = self.containerStackView
-      |> discoveryNavTitleStackViewStyle
-
-    if self.view.traitCollection.isRegularRegular {
-      self.outerStackViewTopConstraint.constant = -6.0
-    }
   }
 
   fileprivate func showDiscoveryFilters(selectedRow: SelectableRow) {

@@ -73,44 +73,7 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
       }
   }
 
-  internal override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> feedTableViewCellStyle
-
-    _ = self.cardView
-      |> cardStyle()
-
-    _ = self.containerView
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
-
-    self.containerView.backgroundColor = Colors.Background.Surface.primary.uiColor()
-
-    _ = self.titleLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
-      |> UILabel.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
-
-    _ = self.subtitleLabel
-      |> UILabel.lens.font .~ .ksr_subhead(size: 12)
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
-
-    _ = self.closeButton
-      |> UIButton.lens.tintColor .~ LegacyColors.ksr_support_700.uiColor()
-      |> UIButton.lens.targets .~ [(self, action: #selector(self.closeButtonTapped), .touchUpInside)]
-      |> UIButton.lens.contentEdgeInsets .~ .init(
-        top: Styles.grid(1), left: Styles.grid(3),
-        bottom: Styles.grid(3), right: Styles.grid(2)
-      )
-
-    _ = self.facebookConnectButton
-      |> facebookButtonStyle
-      |> UIButton.lens.targets .~ [
-        (self, action: #selector(self.facebookConnectButtonTapped), .touchUpInside)
-      ]
-      |> UIButton.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
-  }
+  internal override func bindStyles() { super.bindStyles() }
 
   // MARK: - Facebook Login
 

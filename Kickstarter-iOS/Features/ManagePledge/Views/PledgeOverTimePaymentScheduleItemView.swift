@@ -76,13 +76,7 @@ final class PledgeOverTimePaymentScheduleItemView: UIView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    applyDateAndStatusStackViewStyle(self.dateAndStatusStackView)
-    applyDateLabelStyle(self.dateLabel)
-    applyAmountLabelStyle(self.amountLabel)
-  }
+  override func bindStyles() { super.bindStyles() }
 }
 
 private func applyDateAndStatusStackViewStyle(_ stackView: UIStackView) {

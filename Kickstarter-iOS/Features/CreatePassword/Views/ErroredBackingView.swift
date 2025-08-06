@@ -106,39 +106,7 @@ final class ErroredBackingView: UIView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> \.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
-
-    _ = self.fixIconImageView
-      |> \.clipsToBounds .~ true
-      |> \.contentMode .~ .scaleAspectFit
-      |> \.tintColor .~ LegacyColors.ksr_alert.uiColor()
-
-    _ = self.finalCollectionDateStackView
-      |> finalCollectionStackViewStyle
-
-    _ = self.finalCollectionDateLabel
-      |> \.textColor .~ LegacyColors.ksr_alert.uiColor()
-      |> \.font .~ .ksr_headline(size: 13)
-
-    _ = self.backingInfoStackView
-      |> backingInfoStackViewStyle
-
-    _ = self.manageButton
-      |> manageButtonStyle
-
-    _ = self.manageButton.titleLabel
-      ?|> manageButtonTitleLabelStyle
-
-    _ = self.projectNameLabel
-      |> projectNameLabelStyle
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 }
 
 // MARK: - Styles

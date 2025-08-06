@@ -39,21 +39,7 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> baseTableViewCellStyle()
-
-    _ = self.rootStackView
-      |> commentCellRootStackViewStyle
-
-    _ = self.bodyTextView
-      |> commentBodyTextViewStyle
-      |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
-
-    self.viewModel.inputs.bindStyles()
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - Configuration
 

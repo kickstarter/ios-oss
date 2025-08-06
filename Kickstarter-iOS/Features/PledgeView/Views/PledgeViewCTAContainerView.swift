@@ -88,43 +88,7 @@ final class PledgeViewCTAContainerView: UIView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> \.layoutMargins .~ .init(all: Styles.grid(3))
-
-    PledgeViewStyles.pledgeAmountStackViewStyle(self.titleAndAmountStackView)
-
-    PledgeViewStyles.pledgeAmountHeadingStyle(self.titleLabel)
-    self.titleLabel.text = Strings.Total_amount()
-
-    PledgeViewStyles.pledgeAmountValueStyle(self.amountLabel)
-
-    _ = applePayButtonStyle(self.applePayButton)
-
-    ctaStackViewStyle(self.ctaStackView)
-
-    termsTextViewStyle(self.termsTextView)
-
-    self.pledgeImmediatelyLabel.numberOfLines = 0
-    self.pledgeImmediatelyLabel.textAlignment = .center
-    self.pledgeImmediatelyLabel.textColor = LegacyColors.ksr_support_400.uiColor()
-
-    disclaimerStackViewStyle(self.disclaimerStackView)
-
-    _ = self.layer
-      |> layerStyle
-
-    _ = self.continueButton
-      |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue() }
-
-    _ = self.submitButton
-      |> greenButtonStyle
-
-    PledgeViewStyles.rootPledgeCTAStackViewStyle(self.rootStackView)
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View Model
 

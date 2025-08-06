@@ -21,18 +21,7 @@ public final class RewardsCollectionViewHeaderView: UICollectionReusableView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  public override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> baseStyle
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-
-    _ = self.label
-      |> labelStyle
-  }
+  public override func bindStyles() { super.bindStyles() }
 
   private func setupSubviews() {
     _ = ([self.label], self.rootStackView)

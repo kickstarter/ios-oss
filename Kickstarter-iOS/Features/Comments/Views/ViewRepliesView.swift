@@ -36,22 +36,5 @@ final class ViewRepliesView: UIView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.rootStackView
-      |> viewRepliesStackViewStyle
-
-    _ = self.textLabel
-      |> \.text %~ { _ in Strings.View_replies() }
-      |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
-      |> \.font .~ UIFont.ksr_callout(size: 14)
-
-    _ = self.iconImageView
-      |> UIImageView.lens.image .~ Library.image(named: "right-diagonal")
-
-    // Add accessibility label to self instead of to the textLabel, so the cell can be treated as
-    // one accessibility element.
-    self.accessibilityLabel = Strings.View_replies()
-  }
+  override func bindStyles() { super.bindStyles() }
 }

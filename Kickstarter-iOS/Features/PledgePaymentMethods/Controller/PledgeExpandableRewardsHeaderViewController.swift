@@ -102,23 +102,7 @@ final class PledgeExpandableRewardsHeaderViewController: UIViewController {
 
   // MARK: - Bind Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.view
-      |> \.clipsToBounds .~ true
-      |> checkoutWhiteBackgroundStyle
-
-    _ = self.coverView
-      |> checkoutBackgroundStyle
-
-    _ = self.tableView
-      |> checkoutWhiteBackgroundStyle
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-
-    _ = self.expandButton
-      |> expandButtonStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View model
 

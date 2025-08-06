@@ -60,42 +60,5 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
       }
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> feedTableViewCellStyle
-      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button
-
-    _ = self.cardView
-      |> cardStyle()
-
-    _ = self.containerView
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
-
-    _ = self.friendImageView
-      |> ignoresInvertColorsImageViewStyle
-
-    _ = self.fundingProgressContainerView
-      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
-
-    _ = self.projectImageView
-      |> UIImageView.lens.clipsToBounds .~ true
-
-    _ = self.projectNameLabel
-      |> UILabel.lens.font .~ .ksr_title1(size: 18)
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
-
-    _ = self.projectImageView
-      |> ignoresInvertColorsImageViewStyle
-
-    _ = self.projectTextContainerView
-      |> UIView.lens.alpha .~ 0.96
-      |> UIView.lens.layoutMargins .~ .init(
-        topBottom: Styles.gridHalf(5),
-        leftRight: Styles.grid(2)
-      )
-
-    self.projectTextContainerView.backgroundColor = Colors.Background.Surface.primary.uiColor()
-  }
+  override func bindStyles() { super.bindStyles() }
 }

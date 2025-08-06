@@ -71,24 +71,7 @@ final class ActivityErroredBackingsCell: UITableViewCell, ValueCell {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> cellStyle
-
-    _ = self.contentView
-      |> contentViewStyle
-
-    _ = self.backgroundContainerView
-      |> backgroundContainerViewStyle
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-
-    _ = self.erroredBackingsStackView
-      |> \.axis .~ .vertical
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - Private Helpers
 

@@ -18,16 +18,5 @@ internal final class ProjectBannerCell: UITableViewCell, ValueCell {
     }
   }
 
-  internal override func bindStyles() {
-    _ = self.projectImageView
-      |> ignoresInvertColorsImageViewStyle
-
-    _ = self.projectNameLabel
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_white.uiColor()
-      |> UILabel.lens.font .~ .ksr_title1(size: 16)
-
-    _ = self.creatorNameLabel
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_white.uiColor()
-      |> UILabel.lens.font .~ .ksr_headline(size: 13)
-  }
+  internal override func bindStyles() { super.bindStyles() }
 }

@@ -42,44 +42,7 @@ internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
       }
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.friendsLabel
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
-      |> UILabel.lens.font .~ .ksr_subhead()
-      |> UILabel.lens.text %~ { _ in Strings.social_following_stats_friends() }
-
-    _ = self.friendsCountLabel
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
-      |> UILabel.lens.font .~ .ksr_title2()
-
-    _ = self.backedProjectsLabel
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
-      |> UILabel.lens.font .~ .ksr_subhead()
-      |> UILabel.lens.text %~ { _ in Strings.social_following_stats_backed_projects() }
-
-    _ = self.self.backedProjectsCountLabel
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
-      |> UILabel.lens.font .~ .ksr_title2()
-
-    _ = self.followAllButton
-      |> greenButtonStyle
-      |> UIButton.lens.targets .~ [(self, action: #selector(self.followAllButtonTapped), .touchUpInside)]
-
-    _ = self.bulletSeparatorView
-      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
-      |> UIView.lens.alpha .~ 0.7
-
-    _ = self
-      |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
-      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
-        cell.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(20))
-          : .init(all: Styles.grid(4))
-      }
-  }
+  override func bindStyles() { super.bindStyles() }
 
   @objc func followAllButtonTapped() {
     self.viewModel.inputs.followAllButtonTapped()

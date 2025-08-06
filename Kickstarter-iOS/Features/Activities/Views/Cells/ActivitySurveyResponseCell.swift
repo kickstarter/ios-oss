@@ -39,45 +39,6 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
 
   internal override func bindStyles() {
     super.bindStyles()
-
-    _ = self
-      |> feedTableViewCellStyle
-
-    _ = self.cardView
-      |> cardStyle()
-
-    _ = self.containerView
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
-
-    self.containerView.backgroundColor = Colors.Background.Surface.primary.uiColor()
-
-    _ = self.creatorImageView
-      |> ignoresInvertColorsImageViewStyle
-
-    _ = self.creatorNameLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 13)
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
-
-    _ = self.respondNowButton
-      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
-      |> UIButton.lens.backgroundColor(for: .normal) .~ .clear
-      |> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_create_700.uiColor()
-      |> UIButton.lens.titleColor(for: .highlighted) .~ LegacyColors.ksr_support_400.uiColor()
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.discovery_survey_button_respond_now() }
-      |> UIButton.lens.tintColor .~ LegacyColors.ksr_create_700.uiColor()
-      |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: Styles.grid(4))
-      |> UIButton.lens.image(for: .normal) %~ { _ in Library.image(named: "respond-icon") }
-      |> UIButton.lens.contentEdgeInsets .~ .init(
-        top: Styles.grid(3), left: 0, bottom: Styles.grid(1),
-        right: 0
-      )
-
-    _ = self.rewardSurveysCountLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 13)
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_create_700.uiColor()
-
-    _ = self.topLineView
-      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_create_700.uiColor()
   }
 
   internal override func bindViewModel() {

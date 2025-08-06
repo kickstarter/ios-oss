@@ -82,12 +82,6 @@ internal final class ActivitiesViewController: UITableViewController {
 
   internal override func bindStyles() {
     super.bindStyles()
-
-    _ = self
-      |> baseTableControllerStyle(estimatedRowHeight: 200.0)
-
-    _ = self.navigationItem
-      |> UINavigationItem.lens.title %~ { _ in Strings.activity_navigation_title_activity() }
   }
 
   internal override func bindViewModel() {

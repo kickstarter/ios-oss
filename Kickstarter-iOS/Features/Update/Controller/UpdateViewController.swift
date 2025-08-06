@@ -40,15 +40,7 @@ internal final class UpdateViewController: WebViewController {
     self.navigationItem.leftBarButtonItem = self.closeButton
   }
 
-  internal override func bindStyles() {
-    _ = self |> baseControllerStyle()
-
-    _ = self.closeButton |> closeBarButtonItemStyle
-      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(self.dismissSelf))
-
-    _ = self.shareButton
-      |> UIBarButtonItem.lens.accessibilityLabel %~ { _ in Strings.Share_update() }
-  }
+  internal override func bindStyles() { super.bindStyles() }
 
   internal override func bindViewModel() {
     self.navigationItem.rac.title = self.viewModel.outputs.title

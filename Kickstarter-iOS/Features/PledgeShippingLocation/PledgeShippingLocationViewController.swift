@@ -71,39 +71,7 @@ final class PledgeShippingLocationViewController: UIViewController {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.view
-      |> checkoutBackgroundStyle
-
-    _ = self.adaptableStackView
-      |> adaptableStackViewStyle(
-        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-      )
-
-    _ = self.amountLabel
-      |> checkoutBackgroundStyle
-    _ = self.amountLabel
-      |> amountLabelStyle
-
-    _ = self.shippingLocationButton
-      |> countryButtonStyle
-      |> checkoutWhiteBackgroundStyle
-      |> checkoutRoundedCornersStyle
-
-    _ = self.shippingLocationButton.titleLabel
-      ?|> countryButtonTitleLabelStyle
-
-    _ = self.titleLabel
-      |> checkoutBackgroundStyle
-    _ = self.titleLabel
-      |> checkoutTitleLabelStyle
-      |> \.text %~ { _ in Strings.Your_shipping_location() }
-
-    _ = self.rootStackView
-      |> checkoutStackViewStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View model
 

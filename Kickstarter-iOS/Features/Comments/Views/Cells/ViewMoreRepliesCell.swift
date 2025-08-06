@@ -28,26 +28,7 @@ final class ViewMoreRepliesCell: UITableViewCell, ValueCell {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> baseTableViewCellStyle()
-
-    _ = self.rootStackView
-      |> commentCellRootStackViewStyle
-      |> \.layoutMargins .~ .init(
-        top: Styles.grid(1),
-        left: Styles.grid(CommentCellStyles.Content.leftIndentWidth),
-        bottom: Styles.grid(1),
-        right: Styles.grid(1)
-      )
-
-    _ = self.titleTextLabel
-      |> \.font .~ UIFont.ksr_callout()
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_create_700.uiColor()
-      |> UILabel.lens.text .~ Strings.View_more_replies()
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - Configuration
 

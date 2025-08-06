@@ -28,12 +28,7 @@ internal final class HelpWebViewController: WebViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.logoImageView
-      |> \.tintColor .~ Colors.Brand.logo.uiColor()
-  }
+  override func bindStyles() { super.bindStyles() }
 
   internal override func bindViewModel() {
     self.viewModel.outputs.webViewLoadRequest

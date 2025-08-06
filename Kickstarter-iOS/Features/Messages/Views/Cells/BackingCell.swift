@@ -40,38 +40,6 @@ internal final class BackingCell: UITableViewCell, ValueCell {
 
   internal override func bindStyles() {
     super.bindStyles()
-
-    _ = self
-      |> baseTableViewCellStyle()
-      |> BackingCell.lens.contentView.layoutMargins %~~ { _, cell in
-        cell.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
-          : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
-      }
-
-    _ = self.backingInfoButton
-      |> greyButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.backing_info_info_button() }
-      |> UIButton.lens.contentEdgeInsets %~~ { _, button in
-        button.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
-          : .init(topBottom: Styles.gridHalf(3), leftRight: Styles.gridHalf(5))
-      }
-
-    _ = self.deliveryLabel
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
-      |> UILabel.lens.font .~ UIFont.ksr_caption1()
-
-    _ = self.dividerView
-      |> separatorStyle
-
-    _ = self.pledgedLabel
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
-      |> UILabel.lens.font .~ UIFont.ksr_headline()
-
-    _ = self.rewardLabel
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
-      |> UILabel.lens.font .~ .ksr_subhead()
   }
 
   internal override func bindViewModel() {

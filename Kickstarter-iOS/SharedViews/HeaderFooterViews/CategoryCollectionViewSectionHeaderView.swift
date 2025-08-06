@@ -27,15 +27,7 @@ public final class CategoryCollectionViewSectionHeaderView: UICollectionReusable
     self.viewModel.inputs.configure(with: value)
   }
 
-  public override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> baseStyle
-
-    _ = self.label
-      |> labelStyle
-  }
+  public override func bindStyles() { super.bindStyles() }
 
   public override func bindViewModel() {
     super.bindViewModel()

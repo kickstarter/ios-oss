@@ -106,40 +106,6 @@ final class CancelPledgeViewController: UIViewController, MessageBannerViewContr
 
   override func bindStyles() {
     super.bindStyles()
-
-    _ = self.view
-      |> checkoutBackgroundStyle
-
-    _ = self.scrollView
-      |> \.alwaysBounceVertical .~ true
-      |> \.showsVerticalScrollIndicator .~ false
-      |> \.contentInset %~ { _ -> UIEdgeInsets in
-        self.contentInsetsFor(traitCollection: self.traitCollection)
-      }
-
-    _ = self.rootStackView
-      |> checkoutRootStackViewStyle
-      |> \.spacing .~ Styles.grid(2)
-
-    _ = self.cancellationDetailsTextLabel
-      |> cancellationDetailsTextLabelStyle
-
-    _ = self.cancellationReasonTextField
-      |> cancellationReasonTextFieldStyle
-      |> \.accessibilityLabel %~ { _ in Strings.Cancellation_reason() }
-      |> \.placeholder %~ { _ in Strings.Tell_us_why_optional() }
-
-    _ = self.cancellationReasonDisclaimerLabel
-      |> cancellationDisclaimerLabelStyle
-      |> \.text %~ { _ in Strings.We_wont_share_this_with_the_creator() }
-
-    _ = self.cancelPledgeButton
-      |> redButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Yes_cancel_it() }
-
-    _ = self.goBackButton
-      |> greyButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.No_go_back() }
   }
 
   override func bindViewModel() {

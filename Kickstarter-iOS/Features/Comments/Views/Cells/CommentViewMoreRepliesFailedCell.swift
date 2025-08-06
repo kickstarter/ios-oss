@@ -37,21 +37,7 @@ final class CommentViewMoreRepliesFailedCell: UITableViewCell, ValueCell {
     super.init(coder: aDecoder)
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> baseTableViewCellStyle()
-
-    _ = self.bodyTextLabel
-      |> bodyTextLabelStyle
-
-    _ = self.retryImageViewStackView
-      |> \.axis .~ .vertical
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - Configuration
 

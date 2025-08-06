@@ -129,16 +129,7 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    applyHeaderStackViewStyle(self.headerStackView)
-    applyTitleLabelStyle(self.titleLabel)
-    applyCollapseIndicatorImageViewStyle(self.collapseIndicatorImageView)
-    applyRootStackViewStyle(self.rootStackView)
-    applyPaymentsScheduleStackViewStyle(self.paymentsScheduleStackView)
-    applyTermsOfUseStyle(self.termsOfUseButton)
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - Actions
 

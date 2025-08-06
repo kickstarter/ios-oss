@@ -32,36 +32,6 @@ internal final class ActivitySampleBackingCell: UITableViewCell, ValueCell {
 
   internal override func bindStyles() {
     super.bindStyles()
-
-    _ = self
-      |> activitySampleCellStyle
-      |> \.backgroundColor .~ discoveryPageBackgroundColor()
-      |> UITableViewCell.lens.accessibilityHint %~ { _ in
-        Strings.dashboard_tout_accessibility_hint_opens_project()
-      }
-
-    self.cardView.backgroundColor = Colors.Background.Surface.primary.uiColor()
-
-    _ = self.activityStackView
-      |> activitySampleStackViewStyle
-
-    _ = self.activityTitleLabel
-      |> activitySampleTitleLabelStyle
-
-    _ = self.backerImageAndInfoStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(2)
-
-    _ = self.backerImageView
-      |> ignoresInvertColorsImageViewStyle
-
-    _ = self.backingTitleLabel
-      |> activitySampleBackingTitleLabelStyle
-
-    _ = self.cardView
-      |> dropShadowStyleMedium()
-
-    _ = self.seeAllActivityButton
-      |> activitySampleSeeAllActivityButtonStyle
   }
 
   internal override func bindViewModel() {

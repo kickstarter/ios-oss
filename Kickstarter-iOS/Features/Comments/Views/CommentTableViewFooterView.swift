@@ -93,15 +93,7 @@ final class CommentTableViewFooterView: UIView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-
-    _ = self.retryButton
-      |> retryButtonStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 }
 
 // MARK: - Styles

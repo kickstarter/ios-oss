@@ -131,19 +131,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.tableView.ksr_sizeHeaderFooterViewsToFit()
   }
 
-  internal override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.tableView
-      |> \.rowHeight .~ UITableView.automaticDimension
-      |> \.estimatedRowHeight .~ 200.0
-
-    _ = self.view
-      |> \.backgroundColor .~ discoveryPageBackgroundColor()
-
-    _ = self.headerLabel
-      |> headerLabelStyle
-  }
+  internal override func bindStyles() { super.bindStyles() }
 
   internal override func bindViewModel() {
     super.bindViewModel()

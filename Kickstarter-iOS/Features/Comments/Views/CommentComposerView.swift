@@ -121,20 +121,7 @@ final class CommentComposerView: UIView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-
-    _ = self.topBorderView
-      |> \.backgroundColor .~ LegacyColors.ksr_support_200.uiColor()
-
-    _ = self.avatarImageView
-      |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
-
-    _ = self.onlyBackersLabel |> onlyBackersLabelStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - ViewModel
 

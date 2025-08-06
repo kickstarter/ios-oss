@@ -36,28 +36,7 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
     self.rowIsSelected = value.row.isSelected
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
-        cell.traitCollection.isRegularRegular
-          ? .init(
-            top: Styles.grid(2),
-            left: Styles.grid(6),
-            bottom: Styles.grid(2),
-            right: Styles.grid(2)
-          )
-          : .init(
-            top: Styles.grid(2),
-            left: Styles.grid(4),
-            bottom: Styles.grid(2),
-            right: Styles.grid(2)
-          )
-      }
-      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button
-  }
+  override func bindStyles() { super.bindStyles() }
 
   internal func willDisplay() {
     _ = self.filterTitleLabel

@@ -83,14 +83,7 @@ final class BadgeView: UIView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    applyRootStackViewStyle(self.rootStackView)
-    applyBadgeViewStyle(self)
-    applyBadgeLabelStyle(self.badgeLabel)
-    self.updateStyle()
-  }
+  override func bindStyles() { super.bindStyles() }
 
   private func updateStyle() {
     self.badgeLabel.textColor = self.style.foregroundColor

@@ -57,23 +57,7 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> baseTableViewCellStyle()
-
-    _ = self.rootStackView
-      |> commentCellRootStackViewStyle
-
-    _ = self.rowStackView
-      |> rowStackViewStyle
-
-    _ = self.commentTextView
-      |> tappableLinksViewStyle
-
-    self.viewModel.inputs.bindStyles()
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - Configuration
 

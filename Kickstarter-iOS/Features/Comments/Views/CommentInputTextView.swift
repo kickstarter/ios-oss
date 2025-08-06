@@ -31,14 +31,7 @@ final class CommentInputTextView: UITextView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> inputTextViewStyle
-      |> \.tintColor .~ LegacyColors.ksr_create_700.uiColor()
-    self.tintColorDidChange()
-  }
+  override func bindStyles() { super.bindStyles() }
 }
 
 private let inputTextViewStyle: TextViewStyle = { textView in

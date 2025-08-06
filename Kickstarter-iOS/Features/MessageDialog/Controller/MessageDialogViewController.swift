@@ -63,23 +63,7 @@ internal final class MessageDialogViewController: UIViewController {
       .observeValues { [weak self] in self?.presentError($0) }
   }
 
-  internal override func bindStyles() {
-    super.bindStyles()
-
-    self.view.backgroundColor = Colors.Background.Surface.primary.uiColor()
-
-    _ = self.cancelButton
-      |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_cancel() }
-
-    _ = self.nameLabel
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
-      |> UILabel.lens.font .~ UIFont.ksr_body().bolded
-
-    _ = self.postButton
-      |> UIBarButtonItem.lens.title %~ { _ in Strings.social_buttons_send() }
-
-    applyBodyTextViewStyle(self.bodyTextView)
-  }
+  internal override func bindStyles() { super.bindStyles() }
 
   @IBAction fileprivate func cancelButtonPressed() {
     self.viewModel.inputs.cancelButtonPressed()

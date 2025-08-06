@@ -52,21 +52,6 @@ final class PledgeShippingSummaryView: UIView {
 
   override func bindStyles() {
     super.bindStyles()
-
-    _ = self.rootStackView
-      |> \.axis .~ .vertical
-      |> \.spacing .~ Styles.gridHalf(1)
-
-    _ = self.titleLabel
-      |> checkoutTitleLabelStyle
-      |> \.text %~ { _ in Strings.Your_shipping_location() }
-
-    _ = self.titleLabel
-      |> checkoutBackgroundStyle
-
-    _ = self.locationLabel
-      |> \.font .~ .ksr_subhead()
-      |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
   }
 
   // MARK: - View model

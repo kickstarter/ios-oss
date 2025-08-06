@@ -168,41 +168,7 @@ internal final class BackerDashboardViewController: UIViewController {
       }
   }
 
-  internal override func bindStyles() {
-    super.bindStyles()
-
-    _ = self |> baseControllerStyle()
-
-    _ = self.avatarImageView
-      |> ignoresInvertColorsImageViewStyle
-
-    _ = self.navigationItem
-      |> UINavigationItem.lens.title %~ { _ in Strings.tabbar_profile() }
-
-    _ = self.messagesButtonItem
-      |> UIBarButtonItem.lens.image .~ image(named: "inbox-icon")
-      |> UIBarButtonItem.lens.accessibilityLabel %~ { _ in Strings.profile_buttons_messages() }
-
-    _ = self.settingsButtonItem
-      |> UIBarButtonItem.lens.image .~ image(named: "settings-icon")
-      |> UIBarButtonItem.lens.accessibilityLabel %~ { _ in Strings.profile_settings_navbar_title() }
-
-    _ = self.dividerView
-      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
-
-    self.selectedButtonIndicatorView.backgroundColor = Colors.Text.primary.uiColor()
-
-    _ = self.headerStackView
-      |> UIView.lens.layoutMargins %~~ { _, view in
-        view.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
-          : .init(top: Styles.grid(5), left: Styles.grid(2), bottom: 0.0, right: Styles.grid(2))
-      }
-
-    _ = self.backerNameLabel
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
-      |> UILabel.lens.font .~ .ksr_headline(size: 18)
-  }
+  internal override func bindStyles() { super.bindStyles() }
 
   private func configurePagesDataSource(tab: BackerDashboardTab, sort: DiscoveryParams.Sort) {
     self.pagesDataSource = BackerDashboardPagesDataSource(delegate: self, sort: sort)

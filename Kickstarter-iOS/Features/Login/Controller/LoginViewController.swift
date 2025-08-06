@@ -69,41 +69,7 @@ internal final class LoginViewController: UIViewController {
     self.viewModel.inputs.traitCollectionDidChange()
   }
 
-  override func bindStyles() {
-    _ = self |> loginControllerStyle
-
-    _ = self.loginButton
-      |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in
-        Strings.login_tout_back_intent_traditional_login_button()
-      }
-
-    _ = self.forgotPasswordButton |> forgotPasswordButtonStyle
-
-    _ = self.emailTextField |> emailFieldAutoFillStyle
-      |> UITextField.lens.returnKeyType .~ .next
-
-    _ = self.showHidePasswordButton |> showHidePasswordButtonStyle
-      |> \.frame .~ CGRect(x: 0, y: 0, width: 45, height: 30)
-      |> UIButton.lens.image(for: .normal) .~ image(
-        named: "icon--eye",
-        inBundle: Bundle.framework,
-        compatibleWithTraitCollection: nil
-      )
-      |> UIButton.lens.accessibilityValue %~ { _ in
-        Strings.Show_password()
-      }
-
-    _ = self.passwordTextField |> passwordFieldAutoFillStyle
-      |> UITextField.lens.returnKeyType .~ .go
-
-    _ = self.formDividerView |> separatorStyle
-
-    _ = self.formBackgroundView |> cardStyle()
-
-    let isPad = self.traitCollection.userInterfaceIdiom == .pad
-    applyLoginRootStackViewStyle(self.rootStackView, useLargerMargins: isPad)
-  }
+  override func bindStyles() {}
 
   override func bindViewModel() {
     super.bindViewModel()

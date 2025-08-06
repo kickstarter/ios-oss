@@ -12,22 +12,7 @@ internal final class DiscoveryExpandableRowCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.configureWith(row: value.0, categoryId: value.1)
   }
 
-  internal override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> discoveryFilterRowMarginStyle
-      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button
-
-    _ = self.projectsCountLabel
-      |> UILabel.lens.isAccessibilityElement .~ false
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_create_700.uiColor()
-      |> UILabel.lens.font %~~ { _, label in
-        label.traitCollection.isRegularRegular
-          ? UIFont.ksr_headline(size: 13)
-          : UIFont.ksr_headline(size: 11)
-      }
-  }
+  internal override func bindStyles() { super.bindStyles() }
 
   internal override func bindViewModel() {
     super.bindViewModel()

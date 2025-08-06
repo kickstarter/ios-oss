@@ -62,37 +62,7 @@ public final class FacebookResetPasswordViewController: UIViewController {
 
   // MARK: - Styles
 
-  public override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.contextLabel
-      |> contextLabelStyle
-
-    _ = self.rootStackView
-      |> baseStackViewStyle
-    let isPad = self.traitCollection.userInterfaceIdiom == .pad
-    applyLoginRootStackViewStyle(self.rootStackView, useLargerMargins: isPad)
-
-    _ = self.emailLabel
-      |> textFieldLabelStyle
-
-    _ = self.emailTextField
-      |> emailFieldStyle
-      |> UITextField.lens.returnKeyType .~ .go
-      |> roundedStyle(cornerRadius: Styles.grid(2))
-      |> \.borderStyle .~ UITextField.BorderStyle.roundedRect
-      |> \.layer.borderColor .~ LegacyColors.ksr_support_300.uiColor().cgColor
-      |> \.layer.borderWidth .~ 1
-      |> \.accessibilityLabel .~ self.emailLabel.text
-      |> \.attributedPlaceholder %~ { _ in settingsAttributedPlaceholder("") }
-
-    _ = self.setPasswordButton
-      |> resetPasswordButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in
-        Strings.Set_new_password()
-      }
-      |> \.isEnabled .~ false
-  }
+  public override func bindStyles() { super.bindStyles() }
 
   // MARK: - Bind View Model
 

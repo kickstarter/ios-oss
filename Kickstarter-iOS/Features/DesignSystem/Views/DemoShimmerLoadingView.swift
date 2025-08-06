@@ -31,16 +31,7 @@ final class DemoShimmerLoadingView: UIView {
     self.layoutGradientLayers()
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.rootStackView
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ .init(topBottom: Styles.grid(1))
-
-    _ = self.buttonPlaceholder
-      |> roundedStyle(cornerRadius: Styles.gridHalf(3))
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - Subviews
 

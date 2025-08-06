@@ -26,20 +26,7 @@ final class EmptyCommentsCell: UITableViewCell, ValueCell {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> baseTableViewCellStyle()
-
-    _ = self.noCommentsLabel
-      |> \.lineBreakMode .~ .byWordWrapping
-      |> \.numberOfLines .~ 0
-      |> \.adjustsFontForContentSizeCategory .~ true
-      |> \.font .~ UIFont.ksr_callout()
-      |> \.textAlignment .~ .center
-      |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - Configuration
 

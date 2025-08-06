@@ -56,18 +56,7 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
       |> \.isAccessibilityElement .~ false
   }
 
-  public override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.view
-      |> \.backgroundColor .~ .clear
-
-    _ = self.backgroundView
-      |> roundedStyle(cornerRadius: 4)
-
-    _ = self.messageLabel
-      |> UILabel.lens.font .~ .ksr_subhead()
-  }
+  public override func bindStyles() { super.bindStyles() }
 
   public override func bindViewModel() {
     super.bindViewModel()

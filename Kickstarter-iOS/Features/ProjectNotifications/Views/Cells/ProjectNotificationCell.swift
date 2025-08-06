@@ -25,19 +25,7 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
     self.notificationSwitch.addTarget(self, action: #selector(self.notificationTapped), for: .valueChanged)
   }
 
-  internal override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> baseTableViewCellStyle()
-
-    _ = self.nameLabel
-      |> settingsTitleLabelStyle
-      |> UILabel.lens.numberOfLines .~ 1
-      |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
-
-    _ = self.notificationSwitch |> settingsSwitchStyle
-  }
+  internal override func bindStyles() { super.bindStyles() }
 
   internal override func bindViewModel() {
     super.bindViewModel()

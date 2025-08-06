@@ -103,62 +103,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
   public override func bindStyles() {
     super.bindStyles()
-
-    let isPad = self.traitCollection.userInterfaceIdiom == .pad
-
-    _ = self.backgroundImageView
-      |> backgroundImageViewStyle
-
-    applyAppleLoginButtonStyle(self.appleLoginButton)
-
-    _ = self.bringCreativeProjectsToLifeLabel
-      |> baseLabelStyle
-      |> UILabel.lens.font .~ .ksr_title2()
-      |> UILabel.lens.text %~ { _ in Strings.Bring_creative_projects_to_life() }
-
-    _ = self.contextLabel
-      |> baseLabelStyle
-      |> UILabel.lens.font %~ { _ in
-        self.bringCreativeProjectsToLifeLabel.isHidden ? UIFont.ksr_title2() : UIFont.ksr_subhead()
-      }
-
-    _ = self.fbLoginButton
-      |> facebookButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue_with_Facebook() }
-
-    _ = self.getNotifiedLabel
-      |> baseLabelStyle
-      |> UILabel.lens.font %~~ { _, _ in
-        isPad ? UIFont.ksr_subhead() : UIFont.ksr_caption2()
-      }
-      |> UILabel.lens.text %~ { _ in Strings.Get_notified_when_your_friends_back_and_launch_projects() }
-
-    _ = self.signupOrLoginWithOAuthButton |> greenButtonStyle
-    self.signupOrLoginWithOAuthButton
-      .setTitle(Strings.login_tout_generic_intent_traditional_signup_or_login_button(), for: .normal)
-
-    _ = self.loginContextStackView
-      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
-      |> UIStackView.lens.layoutMargins %~~ { _, _ in
-        isPad
-          ? .init(topBottom: Styles.grid(2), leftRight: 0)
-          : .init(top: Styles.grid(10), left: 0, bottom: Styles.grid(5), right: 0)
-      }
-      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
-
-    _ = self.logoImageView
-      |> logoImageViewStyle
-
-    _ = self.rootStackView
-      |> baseStackViewStyle
-      |> UIStackView.lens.spacing .~ Styles.grid(5)
-    applyLoginRootStackViewStyle(self.rootStackView, useLargerMargins: isPad)
-
-    _ = self.separatorView
-      |> separatorViewStyle
-
-    _ = [self.loginContextStackView, self.fbLoginStackView, self.emailLoginStackView]
-      ||> baseStackViewStyle
   }
 
   // MARK: - View Model

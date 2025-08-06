@@ -73,29 +73,7 @@ final class CommentCell: UITableViewCell, ValueCell {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> baseTableViewCellStyle()
-
-    _ = self.rootStackView
-      |> commentCellRootStackViewStyle
-
-    _ = self.bodyTextView
-      |> commentBodyTextViewStyle
-
-    _ = self.postedButton
-      |> postedButtonStyle
-
-    _ = self.replyButton
-      |> replyButtonStyle
-
-    _ = self.flagButton
-      |> UIButton.lens.image(for: .normal) %~ { _ in Library.image(named: "flag") }
-
-    self.viewModel.inputs.bindStyles()
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - Configuration
 

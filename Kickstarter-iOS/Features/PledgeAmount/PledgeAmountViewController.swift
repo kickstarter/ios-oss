@@ -91,49 +91,7 @@ final class PledgeAmountViewController: UIViewController {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-
-    _ = self.view
-      |> checkoutBackgroundStyle
-
-    _ = self.adaptableStackView
-      |> adaptableStackViewStyle(isAccessibilityCategory)
-      |> \.spacing .~ Styles.grid(3)
-
-    _ = self.titlesStackView
-      |> \.axis .~ .vertical
-      |> \.spacing .~ Styles.grid(1)
-
-    _ = self.amountInputStackView
-      |> \.alignment .~ .center
-      |> \.spacing .~ Styles.grid(1)
-
-    _ = self.horizontalSpacer
-      |> \.isHidden .~ isAccessibilityCategory
-
-    _ = self.titleLabel
-      |> checkoutTitleLabelStyle
-      |> checkoutBackgroundStyle
-
-    _ = self.plusSignLabel
-      |> \.text .~ "+"
-      |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
-
-    _ = self.subtitleLabel
-      |> subtitleLabelStyle
-
-    _ = self.rootStackView
-      |> checkoutStackViewStyle
-
-    _ = self.stepper
-      |> checkoutStepperStyle
-
-    _ = self.maxPledgeAmountErrorLabel
-      |> maxPledgeAmountErrorLabelStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View model
 

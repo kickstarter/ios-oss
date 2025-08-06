@@ -33,31 +33,7 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
       }
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> feedTableViewCellStyle
-
-    _ = self.cardView
-      |> cardStyle()
-
-    _ = self.containerView
-      |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
-
-    self.containerView.backgroundColor = Colors.Background.Surface.primary.uiColor()
-
-    _ = self.friendImageView
-      |> ignoresInvertColorsImageViewStyle
-
-    _ = self.friendLabel
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
-
-    _ = self.followButton
-      |> blackButtonStyle
-      |> UIButton.lens.targets .~ [(self, action: #selector(self.followButtonTapped), .touchUpInside)]
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.social_following_friend_buttons_follow() }
-  }
+  override func bindStyles() { super.bindStyles() }
 
   @objc fileprivate func followButtonTapped() {
     self.viewModel.inputs.followButtonTapped()

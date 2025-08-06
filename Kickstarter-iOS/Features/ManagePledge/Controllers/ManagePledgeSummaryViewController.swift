@@ -59,44 +59,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.circleAvatarImageView
-      |> ignoresInvertColorsImageViewStyle
-
-    _ = self.backerInfoContainerStackView
-      |> adaptableStackViewStyle(
-        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-      )
-      |> backerInfoContainerStackViewStyle
-
-    _ = self.backerNameLabel
-      |> backerNameLabelStyle
-
-    _ = self.backerInfoStackView
-      |> backerInfoStackViewStyle
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-
-    _ = self.totalAmountStackView
-      |> adaptableStackViewStyle(
-        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-      )
-
-    _ = self.backerNumberLabel
-      |> backerNumberLabelStyle
-
-    _ = self.backingDateLabel
-      |> backingDateLabelStyle
-
-    _ = self.totalLabel
-      |> totalLabelStyle
-
-    _ = self.totalAmountLabel
-      |> amountLabelStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View model
 

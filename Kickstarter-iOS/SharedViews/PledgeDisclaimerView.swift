@@ -64,27 +64,7 @@ final class PledgeDisclaimerView: UIView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> \.backgroundColor .~ LegacyColors.ksr_support_200.uiColor()
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-
-    _ = self.iconImageView
-      |> iconImageViewStyle(self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory)
-
-    _ = self.textView
-      |> textViewStyle
-
-    _ = self.leftColumnStackView
-      |> leftColumnStackViewStyle
-
-    _ = self.rightColumnStackView
-      |> rightColumnStackViewStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View model
 

@@ -27,15 +27,7 @@ internal final class MessageThreadsViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  internal override func bindStyles() {
-    super.bindStyles()
-
-    _ = self |> baseTableControllerStyle()
-
-    _ = self.mailboxLabel
-      |> UILabel.lens.font .~ UIFont.ksr_callout().bolded
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
-  }
+  internal override func bindStyles() { super.bindStyles() }
 
   internal override func bindViewModel() {
     super.bindViewModel()

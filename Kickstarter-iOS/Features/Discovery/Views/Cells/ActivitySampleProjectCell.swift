@@ -32,41 +32,7 @@ internal final class ActivitySampleProjectCell: UITableViewCell, ValueCell {
     )
   }
 
-  internal override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> activitySampleCellStyle
-
-    _ = self.activityTitleLabel
-      |> activitySampleTitleLabelStyle
-
-    _ = self.activityStackView
-      |> activitySampleStackViewStyle
-
-    _ = self.cardView
-      |> dropShadowStyleMedium()
-
-    self.cardView.backgroundColor = Colors.Background.Surface.primary.uiColor()
-
-    _ = self.projectImageAndInfoStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(2)
-
-    _ = self.projectSubtitleAndTitleStackView
-      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
-
-    _ = self.projectImageView
-      |> ignoresInvertColorsImageViewStyle
-
-    _ = self.projectSubtitleLabel
-      |> activitySampleProjectSubtitleLabelStyle
-
-    _ = self.projectTitleLabel
-      |> activitySampleProjectTitleLabelStyle
-
-    _ = self.seeAllActivityButton
-      |> activitySampleSeeAllActivityButtonStyle
-  }
+  internal override func bindStyles() { super.bindStyles() }
 
   internal override func bindViewModel() {
     super.bindViewModel()

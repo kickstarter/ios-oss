@@ -68,21 +68,7 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    applyRewardReceivedInfoStackViewStyle(self.rewardReceivedInfoStackView)
-
-    applyRootStackViewStyle(self.rootStackView)
-
-    applyLabelStackViewStyle(self.labelStackView)
-
-    applyToggleViewControllerTitleLabelStyle(self.toggleViewController.titleLabel)
-
-    applyToggleViewControllerToggleStyle(self.toggleViewController.toggle)
-
-    applyDisclaimerStyle(self.pledgeDisclaimerView)
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View model
 

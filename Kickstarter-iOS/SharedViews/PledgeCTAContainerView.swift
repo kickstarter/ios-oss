@@ -116,57 +116,7 @@ final class PledgeCTAContainerView: UIView {
     self.projectSavedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> \.layoutMargins .~ .init(all: Styles.grid(3))
-
-    _ = self.layer
-      |> checkoutLayerCardRoundedStyle
-      |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor().cgColor
-      |> \.shadowColor .~ LegacyColors.ksr_black.uiColor().cgColor
-      |> \.shadowOpacity .~ 0.12
-      |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
-      |> \.shadowRadius .~ CGFloat(1.0)
-      |> \.maskedCorners .~ [
-        CACornerMask.layerMaxXMinYCorner,
-        CACornerMask.layerMinXMinYCorner
-      ]
-
-    let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-
-    _ = self.retryButton
-      |> greyButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Retry() }
-
-    _ = self.retryStackView
-      |> retryStackViewStyle
-
-    _ = self.retryDescriptionLabel
-      |> retryDescriptionLabelStyle
-
-    _ = self.titleAndSubtitleStackView
-      |> titleAndSubtitleStackViewStyle
-
-    _ = self.pledgeButtonAndWatchesStackView
-      |> pledgeButtonAndWatchesStackViewStyle
-
-    _ = self.rootStackView
-      |> adaptableStackViewStyle(isAccessibilityCategory)
-
-    _ = self.titleLabel
-      |> titleLabelStyle
-
-    _ = self.subtitleLabel
-      |> subtitleLabelStyle
-
-    _ = self.watchesLabel
-      |> watchesLabelStyle
-
-    _ = self.activityIndicator
-      |> activityIndicatorStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View Model
 

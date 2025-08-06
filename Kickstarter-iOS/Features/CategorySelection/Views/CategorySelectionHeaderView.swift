@@ -36,28 +36,7 @@ final class CategorySelectionHeaderView: UIView {
     self.viewModel.inputs.configure(with: context)
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> \.clipsToBounds .~ true
-      |> \.backgroundColor .~ LegacyColors.ksr_trust_700.uiColor()
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-
-    _ = self.titleLabel
-      |> titleLabelStyle
-
-    _ = self.subtitleLabel
-      |> subtitleLabelStyle
-
-    _ = self.stepLabel
-      |> stepLabelStyle
-
-    _ = self.imageView
-      |> imageViewStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   private func setupViews() {
     _ = (self.rootStackView, self)

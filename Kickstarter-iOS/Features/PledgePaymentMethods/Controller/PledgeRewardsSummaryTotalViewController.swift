@@ -36,33 +36,7 @@ final class PledgeRewardsSummaryTotalViewController: UIViewController {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    _ = self.view
-      |> checkoutBackgroundStyle
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-
-    _ = self.titleAndTotalStackView
-      |> adaptableStackViewStyle(
-        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-      )
-      |> titleAndTotalStackViewStyle
-
-    _ = self.totalStackView
-      |> totalStackViewStyle(self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory)
-
-    _ = self.titleLabel
-      |> titleLabelStyle
-
-    _ = self.amountLabel
-      |> amountLabelStyle
-
-    _ = self.totalConversionLabel
-      |> totalConversionLabelStyle
-
-    applyConfirmationLabelStyle(self.confirmationLabel)
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - Configuration
 

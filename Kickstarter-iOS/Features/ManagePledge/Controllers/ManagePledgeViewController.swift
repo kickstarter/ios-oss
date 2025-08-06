@@ -166,30 +166,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.tableView
-      |> checkoutBackgroundStyle
-
-    _ = self.closeButton
-      |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
-      |> \.width .~ Styles.minTouchSize.width
-
-    _ = self.menuButton
-      |> \.accessibilityLabel %~ { _ in Strings.Menu() }
-
-    _ = self.rootStackView
-      |> checkoutRootStackViewStyle
-
-    _ = self.pledgeDetailsSectionLabel
-      |> pledgeDetailsSectionLabelStyle
-
-    _ = self.sectionSeparatorViews
-      ||> separatorStyleDark
-
-    applyPlotPaymentScheduleStackViewStyle(self.plotPaymentScheduleStackView)
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View model
 

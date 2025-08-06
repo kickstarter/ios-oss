@@ -93,20 +93,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
       }
   }
 
-  internal override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.bgView
-      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
-
-    _ = self.filtersTableView
-      |> UITableView.lens.rowHeight .~ UITableView.automaticDimension
-      |> UITableView.lens.estimatedRowHeight .~ 55.0
-      |> UITableView.lens.backgroundColor .~ .clear
-
-    _ = self.closeButton
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Closes_filters() }
-  }
+  internal override func bindStyles() { super.bindStyles() }
 
   internal func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     if let expandableRow = self.dataSource.expandableRow(indexPath: indexPath) {

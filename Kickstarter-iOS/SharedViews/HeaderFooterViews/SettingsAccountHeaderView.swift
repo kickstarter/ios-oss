@@ -33,25 +33,7 @@ final class SettingsAccountHeaderView: UIView {
       |> \.text .~ email
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
-      |> settingsHeaderContentViewStyle
-
-    _ = self.rootStackView
-      |> stackViewStyle
-
-    _ = self.appleIdLabel
-      |> appleIdLabelStyle
-
-    _ = self.emailLabel
-      |> emailLabelStyle
-
-    _ = self.manageThisAccountLabel
-      |> manageThisAccountLabelStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   private func setupViews() {
     _ = (self.rootStackView, self)

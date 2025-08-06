@@ -63,38 +63,7 @@ final class DemoCTAContainerView: UIView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> \.layoutMargins .~ .init(all: Styles.grid(3))
-
-    _ = self.applePayButton
-      |> applePayButtonStyle
-
-    _ = self.ctaStackView
-      |> ctaStackViewStyle
-
-    _ = self.termsTextView
-      |> termsTextViewStyle
-
-    _ = self.disclaimerStackView
-      |> disclaimerStackViewStyle
-
-    _ = self.layer
-      |> layerStyle
-
-    _ = self.continueButton
-      |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue() }
-
-    _ = self.submitButton
-      |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.two_factor_buttons_submit() }
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View Model
 

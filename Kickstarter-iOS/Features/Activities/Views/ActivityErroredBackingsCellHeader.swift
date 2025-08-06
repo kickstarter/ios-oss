@@ -35,18 +35,7 @@ final class ActivityErroredBackingsCellHeader: UIView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-
-    _ = self.subtitleLabel
-      |> subtitleLabelStyle
-
-    _ = self.titleLabel
-      |> titleLabelStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 }
 
 // MARK: - Styles

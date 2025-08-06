@@ -47,61 +47,6 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
 
   override func bindStyles() {
     super.bindStyles()
-
-    _ = self.scrollView
-      |> \.alwaysBounceVertical .~ true
-      |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
-
-    _ = self
-      |> settingsViewControllerStyle
-      |> \.title %~ { _ in
-        Strings.Change_email()
-      }
-
-    _ = self.messageLabelView
-      |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
-
-    _ = self.unverifiedEmailLabel
-      |> settingsDescriptionLabelStyle
-      |> \.text %~ { _ in Strings.Email_unverified() }
-
-    _ = self.warningMessageLabel
-      |> settingsDescriptionLabelStyle
-      |> warningMessageLabelStyle
-
-    _ = self.currentEmailContainer
-      |> \.isAccessibilityElement .~ true
-      |> \.accessibilityLabel .~ self.currentEmailTitle.text
-
-    _ = self.currentEmailTitle
-      |> settingsTitleLabelStyle
-      |> currentEmailTitleStyle
-
-    _ = self.currentEmailValue
-      |> settingsDetailLabelStyle
-      |> currentEmailValueStyle
-
-    _ = self.newEmailLabel
-      |> settingsTitleLabelStyle
-      |> newEmailLabelStyle
-
-    _ = self.newEmailTextField
-      |> settingsEmailFieldAutoFillStyle
-      |> newEmailTextFieldStyle
-      |> \.accessibilityLabel .~ self.newEmailLabel.text
-
-    _ = self.passwordLabel
-      |> settingsTitleLabelStyle
-      |> passwordLabelStyle
-
-    _ = self.passwordTextField
-      |> settingsPasswordFormFieldAutoFillStyle
-      |> passwordTextFieldStyle
-      |> \.accessibilityLabel .~ self.passwordLabel.text
-      |> \.enablesReturnKeyAutomatically .~ true
-
-    _ = self.resendVerificationEmailButton
-      |> resendVerificationEmailButtonStyle
   }
 
   override func bindViewModel() {

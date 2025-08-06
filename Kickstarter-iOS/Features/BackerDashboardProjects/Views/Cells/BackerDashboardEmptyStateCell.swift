@@ -99,23 +99,5 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
 
   internal override func bindStyles() {
     super.bindStyles()
-
-    _ = self
-      |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
-        cell.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(20))
-          : .init(topBottom: Styles.grid(10), leftRight: Styles.grid(3))
-      }
-    _ = self.messageLabel
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
-      |> UILabel.lens.font .~ UIFont.ksr_body(size: 15.0)
-
-    _ = self.titleLabel
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
-      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 21.0)
-
-    _ = self.iconImageView
-      |> UIImageView.lens.tintColor .~ LegacyColors.ksr_support_700.uiColor()
   }
 }

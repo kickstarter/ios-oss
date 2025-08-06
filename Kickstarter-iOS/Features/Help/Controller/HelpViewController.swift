@@ -28,17 +28,7 @@ final class HelpViewController: UIViewController {
     self.tableView.reloadData()
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> settingsViewControllerStyle
-      |> UIViewController.lens.title %~ { _ in Strings.profile_settings_about_title() }
-
-    _ = self.tableView
-      |> settingsTableViewStyle
-      |> settingsTableViewSeparatorStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   override func bindViewModel() {
     super.bindViewModel()

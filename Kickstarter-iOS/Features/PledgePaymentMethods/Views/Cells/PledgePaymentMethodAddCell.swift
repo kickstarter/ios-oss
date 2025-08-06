@@ -76,24 +76,7 @@ final class PledgePaymentMethodAddCell: UITableViewCell, ValueCell {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.selectionView
-      |> selectionViewStyle
-
-    _ = self
-      |> \.selectedBackgroundView .~ self.selectionView
-
-    _ = self.addButton
-      |> addButtonStyle
-
-    _ = self.activityIndicator
-      |> activityIndicatorStyle
-
-    _ = self.containerView
-      |> stackViewStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   func configureWith(value flag: Bool) {
     self.viewModel.inputs.configureWith(value: flag)

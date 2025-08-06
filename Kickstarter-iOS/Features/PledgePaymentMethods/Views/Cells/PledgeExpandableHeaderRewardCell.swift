@@ -28,23 +28,7 @@ final class PledgeExpandableHeaderRewardCell: UITableViewCell, ValueCell {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> \.selectionStyle .~ .none
-      |> \.separatorInset .~ .init(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
-
-    _ = self.amountLabel
-      |> UILabel.lens.contentHuggingPriority(for: .horizontal) .~ .required
-      |> \.adjustsFontForContentSizeCategory .~ true
-
-    _ = self.rootStackView
-      |> rootStackViewStyle(self.traitCollection.preferredContentSizeCategory > .accessibilityLarge)
-
-    _ = self.titleLabel
-      |> titleLabelStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View model
 

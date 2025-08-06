@@ -22,17 +22,7 @@ final class LoadingBarButtonItemView: UIView, NibLoading {
     super.init(coder: aDecoder)
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.titleButton
-      |> UIButton.lens.titleLabel.font .~ UIFont.ksr_body()
-      |> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_create_700.uiColor()
-      |> UIButton.lens.titleColor(for: .disabled) .~ LegacyColors.ksr_support_300.uiColor()
-
-    _ = self.activityIndicator
-      |> baseActivityIndicatorStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   override func bindViewModel() {
     super.bindViewModel()

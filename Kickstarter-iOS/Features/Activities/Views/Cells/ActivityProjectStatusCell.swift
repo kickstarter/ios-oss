@@ -55,48 +55,5 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
 
   internal override func bindStyles() {
     super.bindStyles()
-
-    _ = self
-      |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
-        cell.traitCollection.isRegularRegular
-          ? .init(
-            top: Styles.gridHalf(7), left: Styles.grid(30), bottom: Styles.grid(2),
-            right: Styles.grid(30)
-          )
-          : .init(
-            top: Styles.gridHalf(6), left: Styles.grid(2), bottom: Styles.gridHalf(3),
-            right: Styles.grid(2)
-          )
-      }
-
-    self.cardView.backgroundColor = Colors.Background.Surface.primary.uiColor()
-
-    _ = self.containerView
-      |> cardStyle()
-
-    _ = self.fundingProgressContainerView
-      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
-
-    _ = self.metadataBackgroundView
-      |> UIView.lens.layer.borderColor .~ LegacyColors.ksr_white.uiColor().cgColor
-      |> UIView.lens.layer.borderWidth .~ 1.0
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(1))
-
-    _ = self.metadataLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 12)
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_white.uiColor()
-
-    _ = self.projectNameLabel
-      |> UILabel.lens.font .~ .ksr_title1(size: 18)
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
-
-    _ = self.projectImageView
-      |> ignoresInvertColorsImageViewStyle
-
-    _ = self.textBackgroundView
-      |> UIView.lens.alpha .~ 0.96
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
-      |> UIView.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
   }
 }

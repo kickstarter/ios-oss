@@ -111,21 +111,7 @@ final class PledgeRewardsSummaryViewController: UIViewController {
 
   // MARK: - Bind Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    self.view.backgroundColor = LegacyColors.ksr_white.uiColor()
-    self.view.clipsToBounds = true
-
-    self.applyRootStackViewStyle(self.rootStackView)
-
-    self.applyTableViewStyle(self.tableView)
-
-    self.applySeparatorViewStyle(self.separatorView)
-
-    self.applyTableViewContainerStyle(self.tableViewContainer)
-    self.tableViewContainerHeightConstraint?.constant = self.tableView.intrinsicContentSize.height
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View model
 

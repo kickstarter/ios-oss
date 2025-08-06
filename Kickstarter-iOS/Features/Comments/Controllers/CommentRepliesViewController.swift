@@ -52,11 +52,7 @@ final class CommentRepliesViewController: UITableViewController, MessageBannerVi
 
   // MARK: - Styles
 
-  internal override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.tableView |> tableViewStyle
-  }
+  internal override func bindStyles() { super.bindStyles() }
 
   // MARK: Lifecycle
 

@@ -22,26 +22,7 @@ internal final class DiscoveryOnboardingCell: UITableViewCell, ValueCell {
 
   internal func configureWith(value _: Void) {}
 
-  internal override func bindStyles() {
-    _ = self
-      |> baseTableViewCellStyle()
-      |> \.backgroundColor .~ discoveryPageBackgroundColor()
-      |> DiscoveryOnboardingCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
-        cell.traitCollection.isRegularRegular
-          ? .init(top: Styles.grid(5), left: Styles.grid(30), bottom: 0, right: Styles.grid(30))
-          : .init(top: Styles.grid(3), left: layoutMargins.left, bottom: 0, right: layoutMargins.left)
-      }
-
-    _ = self.loginButton
-      |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in
-        Strings.discovery_onboarding_buttons_signup_or_login()
-      }
-
-    _ = self.logoImageView |> discoveryOnboardingLogoStyle
-    _ = self.onboardingTitleLabel |> discoveryOnboardingTitleStyle
-    _ = self.stackView |> discoveryOnboardingStackViewStyle
-  }
+  internal override func bindStyles() {}
 
   @objc fileprivate func loginButtonTapped() {
     self.delegate?.discoveryOnboardingTappedSignUpLoginButton()

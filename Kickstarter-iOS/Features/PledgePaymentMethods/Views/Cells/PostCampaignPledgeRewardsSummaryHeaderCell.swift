@@ -31,31 +31,7 @@ final class PostCampaignPledgeRewardsSummaryHeaderCell: UITableViewCell, ValueCe
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> \.selectionStyle .~ .none
-      |> \.separatorInset .~ .init(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
-
-    self.applyContainerStackViewStyle(self.containerStackView)
-
-    self.contentView.backgroundColor = LegacyColors.ksr_white.uiColor()
-
-    _ = self.rootStackView
-      |> self
-      .applyRcootStackViewStyle(self.traitCollection.preferredContentSizeCategory > .accessibilityLarge)
-      |> verticalStackViewStyle
-      |> \.spacing .~ Styles.grid(1)
-
-    _ = self.titleLabel
-      |> self.applyTitleLabelStyle
-
-    _ = self.subtitleLabel
-      |> self.applySubtitleLabelStyle
-
-    self.applySeparatorViewStyle(self.separatorView)
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View model
 

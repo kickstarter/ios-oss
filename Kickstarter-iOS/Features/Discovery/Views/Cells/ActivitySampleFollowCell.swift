@@ -30,36 +30,7 @@ internal final class ActivitySampleFollowCell: UITableViewCell, ValueCell {
     )
   }
 
-  internal override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> activitySampleCellStyle
-      |> \.backgroundColor .~ discoveryPageBackgroundColor()
-
-    _ = self.activityStackView
-      |> activitySampleStackViewStyle
-
-    _ = self.activityTitleLabel
-      |> activitySampleTitleLabelStyle
-
-    _ = self.cardView
-      |> dropShadowStyleMedium()
-
-    self.cardView.backgroundColor = Colors.Background.Surface.primary.uiColor()
-
-    _ = self.friendFollowLabel
-      |> activitySampleFriendFollowLabelStyle
-
-    _ = self.friendImageAndFollowStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(2)
-
-    _ = self.friendImageView
-      |> ignoresInvertColorsImageViewStyle
-
-    _ = self.seeAllActivityButton
-      |> activitySampleSeeAllActivityButtonStyle
-  }
+  internal override func bindStyles() { super.bindStyles() }
 
   internal override func bindViewModel() {
     super.bindViewModel()

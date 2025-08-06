@@ -103,13 +103,7 @@ internal final class CommentsViewController: UITableViewController, MessageBanne
 
   // MARK: - Styles
 
-  internal override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.tableView
-      |> \.tableFooterView .~ self.footerView
-      |> tableViewStyle
-  }
+  internal override func bindStyles() { super.bindStyles() }
 
   // MARK: - View Model
 

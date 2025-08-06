@@ -58,18 +58,7 @@ final class RootCommentCell: UITableViewCell, ValueCell {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> baseTableViewCellStyle()
-
-    _ = self.rootStackView
-      |> commentCellRootStackViewStyle
-
-    _ = self.bodyTextView
-      |> commentBodyTextViewStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - Configuration
 

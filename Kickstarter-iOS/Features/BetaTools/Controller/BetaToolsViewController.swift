@@ -45,10 +45,7 @@ internal final class BetaToolsViewController: UITableViewController {
     self.tableView.ksr_sizeHeaderFooterViewsToFit()
   }
 
-  override func bindStyles() {
-    _ = self.navigationController
-      ?|> UINavigationController.lens.isNavigationBarHidden .~ false
-  }
+  override func bindStyles() { super.bindStyles() }
 
   override func bindViewModel() {
     self.viewModel.outputs.reloadWithData

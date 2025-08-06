@@ -26,24 +26,7 @@ final class CommentsErrorCell: UITableViewCell, ValueCell {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self |> baseTableViewCellStyle()
-
-    _ = self.rootStackView
-      |> \.axis .~ .vertical
-      |> \.distribution .~ .fillProportionally
-      |> \.alignment .~ .center
-      |> \.spacing .~ Styles.grid(2)
-
-    _ = self.messageLabel
-      |> messageLabelStyle
-
-    _ = self.iconImageView
-      |> UIImageView.lens.image .~ Library.image(named: "icon--alert")
-      |> \.tintColor .~ LegacyColors.ksr_black.uiColor()
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - Configuration
 

@@ -23,17 +23,7 @@ internal final class ProjectNotificationsViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> settingsViewControllerStyle
-
-    _ = self.tableView
-      |> \.separatorStyle .~ .singleLine
-      |> \.separatorColor .~ LegacyColors.ksr_support_300.uiColor()
-      |> \.separatorInset .~ .init(left: Styles.grid(2))
-  }
+  override func bindStyles() { super.bindStyles() }
 
   internal override func bindViewModel() {
     super.bindViewModel()

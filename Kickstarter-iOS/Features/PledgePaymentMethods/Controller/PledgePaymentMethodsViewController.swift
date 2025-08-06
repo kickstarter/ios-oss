@@ -60,14 +60,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   // MARK: - Bind Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-    _ = self.view
-      |> checkoutBackgroundStyle
-
-    _ = self.tableView
-      |> checkoutWhiteBackgroundStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View model
 

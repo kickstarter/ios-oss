@@ -44,27 +44,7 @@ internal final class CommentDialogViewController: UIViewController {
     return vc
   }
 
-  internal override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> baseControllerStyle()
-
-    _ = self.postButton
-      |> UIBarButtonItem.lens.title %~ { _ in Strings.social_buttons_post() }
-
-    _ = self.titleLabel
-      |> UILabel.lens.text %~ { _ in Strings.Public_comment() }
-
-    _ = self.cancelButton
-      |> UIBarButtonItem.lens.title %~ { _ in
-        Strings.dashboard_post_update_compose_attachment_buttons_cancel()
-      }
-
-    _ = self.bodyTextView
-      |> UITextView.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
-      |> UITextView.lens.font .~ .ksr_body()
-  }
+  internal override func bindStyles() { super.bindStyles() }
 
   internal override func bindViewModel() {
     super.bindViewModel()

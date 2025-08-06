@@ -34,21 +34,7 @@ final class ProcessingView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> processingViewStyle
-
-    _ = self.activityIndicator
-      |> activityIndicatorStyle
-
-    _ = self.processingLabel
-      |> processingLabelStyle
-
-    _ = self.stackView
-      |> stackViewStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   private func configureSubviews() {
     _ = (self.stackView, self)

@@ -74,39 +74,6 @@ final class PersonalizationCell: UITableViewCell, ValueCell {
 
   override func bindStyles() {
     super.bindStyles()
-
-    _ = self
-      |> baseTableViewCellStyle()
-      |> \.backgroundColor .~ discoveryPageBackgroundColor()
-      |> \.accessibilityElements .~ [self.containerView, self.dismissButton]
-      |> PersonalizationCell.lens.contentView.layoutMargins %~~ { _, cell in
-        cell.traitCollection.isRegularRegular
-          ? .init(top: Styles.grid(2), left: Styles.grid(30), bottom: 0, right: Styles.grid(30))
-          : .init(top: Styles.grid(2), left: Styles.grid(2), bottom: 0, right: Styles.grid(2))
-      }
-
-    _ = self.containerView
-      |> containerViewStyle
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-
-    _ = self.imageViewLeft
-      |> imageLeftStyle
-
-    _ = self.imageViewRight
-      |> imageRightStyle
-
-    _ = self.dismissButton
-      |> dismissButtonStyle
-
-    _ = self.titleLabel
-      |> baseLabelStyle
-      |> titleLabelStyle
-
-    _ = self.subtitleLabel
-      |> baseLabelStyle
-      |> subtitleLabelStyle
   }
 
   func configureWith(value _: ()) {}

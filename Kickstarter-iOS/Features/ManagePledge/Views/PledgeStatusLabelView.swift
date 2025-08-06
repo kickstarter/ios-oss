@@ -29,14 +29,7 @@ final class PledgeStatusLabelView: UIView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.rootStackView
-      |> containerViewStyle
-
-    applyTextViewStyle(self.textView)
-  }
+  override func bindStyles() { super.bindStyles() }
 
   private func configureSubviews() {
     _ = (self.rootStackView, self)

@@ -68,16 +68,6 @@ internal final class PaymentMethodSettingsViewController: UIViewController,
 
   override func bindStyles() {
     super.bindStyles()
-
-    _ = self
-      |> settingsViewControllerStyle
-      |> UIViewController.lens.title %~ { _ in
-        Strings.Payment_methods()
-      }
-
-    _ = self.tableView
-      |> tableViewStyle
-      |> tableViewSeparatorStyle
   }
 
   override func bindViewModel() {

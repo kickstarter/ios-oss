@@ -16,23 +16,7 @@ internal final class CreditCardCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.configureWith(creditCard: card)
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.stackView
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-
-    _ = self.cardImageView
-      |> \.contentMode .~ .scaleAspectFit
-
-    _ = self.cardNumberLabel
-      |> settingsTitleLabelStyle
-      |> \.lineBreakMode .~ .byTruncatingMiddle
-
-    _ = self.expirationDateLabel
-      |> settingsDescriptionLabelStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   override func bindViewModel() {
     super.bindViewModel()

@@ -30,10 +30,5 @@ final class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.label
-      |> settingsHeaderFooterLabelStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 }

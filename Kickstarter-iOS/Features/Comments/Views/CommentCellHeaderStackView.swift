@@ -37,38 +37,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> \.axis .~ .horizontal
-      |> \.spacing .~ Styles.grid(2)
-      |> \.alignment .~ .center
-
-    _ = self.authorNameTimeLabelsStackView
-      |> \.axis .~ .vertical
-      |> \.spacing .~ Styles.grid(1)
-
-    _ = self.authorNameBadgeLabelsStackView
-      |> \.axis .~ .horizontal
-      |> \.spacing .~ Styles.grid(1)
-
-    _ = self.authorNameLabel
-      |> \.numberOfLines .~ 1
-      |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
-      |> \.textAlignment .~ .left
-      |> \.font .~ UIFont.ksr_callout().weighted(.semibold)
-      |> \.adjustsFontForContentSizeCategory .~ true
-
-    _ = self.postTimeLabel
-      |> \.numberOfLines .~ 2
-      |> \.textColor .~ LegacyColors.ksr_support_400.uiColor()
-      |> \.textAlignment .~ .left
-      |> \.font .~ UIFont.ksr_footnote()
-      |> \.adjustsFontForContentSizeCategory .~ true
-
-    self.viewModel.inputs.bindStyles()
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - Configuration
 

@@ -41,12 +41,7 @@ final class CategoryPillCell: UICollectionViewCell, ValueCell {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.button
-      |> buttonStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View Model
 

@@ -167,39 +167,7 @@ final class PostCampaignCheckoutViewController: UIViewController,
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.view
-      |> checkoutBackgroundStyle
-
-    self.titleLabel.text = Strings.Checkout()
-    self.titleLabel.numberOfLines = 1
-    self.titleLabel.textColor = LegacyColors.ksr_support_700.uiColor()
-    self.titleLabel.font = UIFont.ksr_title2().bolded
-    self.titleLabel.layoutMargins = UIEdgeInsets(
-      topBottom: Layout.Margin.topBottom,
-      leftRight: Styles.grid(3)
-    )
-
-    self.rootScrollView.showsVerticalScrollIndicator = false
-    self.rootScrollView.alwaysBounceVertical = true
-
-    self.rootStackView.axis = NSLayoutConstraint.Axis.vertical
-    self.rootStackView.spacing = Styles.grid(1)
-    self.rootStackView.isLayoutMarginsRelativeArrangement = true
-    self.rootStackView.layoutMargins = UIEdgeInsets(
-      topBottom: Layout.Margin.topBottom,
-      leftRight: 0
-    )
-
-    rootInsetStackViewStyle(self.rootInsetStackView)
-    rootInsetStackViewStyle(self.estimatedShippingStackView)
-
-    roundedStyle(self.paymentMethodsViewController.view, cornerRadius: Layout.Style.cornerRadius)
-
-    roundedStyle(self.pledgeDisclaimerView, cornerRadius: Layout.Style.cornerRadius)
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View model
 

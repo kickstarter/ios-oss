@@ -8,11 +8,5 @@ internal final class DiscoveryFiltersLoaderCell: UITableViewCell, ValueCell {
 
   internal func configureWith(value _: Void) {}
 
-  internal override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.activityIndicator
-      |> baseActivityIndicatorStyle
-      |> UIActivityIndicatorView.lens.animating .~ true
-  }
+  internal override func bindStyles() { super.bindStyles() }
 }

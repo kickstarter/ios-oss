@@ -45,65 +45,6 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
 
   override func bindStyles() {
     super.bindStyles()
-
-    _ = self.scrollView
-      |> \.alwaysBounceVertical .~ true
-      |> \.backgroundColor .~ LegacyColors.ksr_support_100.uiColor()
-
-    _ = self.stackView
-      |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-
-    _ = self
-      |> settingsViewControllerStyle
-      |> UIViewController.lens.title %~ { _ in
-        Strings.Change_password()
-      }
-
-    _ = [self.currentPasswordLabel, self.newPasswordLabel, self.confirmNewPasswordLabel]
-      ||> \.isAccessibilityElement .~ false
-
-    _ = self.changePasswordLabel
-      |> settingsDescriptionLabelStyle
-      |> UILabel.lens.text %~ { _ in
-        Strings.Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password()
-      }
-
-    _ = self.confirmNewPasswordLabel
-      |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.Confirm_password() }
-
-    _ = self.confirmNewPasswordTextField
-      |> settingsNewPasswordFormFieldAutoFillStyle
-      |> \.accessibilityLabel .~ self.confirmNewPasswordLabel.text
-      |> UITextField.lens.returnKeyType .~ .done
-      |> \.attributedPlaceholder %~ { _ in
-        settingsAttributedPlaceholder(Strings.login_placeholder_password())
-      }
-
-    _ = self.currentPasswordLabel
-      |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.Current_password() }
-
-    _ = self.currentPasswordTextField
-      |> settingsPasswordFormFieldAutoFillStyle
-      |> \.accessibilityLabel .~ self.currentPasswordLabel.text
-      |> \.attributedPlaceholder %~ { _ in
-        settingsAttributedPlaceholder(Strings.login_placeholder_password())
-      }
-
-    _ = self.validationErrorMessageLabel
-      |> settingsDescriptionLabelStyle
-
-    _ = self.newPasswordLabel
-      |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.New_password() }
-
-    _ = self.newPasswordTextField
-      |> settingsNewPasswordFormFieldAutoFillStyle
-      |> \.accessibilityLabel .~ self.newPasswordLabel.text
-      |> \.attributedPlaceholder %~ { _ in
-        settingsAttributedPlaceholder(Strings.login_placeholder_password())
-      }
   }
 
   override func bindViewModel() {

@@ -86,16 +86,7 @@ internal final class FindFriendsViewController: UITableViewController {
     self.loadingIndicatorView.center = self.backgroundView.center
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> baseTableControllerStyle()
-      |> UIViewController.lens.title %~ { _ in Strings.Follow_friends() }
-
-    _ = self.loadingIndicatorView
-      |> baseActivityIndicatorStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     if let statsCell = cell as? FindFriendsStatsCell, statsCell.delegate == nil {

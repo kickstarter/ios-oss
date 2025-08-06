@@ -75,46 +75,7 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> \.selectedBackgroundView .~ self.selectionView
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-
-    _ = self.leftColumnStackView
-      |> columnStackViewStyle
-      |> \.spacing .~ 0
-
-    _ = self.rightColumnStackView
-      |> columnStackViewStyle
-
-    _ = self.labelsStackView
-      |> labelsStackViewStyle
-
-    _ = self.cardImageAndLabelsStackView
-      |> adaptableStackViewStyle(
-        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-      )
-      |> cardImageAndLabelsStackViewStyle
-
-    _ = self.unavailableCardTypeLabel
-      |> unavailableCardTypeLabelStyle
-
-    _ = self.cardImageView
-      |> cardImageViewStyle
-
-    _ = self.checkmarkImageView
-      |> checkmarkImageViewStyle
-
-    _ = self.lastFourLabel
-      |> lastFourLabelStyle
-
-    _ = self.expirationDateLabel
-      |> expirationDateLabelStyle
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View model
 

@@ -56,36 +56,7 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
       }
   }
 
-  internal override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> feedTableViewCellStyle
-      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button
-
-    _ = self.cardView
-      |> cardStyle()
-
-    _ = self.containerView
-      |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
-
-    self.containerView.backgroundColor = Colors.Background.Surface.primary.uiColor()
-
-    _ = self.bodyLabel
-      |> UILabel.lens.font .~ .ksr_subhead()
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
-
-    _ = self.projectImageView
-      |> ignoresInvertColorsImageViewStyle
-
-    _ = self.projectNameLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
-
-    _ = self.titleLabel
-      |> UILabel.lens.font .~ .ksr_title1(size: 22)
-      |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
-  }
+  internal override func bindStyles() { super.bindStyles() }
 
   @IBAction internal func tappedProjectImage() {
     self.viewModel.inputs.tappedProjectImage()

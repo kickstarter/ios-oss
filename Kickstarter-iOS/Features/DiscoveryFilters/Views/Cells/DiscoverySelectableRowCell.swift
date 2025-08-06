@@ -34,13 +34,7 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
     self.rowIsSelected = value.row.isSelected
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self
-      |> discoveryFilterRowMarginStyle
-      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button
-  }
+  override func bindStyles() { super.bindStyles() }
 
   internal func willDisplay() {
     _ = self.filterTitleLabel

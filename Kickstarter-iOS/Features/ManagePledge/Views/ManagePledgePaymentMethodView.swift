@@ -80,37 +80,7 @@ final class ManagePledgePaymentMethodView: UIView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-    _ = self.cardLabelsStackView
-      |> cardLabelsStackViewStyle
-
-    _ = self.expirationDateLabel
-      |> expirationDateLabelStyle
-
-    _ = self.cardNumberLabel
-      |> lastFourDigitsLabelStyle
-
-    _ = self.paymentMethodAdaptableStackView
-      |> adaptableStackViewStyle(
-        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-      )
-      |> paymentMethodAdaptableStackViewStyle
-
-    _ = self.paymentMethodImageView
-      |> cardImageViewStyle
-
-    _ = self.rootStackView
-      |> checkoutCardStackViewStyle
-
-    _ = self.titleLabel
-      |> checkoutTitleLabelStyle
-      |> \.text %~ { _ in Strings.Payment_method() }
-
-    _ = self.fixButton
-      |> redButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Fix() }
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View model
 

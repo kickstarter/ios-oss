@@ -76,24 +76,7 @@ final class CommentInputContainerView: UIView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self |> containerStyle
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-
-    _ = self.placeholderLabel
-      |> placeholderLabelStyle
-
-    _ = self.postButton
-      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
-      |> UIButton.lens.titleLabel.numberOfLines .~ 0
-      |> UIButton.lens.titleColor(for: .normal) %~ { _ in LegacyColors.ksr_create_700.uiColor() }
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Post() }
-      |> UIButton.lens.titleLabel.textAlignment .~ .center
-  }
+  override func bindStyles() { super.bindStyles() }
 
   override func traitCollectionDidChange(_: UITraitCollection?) {
     self.inputTextView.invalidateIntrinsicContentSize()

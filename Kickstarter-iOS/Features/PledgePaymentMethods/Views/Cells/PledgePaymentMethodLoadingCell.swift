@@ -59,29 +59,7 @@ final class PledgePaymentMethodLoadingCell: UITableViewCell, ValueCell {
       |> roundedStyle(cornerRadius: self.titlePlaceholder.bounds.height / 2)
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.rootStackView
-      |> \.spacing .~ Styles.grid(2)
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.insetsLayoutMarginsFromSafeArea .~ false
-      |> \.layoutMargins .~ .init(all: Styles.grid(2))
-
-    _ = self.contentStackView
-      |> \.axis .~ .vertical
-      |> \.distribution .~ .fillEqually
-      |> \.spacing .~ Styles.gridHalf(3)
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.insetsLayoutMarginsFromSafeArea .~ false
-      |> \.layoutMargins .~ .init(topBottom: Styles.grid(1))
-
-    _ = self.subtitleStackView
-      |> \.insetsLayoutMarginsFromSafeArea .~ false
-
-    _ = self.titleStackView
-      |> \.insetsLayoutMarginsFromSafeArea .~ false
-  }
+  override func bindStyles() { super.bindStyles() }
 
   func configureWith(value _: Void) {}
 

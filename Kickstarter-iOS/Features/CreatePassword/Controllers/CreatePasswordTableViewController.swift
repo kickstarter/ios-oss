@@ -83,13 +83,7 @@ final class CreatePasswordTableViewController: UITableViewController {
 
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.tableView
-      |> settingsGroupedTableViewStyle
-      |> \.allowsSelection .~ true
-  }
+  override func bindStyles() { super.bindStyles() }
 
   // MARK: - View model
 

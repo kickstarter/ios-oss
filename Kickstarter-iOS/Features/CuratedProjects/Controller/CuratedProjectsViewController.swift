@@ -133,21 +133,7 @@ final class CuratedProjectsViewController: UIViewController {
 
   // MARK: - Styles
 
-  public override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.tableView
-      |> tableViewStyle
-
-    _ = self.doneButton
-      |> doneButtonStyle
-
-    _ = self.headerView
-      |> headerViewStyle
-
-    _ = self.loadingIndicator
-      |> baseActivityIndicatorStyle
-  }
+  public override func bindStyles() { super.bindStyles() }
 
   // MARK: - Accessors
 

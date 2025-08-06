@@ -94,9 +94,6 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
 
   internal override func bindStyles() {
     super.bindStyles()
-
-    _ = self
-      |> baseTableControllerStyle()
   }
 
   internal override func tableView(
