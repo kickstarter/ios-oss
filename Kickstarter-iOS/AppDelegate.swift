@@ -39,6 +39,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     Settings.shouldLimitEventAndDataUsage = true
 
+    BrazeDestination.prepareForDelayedInitialization()
+
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
 
@@ -148,8 +150,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.registerPushTokenInSegment
       .observeForUI()
       .observeValues { token in
-        // TODO: Handle notifications
-//        Analytics.shared().registeredForRemoteNotifications(withDeviceToken: token)
+        self.analytics?.registeredForRemoteNotifications(deviceToken: token)
+        // TODO: do I need to register braze separately?
+        // from braze docs: AppDelegate.braze?.notifications.register(deviceToken: token)
       }
 
     self.viewModel.outputs.triggerOnboardingFlow
@@ -256,7 +259,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
             configuration.triggerMinimumTimeInterval = 5
             configuration.push.automation = false
             configuration.logger.level = .debug
-            //            configuration.push.automation.requestAuthorizationAtLaunch = false
+            // configuration.push.automation.requestAuthorizationAtLaunch = false
             //            configuration.push.automation.handleBackgroundNotification = false
           }
         ) { [weak self] braze in
@@ -266,6 +269,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           if let userId = AppEnvironment.current.currentUser?.id {
             braze.changeUser(userId: String(userId))
           }
+          // TODO: use this if I end up using automatic push notification support
           //            braze.notifications.subscribeToUpdates { [weak self] payload in
           //              guard let self else { return }
           //              if let rootTabBarController = self.rootTabBarController {
@@ -274,6 +278,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           //                rootTabBarController.didReceiveBadgeValue(payload.badge)
           //              }
           //            }
+          // TODO: fix inappmessages separately
 //          let inAppMessageUI = BrazeInAppMessageUI() // TODO
 //          // inAppMessageUI.delegate = self
 //          braze.inAppMessagePresenter = inAppMessageUI
@@ -378,7 +383,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     fetchCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void
   ) {
     // TODO: handle notifications
-//    SEGAppboyIntegrationFactory.instance()?.saveRemoteNotification(userInfo)
+    SEGAppboyIntegrationFactory.instance()?.saveRemoteNotification(userInfo)
   }
 
   internal func applicationDidReceiveMemoryWarning(_: UIApplication) {
