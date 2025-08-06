@@ -232,7 +232,7 @@ public class SearchQuery: GraphQLQuery {
         /// Exchange rate to US Dollars (USD), null for draft projects.
         public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
         /// Project updates.
-        public var posts: Posts? { __data["posts"] }
+        public var posts: Posts { __data["posts"] }
         /// Whether a project has activated prelaunch.
         public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
         /// A URL to the project's page.
@@ -290,7 +290,7 @@ public class SearchQuery: GraphQLQuery {
           video: Video? = nil,
           fxRate: Double,
           usdExchangeRate: Double? = nil,
-          posts: Posts? = nil,
+          posts: Posts,
           prelaunchActivated: Bool,
           url: String,
           projectDescription: String,
