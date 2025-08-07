@@ -11,7 +11,12 @@ public extension Analytics {
     let configuration = Configuration(writeKey: writeKey)
       .flushAt(3)
       .flushInterval(10)
-      .setTrackedApplicationLifecycleEvents(.all)
+      .setTrackedApplicationLifecycleEvents([
+        .applicationInstalled,
+        .applicationUpdated,
+        .applicationOpened,
+        .applicationBackgrounded,
+    ])
 //    configuration.sourceMiddleware = [BrazeDebounceMiddleware()]
     return Analytics(configuration: configuration)
   }

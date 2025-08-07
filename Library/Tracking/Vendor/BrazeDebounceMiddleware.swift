@@ -20,13 +20,6 @@ public class BrazeDebounceMiddlewarePlugin: EventPlugin {
     self.previousIdentifyEvent = previousIdentifyEvent
   }
   
-  public func track(event: TrackEvent) -> TrackEvent? {
-    if event.event == "Application Foregrounded" {
-      return nil
-    }
-    return event
-  }
-  
   public func identify(event: IdentifyEvent) -> IdentifyEvent? {
     var mutableEvent = event
   
