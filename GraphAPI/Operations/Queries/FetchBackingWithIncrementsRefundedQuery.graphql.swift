@@ -757,6 +757,8 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
         public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
         public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
         public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
+        /// The original amount minus the refunded amount formatted in the project native currency
+        public var refundUpdatedAmountInProjectNativeCurrency: String? { __data["refundUpdatedAmountInProjectNativeCurrency"] }
         /// The total amount that has been refunded on the payment increment, across potentially multiple adjustments
         public var refundedAmount: RefundedAmount? { __data["refundedAmount"] }
 
@@ -772,6 +774,7 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
           scheduledCollection: GraphAPI.ISO8601DateTime,
           state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
           stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil,
+          refundUpdatedAmountInProjectNativeCurrency: String? = nil,
           refundedAmount: RefundedAmount? = nil
         ) {
           self.init(_dataDict: DataDict(
@@ -781,6 +784,7 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
               "scheduledCollection": scheduledCollection,
               "state": state,
               "stateReason": stateReason,
+              "refundUpdatedAmountInProjectNativeCurrency": refundUpdatedAmountInProjectNativeCurrency,
               "refundedAmount": refundedAmount._fieldData,
             ],
             fulfilledFragments: [
@@ -1321,7 +1325,7 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
         /// Is this project configured for post-campaign pledges?
         public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
         /// Project updates.
-        public var posts: Posts? { __data["posts"] }
+        public var posts: Posts { __data["posts"] }
         /// Whether a project has activated prelaunch.
         public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
         /// The text of the currently applied project notice, empty if there is no notice
@@ -1396,7 +1400,7 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
           pledgeOverTimeMinimumExplanation: String? = nil,
           pledged: Pledged,
           postCampaignPledgingEnabled: Bool,
-          posts: Posts? = nil,
+          posts: Posts,
           prelaunchActivated: Bool,
           projectNotice: String? = nil,
           redemptionPageUrl: String,

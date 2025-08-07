@@ -57,13 +57,7 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
     self.titleLabel.text = Strings.Payment_schedule()
 
     self.termsOfUseButton.setContentCompressionResistancePriority(.required, for: .vertical)
-    self.termsOfUseButton.setAttributedTitle(
-      NSAttributedString(
-        string: Strings.login_tout_help_sheet_terms(),
-        attributes: [NSAttributedString.Key.font: UIFont.ksr_subhead()]
-      ),
-      for: .normal
-    )
+    // termsOfUseButton title is set in bindStyles
   }
 
   private func setupConstraints() {
@@ -212,6 +206,12 @@ private func applyCollapseIndicatorImageViewStyle(_ imageView: UIImageView) {
 private func applyTermsOfUseStyle(_ button: UIButton) {
   button.configuration = {
     var config = UIButton.Configuration.borderless()
+    config.attributedTitle = AttributedString(
+      NSAttributedString(
+        string: Strings.login_tout_help_sheet_terms(),
+        attributes: [NSAttributedString.Key.font: UIFont.ksr_subhead()]
+      )
+    )
     config.contentInsets = Constants.contentInsets
     config.baseForegroundColor = LegacyColors.ksr_create_700.uiColor()
     return config

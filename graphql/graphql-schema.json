@@ -2390,54 +2390,6 @@
             "deprecationReason": null
           },
           {
-            "name": "availableCrossSells",
-            "description": "Add-ons available to be added at Pledge Redemption",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Reward",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "availableUpgradeableRewards",
-            "description": "Base rewards available to upgrade to",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Reward",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "backer",
             "description": "The backer",
             "args": [],
@@ -4358,6 +4310,22 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "vatInclusivePricing",
+            "description": "Whether the creator has included VAT in reward pricing",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -6208,6 +6176,26 @@
                 "defaultValue": null
               },
               {
+                "name": "pmCompletedAtMin",
+                "description": "Filter by pledge manager completed at minimum",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "pmCompletedAtMax",
+                "description": "Filter by pledge manager completed at maximum",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
                 "name": "fulfillmentStatus",
                 "description": "Filter by fulfillment status",
                 "type": {
@@ -7519,6 +7507,22 @@
             "deprecationReason": null
           },
           {
+            "name": "hasAnsweredEligibilityQuestionnaire",
+            "description": "Whether the project creator has answered the eligibility questionnaire",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "hasPledgeOverTimeConfig",
             "description": "Does this project have any pledge over time config record?",
             "args": [],
@@ -8139,6 +8143,18 @@
             "deprecationReason": null
           },
           {
+            "name": "latestSentimentStats",
+            "description": "The tallies from the sentiment from each backers latest feedback",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ProjectSentimentStats",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "launchedAt",
             "description": "When the project launched",
             "args": [],
@@ -8713,9 +8729,13 @@
               }
             ],
             "type": {
-              "kind": "OBJECT",
-              "name": "PostConnection",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PostConnection",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -16831,6 +16851,12 @@
             "deprecationReason": null
           },
           {
+            "name": "pledge_over_time_mid_plot_refunds_2025",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "eufymake_backer_report",
             "description": null,
             "isDeprecated": false,
@@ -16873,7 +16899,19 @@
             "deprecationReason": null
           },
           {
+            "name": "prelaunch_updates",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "creator_opt_out_feedback_2025",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "include_canada_item_taxes_in_price",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -16886,6 +16924,24 @@
           },
           {
             "name": "pm_backer_preview_2025",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "include_uk_vat_in_item_prices",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "include_eu_vat_in_item_prices",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pledge_manager_eligibility_questionnaire_2025",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -24948,6 +25004,81 @@
       },
       {
         "kind": "OBJECT",
+        "name": "ProjectSentimentStats",
+        "description": null,
+        "fields": [
+          {
+            "name": "negative",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "neutral",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "positive",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "total",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "LocationVatNumber",
         "description": null,
         "fields": [
@@ -25275,16 +25406,68 @@
             "deprecationReason": null
           },
           {
-            "name": "backer",
-            "description": "The associated backer",
+            "name": "allowedCountries",
+            "description": "Countries that the backing's reward can be shipped to. If null, the backing's reward can be shipped to any country.",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "CountryCode",
+                  "ofType": null
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "availableCrossSells",
+            "description": "Add-ons available to be added at Pledge Redemption",
             "args": [],
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "User",
-                "ofType": null
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Reward",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "availableUpgradeableRewards",
+            "description": "Base rewards available to upgrade to",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Reward",
+                    "ofType": null
+                  }
+                }
               }
             },
             "isDeprecated": false,
@@ -25313,6 +25496,18 @@
             "type": {
               "kind": "OBJECT",
               "name": "OrderOrderable",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "baseOrderable",
+            "description": "The base reward on the order. Could be base reward from original backing or one from reward upgrade.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Reward",
               "ofType": null
             },
             "isDeprecated": false,
@@ -25575,6 +25770,22 @@
             "deprecationReason": null
           },
           {
+            "name": "customer",
+            "description": "The associated user",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "finalized",
             "description": "Whether the order is in a finalized state",
             "args": [],
@@ -25641,6 +25852,22 @@
           {
             "name": "isPledgeManagerNetNewBacker",
             "description": "Whether this order is a net new order for the pledge manager",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isPreview",
+            "description": "Whether the order is a preview order",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -26090,6 +26317,22 @@
             "deprecationReason": null
           },
           {
+            "name": "taxProviderSalesInvoice",
+            "description": "Requests the Avatax data for a given document code. This is only available to KSR admins.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AvataxTransactionResponseData",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "total",
             "description": "The total cost for the order including taxes and shipping",
             "args": [],
@@ -26133,6 +26376,30 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "usableAddresses",
+            "description": "All of the user's saved addresses that match the order country",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Address",
+                    "ofType": null
+                  }
+                }
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -26262,6 +26529,18 @@
                 "name": "Boolean",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": "The orderable name.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -26625,7 +26904,7 @@
       {
         "kind": "OBJECT",
         "name": "Answer",
-        "description": "An answer associated with one of the following: LineItem, Cart, BackingAddon, CartReward",
+        "description": "An answer associated with one of the following: LineItem, Cart, BackingAddon, OrderOrderable",
         "fields": [
           {
             "name": "answerable",
@@ -26731,7 +27010,7 @@
           },
           {
             "kind": "OBJECT",
-            "name": "CartReward",
+            "name": "OrderOrderable",
             "ofType": null
           }
         ]
@@ -26739,7 +27018,7 @@
       {
         "kind": "OBJECT",
         "name": "Cart",
-        "description": "A cart associated with a backing",
+        "description": "A cart associated with a surveyable (backing or order)",
         "fields": [
           {
             "name": "addOnQuestions",
@@ -27227,61 +27506,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "OBJECT",
-        "name": "CartReward",
-        "description": "A reward in the cart (currently scoped to cross-sell rewards only)",
-        "fields": [
-          {
-            "name": "backerReward",
-            "description": "The addon reward",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Reward",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "name",
-            "description": "The add-on name.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "UNION",
         "name": "Orderable",
         "description": "Types that can be added to an Order",
@@ -27665,6 +27889,192 @@
       },
       {
         "kind": "OBJECT",
+        "name": "AvataxTransactionResponseData",
+        "description": "Avatax transaction response data type containing details about a transaction.",
+        "fields": [
+          {
+            "name": "handledResponse",
+            "description": "The processed response from the Avatax API, containing structured data about the transaction.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AvataxTransactionLineItem",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "rawResponse",
+            "description": "The raw response from the Avatax API for the transaction.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "JSON",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AvataxTransactionLineItem",
+        "description": "Avatax transaction line item type containing details about a line item in a transaction.",
+        "fields": [
+          {
+            "name": "amount",
+            "description": "The amount of tax applied to the item.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "deemedSupplier",
+            "description": "The deemed supplier for the tax.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": "The name of the tax applied to the item.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "rate",
+            "description": "The tax rate applied to the item.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Float",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "taxId",
+            "description": "The ID of the tax applied to the item.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "taxableId",
+            "description": "The ID of the taxable item.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "taxableType",
+            "description": "The type of the taxable item (e.g., OrderItem or Shipment).",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "vatNumber",
+            "description": "The VAT number associated with the transaction, if applicable.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "PaymentPlan",
         "description": "A payment plan for a pledge over time project",
         "fields": [
@@ -27774,6 +28184,18 @@
           {
             "name": "paymentIncrementableType",
             "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refundUpdatedAmountInProjectNativeCurrency",
+            "description": "The original amount minus the refunded amount formatted in the project native currency",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -41570,6 +41992,12 @@
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "REWARD_RECEIVED",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "possibleTypes": null
@@ -43873,6 +44301,33 @@
             "deprecationReason": null
           },
           {
+            "name": "createEligibilityQuestionnaire",
+            "description": "create a filled out eligibility questionnaire recording access to PM.",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CreateEligibilityQuestionnaireInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CreateEligibilityQuestionnairePayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createFlagging",
             "description": "Create a flagging (report) of a piece flaggable content.",
             "args": [
@@ -44002,6 +44457,33 @@
             "type": {
               "kind": "OBJECT",
               "name": "CreateOrUpdateItemTaxConfigPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "createOrUpdatePreviewOrder",
+            "description": "Creates or updates a preview order with given starting attributes",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CreateOrUpdatePreviewOrderInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CreateOrUpdatePreviewOrderPayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -52118,6 +52600,136 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "CreateEligibilityQuestionnaireInput",
+        "description": "Autogenerated input type of CreateEligibilityQuestionnaire",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "chargedUsSalesTax",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "chargedUkVat",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "chargedEuVat",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "chargedGstOrHst",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "backersReceivingGoodsFromMultiplePlaces",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "tableAcknowledged",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CreateEligibilityQuestionnairePayload",
+        "description": "Autogenerated return type of CreateEligibilityQuestionnaire",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "project",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Project",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "CreateFlaggingInput",
         "description": "Autogenerated input type of CreateFlagging",
         "fields": null,
@@ -52899,6 +53511,175 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "RewardItem",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "CreateOrUpdatePreviewOrderInput",
+        "description": "Autogenerated input type of CreateOrUpdatePreviewOrder",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "projectId",
+            "description": "The id of the project the order should belong to",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "existingOrderId",
+            "description": "The id of an existing order to update (optional)",
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "locationId",
+            "description": "The id of the location for the order",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "entryPoint",
+            "description": "The type of order you are trying to preview, e.g. one with a crowdfunding backing",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "PreviewEntryPointEnum",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "baseRewardId",
+            "description": "The id of the crowdfunding base reward for the order (optional)",
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "addonIds",
+            "description": "The ids of the crowdfunding add-ons for the order (optional)",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "PreviewEntryPointEnum",
+        "description": "Customer entry points to be used when previewing an order.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "crowdfunding",
+            "description": "crowdfunding",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "late_pledge",
+            "description": "late_pledge",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pledge_manager",
+            "description": "pledge_manager",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CreateOrUpdatePreviewOrderPayload",
+        "description": "Autogenerated return type of CreateOrUpdatePreviewOrder",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "order",
+            "description": "The preview order",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Order",
                 "ofType": null
               }
             },
@@ -55402,6 +56183,16 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "AudienceInput",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "vatInclusivePricing",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
               "ofType": null
             },
             "defaultValue": null
@@ -68555,6 +69346,16 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "AudienceInput",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "vatInclusivePricing",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
               "ofType": null
             },
             "defaultValue": null

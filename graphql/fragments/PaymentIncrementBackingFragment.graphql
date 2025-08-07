@@ -6,8 +6,8 @@ fragment PaymentIncrementBackingFragment on PaymentIncrement {
   scheduledCollection
   state
   stateReason
+  refundUpdatedAmountInProjectNativeCurrency
   refundedAmount {
-    amountFormattedInProjectNativeCurrency
     currency
   }
 }

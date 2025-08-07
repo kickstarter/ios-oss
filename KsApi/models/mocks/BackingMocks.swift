@@ -14,6 +14,7 @@ extension GraphAPITestMocks.Backing {
     backing.cancelable = true
     backing.isLatePledge = true
     backing.project = GraphAPITestMocks.Project.mock
+    backing.project?.posts = Mock<GraphAPITestMocks.PostConnection>(totalCount: 0)
     backing.paymentIncrements = []
     backing.bonusAmount = Mock<GraphAPITestMocks.Money>()
     backing.bonusAmount?.amount = "50"
