@@ -2557,7 +2557,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testPresentViewController_BrazeInAppNotificationDeeplink_ProjectCommentThread_Success() {
+  func testPresentViewController_BrazeNotificationDeeplink_ProjectCommentThread_Success() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
       launchOptions: [:]
@@ -2572,20 +2572,20 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.presentViewController.assertValues([])
 
-      self.vm.inputs.urlFromBrazeInAppNotification(URL(string: url)!)
+      self.vm.inputs.urlFromBrazeNotification(URL(string: url)!)
 
       self.presentViewController.assertValues([1])
     }
   }
 
-  func testGoToMobileSafari_BrazeInAppNotificaton() {
+  func testGoToMobileSafari_BrazeNotificaton() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
       launchOptions: [:]
     )
 
     let url = URL(string: "https://fake-url.com")!
-    self.vm.inputs.urlFromBrazeInAppNotification(url)
+    self.vm.inputs.urlFromBrazeNotification(url)
 
     self.goToMobileSafari.assertValues([url])
     self.presentViewController.assertValues([])
