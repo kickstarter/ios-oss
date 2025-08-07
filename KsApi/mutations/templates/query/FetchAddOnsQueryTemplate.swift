@@ -302,6 +302,10 @@ public enum FetchAddsOnsQueryTemplate {
               "symbol": "$"
             },
             "isInPostCampaignPledgingPhase": false,
+            "posts": {
+              "__typename": "PostsConnection",
+              "totalCount": 0
+            },
             "postCampaignPledgingEnabled": false,
             "prelaunchActivated": true,
             "redemptionPageUrl": "https://www.kickstarter.com/projects/creator/a-fun-project/backing/redeem",

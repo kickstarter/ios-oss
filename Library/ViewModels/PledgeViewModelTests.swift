@@ -4651,11 +4651,9 @@ final class PledgeViewModelTests: TestCase {
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
-    let variables = ["includeRefundedAmount": false]
     let mockQuery: GraphAPI.BuildPaymentPlanQuery
       .Data = try! testGraphObject(
-        jsonString: buildPaymentPlanQueryJson(eligible: true),
-        variables: variables
+        jsonString: buildPaymentPlanQueryJson(eligible: true)
       )
     let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
 
@@ -4691,11 +4689,9 @@ final class PledgeViewModelTests: TestCase {
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
-    let variables = ["includeRefundedAmount": false]
     let mockQuery: GraphAPI.BuildPaymentPlanQuery
       .Data = try! testGraphObject(
-        jsonString: buildPaymentPlanQueryJson(eligible: true),
-        variables: variables
+        jsonString: buildPaymentPlanQueryJson(eligible: true)
       )
     let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
 
@@ -4731,11 +4727,9 @@ final class PledgeViewModelTests: TestCase {
       RemoteConfigFeature.pledgeOverTime.rawValue: true
     ]
 
-    let variables = ["includeRefundedAmount": false]
     let mockQuery: GraphAPI.BuildPaymentPlanQuery
       .Data = try! testGraphObject(
-        jsonString: buildPaymentPlanQueryJson(eligible: true),
-        variables: variables
+        jsonString: buildPaymentPlanQueryJson(eligible: true)
       )
     let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
 
@@ -4866,11 +4860,9 @@ final class PledgeViewModelTests: TestCase {
       )
     )
 
-    let variables = ["includeRefundedAmount": false]
     let buildPaymentPlan: GraphAPI.BuildPaymentPlanQuery
       .Data = try! testGraphObject(
-        jsonString: buildPaymentPlanQueryJson(eligible: true),
-        variables: variables
+        jsonString: buildPaymentPlanQueryJson(eligible: true)
       )
 
     let mockService = MockService(

@@ -228,7 +228,7 @@ private func projectStats(
     goal: projectFragment.goal?.fragments.moneyFragment.amount.flatMap(Float.init).flatMap(Int.init) ?? 0,
     pledged: pledgedValue,
     staticUsdRate: staticUSDRateValue,
-    updatesCount: projectFragment.posts?.totalCount,
+    updatesCount: projectFragment.posts.totalCount,
     usdExchangeRate: usdExchangeRate
   )
 }

@@ -9,8 +9,7 @@ extension PledgePaymentIncrementState {
     case .unattempted: return Strings.Scheduled()
     case .errored: return Strings.Errored_payment()
     case .cancelled: return Strings.profile_projects_status_canceled()
-    // TODO: [MBL-2644] implement translated strings.
-    case .refunded: return "FPO: Refunded"
+    case .refunded: return Strings.Refunded()
     }
   }
 
@@ -18,7 +17,7 @@ extension PledgePaymentIncrementState {
   public var badgeStyle: BadgeStyle {
     switch self {
     case .collected:
-      // TODO: Add support to apply alpha to background color for light mode only. See: [MBL-2650](https://kickstarter.atlassian.net/browse/MBL-2650)
+      // TODO: Add support to apply alpha to background color for light mode only. See: MBL-2650
       return .custom(
         foregroundColor: Colors.Custom.Badge.Text.collected.uiColor(),
         backgroundColor: Colors.Custom.Badge.Background.collected.uiColor()
