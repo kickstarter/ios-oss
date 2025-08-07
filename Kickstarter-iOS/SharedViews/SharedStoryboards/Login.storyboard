@@ -268,9 +268,6 @@
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="48" id="6Xl-re-hUR"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                                        <state key="normal">
-                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
                                         <connections>
                                             <action selector="resetPasswordPressed:" destination="65d-VH-Q1M" eventType="touchUpInside" id="yw2-8Y-ki4"/>
                                         </connections>
