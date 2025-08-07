@@ -80,10 +80,10 @@ public final class FacebookResetPasswordViewController: UIViewController {
       |> emailFieldStyle
       |> UITextField.lens.returnKeyType .~ .go
       |> roundedStyle(cornerRadius: Styles.grid(2))
-      |> \.borderStyle .~ UITextField.BorderStyle.roundedRect
-      |> \.layer.borderColor .~ LegacyColors.ksr_support_300.uiColor().cgColor
-      |> \.layer.borderWidth .~ 1
-      |> \.accessibilityLabel .~ self.emailLabel.text
+      |> UITextField.lens.borderStyle .~ UITextField.BorderStyle.roundedRect
+      |> UITextField.lens.layer.borderColor .~ LegacyColors.ksr_support_300.uiColor().cgColor
+      |> UITextField.lens.layer.borderWidth .~ 1
+      |> UITextField.lens.accessibilityLabel .~ self.emailLabel.text
       |> \.attributedPlaceholder %~ { _ in settingsAttributedPlaceholder("") }
 
     _ = self.setPasswordButton
@@ -91,7 +91,7 @@ public final class FacebookResetPasswordViewController: UIViewController {
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.Set_new_password()
       }
-      |> \.isEnabled .~ false
+      |> UIButton.lens.isEnabled .~ false
   }
 
   // MARK: - Bind View Model
@@ -216,27 +216,27 @@ public final class FacebookResetPasswordViewController: UIViewController {
 
 private let baseStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.distribution .~ .fill
-    |> \.alignment .~ .fill
-    |> \.axis .~ .vertical
+    |> UIStackView.lens.distribution .~ .fill
+    |> UIStackView.lens.alignment .~ .fill
+    |> UIStackView.lens.axis .~ .vertical
     |> UIStackView.lens.spacing .~ Styles.grid(2)
 }
 
-private let contextLabelStyle: LabelStyle = { label in
+private let contextLabelStyle: (UILabel) -> UILabel = { label in
   label
-    |> \.textAlignment .~ NSTextAlignment.left
-    |> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
-    |> \.numberOfLines .~ 0
+    |> UILabel.lens.textAlignment .~ NSTextAlignment.left
+    |> UILabel.lens.lineBreakMode .~ NSLineBreakMode.byWordWrapping
+    |> UILabel.lens.numberOfLines .~ 0
     |> UILabel.lens.font %~ { _ in UIFont.ksr_body(size: 16) }
 }
 
-private let textFieldLabelStyle: LabelStyle = { label in
+private let textFieldLabelStyle: (UILabel) -> UILabel = { label in
   label
-    |> \.textAlignment .~ NSTextAlignment.left
-    |> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
-    |> \.numberOfLines .~ 0
-    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
-    |> \.textColor .~ LegacyColors.ksr_support_700.uiColor()
+    |> UILabel.lens.textAlignment .~ NSTextAlignment.left
+    |> UILabel.lens.lineBreakMode .~ NSLineBreakMode.byWordWrapping
+    |> UILabel.lens.numberOfLines .~ 0
+    |> UILabel.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()
+    |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
     |> \.font %~ { _ in .ksr_callout(size: 13) }
 }
 
@@ -246,11 +246,11 @@ private let textFieldStyle: TextFieldStyle = { textField in
     |> roundedStyle(cornerRadius: Styles.grid(2))
     |> UITextField.lens.textColor .~ LegacyColors.ksr_black.uiColor()
     |> UITextField.lens.font %~ { _ in UIFont.ksr_body(size: 13) }
-    |> \.textAlignment .~ .left
-    |> \.borderStyle .~ UITextField.BorderStyle.roundedRect
-    |> \.layer.borderColor .~ LegacyColors.ksr_support_300.uiColor().cgColor
-    |> \.layer.borderWidth .~ 1
-    |> \.returnKeyType .~ .done
+    |> UITextField.lens.textAlignment .~ .left
+    |> UITextField.lens.borderStyle .~ UITextField.BorderStyle.roundedRect
+    |> UITextField.lens.layer.borderColor .~ LegacyColors.ksr_support_300.uiColor().cgColor
+    |> UITextField.lens.layer.borderWidth .~ 1
+    |> UITextField.lens.returnKeyType .~ .done
 }
 
 private let savePasswordButtonStyle: ButtonStyle = { button in
