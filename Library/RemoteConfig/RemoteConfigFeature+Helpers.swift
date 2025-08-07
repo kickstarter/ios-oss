@@ -43,10 +43,6 @@ public func featureNetNewBackersWebViewEnabled() -> Bool {
   featureEnabled(feature: .netNewBackersWebView)
 }
 
-public func featureNewDesignSystemEnabled() -> Bool {
-  featureEnabled(feature: .newDesignSystem)
-}
-
 public func featureRewardShipmentTrackingEnabled() -> Bool {
   featureEnabled(feature: .rewardShipmentTracking)
 }
