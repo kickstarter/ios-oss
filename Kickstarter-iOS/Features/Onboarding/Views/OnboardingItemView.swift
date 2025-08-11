@@ -30,7 +30,6 @@ struct OnboardingItemView: View {
 
         Text(self.item.subtitle)
           .font(Font(OnboardingStyles.subtitle))
-          .lineLimit(4)
           .multilineTextAlignment(.center)
           .frame(maxWidth: .infinity)
           .accessibilityLabel(Text(self.accessibilityLabel(for: self.item)))
