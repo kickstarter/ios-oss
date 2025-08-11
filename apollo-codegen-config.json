@@ -1,5 +1,25 @@
 {
   "schemaNamespace": "GraphAPI",
+  "schemaDownload": {
+    "downloadMethod": {
+      "introspection": {
+        "endpointURL": "https://staging.kickstarter.com/graph",
+        "httpMethod": {
+          "POST": {}
+        },
+        "includeDeprecatedInputValues": false,
+        "outputFormat": "JSON"
+      }
+    },
+    "downloadTimeout": 60,
+    "headers": [
+      {
+        "key": "User-Agent",
+        "value": "Kickstarter-iOS"
+      }
+    ],
+    "outputPath": "graphql/graphql-schema.json"
+  },
   "input": {
     "operationSearchPaths": [
       "graphql/**/*.graphql"
