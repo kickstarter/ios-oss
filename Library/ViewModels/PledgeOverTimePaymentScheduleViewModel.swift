@@ -82,13 +82,28 @@ public struct PLOTPaymentScheduleItem: Equatable {
       timeStyle: .none
     )
 
-    self.amountString = increment.amount.amountFormattedInProjectNativeCurrency
+    self.amountString = getAmountString(from: increment)
     self.stateLabel = getStateLabelText(from: increment)
     self.badgeStyle = getBadgeStyle(from: increment)
   }
 }
 
+private func getAmountString(from increment: PledgePaymentIncrement) -> String {
+  // Only display the adjusted amount if the status is `.collected`.
+  // If the payment increment was fully refunded, display the full payment increment amount.
+  if increment.isCollectedAdjusted,
+     case let .refunded(refundedAmount) = increment.refundStatus {
+    return refundedAmount.amountFormattedInProjectNativeCurrency
+  }
+
+  return increment.amount.amountFormattedInProjectNativeCurrency
+}
+
 private func getStateLabelText(from increment: PledgePaymentIncrement) -> String {
+  if increment.isCollectedAdjusted {
+    return Strings.Collected_adjusted()
+  }
+
   let requiresAction = increment.state == .errored && increment.stateReason == .requiresAction
 
   return requiresAction ? Strings.Authentication_required() : increment.state.description

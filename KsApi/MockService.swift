@@ -641,8 +641,7 @@
 
       let query = GraphAPI.BuildPaymentPlanQuery(
         slug: projectSlug,
-        amount: pledgeAmount,
-        includeRefundedAmount: false
+        amount: pledgeAmount
       )
 
       return client.fetchWithResult(query: query, result: self.buildPaymentPlanResult)

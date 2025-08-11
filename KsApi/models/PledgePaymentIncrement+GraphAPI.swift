@@ -22,13 +22,42 @@ extension PledgePaymentIncrement {
       self.stateReason = PledgePaymentIncrementStateReason(rawValue: stateReason)
     }
 
-    if let refundedAmount = fragment.refundedAmount {
-      self.refundedAmount = PledgePaymentIncrementAmount(
-        currency: refundedAmount.currency,
-        amountFormattedInProjectNativeCurrency: refundedAmount.amountFormattedInProjectNativeCurrency
+    // Set `refundStatus` to `.unknown` because the refunded field is not available in this fragment
+    self.refundStatus = .unknown
+  }
+
+  public init?(withIncrementBackingFragment data: PaymentIncrementBackingFragment) {
+    guard let intervalAsTime = TimeInterval.from(ISO8601DateTimeString: data.scheduledCollection) else {
+      return nil
+    }
+
+    guard let stateValue = data.state.value else {
+      return nil
+    }
+
+    self.amount = PledgePaymentIncrementAmount(
+      currency: data.amount.currency,
+      amountFormattedInProjectNativeCurrency: data.amount.amountFormattedInProjectNativeCurrency
+    )
+    self.scheduledCollection = intervalAsTime
+    self.state = PledgePaymentIncrementState(stateValue: stateValue)
+
+    if let stateReason = data.stateReason?.rawValue {
+      self.stateReason = PledgePaymentIncrementStateReason(rawValue: stateReason)
+    }
+
+    // If we get a `refundedAmount`, it means this increment was refunded
+    // so we store the amount. If not, we treat it as not refunded.
+    if let refundedAmountData = data.refundedAmount,
+       let formattedRefund = data.refundUpdatedAmountInProjectNativeCurrency {
+      let refundedAmount = PledgePaymentIncrementAmount(
+        currency: refundedAmountData.currency,
+        amountFormattedInProjectNativeCurrency: formattedRefund
       )
+
+      self.refundStatus = .refunded(refundedAmount)
     } else {
-      self.refundedAmount = nil
+      self.refundStatus = .notRefunded
     }
   }
 }
