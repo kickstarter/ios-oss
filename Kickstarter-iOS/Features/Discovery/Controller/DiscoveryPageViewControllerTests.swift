@@ -263,9 +263,19 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
   }
 
   func testView_Onboarding() {
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
-      language, device in
-      withEnvironment(currentUser: nil, language: language) {
+    orthogonalCombos(
+      Language.allLanguages,
+      [Device.phone4_7inch, Device.phone5_8inch, Device.pad],
+      [true, false]
+    ).forEach {
+      language, device, useNewDesignSystem in
+
+      let remoteConfig = MockRemoteConfigClient()
+      remoteConfig.features = [
+        RemoteConfigFeature.newDesignSystem.rawValue: useNewDesignSystem
+      ]
+
+      withEnvironment(currentUser: nil, language: language, remoteConfigClient: remoteConfig) {
         let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 210
@@ -276,7 +286,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         assertSnapshot(
           matching: parent.view,
           as: .image(perceptualPrecision: 0.98),
-          named: "lang_\(language)_device_\(device)"
+          named: "lang_\(language)_device_\(device)_useNewDesignSystem_\(useNewDesignSystem)"
         )
       }
     }
