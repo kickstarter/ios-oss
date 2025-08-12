@@ -159,7 +159,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
       /// Is this project configured for post-campaign pledges?
       public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
       /// Project updates.
-      public var posts: Posts? { __data["posts"] }
+      public var posts: Posts { __data["posts"] }
       /// Whether a project has activated prelaunch.
       public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
       /// The text of the currently applied project notice, empty if there is no notice
@@ -235,7 +235,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
         pledgeOverTimeMinimumExplanation: String? = nil,
         pledged: Pledged,
         postCampaignPledgingEnabled: Bool,
-        posts: Posts? = nil,
+        posts: Posts,
         prelaunchActivated: Bool,
         projectNotice: String? = nil,
         redemptionPageUrl: String,

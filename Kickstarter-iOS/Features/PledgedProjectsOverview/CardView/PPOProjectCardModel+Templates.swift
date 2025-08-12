@@ -175,7 +175,7 @@ import KsApi
       pledged: .init(amount: nil),
       fxRate: 4,
       usdExchangeRate: nil,
-      posts: nil,
+      posts: ProjectAnalyticsFragment.Posts(totalCount: 0),
       goal: nil
     )
 

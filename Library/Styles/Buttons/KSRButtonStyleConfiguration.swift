@@ -63,7 +63,7 @@ extension UIButton {
 
         var newConfig = config
         newConfig.font = styleConfig.font
-        newConfig.foregroundColor = self.tintColor
+
         return newConfig
       }
 

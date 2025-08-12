@@ -7,7 +7,7 @@ public class FetchBackingQuery: GraphQLQuery {
   public static let operationName: String = "FetchBacking"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchBacking($id: ID!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!, $includeRefundedAmount: Boolean!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment } }"#,
+      #"query FetchBacking($id: ID!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment paymentIncrements { __typename ...PaymentIncrementFragment } } }"#,
       fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, ProjectFragment.self, RewardFragment.self, ShippingRuleFragment.self, UserFragment.self, UserStoredCardsFragment.self]
     ))
 
@@ -15,28 +15,24 @@ public class FetchBackingQuery: GraphQLQuery {
   public var withStoredCards: Bool
   public var includeShippingRules: Bool
   public var includeLocalPickup: Bool
-  public var includeRefundedAmount: Bool
 
   public init(
     id: ID,
     withStoredCards: Bool,
     includeShippingRules: Bool,
-    includeLocalPickup: Bool,
-    includeRefundedAmount: Bool
+    includeLocalPickup: Bool
   ) {
     self.id = id
     self.withStoredCards = withStoredCards
     self.includeShippingRules = includeShippingRules
     self.includeLocalPickup = includeLocalPickup
-    self.includeRefundedAmount = includeRefundedAmount
   }
 
   public var __variables: Variables? { [
     "id": id,
     "withStoredCards": withStoredCards,
     "includeShippingRules": includeShippingRules,
-    "includeLocalPickup": includeLocalPickup,
-    "includeRefundedAmount": includeRefundedAmount
+    "includeLocalPickup": includeLocalPickup
   ] }
 
   public struct Data: GraphAPI.SelectionSet {
@@ -76,11 +72,14 @@ public class FetchBackingQuery: GraphQLQuery {
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
         .field("addOns", AddOns?.self),
+        .field("paymentIncrements", [PaymentIncrement]?.self),
         .fragment(BackingFragment.self),
       ] }
 
       /// The add-ons that the backer selected
       public var addOns: AddOns? { __data["addOns"] }
+      /// Scheduled incremental payments
+      public var paymentIncrements: [PaymentIncrement]? { __data["paymentIncrements"] }
       /// Total amount pledged by the backer to the project, including shipping.
       public var amount: Amount { __data["amount"] }
       /// The backer
@@ -100,8 +99,6 @@ public class FetchBackingQuery: GraphQLQuery {
       public var location: Location? { __data["location"] }
       /// The order associated with the backing
       public var order: Order? { __data["order"] }
-      /// Scheduled incremental payments
-      public var paymentIncrements: [PaymentIncrement]? { __data["paymentIncrements"] }
       /// When the backing was created
       public var pledgedOn: GraphAPI.DateTime? { __data["pledgedOn"] }
       /// The project
@@ -128,6 +125,7 @@ public class FetchBackingQuery: GraphQLQuery {
 
       public init(
         addOns: AddOns? = nil,
+        paymentIncrements: [PaymentIncrement]? = nil,
         amount: Amount,
         backer: Backer? = nil,
         backerCompleted: Bool,
@@ -138,7 +136,6 @@ public class FetchBackingQuery: GraphQLQuery {
         isLatePledge: Bool,
         location: Location? = nil,
         order: Order? = nil,
-        paymentIncrements: [PaymentIncrement]? = nil,
         pledgedOn: GraphAPI.DateTime? = nil,
         project: Project? = nil,
         reward: Reward? = nil,
@@ -152,6 +149,7 @@ public class FetchBackingQuery: GraphQLQuery {
           data: [
             "__typename": GraphAPI.Objects.Backing.typename,
             "addOns": addOns._fieldData,
+            "paymentIncrements": paymentIncrements._fieldData,
             "amount": amount._fieldData,
             "backer": backer._fieldData,
             "backerCompleted": backerCompleted,
@@ -162,7 +160,6 @@ public class FetchBackingQuery: GraphQLQuery {
             "isLatePledge": isLatePledge,
             "location": location._fieldData,
             "order": order._fieldData,
-            "paymentIncrements": paymentIncrements._fieldData,
             "pledgedOn": pledgedOn,
             "project": project._fieldData,
             "reward": reward._fieldData,
@@ -742,6 +739,56 @@ public class FetchBackingQuery: GraphQLQuery {
         }
       }
 
+      /// Backing.PaymentIncrement
+      ///
+      /// Parent Type: `PaymentIncrement`
+      public struct PaymentIncrement: GraphAPI.SelectionSet {
+        public let __data: DataDict
+        public init(_dataDict: DataDict) { __data = _dataDict }
+
+        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.PaymentIncrement }
+        public static var __selections: [ApolloAPI.Selection] { [
+          .field("__typename", String.self),
+          .fragment(PaymentIncrementFragment.self),
+        ] }
+
+        /// The payment increment amount represented in various formats
+        public var amount: Amount { __data["amount"] }
+        public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
+        public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
+        public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
+
+        public struct Fragments: FragmentContainer {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public var paymentIncrementFragment: PaymentIncrementFragment { _toFragment() }
+        }
+
+        public init(
+          amount: Amount,
+          scheduledCollection: GraphAPI.ISO8601DateTime,
+          state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
+          stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.PaymentIncrement.typename,
+              "amount": amount._fieldData,
+              "scheduledCollection": scheduledCollection,
+              "state": state,
+              "stateReason": stateReason,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchBackingQuery.Data.Backing.PaymentIncrement.self),
+              ObjectIdentifier(PaymentIncrementFragment.self)
+            ]
+          ))
+        }
+
+        public typealias Amount = PaymentIncrementFragment.Amount
+      }
+
       /// Backing.Amount
       ///
       /// Parent Type: `Money`
@@ -1185,59 +1232,6 @@ public class FetchBackingQuery: GraphQLQuery {
         }
       }
 
-      /// Backing.PaymentIncrement
-      ///
-      /// Parent Type: `PaymentIncrement`
-      public struct PaymentIncrement: GraphAPI.SelectionSet {
-        public let __data: DataDict
-        public init(_dataDict: DataDict) { __data = _dataDict }
-
-        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.PaymentIncrement }
-
-        /// The payment increment amount represented in various formats
-        public var amount: Amount { __data["amount"] }
-        public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
-        public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
-        public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
-        /// The total amount that has been refunded on the payment increment, across potentially multiple adjustments
-        public var refundedAmount: RefundedAmount? { __data["refundedAmount"] }
-
-        public struct Fragments: FragmentContainer {
-          public let __data: DataDict
-          public init(_dataDict: DataDict) { __data = _dataDict }
-
-          public var paymentIncrementFragment: PaymentIncrementFragment { _toFragment() }
-        }
-
-        public init(
-          amount: Amount,
-          scheduledCollection: GraphAPI.ISO8601DateTime,
-          state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
-          stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil,
-          refundedAmount: RefundedAmount? = nil
-        ) {
-          self.init(_dataDict: DataDict(
-            data: [
-              "__typename": GraphAPI.Objects.PaymentIncrement.typename,
-              "amount": amount._fieldData,
-              "scheduledCollection": scheduledCollection,
-              "state": state,
-              "stateReason": stateReason,
-              "refundedAmount": refundedAmount._fieldData,
-            ],
-            fulfilledFragments: [
-              ObjectIdentifier(FetchBackingQuery.Data.Backing.PaymentIncrement.self),
-              ObjectIdentifier(BackingFragment.PaymentIncrement.self),
-              ObjectIdentifier(PaymentIncrementFragment.self)
-            ]
-          ))
-        }
-
-        public typealias Amount = PaymentIncrementFragment.Amount
-
-        public typealias RefundedAmount = PaymentIncrementFragment.RefundedAmount
-      }
-
       /// Backing.Project
       ///
       /// Parent Type: `Project`
@@ -1321,7 +1315,7 @@ public class FetchBackingQuery: GraphQLQuery {
         /// Is this project configured for post-campaign pledges?
         public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
         /// Project updates.
-        public var posts: Posts? { __data["posts"] }
+        public var posts: Posts { __data["posts"] }
         /// Whether a project has activated prelaunch.
         public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
         /// The text of the currently applied project notice, empty if there is no notice
@@ -1396,7 +1390,7 @@ public class FetchBackingQuery: GraphQLQuery {
           pledgeOverTimeMinimumExplanation: String? = nil,
           pledged: Pledged,
           postCampaignPledgingEnabled: Bool,
-          posts: Posts? = nil,
+          posts: Posts,
           prelaunchActivated: Bool,
           projectNotice: String? = nil,
           redemptionPageUrl: String,
