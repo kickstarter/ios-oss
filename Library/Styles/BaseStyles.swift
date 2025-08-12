@@ -7,10 +7,20 @@ public enum Styles {
   public static let projectPageLeftRightInset: CGFloat = Styles.grid(3)
   public static let projectPageTopBottomInset: CGFloat = Styles.grid(4)
 
+  @available(
+    *,
+    deprecated,
+    message: "Styles.grid is part of our old design system. If you're writing new code, use Spacing.unit_xx instead."
+  )
   public static func grid(_ count: Int) -> CGFloat {
     return 6.0 * CGFloat(count)
   }
 
+  @available(
+    *,
+    deprecated,
+    message: "Styles.gridHalf is part of our old design system. If you're writing new code, use Spacing.unit_xx instead."
+  )
   public static func gridHalf(_ count: Int) -> CGFloat {
     return self.grid(count) / 2.0
   }
