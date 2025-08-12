@@ -1,4 +1,4 @@
-query FetchBacking($id: ID!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!, $includeRefundedAmount: Boolean!) {
+query FetchBacking($id: ID!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) {
   backing(id: $id) {
     addOns {
       nodes {
@@ -6,5 +6,8 @@ query FetchBacking($id: ID!, $withStoredCards: Boolean!, $includeShippingRules: 
       }
     }
     ...BackingFragment
+    paymentIncrements {
+      ...PaymentIncrementFragment
+    }
   }
 }

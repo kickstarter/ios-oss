@@ -57,7 +57,7 @@ struct PPOProjectDetails: View {
   private enum Constants {
     static let spacing: CGFloat = Styles.grid(1)
 
-    static let imageShape = RoundedRectangle(cornerRadius: Styles.cornerRadius)
+    static let imageShape = RoundedRectangle(cornerRadius: Dimension.CornerRadius.small)
     static let imageAspectRatio: CGFloat = 16 / 9
     static let imageContentMode = ContentMode.fit
 

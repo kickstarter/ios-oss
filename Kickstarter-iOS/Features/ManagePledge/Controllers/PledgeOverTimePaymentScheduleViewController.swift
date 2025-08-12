@@ -4,7 +4,7 @@ import UIKit
 
 private enum Constants {
   static let animationDuration: TimeInterval = 0.3
-  static let collapseIndicatorSize: CGFloat = 20.0
+  static let collapseIndicatorSize: CGFloat = Spacing.unit_05
   static let contentInsets = NSDirectionalEdgeInsets(top: 1.0, leading: 0, bottom: 1.0, trailing: 0)
   static let paymentsScheduleStackViewSpacing = Styles.grid(3)
   static let rootStackViewSpacing = Styles.grid(4)
@@ -57,13 +57,7 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
     self.titleLabel.text = Strings.Payment_schedule()
 
     self.termsOfUseButton.setContentCompressionResistancePriority(.required, for: .vertical)
-    self.termsOfUseButton.setAttributedTitle(
-      NSAttributedString(
-        string: Strings.login_tout_help_sheet_terms(),
-        attributes: [NSAttributedString.Key.font: UIFont.ksr_subhead()]
-      ),
-      for: .normal
-    )
+    // termsOfUseButton title is set in bindStyles
   }
 
   private func setupConstraints() {
@@ -212,6 +206,12 @@ private func applyCollapseIndicatorImageViewStyle(_ imageView: UIImageView) {
 private func applyTermsOfUseStyle(_ button: UIButton) {
   button.configuration = {
     var config = UIButton.Configuration.borderless()
+    config.attributedTitle = AttributedString(
+      NSAttributedString(
+        string: Strings.login_tout_help_sheet_terms(),
+        attributes: [NSAttributedString.Key.font: UIFont.ksr_subhead()]
+      )
+    )
     config.contentInsets = Constants.contentInsets
     config.baseForegroundColor = LegacyColors.ksr_create_700.uiColor()
     return config

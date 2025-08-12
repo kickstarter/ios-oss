@@ -92,7 +92,7 @@ public struct ProjectCardFragment: GraphAPI.SelectionSet, Fragment {
   /// Exchange rate to US Dollars (USD), null for draft projects.
   public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
   /// Project updates.
-  public var posts: Posts? { __data["posts"] }
+  public var posts: Posts { __data["posts"] }
   /// A short description of the project.
   public var projectDescription: String { __data["projectDescription"] }
   /// The last time a project's state changed, time since epoch
@@ -142,7 +142,7 @@ public struct ProjectCardFragment: GraphAPI.SelectionSet, Fragment {
     video: Video? = nil,
     fxRate: Double,
     usdExchangeRate: Double? = nil,
-    posts: Posts? = nil,
+    posts: Posts,
     projectDescription: String,
     stateChangedAt: GraphAPI.DateTime,
     projectUsdExchangeRate: Double,

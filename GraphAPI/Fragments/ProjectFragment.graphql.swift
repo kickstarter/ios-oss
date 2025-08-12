@@ -51,7 +51,7 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     .field("pledgeOverTimeMinimumExplanation", String?.self),
     .field("pledged", Pledged.self),
     .field("postCampaignPledgingEnabled", Bool.self),
-    .field("posts", Posts?.self),
+    .field("posts", Posts.self),
     .field("prelaunchActivated", Bool.self),
     .field("projectNotice", String?.self),
     .field("redemptionPageUrl", String.self),
@@ -142,7 +142,7 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   /// Is this project configured for post-campaign pledges?
   public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
   /// Project updates.
-  public var posts: Posts? { __data["posts"] }
+  public var posts: Posts { __data["posts"] }
   /// Whether a project has activated prelaunch.
   public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
   /// The text of the currently applied project notice, empty if there is no notice
@@ -210,7 +210,7 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     pledgeOverTimeMinimumExplanation: String? = nil,
     pledged: Pledged,
     postCampaignPledgingEnabled: Bool,
-    posts: Posts? = nil,
+    posts: Posts,
     prelaunchActivated: Bool,
     projectNotice: String? = nil,
     redemptionPageUrl: String,

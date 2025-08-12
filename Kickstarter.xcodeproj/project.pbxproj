@@ -646,9 +646,18 @@
 		33AA18832E38A7B1002DBD60 /* VideoTrack+Mock.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA18172E38A7B1002DBD60 /* VideoTrack+Mock.graphql.swift */; };
 		33AA18842E38A7B1002DBD60 /* VideoTrackCue+Mock.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA18182E38A7B1002DBD60 /* VideoTrackCue+Mock.graphql.swift */; };
 		33AA18852E38A7B1002DBD60 /* WatchProjectPayload+Mock.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA18192E38A7B1002DBD60 /* WatchProjectPayload+Mock.graphql.swift */; };
+		33AA26CC2E39EE21002DBD60 /* PaymentIncrementBackingFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26CB2E39EE21002DBD60 /* PaymentIncrementBackingFragment.graphql.swift */; };
+		33AA26CE2E3A89AB002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26CD2E3A89AB002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql.swift */; };
+		33AA26D12E3AC568002DBD60 /* ProjectAndBackingEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26CF2E3AC55A002DBD60 /* ProjectAndBackingEnvelopeTests.swift */; };
+		33AA26D32E3ACDBC002DBD60 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 33AA26D22E3ACDBC002DBD60 /* ReactiveExtensions-TestHelpers */; };
+		33AA26DE2E3B1467002DBD60 /* LocationMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26D82E3B1337002DBD60 /* LocationMocks.swift */; };
+		33AA26DF2E3B146C002DBD60 /* UserMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26DA2E3B135F002DBD60 /* UserMocks.swift */; };
+		33AA26E02E3B1471002DBD60 /* ProjectMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26DC2E3B13A6002DBD60 /* ProjectMocks.swift */; };
+		33AA26E12E3B1476002DBD60 /* BackingMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26D62E3B1154002DBD60 /* BackingMocks.swift */; };
+		33AA26E32E3B16D8002DBD60 /* PaymentIncrementsMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26E22E3B16D1002DBD60 /* PaymentIncrementsMocks.swift */; };
 		33AB202B2D268EE500B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */; };
-		33AB202E2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */; };
-		33AB202F2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */; };
+		33AB202E2D269A8D00B8C047 /* MockPledgeOverTimePlanIncrements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIncrements.swift */; };
+		33AB202F2D269A8D00B8C047 /* MockPledgeOverTimePlanIncrements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIncrements.swift */; };
 		33AF01B62D2BBD5C0085A153 /* PledgeOverTimePaymentScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01B52D2BBCC90085A153 /* PledgeOverTimePaymentScheduleViewController.swift */; };
 		33AF01B82D2BC3570085A153 /* PledgeOverTimePaymentScheduleItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01B72D2BC3440085A153 /* PledgeOverTimePaymentScheduleItemView.swift */; };
 		33AF01BA2D2CBD870085A153 /* PledgeOverTimePaymentScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01B92D2CBD6E0085A153 /* PledgeOverTimePaymentScheduleViewModel.swift */; };
@@ -860,7 +869,6 @@
 		598D96CB1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598D96CA1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift */; };
 		59AE35B01D67631B00A310E6 /* DiscoveryPage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 59AE35AF1D67631B00A310E6 /* DiscoveryPage.storyboard */; };
 		59AE35E21D67643100A310E6 /* DiscoveryPostcardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */; };
-		59B0E07E1D147F340081D2DC /* DashboardStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0E07D1D147F340081D2DC /* DashboardStyles.swift */; };
 		59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E877371DC9419700BCD1F7 /* Newsletter.swift */; };
 		6005D3A12E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 6005D3A02E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json */; };
 		6005D3A52E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 6005D3A02E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json */; };
@@ -1141,7 +1149,6 @@
 		77FB8BF720F6586500F91EEB /* SettingsHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77FB8BF620F6586500F91EEB /* SettingsHeaderView.xib */; };
 		77FD8B44216D6167000A95AC /* LoadingBarButtonItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77FD8B43216D6167000A95AC /* LoadingBarButtonItemView.xib */; };
 		77FD8B46216D6245000A95AC /* LoadingBarButtonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */; };
-		8001D4C91D415692009E6667 /* UpdateDraftStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8001D4971D41568C009E6667 /* UpdateDraftStyles.swift */; };
 		8016BFE81D0F582D00067956 /* String+Whitespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8016BFE71D0F582D00067956 /* String+Whitespace.swift */; };
 		8053D3111D3848A3007B85DB /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053D3101D3848A3007B85DB /* Reachability.swift */; };
 		809F8B661D08B4FF005BADD9 /* UpdateDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8B651D08B4FF005BADD9 /* UpdateDraftViewModel.swift */; };
@@ -2101,6 +2108,8 @@
 		E1A310242D270CB00062646C /* BuildPaymentPlanQueryTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */; };
 		E1A310262D28406F0062646C /* PledgeOverTimeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310252D2840680062646C /* PledgeOverTimeUseCase.swift */; };
 		E1A310292D2845E00062646C /* PledgeOverTimeUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310272D2845CB0062646C /* PledgeOverTimeUseCaseTests.swift */; };
+		E1A9678C2E40F9B2009D99CC /* CoreSpacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A9678B2E40F9AE009D99CC /* CoreSpacing.swift */; };
+		E1A9678E2E40F9C0009D99CC /* Dimension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A9678D2E40F9BC009D99CC /* Dimension.swift */; };
 		E1AA8ABF2AEABBB100AC98BF /* Signal+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */; };
 		E1AABC2B2DD259BA00BFFACF /* ColorsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1AABC292DD2599600BFFACF /* ColorsViewTests.swift */; };
 		E1AACA872DDBB3AA005C38F1 /* LegacyColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1AACA862DDBB3AA005C38F1 /* LegacyColors.swift */; };
@@ -2867,8 +2876,18 @@
 		33AA18172E38A7B1002DBD60 /* VideoTrack+Mock.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VideoTrack+Mock.graphql.swift"; sourceTree = "<group>"; };
 		33AA18182E38A7B1002DBD60 /* VideoTrackCue+Mock.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VideoTrackCue+Mock.graphql.swift"; sourceTree = "<group>"; };
 		33AA18192E38A7B1002DBD60 /* WatchProjectPayload+Mock.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchProjectPayload+Mock.graphql.swift"; sourceTree = "<group>"; };
+		33AA26C72E39E9BD002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchBackingWithIncrementsRefundedQuery.graphql; sourceTree = "<group>"; };
+		33AA26C82E39EA00002DBD60 /* PaymentIncrementBackingFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PaymentIncrementBackingFragment.graphql; sourceTree = "<group>"; };
+		33AA26CB2E39EE21002DBD60 /* PaymentIncrementBackingFragment.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentIncrementBackingFragment.graphql.swift; sourceTree = "<group>"; };
+		33AA26CD2E3A89AB002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchBackingWithIncrementsRefundedQuery.graphql.swift; sourceTree = "<group>"; };
+		33AA26CF2E3AC55A002DBD60 /* ProjectAndBackingEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAndBackingEnvelopeTests.swift; sourceTree = "<group>"; };
+		33AA26D62E3B1154002DBD60 /* BackingMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackingMocks.swift; sourceTree = "<group>"; };
+		33AA26D82E3B1337002DBD60 /* LocationMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMocks.swift; sourceTree = "<group>"; };
+		33AA26DA2E3B135F002DBD60 /* UserMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMocks.swift; sourceTree = "<group>"; };
+		33AA26DC2E3B13A6002DBD60 /* ProjectMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectMocks.swift; sourceTree = "<group>"; };
+		33AA26E22E3B16D1002DBD60 /* PaymentIncrementsMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentIncrementsMocks.swift; sourceTree = "<group>"; };
 		33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRewardsSummaryTotalViewControllerTests.swift; sourceTree = "<group>"; };
-		33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPledgeOverTimePlanIntervals.swift; sourceTree = "<group>"; };
+		33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIncrements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPledgeOverTimePlanIncrements.swift; sourceTree = "<group>"; };
 		33AF01B52D2BBCC90085A153 /* PledgeOverTimePaymentScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewController.swift; sourceTree = "<group>"; };
 		33AF01B72D2BC3440085A153 /* PledgeOverTimePaymentScheduleItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleItemView.swift; sourceTree = "<group>"; };
 		33AF01B92D2CBD6E0085A153 /* PledgeOverTimePaymentScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewModel.swift; sourceTree = "<group>"; };
@@ -3086,7 +3105,6 @@
 		598D96CA1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySampleProjectCellViewModel.swift; sourceTree = "<group>"; };
 		59AE35AF1D67631B00A310E6 /* DiscoveryPage.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DiscoveryPage.storyboard; sourceTree = "<group>"; };
 		59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPostcardCell.swift; sourceTree = "<group>"; };
-		59B0E07D1D147F340081D2DC /* DashboardStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardStyles.swift; sourceTree = "<group>"; };
 		59E877371DC9419700BCD1F7 /* Newsletter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Newsletter.swift; sourceTree = "<group>"; };
 		6005D3A02E1ECC7600068814 /* onboarding-flow-activity-tracking-en.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "onboarding-flow-activity-tracking-en.json"; sourceTree = "<group>"; };
 		6008633329B8FBD700B87B39 /* GraphUserEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserEmail.swift; sourceTree = "<group>"; };
@@ -3316,7 +3334,6 @@
 		77FB8BF620F6586500F91EEB /* SettingsHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsHeaderView.xib; sourceTree = "<group>"; };
 		77FD8B43216D6167000A95AC /* LoadingBarButtonItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingBarButtonItemView.xib; sourceTree = "<group>"; };
 		77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItemView.swift; sourceTree = "<group>"; };
-		8001D4971D41568C009E6667 /* UpdateDraftStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateDraftStyles.swift; sourceTree = "<group>"; };
 		8016BFE71D0F582D00067956 /* String+Whitespace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Whitespace.swift"; sourceTree = "<group>"; };
 		802800571C88F64D00141235 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Base.xcconfig; path = Configs/Base.xcconfig; sourceTree = "<group>"; };
 		8053D3101D3848A3007B85DB /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
@@ -4351,6 +4368,8 @@
 		E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildPaymentPlanQueryTestData.swift; sourceTree = "<group>"; };
 		E1A310252D2840680062646C /* PledgeOverTimeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimeUseCase.swift; sourceTree = "<group>"; };
 		E1A310272D2845CB0062646C /* PledgeOverTimeUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimeUseCaseTests.swift; sourceTree = "<group>"; };
+		E1A9678B2E40F9AE009D99CC /* CoreSpacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSpacing.swift; sourceTree = "<group>"; };
+		E1A9678D2E40F9BC009D99CC /* Dimension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dimension.swift; sourceTree = "<group>"; };
 		E1AABC292DD2599600BFFACF /* ColorsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsViewTests.swift; sourceTree = "<group>"; };
 		E1AACA862DDBB3AA005C38F1 /* LegacyColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyColors.swift; sourceTree = "<group>"; };
 		E1AACA882DDBB48A005C38F1 /* ColorResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorResolver.swift; sourceTree = "<group>"; };
@@ -4375,29 +4394,6 @@
 		E1EEED2A2B686829009976D9 /* PKCETest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETest.swift; sourceTree = "<group>"; };
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		E18A64692E28224A00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			publicHeaders = (
-				GraphAPI.h,
-			);
-			target = E18A645C2E28224A00BA0376 /* GraphAPI */;
-		};
-		E18A666B2E28225E00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			publicHeaders = (
-				GraphAPITestMocks.h,
-			);
-			target = E18A66662E28225E00BA0376 /* GraphAPITestMocks */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		60CC7C9C2E269D270055BE8F /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
-		E18A645E2E28224A00BA0376 /* GraphAPI */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E18A64692E28224A00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = GraphAPI; sourceTree = "<group>"; };
-		E18A66682E28225E00BA0376 /* GraphAPITestMocks */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E18A666B2E28225E00BA0376 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = GraphAPITestMocks; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		A75511381C8642B3005355CF /* Frameworks */ = {
@@ -4526,6 +4522,7 @@
 				E18A67482E28236800BA0376 /* GraphAPITestMocks.framework in Frameworks */,
 				E123A0892E2ECA3F00D61B63 /* ApolloAPI in Frameworks */,
 				E18A674E2E28236D00BA0376 /* ApolloTestSupport in Frameworks */,
+				33AA26D32E3ACDBC002DBD60 /* ReactiveExtensions-TestHelpers in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6954,6 +6951,7 @@
 				33AA15BE2E38A76F002DBD60 /* LocationFragment.graphql.swift */,
 				33AA15BF2E38A76F002DBD60 /* MoneyFragment.graphql.swift */,
 				33AA15C02E38A76F002DBD60 /* OrderFragment.graphql.swift */,
+				33AA26CB2E39EE21002DBD60 /* PaymentIncrementBackingFragment.graphql.swift */,
 				33AA15C12E38A76F002DBD60 /* PaymentIncrementFragment.graphql.swift */,
 				33AA15C22E38A76F002DBD60 /* PaymentSourceFragment.graphql.swift */,
 				33AA15C32E38A76F002DBD60 /* PledgeManagerFragment.graphql.swift */,
@@ -7014,6 +7012,7 @@
 				33AA15EE2E38A76F002DBD60 /* DefaultLocationsQuery.graphql.swift */,
 				33AA15EF2E38A76F002DBD60 /* FetchAddOnsQuery.graphql.swift */,
 				33AA15F02E38A76F002DBD60 /* FetchBackingQuery.graphql.swift */,
+				33AA26CD2E3A89AB002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql.swift */,
 				33AA15F12E38A76F002DBD60 /* FetchCategoryQuery.graphql.swift */,
 				33AA15F22E38A76F002DBD60 /* FetchCommentRepliesQuery.graphql.swift */,
 				33AA15F32E38A76F002DBD60 /* FetchMyBackedProjectsQuery.graphql.swift */,
@@ -7393,6 +7392,18 @@
 				33AA18192E38A7B1002DBD60 /* WatchProjectPayload+Mock.graphql.swift */,
 			);
 			path = GraphAPITestMocks;
+			sourceTree = "<group>";
+		};
+		33AA26D52E3B1150002DBD60 /* mocks */ = {
+			isa = PBXGroup;
+			children = (
+				33AA26E22E3B16D1002DBD60 /* PaymentIncrementsMocks.swift */,
+				33AA26DC2E3B13A6002DBD60 /* ProjectMocks.swift */,
+				33AA26DA2E3B135F002DBD60 /* UserMocks.swift */,
+				33AA26D82E3B1337002DBD60 /* LocationMocks.swift */,
+				33AA26D62E3B1154002DBD60 /* BackingMocks.swift */,
+			);
+			path = mocks;
 			sourceTree = "<group>";
 		};
 		33F55B472D4C70D40007E50E /* Resources */ = {
@@ -7832,6 +7843,7 @@
 		A73378F91D0AE33B00C91445 /* Styles */ = {
 			isa = PBXGroup;
 			children = (
+				E1A9678A2E40F9A7009D99CC /* Spacing */,
 				338E60282D70CACB008D42F9 /* Buttons */,
 				338E601D2D6FE303008D42F9 /* Colors */,
 				33F55B552D552BEF0007E50E /* Fonts */,
@@ -7843,7 +7855,6 @@
 				37280250226F878300E0ACBB /* CheckoutStyles.swift */,
 				941710B426557A6A00F5954E /* CommentCellStyles.swift */,
 				064B007927A469C8007B21FE /* HTMLViewElementStyles.swift */,
-				59B0E07D1D147F340081D2DC /* DashboardStyles.swift */,
 				A757EB2A1D1AD89E00A5C978 /* DiscoveryStyles.swift */,
 				A73378FD1D0AE36400C91445 /* LoginStyles.swift */,
 				9DC572E41D36CA9800AE209C /* ProjectActivityStyles.swift */,
@@ -7851,7 +7862,6 @@
 				597582E21D5D12AE008765DE /* SettingsStyles.swift */,
 				01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */,
 				7705563A22BC03A600DCB062 /* TableViewStyles.swift */,
-				8001D4971D41568C009E6667 /* UpdateDraftStyles.swift */,
 			);
 			path = Styles;
 			sourceTree = "<group>";
@@ -8205,7 +8215,7 @@
 		A7ED1F421E831BA200BFFA01 /* TestHelpers */ = {
 			isa = PBXGroup;
 			children = (
-				33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIntervals.swift */,
+				33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIncrements.swift */,
 				A7ED1F431E831BA200BFFA01 /* AlertError+Equatable.swift */,
 				A7ED1F441E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift */,
 				77C9122A23C5079200F3D2C9 /* MockApplePayCapable.swift */,
@@ -8779,6 +8789,7 @@
 				D01587DB1EEB2ED7006E7684 /* ProjectActivityEnvelope.swift */,
 				8A2C015E2589391D00EE11E7 /* ProjectActivityEnvelopeTests.swift */,
 				8AE3F72D24DA27BE002B03C3 /* ProjectAndBackingEnvelope.swift */,
+				33AA26CF2E3AC55A002DBD60 /* ProjectAndBackingEnvelopeTests.swift */,
 				D01587DC1EEB2ED7006E7684 /* ProjectNotification.swift */,
 				D01587DD1EEB2ED7006E7684 /* ProjectsEnvelope.swift */,
 				8A4E954624525DE400A578CF /* ProjectState.swift */,
@@ -8817,6 +8828,7 @@
 				D01588251EEB2ED7006E7684 /* VoidEnvelope.swift */,
 				8ABD5B3B24CFB026002E585C /* graphql */,
 				D01587971EEB2ED6006E7684 /* lenses */,
+				33AA26D52E3B1150002DBD60 /* mocks */,
 				D01587EE1EEB2ED7006E7684 /* templates */,
 			);
 			path = models;
@@ -9057,6 +9069,7 @@
 				E190EB252E29944E006A6DB6 /* MoneyFragment.graphql */,
 				E190EB262E29944E006A6DB6 /* OrderFragment.graphql */,
 				E190EB272E29944E006A6DB6 /* PaymentIncrementFragment.graphql */,
+				33AA26C82E39EA00002DBD60 /* PaymentIncrementBackingFragment.graphql */,
 				E190EB282E29944E006A6DB6 /* PaymentSourceFragment.graphql */,
 				E190EB292E29944E006A6DB6 /* PledgeManagerFragment.graphql */,
 				E190EB2A2E29944E006A6DB6 /* PledgeOverTimeFragment.graphql */,
@@ -9116,6 +9129,7 @@
 				E190EB542E29944E006A6DB6 /* DefaultLocationsQuery.graphql */,
 				E190EB552E29944E006A6DB6 /* FetchAddOnsQuery.graphql */,
 				E190EB562E29944E006A6DB6 /* FetchBackingQuery.graphql */,
+				33AA26C72E39E9BD002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql */,
 				E190EB572E29944E006A6DB6 /* FetchCategory.graphql */,
 				E190EB582E29944E006A6DB6 /* FetchCommentReplies.graphql */,
 				E190EB592E29944E006A6DB6 /* FetchMyBackedProjectsQuery.graphql */,
@@ -9193,6 +9207,15 @@
 				E1B813C62BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test */,
 			);
 			path = templates;
+			sourceTree = "<group>";
+		};
+		E1A9678A2E40F9A7009D99CC /* Spacing */ = {
+			isa = PBXGroup;
+			children = (
+				E1A9678B2E40F9AE009D99CC /* CoreSpacing.swift */,
+				E1A9678D2E40F9BC009D99CC /* Dimension.swift */,
+			);
+			path = Spacing;
 			sourceTree = "<group>";
 		};
 		E1AA8ABE2AEABB1900AC98BF /* combine */ = {
@@ -9492,6 +9515,7 @@
 			packageProductDependencies = (
 				E18A674D2E28236D00BA0376 /* ApolloTestSupport */,
 				E123A0882E2ECA3F00D61B63 /* ApolloAPI */,
+				33AA26D22E3ACDBC002DBD60 /* ReactiveExtensions-TestHelpers */,
 			);
 			productName = KsApiTests;
 			productReference = D01587581EEB2DE4006E7684 /* KsApiTests.xctest */;
@@ -9664,7 +9688,7 @@
 			packageReferences = (
 				06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */,
 				06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */,
-				194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */,
+				194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */,
 				60DA50F628BFA331002E2DF1 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
 				60DA510928C7DC0E002E2DF1 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				60DA511028C96865002E2DF1 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
@@ -10055,6 +10079,7 @@
 				067E7EC927BF0F2B00F02B33 /* AudioVideoViewElementCellViewModel.swift in Sources */,
 				8AE09C3C2446330100036043 /* PledgeDisclaimerViewModel.swift in Sources */,
 				77BC00F623301BD400808E75 /* RewardCellViewModel.swift in Sources */,
+				E1A9678C2E40F9B2009D99CC /* CoreSpacing.swift in Sources */,
 				D710ADFB243FB94A00DC7199 /* PledgeViewCTAContainerViewModel.swift in Sources */,
 				3767EDB122CFFF2B0088E8E4 /* ShippingRulesViewModel.swift in Sources */,
 				33D11D422D68C57300CC88A3 /* KSRButtonStyle.swift in Sources */,
@@ -10123,6 +10148,7 @@
 				D04AAC29218BB70D00CF713E /* BetaToolsViewModel.swift in Sources */,
 				D093B49C21A86FD800910962 /* PushRegistration.swift in Sources */,
 				A7F441B31D005A9400FE6FC5 /* ActivityProjectStatusViewModel.swift in Sources */,
+				E1A9678E2E40F9C0009D99CC /* Dimension.swift in Sources */,
 				E1A310262D28406F0062646C /* PledgeOverTimeUseCase.swift in Sources */,
 				AAE7C9A42C7527E000800E03 /* PagedTabBar.swift in Sources */,
 				370BE71622541C8100B44DB2 /* UIViewController+URL.swift in Sources */,
@@ -10247,7 +10273,6 @@
 				3777F2F72343C7900030BEF5 /* ManageViewPledgeRewardReceivedViewModel.swift in Sources */,
 				0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */,
 				D63BBD35217FAB85007E01F0 /* PaymentMethodSettingsViewModel.swift in Sources */,
-				8001D4C91D415692009E6667 /* UpdateDraftStyles.swift in Sources */,
 				063D2D0C2846779100CEDE33 /* PledgeLocalPickupViewModel.swift in Sources */,
 				8A6C979024BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift in Sources */,
 				E11E06A52D83713A002E81B9 /* SearchViewModel+GraphQL.swift in Sources */,
@@ -10289,7 +10314,6 @@
 				598D96C21D429756003F3F66 /* ActivitySampleStyles.swift in Sources */,
 				8AE8D86623466EB9005860C6 /* UpdateBackingInput+Constructor.swift in Sources */,
 				E13D76762D41698500FB58CE /* ApplePayTokenUseCase.swift in Sources */,
-				59B0E07E1D147F340081D2DC /* DashboardStyles.swift in Sources */,
 				E17D6F9F2DD24AB400EF440D /* SemanticColor.swift in Sources */,
 				0169F8C11D6CA27500C8D5C5 /* RootCategory.swift in Sources */,
 				D04AAC21218BB70D00CF713E /* ChangePasswordViewModel.swift in Sources */,
@@ -10528,7 +10552,7 @@
 				A7ED1FEF1E831C5C00BFFA01 /* LoginViewModelTests.swift in Sources */,
 				A7ED1FF31E831C5C00BFFA01 /* ProjectCreatorViewModelTests.swift in Sources */,
 				473DE01A273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift in Sources */,
-				33AB202E2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */,
+				33AB202E2D269A8D00B8C047 /* MockPledgeOverTimePlanIncrements.swift in Sources */,
 				A7ED1FB61E831C5C00BFFA01 /* MessageCellViewModelTests.swift in Sources */,
 				A7ED1F2F1E830FDC00BFFA01 /* LocalizedStringTests.swift in Sources */,
 				D04AACAC218BB72100CF713E /* SettingsNotificationCellViewModelTests.swift in Sources */,
@@ -11010,7 +11034,7 @@
 				392BB12C2C3C095200A5591B /* PPOEmptyStateViewTests.swift in Sources */,
 				774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */,
 				D033E2C322A05B7400464E43 /* MockApplication.swift in Sources */,
-				33AB202F2D269A8D00B8C047 /* MockPledgeOverTimePlanIntervals.swift in Sources */,
+				33AB202F2D269A8D00B8C047 /* MockPledgeOverTimePlanIncrements.swift in Sources */,
 				1611EF6A23B2773A0051CDCC /* MockUUID.swift in Sources */,
 				3751E4292335871600047E9A /* PledgeAmountViewControllerTests.swift in Sources */,
 				D6560C2A2182361800CD24BC /* PaymentMethodsDataSourceTests.swift in Sources */,
@@ -11425,6 +11449,7 @@
 				77776BCA234BA88F00A42388 /* CancelBackingInputTests.swift in Sources */,
 				33AF66CF2DDE571300558D49 /* AddUserToSecretRewardGroupInputTests.swift in Sources */,
 				0622C92827347F980039AAC9 /* FetchCategoryQueryTemplate.swift in Sources */,
+				33AA26DE2E3B1467002DBD60 /* LocationMocks.swift in Sources */,
 				19047FC52889B52100BDD1A8 /* CreateSetupIntentInputTests.swift in Sources */,
 				47A662FB26AF792A001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.DataTests.swift in Sources */,
 				D0D10C201EEB4550005EBAD0 /* User.NewsletterSubscriptionsTests.swift in Sources */,
@@ -11437,6 +11462,8 @@
 				4753C78F264EE1B100BB10B6 /* PostCommentInputTests.swift in Sources */,
 				06032A8C26CEADED0013AAB9 /* FetchProjectCommentsQueryTemplate.swift in Sources */,
 				06BD75C526C42D6600A12D4E /* ActivityCommentAuthorTests.swift in Sources */,
+				33AA26E02E3B1471002DBD60 /* ProjectMocks.swift in Sources */,
+				33AA26E32E3B16D8002DBD60 /* PaymentIncrementsMocks.swift in Sources */,
 				20A0938A2666578D00DEC258 /* CommentTests.swift in Sources */,
 				E10BE8E72B151D2700F73DC9 /* BlockUserInputTests.swift in Sources */,
 				77272D382370AB8E003B7A9C /* BackingPaymentSourceTests.swift in Sources */,
@@ -11472,7 +11499,9 @@
 				D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */,
 				D0D10C081EEB4550005EBAD0 /* ConfigTests.swift in Sources */,
 				6030C6CF2D2D869800A3033C /* PledgePaymentIncrement+GraphAPITests.swift in Sources */,
+				33AA26E12E3B1476002DBD60 /* BackingMocks.swift in Sources */,
 				E10BE8E42B151A0B00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInputTests.swift in Sources */,
+				33AA26D12E3AC568002DBD60 /* ProjectAndBackingEnvelopeTests.swift in Sources */,
 				064AEF13270CFB53006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift in Sources */,
 				06962F8F273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift in Sources */,
 				06232D3C2795EC2400A81755 /* HTMLParserTests.swift in Sources */,
@@ -11494,6 +11523,7 @@
 				E1A149272ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift in Sources */,
 				194154D328D928C9004648C8 /* CreatePaymentSourceSetupIntentInputTests.swift in Sources */,
 				8AF34C762342D1D2000B211D /* UpdateBackingInputTests.swift in Sources */,
+				33AA26DF2E3B146C002DBD60 /* UserMocks.swift in Sources */,
 				D0D10C191EEB4550005EBAD0 /* RewardTests.swift in Sources */,
 				D0D10C101EEB4550005EBAD0 /* MessageTests.swift in Sources */,
 				19047FD12889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift in Sources */,
@@ -11647,6 +11677,7 @@
 				33AA16FC2E38A76F002DBD60 /* FetchProjectFriendsBySlugQuery.graphql.swift in Sources */,
 				33AA16FD2E38A76F002DBD60 /* FetchProjectRewardsByIdQuery.graphql.swift in Sources */,
 				33AA16FE2E38A76F002DBD60 /* FetchRootCategoriesQuery.graphql.swift in Sources */,
+				33AA26CE2E3A89AB002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql.swift in Sources */,
 				33AA16FF2E38A76F002DBD60 /* FetchSimilarProjectsQuery.graphql.swift in Sources */,
 				33AA17002E38A76F002DBD60 /* FetchUpdateCommentsQuery.graphql.swift in Sources */,
 				33AA17012E38A76F002DBD60 /* FetchUserBackingsQuery.graphql.swift in Sources */,
@@ -11659,6 +11690,7 @@
 				33AA17082E38A76F002DBD60 /* ValidateCheckoutQuery.graphql.swift in Sources */,
 				33AA17092E38A76F002DBD60 /* Date.swift in Sources */,
 				33AA170A2E38A76F002DBD60 /* DateTime.swift in Sources */,
+				33AA26CC2E39EE21002DBD60 /* PaymentIncrementBackingFragment.graphql.swift in Sources */,
 				33AA170B2E38A76F002DBD60 /* Email.swift in Sources */,
 				33AA170C2E38A76F002DBD60 /* HTML.swift in Sources */,
 				33AA170D2E38A76F002DBD60 /* ISO8601DateTime.swift in Sources */,
@@ -13463,8 +13495,8 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
@@ -13491,7 +13523,10 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.GraphAPI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -13513,8 +13548,8 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -13542,7 +13577,10 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.GraphAPI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_VERSION = 5.0;
@@ -13563,59 +13601,8 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 Kickstarter. All rights reserved.";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
-				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.GraphAPI;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = "Internal Beta";
-		};
-		E18A64682E28224A00BA0376 /* Internal Alpha */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -13643,7 +13630,63 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.GraphAPI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "Internal Beta";
+		};
+		E18A64682E28224A00BA0376 /* Internal Alpha */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 5DAN4UM3NC;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 Kickstarter. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.GraphAPI;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_VERSION = 5.0;
@@ -13664,9 +13707,11 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -13690,7 +13735,10 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.GraphAPITestMocks;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -13712,11 +13760,13 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -13739,7 +13789,10 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.GraphAPITestMocks;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_VERSION = 5.0;
@@ -13760,11 +13813,13 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -13787,7 +13842,10 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.GraphAPITestMocks;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_VERSION = 5.0;
@@ -13808,11 +13866,13 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -13835,7 +13895,10 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.GraphAPITestMocks;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_VERSION = 5.0;
@@ -14042,9 +14105,9 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */ = {
+		194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/stripe/stripe-ios";
+			repositoryURL = "https://github.com/stripe/stripe-ios-spm";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 23.10.0;
@@ -14155,7 +14218,7 @@
 		};
 		19338D9A2A0D4E2300075F29 /* Stripe */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
+			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
 			productName = Stripe;
 		};
 		19821C84299D392400EF312F /* AppboySegment */ = {
@@ -14170,7 +14233,7 @@
 		};
 		1996AA1E2A5F1BC400AE2ED0 /* StripePaymentSheet */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
+			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
 			productName = StripePaymentSheet;
 		};
 		1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */ = {
@@ -14187,6 +14250,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseRemoteConfig;
+		};
+		33AA26D22E3ACDBC002DBD60 /* ReactiveExtensions-TestHelpers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
+			productName = "ReactiveExtensions-TestHelpers";
 		};
 		600A0EEA2DD23BAA00954829 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
