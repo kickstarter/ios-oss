@@ -11,4 +11,8 @@ public protocol IdentifyingTrackingClient {
    Resets the identity of a user with Segment.
    */
   func reset()
+  
+  // ids
+  var anonymousId: String { get }
+  var userId: String? { get }
 }

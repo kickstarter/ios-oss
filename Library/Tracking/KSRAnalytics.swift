@@ -612,9 +612,19 @@ public final class KSRAnalytics {
     }
 
     let newData = KSRAnalyticsIdentityData(newUser)
+    
+    // Older versions of segment automatically included these ids in the traits.
+    // To de-risk our migration, manually include these in the traits for now.
+    // TODO(INGERID MAKE TICKET): Test if we need these fields as a follow-up.
+    var traits = newData.allTraits
+    traits["userId"] = "\(newData.userId)"
+    if let segmentClient = self.segmentClient {
+      traits["anonymousId"] = segmentClient.anonymousId
+    }
+
     self.segmentClient?.identify(
       userId: "\(newData.userId)",
-      traits: newData.allTraits
+      traits: traits
     )
   }
 
