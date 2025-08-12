@@ -11,7 +11,7 @@ public enum Styles {
   @available(
     *,
     deprecated,
-    message: "Styles.grid is part of our old design system. If you're writing new code, use Spacing_xx instead."
+    message: "Styles.grid is part of our old design system. If you're writing new code, use Spacing.unit_xx instead."
   )
   public static func grid(_ count: Int) -> CGFloat {
     return 6.0 * CGFloat(count)
@@ -20,7 +20,7 @@ public enum Styles {
   @available(
     *,
     deprecated,
-    message: "Styles.gridHalf is part of our old design system. If you're writing new code, use Spacing_xx instead."
+    message: "Styles.gridHalf is part of our old design system. If you're writing new code, use Spacing.unit_xx instead."
   )
   public static func gridHalf(_ count: Int) -> CGFloat {
     return self.grid(count) / 2.0
