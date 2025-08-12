@@ -170,10 +170,12 @@ extension DiscoveryParams {
     params.location = location
     params.amountRaised = amountRaised
     params.goal = goal
-    params.recommended = toggles.recommended
-    params.starred = toggles.savedProjects
-    params.staffPicks = toggles.projectsWeLove
-    params.social = toggles.following
+    // `false` and `nil` are supposed to have the same effect (this filter is not applied).
+    // In practice, setting these to `false` sometimes affects the sort, so `nil` is safer.
+    params.recommended = toggles.recommended == true ? true : nil
+    params.starred = toggles.savedProjects == true ? true : nil
+    params.staffPicks = toggles.projectsWeLove == true ? true : nil
+    params.social = toggles.following == true ? true : nil
     return params
   }
 }

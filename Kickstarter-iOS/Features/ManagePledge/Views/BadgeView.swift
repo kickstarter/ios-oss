@@ -4,7 +4,7 @@ import UIKit
 private enum Constants {
   /// Spacing & Padding
   public static let badgeTopButtonPadding = 6.0
-  public static let badgeLeadingTrailingPadding = 8.0
+  public static let badgeLeadingTrailingPadding = Spacing.unit_02
   public static let defaultStackViewSpacing = Styles.grid(1)
 
   /// Corner radius

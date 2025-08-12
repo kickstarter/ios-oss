@@ -2,8 +2,8 @@ import UIKit
 
 extension UIView {
   /// Rounds the corners of the view with a specified corner radius.
-  /// - Parameter cornerRadius: The radius to apply to the view's corners. Defaults to `Styles.cornerRadius`.
-  public func rounded(with cornerRadius: CGFloat = Styles.cornerRadius) {
+  /// - Parameter cornerRadius: The radius to apply to the view's corners. Defaults to `Dimension.CornerRadius.small`.
+  public func rounded(with cornerRadius: CGFloat = Dimension.CornerRadius.small) {
     self.clipsToBounds = true
     self.layer.masksToBounds = true
     self.layer.cornerRadius = cornerRadius

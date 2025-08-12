@@ -3,7 +3,6 @@ import Prelude_UIKit
 import UIKit
 
 public enum Styles {
-  public static let cornerRadius: CGFloat = 4.0
   public static let minTouchSize: CGSize = CGSize(width: 44, height: 44)
   public static let projectPageLeftRightInset: CGFloat = Styles.grid(3)
   public static let projectPageTopBottomInset: CGFloat = Styles.grid(4)
@@ -61,7 +60,7 @@ public func cardStyle<V: UIViewProtocol>(cornerRadius radius: CGFloat = 0) -> ((
 }
 
 public func darkCardStyle<V: UIViewProtocol>
-(cornerRadius radius: CGFloat = Styles.cornerRadius) -> ((V) -> V) {
+(cornerRadius radius: CGFloat = Dimension.CornerRadius.small) -> ((V) -> V) {
   return cardStyle(cornerRadius: radius)
     <> V.lens.layer.borderColor .~ LegacyColors.ksr_support_400.uiColor().cgColor
 }
@@ -155,7 +154,8 @@ public let separatorStyleDark: ViewStyle = { view in
 
  - returns: A view transformer that rounds corners.
  */
-public func roundedStyle<V: UIViewProtocol>(cornerRadius r: CGFloat = Styles.cornerRadius) -> ((V) -> V) {
+public func roundedStyle<V: UIViewProtocol>(cornerRadius r: CGFloat = Dimension.CornerRadius.small)
+  -> ((V) -> V) {
   return V.lens.clipsToBounds .~ true
     <> V.lens.layer.masksToBounds .~ true
     <> V.lens.layer.cornerRadius .~ r

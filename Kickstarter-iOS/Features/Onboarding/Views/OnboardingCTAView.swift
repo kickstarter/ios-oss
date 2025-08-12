@@ -2,9 +2,9 @@ import Library
 import SwiftUI
 
 private enum Constants {
-  static let rootStackViewSpacing: CGFloat = 12
-  static let rootStackViewHorizontalPadding: CGFloat = 20
-  static let ctaCornerRadius: CGFloat = 12
+  static let rootStackViewSpacing = Spacing.unit_03
+  static let rootStackViewHorizontalPadding = Spacing.unit_05
+  static let ctaCornerRadius = Spacing.unit_03
 }
 
 struct CallToActionView: View {

@@ -4,12 +4,12 @@ import SwiftUI
 
 private enum Constants {
   static let animationDuration: Double = 0.35
-  static let rootStackViewBottomPadding: CGFloat = 80
-  static let horizontalPadding: CGFloat = 20
-  static let lottieViewTopPadding: CGFloat = 16
-  static let rootStackViewTopPadding: CGFloat = 20
-  static let titleSubtitleSpacing: CGFloat = 12
-  static let verticalSpacing: CGFloat = 24
+  static let rootStackViewBottomPadding = Spacing.unit_20
+  static let horizontalPadding = Spacing.unit_05
+  static let lottieViewTopPadding = Spacing.unit_04
+  static let rootStackViewTopPadding = Spacing.unit_05
+  static let titleSubtitleSpacing = Spacing.unit_03
+  static let verticalSpacing = Spacing.unit_06
 }
 
 struct OnboardingItemView: View {

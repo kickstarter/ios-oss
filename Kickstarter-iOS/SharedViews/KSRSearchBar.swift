@@ -6,7 +6,7 @@ private enum Constants {
   static let alphaVisible = 1.0
   static let alphaHidden = 0.0
 
-  static let searchIconSize = 24.0
+  static let searchIconSize = Spacing.unit_06
   static let borderWidth = 1.0
 
   static let focusedBorderColor = Colors.Border.active.uiColor().cgColor

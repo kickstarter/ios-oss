@@ -33,7 +33,7 @@ struct PPOProjectCreator: View {
   }
 
   private enum Constants {
-    static let messageIconSize: CGFloat = 24
+    static let messageIconSize: CGFloat = Spacing.unit_06
     static let spacerWidth = Styles.grid(1)
     static let textLineLimit = 1
     static let largeTextLineLimit = 3
