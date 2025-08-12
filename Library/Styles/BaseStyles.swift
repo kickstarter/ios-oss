@@ -154,10 +154,8 @@ public let separatorStyleDark: ViewStyle = { view in
 
  - returns: A view transformer that rounds corners.
  */
-public func roundedStyle<V: UIViewProtocol>(
-  cornerRadius r: CGFloat = Dimension.CornerRadius
-    .small
-) -> ((V) -> V) {
+public func roundedStyle<V: UIViewProtocol>(cornerRadius r: CGFloat = Dimension.CornerRadius.small)
+  -> ((V) -> V) {
   return V.lens.clipsToBounds .~ true
     <> V.lens.layer.masksToBounds .~ true
     <> V.lens.layer.cornerRadius .~ r
