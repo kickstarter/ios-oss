@@ -57,10 +57,15 @@ struct PPOAlertFlag: View {
 
   private enum Constants {
     static let imageSize: CGFloat = 18
-    static let spacerWidth: CGFloat = 4
+    static let spacerWidth = Spacing.unit_01
     static let cornerRadius: CGFloat = 6
     static let font = UIFont.ksr_caption1().bolded
-    static let padding = EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 8)
+    static let padding = EdgeInsets(
+      top: Spacing.unit_01,
+      leading: Spacing.unit_03,
+      bottom: Spacing.unit_01,
+      trailing: Spacing.unit_02
+    )
   }
 }
 

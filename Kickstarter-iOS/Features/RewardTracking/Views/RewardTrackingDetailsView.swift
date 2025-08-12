@@ -5,9 +5,9 @@ private enum Constants {
   static let rootStackViewSpacing = 14.0
   static let rootStackViewCustomSpacing = Styles.grid(1)
   static let rootStackViewLayoutMargins = UIEdgeInsets(all: 16.0)
-  static let titleStackViewSpacing: CGFloat = 8.0
-  static let activityStyleCornerRadius: CGFloat = 8.0
-  static let backingStyleCornerRadius: CGFloat = 8.0
+  static let titleStackViewSpacing = Spacing.unit_02
+  static let activityStyleCornerRadius = Spacing.unit_02
+  static let backingStyleCornerRadius = Spacing.unit_02
 }
 
 public enum RewardTrackingDetailsViewStyle {

@@ -182,7 +182,7 @@ struct PPOProjectCard: View {
   }
 
   private enum Constants {
-    static let cornerRadius: CGFloat = Styles.cornerRadius * 2
+    static let cornerRadius: CGFloat = Dimension.CornerRadius.medium
     static let borderColor = LegacyColors.ksr_support_300.uiColor()
     static let borderWidth: CGFloat = 1
     static let badgeAlignment = Alignment(horizontal: .trailing, vertical: .top)

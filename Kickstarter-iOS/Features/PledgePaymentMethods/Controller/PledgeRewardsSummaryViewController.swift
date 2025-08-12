@@ -4,7 +4,7 @@ import UIKit
 
 public enum PledgeRewardsSummaryStyles {
   public enum Layout {
-    public static let sectionHeaderLabelHeight: CGFloat = 20
+    public static let sectionHeaderLabelHeight: CGFloat = Spacing.unit_05
     public static let rootStackViewSpacing: CGFloat = Styles.grid(1)
     public static let separatorViewLeftAnchorConstant: CGFloat = Styles.grid(4)
     public static let separatorViewRightAnchorConstant: CGFloat = -Styles.grid(4)
