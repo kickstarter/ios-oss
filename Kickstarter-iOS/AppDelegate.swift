@@ -260,6 +260,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
             configuration.push.automation = false
             configuration.logger.level = .debug
             // configuration.push.automation.requestAuthorizationAtLaunch = false
+//            configuration.push.automation.handleBackgroundNotification = false
+//            configuration.push.automation.handleNotificationResponse = false
             //            configuration.push.automation.handleBackgroundNotification = false
           }
         ) { [weak self] braze in
