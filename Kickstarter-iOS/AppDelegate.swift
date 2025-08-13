@@ -152,9 +152,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.registerPushTokenInSegment
       .observeForUI()
       .observeValues { token in
-        self.analytics?.registeredForRemoteNotifications(deviceToken: token)
-        // TODO: do I need to register braze separately?
-        // from braze docs: AppDelegate.braze?.notifications.register(deviceToken: token)
+        self.braze?.notifications.register(deviceToken: token)
       }
 
     self.viewModel.outputs.triggerOnboardingFlow
@@ -385,9 +383,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     fetchCompletionHandler completion: @escaping (UIBackgroundFetchResult) -> Void
   ) {
     print("INGERID: it's this notif")
-    // TODO: Check if I need the segment code, the braze code, or both.
-    // So far, I haven't been able to trigger this code
-    self.analytics?.receivedRemoteNotification(userInfo: userInfo)
     if let braze = self.braze, braze.notifications.handleBackgroundNotification(
       userInfo: userInfo,
       fetchCompletionHandler: completion
