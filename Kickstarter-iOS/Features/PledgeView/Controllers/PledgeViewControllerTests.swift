@@ -257,11 +257,6 @@ final class PledgeViewControllerTests: TestCase {
       context: .pledge
     )
 
-    let darkModeOn = MockRemoteConfigClient()
-    darkModeOn.features = [
-      RemoteConfigFeature.newDesignSystem.rawValue: true
-    ]
-
     orthogonalCombos(
       [Language.en],
       [Device.phone4_7inch, Device.pad],
@@ -270,8 +265,7 @@ final class PledgeViewControllerTests: TestCase {
     .forEach { language, device, style in
       withEnvironment(
         colorResolver: AppColorResolver(),
-        language: language,
-        remoteConfigClient: darkModeOn
+        language: language
       ) {
         let controller = PledgeViewController.instantiate()
         controller.configure(with: data)
