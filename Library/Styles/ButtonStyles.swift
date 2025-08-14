@@ -57,7 +57,6 @@ public let greyButtonStyle: ButtonStyle = { button in
 }
 
 /// Applies base styling for secondary and legacy buttons (e.g., Blue, Gray).
-/// If `featureNewDesignSystemEnabled()` is enabled, it applies the new corner radius and font defined in the Design System.
 /// These styles are temporary for buttons that do not yet have a direct equivalent in the new system
 /// and are expected to be replaced in the future.
 public let baseButtonStyle: ButtonStyle = { button in
