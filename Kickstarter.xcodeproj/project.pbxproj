@@ -1225,8 +1225,6 @@
 		8A6C979024BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6C978F24BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift */; };
 		8A73EACF2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EACE2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift */; };
 		8A73EAD12339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EAD02339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift */; };
-		8A788F0D263B6E5800A89DAE /* BrazeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A788F0C263B6E5800A89DAE /* BrazeTypes.swift */; };
-		8A788F15263B770100A89DAE /* BrazeMockTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A788F14263B770100A89DAE /* BrazeMockTypes.swift */; };
 		8A788F27263C80D600A89DAE /* BrazeDebounceMiddleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A788F26263C80D600A89DAE /* BrazeDebounceMiddleware.swift */; };
 		8A8099EB22E213F100373E66 /* RewardCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099E922E213F100373E66 /* RewardCardView.swift */; };
 		8A8099EC22E213F100373E66 /* RewardCardContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099EA22E213F100373E66 /* RewardCardContainerView.swift */; };
@@ -3401,8 +3399,6 @@
 		8A6C978F24BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionContinueCTAViewModel.swift; sourceTree = "<group>"; };
 		8A73EACE2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodCellViewModel.swift; sourceTree = "<group>"; };
 		8A73EAD02339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodCellViewModelTests.swift; sourceTree = "<group>"; };
-		8A788F0C263B6E5800A89DAE /* BrazeTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeTypes.swift; sourceTree = "<group>"; };
-		8A788F14263B770100A89DAE /* BrazeMockTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeMockTypes.swift; sourceTree = "<group>"; };
 		8A788F26263C80D600A89DAE /* BrazeDebounceMiddleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeDebounceMiddleware.swift; sourceTree = "<group>"; };
 		8A8099E922E213F100373E66 /* RewardCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardCardView.swift; sourceTree = "<group>"; };
 		8A8099EA22E213F100373E66 /* RewardCardContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardCardContainerView.swift; sourceTree = "<group>"; };
@@ -4513,8 +4509,6 @@
 			isa = PBXGroup;
 			children = (
 				06FFE98627C67C5600E3A929 /* GIFAnimatedImageView.swift */,
-				8A788F14263B770100A89DAE /* BrazeMockTypes.swift */,
-				8A788F0C263B6E5800A89DAE /* BrazeTypes.swift */,
 				8A8C6133243F99AB0092B682 /* ContentSizeTableView.swift */,
 				8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */,
 				379CFFEF2242DAC300F6F0C2 /* MFMailComposeViewController.swift */,
@@ -10630,7 +10624,6 @@
 				6049D01C2AA0ECAC0015BB0D /* DemoShimmerLoadingView.swift in Sources */,
 				06EB4E3227B5D39D00D8BFCC /* OverlayView.swift in Sources */,
 				014D63011E721D500033D2BD /* BackerDashboardProjectCell.swift in Sources */,
-				8A788F0D263B6E5800A89DAE /* BrazeTypes.swift in Sources */,
 				379CFFFD2242DAEB00F6F0C2 /* NSBundle-Framework.swift in Sources */,
 				598D96B41D41790C003F3F66 /* ActivitySampleBackingCell.swift in Sources */,
 				0667C8B326569F39003FB5E3 /* CreatePasswordTableViewController.swift in Sources */,
@@ -10942,7 +10935,6 @@
 				A7ED201D1E8322EC00BFFA01 /* TestCase.swift in Sources */,
 				A7ED20111E83229E00BFFA01 /* ActivitiesDataSourceTests.swift in Sources */,
 				E1BBB65E2E00724100291D48 /* GraphAPI+TestHelpers.swift in Sources */,
-				8A788F15263B770100A89DAE /* BrazeMockTypes.swift in Sources */,
 				A7ED20441E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift in Sources */,
 				1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */,
 				336195032D8AB96000BED4BD /* SortViewModelTest.swift in Sources */,

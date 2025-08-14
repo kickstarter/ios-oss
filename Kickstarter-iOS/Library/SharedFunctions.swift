@@ -48,13 +48,3 @@ public func logoutAndDismiss(
 
   viewController.dismiss(animated: true, completion: nil)
 }
-
-// MARK: - Braze
-
-public func userNotificationCenterDidReceiveResponse(
-  appBoy: AppboyType?,
-  isNotNil: () -> (),
-  isNil: () -> ()
-) {
-  appBoy == nil ? isNil() : isNotNil()
-}
