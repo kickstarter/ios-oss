@@ -1,4 +1,4 @@
-import BrazeKitCompat
+import BrazeKit
 import Library
 import UIKit
 

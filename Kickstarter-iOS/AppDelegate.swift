@@ -1,4 +1,3 @@
-import BrazeKitCompat
 import BrazeKit
 import FBSDKCoreKit
 import Firebase
@@ -28,6 +27,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   
   private var analytics: Segment.Analytics?
   private var braze: Braze?
+  private var brazeSubcription: BrazeKit.Braze.Cancellable?
 
   internal var rootTabBarController: RootTabBarViewController? {
     return self.window?.rootViewController as? RootTabBarViewController
@@ -257,12 +257,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         let brazeDestination = BrazeDestination(
           additionalConfiguration: { configuration in
             configuration.triggerMinimumTimeInterval = 5
-            configuration.push.automation = false
+            configuration.push.automation = true
             configuration.logger.level = .debug
-            // configuration.push.automation.requestAuthorizationAtLaunch = false
-//            configuration.push.automation.handleBackgroundNotification = false
-//            configuration.push.automation.handleNotificationResponse = false
-            //            configuration.push.automation.handleBackgroundNotification = false
+            configuration.push.automation.requestAuthorizationAtLaunch = false
           }
         ) { [weak self] braze in
           guard let self else { return }
@@ -271,19 +268,15 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           if let userId = AppEnvironment.current.currentUser?.id {
             braze.changeUser(userId: String(userId))
           }
-          // TODO: use this if I end up using automatic push notification support
-          //            braze.notifications.subscribeToUpdates { [weak self] payload in
-          //              guard let self else { return }
-          //              if let rootTabBarController = self.rootTabBarController {
-          //                // Handle notification, including any deeplinks.
-          //                self.viewModel.inputs.didReceive(remoteNotification: payload.userInfo)
-          //                rootTabBarController.didReceiveBadgeValue(payload.badge)
-          //              }
-          //            }
-          // TODO: fix inappmessages separately
-//          let inAppMessageUI = BrazeInAppMessageUI() // TODO
-//          // inAppMessageUI.delegate = self
-//          braze.inAppMessagePresenter = inAppMessageUI
+          // TODO: Figure out what code should actually go here
+          self.brazeSubcription = braze.notifications.subscribeToUpdates { [weak self] payload in
+            guard let self else { return }
+            if let rootTabBarController = self.rootTabBarController {
+              // Handle notification, including any deeplinks.
+              self.viewModel.inputs.didReceive(remoteNotification: payload.userInfo)
+              rootTabBarController.didReceiveBadgeValue(payload.badge)
+            }
+          }
         }
 
         configuration.add(plugin: brazeDestination)
@@ -377,21 +370,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     didFailToRegisterForRemoteNotificationsWithError error: Error
   ) {
     print("🔴 Failed to register for remote notifications: \(error.localizedDescription)")
-  }
-
-  func application(
-    _: UIApplication,
-    didReceiveRemoteNotification userInfo: [AnyHashable: Any],
-    fetchCompletionHandler completion: @escaping (UIBackgroundFetchResult) -> Void
-  ) {
-    print("INGERID: it's this notif")
-    if let braze = self.braze, braze.notifications.handleBackgroundNotification(
-      userInfo: userInfo,
-      fetchCompletionHandler: completion
-    ) {
-      return
-    }
-    completion(.noData)
   }
 
   internal func applicationDidReceiveMemoryWarning(_: UIApplication) {
@@ -537,11 +515,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     willPresent notification: UNNotification,
     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
   ) {
-    print("INGERID: foreground notification")
-    if let braze = self.braze {
-      braze.notifications.handleForegroundNotification(notification: notification)
-    }
-    
     self.rootTabBarController?.didReceiveBadgeValue(notification.request.content.badge as? Int)
     completionHandler([.banner, .list])
   }
@@ -551,50 +524,20 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
-    // NOTE: Looks like this code is never called
-    print("INGERID: we saw the notification")
     if let rootTabBarController = self.rootTabBarController {
       // Handle notification, including any deeplinks.
       self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
       rootTabBarController.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
     }
-    
-    // Tell braze about notification.
-    if let braze = self.braze, braze.notifications.handleUserNotification(
-      response: response,
-      withCompletionHandler: completion
-    ) {
-      return // Braze called completion.
-    }
-    completion() // Braze didn't call completion.
-  }
-}
-
-// MARK: - ABKInAppMessageControllerDelegate
-
-extension AppDelegate: ABKInAppMessageControllerDelegate {
-  func before(inAppMessageDisplayed inAppMessage: ABKInAppMessage) -> ABKInAppMessageDisplayChoice {
-    return self.viewModel.inputs.brazeWillDisplayInAppMessage(inAppMessage)
-  }
-}
-
-// MARK: - ABKURLDelegate
-
-extension AppDelegate: ABKURLDelegate {
-  func handleAppboyURL(_ url: URL?, from _: ABKChannel, withExtras _: [AnyHashable: Any]?) -> Bool {
-    self.viewModel.inputs.urlFromBrazeNotification(url)
-
-    return true
+    completion()
   }
 }
 
 // MARK: - BrazeDelegate
 extension AppDelegate: BrazeDelegate {
-  
   // Custom handle all urls instead of letting braze try to open them.
   func braze(_ braze: BrazeKit.Braze, shouldOpenURL context: BrazeKit.Braze.URLContext) -> Bool {
     self.viewModel.inputs.urlFromBrazeNotification(context.url)
     return false
   }
-
 }
