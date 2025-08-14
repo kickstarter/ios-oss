@@ -7,17 +7,11 @@ internal final class ResetPasswordViewControllerTests: TestCase {
   func testView() {
     orthogonalCombos(
       Language.allLanguages,
-      [Device.pad, Device.phone4_7inch, Device.phone5_8inch],
-      [true, false]
+      [Device.pad, Device.phone4_7inch, Device.phone5_8inch]
     ).forEach {
-      language, device, useNewDesignSystem in
+      language, device in
 
-      let remoteConfig = MockRemoteConfigClient()
-      remoteConfig.features = [
-        RemoteConfigFeature.newDesignSystem.rawValue: useNewDesignSystem
-      ]
-
-      withEnvironment(language: language, remoteConfigClient: remoteConfig) {
+      withEnvironment(language: language) {
         let controller = ResetPasswordViewController
           .configuredWith(email: "americasnexttopmodulus@example.com")
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -27,7 +21,7 @@ internal final class ResetPasswordViewControllerTests: TestCase {
         assertSnapshot(
           matching: parent.view,
           as: .image,
-          named: "lang_\(language)_device_\(device)_useNewDesignSystem_\(useNewDesignSystem)"
+          named: "lang_\(language)_device_\(device)"
         )
       }
     }

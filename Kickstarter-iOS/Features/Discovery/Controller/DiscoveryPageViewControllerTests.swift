@@ -40,11 +40,6 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
       sampleUpdate
     ]
 
-    let newDesignSystemOn = MockRemoteConfigClient()
-    newDesignSystemOn.features = [
-      RemoteConfigFeature.newDesignSystem.rawValue: true
-    ]
-
     orthogonalCombos(
       Language.allLanguages,
       [Device.phone4_7inch, Device.phone5_8inch, Device.pad],
@@ -56,7 +51,6 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         colorResolver: AppColorResolver(),
         currentUser: User.template,
         language: language,
-        remoteConfigClient: newDesignSystemOn,
         userDefaults: MockKeyValueStore()
       ) {
         let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
@@ -265,17 +259,11 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
   func testView_Onboarding() {
     orthogonalCombos(
       Language.allLanguages,
-      [Device.phone4_7inch, Device.phone5_8inch, Device.pad],
-      [true, false]
+      [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     ).forEach {
-      language, device, useNewDesignSystem in
+      language, device in
 
-      let remoteConfig = MockRemoteConfigClient()
-      remoteConfig.features = [
-        RemoteConfigFeature.newDesignSystem.rawValue: useNewDesignSystem
-      ]
-
-      withEnvironment(currentUser: nil, language: language, remoteConfigClient: remoteConfig) {
+      withEnvironment(currentUser: nil, language: language) {
         let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 210
@@ -286,7 +274,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         assertSnapshot(
           matching: parent.view,
           as: .image(perceptualPrecision: 0.98),
-          named: "lang_\(language)_device_\(device)_useNewDesignSystem_\(useNewDesignSystem)"
+          named: "lang_\(language)_device_\(device)"
         )
       }
     }

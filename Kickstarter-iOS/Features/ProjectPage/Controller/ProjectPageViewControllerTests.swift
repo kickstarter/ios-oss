@@ -292,11 +292,6 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let mockService = MockService(
       fetchProjectPamphletResult: .success(projectPamphletData)
     )
-    let darkModeOn = MockRemoteConfigClient()
-    darkModeOn.features = [
-      RemoteConfigFeature.newDesignSystem.rawValue: true
-    ]
-
     let language = Language.en
     let device = Device.phone5_8inch
 
@@ -305,8 +300,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       colorResolver: AppColorResolver(),
       config: config,
       currentUser: currentUser,
-      language: language,
-      remoteConfigClient: darkModeOn
+      language: language
     ) {
       let vc = ProjectPageViewController.configuredWith(
         projectOrParam: .left(project), refInfo: nil
