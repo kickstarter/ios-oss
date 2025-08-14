@@ -1,8 +1,8 @@
-import SegmentBraze
 import AppTrackingTransparency
 import KsApi
 import PassKit
 import Prelude
+import SegmentBraze
 import UIKit
 
 public final class KSRAnalytics {
@@ -612,7 +612,7 @@ public final class KSRAnalytics {
     }
 
     let newData = KSRAnalyticsIdentityData(newUser)
-    
+
     // Older versions of segment automatically included these ids in the traits.
     // To de-risk our migration, manually include these in the traits for now.
     // TODO(INGERID MAKE TICKET): Test if we need these fields as a follow-up.

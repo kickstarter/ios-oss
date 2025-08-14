@@ -11,23 +11,23 @@ private let __brazeIntegrationName = "Appboy"
 /// for a plugin example
 public class BrazeDebounceMiddlewarePlugin: EventPlugin {
   public weak var analytics: Segment.Analytics?
-  
+
   public let type = PluginType.before
   private var previousIdentifyEvent: IdentifyEvent?
-  
+
   public init(analytics: Segment.Analytics? = nil, previousIdentifyEvent: IdentifyEvent? = nil) {
     self.analytics = analytics
     self.previousIdentifyEvent = previousIdentifyEvent
   }
-  
+
   public func identify(event: IdentifyEvent) -> IdentifyEvent? {
     var mutableEvent = event
-  
+
     if !self.shouldSendToBraze(event) {
       let integrations = try? event.integrations?.add(value: false, forKey: __brazeIntegrationName)
       mutableEvent.integrations = integrations
     }
-    
+
     self.previousIdentifyEvent = event
     return mutableEvent
   }

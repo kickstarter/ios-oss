@@ -2,8 +2,8 @@ import KsApi
 import Library
 import Prelude
 import ReactiveSwift
-import UserNotifications
 import UIKit
+import UserNotifications
 
 public enum NotificationAuthorizationStatus {
   case authorized
@@ -352,7 +352,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .map(PushEnvelope.decodeJSONDictionary)
       .skipNil()
       .map(navigation(fromPushEnvelope:))
-
 
     let urlFromBraze = self.brazeNotificationURLProperty.signal.skipNil()
 

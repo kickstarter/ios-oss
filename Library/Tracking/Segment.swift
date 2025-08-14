@@ -1,6 +1,6 @@
-import SegmentBraze
-import Segment
 import KsApi
+import Segment
+import SegmentBraze
 
 public extension Analytics {
   /**
@@ -14,8 +14,8 @@ public extension Analytics {
         .applicationInstalled,
         .applicationUpdated,
         .applicationOpened,
-        .applicationBackgrounded,
-    ])
+        .applicationBackgrounded
+      ])
 //    configuration.sourceMiddleware = [BrazeDebounceMiddleware()]
     return Analytics(configuration: configuration)
   }
@@ -28,8 +28,8 @@ public extension Analytics {
 extension Analytics: IdentifyingTrackingClient {}
 extension Analytics: TrackingClientType {}
 
-//extension Analytics {
+// extension Analytics {
 //    (SegAnalytics)shared() {
 //        return analytics; // or whatever variable name you're using
 //    }
-//}
+// }

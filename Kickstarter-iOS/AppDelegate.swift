@@ -7,7 +7,6 @@ import Foundation
 #else
   import KsApi
 #endif
-import SegmentBraze
 import Kickstarter_Framework
 import Library
 import Prelude
@@ -15,6 +14,7 @@ import ReactiveExtensions
 import ReactiveSwift
 import SafariServices
 import Segment
+import SegmentBraze
 import SwiftUI
 import UIKit
 import UserNotifications
@@ -24,7 +24,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   fileprivate let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
   fileprivate var disposables: [any Disposable] = []
-  
+
   private var analytics: Segment.Analytics?
   private var braze: Braze?
   private var brazeSubcription: BrazeKit.Braze.Cancellable?
@@ -263,8 +263,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           }
         ) { [weak self] braze in
           guard let self else { return }
-           self.braze = braze
-           braze.delegate = self
+          self.braze = braze
+          braze.delegate = self
           if let userId = AppEnvironment.current.currentUser?.id {
             braze.changeUser(userId: String(userId))
           }
@@ -280,10 +280,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         configuration.add(plugin: brazeDestination)
-        
+
         let middleware = BrazeDebounceMiddlewarePlugin()
         configuration.add(plugin: middleware)
-        
+
         self?.analytics = configuration
 
         AppEnvironment.current.ksrAnalytics.configureSegmentClient(configuration)
@@ -520,7 +520,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
   }
 
   func userNotificationCenter(
-    _ center: UNUserNotificationCenter,
+    _: UNUserNotificationCenter,
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
@@ -534,9 +534,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 }
 
 // MARK: - BrazeDelegate
+
 extension AppDelegate: BrazeDelegate {
   // Custom handle all urls instead of letting braze try to open them.
-  func braze(_ braze: BrazeKit.Braze, shouldOpenURL context: BrazeKit.Braze.URLContext) -> Bool {
+  func braze(_: BrazeKit.Braze, shouldOpenURL context: BrazeKit.Braze.URLContext) -> Bool {
     self.viewModel.inputs.urlFromBrazeNotification(context.url)
     return false
   }
