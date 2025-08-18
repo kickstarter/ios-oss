@@ -1681,7 +1681,6 @@
 		E11E06A92D83817C002E81B9 /* SearchQuery_SearchViewControllerTests_Active.json in Resources */ = {isa = PBXBuildFile; fileRef = E11E06A72D838022002E81B9 /* SearchQuery_SearchViewControllerTests_Active.json */; };
 		E11E06AB2D885E4C002E81B9 /* SearchQuery_SearchViewControllerTests_Prelaunch.json in Resources */ = {isa = PBXBuildFile; fileRef = E11E06AA2D885E4C002E81B9 /* SearchQuery_SearchViewControllerTests_Prelaunch.json */; };
 		E12C883B2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12C883A2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift */; };
-		E132ADEE2E2845E500F73A76 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E132ADED2E2845E500F73A76 /* ApolloAPI */; };
 		E135005C2C07ABA600A30161 /* PledgePaymentMethodsAndSelectionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E135005B2C07ABA600A30161 /* PledgePaymentMethodsAndSelectionData.swift */; };
 		E13D76712D4011BF00FB58CE /* PaymentMethodsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D76702D4011BF00FB58CE /* PaymentMethodsUseCase.swift */; };
 		E13D76742D404F1600FB58CE /* PaymentMethodsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D76722D40438100FB58CE /* PaymentMethodsUseCaseTests.swift */; };
@@ -1743,7 +1742,6 @@
 		E1B33F522E538163008903BA /* GraphAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E1B33F512E538163008903BA /* GraphAPI */; };
 		E1B33F542E538166008903BA /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = E1B33F532E538166008903BA /* Apollo */; };
 		E1B33F562E53817D008903BA /* GraphAPITestMocks in Frameworks */ = {isa = PBXBuildFile; productRef = E1B33F552E53817D008903BA /* GraphAPITestMocks */; };
-		E1B33F5A2E5383AF008903BA /* ApolloTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = E1B33F592E5383AF008903BA /* ApolloTestSupport */; };
 		E1B813C72BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C62BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test */; };
 		E1B813C92BC851E100DF33CF /* FetchMyBackedProjectsQuery.json in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C82BC851E100DF33CF /* FetchMyBackedProjectsQuery.json */; };
 		E1B8E3462E20263C00299046 /* GraphQLNullable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E3452E20263C00299046 /* GraphQLNullable.swift */; };
@@ -3642,7 +3640,6 @@
 				60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */,
 				1996AA1F2A5F1BC400AE2ED0 /* StripePaymentSheet in Frameworks */,
 				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
-				E132ADEE2E2845E500F73A76 /* ApolloAPI in Frameworks */,
 				600A0EEB2DD23BAA00954829 /* Lottie in Frameworks */,
 				6078106F2A04191C0050D4F7 /* FirebaseAnalytics in Frameworks */,
 				19821C87299D3E8300EF312F /* AppboySegment in Frameworks */,
@@ -3660,7 +3657,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA645EA02C772DC90034705A /* SnapshotTesting in Frameworks */,
-				E1B33F5A2E5383AF008903BA /* ApolloTestSupport in Frameworks */,
 				19A666632A0488F500708F8B /* Library.framework in Frameworks */,
 				191A4B4C28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers in Frameworks */,
 			);
@@ -8091,7 +8087,6 @@
 				E113BD902B7D615000D3A809 /* Prelude */,
 				E1B214702BFD184500109961 /* KingfisherWebP */,
 				600A0EEA2DD23BAA00954829 /* Lottie */,
-				E132ADED2E2845E500F73A76 /* ApolloAPI */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -8115,7 +8110,6 @@
 			packageProductDependencies = (
 				191A4B4B28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers */,
 				AA645E9F2C772DC90034705A /* SnapshotTesting */,
-				E1B33F592E5383AF008903BA /* ApolloTestSupport */,
 			);
 			productName = "Library-iOSTests";
 			productReference = A75511451C8642B3005355CF /* Library-iOSTests.xctest */;
@@ -12133,11 +12127,6 @@
 			package = 06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
 			productName = Prelude;
 		};
-		E132ADED2E2845E500F73A76 /* ApolloAPI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
-			productName = ApolloAPI;
-		};
 		E18A674D2E28236D00BA0376 /* ApolloTestSupport */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
@@ -12160,11 +12149,6 @@
 		E1B33F552E53817D008903BA /* GraphAPITestMocks */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GraphAPITestMocks;
-		};
-		E1B33F592E5383AF008903BA /* ApolloTestSupport */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
-			productName = ApolloTestSupport;
 		};
 		E1F1DB3E2B7BC09C004EA80B /* Prelude */ = {
 			isa = XCSwiftPackageProductDependency;
