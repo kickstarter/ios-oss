@@ -19,6 +19,9 @@ import SwiftUI
 import UIKit
 import UserNotifications
 
+/// Importing new module for testing purposes.
+import NextGenFeature
+
 @UIApplicationMain
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
@@ -49,6 +52,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         userDefaults: UserDefaults.standard
       )
     )
+
+    /// Testing that we can import the new `NextGenFeature` module and run some of its code.
+    HelloNextGen.greet()
 
     #if DEBUG
       if KsApi.Secrets.isOSS {
