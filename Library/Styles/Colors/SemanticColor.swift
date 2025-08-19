@@ -8,11 +8,15 @@ public protocol AdaptiveColor {
 
 public extension AdaptiveColor {
   func uiColor(opacity alpha: CGFloat = 1.0) -> UIColor {
-    return AppEnvironment.current.colorResolver.color(
-      withLightModeColor: self.lightModeColor,
-      darkModeColor: self.darkModeColor,
-      alpha: alpha
-    )
+    let dynamicColor = UIColor { traits in
+      if traits.userInterfaceStyle == .dark {
+        return darkModeColor
+      } else {
+        return lightModeColor
+      }
+    }
+
+    return dynamicColor.withAlphaComponent(alpha)
   }
 
   func swiftUIColor(opacity: CGFloat = 1.0) -> Color {
