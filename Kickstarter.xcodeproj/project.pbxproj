@@ -875,6 +875,9 @@
 		6008633429B8FBD700B87B39 /* GraphUserEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633329B8FBD700B87B39 /* GraphUserEmail.swift */; };
 		6008633729B9025F00B87B39 /* GraphUserEmailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633529B9023300B87B39 /* GraphUserEmailTests.swift */; };
 		6008633F29BF750700B87B39 /* MockAppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */; };
+		600944BB2E54F254004A089F /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 6067FC5A2E54E5CF00F5F904 /* ApolloAPI */; };
+		600944CE2E54F3F7004A089F /* Apollo-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 600944CD2E54F3F7004A089F /* Apollo-Dynamic */; };
+		600944D02E54F3F7004A089F /* Apollo-Dynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 600944CD2E54F3F7004A089F /* Apollo-Dynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		600A0EEB2DD23BAA00954829 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 600A0EEA2DD23BAA00954829 /* Lottie */; };
 		601342EC2C81414000B851FA /* PostCampaignCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342EB2C81414000B851FA /* PostCampaignCheckoutViewController.swift */; };
 		601342EF2C81419C00B851FA /* PostCampaignCheckoutViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342ED2C81418700B851FA /* PostCampaignCheckoutViewControllerTests.swift */; };
@@ -967,7 +970,6 @@
 		6067BCF2293FC3520036ABB1 /* FacebookResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */; };
 		6067FAC52E537F8800F5F904 /* NextGenFeature.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6075B3C32E5374A700CA4A46 /* NextGenFeature.framework */; };
 		6067FC592E54E5CA00F5F904 /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; platformFilter = ios; };
-		6067FC5B2E54E5CF00F5F904 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 6067FC5A2E54E5CF00F5F904 /* ApolloAPI */; };
 		606C45F129FACD49001BA067 /* RemoteConfigClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F029FACD49001BA067 /* RemoteConfigClientType.swift */; };
 		606C45F329FACD68001BA067 /* RemoteConfigFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F229FACD68001BA067 /* RemoteConfigFeature.swift */; };
 		606C45F529FACD78001BA067 /* RemoteConfigFeature+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F429FACD78001BA067 /* RemoteConfigFeature+Helpers.swift */; };
@@ -2280,6 +2282,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		600944CF2E54F3F7004A089F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				600944D02E54F3F7004A089F /* Apollo-Dynamic in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A7D1F9C21C850DDE000D41D5 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4458,9 +4471,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				600944BB2E54F254004A089F /* ApolloAPI in Frameworks */,
+				600944CE2E54F3F7004A089F /* Apollo-Dynamic in Frameworks */,
 				6067FC592E54E5CA00F5F904 /* Library.framework in Frameworks */,
 				6075B3E42E53751900CA4A46 /* KsApi.framework in Frameworks */,
-				6067FC5B2E54E5CF00F5F904 /* ApolloAPI in Frameworks */,
 				6075B3E32E53751500CA4A46 /* GraphAPI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9427,11 +9441,11 @@
 				6075B3BF2E5374A700CA4A46 /* Sources */,
 				6075B3C02E5374A700CA4A46 /* Frameworks */,
 				6075B3C12E5374A700CA4A46 /* Resources */,
+				600944CF2E54F3F7004A089F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				6067FC582E54E5C400F5F904 /* PBXTargetDependency */,
 				6067FC562E54E5C000F5F904 /* PBXTargetDependency */,
 				6075B3E22E53750A00CA4A46 /* PBXTargetDependency */,
 				6075B3E02E53750700CA4A46 /* PBXTargetDependency */,
@@ -9442,6 +9456,7 @@
 			name = NextGenFeature;
 			packageProductDependencies = (
 				6067FC5A2E54E5CF00F5F904 /* ApolloAPI */,
+				600944CD2E54F3F7004A089F /* Apollo-Dynamic */,
 			);
 			productName = NextGenFeature;
 			productReference = 6075B3C32E5374A700CA4A46 /* NextGenFeature.framework */;
@@ -12161,10 +12176,6 @@
 			target = A755113B1C8642B3005355CF /* Library-iOS */;
 			targetProxy = 6067FC552E54E5C000F5F904 /* PBXContainerItemProxy */;
 		};
-		6067FC582E54E5C400F5F904 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 6067FC572E54E5C400F5F904 /* ApolloAPI */;
-		};
 		6075B3CF2E5374A700CA4A46 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 6075B3C22E5374A700CA4A46 /* NextGenFeature */;
@@ -14803,6 +14814,11 @@
 			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
 			productName = "ReactiveExtensions-TestHelpers";
 		};
+		600944CD2E54F3F7004A089F /* Apollo-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = "Apollo-Dynamic";
+		};
 		600A0EEA2DD23BAA00954829 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 600A0EE92DD23BAA00954829 /* XCRemoteSwiftPackageReference "lottie-ios" */;
@@ -14817,11 +14833,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 606754B728CF8A190033CD5E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
 			productName = FacebookLogin;
-		};
-		6067FC572E54E5C400F5F904 /* ApolloAPI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
-			productName = ApolloAPI;
 		};
 		6067FC5A2E54E5CF00F5F904 /* ApolloAPI */ = {
 			isa = XCSwiftPackageProductDependency;

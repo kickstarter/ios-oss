@@ -98,7 +98,8 @@ extension GraphAPI.GoalBuckets {
 }
 
 extension GraphAPI.SearchQuery {
-  static func from(
+  /// Making public for Next Gen Architecture testing.
+  public static func from(
     discoveryParams params: DiscoveryParams,
     withCursor cursor: String? = nil
   ) -> GraphAPI.SearchQuery {
@@ -149,7 +150,8 @@ extension DiscoveryParams {
     return params
   }
 
-  static func withQuery(
+  /// Making public for Next Gen Architecture testing.
+  public static func withQuery(
     _ query: String,
     sort: DiscoveryParams.Sort,
     category: KsApi.Category?,

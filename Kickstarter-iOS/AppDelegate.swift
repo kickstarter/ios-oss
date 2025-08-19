@@ -54,8 +54,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     )
 
     /// Testing that we can import the new `NextGenFeature` module and run some of its code.
-    HelloNextGen.greet()
-
     #if DEBUG
       if KsApi.Secrets.isOSS {
         AppEnvironment.replaceCurrentEnvironment(apiService: MockService())
@@ -160,13 +158,20 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeValues { [weak self] in
         guard let rootTabBarController = self?.rootTabBarController else { return }
 
-        let onboardingVC = UIHostingController(rootView: OnboardingView(viewModel: OnboardingViewModel()))
+        /// Replacing Onboarding screen with Next Gen Architecture Search View for testing.
+        let nextGenSearchVC = UIHostingController(
+          rootView: NextGenFeature
+            .NextGenSearchView(
+              viewModel: NextGenFeature
+                .NextGenSearchViewModel(service: NextGenProjectSearchService(apollo: GraphQL.shared.client))
+            )
+        )
         /// Onboarding flow should not respond to light/dark mode preference.
-        onboardingVC.overrideUserInterfaceStyle = .light
-        onboardingVC.modalPresentationStyle = .fullScreen
+        nextGenSearchVC.overrideUserInterfaceStyle = .light
+        nextGenSearchVC.modalPresentationStyle = .fullScreen
 
         rootTabBarController.navigationController?.isNavigationBarHidden = true
-        rootTabBarController.present(onboardingVC, animated: true, completion: nil)
+        rootTabBarController.present(nextGenSearchVC, animated: true, completion: nil)
       }
 
     NotificationCenter.default

@@ -398,6 +398,14 @@ public struct SearchFilterToggles {
   public var savedProjects: Bool
   public var projectsWeLove: Bool
   public var following: Bool
+
+  /// Making a public initiializer for Next Gen Architecture testing.
+  public init(recommended: Bool, savedProjects: Bool, projectsWeLove: Bool, following: Bool) {
+    self.recommended = recommended
+    self.savedProjects = savedProjects
+    self.projectsWeLove = projectsWeLove
+    self.following = following
+  }
 }
 
 private extension GraphAPI.LocationsByTermQuery.Data.Locations {}
