@@ -55,11 +55,6 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
       totalCount: 5
     )
 
-    let darkModeOn = MockRemoteConfigClient()
-    darkModeOn.features = [
-      RemoteConfigFeature.newDesignSystem.rawValue: true
-    ]
-
     orthogonalCombos(
       Language.allLanguages,
       [Device.phone4_7inch, Device.phone5_8inch, Device.pad],
@@ -70,8 +65,7 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
         apiService: MockService(fetchBackerBackedProjectsResponse: env),
         colorResolver: AppColorResolver(),
         currentUser: User.template,
-        language: language,
-        remoteConfigClient: darkModeOn
+        language: language
       ) {
         let controller = BackerDashboardProjectsViewController
           .configuredWith(projectsType: .backed, sort: .endingSoon)
