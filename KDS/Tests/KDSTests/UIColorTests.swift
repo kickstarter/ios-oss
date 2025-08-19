@@ -1,4 +1,4 @@
-@testable import Library
+@testable import KDS
 import XCTest
 
 final class UIColorTests: XCTestCase {
