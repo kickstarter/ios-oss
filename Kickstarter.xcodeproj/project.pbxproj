@@ -3479,6 +3479,7 @@
 		E15803012D8363020000BAB3 /* SearchQuery_FiveResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_FiveResults.json; sourceTree = "<group>"; };
 		E15803032D8363210000BAB3 /* SearchQuery_AnotherFiveResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_AnotherFiveResults.json; sourceTree = "<group>"; };
 		E15803052D83632F0000BAB3 /* SearchQuery_EmptyResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_EmptyResults.json; sourceTree = "<group>"; };
+		E15E22CD2E54B91B00EE6BB0 /* KDS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = KDS; sourceTree = "<group>"; };
 		E16794272B7EAA5200064063 /* OAuthTokenExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenExchange.swift; sourceTree = "<group>"; };
 		E16794292B85136900064063 /* OAuthTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTests.swift; sourceTree = "<group>"; };
 		E16ECA6F2C245A34002A1D25 /* PagedContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedContainerViewController.swift; sourceTree = "<group>"; };
@@ -6912,6 +6913,7 @@
 				A7D1F9461C850B7C000D41D5 /* Kickstarter-iOS */,
 				D01587511EEB2DE4006E7684 /* KsApi */,
 				A7C725771C85D36D005A016B /* Library */,
+				E15E22CD2E54B91B00EE6BB0 /* KDS */,
 				E1B33F502E538157008903BA /* GraphAPI */,
 				E190EB6F2E29944E006A6DB6 /* graphql */,
 				A7E06C7A1C5A6EB300EBDCC2 /* Products */,
