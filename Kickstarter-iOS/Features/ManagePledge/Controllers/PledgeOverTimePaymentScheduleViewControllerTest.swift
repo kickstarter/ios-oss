@@ -42,7 +42,6 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
       [UIUserInterfaceStyle.light, UIUserInterfaceStyle.dark]
     ).forEach { language, device, style in
       withEnvironment(
-        colorResolver: AppColorResolver(),
         language: language
       ) {
         let controller = PledgeOverTimePaymentScheduleViewController.instantiate()

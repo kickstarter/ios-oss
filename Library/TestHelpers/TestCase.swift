@@ -33,7 +33,6 @@ internal class TestCase: XCTestCase {
   internal let ubiquitousStore = MockKeyValueStore()
   internal let userDefaults = MockKeyValueStore()
   internal let uuidType = MockUUID.self
-  internal let colorResolver = MockColorResolver()
 
   override func setUp() {
     super.setUp()
@@ -53,7 +52,6 @@ internal class TestCase: XCTestCase {
       assetImageGeneratorType: AVAssetImageGenerator.self,
       cache: self.cache,
       calendar: calendar,
-      colorResolver: self.colorResolver,
       config: self.config,
       cookieStorage: self.cookieStorage,
       coreTelephonyNetworkInfo: self.coreTelephonyNetworkInfo,
