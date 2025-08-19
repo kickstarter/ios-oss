@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -966,6 +966,8 @@
 		6067BCEC293E49F00036ABB1 /* FacebookResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */; };
 		6067BCF2293FC3520036ABB1 /* FacebookResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */; };
 		6067FAC52E537F8800F5F904 /* NextGenFeature.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6075B3C32E5374A700CA4A46 /* NextGenFeature.framework */; };
+		6067FC592E54E5CA00F5F904 /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; platformFilter = ios; };
+		6067FC5B2E54E5CF00F5F904 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 6067FC5A2E54E5CF00F5F904 /* ApolloAPI */; };
 		606C45F129FACD49001BA067 /* RemoteConfigClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F029FACD49001BA067 /* RemoteConfigClientType.swift */; };
 		606C45F329FACD68001BA067 /* RemoteConfigFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F229FACD68001BA067 /* RemoteConfigFeature.swift */; };
 		606C45F529FACD78001BA067 /* RemoteConfigFeature+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F429FACD78001BA067 /* RemoteConfigFeature+Helpers.swift */; };
@@ -2148,6 +2150,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 6075B3C22E5374A700CA4A46;
 			remoteInfo = NextGenFeature;
+		};
+		6067FC552E54E5C000F5F904 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A755113B1C8642B3005355CF;
+			remoteInfo = "Library-iOS";
 		};
 		6075B3CE2E5374A700CA4A46 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -4449,7 +4458,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6067FC592E54E5CA00F5F904 /* Library.framework in Frameworks */,
 				6075B3E42E53751900CA4A46 /* KsApi.framework in Frameworks */,
+				6067FC5B2E54E5CF00F5F904 /* ApolloAPI in Frameworks */,
 				6075B3E32E53751500CA4A46 /* GraphAPI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9420,6 +9431,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				6067FC582E54E5C400F5F904 /* PBXTargetDependency */,
+				6067FC562E54E5C000F5F904 /* PBXTargetDependency */,
 				6075B3E22E53750A00CA4A46 /* PBXTargetDependency */,
 				6075B3E02E53750700CA4A46 /* PBXTargetDependency */,
 			);
@@ -9428,6 +9441,7 @@
 			);
 			name = NextGenFeature;
 			packageProductDependencies = (
+				6067FC5A2E54E5CF00F5F904 /* ApolloAPI */,
 			);
 			productName = NextGenFeature;
 			productReference = 6075B3C32E5374A700CA4A46 /* NextGenFeature.framework */;
@@ -9832,7 +9846,6 @@
 				19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
 				E1B2146F2BFD184500109961 /* XCRemoteSwiftPackageReference "KingfisherWebP" */,
 				600A0EE92DD23BAA00954829 /* XCRemoteSwiftPackageReference "lottie-ios" */,
-				6067FABA2E53782600F5F904 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -12142,6 +12155,15 @@
 			isa = PBXTargetDependency;
 			target = 6075B3C22E5374A700CA4A46 /* NextGenFeature */;
 			targetProxy = 6067FAC32E537F8100F5F904 /* PBXContainerItemProxy */;
+		};
+		6067FC562E54E5C000F5F904 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A755113B1C8642B3005355CF /* Library-iOS */;
+			targetProxy = 6067FC552E54E5C000F5F904 /* PBXContainerItemProxy */;
+		};
+		6067FC582E54E5C400F5F904 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 6067FC572E54E5C400F5F904 /* ApolloAPI */;
 		};
 		6075B3CF2E5374A700CA4A46 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -14795,6 +14817,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 606754B728CF8A190033CD5E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
 			productName = FacebookLogin;
+		};
+		6067FC572E54E5C400F5F904 /* ApolloAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = ApolloAPI;
+		};
+		6067FC5A2E54E5CF00F5F904 /* ApolloAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = ApolloAPI;
 		};
 		6078106A2A0419130050D4F7 /* FirebaseCrashlytics */ = {
 			isa = XCSwiftPackageProductDependency;
