@@ -36,15 +36,14 @@
   },
   "output": {
     "testMocks": {
-      "absolute": {
-        "path": "./GraphAPITestMocks",
-        "accessModifier": "public"
+      "swiftPackage": {
+        "targetName": "GraphAPITestMocks"
       }
     },
     "schemaTypes": {
       "path": "./GraphAPI",
       "moduleType": {
-        "other": {}
+        "swiftPackageManager": {}
       }
     },
     "operations": {

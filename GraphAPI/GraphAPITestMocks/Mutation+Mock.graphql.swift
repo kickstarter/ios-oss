@@ -31,7 +31,7 @@ public class Mutation: MockObject {
     @Field<UpdateUserAccountPayload>("updateUserAccount") public var updateUserAccount
     @Field<UpdateUserProfilePayload>("updateUserProfile") public var updateUserProfile
     @Field<UserSendEmailVerificationPayload>("userSendEmailVerification") public var userSendEmailVerification
-    @Field<WatchProjectPayload>("watchProject") public var watchProject
+    @Field<UnwatchProjectPayload>("watchProject") public var watchProject
   }
 }
 
@@ -58,7 +58,7 @@ public extension Mock where O == Mutation {
     updateUserAccount: Mock<UpdateUserAccountPayload>? = nil,
     updateUserProfile: Mock<UpdateUserProfilePayload>? = nil,
     userSendEmailVerification: Mock<UserSendEmailVerificationPayload>? = nil,
-    watchProject: Mock<WatchProjectPayload>? = nil
+    watchProject: Mock<UnwatchProjectPayload>? = nil
   ) {
     self.init()
     _setEntity(addUserToSecretRewardGroup, for: \.addUserToSecretRewardGroup)
