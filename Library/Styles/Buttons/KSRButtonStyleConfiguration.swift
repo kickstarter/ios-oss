@@ -1,17 +1,17 @@
 import UIKit
 
 private let buttonContentInsets = NSDirectionalEdgeInsets(
-  top: Styles.grid(2),
-  leading: Styles.grid(2),
-  bottom: Styles.grid(2),
-  trailing: Styles.grid(2)
+  top: Spacing.unit_03,
+  leading: Spacing.unit_03,
+  bottom: Spacing.unit_03,
+  trailing: Spacing.unit_03
 )
 
 private let buttonWithImageContentInsets = NSDirectionalEdgeInsets(
   top: 8.5,
-  leading: Styles.grid(2),
+  leading: Spacing.unit_03,
   bottom: 8.5,
-  trailing: Styles.grid(2)
+  trailing: Spacing.unit_03
 )
 
 public protocol KSRButtonStyleConfiguration {
@@ -42,7 +42,7 @@ extension UIButton {
 
     buttonConfiguration.background.cornerRadius = styleConfig.cornerRadius
 
-    buttonConfiguration.imagePadding = Styles.grid(1)
+    buttonConfiguration.imagePadding = 6.0
     buttonConfiguration.imagePlacement = .leading
 
     buttonConfiguration.titleLineBreakMode = .byWordWrapping

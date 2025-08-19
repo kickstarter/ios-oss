@@ -16,7 +16,7 @@ public struct KSRButtonStyleModifier: SwiftUI.ButtonStyle {
       .frame(maxWidth: .infinity)
       .font(Font(self.style.font))
       .foregroundColor(self.foregroundColor(configuration))
-      .padding(Styles.grid(2))
+      .padding(Spacing.unit_03)
       .background(self.backgroundColor(configuration))
       .cornerRadius(self.style.cornerRadius)
       .overlay(
