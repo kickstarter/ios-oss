@@ -304,7 +304,7 @@ workflows:
             - build-and-cache
             - ksapi-tests
             - library-tests
-            - kickstarter_tests
+            - kickstarter-tests
 
 experimental:
   notify:
