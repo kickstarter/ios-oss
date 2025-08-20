@@ -300,7 +300,11 @@ workflows:
               only: itunes-dist
           requires: *all_jobs
       - notify_slack_on_failure:
-          requires: *all_jobs
+          requires:
+            - build-and-cache
+            - ksapi-tests
+            - library-tests
+            - kickstarter_tests
 
 experimental:
   notify:
