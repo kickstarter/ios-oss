@@ -98,6 +98,9 @@ jobs:
       - git-shallow-clone/checkout:
           # This is for Danger, which requires a bit more git history
           fetch_depth: 100 
+      - run: 
+          name: Fail on purpose
+          command: exit 1
       - run:
           name: SPM SSH Workaround
           command: *spm_ssh_workaround
