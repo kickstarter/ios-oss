@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import KDS
 import SwiftUI
 
 public final class MessageBannerViewViewModel: ObservableObject, Equatable {

@@ -1,4 +1,5 @@
 import Foundation
+import KDS
 @testable import Library
 import Prelude
 import ReactiveExtensions_TestHelpers

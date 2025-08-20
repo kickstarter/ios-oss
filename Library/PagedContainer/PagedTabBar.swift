@@ -1,4 +1,5 @@
 import Foundation
+import KDS
 import SwiftUI
 
 public struct PagedTabBar<Page: TabBarPage>: View {

@@ -1,3 +1,4 @@
+import KDS
 import UIKit
 
 public let tabBarDeselectedColor = LegacyColors.ksr_support_400.uiColor()

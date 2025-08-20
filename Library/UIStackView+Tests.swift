@@ -1,3 +1,4 @@
+import KDS
 @testable import Library
 import Prelude
 import XCTest

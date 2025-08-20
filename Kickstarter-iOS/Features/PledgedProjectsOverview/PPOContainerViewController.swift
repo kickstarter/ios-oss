@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import KDS
 import KsApi
 import Library
 import Stripe
