@@ -31,10 +31,56 @@ default_environment: &default_environment
 commands:
   notify_slack_on_failure:
     steps:
-      - run:
-          name: Complain to Slack
-          command: aws events put-events --entries '[{"Source":"kickbot","DetailType":"post","Detail":"{\"method\":\"chat.postMessage\",\"params\":{\"channel\":\"CBFKYTCEQ\",\"username\":\"CircleCI\",\"icon_emoji\":\"circleci-fail\",\"text\":\"CircleCI notification\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"[TESTING] An iOS build failed!\"}}]}}"}]'
-          when: on_fail
+    - aws-cli/setup:
+        <<: *aws_cli_setup
+    - run:
+        name: Create Slack message detail
+        command: |
+          cat <<-JSON | jq -c > slack.json
+          {
+            "method": "chat.postMessage",
+            "params": {
+              "channel": "CBFKYTCEQ",
+              "username": "CircleCI",
+              "icon_emoji": "circleci-fail",
+              "text": "CircleCI notification",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Lorem ispum ergo sum"
+                  }
+                }
+              ]
+            }
+          }
+          JSON
+    - run:
+        name: Create EventBridge entries
+        command: |
+          cat <<-JSON | jq -c > entries.json
+          [{
+            "Source": "kickbot",
+            "DetailType": "post",
+            "Detail": $(jq tojson slack.json)
+          }]
+          JSON
+    - run:
+        name: Send EventBridge event
+        command: aws events put-events --entries "$(cat entries.json)"
+
+
+
+
+
+
+
+
+
+
+
+
 
 base_job: &base_job
   macos:
