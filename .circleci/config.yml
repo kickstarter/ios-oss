@@ -227,6 +227,14 @@ jobs:
       - FIREBASE_DIR=Firebase-Production
       - DSYMS_FILE=Kickstarter.app.dSYM.zip
 
+  notify_slack_on_failure:
+    <<: *base_job
+    environment:
+      - *default_environment
+    steps:
+      - run:
+        - aws events put-events --entries '[{"Source":"kickbot","DetailType":"post","Detail":"{\"method\":\"chat.postMessage\",\"params\":{\"channel\":\"CBFKYTCEQ\",\"username\":\"CircleCI\",\"icon_emoji\":\"circleci-fail\",\"text\":\"CircleCI notification\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"[TESTING] An iOS build failed!\"}}]}}"}]'
+
 # Workflows
 workflows:
   version: 2
@@ -287,6 +295,9 @@ workflows:
               # matches branch named exactly `itunes-dist`
               only: itunes-dist
           requires: *all_jobs
+      - notify_slack_on_failure:
+          requires: *all_jobs
+          when: on_fail
 
 experimental:
   notify:
