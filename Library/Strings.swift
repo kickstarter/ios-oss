@@ -8133,7 +8133,7 @@ n'ont rien soutenu."
 
    - **en**: "No results for “%{query}”"
    - **de**: "Keine Ergebnisse für „%{query}“"
-   - **es**: "No hay resultados para %{query}"
+   - **es**: "No hay resultados para “%{query}”"
    - **fr**: "Aucun résultat pour « %{query} »"
    - **ja**: "「%{query}」の検索結果がありません"
   */
@@ -13025,6 +13025,23 @@ catch your eye?"
     return localizedString(
       key: "The_creator_canceled_this_project_so_your_payment_method_was_never_charged",
       defaultValue: "The creator canceled this project, so your payment method was never charged.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "The creator has not collected your address. Please contact them to resolve the issue."
+
+   - **en**: "The creator has not collected your address. Please contact them to resolve the issue."
+   - **de**: "Der Projektgründer hat deine Adresse nicht erfasst. Bitte kontaktiere ihn, um das Problem zu lösen."
+   - **es**: "El creador no recopiló tu dirección. Contáctalo para resolver el problema."
+   - **fr**: "Le créateur n'a pas récupéré votre adresse. Veuillez le contacter pour résoudre ce problème."
+   - **ja**: "クリエイターがまだあなたの住所を収集していません。クリエイターに連絡して、この問題を解決してください。"
+  */
+  public static func The_creator_has_not_collected_your_address_please_contact_them_to_resolve_the_issue() -> String {
+    return localizedString(
+      key: "The_creator_has_not_collected_your_address_please_contact_them_to_resolve_the_issue",
+      defaultValue: "The creator has not collected your address. Please contact them to resolve the issue.",
       count: nil,
       substitutions: [:]
     )
@@ -21962,7 +21979,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -25561,7 +25578,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
+   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -28740,7 +28757,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count}\n件バック済み"
+   - **ja**: "%{projects_count} \n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -29692,7 +29709,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count}プロジェクト"
+   - **ja**: "%{created_count} プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(
