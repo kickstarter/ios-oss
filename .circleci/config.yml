@@ -28,6 +28,13 @@ default_environment: &default_environment
   XCODE_VERSION: *xcode_version
   PLATFORM: iOS
 
+commands:
+  notify_slack_on_failure:
+    steps:
+      name: Complain to Slack
+      command: aws events put-events --entries '[{"Source":"kickbot","DetailType":"post","Detail":"{\"method\":\"chat.postMessage\",\"params\":{\"channel\":\"CBFKYTCEQ\",\"username\":\"CircleCI\",\"icon_emoji\":\"circleci-fail\",\"text\":\"CircleCI notification\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"[TESTING] An iOS build failed!\"}}]}}"}]'
+      when: on_fail
+
 base_job: &base_job
   macos:
     xcode: *xcode_version
@@ -129,6 +136,7 @@ jobs:
           root: .
           paths:
             - .
+      - notify_slack_on_failure
 
   # Kickstarter tests
   kickstarter-tests:
@@ -230,15 +238,6 @@ jobs:
       - FIREBASE_DIR=Firebase-Production
       - DSYMS_FILE=Kickstarter.app.dSYM.zip
 
-  notify_slack_on_failure:
-    <<: *base_job
-    environment:
-      - *default_environment
-    steps:
-      - run:
-          name: Complain to Slack
-          command: aws events put-events --entries '[{"Source":"kickbot","DetailType":"post","Detail":"{\"method\":\"chat.postMessage\",\"params\":{\"channel\":\"CBFKYTCEQ\",\"username\":\"CircleCI\",\"icon_emoji\":\"circleci-fail\",\"text\":\"CircleCI notification\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"[TESTING] An iOS build failed!\"}}]}}"}]'
-
 # Workflows
 workflows:
   version: 2
@@ -299,12 +298,6 @@ workflows:
               # matches branch named exactly `itunes-dist`
               only: itunes-dist
           requires: *all_jobs
-      - notify_slack_on_failure:
-          requires:
-            - build-and-cache: failed
-            - ksapi-tests: failed
-            - library-tests: failed
-            - kickstarter-tests: failed
 
 experimental:
   notify:
