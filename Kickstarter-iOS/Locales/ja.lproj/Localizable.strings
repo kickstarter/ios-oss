@@ -1503,7 +1503,7 @@
 "discovery.nearby" = "近くにいる人";
 "discovery.onboarding.buttons.learn_more" = "さらにみる";
 "discovery.onboarding.buttons.login" = "ログイン";
-"discovery.onboarding.buttons.signup_or_login" = "サインアップ or ログイン\n";
+"discovery.onboarding.buttons.signup_or_login" = "サインアップまたはログイン";
 "discovery.onboarding.learn_login_conjunction_or" = "か";
 "discovery.onboarding.title.bring_creative_projects_to_life" = "クリエイティブなプロジェクトに生命を。";
 "discovery.popular" = "人気";
@@ -1629,7 +1629,7 @@
 "login_tout.generic_intent.title" = "続行するにはアカウントにログインが必要です。 メールアドレス、Facebookアカウントで登録するか、ログインしてください。";
 "login_tout.generic_intent.traditional_login_button" = "ログイン";
 "login_tout.generic_intent.traditional_signup_button" = "サインアップ";
-"login_tout.generic_intent.traditional_signup_or_login_button" = "サインアップ or ログイン\n";
+"login_tout.generic_intent.traditional_signup_or_login_button" = "サインアップまたはログイン";
 "login_tout.generic_intent.traditional_title" = "メールアドレスを使用：";
 "login_tout.help_sheet.cancel" = "キャンセル";
 "login_tout.help_sheet.contact" = "お問い合わせ";
