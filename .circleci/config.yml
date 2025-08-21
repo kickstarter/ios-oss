@@ -56,7 +56,6 @@ commands:
             }
           }
           JSON
-        when: on_fail
     - run:
         name: Create EventBridge entries
         command: |
@@ -67,11 +66,9 @@ commands:
             "Detail": $(jq tojson slack.json)
           }]
           JSON
-        when: on_fail
-    - run:
+`    - run:
         name: Send EventBridge event
         command: aws events put-events --entries "$(cat entries.json)"
-        when: on_fail
 
 
 
@@ -186,7 +183,8 @@ jobs:
           root: .
           paths:
             - .
-      - notify_slack_on_failure
+      - notify_slack_on_failure:
+          when: on_fail
 
   # Kickstarter tests
   kickstarter-tests:
