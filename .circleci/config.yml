@@ -31,57 +31,45 @@ default_environment: &default_environment
 commands:
   notify_slack_on_failure:
     steps:
-    - run:
-        name: Create Slack message detail
-        command: |
-          cat \<<-JSON | jq -c > slack.json
-          {
-            "method": "chat.postMessage",
-            "params": {
-              "channel": "CBFKYTCEQ",
-              "username": "CircleCI",
-              "icon_emoji": "circleci-fail",
-              "text": "CircleCI notification",
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "Lorem ispum ergo sum"
+      - run:
+          name: Create Slack message detail
+          command: |
+            cat \<<-JSON | jq -c > slack.json
+            {
+              "method": "chat.postMessage",
+              "params": {
+                "channel": "CBFKYTCEQ",
+                "username": "CircleCI",
+                "icon_emoji": "circleci-fail",
+                "text": "CircleCI notification",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "text": {
+                      "type": "mrkdwn",
+                      "text": "Lorem ispum ergo sum"
+                    }
                   }
-                }
-              ]
+                ]
+              }
             }
-          }
-          JSON
-        when: on_fail
-    - run:
-        name: Create EventBridge entries
-        command: |
-          cat \<<-JSON | jq -c > entries.json
-          [{
-            "Source": "kickbot",
-            "DetailType": "post",
-            "Detail": $(jq tojson slack.json)
-          }]
-          JSON
-        when: on_fail
-    - run:
-        name: Send EventBridge event
-        command: aws events put-events --entries "$(cat entries.json)"
-        when: on_fail
-
-
-
-
-
-
-
-
-
-
-
-
+            JSON
+          when: on_fail
+      - run:
+          name: Create EventBridge entries
+          command: |
+            cat \<<-JSON | jq -c > entries.json
+            [{
+              "Source": "kickbot",
+              "DetailType": "post",
+              "Detail": $(jq tojson slack.json)
+            }]
+            JSON
+          when: on_fail
+      - run:
+          name: Send EventBridge event
+          command: aws events put-events --entries "$(cat entries.json)"
+          when: on_fail
 
 base_job: &base_job
   macos:
@@ -93,7 +81,7 @@ test_job: &test_job
   steps:
     - macos/install-rosetta
     - aws-cli/setup:
-      <<: *aws_cli_setup
+        <<: *aws_cli_setup
     - attach_workspace:
         at: .
     - macos/preboot-simulator:
@@ -153,11 +141,11 @@ jobs:
     steps:
       - macos/install-rosetta
       - aws-cli/setup:
-        <<: *aws_cli_setup
+          <<: *aws_cli_setup
       - git-shallow-clone/checkout:
           # This is for Danger, which requires a bit more git history
-          fetch_depth: 100 
-      - run: 
+          fetch_depth: 100
+      - run:
           name: Fail on purpose
           command: exit 1
       - run:
@@ -297,13 +285,13 @@ workflows:
       - build-and-cache
       - kickstarter-tests:
           requires:
-           - build-and-cache
+            - build-and-cache
       - library-tests:
           requires:
-           - build-and-cache
+            - build-and-cache
       - ksapi-tests:
           requires:
-           - build-and-cache
+            - build-and-cache
 
       # ** Refreshing dSYMs disabled until a suitable workaround is found for App Store Connect 2FA authentication
       # or Fastlane implements API key support in this Fastlane action. Uncomment below to re-enable.
