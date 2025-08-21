@@ -24,14 +24,6 @@ final class DesignSystemViewController: UIViewController {
 
   private let buttonsLabel = UILabel()
   private let buttonsStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private let primaryGreenButton = UIButton(type: .custom)
-  private let primaryBlueButton = UIButton(type: .custom)
-  private let primaryBlackButton = UIButton(type: .custom)
-  private let secondaryGreyButton = UIButton(type: .custom)
-  private let secondaryRedButton = UIButton(type: .custom)
-  private let secondaryDisabledButton = UIButton(type: .custom)
-  private let facebookButton = UIButton(type: .custom)
-  private let applePayButton: PKPaymentButton = { PKPaymentButton() }()
 
   // MARK: - Icons
 
@@ -79,24 +71,6 @@ final class DesignSystemViewController: UIViewController {
 
   private let typesLabel = UILabel()
   private let typeStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private let title1Label = UILabel()
-  private let title1LabelBold = UILabel()
-  private let title2Label = UILabel()
-  private let title2LabelBold = UILabel()
-  private let title3Label = UILabel()
-  private let title3LabelBold = UILabel()
-  private let headlineLabel = UILabel()
-  private let bodyLabel = UILabel()
-  private let calloutLabel = UILabel()
-  private let calloutLabelBold = UILabel()
-  private let subheadlineLabel = UILabel()
-  private let subheadlineLabelBold = UILabel()
-  private let footnoteLabel = UILabel()
-  private let footnoteLabelBold = UILabel()
-  private let caption1Label = UILabel()
-  private let caption1LabelBold = UILabel()
-  private let caption2Label = UILabel()
-  private let caption2LabelBold = UILabel()
 
   // MARK: - Lifecycle
 
@@ -168,53 +142,24 @@ final class DesignSystemViewController: UIViewController {
     )
       |> ksr_addArrangedSubviewsToStackView()
 
-    // MARK: - Button Stack
-
-    _ = (
-      [
-        self.primaryGreenButton,
-        self.primaryBlueButton,
-        self.primaryBlackButton,
-        self.secondaryGreyButton,
-        self.secondaryDisabledButton,
-        self.secondaryRedButton,
-        self.facebookButton,
-        self.applePayButton
-      ], self.buttonsStackView
-    )
-      |> ksr_addArrangedSubviewsToStackView()
-
     // MARK: - New Design System Buttons
-
-    let newButtons = UILabel()
-    newButtons.font = .ksr_title1().bolded
-    newButtons.textColor = adaptiveColor(.black)
-    newButtons.adjustsFontForContentSizeCategory = true
-    newButtons.text = "New Buttons"
-    self.buttonsStackView.addArrangedSubview(newButtons)
 
     KSRButtonStyle.allCases.forEach { buttonStyle in
       let button = KSRButton(style: buttonStyle)
-      button.setTitle("Button - \(String(describing: buttonStyle))", for: .normal)
-      button.configuration?.image = image(named: "icon-eye")
+      button.setTitle("\(String(describing: buttonStyle))", for: .normal)
       self.buttonsStackView.addArrangedSubview(button)
 
       let buttonDisabled = KSRButton(style: buttonStyle)
-      buttonDisabled.setTitle("Button - \(String(describing: buttonStyle)) - Disabled", for: .normal)
-      buttonDisabled.configuration?.image = image(named: "icon-eye")
+      buttonDisabled.setTitle("\(String(describing: buttonStyle)) (disabled)", for: .normal)
       buttonDisabled.isEnabled = false
       self.buttonsStackView.addArrangedSubview(buttonDisabled)
 
-      let buttonFocused = KSRButton(style: buttonStyle)
-      buttonFocused.setTitle("Button - \(String(describing: buttonStyle)) - Loading", for: .normal)
-      buttonFocused.configuration?.image = image(named: "icon-eye")
-      buttonFocused.startLoading()
-      self.buttonsStackView.addArrangedSubview(buttonFocused)
+      let twoButtonStack = UIStackView(arrangedSubviews: [button, buttonDisabled])
+      twoButtonStack.spacing = 8.0
+      self.buttonsStackView.addArrangedSubview(twoButtonStack)
 
       NSLayoutConstraint.activate([
-        button.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
-        buttonDisabled.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
-        buttonFocused.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor)
+        twoButtonStack.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor)
       ])
     }
 
@@ -270,50 +215,19 @@ final class DesignSystemViewController: UIViewController {
 
     // MARK: - Typography Stack
 
-    _ = (
-      [
-        self.title1Label,
-        self.title1LabelBold,
-        self.title2Label,
-        self.title2LabelBold,
-        self.title3Label,
-        self.title3LabelBold,
-        self.headlineLabel,
-        self.bodyLabel,
-        self.calloutLabel,
-        self.calloutLabelBold,
-        self.subheadlineLabel,
-        self.subheadlineLabelBold,
-        self.footnoteLabel,
-        self.footnoteLabelBold,
-        self.caption1Label,
-        self.caption1Label,
-        self.caption2Label,
-        self.caption2LabelBold
-      ], self.typeStackView
-    )
-      |> ksr_addArrangedSubviewsToStackView()
-
     // New Design System Fonts
-    let newFontHeader = UILabel()
-    newFontHeader.font = .ksr_title1().bolded
-    newFontHeader.textColor = adaptiveColor(.black)
-    newFontHeader.adjustsFontForContentSizeCategory = true
-    newFontHeader.text = "New Typography"
-    self.typeStackView.addArrangedSubview(newFontHeader)
-
     InterFont.allCases.forEach { style in
       let label = UILabel()
       label.text = String(describing: style).capitalized
       label.font = style.font()
-      label.textColor = adaptiveColor(.black)
+      label.textColor = LegacyColors.ksr_black.uiColor()
       label.adjustsFontForContentSizeCategory = true
       self.typeStackView.addArrangedSubview(label)
 
       let labelBold = UILabel()
       labelBold.text = "\(String(describing: style)) Bold".capitalized
       labelBold.font = style.font().bolded
-      labelBold.textColor = adaptiveColor(.black)
+      labelBold.textColor = LegacyColors.ksr_black.uiColor()
       labelBold.adjustsFontForContentSizeCategory = true
       self.typeStackView.addArrangedSubview(labelBold)
     }
@@ -329,16 +243,6 @@ final class DesignSystemViewController: UIViewController {
       self.errorSnackbarIcon.heightAnchor.constraint(equalToConstant: 20),
       self.confirmationSnackbarIcon.widthAnchor.constraint(equalToConstant: 20),
       self.confirmationSnackbarIcon.heightAnchor.constraint(equalToConstant: 20),
-
-      self.primaryGreenButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
-      self.primaryBlueButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
-      self.primaryBlackButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
-      self.secondaryGreyButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
-      self.secondaryRedButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
-      self.secondaryDisabledButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
-      self.facebookButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
-      self.applePayButton.heightAnchor.constraint(equalToConstant: 48),
-      self.applePayButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
 
       self.heartIcon.widthAnchor.constraint(equalToConstant: 20),
       self.heartIcon.heightAnchor.constraint(equalToConstant: 20),
@@ -369,7 +273,7 @@ final class DesignSystemViewController: UIViewController {
     super.bindStyles()
 
     _ = self.view
-      |> \.backgroundColor .~ adaptiveColor(.white)
+      |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 
     _ = self.scrollView
       |> \.alwaysBounceVertical .~ true
@@ -386,15 +290,15 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.errorSnackbarStackView
       |> alertStackViewStyle
-      |> \.backgroundColor .~ adaptiveColor(.alert)
+      |> \.backgroundColor .~ LegacyColors.ksr_alert.uiColor()
 
     _ = self.confirmationSnackbarStackView
       |> alertStackViewStyle
-      |> \.backgroundColor .~ adaptiveColor(.trust500)
+      |> \.backgroundColor .~ LegacyColors.ksr_trust_500.uiColor()
 
     _ = self.alertsLabel
       |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ LegacyColors.ksr_black.uiColor()
       |> \.text .~ "Alerts"
 
     _ = self.alertsStackView
@@ -402,24 +306,24 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.errorSnackbarIcon
       |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.white)
+      |> \.tintColor .~ LegacyColors.ksr_white.uiColor()
       |> UIImageView.lens.image .~ UIImage(named: "fix-icon")?.withRenderingMode(.alwaysTemplate)
 
     _ = self.errorSnackbarLabel
       |> \.font .~ .ksr_subhead()
-      |> \.textColor .~ adaptiveColor(.white)
+      |> \.textColor .~ LegacyColors.ksr_white.uiColor()
       |> \.text .~ "Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada."
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 2
 
     _ = self.confirmationSnackbarIcon
       |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.white)
+      |> \.tintColor .~ LegacyColors.ksr_white.uiColor()
       |> UIImageView.lens.image .~ UIImage(named: "icon--confirmation")?.withRenderingMode(.alwaysTemplate)
 
     _ = self.confirmationSnackbarLabel
       |> \.font .~ .ksr_subhead()
-      |> \.textColor .~ adaptiveColor(.white)
+      |> \.textColor .~ LegacyColors.ksr_white.uiColor()
       |> \.text .~ "Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada."
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 2
@@ -428,49 +332,17 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.buttonsLabel
       |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ LegacyColors.ksr_black.uiColor()
       |> \.text .~ "Buttons"
 
     _ = self.buttonsStackView
       |> verticalComponentStackViewStyle
 
-    _ = self.primaryGreenButton
-      |> adaptiveGreenButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ "Primary Green Button"
-
-    _ = self.primaryBlueButton
-      |> adaptiveBlueButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ "Primary Blue Button"
-
-    _ = self.primaryBlackButton
-      |> adaptiveBlackButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ "Primary Black Button"
-
-    _ = self.secondaryGreyButton
-      |> adaptiveGreyButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ "Secondary Grey Button"
-
-    _ = self.secondaryDisabledButton
-      |> adaptiveGreyButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ "Secondary Disabled Button"
-      |> UIButton.lens.isEnabled .~ false
-
-    _ = self.secondaryRedButton
-      |> adaptiveRedButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ "Secondary Red Button"
-
-    _ = self.facebookButton
-      |> adaptiveFacebookButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ " \(Strings.Continue_with_Facebook())"
-
-    _ = self.applePayButton
-      |> applePayButtonStyle
-
     // MARK: - Icon Styles
 
     _ = self.iconsLabel
       |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ LegacyColors.ksr_black.uiColor()
       |> \.text .~ "Icons"
 
     _ = self.iconsStackView
@@ -478,29 +350,29 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.logoIcon
       |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.create500)
+      |> \.tintColor .~ LegacyColors.ksr_create_500.uiColor()
       |> UIImageView.lens.image .~ UIImage(named: "kickstarter-logo")?.withRenderingMode(.alwaysTemplate)
 
     _ = self.arrowDownIcon
       |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.create500)
+      |> \.tintColor .~ LegacyColors.ksr_create_500.uiColor()
       |> UIImageView.lens.image .~ UIImage(named: "arrow-down-large")?.withRenderingMode(.alwaysTemplate)
 
     _ = self.heartIcon
       |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.support400)
+      |> \.tintColor .~ LegacyColors.ksr_support_400.uiColor()
       |> UIImageView.lens.image .~ UIImage(named: "heart-icon")?.withRenderingMode(.alwaysTemplate)
 
     _ = self.bookmarkIcon
       |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.create700)
+      |> \.tintColor .~ LegacyColors.ksr_create_700.uiColor()
       |> UIImageView.lens.image .~ UIImage(named: "icon--bookmark")?.withRenderingMode(.alwaysTemplate)
 
     // MARK: - Control Styles
 
     _ = self.controlsLabel
       |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ LegacyColors.ksr_black.uiColor()
       |> \.text .~ "Controls"
 
     _ = self.controlsStackView
@@ -532,7 +404,7 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.inputsLabel
       |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ LegacyColors.ksr_black.uiColor()
       |> \.text .~ "Inputs"
 
     _ = self.inputsStackView
@@ -540,7 +412,7 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.emailTextField
       |> adaptiveEmailFieldStyle
-      |> \.layer.borderColor .~ adaptiveColor(.support500).cgColor
+      |> \.layer.borderColor .~ LegacyColors.ksr_support_500.uiColor().cgColor
       |> \.layer.borderWidth .~ 1
       |> \.layer.cornerRadius .~ 6
       |> \.attributedPlaceholder %~ { _ in
@@ -548,7 +420,7 @@ final class DesignSystemViewController: UIViewController {
       }
     _ = self.passwordTextField
       |> adaptiveEmailFieldStyle
-      |> \.layer.borderColor .~ adaptiveColor(.support500).cgColor
+      |> \.layer.borderColor .~ LegacyColors.ksr_support_500.uiColor().cgColor
       |> \.layer.borderWidth .~ 1
       |> \.layer.cornerRadius .~ 6
       |> UITextField.lens.secureTextEntry .~ true
@@ -560,7 +432,7 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.progressLabel
       |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ LegacyColors.ksr_black.uiColor()
       |> \.text .~ "Progress Indicators"
 
     _ = self.progressStackView
@@ -579,108 +451,18 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.footersLabel
       |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ LegacyColors.ksr_black.uiColor()
       |> \.text .~ "Footers"
 
     // MARK: - Typography Styles
 
     _ = self.typesLabel
       |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ LegacyColors.ksr_black.uiColor()
       |> \.text .~ "Typography"
 
     _ = self.typeStackView
       |> verticalComponentStackViewStyle
-
-    _ = self.title1Label
-      |> \.font .~ .ksr_title1()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Title 1"
-
-    _ = self.title1LabelBold
-      |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Title 1 Bold"
-
-    _ = self.title2Label
-      |> \.font .~ .ksr_title2()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Title 2"
-
-    _ = self.title2LabelBold
-      |> \.font .~ .ksr_title2().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Title 2 Bold"
-
-    _ = self.title3Label
-      |> \.font .~ .ksr_title3()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Title 3"
-
-    _ = self.title3LabelBold
-      |> \.font .~ .ksr_title3().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Title 3 Bold"
-
-    _ = self.headlineLabel
-      |> \.font .~ .ksr_headline()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Headline Bold"
-
-    _ = self.bodyLabel
-      |> \.font .~ .ksr_body()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Body"
-
-    _ = self.calloutLabel
-      |> \.font .~ .ksr_callout()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Callout"
-
-    _ = self.calloutLabelBold
-      |> \.font .~ .ksr_callout().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Callout Bold"
-
-    _ = self.subheadlineLabel
-      |> \.font .~ .ksr_subhead()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Subheadline"
-
-    _ = self.subheadlineLabelBold
-      |> \.font .~ .ksr_subhead().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Subheadline Bold"
-
-    _ = self.footnoteLabel
-      |> \.font .~ .ksr_footnote()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Footnote"
-
-    _ = self.footnoteLabelBold
-      |> \.font .~ .ksr_footnote().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Footnote Bold"
-
-    _ = self.caption1Label
-      |> \.font .~ .ksr_caption1()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Caption 1"
-
-    _ = self.caption1LabelBold
-      |> \.font .~ .ksr_caption1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Caption 1 Bold"
-
-    _ = self.caption2Label
-      |> \.font .~ .ksr_caption2()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Caption 2"
-
-    _ = self.caption2LabelBold
-      |> \.font .~ .ksr_caption2().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Caption 2 Bold"
   }
 }
 
