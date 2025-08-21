@@ -53,13 +53,13 @@ commands:
   notify_on_failure_on_important_branches:
     steps:
       - when:
-        condition:
-          or:
-            - equal: [ main, << pipeline.git.branch >> ]
-            - equal: [ itunes-dist, << pipeline.git.branch >> ]
-            - equal: [ feat/adyer/circle-slack-arts, << pipeline.git.branch >> ]
-        steps:
-          - notify_on_failure
+          condition:
+            or:
+              - equal: [ main, << pipeline.git.branch >> ]
+              - equal: [ itunes-dist, << pipeline.git.branch >> ]
+              - equal: [ feat/adyer/circle-slack-arts, << pipeline.git.branch >> ]
+          steps:
+            - notify_on_failure
 
 base_job: &base_job
   macos:
