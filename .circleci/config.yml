@@ -55,7 +55,7 @@ commands:
               "Detail": '$(jq -c tojson detail.json)'
             }]'
   notify_on_failure_on_important_branches:
-    description: "Sends an alert to #mobile_deployments when the current job fails, if it is running against main or itunes-dist.""
+    description: "Sends an alert to #mobile_deployments when the current job fails, if it is running against main or itunes-dist."
     steps:
       - when:
           condition:
