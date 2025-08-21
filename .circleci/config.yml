@@ -50,6 +50,16 @@ commands:
               "DetailType": "CircleCI Job Failed",
               "Detail": '$(jq -c tojson detail.json)'
             }]'
+  notify_on_failure_on_important_branches:
+    steps:
+      - when:
+        condition:
+          or:
+            equal: [ main, << pipeline.git.branch >> ]
+            equal: [ itunes-dist, << pipeline.git.branch >> ]
+            equal: [ feat/adyer/circle-slack-arts, << pipeline.git.branch >> ]
+        steps:
+          - notify_on_failure
 
 base_job: &base_job
   macos:
@@ -62,6 +72,9 @@ test_job: &test_job
     - macos/install-rosetta
     - aws-cli/setup:
         <<: *aws_cli_setup
+    - run:
+        name: Fail on purpose
+        command: exit 1
     - attach_workspace:
         at: .
     - macos/preboot-simulator:
@@ -77,6 +90,7 @@ test_job: &test_job
         no_output_timeout: "20m" # 20 minutes
     - store_artifacts:
         path: ./Failed_Snapshot_Tests
+    - notify_on_failure_on_important_branches
 
 distribute_job: &distribute_job
   steps:
@@ -126,9 +140,6 @@ jobs:
           # This is for Danger, which requires a bit more git history
           fetch_depth: 100
       - run:
-          name: Fail on purpose
-          command: exit 1
-      - run:
           name: SPM SSH Workaround
           command: *spm_ssh_workaround
       - run:
@@ -156,11 +167,7 @@ jobs:
           root: .
           paths:
             - .
-      - when:
-          condition:
-            equal: [ feat/adyer/circle-slack-arts, << pipeline.git.branch >> ]
-          steps:
-            - notify_on_failure
+      - notify_on_failure_on_important_branches
 
   # Kickstarter tests
   kickstarter-tests:
