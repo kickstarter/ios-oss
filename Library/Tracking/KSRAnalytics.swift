@@ -2,7 +2,7 @@ import AppTrackingTransparency
 import KsApi
 import PassKit
 import Prelude
-import SegmentBraze
+import SegmentBrazeUI
 import UIKit
 
 public final class KSRAnalytics {

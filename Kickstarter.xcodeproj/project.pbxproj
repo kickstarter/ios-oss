@@ -420,8 +420,8 @@
 		395A3BC22B8E54C90091A379 /* AttributionTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BC12B8E54C90091A379 /* AttributionTracking.swift */; };
 		395A3BC42B8E56800091A379 /* AttributionTrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BC32B8E56800091A379 /* AttributionTrackingTests.swift */; };
 		395A3BCB2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BCA2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift */; };
-		3976B36A2E57AEC200D2DD50 /* SegmentBraze in Frameworks */ = {isa = PBXBuildFile; productRef = 3976B3692E57AEC200D2DD50 /* SegmentBraze */; };
-		3976B36C2E57AEE000D2DD50 /* SegmentBraze in Frameworks */ = {isa = PBXBuildFile; productRef = 3976B36B2E57AEE000D2DD50 /* SegmentBraze */; };
+		3976B36E2E57DC7F00D2DD50 /* SegmentBrazeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 3976B36D2E57DC7F00D2DD50 /* SegmentBrazeUI */; };
+		3976B3702E5CBDC300D2DD50 /* SegmentBrazeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 3976B36F2E5CBDC300D2DD50 /* SegmentBrazeUI */; };
 		399653682E2EE98D00ED69E5 /* SearchEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399653672E2EE98D00ED69E5 /* SearchEmptyStateCell.swift */; };
 		3996536A2E2EEA2300ED69E5 /* SearchEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399653692E2EEA2300ED69E5 /* SearchEmptyStateCellViewModel.swift */; };
 		39B5E10E2B86C56600FFB720 /* RefInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B5E10D2B86C56600FFB720 /* RefInfo.swift */; };
@@ -3632,10 +3632,10 @@
 				19338D9B2A0D4E2300075F29 /* Stripe in Frameworks */,
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
 				6078106D2A0419170050D4F7 /* FirebasePerformance in Frameworks */,
-				3976B36C2E57AEE000D2DD50 /* SegmentBraze in Frameworks */,
 				E113BD912B7D615000D3A809 /* Prelude in Frameworks */,
 				60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */,
 				1996AA1F2A5F1BC400AE2ED0 /* StripePaymentSheet in Frameworks */,
+				3976B3702E5CBDC300D2DD50 /* SegmentBrazeUI in Frameworks */,
 				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
 				600A0EEB2DD23BAA00954829 /* Lottie in Frameworks */,
 				6078106F2A04191C0050D4F7 /* FirebaseAnalytics in Frameworks */,
@@ -3674,7 +3674,7 @@
 				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
-				3976B36A2E57AEC200D2DD50 /* SegmentBraze in Frameworks */,
+				3976B36E2E57DC7F00D2DD50 /* SegmentBrazeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8080,7 +8080,7 @@
 				E113BD902B7D615000D3A809 /* Prelude */,
 				E1B214702BFD184500109961 /* KingfisherWebP */,
 				600A0EEA2DD23BAA00954829 /* Lottie */,
-				3976B36B2E57AEE000D2DD50 /* SegmentBraze */,
+				3976B36F2E5CBDC300D2DD50 /* SegmentBrazeUI */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -8152,7 +8152,7 @@
 			name = "Kickstarter-iOS";
 			packageProductDependencies = (
 				06EA2D4B280F76B700F4DE2E /* Prelude */,
-				3976B3692E57AEC200D2DD50 /* SegmentBraze */,
+				3976B36D2E57DC7F00D2DD50 /* SegmentBrazeUI */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -12049,15 +12049,15 @@
 			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
 			productName = "ReactiveExtensions-TestHelpers";
 		};
-		3976B3692E57AEC200D2DD50 /* SegmentBraze */ = {
+		3976B36D2E57DC7F00D2DD50 /* SegmentBrazeUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3976B3682E57AEC200D2DD50 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
-			productName = SegmentBraze;
+			productName = SegmentBrazeUI;
 		};
-		3976B36B2E57AEE000D2DD50 /* SegmentBraze */ = {
+		3976B36F2E5CBDC300D2DD50 /* SegmentBrazeUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3976B3682E57AEC200D2DD50 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
-			productName = SegmentBraze;
+			productName = SegmentBrazeUI;
 		};
 		600A0EEA2DD23BAA00954829 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;

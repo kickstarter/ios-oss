@@ -1,4 +1,5 @@
 import BrazeKit
+import BrazeUI
 import FBSDKCoreKit
 import Firebase
 import Foundation
@@ -14,7 +15,7 @@ import ReactiveExtensions
 import ReactiveSwift
 import SafariServices
 import Segment
-import SegmentBraze
+import SegmentBrazeUI
 import SwiftUI
 import UIKit
 import UserNotifications
@@ -269,6 +270,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         ) { [weak self] braze in
           guard let self else { return }
           braze.delegate = self
+
+          braze.inAppMessagePresenter = BrazeUI.BrazeInAppMessageUI()
 
           if let userId = AppEnvironment.current.currentUser?.id {
             braze.changeUser(userId: String(userId))
