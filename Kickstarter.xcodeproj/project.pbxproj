@@ -212,8 +212,6 @@
 		1965436D28C807FB00457EC6 /* PledgePaymentMethodsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */; };
 		1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
 		1965437E28C8165200457EC6 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
-		19821C85299D392400EF312F /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19821C84299D392400EF312F /* AppboySegment */; };
-		19821C87299D3E8300EF312F /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19821C86299D3E8300EF312F /* AppboySegment */; };
 		1996AA1F2A5F1BC400AE2ED0 /* StripePaymentSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 1996AA1E2A5F1BC400AE2ED0 /* StripePaymentSheet */; };
 		1996AA312A5F39CC00AE2ED0 /* PledgePaymentMethodsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6534D3D22E789B900E9D279 /* PledgePaymentMethodsViewModelTests.swift */; };
 		1996AA322A5F3A3200AE2ED0 /* Stripe+PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */; };
@@ -422,6 +420,8 @@
 		395A3BC22B8E54C90091A379 /* AttributionTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BC12B8E54C90091A379 /* AttributionTracking.swift */; };
 		395A3BC42B8E56800091A379 /* AttributionTrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BC32B8E56800091A379 /* AttributionTrackingTests.swift */; };
 		395A3BCB2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BCA2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift */; };
+		3976B36A2E57AEC200D2DD50 /* SegmentBraze in Frameworks */ = {isa = PBXBuildFile; productRef = 3976B3692E57AEC200D2DD50 /* SegmentBraze */; };
+		3976B36C2E57AEE000D2DD50 /* SegmentBraze in Frameworks */ = {isa = PBXBuildFile; productRef = 3976B36B2E57AEE000D2DD50 /* SegmentBraze */; };
 		399653682E2EE98D00ED69E5 /* SearchEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399653672E2EE98D00ED69E5 /* SearchEmptyStateCell.swift */; };
 		3996536A2E2EEA2300ED69E5 /* SearchEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399653692E2EEA2300ED69E5 /* SearchEmptyStateCellViewModel.swift */; };
 		39B5E10E2B86C56600FFB720 /* RefInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B5E10D2B86C56600FFB720 /* RefInfo.swift */; };
@@ -3632,13 +3632,13 @@
 				19338D9B2A0D4E2300075F29 /* Stripe in Frameworks */,
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
 				6078106D2A0419170050D4F7 /* FirebasePerformance in Frameworks */,
+				3976B36C2E57AEE000D2DD50 /* SegmentBraze in Frameworks */,
 				E113BD912B7D615000D3A809 /* Prelude in Frameworks */,
 				60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */,
 				1996AA1F2A5F1BC400AE2ED0 /* StripePaymentSheet in Frameworks */,
 				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
 				600A0EEB2DD23BAA00954829 /* Lottie in Frameworks */,
 				6078106F2A04191C0050D4F7 /* FirebaseAnalytics in Frameworks */,
-				19821C87299D3E8300EF312F /* AppboySegment in Frameworks */,
 				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
 				6078106B2A0419130050D4F7 /* FirebaseCrashlytics in Frameworks */,
 				19A6665F2A045F2A00708F8B /* FirebaseRemoteConfig in Frameworks */,
@@ -3673,8 +3673,8 @@
 			files = (
 				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
-				19821C85299D392400EF312F /* AppboySegment in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
+				3976B36A2E57AEC200D2DD50 /* SegmentBraze in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8071,7 +8071,6 @@
 				60DA510E28C7E04B002E2DF1 /* Kingfisher */,
 				606754BC28CF91D60033CD5E /* FacebookCore */,
 				606754BE28CF91DD0033CD5E /* FacebookLogin */,
-				19821C86299D3E8300EF312F /* AppboySegment */,
 				6078106A2A0419130050D4F7 /* FirebaseCrashlytics */,
 				6078106C2A0419170050D4F7 /* FirebasePerformance */,
 				6078106E2A04191C0050D4F7 /* FirebaseAnalytics */,
@@ -8081,6 +8080,7 @@
 				E113BD902B7D615000D3A809 /* Prelude */,
 				E1B214702BFD184500109961 /* KingfisherWebP */,
 				600A0EEA2DD23BAA00954829 /* Lottie */,
+				3976B36B2E57AEE000D2DD50 /* SegmentBraze */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -8152,7 +8152,7 @@
 			name = "Kickstarter-iOS";
 			packageProductDependencies = (
 				06EA2D4B280F76B700F4DE2E /* Prelude */,
-				19821C84299D392400EF312F /* AppboySegment */,
+				3976B3692E57AEC200D2DD50 /* SegmentBraze */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -8356,9 +8356,9 @@
 				19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */,
 				7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
-				19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
 				E1B2146F2BFD184500109961 /* XCRemoteSwiftPackageReference "KingfisherWebP" */,
 				600A0EE92DD23BAA00954829 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				3976B3682E57AEC200D2DD50 /* XCRemoteSwiftPackageReference "braze-segment-swift" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -11924,20 +11924,20 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Appboy/appboy-segment-ios";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
-			};
-		};
 		19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 11.4.0;
+			};
+		};
+		3976B3682E57AEC200D2DD50 /* XCRemoteSwiftPackageReference "braze-segment-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/braze-inc/braze-segment-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
 			};
 		};
 		600A0EE92DD23BAA00954829 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
@@ -12024,16 +12024,6 @@
 			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
 			productName = Stripe;
 		};
-		19821C84299D392400EF312F /* AppboySegment */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */;
-			productName = AppboySegment;
-		};
-		19821C86299D3E8300EF312F /* AppboySegment */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */;
-			productName = AppboySegment;
-		};
 		1996AA1E2A5F1BC400AE2ED0 /* StripePaymentSheet */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
@@ -12058,6 +12048,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
 			productName = "ReactiveExtensions-TestHelpers";
+		};
+		3976B3692E57AEC200D2DD50 /* SegmentBraze */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3976B3682E57AEC200D2DD50 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
+			productName = SegmentBraze;
+		};
+		3976B36B2E57AEE000D2DD50 /* SegmentBraze */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3976B3682E57AEC200D2DD50 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
+			productName = SegmentBraze;
 		};
 		600A0EEA2DD23BAA00954829 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;

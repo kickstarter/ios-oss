@@ -1,4 +1,4 @@
-import AppboyKit
+import BrazeKit
 import FBSDKCoreKit
 import Firebase
 import Foundation
@@ -7,7 +7,6 @@ import Foundation
 #else
   import KsApi
 #endif
-import AppboySegment
 import Kickstarter_Framework
 import Library
 import Prelude
@@ -15,6 +14,7 @@ import ReactiveExtensions
 import ReactiveSwift
 import SafariServices
 import Segment
+import SegmentBraze
 import SwiftUI
 import UIKit
 import UserNotifications
@@ -24,6 +24,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   fileprivate let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
   fileprivate var disposables: [any Disposable] = []
+  fileprivate var brazeSubscription: BrazeKit.Braze.Cancellable?
+
+  private var analytics: Segment.Analytics?
 
   internal var rootTabBarController: RootTabBarViewController? {
     return self.window?.rootViewController as? RootTabBarViewController
@@ -36,6 +39,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     // FBSDK initialization
     ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     Settings.shouldLimitEventAndDataUsage = true
+
+    // Braze expects to be configured immediately, but segment destination plugins are initialized
+    // async. This method bridges that gap.
+    // https://www.braze.com/docs/developer_guide/sdk_integration#swift_step-2-set-up-delayed-initialization-optional
+    BrazeDestination.prepareForDelayedInitialization()
 
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
@@ -146,7 +154,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.registerPushTokenInSegment
       .observeForUI()
       .observeValues { token in
-        Analytics.shared().registeredForRemoteNotifications(withDeviceToken: token)
+        self.analytics?.registeredForRemoteNotifications(deviceToken: token)
       }
 
     self.viewModel.outputs.triggerOnboardingFlow
@@ -250,23 +258,44 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let configuration = Analytics.configuredClient(withWriteKey: writeKey)
 
-        if let appBoyInstance = SEGAppboyIntegrationFactory.instance() {
-          configuration.use(appBoyInstance)
-          appBoyInstance.saveLaunchOptions(launchOptions)
-          appBoyInstance.appboyOptions = [
-            ABKInAppMessageControllerDelegateKey: strongSelf,
-            ABKURLDelegateKey: strongSelf,
-            ABKMinimumTriggerTimeIntervalKey: 5
-          ]
+        let brazeDestination = BrazeDestination(
+          additionalConfiguration: { configuration in
+            configuration.triggerMinimumTimeInterval = 5
+            configuration.push.automation = true
+            configuration.push.automation.requestAuthorizationAtLaunch = false
+            // TODO(MBL-2742): Change the logger level to `info` or `error` if it gets tedious.
+            configuration.logger.level = .debug
+          }
+        ) { [weak self] braze in
+          guard let self else { return }
+          if let userId = AppEnvironment.current.currentUser?.id {
+            braze.changeUser(userId: String(userId))
+          }
+          self.brazeSubscription = braze.notifications
+            .subscribeToUpdates(payloadTypes: [.opened]) { [weak self] payload in
+              guard let self else { return }
+              // TODO(MBL-2742): Once migration is stable, revisit if braze should update the rootTabBar.
+              if let rootTabBarController = self.rootTabBarController {
+                // Handle notification, including any deeplinks.
+                self.viewModel.inputs.didReceive(remoteNotification: payload.userInfo)
+                rootTabBarController.didReceiveBadgeValue(payload.badge)
+              }
+            }
         }
 
-        Analytics.setup(with: configuration)
-        AppEnvironment.current.ksrAnalytics.configureSegmentClient(Analytics.shared())
+        configuration.add(plugin: brazeDestination)
+
+        let middleware = BrazeDebounceMiddlewarePlugin()
+        configuration.add(plugin: middleware)
+
+        self?.analytics = configuration
+
+        AppEnvironment.current.ksrAnalytics.configureSegmentClient(configuration)
       }
 
     self.viewModel.outputs.segmentIsEnabled
       .observeValues { enabled in
-        enabled ? Analytics.shared().enable() : Analytics.shared().disable()
+        self.analytics?.enabled = enabled
       }
 
     NotificationCenter.default
