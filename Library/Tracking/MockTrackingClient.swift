@@ -4,6 +4,7 @@ internal final class MockTrackingClient: TrackingClientType {
   internal var tracks: [(event: String, properties: [String: Any])] = []
   internal var screens: [(title: String, properties: [String: Any])] = []
   internal var userId: String?
+  internal var anonymousId: String = "fake-anon-id"
   internal var traits: [String: Any]?
 
   func track(name: String, properties: [String: Any]?) {
