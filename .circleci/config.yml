@@ -152,6 +152,8 @@ jobs:
       - *default_environment
     steps:
       - macos/install-rosetta
+      - aws-cli/setup:
+        <<: *aws_cli_setup
       - git-shallow-clone/checkout:
           # This is for Danger, which requires a bit more git history
           fetch_depth: 100 
@@ -220,8 +222,6 @@ jobs:
     steps:
       - macos/install-rosetta
       - git-shallow-clone/checkout
-      - aws-cli/setup:
-          <<: *aws_cli_setup
       - run:
           name: Deploy Alpha
           command: make alpha
