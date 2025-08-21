@@ -152,7 +152,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.registerPushTokenInSegment
       .observeForUI()
       .observeValues { token in
-        self.braze?.notifications.register(deviceToken: token)
+        self.analytics?.registeredForRemoteNotifications(deviceToken: token)
       }
 
     self.viewModel.outputs.triggerOnboardingFlow
