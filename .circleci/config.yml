@@ -34,7 +34,7 @@ commands:
       - run:
           name: Create Slack message detail
           command: |
-            cat \<<-JSON | jq -c > slack.json
+            cat <<-JSON | jq -c > slack.json
             {
               "method": "chat.postMessage",
               "params": {
@@ -58,7 +58,7 @@ commands:
       - run:
           name: Create EventBridge entries
           command: |
-            cat \<<-JSON | jq -c > entries.json
+            cat <<-JSON | jq -c > entries.json
             [{
               "Source": "kickbot",
               "DetailType": "post",
