@@ -268,16 +268,17 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           }
         ) { [weak self] braze in
           guard let self else { return }
+          braze.delegate = self
+
           if let userId = AppEnvironment.current.currentUser?.id {
             braze.changeUser(userId: String(userId))
           }
+
           self.brazeSubscription = braze.notifications
             .subscribeToUpdates(payloadTypes: [.opened]) { [weak self] payload in
               guard let self else { return }
               // TODO(MBL-2742): Once migration is stable, revisit if braze should update the rootTabBar.
               if let rootTabBarController = self.rootTabBarController {
-                // Handle notification, including any deeplinks.
-                self.viewModel.inputs.didReceive(remoteNotification: payload.userInfo)
                 rootTabBarController.didReceiveBadgeValue(payload.badge)
               }
             }
@@ -536,5 +537,15 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
     rootTabBarController.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
     completion()
+  }
+}
+
+// MARK: - BrazeDelegate
+
+extension AppDelegate: BrazeDelegate {
+  func braze(_: BrazeKit.Braze, shouldOpenURL context: BrazeKit.Braze.URLContext) -> Bool {
+    // Custom handle all urls instead of letting braze try to open them.
+    self.viewModel.inputs.urlFromBrazeNotification(context.url)
+    return false
   }
 }
