@@ -48,7 +48,6 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
       language, device, style in
       withEnvironment(
         apiService: MockService(fetchActivitiesResponse: activities),
-        colorResolver: AppColorResolver(),
         currentUser: User.template,
         language: language,
         userDefaults: MockKeyValueStore()

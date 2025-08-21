@@ -42,7 +42,6 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
     ).forEach { language, device, style in
       withEnvironment(
         apiService: mockService,
-        colorResolver: AppColorResolver(),
         language: language
       ) {
         let controller = RewardAddOnSelectionViewController.instantiate()

@@ -150,7 +150,7 @@ internal final class SearchViewContollerTests: TestCase {
     )
     .forEach { language, device, style in
       withEnvironment(
-        apiService: MockService(fetchGraphQLResponses: emptyResponse), colorResolver: AppColorResolver(),
+        apiService: MockService(fetchGraphQLResponses: emptyResponse),
         language: language, remoteConfigClient: mockRemoteConfig
       ) {
         let controller = Storyboard.Search.instantiate(SearchViewController.self)
@@ -214,7 +214,7 @@ internal final class SearchViewContollerTests: TestCase {
     )
     .forEach { language, device, style in
       withEnvironment(
-        apiService: MockService(fetchGraphQLResponses: searchResponse), colorResolver: AppColorResolver(),
+        apiService: MockService(fetchGraphQLResponses: searchResponse),
         language: language
       ) {
         let controller = Storyboard.Search.instantiate(SearchViewController.self)

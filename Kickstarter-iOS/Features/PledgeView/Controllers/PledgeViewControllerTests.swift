@@ -264,7 +264,6 @@ final class PledgeViewControllerTests: TestCase {
     )
     .forEach { language, device, style in
       withEnvironment(
-        colorResolver: AppColorResolver(),
         language: language
       ) {
         let controller = PledgeViewController.instantiate()

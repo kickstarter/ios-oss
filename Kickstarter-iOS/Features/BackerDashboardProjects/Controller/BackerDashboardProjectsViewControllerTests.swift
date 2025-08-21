@@ -63,7 +63,6 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
       language, device, style in
       withEnvironment(
         apiService: MockService(fetchBackerBackedProjectsResponse: env),
-        colorResolver: AppColorResolver(),
         currentUser: User.template,
         language: language
       ) {

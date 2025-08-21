@@ -297,7 +297,6 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
     withEnvironment(
       apiService: mockService,
-      colorResolver: AppColorResolver(),
       config: config,
       currentUser: currentUser,
       language: language

@@ -27,10 +27,9 @@ internal final class LoginToutViewControllerTests: TestCase {
   func testDarkMode() {
     let language = Language.en
     let device = Device.phone5_8inch
-    let resolver = AppColorResolver()
     let intent = LoginIntent.generic
 
-    withEnvironment(colorResolver: resolver, language: language) {
+    withEnvironment(language: language) {
       let controller = LoginToutViewController.configuredWith(loginIntent: intent)
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
