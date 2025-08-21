@@ -30,10 +30,11 @@ public protocol NextGenSearchViewModelType {
 @Observable
 public final class NextGenSearchViewModel: NextGenSearchViewModelType,
   NextGenSearchViewModelInputs, NextGenSearchViewModelOutputs, Identifiable {
-  // Input bound by TextField; each change is yielded into the AsyncStream.
+  /// When the TextField changes `searchQuery`, push the new value into our AsyncStream
+  /// so the debounced search pipeline can react to it.
   public var searchQuery: String = "" {
     didSet {
-      self.textChangesContinuation?.yield(self.query)
+      self.textChangesContinuation.yield(self.searchQuery)
     }
   }
 
@@ -42,16 +43,16 @@ public final class NextGenSearchViewModel: NextGenSearchViewModelType,
   public private(set) var statusText: String = "Idle"
 
   private let service: any NextGenProjectSearchServicing
-  private var textChangesStream: AsyncStream<String>!
-  private var textChangesContinuation: AsyncStream<String>.Continuation?
+  private let textChangesStream: AsyncStream<String>
+  private let textChangesContinuation: AsyncStream<String>.Continuation
   private var bindTask: Task<Void, Never>?
   private var currentRequest: Task<Void, Never>?
 
   public init(service: any NextGenProjectSearchServicing) {
     self.service = service
-    self.textChangesStream = AsyncStream<String> { continuation in
-      self.textChangesContinuation = continuation
-    }
+
+    (self.textChangesStream, self.textChangesContinuation) = AsyncStream<String>.makeStream()
+
     self.bindTyping(stream: self.textChangesStream)
   }
 
