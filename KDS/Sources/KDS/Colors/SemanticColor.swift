@@ -23,7 +23,7 @@ public struct SemanticColor: AdaptiveColor {
 
   public let name: String
 
-  init(_ name: String, lightMode: CoreColor, darkMode: CoreColor) {
+  public init(_ name: String, lightMode: CoreColor, darkMode: CoreColor) {
     self.name = name
 
     let lightModeColor = UIColor(coreColor: lightMode)
