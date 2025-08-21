@@ -22778,8 +22778,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Registrieren oder Anmelden"
    - **es**: "Regístrate o Inicia sesión"
    - **fr**: "Inscription ou connexion"
-   - **ja**: "サインアップ or ログイン
-"
+   - **ja**: "サインアップまたはログイン"
   */
   public static func discovery_onboarding_buttons_signup_or_login() -> String {
     return localizedString(
@@ -24712,8 +24711,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
    - **de**: "Registrieren oder Anmelden"
    - **es**: "Registrarme o iniciar sesión"
    - **fr**: "Inscription ou connexion"
-   - **ja**: "サインアップ or ログイン
-"
+   - **ja**: "サインアップまたはログイン"
   */
   public static func login_tout_generic_intent_traditional_signup_or_login_button() -> String {
     return localizedString(
