@@ -29,43 +29,27 @@ default_environment: &default_environment
   PLATFORM: iOS
 
 commands:
-  notify_slack_on_failure:
+  notify_on_failure:
     steps:
       - run:
-          name: Create Slack message detail
+          name: Create failure detail
           when: on_fail
           command: |
             jq -n '{
-              "method": "chat.postMessage",
-              "params": {
-                "channel": "CBFKYTCEQ",
-                "username": "CircleCI",
-                "icon_emoji": "circleci-fail",
-                "text": "CircleCI notification",
-                "blocks": [
-                  {
-                    "type": "section",
-                    "text": {
-                      "type": "mrkdwn",
-                      "text": "Lorem ispum ergo sum"
-                    }
-                  }
-                ]
-              }
-            }' > slack.json
-      - run:
-          name: Create EventBridge entries
-          when: on_fail
-          command: |
-            jq -n '[{
-              "Source": "kickbot",
-              "DetailType": "post",
-              "Detail": '"$(jq tojson slack.json)"'
-            }]' > entries.json
+              "branch": "'$CIRCLE_BRANCH'",
+              "job": "'$CIRCLE_JOB'",
+              "repo": "'$CIRCLE_PROJECT_REPONAME'",
+              "url": "'$CIRCLE_BUILD_URL'"
+            }' > detail.json
       - run:
           name: Send EventBridge event
           when: on_fail
-          command: aws events put-events --entries "$(jq -c . entries.json)"
+          command: |
+            aws events put-events --entries '[{
+              "Source": "circleci",
+              "DetailType": "CircleCI Job Failed",
+              "Detail": '$(jq -c tojson detail.json)'
+            }]'
 
 base_job: &base_job
   macos:
@@ -172,7 +156,7 @@ jobs:
           root: .
           paths:
             - .
-      - notify_slack_on_failure
+      - notify_on_failure
 
   # Kickstarter tests
   kickstarter-tests:
