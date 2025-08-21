@@ -55,9 +55,9 @@ commands:
       - when:
         condition:
           or:
-            equal: [ main, << pipeline.git.branch >> ]
-            equal: [ itunes-dist, << pipeline.git.branch >> ]
-            equal: [ feat/adyer/circle-slack-arts, << pipeline.git.branch >> ]
+            - equal: [ main, << pipeline.git.branch >> ]
+            - equal: [ itunes-dist, << pipeline.git.branch >> ]
+            - equal: [ feat/adyer/circle-slack-arts, << pipeline.git.branch >> ]
         steps:
           - notify_on_failure
 
@@ -119,6 +119,8 @@ distribute_job: &distribute_job
         command: make cleanup
     - store_artifacts:
         path: output
+    - notify_on_failure
+
 
 all_jobs: &all_jobs
   - kickstarter-tests
