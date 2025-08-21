@@ -31,9 +31,6 @@ default_environment: &default_environment
 commands:
   notify_slack_on_failure:
     steps:
-    - aws-cli/setup:
-        <<: *aws_cli_setup
-        when: on_fail
     - run:
         name: Create Slack message detail
         command: |
@@ -95,6 +92,8 @@ base_job: &base_job
 test_job: &test_job
   steps:
     - macos/install-rosetta
+    - aws-cli/setup:
+      <<: *aws_cli_setup
     - attach_workspace:
         at: .
     - macos/preboot-simulator:
