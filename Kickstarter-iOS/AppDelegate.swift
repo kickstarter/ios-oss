@@ -347,14 +347,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     print("🔴 Failed to register for remote notifications: \(error.localizedDescription)")
   }
 
-  func application(
-    _: UIApplication,
-    didReceiveRemoteNotification userInfo: [AnyHashable: Any],
-    fetchCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void
-  ) {
-    SEGAppboyIntegrationFactory.instance()?.saveRemoteNotification(userInfo)
-  }
-
   internal func applicationDidReceiveMemoryWarning(_: UIApplication) {
     self.viewModel.inputs.applicationDidReceiveMemoryWarning()
   }
@@ -503,18 +495,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
   }
 
   func userNotificationCenter(
-    _ center: UNUserNotificationCenter,
+    _: UNUserNotificationCenter,
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
-    // Track notification opened.
-    // Documentation: https://github.com/Appboy/appboy-segment-ios/blob/master/CHANGELOG.md#added-6.
-    let appBoyHelper = SEGAppboyIntegrationFactory.instance().appboyHelper
-    if Appboy.sharedInstance() == nil {
-      appBoyHelper?.save(center, notificationResponse: response)
-    }
-    appBoyHelper?.userNotificationCenter(center, receivedNotificationResponse: response)
-
     guard let rootTabBarController = self.rootTabBarController else {
       completion()
       return
@@ -523,23 +507,5 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
     rootTabBarController.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
     completion()
-  }
-}
-
-// MARK: - ABKInAppMessageControllerDelegate
-
-extension AppDelegate: ABKInAppMessageControllerDelegate {
-  func before(inAppMessageDisplayed inAppMessage: ABKInAppMessage) -> ABKInAppMessageDisplayChoice {
-    return self.viewModel.inputs.brazeWillDisplayInAppMessage(inAppMessage)
-  }
-}
-
-// MARK: - ABKURLDelegate
-
-extension AppDelegate: ABKURLDelegate {
-  func handleAppboyURL(_ url: URL?, from _: ABKChannel, withExtras _: [AnyHashable: Any]?) -> Bool {
-    self.viewModel.inputs.urlFromBrazeInAppNotification(url)
-
-    return true
   }
 }
