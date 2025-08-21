@@ -33,9 +33,9 @@ commands:
     steps:
       - run:
           name: Create Slack message detail
+          when: on_fail
           command: |
-            cat <<-JSON | jq -c > slack.json
-            {
+            jq -n '{
               "method": "chat.postMessage",
               "params": {
                 "channel": "CBFKYTCEQ",
@@ -52,24 +52,20 @@ commands:
                   }
                 ]
               }
-            }
-            JSON
-          when: on_fail
+            }' > slack.json
       - run:
           name: Create EventBridge entries
+          when: on_fail
           command: |
-            cat <<-JSON | jq -c > entries.json
-            [{
+            jq -n '[{
               "Source": "kickbot",
               "DetailType": "post",
-              "Detail": $(jq tojson slack.json)
-            }]
-            JSON
-          when: on_fail
+              "Detail": '"$(jq tojson slack.json)"'
+            }]' > entries.json
       - run:
           name: Send EventBridge event
-          command: aws events put-events --entries "$(cat entries.json)"
           when: on_fail
+          command: aws events put-events --entries "$(jq -c . entries.json)"
 
 base_job: &base_job
   macos:
