@@ -14,7 +14,7 @@ COMMIT ?= $(CIRCLE_SHA1)
 CURRENT_BRANCH ?= $(CIRCLE_BRANCH)
 
 ifeq ($(PLATFORM),iOS)
-	DESTINATION ?= 'platform=iOS Simulator,name=$(IPHONE_NAME),OS=$(IOS_VERSION)'
+	DESTINATION ?= 'platform=iOS Simulator,name=$(IPHONE_NAME)'
 endif
 
 XCPRETTY :=

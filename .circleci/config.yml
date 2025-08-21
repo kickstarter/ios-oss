@@ -43,7 +43,7 @@ test_job: &test_job
         # Keep simulator in sync with `Library/TestHelpers/TestCase.swift` and `Makefile`
         # iOS 17.5 is minimum supported runtime by circle-ci -> 16.0 (16A242d)
         # more info: https://circle-macos-docs.s3.amazonaws.com/image-manifest/v15048/manifest.txt
-        version: "17.5"
+        version: "18.0"
         platform: "iOS"
         device: "iPhone SE (3rd generation)"
     - run:
