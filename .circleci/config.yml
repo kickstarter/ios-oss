@@ -156,7 +156,11 @@ jobs:
           root: .
           paths:
             - .
-      - notify_on_failure
+      - when:
+          condition:
+            equal: [ feat/adyer/circle-slack-arts, << pipeline.git.branch >> ]
+          steps:
+            - notify_on_failure
 
   # Kickstarter tests
   kickstarter-tests:
