@@ -12,9 +12,9 @@ public protocol NextGenProjectSearchServicing {
 /// Calls Apollo via our minimal async/await wrapper.
 @MainActor
 public struct NextGenProjectSearchService: NextGenProjectSearchServicing {
-  private let apollo: ApolloClient
+  private let apollo: AsyncApolloClient
 
-  public init(apollo: ApolloClient) {
+  public init(apollo: AsyncApolloClient) {
     self.apollo = apollo
   }
 
@@ -40,7 +40,7 @@ public struct NextGenProjectSearchService: NextGenProjectSearchServicing {
       )
     )
 
-    let result = try await apollo.fetch(query: GraphAPI.SearchQuery.from(discoveryParams: params))
+    let result = try await self.apollo.fetch(GraphAPI.SearchQuery.from(discoveryParams: params))
 
     let nodes = result.data?.projects?.nodes ?? []
 

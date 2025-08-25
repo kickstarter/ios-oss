@@ -160,11 +160,13 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         /// Replacing Onboarding screen with Next Gen Architecture Search View for testing.
         let nextGenSearchVC = UIHostingController(
-          rootView: NextGenFeature
-            .NextGenSearchView(
-              viewModel: NextGenFeature
-                .NextGenSearchViewModel(service: NextGenProjectSearchService(apollo: GraphQL.shared.client))
+          rootView: NextGenFeature.NextGenSearchView(
+            viewModel: NextGenFeature.NextGenSearchViewModel(
+              service: NextGenProjectSearchService(
+                apollo: AsyncApolloClient(client: GraphQL.shared.client)
+              )
             )
+          )
         )
         /// Onboarding flow should not respond to light/dark mode preference.
         nextGenSearchVC.overrideUserInterfaceStyle = .light
