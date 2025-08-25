@@ -1,0 +1,6 @@
+/*
+ Description strings shown in the AppTrackingTransparency prompt.
+ If a user’s language isn’t localized, iOS falls back to the English default in Info.plist)
+ */
+
+"NSUserTrackingUsageDescription" = "Usamos tus datos personales para ofrecerte una buena experiencia en Kickstarter y ayudarte a descubrir proyectos que te encantarán.";

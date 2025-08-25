@@ -1,0 +1,6 @@
+/*
+ Description strings shown in the AppTrackingTransparency prompt.
+ If a user’s language isn’t localized, iOS falls back to the English default in Info.plist)
+ */
+
+"NSUserTrackingUsageDescription" = "Kickstarter では、ユーザーの皆様により良い体験を提供し、最適なプロジェクトをご紹介するために、個人データを利用しています。";

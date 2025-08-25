@@ -1,0 +1,6 @@
+/*
+ Description strings shown in the AppTrackingTransparency prompt.
+ If a user’s language isn’t localized, iOS falls back to the English default in Info.plist)
+ */
+
+"NSUserTrackingUsageDescription" = "We use your data to show more relevant ads and to measure campaign performance.";
