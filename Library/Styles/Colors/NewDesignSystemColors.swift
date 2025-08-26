@@ -77,6 +77,14 @@ public struct Colors {
         darkMode: .gray_900
       )
     }
+
+    public struct Action {
+      public static let disabled = SemanticColor(
+        "text/action/disabled",
+        lightMode: .gray_500,
+        darkMode: .gray_900
+      )
+    }
   }
 
   public struct Background {

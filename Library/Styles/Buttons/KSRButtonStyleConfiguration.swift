@@ -63,6 +63,10 @@ extension UIButton {
 
         var newConfig = config
         newConfig.font = styleConfig.font
+        // The `foregroundColor` set gets used directly when determining font color.
+        // Without this override, the `baseForegroundColor` in the configuration does
+        // not actually get used when determining text color for disabled buttons.
+        newConfig.foregroundColor = self.configuration?.baseForegroundColor ?? self.tintColor
 
         return newConfig
       }

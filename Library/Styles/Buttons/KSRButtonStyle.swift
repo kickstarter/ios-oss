@@ -63,7 +63,8 @@ public enum KSRButtonStyle: KSRButtonStyleConfiguration, CaseIterable {
   public var disabledTitleColor: UIColor {
     switch self {
     case .filled: Colors.Text.Inverse.disabled.uiColor()
-    case .green, .filledInverted, .borderless, .outlined: Colors.Text.disabled.uiColor()
+    case .green: Colors.Text.Action.disabled.uiColor()
+    case .filledInverted, .borderless, .outlined: Colors.Text.disabled.uiColor()
     case .filledDestructive: Colors.Text.Accent.Red.Inverse.disabled.uiColor()
     case .outlinedDestructive, .borderlessDestructive: Colors.Text.Accent.Red.disabled.uiColor()
     case .facebook: self.titleColor.mixLighter(0.35)
