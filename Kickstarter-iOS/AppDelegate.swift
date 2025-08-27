@@ -260,35 +260,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let strongSelf = self else { return }
 
         let configuration = Analytics.configuredClient(withWriteKey: writeKey)
-
-        let brazeDestination = BrazeDestination(
-          additionalConfiguration: { configuration in
-            configuration.triggerMinimumTimeInterval = 5
-            configuration.push.automation = true
-            configuration.push.automation.requestAuthorizationAtLaunch = false
-            // TODO(MBL-2742): Change the logger level to `info` or `error` if it gets tedious.
-            configuration.logger.level = .debug
-          }
-        ) { [weak self] braze in
-          guard let self else { return }
-          braze.delegate = self
-
-          braze.inAppMessagePresenter = BrazeUI.BrazeInAppMessageUI()
-
-          if let userId = AppEnvironment.current.currentUser?.id {
-            braze.changeUser(userId: String(userId))
-          }
-
-          self.brazeSubscription = braze.notifications
-            .subscribeToUpdates(payloadTypes: [.opened]) { [weak self] payload in
-              guard let self else { return }
-              // TODO(MBL-2742): Once migration is stable, revisit if braze should update the rootTabBar.
-              if let rootTabBarController = self.rootTabBarController {
-                rootTabBarController.didReceiveBadgeValue(payload.badge)
-              }
-            }
-        }
-
+        let brazeDestination = self.configuredBrazeDestination(for: configuration)
         configuration.add(plugin: brazeDestination)
 
         let middleware = BrazeDebounceMiddlewarePlugin()
@@ -500,6 +472,39 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       self.viewModel.inputs.remoteConfigClientConfigurationFailed()
     }
   }
+
+  private func configuredBrazeDestination(for configuration: Analytics) -> BrazeDestination {
+    return BrazeDestination(
+      additionalConfiguration: { configuration in
+        configuration.triggerMinimumTimeInterval = 5
+        configuration.push.automation = true
+        configuration.push.automation.requestAuthorizationAtLaunch = false
+        // TODO(MBL-2742): Change the logger level to `info` or `error` if it gets tedious.
+        configuration.logger.level = .debug
+      }
+    ) { [weak self] braze in
+      guard let self else { return }
+      braze.delegate = self
+
+      braze.inAppMessagePresenter = BrazeUI.BrazeInAppMessageUI()
+
+      if let userId = AppEnvironment.current.currentUser?.id {
+        braze.changeUser(userId: String(userId))
+      }
+
+      // This block of code gets called anytime a Braze notification is opened.
+      // AWS notifications will not trigger this code.
+      self.brazeSubscription = braze.notifications
+        .subscribeToUpdates(payloadTypes: [.opened]) { [weak self] payload in
+          guard let self else { return }
+          // TODO(MBL-2742): Once the migration is stable, revisit if Braze should update the
+          // rootTabBar. If not, this block can be deleted.
+          if let rootTabBarController = self.rootTabBarController {
+            rootTabBarController.didReceiveBadgeValue(payload.badge)
+          }
+        }
+    }
+  }
 }
 
 // MARK: - URLSessionTaskDelegate
@@ -525,6 +530,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     willPresent notification: UNNotification,
     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
   ) {
+    // Handle AWS foreground notification.
+    // Braze notifications will not trigger this delegate method.
     self.rootTabBarController?.didReceiveBadgeValue(notification.request.content.badge as? Int)
     completionHandler([.banner, .list])
   }
@@ -534,6 +541,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
+    // Handle AWS notification opened.
+    // Braze notifications will not trigger this delegate method.
     guard let rootTabBarController = self.rootTabBarController else {
       completion()
       return
@@ -548,6 +557,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 // MARK: - BrazeDelegate
 
 extension AppDelegate: BrazeDelegate {
+  // Intercept all URLs from Braze in-app messages or push notifications.
+  // AWS notifications will not trigger this delegate method.
   func braze(_: BrazeKit.Braze, shouldOpenURL context: BrazeKit.Braze.URLContext) -> Bool {
     // Custom handle all urls instead of letting braze try to open them.
     self.viewModel.inputs.urlFromBrazeNotification(context.url)
