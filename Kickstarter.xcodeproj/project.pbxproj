@@ -1663,6 +1663,7 @@
 		E13D767D2D42C36900FB58CE /* LoginSignupUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D767C2D42C36900FB58CE /* LoginSignupUseCase.swift */; };
 		E13D76802D42C55C00FB58CE /* PledgeOverTimeUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310272D2845CB0062646C /* PledgeOverTimeUseCaseTests.swift */; };
 		E13D76812D42CBA400FB58CE /* LoginSignupUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D767E2D42C52900FB58CE /* LoginSignupUseCaseTests.swift */; };
+		E147F2902E5F7A6A00825650 /* KDS in Frameworks */ = {isa = PBXBuildFile; productRef = E147F28F2E5F7A6A00825650 /* KDS */; };
 		E158020E2D7F53220000BAB3 /* Project+ProjectCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E158020D2D7F53220000BAB3 /* Project+ProjectCellModel.swift */; };
 		E15802102D7F536A0000BAB3 /* BackerDashboardProjectCellFragment+ProjectCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E158020F2D7F536A0000BAB3 /* BackerDashboardProjectCellFragment+ProjectCellModel.swift */; };
 		E15802502D7F784F0000BAB3 /* BackerDashboardProjectCellViewModel+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E158024F2D7F784F0000BAB3 /* BackerDashboardProjectCellViewModel+Utilities.swift */; };
@@ -3593,6 +3594,7 @@
 				3976B3702E5CBDC300D2DD50 /* SegmentBrazeUI in Frameworks */,
 				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
 				600A0EEB2DD23BAA00954829 /* Lottie in Frameworks */,
+				E147F2902E5F7A6A00825650 /* KDS in Frameworks */,
 				6078106F2A04191C0050D4F7 /* FirebaseAnalytics in Frameworks */,
 				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
 				6078106B2A0419130050D4F7 /* FirebaseCrashlytics in Frameworks */,
@@ -7976,6 +7978,7 @@
 				E1B214702BFD184500109961 /* KingfisherWebP */,
 				600A0EEA2DD23BAA00954829 /* Lottie */,
 				3976B36F2E5CBDC300D2DD50 /* SegmentBrazeUI */,
+				E147F28F2E5F7A6A00825650 /* KDS */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -11996,6 +11999,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
 			productName = Prelude;
+		};
+		E147F28F2E5F7A6A00825650 /* KDS */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = KDS;
 		};
 		E18A674D2E28236D00BA0376 /* ApolloTestSupport */ = {
 			isa = XCSwiftPackageProductDependency;
