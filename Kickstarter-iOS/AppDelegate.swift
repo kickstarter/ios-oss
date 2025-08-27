@@ -43,6 +43,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     UIImageView.appearance(whenContainedInInstancesOf: [UITabBar.self])
       .accessibilityIgnoresInvertColors = true
 
+    InterFont.registerFontIfUnregistered()
+
     AppEnvironment.replaceCurrentEnvironment(
       AppEnvironment.fromStorage(
         ubiquitousStore: NSUbiquitousKeyValueStore.default,
