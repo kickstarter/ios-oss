@@ -72,7 +72,8 @@ extension CustomFont {
 
 extension CustomFontAccessible {
   /// Registers the font files so that they're available for use in the process.
-  /// - Returns: `true` if the font has been successfully registered and is ready for use; `false` if a backup font should be used.
+  /// - Throws: May throw an error from `kCTFontManagerErrorDomain` if registration fails.
+  /// Note that calling this more than once will cause a thrown error.
   static func registerFont() throws {
     guard let fontFileURLs = self.fontFileURLs else {
       return
@@ -84,7 +85,6 @@ extension CustomFontAccessible {
   }
 
   /// Registers the font if `self.isRegistered` is false.
-  /// - Returns: `true` if the font has been successfully registered and is ready for use; `false` if a backup font should be used.
   public static func registerFontIfUnregistered() {
     if self.isRegistered {
       return
