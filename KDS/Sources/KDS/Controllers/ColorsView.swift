@@ -1,8 +1,7 @@
-import Library
 import SwiftUI
 
-struct ColorsView: View {
-  let semanticColors = [
+public struct ColorsView: View {
+  fileprivate let semanticColors = [
     Colors.Background.action,
     Colors.Background.selected,
     Colors.Background.Accent.Green.bold,
@@ -44,7 +43,7 @@ struct ColorsView: View {
     Colors.Text.Accent.Red.Inverse.disabled
   ]
 
-  let legacyColors = [
+  fileprivate let legacyColors = [
     LegacyColors.ksr_alert,
     LegacyColors.ksr_black,
     LegacyColors.ksr_white,
@@ -80,6 +79,10 @@ struct ColorsView: View {
     LegacyColors.Buttons.blue
   ]
 
+  internal var snapshotTestHeight: CGFloat {
+    150.0 + CGFloat(self.semanticColors.count + self.legacyColors.count) * 104.0
+  }
+
   @ViewBuilder
   var colorList: some View {
     ForEach(self.semanticColors) { color in
@@ -90,7 +93,9 @@ struct ColorsView: View {
     }
   }
 
-  var body: some View {
+  public init() {}
+
+  public var body: some View {
     ScrollView {
       VStack(alignment: .leading, spacing: 4) {
         Text("Semantic Colors")

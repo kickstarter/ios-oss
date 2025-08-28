@@ -1,5 +1,6 @@
 import AlamofireImage
 import CoreImage
+import KDS
 import KsApi
 import Library
 import Prelude

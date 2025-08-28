@@ -1,4 +1,5 @@
 import Foundation
+import KDS
 import UIKit
 
 func metadataString(for project: any BackerDashboardProjectCellViewModel.ProjectCellModel) -> String {

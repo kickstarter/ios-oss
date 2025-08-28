@@ -1,28 +1,29 @@
+import KDS
 import UIKit
 
-// This extension contains custom semantic colors that are not part of the official Figma design set.
+// This extension contains custom semantic colors for PLOT that are not part of the official Figma design set.
 // These colors are used for specific UI elements, like badges in the payment schedule component,
 // which are not yet defined in the core Design System. This structure helps organize and
 // isolate non-standard colors from the rest of the shared semantic palette.
 
 extension Colors {
-  public struct Custom {
+  public struct PLOT {
     public struct Badge {
       public struct Background {
         public static let collected = SemanticColor(
-          "custom/badge/background/collected",
+          "plot/badge/background/collected",
           lightMode: .green_02,
           darkMode: .green_02
         )
 
         public static let canceled = SemanticColor(
-          "custom/badge/background/canceled",
+          "plot/badge/background/canceled",
           lightMode: .gray_300,
           darkMode: .gray_500
         )
 
         public static let errored = SemanticColor(
-          "custom/badge/background/errored",
+          "plot/badge/background/errored",
           lightMode: .red_200,
           darkMode: .red_300
         )
@@ -34,7 +35,7 @@ extension Colors {
         )
 
         public static let scheduled = SemanticColor(
-          "custom/badge/background/scheduled",
+          "plot/badge/background/scheduled",
           lightMode: .blue_03,
           darkMode: .blue_03
         )
@@ -48,19 +49,19 @@ extension Colors {
 
       public struct Text {
         public static let collected = SemanticColor(
-          "custom/badge/text/collected",
+          "plot/badge/text/collected",
           lightMode: .green_06,
           darkMode: .green_07
         )
 
         public static let canceled = SemanticColor(
-          "custom/badge/text/canceled",
+          "plot/badge/text/canceled",
           lightMode: .gray_1000,
           darkMode: .gray_1000
         )
 
         public static let errored = SemanticColor(
-          "custom/badge/text/errored",
+          "plot/badge/text/errored",
           lightMode: .red_800,
           darkMode: .red_700
         )

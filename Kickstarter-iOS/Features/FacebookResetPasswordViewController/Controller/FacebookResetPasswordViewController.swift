@@ -1,4 +1,5 @@
 import Foundation
+import KDS
 import Library
 import Prelude
 import ReactiveSwift
@@ -251,15 +252,4 @@ private let textFieldStyle: TextFieldStyle = { textField in
     |> UITextField.lens.layer.borderColor .~ LegacyColors.ksr_support_300.uiColor().cgColor
     |> UITextField.lens.layer.borderWidth .~ 1
     |> UITextField.lens.returnKeyType .~ .done
-}
-
-private let savePasswordButtonStyle: ButtonStyle = { button in
-  button
-    |> greenButtonStyle
-    |> roundedStyle(cornerRadius: Styles.grid(2))
-    |> UIButton.lens.backgroundColor(for: .disabled) .~ LegacyColors.ksr_support_300.uiColor()
-    .mixLighter(0.12)
-    |> UIButton.lens.title(for: .normal) %~ { _ in
-      Strings.Save()
-    }
 }

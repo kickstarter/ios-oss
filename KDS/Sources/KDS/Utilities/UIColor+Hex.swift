@@ -2,7 +2,7 @@ import CoreGraphics
 import func Darwin.round
 import class UIKit.UIColor
 
-public extension UIColor {
+extension UIColor {
   @nonobjc static func hexa(_ value: UInt32) -> UIColor {
     let a = CGFloat((value & 0xFF000000) >> 24) / 255.0
     let r = CGFloat((value & 0xFF0000) >> 16) / 255.0

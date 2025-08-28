@@ -88,9 +88,7 @@ extension InterFont: CustomFontAccessible {
   }
 
   public static var fontFileURLs: [URL]? {
-    guard let bundle = Bundle.init(identifier: "com.Library-iOS") else {
-      return nil
-    }
+    let bundle = Bundle.module
 
     guard let italicFontURL = bundle.url(forResource: "Inter-Italic-VariableFont", withExtension: "ttf"),
           let variableFontURL = bundle.url(forResource: "Inter-VariableFont", withExtension: "ttf") else {

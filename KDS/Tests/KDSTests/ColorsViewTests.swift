@@ -1,13 +1,12 @@
-@testable import Kickstarter_Framework
-import Library
+@testable import KDS
 import SnapshotTesting
 import SwiftUI
+import XCTest
 
-final class ColorsViewTests: TestCase {
+final class ColorsViewTests: XCTestCase {
   func testView() {
     let colorsView = ColorsView()
-    let height: CGFloat =
-      CGFloat(150 + (colorsView.semanticColors.count + colorsView.legacyColors.count) * 104)
+    let height = colorsView.snapshotTestHeight
 
     assertSnapshot(
       matching: colorsView.frame(width: 500, height: height),
