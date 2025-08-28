@@ -117,9 +117,6 @@ jobs:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
       - run:
-          name: Download GraphQL Schema
-          command: bin/apollo-schema-download.sh
-      - run:
           name: Danger
           command: bin/danger.sh
       - persist_to_workspace:
