@@ -8,8 +8,8 @@ enum OnboardingStyles {
 
   static let ctaFont = UIFont.ksr_bodyLG().bolded
 
-  static let backgroundColor = Color(.hex(0x06E584))
-  static let progressBarTintColor = Color(.hex(0x00743D))
+  static let backgroundColor = Color(UIColor(coreColor: .green_04))
+  static let progressBarTintColor = Color(UIColor(coreColor: .green_06))
 
   static let closeImage = ImageResource.closeIconNoBackground
   static let backgroundImage = ImageResource.onboardingSquiggleBackground

@@ -92,6 +92,16 @@ public struct LegacyColors {
     )
   }
 
+  public struct Badge {
+    public struct Notification {
+      public static let background = LegacyColor(
+        "legacy/badge/notification/background",
+        lightMode: UIColor.hex(0xFF3B30),
+        darkMode: UIColor.hex(0xFF3B30)
+      )
+    }
+  }
+
   public struct Facebook {
     public static let primary = LegacyColor(
       "legacy/facebook/primary",
