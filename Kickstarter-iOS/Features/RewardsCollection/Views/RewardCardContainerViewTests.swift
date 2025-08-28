@@ -171,29 +171,34 @@ final class RewardCardContainerViewTests: TestCase {
   }
 
   func testLive_NonBackedProject_LoggedOut() {
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(currentUser: nil, language: language) {
-        let (rewardDescription, reward) = rewardTuple
+    let language = Language.en
+    let device = Device.phone4_7inch
+    orthogonalCombos([UIUserInterfaceStyle.light, UIUserInterfaceStyle.dark], allRewards)
+      .forEach { style, rewardTuple in
+        withEnvironment(currentUser: nil, language: language) {
+          let (rewardDescription, reward) = rewardTuple
 
-        let project = Project.cosmicSurgery
-          |> Project.lens.state .~ .live
-          |> Project.lens.personalization.isBacking .~ nil
-          |> Project.lens.personalization.backing .~ nil
+          let project = Project.cosmicSurgery
+            |> Project.lens.state .~ .live
+            |> Project.lens.personalization.isBacking .~ nil
+            |> Project.lens.personalization.backing .~ nil
 
-        let vc = rewardCardInViewController(
-          language: language,
-          device: device,
-          project: project,
-          reward: reward
-        )
+          let vc = rewardCardInViewController(
+            language: language,
+            device: device,
+            project: project,
+            reward: reward
+          )
+          vc.overrideUserInterfaceStyle = style
 
-        assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
-        )
+          let styleDescription = style == .light ? "light" : "dark"
+          assertSnapshot(
+            matching: vc,
+            as: .image(perceptualPrecision: 0.98),
+            named: "\(rewardDescription)_lang_\(language)_device_\(device)_\(styleDescription)"
+          )
+        }
       }
-    }
   }
 
   func testNonLive_BackedProject_BackedReward() {
