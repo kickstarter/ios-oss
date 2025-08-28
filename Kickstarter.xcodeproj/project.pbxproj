@@ -1631,7 +1631,6 @@
 		E108416E2DCA6AC8000E4F17 /* SearchFiltersCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108416D2DCA6AC8000E4F17 /* SearchFiltersCategory.swift */; };
 		E10841702DCA7472000E4F17 /* SearchFiltersCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108416F2DCA7472000E4F17 /* SearchFiltersCategory.swift */; };
 		E10841722DCBD874000E4F17 /* SearchResultsCountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10841712DCBD874000E4F17 /* SearchResultsCountCell.swift */; };
-		E10841742DCD2ECE000E4F17 /* ColorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10841732DCD2EC8000E4F17 /* ColorsView.swift */; };
 		E10BE8D02B02975C00F73DC9 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */; };
 		E10BE8D42B02975C00F73DC9 /* RichPushNotifications.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E10BE8DE2B1516DB00F73DC9 /* BlockUserInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8DD2B1516DB00F73DC9 /* BlockUserInput.swift */; };
@@ -1707,7 +1706,6 @@
 		E1A310262D28406F0062646C /* PledgeOverTimeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310252D2840680062646C /* PledgeOverTimeUseCase.swift */; };
 		E1A310292D2845E00062646C /* PledgeOverTimeUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310272D2845CB0062646C /* PledgeOverTimeUseCaseTests.swift */; };
 		E1AA8ABF2AEABBB100AC98BF /* Signal+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */; };
-		E1AABC2B2DD259BA00BFFACF /* ColorsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1AABC292DD2599600BFFACF /* ColorsViewTests.swift */; };
 		E1B214712BFD184500109961 /* KingfisherWebP in Frameworks */ = {isa = PBXBuildFile; productRef = E1B214702BFD184500109961 /* KingfisherWebP */; };
 		E1B33F522E538163008903BA /* GraphAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E1B33F512E538163008903BA /* GraphAPI */; };
 		E1B33F542E538166008903BA /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = E1B33F532E538166008903BA /* Apollo */; };
@@ -3407,7 +3405,6 @@
 		E108416D2DCA6AC8000E4F17 /* SearchFiltersCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersCategory.swift; sourceTree = "<group>"; };
 		E108416F2DCA7472000E4F17 /* SearchFiltersCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersCategory.swift; sourceTree = "<group>"; };
 		E10841712DCBD874000E4F17 /* SearchResultsCountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsCountCell.swift; sourceTree = "<group>"; };
-		E10841732DCD2EC8000E4F17 /* ColorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsView.swift; sourceTree = "<group>"; };
 		E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RichPushNotifications.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		E10BE8D12B02975C00F73DC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3556,7 +3553,6 @@
 		E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildPaymentPlanQueryTestData.swift; sourceTree = "<group>"; };
 		E1A310252D2840680062646C /* PledgeOverTimeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimeUseCase.swift; sourceTree = "<group>"; };
 		E1A310272D2845CB0062646C /* PledgeOverTimeUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimeUseCaseTests.swift; sourceTree = "<group>"; };
-		E1AABC292DD2599600BFFACF /* ColorsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsViewTests.swift; sourceTree = "<group>"; };
 		E1B33F502E538157008903BA /* GraphAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = GraphAPI; sourceTree = "<group>"; };
 		E1B813C62BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMyBackedProjectsQueryRequestForTests.graphql_test; sourceTree = "<group>"; };
 		E1B813C82BC851E100DF33CF /* FetchMyBackedProjectsQuery.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FetchMyBackedProjectsQuery.json; sourceTree = "<group>"; };
@@ -6154,8 +6150,6 @@
 		6049D00F2A9CF6610015BB0D /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				E10841732DCD2EC8000E4F17 /* ColorsView.swift */,
-				E1AABC292DD2599600BFFACF /* ColorsViewTests.swift */,
 				6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */,
 			);
 			path = Controller;
@@ -9269,7 +9263,6 @@
 				A75A29281CE0B7DD00D35E5C /* BackingCell.swift in Sources */,
 				A79F53001D8F50CF00C051B8 /* ProjectPamphletSubpageCell.swift in Sources */,
 				013672E11E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift in Sources */,
-				E10841742DCD2ECE000E4F17 /* ColorsView.swift in Sources */,
 				D7E20E6D2284A3BD00BA61A0 /* PledgeCTAContainerView.swift in Sources */,
 				A75A29251CE0AE5A00D35E5C /* MessagesViewController.swift in Sources */,
 				A7CC14361D00E73D00035C52 /* FindFriendsViewController.swift in Sources */,
@@ -9563,7 +9556,6 @@
 				8ACF95AE248957B10064FC4C /* ManagePledgeDataSourceTests.swift in Sources */,
 				A7ED20591E8323E900BFFA01 /* MessageThreadsViewControllerTests.swift in Sources */,
 				A7ED20241E83237F00BFFA01 /* TraitController.swift in Sources */,
-				E1AABC2B2DD259BA00BFFACF /* ColorsViewTests.swift in Sources */,
 				A7ED201F1E83232A00BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */,
 				A7ED20171E83229E00BFFA01 /* DiscoveryProjectsDataSourceTest.swift in Sources */,
 				776989AA242E747200AAC48D /* CuratedProjectsViewControllerTests.swift in Sources */,

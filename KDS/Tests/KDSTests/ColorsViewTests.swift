@@ -9,7 +9,7 @@ final class ColorsViewTests: XCTestCase {
     let height = colorsView.snapshotTestHeight
 
     assertSnapshot(
-      of: colorsView.frame(width: 500, height: height),
+      matching: colorsView.frame(width: 500, height: height),
       as: .image,
       named: "colorsView_testView"
     )
