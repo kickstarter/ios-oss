@@ -2552,7 +2552,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.presentViewController.assertValues([])
 
-      self.vm.inputs.urlFromBrazeInAppNotification(URL(string: url)!)
+      self.vm.inputs.urlFromBrazeNotification(URL(string: url)!)
 
       self.presentViewController.assertValues([1])
     }
@@ -2565,7 +2565,7 @@ final class AppDelegateViewModelTests: TestCase {
     )
 
     let url = URL(string: "https://fake-url.com")!
-    self.vm.inputs.urlFromBrazeInAppNotification(url)
+    self.vm.inputs.urlFromBrazeNotification(url)
 
     self.goToMobileSafari.assertValues([url])
     self.presentViewController.assertValues([])

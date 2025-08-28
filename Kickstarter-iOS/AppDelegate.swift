@@ -1,4 +1,5 @@
-import AppboyKit
+import BrazeKit
+import BrazeUI
 import FBSDKCoreKit
 import Firebase
 import Foundation
@@ -7,7 +8,6 @@ import Foundation
 #else
   import KsApi
 #endif
-import AppboySegment
 import Kickstarter_Framework
 import Library
 import Prelude
@@ -15,6 +15,7 @@ import ReactiveExtensions
 import ReactiveSwift
 import SafariServices
 import Segment
+import SegmentBrazeUI
 import SwiftUI
 import UIKit
 import UserNotifications
@@ -24,6 +25,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   fileprivate let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
   fileprivate var disposables: [any Disposable] = []
+  // Custom Braze cancellable type. As long as we keep a reference to this active, Braze will
+  // use this to tell us about any Braze push notifications the app handles.
+  fileprivate var brazeSubscription: BrazeKit.Braze.Cancellable?
+
+  private var analytics: Segment.Analytics?
 
   internal var rootTabBarController: RootTabBarViewController? {
     return self.window?.rootViewController as? RootTabBarViewController
@@ -36,6 +42,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     // FBSDK initialization
     ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     Settings.shouldLimitEventAndDataUsage = true
+
+    // Braze expects to be configured immediately, but segment destination plugins are initialized
+    // async. This method bridges that gap.
+    // https://www.braze.com/docs/developer_guide/sdk_integration#swift_step-2-set-up-delayed-initialization-optional
+    BrazeDestination.prepareForDelayedInitialization()
 
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
@@ -148,7 +159,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.registerPushTokenInSegment
       .observeForUI()
       .observeValues { token in
-        Analytics.shared().registeredForRemoteNotifications(withDeviceToken: token)
+        self.analytics?.registeredForRemoteNotifications(deviceToken: token)
       }
 
     self.viewModel.outputs.triggerOnboardingFlow
@@ -248,27 +259,23 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.configureSegmentWithBraze
       .observeValues { [weak self] writeKey in
-        guard let strongSelf = self else { return }
+        guard let self else { return }
 
         let configuration = Analytics.configuredClient(withWriteKey: writeKey)
+        let brazeDestination = self.configuredBrazeDestination(for: configuration)
+        configuration.add(plugin: brazeDestination)
 
-        if let appBoyInstance = SEGAppboyIntegrationFactory.instance() {
-          configuration.use(appBoyInstance)
-          appBoyInstance.saveLaunchOptions(launchOptions)
-          appBoyInstance.appboyOptions = [
-            ABKInAppMessageControllerDelegateKey: strongSelf,
-            ABKURLDelegateKey: strongSelf,
-            ABKMinimumTriggerTimeIntervalKey: 5
-          ]
-        }
+        let middleware = BrazeDebounceMiddlewarePlugin()
+        configuration.add(plugin: middleware)
 
-        Analytics.setup(with: configuration)
-        AppEnvironment.current.ksrAnalytics.configureSegmentClient(Analytics.shared())
+        self.analytics = configuration
+
+        AppEnvironment.current.ksrAnalytics.configureSegmentClient(configuration)
       }
 
     self.viewModel.outputs.segmentIsEnabled
       .observeValues { enabled in
-        enabled ? Analytics.shared().enable() : Analytics.shared().disable()
+        self.analytics?.enabled = enabled
       }
 
     NotificationCenter.default
@@ -347,14 +354,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     didFailToRegisterForRemoteNotificationsWithError error: Error
   ) {
     print("🔴 Failed to register for remote notifications: \(error.localizedDescription)")
-  }
-
-  func application(
-    _: UIApplication,
-    didReceiveRemoteNotification userInfo: [AnyHashable: Any],
-    fetchCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void
-  ) {
-    SEGAppboyIntegrationFactory.instance()?.saveRemoteNotification(userInfo)
   }
 
   internal func applicationDidReceiveMemoryWarning(_: UIApplication) {
@@ -475,6 +474,39 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       self.viewModel.inputs.remoteConfigClientConfigurationFailed()
     }
   }
+
+  private func configuredBrazeDestination(for configuration: Segment.Analytics) -> BrazeDestination {
+    return BrazeDestination(
+      additionalConfiguration: { configuration in
+        configuration.triggerMinimumTimeInterval = 5
+        configuration.push.automation = true
+        configuration.push.automation.requestAuthorizationAtLaunch = false
+        // TODO(MBL-2742): Change the logger level to `info` or `error` if it gets tedious.
+        configuration.logger.level = .debug
+      }
+    ) { [weak self] braze in
+      guard let self else { return }
+      braze.delegate = self
+
+      braze.inAppMessagePresenter = BrazeUI.BrazeInAppMessageUI()
+
+      if let userId = AppEnvironment.current.currentUser?.id {
+        braze.changeUser(userId: String(userId))
+      }
+
+      // This block of code gets called anytime a Braze notification is opened.
+      // AWS notifications will not trigger this code.
+      self.brazeSubscription = braze.notifications
+        .subscribeToUpdates(payloadTypes: [.opened]) { [weak self] payload in
+          guard let self else { return }
+          // TODO(MBL-2742): Once the migration is stable, revisit if Braze should update the
+          // rootTabBar. If not, this block can be deleted.
+          if let rootTabBarController = self.rootTabBarController {
+            rootTabBarController.didReceiveBadgeValue(payload.badge)
+          }
+        }
+    }
+  }
 }
 
 // MARK: - URLSessionTaskDelegate
@@ -500,23 +532,19 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     willPresent notification: UNNotification,
     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
   ) {
+    // Handle AWS foreground notification.
+    // Braze notifications will not trigger this delegate method.
     self.rootTabBarController?.didReceiveBadgeValue(notification.request.content.badge as? Int)
     completionHandler([.banner, .list])
   }
 
   func userNotificationCenter(
-    _ center: UNUserNotificationCenter,
+    _: UNUserNotificationCenter,
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
-    // Track notification opened.
-    // Documentation: https://github.com/Appboy/appboy-segment-ios/blob/master/CHANGELOG.md#added-6.
-    let appBoyHelper = SEGAppboyIntegrationFactory.instance().appboyHelper
-    if Appboy.sharedInstance() == nil {
-      appBoyHelper?.save(center, notificationResponse: response)
-    }
-    appBoyHelper?.userNotificationCenter(center, receivedNotificationResponse: response)
-
+    // Handle AWS notification opened.
+    // Braze notifications will not trigger this delegate method.
     guard let rootTabBarController = self.rootTabBarController else {
       completion()
       return
@@ -528,20 +556,14 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
   }
 }
 
-// MARK: - ABKInAppMessageControllerDelegate
+// MARK: - BrazeDelegate
 
-extension AppDelegate: ABKInAppMessageControllerDelegate {
-  func before(inAppMessageDisplayed inAppMessage: ABKInAppMessage) -> ABKInAppMessageDisplayChoice {
-    return self.viewModel.inputs.brazeWillDisplayInAppMessage(inAppMessage)
-  }
-}
-
-// MARK: - ABKURLDelegate
-
-extension AppDelegate: ABKURLDelegate {
-  func handleAppboyURL(_ url: URL?, from _: ABKChannel, withExtras _: [AnyHashable: Any]?) -> Bool {
-    self.viewModel.inputs.urlFromBrazeInAppNotification(url)
-
-    return true
+extension AppDelegate: BrazeDelegate {
+  // Intercept all URLs from Braze in-app messages or push notifications.
+  // AWS notifications will not trigger this delegate method.
+  func braze(_: BrazeKit.Braze, shouldOpenURL context: BrazeKit.Braze.URLContext) -> Bool {
+    // Custom handle all urls instead of letting braze try to open them.
+    self.viewModel.inputs.urlFromBrazeNotification(context.url)
+    return false
   }
 }

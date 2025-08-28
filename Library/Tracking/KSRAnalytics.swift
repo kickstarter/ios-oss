@@ -1,8 +1,8 @@
-import AppboySegment
 import AppTrackingTransparency
 import KsApi
 import PassKit
 import Prelude
+import SegmentBrazeUI
 import UIKit
 
 public final class KSRAnalytics {
@@ -612,9 +612,19 @@ public final class KSRAnalytics {
     }
 
     let newData = KSRAnalyticsIdentityData(newUser)
+
+    // Older versions of segment automatically included these ids in the traits.
+    // To de-risk our migration, manually include these in the traits for now.
+    // TODO(MBL-2742): Test if we need these fields as a follow-up.
+    var traits = newData.allTraits
+    traits["userId"] = "\(newData.userId)"
+    if let segmentClient = self.segmentClient {
+      traits["anonymousId"] = segmentClient.anonymousId
+    }
+
     self.segmentClient?.identify(
-      "\(newData.userId)",
-      traits: newData.allTraits
+      userId: "\(newData.userId)",
+      traits: traits
     )
   }
 
@@ -1469,7 +1479,7 @@ public final class KSRAnalytics {
     self.logEventCallback?(event, props)
 
     self.segmentClient?.track(
-      event,
+      name: event,
       properties: props
     )
   }
