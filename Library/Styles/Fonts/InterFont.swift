@@ -75,8 +75,32 @@ public enum InterFont: CustomFont, CaseIterable {
   }
 }
 
+var registeredInterfont = false
+
 extension InterFont: CustomFontAccessible {
-  var fontName: String {
+  public static var isRegistered: Bool {
+    get {
+      registeredInterfont
+    }
+    set {
+      registeredInterfont = newValue
+    }
+  }
+
+  public static var fontFileURLs: [URL]? {
+    guard let bundle = Bundle.init(identifier: "com.Library-iOS") else {
+      return nil
+    }
+
+    guard let italicFontURL = bundle.url(forResource: "Inter-Italic-VariableFont", withExtension: "ttf"),
+          let variableFontURL = bundle.url(forResource: "Inter-VariableFont", withExtension: "ttf") else {
+      return nil
+    }
+
+    return [italicFontURL, variableFontURL]
+  }
+
+  public var fontName: String {
     switch self {
     case .heading2XL, .headingXL, .headingLG, .headingMD, .headingSM,
          .headingXS, .buttonLabel: return "Inter-Regular_Medium"
@@ -85,7 +109,7 @@ extension InterFont: CustomFontAccessible {
     }
   }
 
-  var boldFontName: String {
+  public var boldFontName: String {
     switch self {
     case .heading2XL, .headingXL, .headingLG, .headingMD, .headingSM, .headingXS,
          .buttonLabel: return "Inter-Regular_Bold"
