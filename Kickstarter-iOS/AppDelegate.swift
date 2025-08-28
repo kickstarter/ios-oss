@@ -257,7 +257,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.configureSegmentWithBraze
       .observeValues { [weak self] writeKey in
-        guard let strongSelf = self else { return }
+        guard let self else { return }
 
         let configuration = Analytics.configuredClient(withWriteKey: writeKey)
         let brazeDestination = self.configuredBrazeDestination(for: configuration)
@@ -266,7 +266,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         let middleware = BrazeDebounceMiddlewarePlugin()
         configuration.add(plugin: middleware)
 
-        self?.analytics = configuration
+        self.analytics = configuration
 
         AppEnvironment.current.ksrAnalytics.configureSegmentClient(configuration)
       }
@@ -473,7 +473,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
   }
 
-  private func configuredBrazeDestination(for configuration: Analytics) -> BrazeDestination {
+  private func configuredBrazeDestination(for configuration: Segment.Analytics) -> BrazeDestination {
     return BrazeDestination(
       additionalConfiguration: { configuration in
         configuration.triggerMinimumTimeInterval = 5
