@@ -84,6 +84,11 @@
             value = "$(SOURCE_ROOT)/Failed_Snapshot_Tests"
             isEnabled = "YES">
          </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "PACKAGE_RESOURCE_BUNDLE_PATH"
+            value = "$(BUILT_PRODUCTS_DIR)"
+            isEnabled = "YES">
+         </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
