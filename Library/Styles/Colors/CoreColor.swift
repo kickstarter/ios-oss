@@ -87,7 +87,7 @@ public enum CoreColor: Int {
   case blue_10 = 0x050543
 }
 
-extension UIColor {
+public extension UIColor {
   convenience init(coreColor: CoreColor) {
     let rgbValue = coreColor.rawValue
     self.init(

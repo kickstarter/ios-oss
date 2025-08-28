@@ -59,5 +59,5 @@ enum PPOStyles {
   static let alertImage = ImageResource.iconNotice
   static let sendMessageImage = ImageResource.iconSendMessage
 
-  static let badgeColor = UIColor.hex(0xFF3B30)
+  static let badgeColor = LegacyColors.Badge.Notification.background.uiColor()
 }
