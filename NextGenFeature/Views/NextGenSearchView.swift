@@ -12,7 +12,6 @@ private enum Constants {
 public struct NextGenSearchView: View {
   @SwiftUI.Environment(\.dismiss) private var dismiss
   @State private var viewModel: NextGenSearchViewModel
-  @Namespace private var animation
 
   public init(viewModel: NextGenSearchViewModel) {
     _viewModel = State(initialValue: viewModel)
