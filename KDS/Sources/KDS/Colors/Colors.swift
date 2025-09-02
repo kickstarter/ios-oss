@@ -265,11 +265,59 @@ public struct Colors {
       darkMode: .gray_550
     )
 
+    public static let disabled = SemanticColor(
+      "border/disabled",
+      lightMode: .gray_200,
+      darkMode: .gray_800
+    )
+
+    public static let focus = SemanticColor(
+      "border/focus",
+      lightMode: .blue_05,
+      darkMode: .blue_05
+    )
+
+    public static let inverse = SemanticColor(
+      "border/inverse",
+      lightMode: .white,
+      darkMode: .gray_1000
+    )
+
     public static let subtle = SemanticColor(
       "border/subtle",
       lightMode: .gray_300,
       darkMode: .gray_700
     )
+
+    public struct Accent {
+      public struct Blue {
+        public static let bold = SemanticColor(
+          "border/accent/blue/bold",
+          lightMode: .blue_08,
+          darkMode: .blue_03
+        )
+
+        public static let subtle = SemanticColor(
+          "border/accent/blue/subtle",
+          lightMode: .blue_04,
+          darkMode: .blue_06
+        )
+      }
+
+      public struct Green {
+        public static let bold = SemanticColor(
+          "border/accent/green/bold",
+          lightMode: .green_08,
+          darkMode: .green_03
+        )
+
+        public static let subtle = SemanticColor(
+          "border/accent/green/subtle",
+          lightMode: .green_04,
+          darkMode: .green_06
+        )
+      }
+    }
 
     public struct Danger {
       public static let bold = SemanticColor(
@@ -282,6 +330,20 @@ public struct Colors {
         "border/danger/subtle",
         lightMode: .red_400,
         darkMode: .red_600
+      )
+    }
+
+    public struct Warning {
+      public static let bold = SemanticColor(
+        "border/warning/bold",
+        lightMode: .yellow_08,
+        darkMode: .yellow_03
+      )
+
+      public static let subtle = SemanticColor(
+        "border/warning/subtle",
+        lightMode: .yellow_04,
+        darkMode: .yellow_06
       )
     }
   }
