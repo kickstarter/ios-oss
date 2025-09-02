@@ -52,12 +52,19 @@ public struct ColorsView: View {
     Colors.Text.primary,
     Colors.Text.secondary,
     Colors.Text.disabled,
+    Colors.Text.placeholder,
     Colors.Text.Inverse.primary,
     Colors.Text.Inverse.disabled,
     Colors.Text.Accent.red,
     Colors.Text.Accent.Red.bolder,
     Colors.Text.Accent.Red.disabled,
-    Colors.Text.Accent.Red.Inverse.disabled
+    Colors.Text.Accent.Red.Inverse.disabled,
+    Colors.Text.Accent.gray,
+    Colors.Text.Accent.green,
+    Colors.Text.Accent.Blue.bolder,
+    Colors.Text.Accent.Green.bolder,
+    Colors.Text.Accent.Purple.bolder,
+    Colors.Text.Accent.Yellow.bolder
   ]
 
   fileprivate let legacyColors = [

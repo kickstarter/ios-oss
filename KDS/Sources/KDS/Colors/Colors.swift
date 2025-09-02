@@ -27,11 +27,47 @@ public struct Colors {
     )
 
     public struct Accent {
+      public static let gray = SemanticColor(
+        "text/accent/gray",
+        lightMode: .gray_1000,
+        darkMode: .gray_200
+      )
+
+      public static let green = SemanticColor(
+        "text/accent/green",
+        lightMode: .green_06,
+        darkMode: .green_05
+      )
+
       public static let red = SemanticColor(
         "text/accent/red",
         lightMode: .red_600,
         darkMode: .red_500
       )
+
+      public struct Blue {
+        public static let bolder = SemanticColor(
+          "text/accent/blue/bolder",
+          lightMode: .blue_08,
+          darkMode: .blue_02
+        )
+      }
+
+      public struct Green {
+        public static let bolder = SemanticColor(
+          "text/accent/green/bolder",
+          lightMode: .green_08,
+          darkMode: .green_02
+        )
+      }
+
+      public struct Purple {
+        public static let bolder = SemanticColor(
+          "text/accent/purple/bolder",
+          lightMode: .purple_08,
+          darkMode: .purple_02
+        )
+      }
 
       public struct Red {
         public static let disabled = SemanticColor(
@@ -55,11 +91,11 @@ public struct Colors {
         }
       }
 
-      public struct Green {
+      public struct Yellow {
         public static let bolder = SemanticColor(
-          "text/accent/green/bolder",
-          lightMode: .green_08,
-          darkMode: .green_02
+          "text/accent/yellow/bolder",
+          lightMode: .yellow_08,
+          darkMode: .yellow_02
         )
       }
     }
