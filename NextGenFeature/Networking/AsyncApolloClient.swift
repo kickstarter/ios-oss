@@ -15,10 +15,10 @@ public final class AsyncApolloClient: @unchecked Sendable {
   }
 
   // MARK: - Queries
-  
+
   public func fetch<Query: GraphQLQuery>(
     _ query: Query,
-    cachePolicy: CachePolicy = .default,
+    cachePolicy: CachePolicy = .fetchIgnoringCacheCompletely,
     contextIdentifier: UUID? = nil,
     queue: DispatchQueue = .main
   ) async throws -> GraphQLResult<Query.Data> {
@@ -44,7 +44,7 @@ public final class AsyncApolloClient: @unchecked Sendable {
   }
 
   // MARK: - Mutations
-  
+
   public func perform<Mutation: GraphQLMutation>(
     _ mutation: Mutation,
     publishResultToStore: Bool = true,
