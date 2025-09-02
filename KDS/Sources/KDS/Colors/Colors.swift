@@ -349,16 +349,40 @@ public struct Colors {
   }
 
   public struct Icon {
+    public static let danger = SemanticColor(
+      "icon/danger",
+      lightMode: .red_700,
+      darkMode: .red_400
+    )
+
+    public static let disabled = SemanticColor(
+      "icon/disabled",
+      lightMode: .gray_500,
+      darkMode: .gray_600
+    )
+
     public static let green = SemanticColor(
       "icon/green",
       lightMode: .green_07,
       darkMode: .green_03
     )
 
-    public static let danger = SemanticColor(
-      "icon/danger",
-      lightMode: .red_700,
-      darkMode: .red_400
+    public static let info = SemanticColor(
+      "icon/info",
+      lightMode: .blue_07,
+      darkMode: .blue_03
+    )
+
+    public static let inverse = SemanticColor(
+      "icon/inverse",
+      lightMode: .gray_300,
+      darkMode: .gray_800
+    )
+
+    public static let pressed = SemanticColor(
+      "icon/primary",
+      lightMode: .gray_550,
+      darkMode: .gray_500
     )
 
     public static let primary = SemanticColor(
@@ -366,5 +390,33 @@ public struct Colors {
       lightMode: .gray_800,
       darkMode: .gray_200
     )
+
+    public static let subtle = SemanticColor(
+      "icon/subtle",
+      lightMode: .gray_600,
+      darkMode: .gray_500
+    )
+
+    public static let warning = SemanticColor(
+      "icon/warning",
+      lightMode: .yellow_07,
+      darkMode: .yellow_03
+    )
+
+    public struct Danger {
+      public static let inverse = SemanticColor(
+        "icon/danger/inverse",
+        lightMode: .red_200,
+        darkMode: .red_800
+      )
+    }
+
+    public struct Green {
+      public static let inverse = SemanticColor(
+        "icon/green/inverse",
+        lightMode: .green_02,
+        darkMode: .green_08
+      )
+    }
   }
 }
