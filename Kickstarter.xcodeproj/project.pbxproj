@@ -4454,15 +4454,25 @@
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		6075B3DC2E5374A700CA4A46 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ViewModels/NextGenSearchViewModelTests.swift,
+			);
 			publicHeaders = (
 				NextGenFeature.h,
 			);
 			target = 6075B3C22E5374A700CA4A46 /* NextGenFeature */;
 		};
+		609048922E677E7400F0A7E4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ViewModels/NextGenSearchViewModelTests.swift,
+			);
+			target = 6075B3CB2E5374A700CA4A46 /* NextGenFeatureTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		6075B3C42E5374A700CA4A46 /* NextGenFeature */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (6075B3DC2E5374A700CA4A46 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = NextGenFeature; sourceTree = "<group>"; };
+		6075B3C42E5374A700CA4A46 /* NextGenFeature */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (6075B3DC2E5374A700CA4A46 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 609048922E677E7400F0A7E4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = NextGenFeature; sourceTree = "<group>"; };
 		6075B3D02E5374A700CA4A46 /* NextGenFeatureTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = NextGenFeatureTests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 

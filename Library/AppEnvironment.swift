@@ -151,7 +151,7 @@ public struct AppEnvironment: AppEnvironmentType {
     return last
   }
 
-  internal static func resetStackForUnitTests() {
+  public static func resetStackForUnitTests() {
     while self.stack.count > 1 {
       _ = self.stack.popLast()
     }
