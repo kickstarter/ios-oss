@@ -1,4 +1,6 @@
 import KsApi
+import Library
+import Observation
 import SwiftUI
 
 private enum Constants {
@@ -16,40 +18,67 @@ public struct NextGenSearchView: View {
     apollo: AsyncApolloClient(client: GraphQL.shared.client)
   ))
 
+  @State private var searchText: String = ""
+
   public init() {}
 
   public var body: some View {
+    @Bindable var vm = self.vm
+
     ZStack {
       Color(.systemBackground).ignoresSafeArea()
 
       VStack(spacing: Constants.verticalSpacing) {
-        self.TopBarView()
+        self.TopBarView
 
-        // Search field + status row
         VStack(alignment: .leading, spacing: Constants.titleSubtitleSpacing) {
-          self.SearchFieldView(vm: self.vm)
-          self.StatusRowView(vm: self.vm)
+          TextField("Search projects…", text: self.$searchText)
+            .textFieldStyle(.roundedBorder)
+            .autocorrectionDisabled()
+            .textInputAutocapitalization(.never)
+            .submitLabel(.search)
+            // send every keystroke to the VM. it handles debouncing
+            .onChange(of: self.searchText) { newValue in
+              vm.inputs.searchTextChanged(newValue)
+            }
+            .onSubmit {
+              vm.inputs.searchTextChanged(self.searchText)
+            }
+
+          Text(vm.outputs.statusText)
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+            .lineLimit(1)
+            .truncationMode(.tail)
         }
         .padding(.horizontal, Constants.horizontalPadding)
 
-        // Value-based results list (no Binding).
-        self.ResultsListView(items: Array(self.vm.outputs.results))
-          .animation(.easeInOut(duration: Constants.animationDuration), value: self.vm.outputs.results)
+        self.ResultsListView(items: vm.outputs.results)
+          .animation(.easeInOut(duration: Constants.animationDuration), value: vm.outputs.results)
       }
       .padding(.top)
     }
-    .onAppear { self.vm.inputs.onAppear() }
+    .onAppear {
+      vm.inputs.onAppear()
+
+      if !vm.searchQuery.isEmpty {
+        self.searchText = vm.searchQuery
+      }
+    }
   }
 
-  // MARK: - ViewBuilders
+  // MARK: - Subviews
 
-  private func TopBarView() -> some View {
+  private var TopBarView: some View {
     HStack {
-      Text("Projects").font(.title.bold())
+      Text("Projects")
+        .font(.title.bold())
 
       Spacer()
 
-      Button(action: { self.handleClose() }) {
+      Button {
+        self.dismiss()
+      } label: {
         Image(systemName: "xmark.circle.fill")
           .font(.title3)
           .foregroundColor(.secondary)
@@ -60,35 +89,10 @@ public struct NextGenSearchView: View {
     .padding(.horizontal, Constants.horizontalPadding)
   }
 
-  private func SearchFieldView(vm: NextGenSearchViewModel) -> some View {
-    TextField(
-      "Search projects…",
-      text: Binding(
-        get: {
-          vm.searchQuery
-        },
-        set: {
-          vm.inputs.searchTextChanged($0)
-        }
-      )
-    )
-    .textFieldStyle(.roundedBorder)
-    .autocorrectionDisabled()
-  }
-
-  private func StatusRowView(vm: NextGenSearchViewModel) -> some View {
-    Text(vm.outputs.statusText)
-      .font(.footnote)
-      .foregroundStyle(.secondary)
-      .lineLimit(1)
-      .truncationMode(.tail)
-  }
-
   private func ResultsListView(items: [NextGenSearchResult]) -> some View {
-    // ScrollView + LazyVStack keeps it simple and avoids List’s Binding requirement on init.
     ScrollView {
       LazyVStack(alignment: .leading, spacing: 8) {
-        ForEach(items, id: \.id) { (item: NextGenSearchResult) in
+        ForEach(items) { item in
           VStack(alignment: .leading, spacing: 4) {
             Text(item.name).font(.headline)
           }
@@ -97,11 +101,5 @@ public struct NextGenSearchView: View {
       }
       .padding(.horizontal, Constants.horizontalPadding)
     }
-  }
-
-  // MARK: - Helpers
-
-  private func handleClose() {
-    self.dismiss()
   }
 }

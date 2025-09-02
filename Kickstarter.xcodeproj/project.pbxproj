@@ -984,6 +984,7 @@
 		6080DA402AB366680088EF3D /* Text+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6080DA3F2AB366680088EF3D /* Text+HTML.swift */; };
 		608B5B212CADA6CD00BCC5F4 /* PledgeRewardsSummaryDiffableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608B5B202CADA6CD00BCC5F4 /* PledgeRewardsSummaryDiffableDataSource.swift */; };
 		608F974C2B752C4900DBE7D7 /* ValidateCheckoutEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608F974B2B752C4900DBE7D7 /* ValidateCheckoutEnvelope.swift */; };
+		609048972E67895700F0A7E4 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 609048962E67895700F0A7E4 /* ApolloAPI */; };
 		6090F0C52D2ED52D009C9AEE /* TimeInterval+ISO8601DateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F4A96126125EA0000C21F9 /* TimeInterval+ISO8601DateTests.swift */; };
 		6093098D2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6093098C2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift */; };
 		609309912A60555F004297AF /* TriggerThirdPartyEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609309902A60555F004297AF /* TriggerThirdPartyEventInput.swift */; };
@@ -4455,6 +4456,7 @@
 		6075B3DC2E5374A700CA4A46 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Networking/AsyncApolloClientTests.swift,
 				ViewModels/NextGenSearchViewModelTests.swift,
 			);
 			publicHeaders = (
@@ -4465,6 +4467,7 @@
 		609048922E677E7400F0A7E4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Networking/AsyncApolloClientTests.swift,
 				ViewModels/NextGenSearchViewModelTests.swift,
 			);
 			target = 6075B3CB2E5374A700CA4A46 /* NextGenFeatureTests */;
@@ -4493,6 +4496,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				609048972E67895700F0A7E4 /* ApolloAPI in Frameworks */,
 				6075B3CD2E5374A700CA4A46 /* NextGenFeature.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9490,6 +9494,7 @@
 			);
 			name = NextGenFeatureTests;
 			packageProductDependencies = (
+				609048962E67895700F0A7E4 /* ApolloAPI */,
 			);
 			productName = NextGenFeatureTests;
 			productReference = 6075B3CC2E5374A700CA4A46 /* NextGenFeatureTests.xctest */;
@@ -14863,6 +14868,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
+		};
+		609048962E67895700F0A7E4 /* ApolloAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = ApolloAPI;
 		};
 		60DA50FD28C38DDB002E2DF1 /* AlamofireImage */ = {
 			isa = XCSwiftPackageProductDependency;
