@@ -1,3 +1,4 @@
+import KsApi
 import SwiftUI
 
 private enum Constants {
@@ -11,15 +12,13 @@ private enum Constants {
 
 public struct NextGenSearchView: View {
   @SwiftUI.Environment(\.dismiss) private var dismiss
-  @State private var viewModel: NextGenSearchViewModel
+  @State private var vm: NextGenSearchViewModel = NextGenSearchViewModel(service: NextGenProjectSearchService(
+    apollo: AsyncApolloClient(client: GraphQL.shared.client)
+  ))
 
-  public init(viewModel: NextGenSearchViewModel) {
-    _viewModel = State(initialValue: viewModel)
-  }
+  public init() {}
 
   public var body: some View {
-    @Bindable var vm = self.viewModel
-
     ZStack {
       Color(.systemBackground).ignoresSafeArea()
 
@@ -28,18 +27,18 @@ public struct NextGenSearchView: View {
 
         // Search field + status row
         VStack(alignment: .leading, spacing: Constants.titleSubtitleSpacing) {
-          self.SearchFieldView(vm: vm)
-          self.StatusRowView(vm: vm)
+          self.SearchFieldView(vm: self.vm)
+          self.StatusRowView(vm: self.vm)
         }
         .padding(.horizontal, Constants.horizontalPadding)
 
         // Value-based results list (no Binding).
-        self.ResultsListView(items: Array(vm.outputs.results))
-          .animation(.easeInOut(duration: Constants.animationDuration), value: vm.outputs.results)
+        self.ResultsListView(items: Array(self.vm.outputs.results))
+          .animation(.easeInOut(duration: Constants.animationDuration), value: self.vm.outputs.results)
       }
       .padding(.top)
     }
-    .onAppear { vm.inputs.onAppear() }
+    .onAppear { self.vm.inputs.onAppear() }
   }
 
   // MARK: - ViewBuilders

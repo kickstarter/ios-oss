@@ -1,11 +1,11 @@
 import Apollo
 import Foundation
 
-class GraphQL {
+public class GraphQL {
   // MARK: - Properties
 
-  private var apollo: ApolloClient?
-  var client: ApolloClient {
+  public var apollo: ApolloClient?
+  public var client: ApolloClient {
     guard let client = self.apollo else {
       fatalError("Apollo Client accessed before calling configure(with:headers:additionalHeaders:)")
     }
@@ -13,7 +13,7 @@ class GraphQL {
     return client
   }
 
-  static let shared = GraphQL()
+  public static let shared = GraphQL()
 
   /**
    Configures the shared instance with the specified URL and headers.

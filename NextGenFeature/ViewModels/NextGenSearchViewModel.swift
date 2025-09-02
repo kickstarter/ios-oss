@@ -42,13 +42,13 @@ public final class NextGenSearchViewModel: NextGenSearchViewModelType,
   public private(set) var isLoading: Bool = false
   public private(set) var statusText: String = "Idle"
 
-  private let service: any NextGenProjectSearchServicing
+  private let service: any NextGenProjectSearchType
   private let textChangesStream: AsyncStream<String>
   private let textChangesContinuation: AsyncStream<String>.Continuation
   private var bindTask: Task<Void, Never>?
   private var currentRequest: Task<Void, Never>?
 
-  public init(service: any NextGenProjectSearchServicing) {
+  public init(service: any NextGenProjectSearchType) {
     self.service = service
 
     (self.textChangesStream, self.textChangesContinuation) = AsyncStream<String>.makeStream()

@@ -5,13 +5,13 @@ import KsApi
 import Library
 
 @MainActor
-public protocol NextGenProjectSearchServicing {
+public protocol NextGenProjectSearchType {
   func searchProjects(matching term: String) async throws -> [NextGenSearchResult]
 }
 
 /// Calls Apollo via our minimal async/await wrapper.
 @MainActor
-public struct NextGenProjectSearchService: NextGenProjectSearchServicing {
+public struct NextGenProjectSearchService: NextGenProjectSearchType {
   private let apollo: AsyncApolloClient
 
   public init(apollo: AsyncApolloClient) {
