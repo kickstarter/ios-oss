@@ -90,6 +90,7 @@ public final class OnboardingViewModel: OnboardingViewModelType, Equatable & Ide
 
   public func didCompletePushNotificationsDialog(with authStatus: UNAuthorizationStatus) {
     /// Send analytics event when the user has finished interacting with the PN system dialog. `authStatus` let's insights know whether they allowed or denied permissions.
+
     AppEnvironment.current.ksrAnalytics.trackPushNotificationPermissionsDialogInteraction(
       .onboardingNotificationsDialog,
       authStatus: authStatus
@@ -97,10 +98,11 @@ public final class OnboardingViewModel: OnboardingViewModelType, Equatable & Ide
   }
 
   public func didCompleteAppTrackingDialog(with authStatus: ATTrackingManager.AuthorizationStatus) {
-    /// Send analytics event when the user has finished interacting with the AppTracking  system dialog. `authStatus` let's insights know whether they allowed or denied permissions.
+    /// Send analytics event if the user has allowed AppTracking permission.
+    guard authStatus == .authorized else { return }
+
     AppEnvironment.current.ksrAnalytics.trackAppTrackingTransparencyPermissionsDialogInteraction(
-      .onboardingAppTrackingDialog,
-      authStatus: authStatus
+      .onboardingAppTrackingDialog
     )
   }
 

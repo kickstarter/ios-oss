@@ -141,11 +141,6 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
       .mapConst(())
 
     _ = self.goToNextItemTappedSignal.signal
-      .observeValues { itemType in
-        if itemType.isPermissionType {
-          // TODO: Emit analytic tracking events here so that we know that the user opted skipped push notifications and/or AppTrackingTransparency views
-        }
-      }
   }
 
   // MARK: - Inputs
