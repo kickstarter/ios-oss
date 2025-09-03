@@ -1354,20 +1354,21 @@ public final class KSRAnalytics {
       .onboardingSystemPermissionsDenied
 
     let props = contextProperties(ctaContext: ctaContext, page: .onboarding, sectionContext: sectionContext)
+
     self.track(event: SegmentEvent.ctaClicked.rawValue, properties: props)
   }
 
   /**
-   Call when the user has finished interacting with the AppTrackingTransparency permissions dialog that was presented in the onboarding flow.
+   Call when the user has allowed the AppTrackingTransparency permissions dialog that was presented in the onboarding flow.
    */
   public func trackAppTrackingTransparencyPermissionsDialogInteraction(
-    _ sectionContext: SectionContext,
-    authStatus: ATTrackingManager.AuthorizationStatus
+    _ sectionContext: SectionContext
   ) {
-    let ctaContext: CTAContext = authStatus == .authorized ? .onboardingSystemPermissionsAllowed :
-      .onboardingSystemPermissionsDenied
-
-    let props = contextProperties(ctaContext: ctaContext, page: .onboarding, sectionContext: sectionContext)
+    let props = contextProperties(
+      ctaContext: .onboardingSystemPermissionsAllowed,
+      page: .onboarding,
+      sectionContext: sectionContext
+    )
     self.track(event: SegmentEvent.ctaClicked.rawValue, properties: props)
   }
 

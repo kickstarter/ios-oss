@@ -113,13 +113,15 @@ final class OnboardingViewModelTest: TestCase {
 
     self.viewModel.inputs.didCompleteAppTrackingDialog(with: .denied)
 
-    XCTAssertEqual(["CTA Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
     XCTAssertEqual("onboarding", self.segmentTrackingClient.properties.last?["context_page"] as? String)
     XCTAssertEqual(
       "activity_tracking_prompt",
       self.segmentTrackingClient.properties.last?["context_section"] as? String
     )
-    XCTAssertEqual("deny", self.segmentTrackingClient.properties.last?["context_cta"] as? String)
+    
+    /// last ctaContext should be `allow` still because we shouldn't track denied events.
+    XCTAssertEqual("allow", self.segmentTrackingClient.properties.last?["context_cta"] as? String)
   }
 
   func testGoToLoginSignupTapped_FiresAnalyticsEvents() {

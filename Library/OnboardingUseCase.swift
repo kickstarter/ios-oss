@@ -141,11 +141,6 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
       .mapConst(())
 
     _ = self.goToNextItemTappedSignal.signal
-      .observeValues { itemType in
-        if itemType.isPermissionType {
-          // TODO: Emit analytic tracking events here so that we know that the user opted skipped push notifications and/or AppTrackingTransparency views
-        }
-      }
   }
 
   // MARK: - Inputs
@@ -201,15 +196,15 @@ private func allOnboardingItems(
       in: bundle
     ),
     makeOnboardingItem(
-      title: Strings.onboarding_stay_in_the_know_title(),
-      subTitle: Strings.onboarding_stay_in_the_know_subtitle(),
-      type: .enableNotifications,
-      in: bundle
-    ),
-    makeOnboardingItem(
       title: Strings.onboarding_personalize_your_experience_title(),
       subTitle: Strings.onboarding_personalize_your_experience_subtitle(),
       type: .allowTracking,
+      in: bundle
+    ),
+    makeOnboardingItem(
+      title: Strings.onboarding_stay_in_the_know_title(),
+      subTitle: Strings.onboarding_stay_in_the_know_subtitle(),
+      type: .enableNotifications,
       in: bundle
     ),
     makeOnboardingItem(
