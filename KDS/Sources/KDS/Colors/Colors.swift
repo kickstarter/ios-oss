@@ -130,6 +130,12 @@ public struct Colors {
       darkMode: .gray_100
     )
 
+    public static let disabled = SemanticColor(
+      "background/disabled",
+      lightMode: .gray_400,
+      darkMode: .gray_700
+    )
+
     public static let selected = SemanticColor(
       "background/selected",
       lightMode: .gray_900,
@@ -137,7 +143,27 @@ public struct Colors {
     )
 
     public struct Accent {
+      public struct Blue {
+        public static let disabled = SemanticColor(
+          "background/accent/blue/disabled",
+          lightMode: .blue_01,
+          darkMode: .blue_10
+        )
+
+        public static let subtle = SemanticColor(
+          "background/accent/blue/subtle",
+          lightMode: .blue_02,
+          darkMode: .blue_09
+        )
+      }
+
       public struct Gray {
+        public static let bold = SemanticColor(
+          "background/accent/gray/bold",
+          lightMode: .gray_600,
+          darkMode: .gray_500
+        )
+
         public static let disabled = SemanticColor(
           "background/accent/gray/disabled",
           lightMode: .gray_100,
@@ -179,7 +205,27 @@ public struct Colors {
         }
       }
 
+      public struct Purple {
+        public static let disabled = SemanticColor(
+          "background/accent/purple/disabled",
+          lightMode: .purple_01,
+          darkMode: .purple_09
+        )
+
+        public static let subtle = SemanticColor(
+          "background/accent/purple/subtle",
+          lightMode: .purple_02,
+          darkMode: .purple_08
+        )
+      }
+
       public struct Red {
+        public static let disabled = SemanticColor(
+          "background/accent/red/disabled",
+          lightMode: .red_100,
+          darkMode: .red_1000
+        )
+
         public static let subtle = SemanticColor(
           "background/accent/red/subtle",
           lightMode: .red_200,
@@ -250,15 +296,29 @@ public struct Colors {
       }
     }
 
+    public struct Warning {
+      public static let disabled = SemanticColor(
+        "background/warning/disabled",
+        lightMode: .yellow_01,
+        darkMode: .yellow_09
+      )
+
+      public static let subtle = SemanticColor(
+        "background/warning/subtle",
+        lightMode: .yellow_02,
+        darkMode: .yellow_08
+      )
+    }
+
     public struct Inverse {
       public static let pressed = SemanticColor(
-        "background/inverse/disabled",
+        "background/inverse/pressed",
         lightMode: .gray_300,
         darkMode: .gray_800
       )
 
       public static let disabled = SemanticColor(
-        "background/inverse/pressed",
+        "background/inverse/disabled",
         lightMode: .gray_200,
         darkMode: .gray_850
       )
@@ -275,6 +335,30 @@ public struct Colors {
         "background/surface/secondary",
         lightMode: .gray_100,
         darkMode: .black
+      )
+
+      public static let inverse = SemanticColor(
+        "background/surface/inverse",
+        lightMode: .gray_1000,
+        darkMode: .white
+      )
+
+      public static let raised = SemanticColor(
+        "background/surface/raised",
+        lightMode: .white,
+        darkMode: .gray_950
+      )
+
+      public static let raisedHigher = SemanticColor(
+        "background/surface/raisedHigher",
+        lightMode: .white,
+        darkMode: .gray_900
+      )
+
+      public static let overlay = SemanticColor(
+        "background/surface/overlay",
+        lightMode: .white,
+        darkMode: .gray_900
       )
     }
   }
