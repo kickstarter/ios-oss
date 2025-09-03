@@ -201,15 +201,15 @@ private func allOnboardingItems(
       in: bundle
     ),
     makeOnboardingItem(
-      title: Strings.onboarding_stay_in_the_know_title(),
-      subTitle: Strings.onboarding_stay_in_the_know_subtitle(),
-      type: .enableNotifications,
-      in: bundle
-    ),
-    makeOnboardingItem(
       title: Strings.onboarding_personalize_your_experience_title(),
       subTitle: Strings.onboarding_personalize_your_experience_subtitle(),
       type: .allowTracking,
+      in: bundle
+    ),
+    makeOnboardingItem(
+      title: Strings.onboarding_stay_in_the_know_title(),
+      subTitle: Strings.onboarding_stay_in_the_know_subtitle(),
+      type: .enableNotifications,
       in: bundle
     ),
     makeOnboardingItem(
