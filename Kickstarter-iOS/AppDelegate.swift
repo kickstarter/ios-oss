@@ -48,7 +48,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     // Braze expects to be configured immediately, but segment destination plugins are initialized
     // async. This method bridges that gap.
     // https://www.braze.com/docs/developer_guide/sdk_integration#swift_step-2-set-up-delayed-initialization-optional
-    Braze.prepareForDelayedInitialization(pushAutomation: .init(automaticSetup: false))
+    Braze.prepareForDelayedInitialization(pushAutomation: self.configuredBrazePushAutmation())
 
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
@@ -478,9 +478,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     return BrazeDestination(
       additionalConfiguration: { configuration in
         configuration.triggerMinimumTimeInterval = 5
-        configuration.push.automation = true
-        configuration.push.automation.requestAuthorizationAtLaunch = false
-        configuration.push.automation.automaticSetup = false
+        configuration.push.automation = self.configuredBrazePushAutmation()
         // TODO(MBL-2742): Change the logger level to `info` or `error` if it gets tedious.
         configuration.logger.level = .debug
       }
@@ -507,6 +505,16 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           }
         }
     }
+  }
+
+  // This configuration object defines how much automation Braze does. It gets set both when
+  // we configure `BrazeDestination` and when we call `Braze.prepareForDelayedInitialization`.
+  // https://braze-inc.github.io/braze-swift-sdk/documentation/brazekit/braze/configuration-swift.class/push-swift.class/automation-swift.class/
+  private func configuredBrazePushAutmation() -> BrazeKit.Braze.Configuration.Push.Automation {
+    let automation: BrazeKit.Braze.Configuration.Push.Automation = true
+    automation.automaticSetup = false
+    automation.requestAuthorizationAtLaunch = false
+    return automation
   }
 }
 
