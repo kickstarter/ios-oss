@@ -500,7 +500,7 @@ public struct Colors {
     )
 
     public static let pressed = SemanticColor(
-      "icon/primary",
+      "icon/pressed",
       lightMode: .gray_550,
       darkMode: .gray_500
     )
