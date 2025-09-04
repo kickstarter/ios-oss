@@ -22,7 +22,6 @@ public struct OnboardingView: View {
   @ObservedObject var viewModel: OnboardingViewModel
   @Namespace private var animation
   @State private var currentIndex: Int = 0
-  @State private var contentHeight: CGFloat = 1
   @State private var onboardingItems: [OnboardingItem] = []
 
   private var progress: Double {
@@ -46,56 +45,28 @@ public struct OnboardingView: View {
       VStack {
         self.ProgressBarView()
           .accessibilityElement(children: .combine)
+        // TODO: Add accessibility translations [mbl-2418]
 
-        /// Scale down view only if its height exceeds available height
-        GeometryReader { proxy in
-          let availableHeight = proxy.size.height
-          /// Compute how much to scale down the view to fit the available height.
-          /// - min(1, …) - don't scale up beyond 100% (full view height)
-          /// - max(0.86, …) - don’t let it shrink past 86% (keep tap targets accessible)
-          /// - availableHeight / max(contentHeight, 1) - fit ratio
-          let scale = min(1, max(0.86, availableHeight / max(self.contentHeight, 1)))
-
-          ZStack {
-            ForEach(Array(self.onboardingItems.enumerated()), id: \.element.id) { index, item in
-              if index == self.currentIndex {
-                OnboardingItemView(
-                  item: item,
-                  progress: self.progress,
-                  onPrimaryTap: { self.handlePrimaryTap(for: item) },
-                  onSecondaryTap: { self.handleSecondaryTap(for: item) }
-                )
-                .transition(.asymmetric(
-                  insertion: .move(edge: .trailing).combined(with: .opacity),
-                  removal: .move(edge: .leading).combined(with: .opacity)
-                ))
-              }
+        ZStack {
+          ForEach(Array(self.onboardingItems.enumerated()), id: \.element.id) { index, item in
+            if index == self.currentIndex {
+              OnboardingItemView(
+                item: item,
+                progress: self.progress,
+                onPrimaryTap: { self.handlePrimaryTap(for: item) },
+                onSecondaryTap: { self.handleSecondaryTap(for: item) }
+              )
+              .transition(.asymmetric(
+                insertion: .move(edge: .trailing).combined(with: .opacity),
+                removal: .move(edge: .leading).combined(with: .opacity)
+              ))
             }
           }
-          /// Get the view content's height.
-          .background(
-            GeometryReader { geo in
-              Color.clear
-                .onAppear {
-                  self.contentHeight = geo.size.height
-                }
-                .onChange(of: geo.size.height) { height in
-                  withAnimation {
-                    self.contentHeight = height
-                  }
-                }
-            }
-          )
-          /// scale down  just enough to fit on screen and achor to  top
-          .scaleEffect(
-            scale,
-            anchor: .top
-          )
-          .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+          .animation(.easeInOut(duration: Constants.animationDuration), value: self.currentIndex)
         }
         .animation(.easeInOut(duration: Constants.animationDuration), value: self.currentIndex)
       }
-      .padding(.vertical)
+      .padding(.top)
     }
     .onAppear {
       self.viewModel.inputs.onAppear()
@@ -150,6 +121,7 @@ public struct OnboardingView: View {
           .accessibilityAddTraits(.isButton)
       }
     }
+    .padding(.top, Constants.verticalPadding)
     .padding(.horizontal, Constants.horizontalPadding)
   }
 
