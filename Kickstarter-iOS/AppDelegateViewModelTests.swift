@@ -30,7 +30,6 @@ final class AppDelegateViewModelTests: TestCase {
   private let presentViewController = TestObserver<Int, Never>()
   private let pushRegistrationStarted = TestObserver<(), Never>()
   private let pushTokenSuccessfullyRegistered = TestObserver<String, Never>()
-  private let registerPushTokenInSegment = TestObserver<Data, Never>()
   private let requestATTrackingAuthorizationStatus = TestObserver<Void, Never>()
   private let setApplicationShortcutItems = TestObserver<[ShortcutItem], Never>()
   private let segmentIsEnabled = TestObserver<Bool, Never>()
@@ -77,7 +76,6 @@ final class AppDelegateViewModelTests: TestCase {
       .observe(self.presentViewController.observer)
     self.vm.outputs.pushTokenRegistrationStarted.observe(self.pushRegistrationStarted.observer)
     self.vm.outputs.pushTokenSuccessfullyRegistered.observe(self.pushTokenSuccessfullyRegistered.observer)
-    self.vm.outputs.registerPushTokenInSegment.observe(self.registerPushTokenInSegment.observer)
     self.vm.outputs.requestATTrackingAuthorizationStatus
       .observe(self.requestATTrackingAuthorizationStatus.observer)
     self.vm.outputs.setApplicationShortcutItems.observe(self.setApplicationShortcutItems.observer)
@@ -1032,22 +1030,6 @@ final class AppDelegateViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(5))
 
       self.pushTokenSuccessfullyRegistered.assertValueCount(1)
-    }
-  }
-
-  func testRegisterPushTokenInSegment() {
-    let data = Data("deadbeef".utf8)
-
-    self.registerPushTokenInSegment.assertDidNotEmitValue()
-
-    withEnvironment(currentUser: .template) {
-      self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.shared,
-        launchOptions: [:]
-      )
-      self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: data)
-
-      self.registerPushTokenInSegment.assertValueCount(1)
     }
   }
 
