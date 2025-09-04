@@ -29,6 +29,13 @@ public struct OnboardingView: View {
     return Double(self.currentIndex + 1) / onboardingItemsCount
   }
 
+  @SwiftUI.Environment(\.sizeCategory) private var sizeCategory
+
+  /// SE / older small devices are ~667pt tall
+  private var isSmallDevice: Bool {
+    UIScreen.main.bounds.height < 700
+  }
+
   public init(viewModel: OnboardingViewModel) {
     self.viewModel = viewModel
   }
@@ -45,7 +52,6 @@ public struct OnboardingView: View {
       VStack {
         self.ProgressBarView()
           .accessibilityElement(children: .combine)
-        // TODO: Add accessibility translations [mbl-2418]
 
         ZStack {
           ForEach(Array(self.onboardingItems.enumerated()), id: \.element.id) { index, item in
@@ -62,10 +68,9 @@ public struct OnboardingView: View {
               ))
             }
           }
-          .animation(.easeInOut(duration: Constants.animationDuration), value: self.currentIndex)
         }
-        .animation(.easeInOut(duration: Constants.animationDuration), value: self.currentIndex)
       }
+      .scaleEffect(self.isSmallDevice ? 0.85 : 1.0, anchor: .center)
       .padding(.top)
     }
     .onAppear {
@@ -160,7 +165,9 @@ public struct OnboardingView: View {
   private func goToNextItem() {
     guard self.currentIndex < self.onboardingItems.count - 1 else { return }
 
-    self.currentIndex += 1
+    withAnimation(.easeInOut(duration: Constants.animationDuration)) {
+      self.currentIndex += 1
+    }
 
     self.viewModel.inputs.goToNextItemTapped(item: self.onboardingItems[self.currentIndex])
   }
