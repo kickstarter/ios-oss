@@ -1,5 +1,5 @@
 import AuthenticationServices
-import FBSDKLoginKit
+import FacebookLogin
 import Foundation
 import KDS
 import KsApi
