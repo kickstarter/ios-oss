@@ -1,4 +1,4 @@
-import FBSDKCoreKit
+import FacebookCore
 import FirebaseCrashlytics
 import Foundation
 import KsApi

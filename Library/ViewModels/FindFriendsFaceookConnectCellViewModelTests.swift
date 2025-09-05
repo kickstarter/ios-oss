@@ -1,5 +1,5 @@
-@testable import FBSDKCoreKit
-@testable import FBSDKLoginKit
+@testable import FacebookCore
+@testable import FacebookLogin
 @testable import KsApi
 @testable import Library
 import Prelude

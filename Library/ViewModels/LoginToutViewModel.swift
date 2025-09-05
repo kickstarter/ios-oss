@@ -1,4 +1,4 @@
-import FBSDKLoginKit
+import FacebookLogin
 import KsApi
 import Prelude
 import ReactiveSwift
