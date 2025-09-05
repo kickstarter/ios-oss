@@ -1,4 +1,4 @@
-@testable import FBSDKLoginKit
+@testable import FacebookLogin
 @testable import KsApi
 @testable import Library
 import Prelude

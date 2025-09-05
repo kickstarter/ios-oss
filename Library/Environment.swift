@@ -1,6 +1,6 @@
 import AVFoundation
 import CoreTelephony
-import FBSDKCoreKit
+import FacebookCore
 import Foundation
 import KsApi
 import ReactiveSwift
