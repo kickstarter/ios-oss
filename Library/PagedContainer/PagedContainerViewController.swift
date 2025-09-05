@@ -3,6 +3,7 @@ import Foundation
 import KDS
 import SwiftUI
 import UIKit
+import Library
 
 open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
   private weak var activeController: UIViewController? = nil

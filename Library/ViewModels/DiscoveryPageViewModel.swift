@@ -3,6 +3,7 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 import UIKit
+import Library
 
 public protocol DiscoveryPageViewModelInputs {
   /// Call when the Config has been updated in the AppEnvironment

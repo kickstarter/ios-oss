@@ -394,7 +394,7 @@ public final class KSRAnalytics {
 
      - parameter params: a `DiscoveryParams` object
      */
-    init(params: DiscoveryParams) {
+    public init(params: DiscoveryParams) {
       if let recommended = params.recommended, recommended {
         self = .recommended
       } else if let starred = params.starred, starred {
@@ -542,20 +542,37 @@ public final class KSRAnalytics {
   }
 
   public struct CheckoutPropertiesData: Equatable {
-    let addOnsCountTotal: Int?
-    let addOnsCountUnique: Int?
-    let addOnsMinimumUsd: Double
-    let bonusAmountInUsd: Decimal?
-    let checkoutId: String?
-    let estimatedDelivery: TimeInterval?
-    let paymentType: String?
-    let revenueInUsd: Decimal
-    let rewardId: String
-    let rewardMinimumUsd: Decimal
-    let rewardTitle: String?
-    let shippingEnabled: Bool
-    let shippingAmountUsd: Double?
-    let userHasStoredApplePayCard: Bool
+    public let addOnsCountTotal: Int?
+    public let addOnsCountUnique: Int?
+    public let addOnsMinimumUsd: Double
+    public let bonusAmountInUsd: Decimal?
+    public let checkoutId: String?
+    public let estimatedDelivery: TimeInterval?
+    public let paymentType: String?
+    public let revenueInUsd: Decimal
+    public let rewardId: String
+    public let rewardMinimumUsd: Decimal
+    public let rewardTitle: String?
+    public let shippingEnabled: Bool
+    public let shippingAmountUsd: Double?
+    public let userHasStoredApplePayCard: Bool
+    
+    public init(addOnsCountTotal: Int?, addOnsCountUnique: Int?, addOnsMinimumUsd: Double, bonusAmountInUsd: Decimal?, checkoutId: String?, estimatedDelivery: TimeInterval?, paymentType: String?, revenueInUsd: Decimal, rewardId: String, rewardMinimumUsd: Decimal, rewardTitle: String?, shippingEnabled: Bool, shippingAmountUsd: Double?, userHasStoredApplePayCard: Bool) {
+      self.addOnsCountTotal = addOnsCountTotal
+      self.addOnsCountUnique = addOnsCountUnique
+      self.addOnsMinimumUsd = addOnsMinimumUsd
+      self.bonusAmountInUsd = bonusAmountInUsd
+      self.checkoutId = checkoutId
+      self.estimatedDelivery = estimatedDelivery
+      self.paymentType = paymentType
+      self.revenueInUsd = revenueInUsd
+      self.rewardId = rewardId
+      self.rewardMinimumUsd = rewardMinimumUsd
+      self.rewardTitle = rewardTitle
+      self.shippingEnabled = shippingEnabled
+      self.shippingAmountUsd = shippingAmountUsd
+      self.userHasStoredApplePayCard = userHasStoredApplePayCard
+    }
   }
 
   public struct PledgedProjectOverviewProperties {

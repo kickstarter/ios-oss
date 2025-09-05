@@ -1,6 +1,7 @@
 import KsApi
 import Prelude
 import ReactiveSwift
+import Library
 
 public protocol DiscoveryFiltersViewModelInputs {
   /// Call with the row that is selected when the filters appear and array of loaded categories.

@@ -1,6 +1,7 @@
 import KsApi
 import Prelude
 import ReactiveSwift
+import Library
 
 protocol SettingsAccountPickerCellViewModelInputs {
   func configure(with cellValue: SettingsCellValue)

@@ -1,6 +1,7 @@
 import Foundation
 import KDS
 import SwiftUI
+import Library
 
 public struct PagedTabBar<Page: TabBarPage>: View {
   @StateObject var viewModel: PagedContainerViewModel<Page>

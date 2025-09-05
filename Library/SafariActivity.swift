@@ -4,6 +4,10 @@ import UIKit
 public let SafariActivityType = UIActivity.ActivityType("com.kickstarter.kickstarter.safari")
 public struct SafariURL {
   public let url: URL
+  
+  public init(url: URL) {
+    self.url = url
+  }
 }
 
 public final class SafariActivity: UIActivity {

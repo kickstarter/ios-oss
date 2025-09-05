@@ -2,6 +2,7 @@ import Combine
 import Foundation
 import KDS
 import SwiftUI
+import Library
 
 public final class MessageBannerViewViewModel: ObservableObject, Equatable {
   @Published public var bannerBackgroundColor: Color

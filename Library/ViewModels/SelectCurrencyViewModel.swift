@@ -2,6 +2,7 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
+import Library
 
 public struct SelectedCurrencyData: Equatable {
   public let currency: Currency

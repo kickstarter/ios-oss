@@ -1,6 +1,7 @@
 import KsApi
 import Prelude
 import ReactiveSwift
+import Library
 
 public protocol SettingsNotificationPickerViewModelOutputs {
   var frequencyValueText: Signal<String, Never> { get }

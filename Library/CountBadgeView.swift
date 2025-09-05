@@ -2,6 +2,7 @@ import KDS
 import Prelude
 import Prelude_UIKit
 import UIKit
+import Library
 
 public final class CountBadgeView: UIView {
   public let label: UILabel = UILabel()

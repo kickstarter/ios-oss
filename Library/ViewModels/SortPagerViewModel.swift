@@ -1,6 +1,7 @@
 import KsApi
 import Prelude
 import ReactiveSwift
+import Library
 
 public protocol SortPagerViewModelInputs {
   /// Call with the sorts that the view was configured with.

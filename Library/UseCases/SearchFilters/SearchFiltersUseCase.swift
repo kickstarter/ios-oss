@@ -2,6 +2,7 @@ import GraphAPI
 import KsApi
 import ReactiveSwift
 import UIKit
+import Library
 
 public protocol SearchFiltersUseCaseType {
   var inputs: SearchFiltersUseCaseInputs { get }

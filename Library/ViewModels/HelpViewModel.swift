@@ -1,6 +1,7 @@
 import MessageUI
 import Prelude
 import ReactiveSwift
+import Library
 
 public enum HelpContext {
   case loginTout

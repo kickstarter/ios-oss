@@ -5,6 +5,7 @@ import PassKit
 import Prelude
 import ReactiveSwift
 import Stripe
+import Library
 
 public struct PostCampaignCheckoutData: Equatable {
   public let project: Project

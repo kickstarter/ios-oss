@@ -4,6 +4,7 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 import UIKit
+import Library
 
 public typealias PledgePaymentMethodCellData = (
   card: UserCreditCards.CreditCard,

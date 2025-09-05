@@ -3,6 +3,7 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 import WebKit
+import Library
 
 public protocol SurveyResponseViewModelInputs {
   /// Call when the close button is tapped.

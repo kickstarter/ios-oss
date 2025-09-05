@@ -3,6 +3,7 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 import UIKit
+import Library
 
 public typealias ThanksPageData = (
   project: Project,

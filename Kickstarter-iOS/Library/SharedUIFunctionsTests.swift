@@ -2,7 +2,7 @@
 import Prelude
 import XCTest
 
-internal final class SharedFunctionsTests: TestCase {
+internal final class SharedUIFunctionsTests: TestCase {
   func testGenerateImpactFeedback() {
     let mockFeedbackGenerator = MockImpactFeedbackGenerator()
 

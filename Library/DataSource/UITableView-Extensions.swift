@@ -1,4 +1,5 @@
 import UIKit
+import Library
 
 public extension UITableView {
   // MARK: - Registration

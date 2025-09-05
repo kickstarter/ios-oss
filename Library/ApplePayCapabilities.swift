@@ -1,6 +1,7 @@
 import Foundation
 import KsApi
 import PassKit
+import Library
 
 public protocol ApplePayCapabilitiesType {
   /*

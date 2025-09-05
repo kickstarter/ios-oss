@@ -2,6 +2,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import UIKit
+import Library
 
 public struct ShareActivityCompletionData {
   internal let activityType: UIActivity.ActivityType?

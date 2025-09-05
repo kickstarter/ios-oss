@@ -2,6 +2,7 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
+import Library
 
 public protocol ErroredBackingViewViewModelInputs {
   func configure(with value: ProjectAndBackingEnvelope)

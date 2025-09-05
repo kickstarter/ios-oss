@@ -1,6 +1,7 @@
 import KsApi
 import ReactiveExtensions
 import ReactiveSwift
+import Library
 
 public protocol ResetPasswordViewModelInputs {
   /// Call when the view loads

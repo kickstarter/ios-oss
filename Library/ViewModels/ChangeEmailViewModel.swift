@@ -2,6 +2,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import UIKit
+import Library
 
 public protocol ChangeEmailViewModelInputs {
   func emailFieldTextDidChange(text: String?)

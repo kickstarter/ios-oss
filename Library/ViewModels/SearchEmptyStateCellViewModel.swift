@@ -1,5 +1,6 @@
 import KsApi
 import ReactiveSwift
+import Library
 
 public struct SearchEmptyStateSearchData {
   public let query: String?

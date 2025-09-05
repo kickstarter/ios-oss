@@ -1,5 +1,6 @@
 import Foundation
 import KsApi
+import Library
 
 public protocol HasProjectPamphletMainCellProperties {
   var projectPamphletMainCellProperties: ProjectPamphletMainCellProperties { get }

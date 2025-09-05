@@ -2,6 +2,7 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
+import Library
 
 public protocol MessagesSearchViewModelInputs {
   /// Call when the search clear button is tapped.

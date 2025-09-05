@@ -3,6 +3,7 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 import UIKit
+import Library
 
 public protocol DiscoveryViewModelInputs {
   /// Call when Recommendations setting changes on Settings > Account > Privacy > Recommendations.

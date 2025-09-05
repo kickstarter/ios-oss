@@ -3,6 +3,7 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+import Library
 
 public protocol ActitiviesViewModelInputs {
   /// Called when the project image in an update activity cell is tapped.

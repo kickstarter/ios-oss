@@ -1,5 +1,6 @@
 import Foundation
 import ReactiveSwift
+import Library
 
 public struct RewardTrackingDetailsViewData {
   public let trackingNumber: String

@@ -1,6 +1,7 @@
 import KsApi
 import Prelude
 import ReactiveSwift
+import Library
 
 public protocol RewardCardContainerViewModelInputs {
   func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>)
@@ -35,7 +36,7 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
         case let .left(reward):
           return reward
         case let .right(backing):
-          return Library.reward(from: backing, inProject: project)
+          return Kickstarter_Framework.reward(from: backing, inProject: project)
         }
       }
 

@@ -3,6 +3,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import UIKit
+import Library
 
 public struct ManagePledgeSummaryViewData: Equatable {
   public let backerId: Int

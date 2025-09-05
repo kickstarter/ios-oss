@@ -5,6 +5,7 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 import UIKit
+import Library
 
 internal final class FindFriendsViewController: UITableViewController {
   fileprivate let viewModel: FindFriendsViewModelType = FindFriendsViewModel()

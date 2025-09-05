@@ -1,6 +1,7 @@
 import Prelude
 import ReactiveSwift
 import UIKit
+import Library
 
 public typealias MessageBannerConfiguration = (type: MessageBannerType, message: String)
 

@@ -3,6 +3,7 @@ import MessageUI
 import Prelude
 import ReactiveSwift
 import WebKit
+import Library
 
 public protocol ProjectUpdatesViewModelInputs {
   /// Call to set whether Mail can be composed.

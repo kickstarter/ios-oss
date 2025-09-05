@@ -3,6 +3,7 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+import Library
 
 private let playRate = 1.0
 private let pauseRate = 0.0

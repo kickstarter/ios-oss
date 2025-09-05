@@ -1,5 +1,5 @@
 import Foundation
 
-internal extension DateFormatter {
-  static let monthYear = "MMMMyyyy"
+public extension DateFormatter {
+  public static let monthYear = "MMMMyyyy"
 }

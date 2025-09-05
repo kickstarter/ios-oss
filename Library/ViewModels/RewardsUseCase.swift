@@ -1,6 +1,7 @@
 import Foundation
 import KsApi
 import ReactiveSwift
+import Library
 
 public protocol RewardsUseCaseOutputs {
   var goToLoginWithIntent: Signal<LoginIntent, Never> { get }

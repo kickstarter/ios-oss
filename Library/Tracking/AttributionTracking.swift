@@ -1,11 +1,11 @@
 import Foundation
 
-struct AttributionTracking {
+public struct AttributionTracking {
   public enum AttributionEvent: String {
     case projectPageViewed = "Project Page Viewed"
   }
 
-  static func eventParametersString(refInfo: RefInfo?) -> String? {
+  public static func eventParametersString(refInfo: RefInfo?) -> String? {
     let sessionRefTag = refInfo?.refTag?.stringTag
     let contextPageUrl = refInfo?.deeplinkUrl
     var props = [String: String]()

@@ -1,6 +1,7 @@
 import Foundation
 import KsApi
 import ReactiveSwift
+import Library
 
 public struct PledgePaymentPlanOptionData: Equatable {
   public var ineligible: Bool = false

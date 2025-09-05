@@ -1,6 +1,7 @@
 import KsApi
 import Prelude
 import ReactiveSwift
+import Library
 
 public protocol MessageDialogViewModelInputs {
   /// Call when the message text changes.

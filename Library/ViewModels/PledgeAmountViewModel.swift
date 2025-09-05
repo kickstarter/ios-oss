@@ -4,6 +4,7 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 import UIKit
+import Library
 
 public typealias PledgeAmountData = (amount: Double, min: Double, max: Double, isValid: Bool)
 

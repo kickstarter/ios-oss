@@ -1,6 +1,7 @@
 import KsApi
 import Prelude
 import ReactiveSwift
+import Library
 
 public protocol ProjectTabCheckmarkListCellViewModelInputs {
   /// Call to configure with a `ProjectTabFundingOptions`.

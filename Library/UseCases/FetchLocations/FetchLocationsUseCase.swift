@@ -1,6 +1,7 @@
 import GraphAPI
 import KsApi
 import ReactiveSwift
+import Library
 
 public protocol FetchLocationsUseCaseType {
   var inputs: FetchLocationsUseCaseInputs { get }

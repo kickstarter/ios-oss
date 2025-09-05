@@ -3,6 +3,8 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import UIKit
+import Library
+
 
 public protocol ActivityUpdateViewModelInputs {
   /// Call to configure with the activity.

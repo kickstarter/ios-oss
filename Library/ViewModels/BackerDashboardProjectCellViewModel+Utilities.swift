@@ -1,6 +1,7 @@
 import Foundation
 import KDS
 import UIKit
+import Library
 
 func metadataString(for project: any BackerDashboardProjectCellViewModel.ProjectCellModel) -> String {
   guard !isProjectPrelaunch(project) else { return Strings.Coming_soon() }

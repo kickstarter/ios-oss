@@ -1,3 +1,5 @@
+import Library
+
 public enum FacebookConnectionType {
   case connect
   case reconnect

@@ -3,6 +3,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import UIKit
+import Library
 
 public struct RewardCardPillData: Equatable {
   public let backgroundColor: UIColor

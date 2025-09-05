@@ -4,6 +4,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import UIKit
+import Library
 
 public protocol PledgeOverTimePaymentScheduleViewModelInputs {
   func configure(with increments: [PledgePaymentIncrement])

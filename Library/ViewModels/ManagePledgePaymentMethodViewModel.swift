@@ -3,6 +3,7 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+import Library
 
 public struct ManagePledgePaymentMethodViewData: Equatable {
   public let backingState: Backing.Status

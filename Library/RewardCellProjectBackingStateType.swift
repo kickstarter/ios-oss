@@ -12,7 +12,7 @@ public enum RewardCellProjectBackingStateType: Equatable {
   case nonBacked(live: ProjectState)
   case backed(live: ProjectState)
 
-  static func state(with project: Project) -> RewardCellProjectBackingStateType {
+  static public func state(with project: Project) -> RewardCellProjectBackingStateType {
     guard let backing = project.personalization.backing else {
       if featurePostCampaignPledgeEnabled(), project.isInPostCampaignPledgingPhase {
         return .nonBacked(live: .inPostCampaignPledgingPhase)

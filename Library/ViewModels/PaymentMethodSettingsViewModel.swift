@@ -3,6 +3,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import StripePaymentSheet
+import Library
 
 public protocol PaymentMethodSettingsViewModelInputs {
   func failedToAddNewCard()

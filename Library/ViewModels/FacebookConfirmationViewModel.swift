@@ -2,6 +2,7 @@ import Foundation
 import KsApi
 import ReactiveExtensions
 import ReactiveSwift
+import Library
 
 public protocol FacebookConfirmationViewModelInputs {
   /// Call when view controller's viewDidLoad() is called

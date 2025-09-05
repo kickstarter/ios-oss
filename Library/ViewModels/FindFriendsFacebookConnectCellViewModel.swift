@@ -3,6 +3,7 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+import Library
 
 public protocol FindFriendsFacebookConnectCellViewModelInputs {
   /// Call when close button tapped to dismiss this view if used as a header

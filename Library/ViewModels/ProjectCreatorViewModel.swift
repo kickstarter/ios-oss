@@ -2,6 +2,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import WebKit
+import Library
 
 public protocol HasProjectCreatorProperties {
   var projectCreatorProperties: ProjectCreatorProperties { get }

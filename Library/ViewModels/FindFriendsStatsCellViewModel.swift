@@ -2,6 +2,7 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+import Library
 
 public protocol FindFriendsStatsCellViewModelInputs {
   /// Call to set with stats and the source from whence it comes

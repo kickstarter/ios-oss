@@ -105,7 +105,7 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
   // MARK: - Initialization
 
   /// Injecting a bundle so that we can test that the correct Lottie JSON files are being loaded as expected.
-  init(for bundle: Bundle = .main) {
+  public init(for bundle: Bundle = .main) {
     let onboardingItems = allOnboardingItems(in: bundle)
 
     self.onboardingItems = SignalProducer(value: onboardingItems)

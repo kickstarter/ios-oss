@@ -1,5 +1,6 @@
 import KsApi
 import ReactiveSwift
+import Library
 
 public protocol PaymentMethodsUseCaseType {
   var uiInputs: PaymentMethodsUseCaseUIInputs { get }

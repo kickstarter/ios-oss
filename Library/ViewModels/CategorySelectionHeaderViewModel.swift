@@ -1,5 +1,6 @@
 import Foundation
 import ReactiveSwift
+import Library
 
 public enum CuratedProjectsContext {
   case onboarding

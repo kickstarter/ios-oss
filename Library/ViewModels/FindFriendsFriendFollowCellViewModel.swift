@@ -3,6 +3,7 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+import Library
 
 public protocol FindFriendsFriendFollowCellViewModelInputs {
   /// Call to set friend from whence it comes

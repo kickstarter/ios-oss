@@ -1,4 +1,5 @@
 import Foundation
+import Library
 
 public struct PledgePaymentMethodsAndSelectionData {
   public var existingPaymentMethods: [PledgePaymentMethodCellData]

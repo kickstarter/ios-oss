@@ -3,6 +3,7 @@ import KDS
 import KsApi
 import ReactiveSwift
 import UIKit
+import Library
 
 public protocol ProjectPamphletCreatorHeaderCellViewModelInputs {
   func configure(with project: Project)

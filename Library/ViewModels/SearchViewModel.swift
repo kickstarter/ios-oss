@@ -3,6 +3,7 @@ import GraphAPI
 import KsApi
 import Prelude
 import ReactiveSwift
+import Library
 
 public typealias SearchResultCard = ProjectCardProperties
 public typealias SearchResult = GraphAPI.SearchQuery.Data.Projects.Node

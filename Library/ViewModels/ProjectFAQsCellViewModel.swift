@@ -1,6 +1,7 @@
 import KsApi
 import Prelude
 import ReactiveSwift
+import Library
 
 public protocol ProjectFAQsCellViewModelInputs {
   /// Call to configure with a tuple of `ProjectFAQ, Bool`. The `Bool` represents whether the cell is expanded.

@@ -2,6 +2,7 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+import Library
 
 public protocol FindFriendsViewModelInputs {
   /// Call to set where Friends View Controller was loaded from

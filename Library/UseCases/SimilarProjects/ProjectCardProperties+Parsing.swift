@@ -2,6 +2,7 @@ import Foundation
 import GraphAPI
 import Kingfisher
 import KsApi
+import Library
 
 extension ProjectCardProperties {
   init?(_ fragment: GraphAPI.ProjectCardFragment) {

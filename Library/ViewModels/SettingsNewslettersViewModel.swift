@@ -1,6 +1,7 @@
 import KsApi
 import Prelude
 import ReactiveSwift
+import Library
 
 public protocol SettingsNewslettersViewModelInputs {
   func didUpdate(user: User)

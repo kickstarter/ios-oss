@@ -3,6 +3,7 @@ import Foundation
 import KsApi
 import ReactiveSwift
 import UserNotifications
+import Library
 
 public protocol OnboardingViewModelInputs {
   func allowTrackingTapped()

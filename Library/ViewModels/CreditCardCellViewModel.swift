@@ -3,6 +3,7 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 import UIKit
+import Library
 
 public protocol CreditCardCellViewModelInputs {
   /// Call to configure cell with card value.

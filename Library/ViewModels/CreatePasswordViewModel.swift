@@ -2,6 +2,7 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
+import Library
 
 public protocol CreatePasswordViewModelInputs {
   func cellAtIndexPathShouldBecomeFirstResponder(_ indexPath: IndexPath?)

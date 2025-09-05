@@ -32,7 +32,7 @@ public struct SearchFilterPill: Identifiable {
 
     /// If `true`, this pill is a boolean value that can be toggled directly from the search header.
     /// Tapping on this pill doesn't open a modal.
-    var isToggle: Bool {
+    public var isToggle: Bool {
       switch self {
       case .projectsWeLove:
         true

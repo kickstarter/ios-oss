@@ -9,7 +9,7 @@ public enum LoginIntent: String {
   case onboarding
   case starProject
 
-  var trackingString: String {
+  public var trackingString: String {
     switch self {
     case .activity:
       return "activity"

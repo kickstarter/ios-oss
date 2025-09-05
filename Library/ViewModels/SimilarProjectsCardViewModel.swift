@@ -3,6 +3,7 @@ import Kingfisher
 import KsApi
 import ReactiveSwift
 import UIKit
+import Library
 
 public protocol ProjectsCardViewModelInputs {
   func configureWith(project: ProjectCardProperties)

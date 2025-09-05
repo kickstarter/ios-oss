@@ -3,6 +3,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import UIKit
+import Library
 
 public struct RewardAddOnCardViewData: Equatable {
   public let project: Project

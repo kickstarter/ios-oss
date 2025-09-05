@@ -2,6 +2,7 @@ import FBSDKLoginKit
 import KsApi
 import Prelude
 import ReactiveSwift
+import Library
 
 public typealias SignInWithAppleData = (appId: String, firstName: String?, lastName: String?, token: String)
 

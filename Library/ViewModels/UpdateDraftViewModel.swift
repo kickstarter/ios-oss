@@ -2,6 +2,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import UIKit
+import Library
 
 public protocol UpdateDraftViewModelInputs {
   /// Call when the creator taps "add attachment".

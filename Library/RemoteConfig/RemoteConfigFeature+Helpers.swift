@@ -1,7 +1,7 @@
 import KsApi
 
 /// Return remote config values either a value from the cloud, if it found one, or an override value from user defaults.
-func featureEnabled(feature: RemoteConfigFeature) -> Bool {
+public func featureEnabled(feature: RemoteConfigFeature) -> Bool {
   if let valueFromDefaults = AppEnvironment.current.userDefaults
     .remoteConfigFeatureFlags[feature.rawValue] {
     return valueFromDefaults

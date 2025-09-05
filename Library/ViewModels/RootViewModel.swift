@@ -2,6 +2,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import UIKit
+import Library
 
 public typealias RootViewControllerIndex = Int
 public typealias RootTabBarItemBadgeValueData = (String?, RootViewControllerIndex)

@@ -1,6 +1,7 @@
 import Combine
 import KsApi
 import SwiftUI
+import Library
 
 /// A model that SwiftUI can use to display Search Filters modals.
 ///

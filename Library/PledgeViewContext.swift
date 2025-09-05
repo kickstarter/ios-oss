@@ -9,91 +9,91 @@ public enum PledgeViewContext {
   case update
   case updateReward
 
-  var confirmationLabelHidden: Bool {
+  public var confirmationLabelHidden: Bool {
     switch self {
     case .fixPaymentMethod, .changePaymentMethod, .updateReward, .editPledgeOverTime: return true
     case .pledge, .latePledge, .update: return false
     }
   }
 
-  var continueViewHidden: Bool {
+  public var continueViewHidden: Bool {
     switch self {
     case .pledge, .latePledge: return false
     case .fixPaymentMethod, .update, .changePaymentMethod, .updateReward, .editPledgeOverTime: return true
     }
   }
 
-  var descriptionViewHidden: Bool {
+  public var descriptionViewHidden: Bool {
     switch self {
     case .pledge, .latePledge, .updateReward, .editPledgeOverTime: return false
     case .fixPaymentMethod, .update, .changePaymentMethod: return true
     }
   }
 
-  var expandableRewardViewHidden: Bool {
+  public var expandableRewardViewHidden: Bool {
     switch self {
     case .pledge, .latePledge, .updateReward, .editPledgeOverTime: return false
     case .fixPaymentMethod, .update, .changePaymentMethod: return true
     }
   }
 
-  var isCreating: Bool {
+  public var isCreating: Bool {
     switch self {
     case .pledge, .latePledge: return true
     case .fixPaymentMethod, .update, .changePaymentMethod, .updateReward, .editPledgeOverTime: return false
     }
   }
 
-  var isUpdating: Bool {
+  public var isUpdating: Bool {
     switch self {
     case .pledge, .latePledge: return false
     case .fixPaymentMethod, .update, .changePaymentMethod, .updateReward, .editPledgeOverTime: return true
     }
   }
 
-  var paymentMethodsViewHidden: Bool {
+  public var paymentMethodsViewHidden: Bool {
     switch self {
     case .fixPaymentMethod, .pledge, .latePledge, .changePaymentMethod: return false
     case .update, .updateReward, .editPledgeOverTime: return true
     }
   }
 
-  var pledgeAmountViewHidden: Bool {
+  public var pledgeAmountViewHidden: Bool {
     switch self {
     case .pledge, .latePledge, .update, .updateReward, .editPledgeOverTime: return false
     case .fixPaymentMethod, .changePaymentMethod: return true
     }
   }
 
-  var pledgeAmountSummaryViewHidden: Bool {
+  public var pledgeAmountSummaryViewHidden: Bool {
     switch self {
     case .fixPaymentMethod, .changePaymentMethod, .update, .editPledgeOverTime: return false
     case .pledge, .latePledge, .updateReward: return true
     }
   }
 
-  var sectionSeparatorsHidden: Bool {
+  public var sectionSeparatorsHidden: Bool {
     switch self {
     case .pledge, .latePledge, .updateReward, .editPledgeOverTime: return false
     case .fixPaymentMethod, .update, .changePaymentMethod: return true
     }
   }
 
-  var shippingLocationViewHidden: Bool {
+  public var shippingLocationViewHidden: Bool {
     switch self {
     case .pledge, .latePledge, .update, .updateReward, .editPledgeOverTime: return false
     case .fixPaymentMethod, .changePaymentMethod: return true
     }
   }
 
-  var applePayButtonHidden: Bool {
+  public var applePayButtonHidden: Bool {
     switch self {
     case .pledge, .latePledge, .fixPaymentMethod, .changePaymentMethod: return false
     case .update, .updateReward, .editPledgeOverTime: return true
     }
   }
 
-  var submitButtonTitle: String {
+  public var submitButtonTitle: String {
     switch self {
     case .pledge, .latePledge: return Strings.Pledge()
     case .fixPaymentMethod, .update, .changePaymentMethod, .updateReward,
@@ -101,7 +101,7 @@ public enum PledgeViewContext {
     }
   }
 
-  var title: String {
+  public var title: String {
     switch self {
     case .fixPaymentMethod: return Strings.Fix_payment_method()
     case .pledge, .latePledge: return Strings.Back_this_project()

@@ -1,5 +1,6 @@
 import KsApi
 import ReactiveSwift
+import Library
 
 public protocol SearchLegacyEmptyStateCellViewModelInputs {
   func configureWith(param: DiscoveryParams)

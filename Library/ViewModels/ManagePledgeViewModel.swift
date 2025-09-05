@@ -3,6 +3,7 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+import Library
 
 public typealias ManagePledgeViewParamConfigData = (
   projectParam: Param,

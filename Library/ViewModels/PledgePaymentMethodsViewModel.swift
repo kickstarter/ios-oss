@@ -5,6 +5,7 @@ import Prelude
 import ReactiveSwift
 import StripePaymentSheet
 import UIKit
+import Library
 
 public enum PaymentMethodsTableViewSection: Int {
   case paymentMethods

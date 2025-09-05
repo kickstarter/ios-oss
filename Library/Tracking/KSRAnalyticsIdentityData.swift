@@ -18,7 +18,7 @@ public struct KSRAnalyticsIdentityData: Equatable {
   private let name: String
   private let notifications: User.Notifications
 
-  init(_ user: User) {
+  public init(_ user: User) {
     self.userId = user.id
     self.name = user.name
     self.notifications = user.notifications
@@ -43,7 +43,7 @@ public struct KSRAnalyticsIdentityData: Equatable {
     return newTraits
   }
 
-  var allTraits: [String: Any] {
+  public var allTraits: [String: Any] {
     return self.traits.mapValues { $0.value }
   }
 
