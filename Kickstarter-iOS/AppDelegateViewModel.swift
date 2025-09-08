@@ -145,8 +145,8 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits the push token that has been successfully registered on the server.
   var pushTokenSuccessfullyRegistered: Signal<String, Never> { get }
 
-  /// Emits when we should register the device push token in Segment Analytics.
-  var registerPushTokenInSegment: Signal<Data, Never> { get }
+  /// Emits when we should register the device push token in Braze.
+  var registerPushTokenInBraze: Signal<Data, Never> { get }
 
   /// Emits when application didFinishLaunchingWithOptions.
   var requestATTrackingAuthorizationStatus: Signal<Void, Never> { get }
@@ -327,7 +327,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           .map { _ in token }
       }
 
-    self.registerPushTokenInSegment = self.deviceTokenDataProperty.signal
+    self.registerPushTokenInBraze = self.deviceTokenDataProperty.signal
 
     // MARK: - Onboarding Flow
 
@@ -939,7 +939,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let presentViewController: Signal<UIViewController, Never>
   public let pushTokenRegistrationStarted: Signal<(), Never>
   public let pushTokenSuccessfullyRegistered: Signal<String, Never>
-  public let registerPushTokenInSegment: Signal<Data, Never>
+  public let registerPushTokenInBraze: Signal<Data, Never>
   public let requestATTrackingAuthorizationStatus: Signal<Void, Never>
   public let segmentIsEnabled: Signal<Bool, Never>
   public let setApplicationShortcutItems: Signal<[ShortcutItem], Never>

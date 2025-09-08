@@ -161,10 +161,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         print("📲 [Push Registration] Push token successfully registered (\(token)) ✨")
       }
 
-    self.viewModel.outputs.registerPushTokenInSegment
+    self.viewModel.outputs.registerPushTokenInBraze
       .observeForUI()
       .observeValues { token in
-        self.analytics?.registeredForRemoteNotifications(deviceToken: token)
+        self.braze?.notifications.register(deviceToken: token)
       }
 
     self.viewModel.outputs.triggerOnboardingFlow
@@ -520,6 +520,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     let automation: BrazeKit.Braze.Configuration.Push.Automation = true
     automation.automaticSetup = false
     automation.requestAuthorizationAtLaunch = false
+    automation.registerDeviceToken = false
     return automation
   }
 }

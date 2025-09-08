@@ -30,7 +30,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let presentViewController = TestObserver<Int, Never>()
   private let pushRegistrationStarted = TestObserver<(), Never>()
   private let pushTokenSuccessfullyRegistered = TestObserver<String, Never>()
-  private let registerPushTokenInSegment = TestObserver<Data, Never>()
+  private let registerPushTokenInBraze = TestObserver<Data, Never>()
   private let requestATTrackingAuthorizationStatus = TestObserver<Void, Never>()
   private let setApplicationShortcutItems = TestObserver<[ShortcutItem], Never>()
   private let segmentIsEnabled = TestObserver<Bool, Never>()
@@ -77,7 +77,7 @@ final class AppDelegateViewModelTests: TestCase {
       .observe(self.presentViewController.observer)
     self.vm.outputs.pushTokenRegistrationStarted.observe(self.pushRegistrationStarted.observer)
     self.vm.outputs.pushTokenSuccessfullyRegistered.observe(self.pushTokenSuccessfullyRegistered.observer)
-    self.vm.outputs.registerPushTokenInSegment.observe(self.registerPushTokenInSegment.observer)
+    self.vm.outputs.registerPushTokenInBraze.observe(self.registerPushTokenInBraze.observer)
     self.vm.outputs.requestATTrackingAuthorizationStatus
       .observe(self.requestATTrackingAuthorizationStatus.observer)
     self.vm.outputs.setApplicationShortcutItems.observe(self.setApplicationShortcutItems.observer)
@@ -1035,10 +1035,10 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testRegisterPushTokenInSegment() {
+  func testRegisterPushTokenInBraze() {
     let data = Data("deadbeef".utf8)
 
-    self.registerPushTokenInSegment.assertDidNotEmitValue()
+    self.registerPushTokenInBraze.assertDidNotEmitValue()
 
     withEnvironment(currentUser: .template) {
       self.vm.inputs.applicationDidFinishLaunching(
@@ -1047,7 +1047,7 @@ final class AppDelegateViewModelTests: TestCase {
       )
       self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: data)
 
-      self.registerPushTokenInSegment.assertValueCount(1)
+      self.registerPushTokenInBraze.assertValueCount(1)
     }
   }
 
