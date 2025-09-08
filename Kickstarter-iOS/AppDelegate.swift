@@ -161,6 +161,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         print("📲 [Push Registration] Push token successfully registered (\(token)) ✨")
       }
 
+    self.viewModel.outputs.registerPushTokenInSegment
+      .observeForUI()
+      .observeValues { token in
+        self.analytics?.registeredForRemoteNotifications(deviceToken: token)
+      }
+
     self.viewModel.outputs.triggerOnboardingFlow
       .observeForUI()
       .observeValues { [weak self] in
