@@ -8,7 +8,7 @@ private enum Constants {
   static let rootStackViewBottomPadding = Spacing.unit_20
   static let horizontalPadding = Spacing.unit_05
   static let lottieViewTopPadding = Spacing.unit_04
-  static let rootStackViewTopPadding = Spacing.unit_05
+  static let rootStackViewTopPadding = Spacing.unit_01
   static let titleSubtitleSpacing = Spacing.unit_03
   static let verticalSpacing = Spacing.unit_06
 }
@@ -20,7 +20,7 @@ struct OnboardingItemView: View {
   let onSecondaryTap: () -> Void
 
   var body: some View {
-    VStack {
+    ScrollView(showsIndicators: false) {
       VStack(spacing: Constants.titleSubtitleSpacing) {
         Text(self.item.title)
           .font(Font(OnboardingStyles.title))
@@ -41,9 +41,10 @@ struct OnboardingItemView: View {
       ResizableLottieView(onboardingItem: self.item, isVisible: true)
         .frame(maxWidth: .infinity)
         .padding(.top, Constants.lottieViewTopPadding)
-
-      Spacer()
-
+    }
+    .padding(.top, Constants.rootStackViewTopPadding)
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .safeAreaInset(edge: .bottom, spacing: 0) {
       CallToActionView(
         item: self.item,
         animationDuration: Constants.animationDuration,
@@ -51,10 +52,8 @@ struct OnboardingItemView: View {
         onSecondaryTap: self.onSecondaryTap
       )
       .padding(.horizontal, Constants.horizontalPadding)
+      .ignoresSafeArea(.all)
     }
-    .padding(.top, Constants.rootStackViewTopPadding)
-    .padding(.bottom, Constants.rootStackViewBottomPadding)
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
     .accessibilityElement(children: .contain)
   }
 
