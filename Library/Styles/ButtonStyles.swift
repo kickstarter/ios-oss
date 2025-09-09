@@ -57,24 +57,6 @@ public let greyButtonStyle: ButtonStyle = { button in
   return button
 }
 
-/// Applies base styling for secondary and legacy buttons (e.g., Blue, Gray).
-/// These styles are temporary for buttons that do not yet have a direct equivalent in the new system
-/// and are expected to be replaced in the future.
-public let baseButtonStyle: ButtonStyle = { button in
-  let cornerRadius: CGFloat = Dimension.CornerRadius.small
-  let font: UIFont = .ksr_ButtonLabel()
-
-  return button
-    |> roundedStyle(cornerRadius: cornerRadius)
-    |> UIButton.lens.contentEdgeInsets .~ .init(all: Styles.grid(2))
-    |> UIButton.lens.adjustsImageWhenDisabled .~ false
-    |> UIButton.lens.adjustsImageWhenHighlighted .~ false
-    <> UIButton.lens.titleLabel.font .~ font
-    <> UIButton.lens.titleLabel.lineBreakMode .~ NSLineBreakMode.byTruncatingMiddle
-    <> UIButton.lens.titleLabel.textAlignment .~ NSTextAlignment.center
-    <> UIButton.lens.titleLabel.numberOfLines .~ 1
-}
-
 // MARK: - Facebook
 
 /// Applies the new `KSRButtonStyle.facebook` style.
