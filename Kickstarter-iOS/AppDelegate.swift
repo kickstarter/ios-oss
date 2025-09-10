@@ -31,6 +31,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   fileprivate var brazeSubscription: BrazeKit.Braze.Cancellable?
 
   private var analytics: Segment.Analytics?
+  private weak var braze: Braze?
 
   internal var rootTabBarController: RootTabBarViewController? {
     return self.window?.rootViewController as? RootTabBarViewController
@@ -47,7 +48,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     // Braze expects to be configured immediately, but segment destination plugins are initialized
     // async. This method bridges that gap.
     // https://www.braze.com/docs/developer_guide/sdk_integration#swift_step-2-set-up-delayed-initialization-optional
-    BrazeDestination.prepareForDelayedInitialization()
+    Braze.prepareForDelayedInitialization(pushAutomation: self.configuredBrazePushAutomation())
 
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
@@ -74,6 +75,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { [weak self] user in
         AppEnvironment.updateCurrentUser(user)
+        // Update user in Braze.
+        self?.braze?.changeUser(userId: String(user.id))
+        // Update user in Segment.
         AppEnvironment.current.ksrAnalytics.identify(newUser: user)
         self?.viewModel.inputs.currentUserUpdatedInEnvironment()
       }
@@ -157,10 +161,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         print("📲 [Push Registration] Push token successfully registered (\(token)) ✨")
       }
 
-    self.viewModel.outputs.registerPushTokenInSegment
+    self.viewModel.outputs.registerPushTokenInBraze
       .observeForUI()
       .observeValues { token in
-        self.analytics?.registeredForRemoteNotifications(deviceToken: token)
+        self.braze?.notifications.register(deviceToken: token)
       }
 
     self.viewModel.outputs.triggerOnboardingFlow
@@ -480,14 +484,14 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     return BrazeDestination(
       additionalConfiguration: { configuration in
         configuration.triggerMinimumTimeInterval = 5
-        configuration.push.automation = true
-        configuration.push.automation.requestAuthorizationAtLaunch = false
+        configuration.push.automation = self.configuredBrazePushAutomation()
         // TODO(MBL-2742): Change the logger level to `info` or `error` if it gets tedious.
         configuration.logger.level = .debug
       }
     ) { [weak self] braze in
       guard let self else { return }
       braze.delegate = self
+      self.braze = braze
 
       braze.inAppMessagePresenter = BrazeUI.BrazeInAppMessageUI()
 
@@ -507,6 +511,17 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           }
         }
     }
+  }
+
+  // This configuration object defines how much automation Braze does. It gets set both when
+  // we configure `BrazeDestination` and when we call `Braze.prepareForDelayedInitialization`.
+  // https://braze-inc.github.io/braze-swift-sdk/documentation/brazekit/braze/configuration-swift.class/push-swift.class/automation-swift.class/
+  private func configuredBrazePushAutomation() -> BrazeKit.Braze.Configuration.Push.Automation {
+    let automation: BrazeKit.Braze.Configuration.Push.Automation = true
+    automation.automaticSetup = false
+    automation.requestAuthorizationAtLaunch = false
+    automation.registerDeviceToken = false
+    return automation
   }
 }
 
