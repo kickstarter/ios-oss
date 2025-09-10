@@ -1,6 +1,14 @@
 import UIKit
 
 public struct Colors {
+  public static let scrim = SemanticColor(
+    "scrim",
+    lightMode: .black,
+    lightModeAlpha: 0.32,
+    darkMode: .black,
+    darkModeAlpha: 0.5
+  )
+
   public struct Text {
     public static let primary = SemanticColor(
       "text/primary",
@@ -241,6 +249,14 @@ public struct Colors {
         darkMode: .gray_600
       )
 
+      public static let overlaidButton = SemanticColor(
+        "background/action/disabled",
+        lightMode: .white,
+        lightModeAlpha: 0.9,
+        darkMode: .gray_900,
+        darkModeAlpha: 0.9
+      )
+
       public static let pressed = SemanticColor(
         "background/action/pressed",
         lightMode: .gray_800,
@@ -252,6 +268,16 @@ public struct Colors {
         lightMode: .green_06,
         darkMode: .white
       )
+
+      public struct OverlaidButton {
+        public static let pressed = SemanticColor(
+          "background/action/primary/pressed",
+          lightMode: .gray_300,
+          lightModeAlpha: 0.9,
+          darkMode: .gray_800,
+          darkModeAlpha: 0.9
+        )
+      }
 
       public struct Primary {
         public static let pressed = SemanticColor(

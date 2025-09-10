@@ -2,6 +2,7 @@ import SwiftUI
 
 public struct ColorsView: View {
   fileprivate let semanticColors = [
+    Colors.scrim,
     Colors.Background.action,
     Colors.Background.disabled,
     Colors.Background.selected,
@@ -19,6 +20,8 @@ public struct ColorsView: View {
     Colors.Background.Accent.Red.disabled,
     Colors.Background.Accent.Red.subtle,
     Colors.Background.Action.disabled,
+    Colors.Background.Action.overlaidButton,
+    Colors.Background.Action.OverlaidButton.pressed,
     Colors.Background.Action.pressed,
     Colors.Background.Action.primary,
     Colors.Background.Action.Primary.disabled,
