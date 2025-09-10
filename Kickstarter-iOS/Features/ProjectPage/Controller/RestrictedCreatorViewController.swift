@@ -82,8 +82,7 @@ public final class RestrictedCreatorViewController: UIViewController {
     self.descriptionLabel.font = .ksr_callout()
 
     self.okButton.setTitle(Strings.general_alert_buttons_ok(), for: .normal)
-    _ = self.okButton
-      |> blackButtonStyle
+    self.okButton.applyStyleConfiguration(KSRButtonStyle.filled)
 
     self.creatorAccountabilityButton.attributedText = self.attributedCreatorAccountabilityButtonTitle()
     self.creatorAccountabilityButton.numberOfLines = 0

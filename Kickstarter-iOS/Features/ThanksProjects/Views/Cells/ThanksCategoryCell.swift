@@ -1,6 +1,6 @@
+import KDS
 import KsApi
 import Library
-import Prelude
 import UIKit
 
 internal protocol ThanksCategoryCellDelegate: AnyObject {
@@ -27,8 +27,7 @@ internal final class ThanksCategoryCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    _ = self.seeAllProjectsButton
-      |> greyButtonStyle
+    self.seeAllProjectsButton.applyStyleConfiguration(KSRButtonLegacyStyle.grey)
   }
 
   internal override func bindViewModel() {

@@ -117,12 +117,10 @@ final class PledgeViewCTAContainerView: UIView {
     _ = self.layer
       |> layerStyle
 
-    _ = self.continueButton
-      |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue() }
+    self.continueButton.applyStyleConfiguration(KSRButtonStyle.green)
+    self.continueButton.setTitle(Strings.Continue(), for: .normal)
 
-    _ = self.submitButton
-      |> greenButtonStyle
+    self.submitButton.applyStyleConfiguration(KSRButtonStyle.green)
 
     PledgeViewStyles.rootPledgeCTAStackViewStyle(self.rootStackView)
   }

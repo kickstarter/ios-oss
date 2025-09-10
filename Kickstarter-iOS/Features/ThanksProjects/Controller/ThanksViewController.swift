@@ -93,8 +93,8 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.text %~ { _ in Strings.Other_projects_you_might_like() }
 
+    self.shareMoreButton.applyStyleConfiguration(KSRButtonLegacyStyle.grey)
     _ = self.shareMoreButton
-      |> greyButtonStyle
       |> UIButton.lens.targets .~ [(self, #selector(self.shareMoreButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.project_accessibility_button_share_label()

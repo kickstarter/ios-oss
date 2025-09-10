@@ -36,10 +36,11 @@ public let activitySampleProjectTitleLabelStyle =
     <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
     <> UILabel.lens.font .~ UIFont.ksr_subhead().bolded
 
-public let activitySampleSeeAllActivityButtonStyle = greyButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in
-    Strings.discovery_activity_sample_button_see_all_activity()
-  }
+public let activitySampleSeeAllActivityButtonStyle: ButtonStyle = { button in
+  button.applyStyleConfiguration(KSRButtonLegacyStyle.grey)
+  button.setTitle(Strings.discovery_activity_sample_button_see_all_activity(), for: .normal)
+  return button
+}
 
 public let activitySampleStackViewStyle =
   UIStackView.lens.spacing .~ Styles.grid(3)

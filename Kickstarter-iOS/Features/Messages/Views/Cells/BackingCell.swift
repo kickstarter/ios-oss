@@ -50,8 +50,8 @@ internal final class BackingCell: UITableViewCell, ValueCell {
           : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
       }
 
+    self.backingInfoButton.applyStyleConfiguration(KSRButtonLegacyStyle.grey)
     _ = self.backingInfoButton
-      |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.backing_info_info_button() }
       |> UIButton.lens.contentEdgeInsets %~~ { _, button in
         button.traitCollection.isRegularRegular

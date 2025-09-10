@@ -211,8 +211,8 @@ public let keyboardToolbarStyle: ToolbarStyle = { toolbar -> UIToolbar in
 }
 
 public let keyboardDoneButtonStyle: ButtonStyle = { button -> UIButton in
-  button
-    |> greenButtonStyle
+  button.applyStyleConfiguration(KSRButtonStyle.green)
+  return button
 }
 
 public let verticalStackViewStyle: StackViewStyle = { (stackView: UIStackView) in

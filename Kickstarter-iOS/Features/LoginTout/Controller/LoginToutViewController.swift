@@ -134,7 +134,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       }
       |> UILabel.lens.text %~ { _ in Strings.Get_notified_when_your_friends_back_and_launch_projects() }
 
-    _ = self.signupOrLoginWithOAuthButton |> greenButtonStyle
+    self.signupOrLoginWithOAuthButton.applyStyleConfiguration(KSRButtonStyle.green)
     self.signupOrLoginWithOAuthButton
       .setTitle(Strings.login_tout_generic_intent_traditional_signup_or_login_button(), for: .normal)
 

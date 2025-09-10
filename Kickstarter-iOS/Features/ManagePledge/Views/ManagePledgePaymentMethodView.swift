@@ -108,8 +108,9 @@ final class ManagePledgePaymentMethodView: UIView {
       |> checkoutTitleLabelStyle
       |> \.text %~ { _ in Strings.Payment_method() }
 
+    self.fixButton.applyStyleConfiguration(KSRButtonStyle.filledDestructive)
+
     _ = self.fixButton
-      |> redButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Fix() }
   }
 

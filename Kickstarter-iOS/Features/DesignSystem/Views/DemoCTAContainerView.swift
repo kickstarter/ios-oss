@@ -85,13 +85,11 @@ final class DemoCTAContainerView: UIView {
     _ = self.layer
       |> layerStyle
 
-    _ = self.continueButton
-      |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue() }
+    self.continueButton.applyStyleConfiguration(KSRButtonStyle.green)
+    self.continueButton.setTitle(Strings.Continue(), for: .normal)
 
-    _ = self.submitButton
-      |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.two_factor_buttons_submit() }
+    self.submitButton.applyStyleConfiguration(KSRButtonStyle.green)
+    self.submitButton.setTitle(Strings.two_factor_buttons_submit(), for: .normal)
 
     _ = self.rootStackView
       |> rootStackViewStyle

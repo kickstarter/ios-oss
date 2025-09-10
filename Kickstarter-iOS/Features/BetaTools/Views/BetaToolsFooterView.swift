@@ -127,9 +127,9 @@ private let appVersionTitleLabelStyle: LabelStyle = { label in
 }
 
 private let betaFeedbackButtonStyle: ButtonStyle = { button in
-  button
-    |> greenButtonStyle
-    |> UIButton.lens.title(for: .normal) .~ "Submit feedback for beta"
+  button.applyStyleConfiguration(KSRButtonStyle.green)
+  button.setTitle("Submit feedback for beta", for: .normal)
+  return button
 }
 
 private let deviceIdentifierDetailTextViewStyle: TextViewStyle = { textView in

@@ -119,8 +119,7 @@ internal final class EmptyStatesViewController: UIViewController {
         right: Styles.grid(4)
       )
 
-    _ = self.mainButton
-      |> greenButtonStyle
+    self.mainButton.applyStyleConfiguration(KSRButtonStyle.green)
 
     _ = self.backgroundStripView
       |> UIView.lens.backgroundColor .~ LegacyColors.ksr_white.uiColor()

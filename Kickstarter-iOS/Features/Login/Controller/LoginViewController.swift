@@ -73,11 +73,8 @@ internal final class LoginViewController: UIViewController {
   override func bindStyles() {
     _ = self |> loginControllerStyle
 
-    _ = self.loginButton
-      |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in
-        Strings.login_tout_back_intent_traditional_login_button()
-      }
+    self.loginButton.applyStyleConfiguration(KSRButtonStyle.green)
+    self.loginButton.setTitle(Strings.login_tout_back_intent_traditional_login_button(), for: .normal)
 
     _ = self.forgotPasswordButton |> forgotPasswordButtonStyle
 

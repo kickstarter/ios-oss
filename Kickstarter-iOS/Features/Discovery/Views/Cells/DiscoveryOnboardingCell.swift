@@ -33,11 +33,8 @@ internal final class DiscoveryOnboardingCell: UITableViewCell, ValueCell {
           : .init(top: Styles.grid(3), left: layoutMargins.left, bottom: 0, right: layoutMargins.left)
       }
 
-    _ = self.loginButton
-      |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in
-        Strings.discovery_onboarding_buttons_signup_or_login()
-      }
+    self.loginButton.applyStyleConfiguration(KSRButtonStyle.green)
+    self.loginButton.setTitle(Strings.discovery_onboarding_buttons_signup_or_login(), for: .normal)
 
     _ = self.logoImageView |> discoveryOnboardingLogoStyle
     _ = self.onboardingTitleLabel |> discoveryOnboardingTitleStyle

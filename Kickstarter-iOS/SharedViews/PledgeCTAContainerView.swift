@@ -137,8 +137,8 @@ final class PledgeCTAContainerView: UIView {
 
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
+    self.retryButton.applyStyleConfiguration(KSRButtonLegacyStyle.grey)
     _ = self.retryButton
-      |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Retry() }
 
     _ = self.retryStackView

@@ -79,13 +79,14 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
       |> UILabel.lens.font .~ .ksr_footnote()
 
+    self.followButton.applyStyleConfiguration(KSRButtonStyle.filled)
+
     _ = self.followButton
-      |> blackButtonStyle
       |> UIButton.lens.targets .~ [(self, action: #selector(self.followButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.social_following_friend_buttons_follow() }
 
+    self.unfollowButton.applyStyleConfiguration(KSRButtonLegacyStyle.grey)
     _ = self.unfollowButton
-      |> greyButtonStyle
       |> UIButton.lens.targets .~ [(self, action: #selector(self.unfollowButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.social_following_friend_buttons_following()

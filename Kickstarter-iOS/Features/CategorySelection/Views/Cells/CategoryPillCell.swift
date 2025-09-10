@@ -101,8 +101,8 @@ final class CategoryPillCell: UICollectionViewCell, ValueCell {
 // MARK: - Styles
 
 private let buttonStyle: ButtonStyle = { button in
-  button
-    |> greyButtonStyle
+  button.applyStyleConfiguration(KSRButtonLegacyStyle.grey)
+  return button
     |> roundedStyle(cornerRadius: Styles.minTouchSize.height / 2)
     |> UIButton.lens.titleLabel.lineBreakMode .~ .byTruncatingTail
     |> UIButton.lens.titleColor(for: .selected) .~ LegacyColors.ksr_white.uiColor()

@@ -134,12 +134,13 @@ final class CancelPledgeViewController: UIViewController, MessageBannerViewContr
       |> cancellationDisclaimerLabelStyle
       |> \.text %~ { _ in Strings.We_wont_share_this_with_the_creator() }
 
+    self.cancelPledgeButton.applyStyleConfiguration(KSRButtonStyle.filledDestructive)
+
     _ = self.cancelPledgeButton
-      |> redButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Yes_cancel_it() }
 
+    self.goBackButton.applyStyleConfiguration(KSRButtonLegacyStyle.grey)
     _ = self.goBackButton
-      |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.No_go_back() }
   }
 

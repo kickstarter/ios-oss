@@ -417,7 +417,7 @@ private func applyStepperStackViewStyle(_ stackView: UIStackView) {
 }
 
 private func applyAddButtonStyle(_ button: UIButton) {
-  _ = blackButtonStyle(button)
+  button.applyStyleConfiguration(KSRButtonStyle.filled)
   button.setTitle(Strings.Add(), for: .normal)
 }
 

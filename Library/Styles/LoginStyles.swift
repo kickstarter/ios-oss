@@ -3,8 +3,11 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-public let createNewAccountButtonStyle = greenButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.Sign_up() }
+public let createNewAccountButtonStyle: ButtonStyle = { button in
+  button.applyStyleConfiguration(KSRButtonStyle.green)
+  button.setTitle(Strings.Sign_up(), for: .normal)
+  return button
+}
 
 public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_support_400
   .uiColor()
@@ -71,9 +74,11 @@ public let forgotPasswordButtonStyle =
 
 public let loginControllerStyle = UIViewController.lens.title %~ { _ in Strings.login_navbar_title() }
 
-public let loginWithEmailButtonStyle = greyButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_log_in()
-  }
+public let loginWithEmailButtonStyle: ButtonStyle = { button in
+  button.applyStyleConfiguration(KSRButtonLegacyStyle.grey)
+  button.setTitle(Strings.login_buttons_log_in(), for: .normal)
+  return button
+}
 
 public let newsletterSwitchStyle = UISwitch.lens.onTintColor .~ LegacyColors.ksr_create_700.uiColor()
 
@@ -94,8 +99,11 @@ public func newPasswordFieldAutoFillStyle(_ textField: UITextField) -> UITextFie
     |> \.textContentType .~ .newPassword
 }
 
-public let resetPasswordButtonStyle = greenButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.forgot_password_buttons_reset_my_password() }
+public let resetPasswordButtonStyle: ButtonStyle = { button in
+  button.applyStyleConfiguration(KSRButtonStyle.green)
+  button.setTitle(Strings.forgot_password_buttons_reset_my_password(), for: .normal)
+  return button
+}
 
 public let resetPasswordControllerStyle = UIViewController.lens.title %~ { _ in
   Strings.forgot_password_title()
@@ -109,11 +117,9 @@ public func applyLoginRootStackViewStyle(_ stackView: UIStackView, useLargerMarg
 }
 
 public let signupButtonStyle: ButtonStyle = { button in
-  button
-    |> greenButtonStyle
-    |> UIButton.lens.title(for: .normal) %~ { _ in
-      Strings.login_tout_default_intent_traditional_signup_button()
-    }
+  button.applyStyleConfiguration(KSRButtonStyle.green)
+  button.setTitle(Strings.login_tout_default_intent_traditional_signup_button(), for: .normal)
+  return button
 }
 
 public let newsletterButtonStyle = UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_support_400
@@ -135,8 +141,11 @@ public let newsletterButtonStyle = UIButton.lens.titleColor(for: .normal) .~ Leg
 
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
 
-public let signupWithEmailButtonStyle = greenButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.Sign_up() }
+public let signupWithEmailButtonStyle: ButtonStyle = { button in
+  button.applyStyleConfiguration(KSRButtonStyle.green)
+  button.setTitle(Strings.Sign_up(), for: .normal)
+  return button
+}
 
 public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
   <> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()

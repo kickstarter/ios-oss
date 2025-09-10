@@ -77,13 +77,10 @@ final class RewardAddOnSelectionContinueCTAView: UIView {
     PledgeViewStyles.pledgeAmountHeadingStyle(self.pledgeHeading)
     self.pledgeHeading.text = Strings.Pledge_amount()
 
-    _ = self.continueButton
-      |> greenButtonStyle
+    self.continueButton.applyStyleConfiguration(KSRButtonStyle.green)
 
     guard let buttonFont = self.continueButton.titleLabel?.font else { return }
-
-    _ = self.continueButton
-      |> UIButton.lens.titleLabel.font .~ buttonFont.monospaced
+    self.continueButton.titleLabel?.font = buttonFont.monospaced
   }
 
   // MARK: - View Model

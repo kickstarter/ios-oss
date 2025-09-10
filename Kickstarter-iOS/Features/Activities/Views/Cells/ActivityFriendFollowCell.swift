@@ -54,8 +54,9 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
     _ = self.friendLabel
       |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
 
+    self.followButton.applyStyleConfiguration(KSRButtonStyle.filled)
+
     _ = self.followButton
-      |> blackButtonStyle
       |> UIButton.lens.targets .~ [(self, action: #selector(self.followButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.social_following_friend_buttons_follow() }
   }
