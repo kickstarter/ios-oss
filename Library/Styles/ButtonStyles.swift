@@ -8,6 +8,11 @@ import UIKit
 
 // MARK: - Apple Pay
 
+@available(
+  *,
+  deprecated,
+  message: "This is a button style from our legacy design system. Instead, use KSRButtonStyle."
+)
 public let applePayButtonStyle: ButtonStyle = { button in
   let cornerRadius: CGFloat = Dimension.CornerRadius.small
 
@@ -18,6 +23,11 @@ public let applePayButtonStyle: ButtonStyle = { button in
 
 // MARK: - Red
 
+@available(
+  *,
+  deprecated,
+  message: "This is a button style from our legacy design system. Instead, use KSRButtonStyle."
+)
 /// Applies the new `KSRButtonStyle.filledDestructive` style.
 public let redButtonStyle: ButtonStyle = { button in
   button.applyStyleConfiguration(KSRButtonStyle.filledDestructive)
@@ -27,6 +37,11 @@ public let redButtonStyle: ButtonStyle = { button in
 
 // MARK: - Black
 
+@available(
+  *,
+  deprecated,
+  message: "This is a button style from our legacy design system. Instead, use KSRButtonStyle."
+)
 /// Applies the new `KSRButtonStyle.filled` style.
 public let blackButtonStyle: ButtonStyle = { button in
   button.applyStyleConfiguration(KSRButtonStyle.filled)
@@ -35,6 +50,11 @@ public let blackButtonStyle: ButtonStyle = { button in
 
 // MARK: - Blue
 
+@available(
+  *,
+  deprecated,
+  message: "This is a button style from our legacy design system. Instead, use KSRButtonStyle."
+)
 /// Applies the new `KSRButtonLegacyStyle.blue` style.
 public let blueButtonStyle: ButtonStyle = { button in
   button.applyStyleConfiguration(KSRButtonLegacyStyle.blue)
@@ -43,6 +63,11 @@ public let blueButtonStyle: ButtonStyle = { button in
 
 // MARK: - Green
 
+@available(
+  *,
+  deprecated,
+  message: "This is a button style from our legacy design system. Instead, use KSRButtonStyle."
+)
 /// Applies the new `KSRButtonStyle.green` style.
 public let greenButtonStyle: ButtonStyle = { button in
   button.applyStyleConfiguration(KSRButtonStyle.green)
@@ -51,6 +76,11 @@ public let greenButtonStyle: ButtonStyle = { button in
 
 // MARK: - Grey
 
+@available(
+  *,
+  deprecated,
+  message: "This is a button style from our legacy design system. Instead, use KSRButtonStyle."
+)
 /// Applies the new `KSRButtonLegacyStyle.grey` style.
 public let greyButtonStyle: ButtonStyle = { button in
   button.applyStyleConfiguration(KSRButtonLegacyStyle.grey)
@@ -59,6 +89,11 @@ public let greyButtonStyle: ButtonStyle = { button in
 
 // MARK: - Facebook
 
+@available(
+  *,
+  deprecated,
+  message: "This is a button style from our legacy design system. Instead, use KSRButtonStyle."
+)
 /// Applies the new `KSRButtonStyle.facebook` style.
 public let facebookButtonStyle: ButtonStyle = { button in
   button.applyStyleConfiguration(KSRButtonStyle.facebook)
@@ -76,6 +111,11 @@ public let facebookButtonStyle: ButtonStyle = { button in
 
 // MARK: - Save
 
+@available(
+  *,
+  deprecated,
+  message: "This is a button style from our legacy design system. Instead, use KSRButtonStyle."
+)
 public func styleSaveButton(_ button: UIButton) {
   button.setTitle(nil, for: .normal)
   button.tintColor = LegacyColors.ksr_support_700.uiColor()
@@ -86,6 +126,11 @@ public func styleSaveButton(_ button: UIButton) {
 
 // MARK: - Share
 
+@available(
+  *,
+  deprecated,
+  message: "This is a button style from our legacy design system. Instead, use KSRButtonStyle."
+)
 public let shareButtonStyle =
   UIButton.lens.title(for: .normal) .~ nil
     <> UIButton.lens.image(for: .normal) .~ image(named: "icon--share")
