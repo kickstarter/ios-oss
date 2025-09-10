@@ -250,7 +250,7 @@ public struct Colors {
       )
 
       public static let overlaidButton = SemanticColor(
-        "background/action/disabled",
+        "background/action/overlaidButton",
         lightMode: .white,
         lightModeAlpha: 0.9,
         darkMode: .gray_900,
@@ -271,7 +271,7 @@ public struct Colors {
 
       public struct OverlaidButton {
         public static let pressed = SemanticColor(
-          "background/action/primary/pressed",
+          "background/action/overlaidButton/pressed",
           lightMode: .gray_300,
           lightModeAlpha: 0.9,
           darkMode: .gray_800,
