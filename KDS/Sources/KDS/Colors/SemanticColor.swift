@@ -7,11 +7,23 @@ public protocol AdaptiveColor {
 }
 
 public extension AdaptiveColor {
-  func uiColor(opacity alpha: CGFloat = 1.0) -> UIColor {
+  // UIColor with default opacity.
+  func uiColor() -> UIColor {
+    return self.dynamicColor
+  }
+
+  // Color with default opacity.
+  func swiftUIColor() -> Color {
+    Color(uiColor: self.uiColor())
+  }
+
+  // UIColor with custom opacity.
+  func uiColor(opacity alpha: CGFloat) -> UIColor {
     return self.dynamicColor.withAlphaComponent(alpha)
   }
 
-  func swiftUIColor(opacity: CGFloat = 1.0) -> Color {
+  // Color with custom opacity.
+  func swiftUIColor(opacity: CGFloat) -> Color {
     Color(uiColor: self.uiColor(opacity: opacity))
   }
 }
