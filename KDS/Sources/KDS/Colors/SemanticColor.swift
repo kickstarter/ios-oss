@@ -24,10 +24,20 @@ public struct SemanticColor: AdaptiveColor {
   public let name: String
 
   public init(_ name: String, lightMode: CoreColor, darkMode: CoreColor) {
+    self.init(name, lightMode: lightMode, lightModeAlpha: 1.0, darkMode: darkMode, darkModeAlpha: 1.0)
+  }
+
+  public init(
+    _ name: String,
+    lightMode: CoreColor,
+    lightModeAlpha: Double,
+    darkMode: CoreColor,
+    darkModeAlpha: Double
+  ) {
     self.name = name
 
-    let lightModeColor = UIColor(coreColor: lightMode)
-    let darkModeColor = UIColor(coreColor: darkMode)
+    let lightModeColor = UIColor(coreColor: lightMode, alpha: lightModeAlpha)
+    let darkModeColor = UIColor(coreColor: darkMode, alpha: darkModeAlpha)
 
     self.dynamicColor = UIColor { traits in
       if traits.userInterfaceStyle == .dark {
