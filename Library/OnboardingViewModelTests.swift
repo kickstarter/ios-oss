@@ -119,7 +119,7 @@ final class OnboardingViewModelTest: TestCase {
       "activity_tracking_prompt",
       self.segmentTrackingClient.properties.last?["context_section"] as? String
     )
-    
+
     /// last ctaContext should be `allow` still because we shouldn't track denied events.
     XCTAssertEqual("allow", self.segmentTrackingClient.properties.last?["context_cta"] as? String)
   }
