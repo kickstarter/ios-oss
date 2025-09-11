@@ -12,14 +12,25 @@ public enum ButtonStyleType: Equatable {
   case none
   case red
 
-  public var style: ButtonStyle {
+  private var ksrButtonStyle: (any KSRButtonStyleConfiguration)? {
     switch self {
-    case .black: return blackButtonStyle
-    case .blue: return blueButtonStyle
-    case .green: return greenButtonStyle
-    case .grey: return greyButtonStyle
-    case .none: return { $0 }
-    case .red: return redButtonStyle
+    case .black: return KSRButtonStyle.filled
+    case .blue: return KSRButtonLegacyStyle.blue
+    case .green: return KSRButtonStyle.green
+    case .grey: return KSRButtonLegacyStyle.grey
+    case .none: return nil
+    case .red: return KSRButtonStyle.filledDestructive
+    }
+  }
+
+  public var style: ButtonStyle {
+    let buttonStyle = self.ksrButtonStyle
+
+    return { button in
+      if let buttonStyle {
+        button.applyStyleConfiguration(buttonStyle)
+      }
+      return button
     }
   }
 }
@@ -209,11 +220,6 @@ public let rewardCardShadowStyle: ViewStyle = { (view: UIView) in
 public let cardImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.contentMode .~ .scaleAspectFit
-}
-
-public let cardSelectButtonStyle: ButtonStyle = { button in
-  button
-    |> blackButtonStyle
 }
 
 public let pledgeCardViewStyle: ViewStyle = { view in

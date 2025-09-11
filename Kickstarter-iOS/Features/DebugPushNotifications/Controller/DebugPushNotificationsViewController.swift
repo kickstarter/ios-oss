@@ -57,8 +57,10 @@ internal final class DebugPushNotificationsViewController: UIViewController {
       ||> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
       ||> UILabel.lens.font .~ .ksr_body()
 
+    for button in buttons {
+      button.applyStyleConfiguration(KSRButtonStyle.green)
+    }
     _ = buttons
-      ||> greenButtonStyle
       ||> UIButton.lens.contentEdgeInsets %~ {
         .init(top: $0.top / 2, left: $0.left / 2, bottom: $0.bottom / 2, right: $0.right / 2)
       }

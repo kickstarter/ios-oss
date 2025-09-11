@@ -137,8 +137,8 @@ final class PledgeCTAContainerView: UIView {
 
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
+    self.retryButton.applyStyleConfiguration(KSRButtonLegacyStyle.grey)
     _ = self.retryButton
-      |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Retry() }
 
     _ = self.retryStackView
@@ -352,20 +352,36 @@ private let retryDescriptionLabelStyle: LabelStyle = { label in
     |> \.text %~ { _ in Strings.Content_isnt_loading_right_now() }
 }
 
+private let basePrelaunchButtonStyle: ButtonStyle = { button in
+  let cornerRadius: CGFloat = Dimension.CornerRadius.small
+  let font: UIFont = .ksr_ButtonLabel()
+
+  return button
+    |> roundedStyle(cornerRadius: cornerRadius)
+    |> UIButton.lens.contentEdgeInsets .~ .init(all: Styles.grid(2))
+    |> UIButton.lens.adjustsImageWhenDisabled .~ false
+    |> UIButton.lens.adjustsImageWhenHighlighted .~ false
+    <> UIButton.lens.titleLabel.font .~ font
+    <> UIButton.lens.titleLabel.lineBreakMode .~ NSLineBreakMode.byTruncatingMiddle
+    <> UIButton.lens.titleLabel.textAlignment .~ NSTextAlignment.center
+    <> UIButton.lens.titleLabel.numberOfLines .~ 1
+}
+
 private let prelaunchButtonUnsavedImageStyle: ButtonStyle = { button in
   button
+    |> basePrelaunchButtonStyle
     |> UIButton.lens.image(for: .normal) .~ image(named: "icon--heart-outline")
     |> UIButton.lens.tintColor .~ LegacyColors.ksr_white.uiColor()
     |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 10.0)
-    |> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_white.uiColor()
     |> UIButton.lens.backgroundColor(for: .normal) .~ LegacyColors.ksr_black.uiColor()
+    |> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_white.uiColor()
     |> UIButton.lens.titleColor(for: .highlighted) .~ LegacyColors.ksr_white.uiColor()
     |> UIButton.lens.backgroundColor(for: .highlighted) .~ LegacyColors.ksr_black.uiColor()
 }
 
 private let prelaunchButtonSavedImageStyle: ButtonStyle = { button in
   button
-    |> baseButtonStyle
+    |> basePrelaunchButtonStyle
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_headline(size: 16)
     |> UIButton.lens.image(for: .normal) .~ image(named: "icon--heart")
     |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 10.0)

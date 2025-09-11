@@ -50,13 +50,11 @@ internal final class TwoFactorViewController: UIViewController {
     _ = self.formStackView
       |> UIStackView.lens.spacing .~ Styles.grid(5)
 
-    _ = self.resendButton
-      |> greyButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.two_factor_buttons_resend() }
+    self.resendButton.applyStyleConfiguration(KSRButtonLegacyStyle.grey)
+    self.resendButton.setTitle(Strings.two_factor_buttons_resend(), for: .normal)
 
-    _ = self.submitButton
-      |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.two_factor_buttons_submit() }
+    self.submitButton.applyStyleConfiguration(KSRButtonStyle.green)
+    self.submitButton.setTitle(Strings.two_factor_buttons_submit(), for: .normal)
 
     _ = self.titleLabel
       |> UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()

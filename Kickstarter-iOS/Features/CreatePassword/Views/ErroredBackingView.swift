@@ -157,8 +157,10 @@ private let finalCollectionStackViewStyle: StackViewStyle = { stackView in
 }
 
 private let manageButtonStyle: ButtonStyle = { button in
-  button
-    |> redButtonStyle
+
+  button.applyStyleConfiguration(KSRButtonStyle.filledDestructive)
+
+  return button
     |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Manage() }
 }
 
