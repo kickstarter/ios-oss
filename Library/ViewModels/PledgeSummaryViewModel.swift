@@ -108,7 +108,7 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
 
     self.confirmationLabelHidden = Signal.combineLatest(initialData, project)
       .map { initialData, project in
-        guard featurePostCampaignPledgeEnabled(), project.isInPostCampaignPledgingPhase else {
+        guard project.isInPostCampaignPledgingPhase else {
           return initialData.confirmationLabelHidden
         }
 

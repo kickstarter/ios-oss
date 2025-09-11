@@ -161,7 +161,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     }
     .map { project, reward, refTag, selectedShippingRule -> (PledgeViewData, Bool) in
       let pledgeContext =
-        featurePostCampaignPledgeEnabled() && project.isInPostCampaignPledgingPhase
+        project.isInPostCampaignPledgingPhase
           ? PledgeViewContext.latePledge
           : PledgeViewContext.pledge
 
