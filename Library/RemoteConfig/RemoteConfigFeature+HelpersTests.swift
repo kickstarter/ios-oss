@@ -27,22 +27,6 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
     }
   }
 
-  func testPostCampaignPledge_RemoteConfig_FeatureFlag_True() {
-    self
-      .assert(
-        featureFlagIsTrue: featurePostCampaignPledgeEnabled,
-        whenRemoteConfigFeatureIsTrue: .postCampaignPledgeEnabled
-      )
-  }
-
-  func testPostCampaignPledge_RemoteConfig_FeatureFlag_False() {
-    self
-      .assert(
-        featureFlagIsFalse: featurePostCampaignPledgeEnabled,
-        whenRemoteConfigFeatureIsFalse: .postCampaignPledgeEnabled
-      )
-  }
-
   func testUseKeychainForOAuthTokenEnabled_RemoteConfig_FeatureFlag_False() {
     self
       .assert(

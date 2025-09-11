@@ -1579,15 +1579,10 @@ private func projectProperties(
   props["tags"] = project.tags?.joined(separator: ", ")
   props["updates_count"] = project.statsUpdatesCount
   props["is_repeat_creator"] = project.creatorIsRepeatCreator ?? false
-
-  if featurePostCampaignPledgeEnabled() {
-    props["late_pledge_enabled"] = project.postCampaignPledgingEnabled
-    props["state"] = project.isInPostCampaignPledgingPhase
-      ? "post_campaign"
-      : project.stateValue
-  } else {
-    props["state"] = project.stateValue
-  }
+  props["late_pledge_enabled"] = project.postCampaignPledgingEnabled
+  props["state"] = project.isInPostCampaignPledgingPhase
+    ? "post_campaign"
+    : project.stateValue
 
   let now = dateType.init().date
   props["hours_remaining"] = project.datesHoursRemaining(from: now, using: calendar)

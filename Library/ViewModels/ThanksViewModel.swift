@@ -90,14 +90,9 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
         let string: String
 
-        /// Setting this to a an empty string for the late pledge beta release.
-        // TODO: [MBL-1351[(https://kickstarter.atlassian.net/browse/MBL-1350) Update as fast-follow when there is time to get translations in for a new more contextually accurate string.
-        let isInPostCampaignPledging = featurePostCampaignPledgeEnabled() && project
-          .isInPostCampaignPledgingPhase
-
         let totalString = Format.currency(pledgeTotal, currencyCode: project.statsCurrency)
 
-        string = isInPostCampaignPledging
+        string = project.isInPostCampaignPledgingPhase
           ? Strings
           .You_have_successfully_pledged_to_project_post_campaign_html_short(pledge_total: totalString)
           : Strings.You_have_successfully_backed_project_html(project_name: project.name)

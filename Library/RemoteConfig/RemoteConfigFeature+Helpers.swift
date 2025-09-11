@@ -19,10 +19,6 @@ public func featureEditPledgeOverTimeEnabled() -> Bool {
   return featureEnabled(feature: .editPledgeOverTimeEnabled)
 }
 
-public func featurePostCampaignPledgeEnabled() -> Bool {
-  featureEnabled(feature: .postCampaignPledgeEnabled)
-}
-
 public func featureUseKeychainForOAuthTokenEnabled() -> Bool {
   featureEnabled(feature: .useKeychainForOAuthToken)
 }
