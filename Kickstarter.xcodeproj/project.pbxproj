@@ -11770,7 +11770,7 @@
 			repositoryURL = "https://github.com/Alamofire/AlamofireImage";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 4.2.0;
+				minimumVersion = 4.3.0;
 			};
 		};
 		60DA510928C7DC0E002E2DF1 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
