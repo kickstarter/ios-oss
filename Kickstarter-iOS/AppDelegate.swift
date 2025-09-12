@@ -1,6 +1,6 @@
 import BrazeKit
 import BrazeUI
-import FBSDKCoreKit
+import FacebookCore
 import Firebase
 import Foundation
 import KDS
@@ -43,7 +43,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   ) -> Bool {
     // FBSDK initialization
     ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-    Settings.shouldLimitEventAndDataUsage = true
+    Settings.shared.isEventDataUsageLimited = true
 
     // Braze expects to be configured immediately, but segment destination plugins are initialized
     // async. This method bridges that gap.

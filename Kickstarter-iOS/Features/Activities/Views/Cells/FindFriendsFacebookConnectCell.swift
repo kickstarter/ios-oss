@@ -1,4 +1,4 @@
-import FBSDKLoginKit
+import FacebookLogin
 import KDS
 import Library
 import Prelude
