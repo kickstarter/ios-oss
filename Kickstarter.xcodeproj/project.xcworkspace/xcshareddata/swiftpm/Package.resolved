@@ -176,8 +176,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Kingfisher",
       "state" : {
-        "revision" : "5b92f029fab2cce44386d28588098b5be0824ef5",
-        "version" : "7.11.0"
+        "revision" : "2015fda791daa72c8058619545a593bf8c1dd59f",
+        "version" : "8.5.0"
       }
     },
     {
@@ -185,8 +185,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/yeatse/KingfisherWebP.git",
       "state" : {
-        "revision" : "f55b0ab7af9155d9b08e65e488fea217ce167fa1",
-        "version" : "1.6.0"
+        "revision" : "dccea7e92e77b0aa9ae5955c0d8f78c88ac0a950",
+        "version" : "1.7.0"
       }
     },
     {
