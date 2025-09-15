@@ -10,5 +10,8 @@ swiftformat.check_format
 # SwiftLint
 swiftlint.binary_path = "bin/swiftlint"
 swiftlint.config_file = ".swiftlint.yml"
+# delete me
+swiftlint.max_num_violations = 20
 swiftlint.lint_all_files = true
+# delete me
 swiftlint.lint_files
