@@ -1,0 +1,11 @@
+disabled_rules:
+  - todo
+  - force_try
+  # swiftformat handles all our whitespace
+  - line_length
+  - colon
+  - comma
+  - comment_spacing
+
+excluded:
+  - GraphAPI
