@@ -14,7 +14,7 @@ final class AsyncApolloClientTests: XCTestCase {
     do {
       _ = try await asyncClient.fetch(StubQuery())
 
-      XCTFail("Expected to throw an error but didn't")
+      XCTFail("Expected to throw an error.")
     } catch {
       XCTAssertEqual(
         String(describing: error),
@@ -35,7 +35,7 @@ final class AsyncApolloClientTests: XCTestCase {
     do {
       _ = try await asyncClient.perform(StubMutation())
 
-      XCTFail("Expected to throw an error but didn't")
+      XCTFail("Expected to throw an error.")
     } catch {
       XCTAssertEqual(
         String(describing: error),
