@@ -10,4 +10,4 @@ swiftformat.check_format
 # SwiftLint
 swiftlint.binary_path = "bin/swiftlint"
 swiftlint.config_file = ".swiftlint.yml"
-swiftlint.lint_files
+swiftlint.lint_all_files
