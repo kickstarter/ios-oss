@@ -99,6 +99,12 @@ jobs:
           # This is for Danger, which requires a bit more git history
           fetch_depth: 100 
       - run:
+          name: Install Bundler
+          command: bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
+      - run:
           name: Danger
           command: bin/danger.sh
       - run:
@@ -113,12 +119,6 @@ jobs:
       - run:
           name: Bootstrap
           command: make bootstrap
-      - run:
-          name: Install Bundler
-          command: bundle check || bundle install
-          environment:
-            BUNDLE_JOBS: 4
-            BUNDLE_RETRY: 3
       - persist_to_workspace:
           root: .
           paths:
