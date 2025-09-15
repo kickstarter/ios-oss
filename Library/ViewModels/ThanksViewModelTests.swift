@@ -116,9 +116,6 @@ final class ThanksViewModelTests: TestCase {
 
   func testDisplayBackedProjectText_postCampaignBackings() {
     let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: true
-    ]
 
     var project = Project.template
     project.name = "Test Project"
@@ -126,7 +123,7 @@ final class ThanksViewModelTests: TestCase {
     project.country = Project.Country.jp
     project.stats.projectCurrency = Project.Country.jp.currencyCode
 
-    withEnvironment(Environment(currentUserEmail: "test@user.com", remoteConfigClient: mockConfigClient)) {
+    withEnvironment(Environment(currentUserEmail: "test@user.com")) {
       self.vm.inputs.configure(with: self.thanksPageData(project: project, pledgeTotal: 127))
       self.vm.inputs.viewDidLoad()
 
