@@ -219,22 +219,14 @@ struct FilterRootView: View {
             self.projectStateSection
             Divider()
             self.percentRaisedSection
-            if featureSearchFilterByLocation() {
-              Divider()
-              self.locationSection
-            }
-            if featureSearchFilterByAmountRaised() {
-              Divider()
-              self.amountRaisedSection
-            }
-            if featureSearchFilterByShowOnlyToggles() {
-              Divider()
-              self.showOnlySection
-            }
-            if featureSearchFilterByGoal() {
-              Divider()
-              self.goalSection
-            }
+            Divider()
+            self.locationSection
+            Divider()
+            self.amountRaisedSection
+            Divider()
+            self.showOnlySection
+            Divider()
+            self.goalSection
             Divider()
             Spacer()
           }

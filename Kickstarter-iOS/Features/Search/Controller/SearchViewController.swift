@@ -23,8 +23,6 @@ internal final class SearchViewController: UITableViewController {
 
   private let backgroundView = UIView()
   private let searchLoaderIndicator = UIActivityIndicatorView()
-  private let showSortAndFilterHeader = MutableProperty<Bool>(false) // Bound to the view model property
-
   private var sortAndFilterHeader: UIViewController?
 
   private var searchBarWidth: CGFloat {
@@ -95,15 +93,11 @@ internal final class SearchViewController: UITableViewController {
     self.viewModel.outputs.showEmptyState
       .observeForUI()
       .observeValues { [weak self] params, visible in
-        if featureSearchNewEmptyState() {
-          let data = SearchEmptyStateSearchData(
-            query: params.query,
-            hasFilters: self?.viewModel.outputs.searchFilters.hasFilters == true
-          )
-          self?.dataSource.load(data: data, visible: visible)
-        } else {
-          self?.dataSource.load(params: params, visible: visible)
-        }
+        let data = SearchEmptyStateSearchData(
+          query: params.query,
+          hasFilters: self?.viewModel.outputs.searchFilters.hasFilters == true
+        )
+        self?.dataSource.load(data: data, visible: visible)
         self?.tableView.reloadData()
       }
 
@@ -127,8 +121,6 @@ internal final class SearchViewController: UITableViewController {
         // All other filters go to the same modal.
         self?.showFilters(filterType: type)
       }
-
-    self.showSortAndFilterHeader <~ self.viewModel.outputs.showSortAndFilterHeader
   }
 
   fileprivate func present(sheet viewController: UIViewController, withHeight _: CGFloat) {
@@ -263,8 +255,7 @@ internal final class SearchViewController: UITableViewController {
   }
 
   override func tableView(_: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    guard section == SearchDataSource.Section.projects.rawValue,
-          self.showSortAndFilterHeader.value == true else {
+    guard section == SearchDataSource.Section.projects.rawValue else {
       return nil
     }
 
@@ -273,8 +264,7 @@ internal final class SearchViewController: UITableViewController {
 
   private var headerHeight: CGFloat? = nil
   override func tableView(_: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    guard section == SearchDataSource.Section.projects.rawValue,
-          self.showSortAndFilterHeader.value == true else {
+    guard section == SearchDataSource.Section.projects.rawValue else {
       return 0
     }
 

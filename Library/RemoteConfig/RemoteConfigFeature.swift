@@ -10,12 +10,7 @@ public enum RemoteConfigFeature: String, CaseIterable {
   case rewardShipmentTracking = "reward_shipment_tracking"
   case similarProjectsCarousel = "similar_projects_carousel"
   case secretRewards = "secret_rewards"
-  case searchFilterByLocation = "search_filter_by_location"
   case netNewBackersGoToPM = "net_new_backers_go_to_pm"
-  case searchFilterByAmountRaised = "search_filter_by_amount_raised"
-  case searchFilterByShowOnlyToggles = "search_filter_by_show_only_toggles"
-  case searchFilterByGoal = "search_filter_by_goal"
-  case searchNewEmptyState = "search_new_empty_state"
 }
 
 extension RemoteConfigFeature: CustomStringConvertible {
@@ -30,12 +25,7 @@ extension RemoteConfigFeature: CustomStringConvertible {
     case .rewardShipmentTracking: return "Reward Shipment Tracking"
     case .similarProjectsCarousel: return "Similar Projects Carousel"
     case .secretRewards: return "Secret Rewards"
-    case .searchFilterByLocation: return "Filter Search by Project Location"
     case .netNewBackersGoToPM: return "Net New Backers Go To PM"
-    case .searchFilterByAmountRaised: return "Filter Search by Amount Raised"
-    case .searchFilterByShowOnlyToggles: return "Filter Search by 'Show Only' Toggles"
-    case .searchFilterByGoal: return "Filter Search by Goal"
-    case .searchNewEmptyState: return "Use New Empty State In Search"
     }
   }
 }

@@ -136,11 +136,6 @@ internal final class SearchViewContollerTests: TestCase {
       GraphAPI.SearchQuery.Data.emptyResults
     )]
 
-    let mockRemoteConfig = MockRemoteConfigClient()
-    mockRemoteConfig.features = [
-      RemoteConfigFeature.searchNewEmptyState.rawValue: true
-    ]
-
     var emptyStateTypeIterator = 0
 
     orthogonalCombos(
@@ -151,7 +146,7 @@ internal final class SearchViewContollerTests: TestCase {
     .forEach { language, device, style in
       withEnvironment(
         apiService: MockService(fetchGraphQLResponses: emptyResponse),
-        language: language, remoteConfigClient: mockRemoteConfig
+        language: language
       ) {
         let controller = Storyboard.Search.instantiate(SearchViewController.self)
         controller.overrideUserInterfaceStyle = style
@@ -176,29 +171,6 @@ internal final class SearchViewContollerTests: TestCase {
         )
       }
     }
-  }
-
-  func testView_LegacyEmptyState() {
-    let emptyResponse = [(
-      GraphAPI.SearchQuery.self,
-      GraphAPI.SearchQuery.Data.emptyResults
-    )]
-
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
-      .forEach { language, device in
-        withEnvironment(
-          apiService: MockService(fetchGraphQLResponses: emptyResponse), language: language
-        ) {
-          let controller = Storyboard.Search.instantiate(SearchViewController.self)
-          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-
-          controller.viewModel.inputs.searchTextChanged("abcdefgh")
-
-          self.scheduler.run()
-
-          assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
-        }
-      }
   }
 
   func testView_SearchState() {
