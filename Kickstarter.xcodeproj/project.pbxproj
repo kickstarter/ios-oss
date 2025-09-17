@@ -1210,6 +1210,10 @@
 		A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
 		AA1023E42CABD2AE007800B5 /* PPOContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1023E32CABD2AE007800B5 /* PPOContainerViewModel.swift */; };
 		AA3EB8432CF687680018C880 /* ServerFeature+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3EB8422CF687680018C880 /* ServerFeature+Helpers.swift */; };
+		AA4533642E7A2B6500B569E8 /* FacebookSDKType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4533632E7A2B6500B569E8 /* FacebookSDKType.swift */; };
+		AA4533652E7A2B6500B569E8 /* FacebookSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4533622E7A2B6500B569E8 /* FacebookSDK.swift */; };
+		AA4533682E7A2C0A00B569E8 /* MockFacebookSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4533672E7A2C0A00B569E8 /* MockFacebookSDK.swift */; };
+		AA4533692E7A2C0A00B569E8 /* FacebookSDKTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4533662E7A2C0A00B569E8 /* FacebookSDKTypeTests.swift */; };
 		AA645E972C770D620034705A /* DesignSystemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */; };
 		AA645E9C2C7725FB0034705A /* PagedContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA645E9A2C7725FB0034705A /* PagedContainerViewModelTests.swift */; };
 		AA645E9E2C772C650034705A /* PagedTabBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA645E9D2C772C650034705A /* PagedTabBarTests.swift */; };
@@ -2967,6 +2971,10 @@
 		A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleAvatarImageView.swift; sourceTree = "<group>"; };
 		AA1023E32CABD2AE007800B5 /* PPOContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOContainerViewModel.swift; sourceTree = "<group>"; };
 		AA3EB8422CF687680018C880 /* ServerFeature+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerFeature+Helpers.swift"; sourceTree = "<group>"; };
+		AA4533622E7A2B6500B569E8 /* FacebookSDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookSDK.swift; sourceTree = "<group>"; };
+		AA4533632E7A2B6500B569E8 /* FacebookSDKType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookSDKType.swift; sourceTree = "<group>"; };
+		AA4533662E7A2C0A00B569E8 /* FacebookSDKTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookSDKTypeTests.swift; sourceTree = "<group>"; };
+		AA4533672E7A2C0A00B569E8 /* MockFacebookSDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFacebookSDK.swift; sourceTree = "<group>"; };
 		AA645E9A2C7725FB0034705A /* PagedContainerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedContainerViewModelTests.swift; sourceTree = "<group>"; };
 		AA645E9D2C772C650034705A /* PagedTabBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedTabBarTests.swift; sourceTree = "<group>"; };
 		AA6682222CB86EEB00C8522E /* PPOProjectCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardModel.swift; sourceTree = "<group>"; };
@@ -6547,6 +6555,8 @@
 				77556F1C20A09993008CEA57 /* ExperimentName+Helpers.swift */,
 				D667C2BB2305F03300EC094A /* ExperimentName+HelpersTests.swift */,
 				77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */,
+				AA4533622E7A2B6500B569E8 /* FacebookSDK.swift */,
+				AA4533632E7A2B6500B569E8 /* FacebookSDKType.swift */,
 				8AF91CDC22EF5AF7005F9C90 /* Feature.swift */,
 				A7C725801C85D36D005A016B /* Format.swift */,
 				A7ED1F151E830FDC00BFFA01 /* FormatTests.swift */,
@@ -6579,6 +6589,8 @@
 				D0200A5321935EDF00F5CC27 /* MessageBannerType.swift */,
 				8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */,
 				D093B4B721A8B0E000910962 /* MockPushRegistration.swift */,
+				AA4533662E7A2C0A00B569E8 /* FacebookSDKTypeTests.swift */,
+				AA4533672E7A2C0A00B569E8 /* MockFacebookSDK.swift */,
 				606C45F929FACE17001BA067 /* MockRemoteConfigClient.swift */,
 				80E26A121D500C6A007B3022 /* Navigation.swift */,
 				77D19FF4240813240058FC8E /* NavigationController.swift */,
@@ -8645,6 +8657,8 @@
 				77F6E73721222E97005A5C55 /* SettingsCellType.swift in Sources */,
 				D703FC6B20F7E3F8004A272D /* SettingsPrivacyViewModel.swift in Sources */,
 				8A4DDAB52373429300ADE31D /* PledgeStatusLabelViewModel.swift in Sources */,
+				AA4533642E7A2B6500B569E8 /* FacebookSDKType.swift in Sources */,
+				AA4533652E7A2B6500B569E8 /* FacebookSDK.swift in Sources */,
 				0169F9881D6F51C400C8D5C5 /* DiscoveryFiltersViewModel.swift in Sources */,
 				94C92E8A2659F09A00A96818 /* PaddingLabel.swift in Sources */,
 				01FD71EC1D3808E500070BAC /* BarButtonItemStyles.swift in Sources */,
@@ -8990,6 +9004,8 @@
 				A78355B91E85BD2D0021DA5A /* ActivityFriendFollowCellViewModelTests.swift in Sources */,
 				A7ED1FF01E831C5C00BFFA01 /* MessagesViewModelTests.swift in Sources */,
 				77BC00F82330236600808E75 /* RewardCellViewModelTests.swift in Sources */,
+				AA4533682E7A2C0A00B569E8 /* MockFacebookSDK.swift in Sources */,
+				AA4533692E7A2C0A00B569E8 /* FacebookSDKTypeTests.swift in Sources */,
 				3344A7812D9C973400D7DE91 /* RewardTrackingDetailsViewModelTest.swift in Sources */,
 				A7ED1FC91E831C5C00BFFA01 /* ActivitiesViewModelTests.swift in Sources */,
 				A7ED1FD21E831C5C00BFFA01 /* LoginToutViewModelTests.swift in Sources */,
@@ -11774,7 +11790,7 @@
 			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 9.0.0;
+				minimumVersion = 12.0.0;
 			};
 		};
 		60DA50F628BFA331002E2DF1 /* XCRemoteSwiftPackageReference "AlamofireImage" */ = {

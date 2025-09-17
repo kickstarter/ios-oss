@@ -1,6 +1,6 @@
 import AVFoundation
 import CoreTelephony
-import FBSDKCoreKit
+import FacebookCore
 import Foundation
 import KsApi
 import ReactiveSwift
@@ -77,6 +77,9 @@ public struct Environment {
   /// The environment variables
   public let environmentVariables: EnvironmentVariables
 
+  /// A type that manages Facebook SDK operations.
+  public let facebookSDK: FacebookSDKType.Type
+
   /// A function that returns whether VoiceOver mode is running.
   public let isVoiceOverRunning: () -> Bool
 
@@ -140,6 +143,7 @@ public struct Environment {
     debugData: DebugData? = nil,
     device: UIDeviceType = UIDevice.current,
     environmentVariables: EnvironmentVariables = EnvironmentVariables(),
+    facebookSDK: FacebookSDKType.Type = FacebookSDK.self,
     isVoiceOverRunning: @escaping () -> Bool = { UIAccessibility.isVoiceOverRunning },
     ksrAnalytics: KSRAnalytics = KSRAnalytics(),
     language: Language = Language(languageStrings: Locale.preferredLanguages) ?? Language.en,
@@ -175,6 +179,7 @@ public struct Environment {
     self.debugData = debugData
     self.device = device
     self.environmentVariables = environmentVariables
+    self.facebookSDK = facebookSDK
     self.isVoiceOverRunning = isVoiceOverRunning
     self.ksrAnalytics = ksrAnalytics
     self.language = language

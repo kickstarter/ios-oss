@@ -1,4 +1,4 @@
-import FBSDKLoginKit
+import FacebookLogin
 import Foundation
 import KsApi
 import Library
