@@ -43,6 +43,7 @@ public protocol ManagePledgeViewModelOutputs {
   var loadProjectAndRewardsIntoDataSource: Signal<(Project, [Reward]), Never> { get }
   var loadPullToRefreshHeaderView: Signal<(), Never> { get }
   var notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never> { get }
+  var fixButtonHidden: Signal<Bool, Never> { get }
   var paymentMethodViewHidden: Signal<Bool, Never> { get }
   var pledgeDetailsSectionLabelText: Signal<String, Never> { get }
   var rightBarButtonItemHidden: Signal<Bool, Never> { get }
@@ -191,11 +192,20 @@ public final class ManagePledgeViewModel:
       .take(until: backing.ignoreValues())
       .ignoreValues()
 
+    self.fixButtonHidden = backing
+      // For PLOT pledges, the fix button is always hidden because the fix action is handled by the `PledgeStatusLabelView`.
+      .map { $0.status != .errored || isPledgeOverTime(with: $0) }
+
     self.paymentMethodViewHidden = Signal.combineLatest(
+      self.fixButtonHidden,
       userIsCreatorOfProject,
       backing.map { backing in backing.paymentSource }
     )
-    .map { userIsCreatorOfProject, creditCard in userIsCreatorOfProject || creditCard == nil }
+    .map { fixButtonHidden, userIsCreatorOfProject, creditCard in
+      if userIsCreatorOfProject { return true }
+      if !fixButtonHidden { return false }
+      return creditCard == nil
+    }
     .skipRepeats()
 
     self.loadProjectAndRewardsIntoDataSource = projectAndReward.combineLatest(with: backing)
@@ -459,6 +469,7 @@ public final class ManagePledgeViewModel:
   public let goToEditPledgeOverTime: Signal<Project, Never>
   public let loadProjectAndRewardsIntoDataSource: Signal<(Project, [Reward]), Never>
   public let loadPullToRefreshHeaderView: Signal<(), Never>
+  public let fixButtonHidden: Signal<Bool, Never>
   public let paymentMethodViewHidden: Signal<Bool, Never>
   public let pledgeDetailsSectionLabelText: Signal<String, Never>
   public let plotPaymentScheduleViewHidden: Signal<Bool, Never>

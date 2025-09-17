@@ -16,9 +16,6 @@ public struct ManagePledgePaymentMethodViewData: Equatable {
 public protocol ManagePledgePaymentMethodViewModelInputs {
   /// Call to configure payment method section the values from a backing
   func configureWith(data: ManagePledgePaymentMethodViewData)
-
-  /// Call when the "Fix" button is tapped
-  func fixButtonTapped()
 }
 
 public protocol ManagePledgePaymentMethodViewModelOutputs {
@@ -33,12 +30,6 @@ public protocol ManagePledgePaymentMethodViewModelOutputs {
 
   /// Emits the formatted card's expirationdate.
   var expirationDateText: Signal<String, Never> { get }
-
-  /// Emits whether the Fix button is hidden
-  var fixButtonHidden: Signal<Bool, Never> { get }
-
-  /// Emits when the fix button was tapped
-  var notifyDelegateFixButtonTapped: Signal<Void, Never> { get }
 }
 
 public protocol ManagePledgePaymentMethodViewModelType {
@@ -80,13 +71,6 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
       .map { String($0.dropLast(3)) }
       .map(formatted(dateString:))
       .map { Strings.Credit_card_expiration(expiration_date: $0) }
-
-    self.fixButtonHidden = self.configureWithDataSignal
-      // TODO: these changes are temporary and will likely be removed when we get to the native implementation in this ticket [MBL-2012](https://kickstarter.atlassian.net/browse/MBL-2012)
-      // For PLOT pledges, the fix button is always hidden because the fix action is handled by the `PledgeStatusLabelView`.
-      .map { $0.backingState != .errored || $0.isPledgeOverTime }
-
-    self.notifyDelegateFixButtonTapped = self.fixButtonTappedSignal
   }
 
   fileprivate let (configureWithDataSignal, configureWithDataObserver)
@@ -95,17 +79,10 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
     self.configureWithDataObserver.send(value: data)
   }
 
-  fileprivate let (fixButtonTappedSignal, fixButtonTappedObserver) = Signal<Void, Never>.pipe()
-  public func fixButtonTapped() {
-    self.fixButtonTappedObserver.send(value: ())
-  }
-
   public let cardImageName: Signal<String, Never>
   public let cardNumberAccessibilityLabel: Signal<String, Never>
   public let cardNumberTextShortStyle: Signal<String, Never>
   public let expirationDateText: Signal<String, Never>
-  public let fixButtonHidden: Signal<Bool, Never>
-  public let notifyDelegateFixButtonTapped: Signal<Void, Never>
 
   public var inputs: ManagePledgePaymentMethodViewModelInputs { return self }
   public var outputs: ManagePledgePaymentMethodViewModelOutputs { return self }
