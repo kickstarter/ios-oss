@@ -5,12 +5,10 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public struct ManagePledgePaymentMethodViewData: Equatable {
-  public let backingState: Backing.Status
   public let expirationDate: String?
   public let lastFour: String?
   public let creditCardType: CreditCardType?
   public let paymentType: PaymentType?
-  public let isPledgeOverTime: Bool
 }
 
 public protocol ManagePledgePaymentMethodViewModelInputs {
