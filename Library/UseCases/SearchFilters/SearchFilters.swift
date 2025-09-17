@@ -257,18 +257,16 @@ public class SearchFilters: ObservableObject {
       )
     )
 
-    if featureSearchFilterByLocation() {
-      let locationTitle = self.location.selectedLocation?.displayableName ?? Strings.Location()
-      pills.append(
-        SearchFilterPill(
-          isHighlighted: self.hasLocation,
-          filterType: .location,
-          buttonType: .dropdown(locationTitle)
-        )
+    let locationTitle = self.location.selectedLocation?.displayableName ?? Strings.Location()
+    pills.append(
+      SearchFilterPill(
+        isHighlighted: self.hasLocation,
+        filterType: .location,
+        buttonType: .dropdown(locationTitle)
       )
-    }
+    )
 
-    if featureSearchFilterByShowOnlyToggles() && AppEnvironment.current.currentUser.isSome {
+    if AppEnvironment.current.currentUser.isSome {
       pills.append(
         SearchFilterPill(
           isHighlighted: self.showOnly.recommended,
@@ -287,55 +285,49 @@ public class SearchFilters: ObservableObject {
       )
     )
 
-    if featureSearchFilterByAmountRaised() {
-      let amountRaisedTitle = self.amountRaised.selectedBucket?.pillTitle ?? Strings.Amount_raised()
+    let amountRaisedTitle = self.amountRaised.selectedBucket?.pillTitle ?? Strings.Amount_raised()
+    pills.append(
+      SearchFilterPill(
+        isHighlighted: self.hasAmountRaised,
+        filterType: .amountRaised,
+        buttonType: .dropdown(amountRaisedTitle)
+      )
+    )
+
+    if let pwlIcon = Library.image(named: "icon-pwl") {
       pills.append(
         SearchFilterPill(
-          isHighlighted: self.hasAmountRaised,
-          filterType: .amountRaised,
-          buttonType: .dropdown(amountRaisedTitle)
+          isHighlighted: self.showOnly.projectsWeLove,
+          filterType: .projectsWeLove,
+          buttonType: .toggleWithImage(Strings.Show_only_projects_we_love(), pwlIcon)
         )
       )
     }
 
-    if featureSearchFilterByShowOnlyToggles() {
-      if let pwlIcon = Library.image(named: "icon-pwl") {
-        pills.append(
-          SearchFilterPill(
-            isHighlighted: self.showOnly.projectsWeLove,
-            filterType: .projectsWeLove,
-            buttonType: .toggleWithImage(Strings.Show_only_projects_we_love(), pwlIcon)
-          )
-        )
-      }
+    let goalTitle = self.goal.selectedBucket?.pillTitle ?? Strings.Goal()
+    pills.append(
+      SearchFilterPill(
+        isHighlighted: self.hasGoal,
+        filterType: .goal,
+        buttonType: .dropdown(goalTitle)
+      )
+    )
 
-      if featureSearchFilterByGoal() {
-        let goalTitle = self.goal.selectedBucket?.pillTitle ?? Strings.Goal()
-        pills.append(
-          SearchFilterPill(
-            isHighlighted: self.hasGoal,
-            filterType: .goal,
-            buttonType: .dropdown(goalTitle)
-          )
+    if AppEnvironment.current.currentUser.isSome {
+      pills.append(
+        SearchFilterPill(
+          isHighlighted: self.showOnly.savedProjects,
+          filterType: .saved,
+          buttonType: .toggle(Strings.Show_only_saved_pill_title())
         )
-      }
-
-      if AppEnvironment.current.currentUser.isSome {
-        pills.append(
-          SearchFilterPill(
-            isHighlighted: self.showOnly.savedProjects,
-            filterType: .saved,
-            buttonType: .toggle(Strings.Show_only_saved_pill_title())
-          )
+      )
+      pills.append(
+        SearchFilterPill(
+          isHighlighted: self.showOnly.following,
+          filterType: .following,
+          buttonType: .toggle(Strings.Show_only_following())
         )
-        pills.append(
-          SearchFilterPill(
-            isHighlighted: self.showOnly.following,
-            filterType: .following,
-            buttonType: .toggle(Strings.Show_only_following())
-          )
-        )
-      }
+      )
     }
 
     self.pills = pills

@@ -179,7 +179,10 @@ class SearchDataSourceTests: XCTestCase {
   func test_indexOfProject_withEmptyState_returnsNil() {
     let datasource = SearchDataSource()
 
-    datasource.load(params: DiscoveryParams.defaults, visible: true)
+    datasource.load(
+      data: SearchEmptyStateSearchData(query: "No results query", hasFilters: true),
+      visible: true
+    )
 
     XCTAssertEqual(
       datasource.numberOfItems(in: projectsSection),
@@ -193,8 +196,8 @@ class SearchDataSourceTests: XCTestCase {
     )
 
     XCTAssertTrue(
-      datasource[IndexPath(row: 0, section: emptySection)] is DiscoveryParams,
-      "First value in the empty section should be a DiscoveryParams"
+      datasource[IndexPath(row: 0, section: emptySection)] is SearchEmptyStateSearchData,
+      "First value in the empty section should be a SearchEmptyStateSearchData"
     )
 
     XCTAssertNil(

@@ -70,9 +70,6 @@ public protocol SearchViewModelOutputs {
   /// Emits true when no search results should be shown, and false otherwise.
   var showEmptyState: Signal<(DiscoveryParams, Bool), Never> { get }
 
-  /// Emits true when there are search or discover results, and we should show the UI to sort and filter those results.
-  var showSortAndFilterHeader: Signal<Bool, Never> { get }
-
   /// Sends a model object which can be used to display all filter options, and a type describing which filters to display.
   var showFilters: Signal<SearchFilterModalType, Never> { get }
 
@@ -231,35 +228,12 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         }
       }
 
-    let shouldShowOldEmptyState = Signal.merge(
-      queryText.mapConst(false),
-      paginatedProjects.map { $0.isEmpty }
-    )
-    .skipRepeats()
-    .skip(first: 1)
-
-    let shouldShowNewEmptyState = Signal.combineLatest(paginatedProjects, isLoading)
+    let shouldShowEmptyState = Signal.combineLatest(paginatedProjects, isLoading)
       .map { projects, isLoading in
         if isLoading { return false }
         return projects.isEmpty
       }
       .skipRepeats()
-
-    // This pattern is a little convoluted but the logic for the new empty state needs to take
-    // filters into account (which the old empty state does not). For rollback safety, the old
-    // logic is unchanged. The `compactMap`s ensure that we're using the most recent value of the
-    // feature flag, in order to keep this and the check in the view controller in sync.
-    // This code will be cleaned up when the feature flag is deleted.
-    let shouldShowEmptyState = Signal.merge(
-      shouldShowNewEmptyState.compactMap {
-        if featureSearchNewEmptyState() { return $0 }
-        return nil
-      },
-      shouldShowOldEmptyState.compactMap {
-        if featureSearchNewEmptyState() { return nil }
-        return $0
-      }
-    )
 
     self.showEmptyState = requestFirstPageWith
       .takePairWhen(shouldShowEmptyState)
@@ -352,11 +326,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         )
       }
 
-    self.showSortAndFilterHeader = self.projects
-      .map { results in
-        featureSearchNewEmptyState() || results.count > 0
-      }
-
     let emptyResultsOnFirstAppearance = viewWillAppearNotAnimated
       .take(first: 1)
       .mapConst(
@@ -425,7 +394,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let projects: Signal<[SearchResultCard], Never>
   public let searchLoaderIndicatorIsAnimating: Signal<Bool, Never>
   public let showEmptyState: Signal<(DiscoveryParams, Bool), Never>
-  public let showSortAndFilterHeader: Signal<Bool, Never>
   public let searchResults: Signal<SearchResults, Never>
 
   public var showFilters: Signal<SearchFilterModalType, Never> {

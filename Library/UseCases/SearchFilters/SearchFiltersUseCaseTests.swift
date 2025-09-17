@@ -246,35 +246,28 @@ final class SearchFiltersUseCaseTests: TestCase {
   }
 
   func test_tappedAmountRaised_showsAmountRaised() {
-    let amountRaisedOn = MockRemoteConfigClient()
-    amountRaisedOn.features = [
-      RemoteConfigFeature.searchFilterByAmountRaised.rawValue: true
-    ]
+    self.initialObserver.send(value: ())
 
-    withEnvironment(remoteConfigClient: amountRaisedOn) {
-      self.initialObserver.send(value: ())
+    self.showFilters.assertDidNotEmitValue()
 
-      self.showFilters.assertDidNotEmitValue()
+    self.useCase.inputs.tappedButton(forFilterType: .amountRaised)
 
-      self.useCase.inputs.tappedButton(forFilterType: .amountRaised)
+    self.showFilters.assertDidEmitValue()
 
-      self.showFilters.assertDidEmitValue()
-
-      if let type = self.showFilters.lastValue {
-        XCTAssertEqual(type, .amountRaised, "Tapping amount raised button should amount raised options")
-        XCTAssertGreaterThan(
-          self.useCase.uiOutputs.searchFilters.amountRaised.buckets.count,
-          0,
-          "There should be multiple amount raised options"
-        )
-      }
-
-      XCTAssertEqual(
-        self.useCase.uiOutputs.searchFilters.amountRaised.selectedBucket,
-        nil,
-        "No option should be selected by default"
+    if let type = self.showFilters.lastValue {
+      XCTAssertEqual(type, .amountRaised, "Tapping amount raised button should amount raised options")
+      XCTAssertGreaterThan(
+        self.useCase.uiOutputs.searchFilters.amountRaised.buckets.count,
+        0,
+        "There should be multiple amount raised options"
       )
     }
+
+    XCTAssertEqual(
+      self.useCase.uiOutputs.searchFilters.amountRaised.selectedBucket,
+      nil,
+      "No option should be selected by default"
+    )
   }
 
   func test_tappedGoal_showsGoal() {
@@ -589,108 +582,89 @@ final class SearchFiltersUseCaseTests: TestCase {
   }
 
   func test_selectingAmountRaised_updatesAmountRaisedPill() {
-    let amountRaisedOn = MockRemoteConfigClient()
-    amountRaisedOn.features = [
-      RemoteConfigFeature.searchFilterByAmountRaised.rawValue: true
-    ]
+    self.initialObserver.send(value: ())
 
-    withEnvironment(remoteConfigClient: amountRaisedOn) {
-      self.initialObserver.send(value: ())
+    self.assert_selectedAmountRaisedBucket_isDefault()
 
-      self.assert_selectedAmountRaisedBucket_isDefault()
+    if let pill = self.useCase.uiOutputs.searchFilters.amountRaisedPill {
+      XCTAssertEqual(
+        pill.isHighlighted,
+        false,
+        "Amount raised pill should not be highlighted when no bucket is selected"
+      )
+    } else {
+      XCTFail("Expected percent raised pill to be set")
+    }
 
-      if let pill = self.useCase.uiOutputs.searchFilters.amountRaisedPill {
-        XCTAssertEqual(
-          pill.isHighlighted,
-          false,
-          "Amount raised pill should not be highlighted when no bucket is selected"
-        )
-      } else {
-        XCTFail("Expected percent raised pill to be set")
+    self.useCase.inputs.selectedFilter(.amountRaised(.bucket_3))
+
+    if let pill = self.useCase.uiOutputs.searchFilters.amountRaisedPill {
+      XCTAssertEqual(
+        pill.isHighlighted,
+        true,
+        "Amount raised pill should be highlighted when a non-default option is selected"
+      )
+
+      guard case let .dropdown(title) = pill.buttonType else {
+        XCTFail("Pill is not a dropdown")
+        return
       }
 
-      self.useCase.inputs.selectedFilter(.amountRaised(.bucket_3))
+      XCTAssertEqual(
+        title,
+        DiscoveryParams.AmountRaisedBucket.bucket_3.pillTitle,
+        "Dropdown should have description of selected amount raised option in its title"
+      )
 
-      if let pill = self.useCase.uiOutputs.searchFilters.amountRaisedPill {
-        XCTAssertEqual(
-          pill.isHighlighted,
-          true,
-          "Amount raised pill should be highlighted when a non-default option is selected"
-        )
-
-        guard case let .dropdown(title) = pill.buttonType else {
-          XCTFail("Pill is not a dropdown")
-          return
-        }
-
-        XCTAssertEqual(
-          title,
-          DiscoveryParams.AmountRaisedBucket.bucket_3.pillTitle,
-          "Dropdown should have description of selected amount raised option in its title"
-        )
-
-      } else {
-        XCTFail("Expected percent raised pill to be set")
-      }
+    } else {
+      XCTFail("Expected percent raised pill to be set")
     }
   }
 
   func test_selectingLocation_updatesLocationPill() {
-    let locationOn = MockRemoteConfigClient()
-    locationOn.features = [
-      RemoteConfigFeature.searchFilterByLocation.rawValue: true
-    ]
+    self.initialObserver.send(value: ())
 
-    withEnvironment(remoteConfigClient: locationOn) {
-      self.initialObserver.send(value: ())
+    self.assert_selectedLocation_isDefault()
 
-      self.assert_selectedLocation_isDefault()
+    if let pill = self.useCase.uiOutputs.searchFilters.locationPill {
+      XCTAssertEqual(
+        pill.isHighlighted,
+        false,
+        "Percent raised pill should not be highlighted when no location is selected"
+      )
+    } else {
+      XCTFail("Expected location pill to be set")
+    }
 
-      if let pill = self.useCase.uiOutputs.searchFilters.locationPill {
-        XCTAssertEqual(
-          pill.isHighlighted,
-          false,
-          "Percent raised pill should not be highlighted when no location is selected"
-        )
-      } else {
-        XCTFail("Expected location pill to be set")
+    let location = threeLocations[0]
+
+    self.useCase.inputs.selectedFilter(.location(location))
+
+    if let pill = self.useCase.uiOutputs.searchFilters.locationPill {
+      XCTAssertEqual(
+        pill.isHighlighted,
+        true,
+        "Location pill should be highlighted when a non-default option is selected"
+      )
+
+      guard case let .dropdown(title) = pill.buttonType else {
+        XCTFail("Pill is not a dropdown")
+        return
       }
 
-      let location = threeLocations[0]
+      XCTAssertEqual(
+        title,
+        location.displayableName,
+        "Dropdown should have description of selected location in its title"
+      )
 
-      self.useCase.inputs.selectedFilter(.location(location))
-
-      if let pill = self.useCase.uiOutputs.searchFilters.locationPill {
-        XCTAssertEqual(
-          pill.isHighlighted,
-          true,
-          "Location pill should be highlighted when a non-default option is selected"
-        )
-
-        guard case let .dropdown(title) = pill.buttonType else {
-          XCTFail("Pill is not a dropdown")
-          return
-        }
-
-        XCTAssertEqual(
-          title,
-          location.displayableName,
-          "Dropdown should have description of selected location in its title"
-        )
-
-      } else {
-        XCTFail("Expected location pill to be set")
-      }
+    } else {
+      XCTFail("Expected location pill to be set")
     }
   }
 
   func test_userLoggedIn_showsUserTogglePills() {
-    let togglesOn = MockRemoteConfigClient()
-    togglesOn.features = [
-      RemoteConfigFeature.searchFilterByShowOnlyToggles.rawValue: true
-    ]
-
-    withEnvironment(currentUser: User.template, remoteConfigClient: togglesOn) {
+    withEnvironment(currentUser: User.template) {
       self.initialObserver.send(value: ())
 
       XCTAssertNotNil(self.useCase.uiOutputs.searchFilters.followingPill)
@@ -701,12 +675,7 @@ final class SearchFiltersUseCaseTests: TestCase {
   }
 
   func test_userLoggedOut_showsAnonymousTogglePills() {
-    let togglesOn = MockRemoteConfigClient()
-    togglesOn.features = [
-      RemoteConfigFeature.searchFilterByShowOnlyToggles.rawValue: true
-    ]
-
-    withEnvironment(currentUser: nil, remoteConfigClient: togglesOn) {
+    withEnvironment(currentUser: nil) {
       self.initialObserver.send(value: ())
 
       XCTAssertNil(self.useCase.uiOutputs.searchFilters.followingPill)
@@ -720,12 +689,7 @@ final class SearchFiltersUseCaseTests: TestCase {
     _ type: SearchFilterPill.FilterType,
     onEvent event: SearchFilterEvent
   ) {
-    let togglesOn = MockRemoteConfigClient()
-    togglesOn.features = [
-      RemoteConfigFeature.searchFilterByShowOnlyToggles.rawValue: true
-    ]
-
-    withEnvironment(currentUser: User.template, remoteConfigClient: togglesOn) {
+    withEnvironment(currentUser: User.template) {
       self.initialObserver.send(value: ())
 
       self.assert_toggles_areDefaults()
@@ -769,12 +733,7 @@ final class SearchFiltersUseCaseTests: TestCase {
   }
 
   func test_tappingOnToggles_changesToggleValue_insteadOfShowingFilters() {
-    let togglesOn = MockRemoteConfigClient()
-    togglesOn.features = [
-      RemoteConfigFeature.searchFilterByShowOnlyToggles.rawValue: true
-    ]
-
-    withEnvironment(currentUser: User.template, remoteConfigClient: togglesOn) {
+    withEnvironment(currentUser: User.template) {
       self.initialObserver.send(value: ())
       self.assert_toggles_areDefaults()
 

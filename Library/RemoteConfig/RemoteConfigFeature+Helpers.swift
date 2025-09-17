@@ -51,26 +51,6 @@ public func featureSecretRewardsEnabled() -> Bool {
   featureEnabled(feature: .secretRewards)
 }
 
-public func featureSearchFilterByLocation() -> Bool {
-  featureEnabled(feature: .searchFilterByLocation)
-}
-
 public func featureNetNewBackersGoToPMEnabled() -> Bool {
   featureEnabled(feature: .netNewBackersGoToPM)
-}
-
-public func featureSearchFilterByAmountRaised() -> Bool {
-  featureEnabled(feature: .searchFilterByAmountRaised)
-}
-
-public func featureSearchFilterByShowOnlyToggles() -> Bool {
-  featureEnabled(feature: .searchFilterByShowOnlyToggles)
-}
-
-public func featureSearchFilterByGoal() -> Bool {
-  featureEnabled(feature: .searchFilterByGoal)
-}
-
-public func featureSearchNewEmptyState() -> Bool {
-  featureEnabled(feature: .searchNewEmptyState)
 }

@@ -22,7 +22,6 @@ internal final class SearchViewModelTests: TestCase {
   fileprivate let showEmptyState = TestObserver<Bool, Never>()
   fileprivate let showEmptyStateParams = TestObserver<DiscoveryParams, Never>()
   fileprivate let showFilters = TestObserver<SearchFilterModalType, Never>()
-  fileprivate let showSortAndFilterHeader = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -44,7 +43,6 @@ internal final class SearchViewModelTests: TestCase {
       .map { prev, next in next > prev }
       .observe(self.hasAddedProjects.observer)
 
-    self.vm.outputs.showSortAndFilterHeader.observe(self.showSortAndFilterHeader.observer)
     self.vm.outputs.showFilters.observe(self.showFilters.observer)
   }
 
@@ -524,28 +522,16 @@ internal final class SearchViewModelTests: TestCase {
       self.hasProjects.assertLastValue(true, "Projects emitted immediately upon view appearing.")
       self.isPopularTitleVisible.assertLastValue(true, "Popular title visible upon view appearing.")
       XCTAssertEqual(self.segmentTrackingClient.events.count, 1, "One event after the popular results load.")
-      self.showSortAndFilterHeader.assertLastValue(
-        true,
-        "Filter header should be shown for popular results."
-      )
 
       self.vm.inputs.searchTextChanged("dogs")
 
       self.hasProjects.assertLastValue(false, "Projects clear immediately upon entering search.")
-      self.showSortAndFilterHeader.assertLastValue(
-        false,
-        "Filter header should be hidden when a search is loading."
-      )
     }
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: searchResponse)) {
       self.scheduler.advance()
 
       self.hasProjects.assertLastValue(true, "Projects emit after waiting enough time.")
-      self.showSortAndFilterHeader.assertLastValue(
-        true,
-        "Filter header should appear when there are search results to filter."
-      )
       XCTAssertEqual(
         self.segmentTrackingClient.events.count,
         2,
@@ -583,18 +569,10 @@ internal final class SearchViewModelTests: TestCase {
         true,
         "Loading spinner should show after new sort option is chosen"
       )
-      self.showSortAndFilterHeader.assertLastValue(
-        false,
-        "Filter header should hide while the page is loading"
-      )
 
       self.scheduler.advance()
 
       self.hasProjects.assertLastValue(true, "New projects with new sort option should load")
-      self.showSortAndFilterHeader.assertLastValue(
-        true,
-        "Filter header should appear when there are search results to filter."
-      )
 
       XCTAssertEqual(
         self.segmentTrackingClient.events.count,
@@ -652,28 +630,16 @@ internal final class SearchViewModelTests: TestCase {
       self.hasProjects.assertLastValue(true, "Projects emitted immediately upon view appearing.")
       self.isPopularTitleVisible.assertLastValue(true, "Popular title visible upon view appearing.")
       XCTAssertEqual(self.segmentTrackingClient.events.count, 1, "One event after the popular results load.")
-      self.showSortAndFilterHeader.assertLastValue(
-        true,
-        "Filter header should be shown for popular results."
-      )
 
       self.vm.inputs.searchTextChanged("dogs")
 
       self.hasProjects.assertLastValue(false, "Projects clear immediately upon entering search.")
-      self.showSortAndFilterHeader.assertLastValue(
-        false,
-        "Filter header should be hidden when a search is loading."
-      )
     }
 
     withEnvironment(apiService: MockService(fetchGraphQLResponses: searchResponse)) {
       self.scheduler.advance()
 
       self.hasProjects.assertLastValue(true, "Projects emit after waiting enough time.")
-      self.showSortAndFilterHeader.assertLastValue(
-        true,
-        "Filter header should appear when there are search results to filter."
-      )
       XCTAssertEqual(
         self.segmentTrackingClient.events.count,
         2,
@@ -711,18 +677,10 @@ internal final class SearchViewModelTests: TestCase {
         true,
         "Loading spinner should show after new category filter is chosen"
       )
-      self.showSortAndFilterHeader.assertLastValue(
-        false,
-        "Filter header should hide while the page is loading"
-      )
 
       self.scheduler.advance()
 
       self.hasProjects.assertLastValue(true, "New projects with new category filter should load")
-      self.showSortAndFilterHeader.assertLastValue(
-        true,
-        "Filter header should appear when there are search results to filter."
-      )
 
       XCTAssertEqual(
         self.segmentTrackingClient.events.count,
@@ -821,22 +779,23 @@ internal final class SearchViewModelTests: TestCase {
           false,
           "Projects clear immediately upon entering search."
         )
-        self.showEmptyState.assertValues([], "No query for project yet.")
+        self.searchLoaderIndicatorIsAnimating.assertLastValue(true, "Search is loading.")
+        self.showEmptyState.assertValues([false], "Search is loading, don't show the empty state.")
 
         self.scheduler.advance()
 
         self.hasProjects.assertLastValue(false, "No Projects to emit.")
-        self.showEmptyState.assertValues([true], "No Projects Found.")
+        self.showEmptyState.assertValues([false, true], "No Projects Found.")
 
         self.vm.inputs.searchTextChanged("abcdefghasfdsafd")
 
         self.hasProjects.assertLastValue(false)
-        self.showEmptyState.assertValues([true, false])
+        self.showEmptyState.assertValues([false, true, false])
 
         self.scheduler.advance()
 
         self.hasProjects.assertLastValue(false)
-        self.showEmptyState.assertValues([true, false, true])
+        self.showEmptyState.assertValues([false, true, false, true])
       }
 
       withEnvironment(apiService: MockService(fetchGraphQLResponses: popularResponse)) {
