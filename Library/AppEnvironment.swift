@@ -102,6 +102,26 @@ public struct AppEnvironment: AppEnvironmentType {
     self.replaceCurrentEnvironment(language: language)
   }
 
+  public static func configureFacebookSDK(
+    appID: String?,
+    application: UIApplication,
+    launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+  ) {
+    self.current.facebookSDK.configure(
+      appID: appID,
+      application: application,
+      launchOptions: launchOptions
+    )
+  }
+
+  public static func didFacebookSDKOpenURL(
+    _ app: UIApplication,
+    open url: URL,
+    options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+  ) -> Bool {
+    return self.current.facebookSDK.handleOpenURL(app, open: url, options: options)
+  }
+
   // Invoke when you want to end the user's session.
   public static func logout() {
     let storage = AppEnvironment.current.cookieStorage
@@ -185,6 +205,7 @@ public struct AppEnvironment: AppEnvironmentType {
     debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
     debugData: DebugData? = AppEnvironment.current.debugData,
     device: UIDeviceType = AppEnvironment.current.device,
+    facebookSDK: FacebookSDKType.Type = AppEnvironment.current.facebookSDK,
     isVoiceOverRunning: @escaping (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
     ksrAnalytics: KSRAnalytics = AppEnvironment.current.ksrAnalytics,
     language: Language = AppEnvironment.current.language,
@@ -218,6 +239,7 @@ public struct AppEnvironment: AppEnvironmentType {
         debounceInterval: debounceInterval,
         debugData: debugData,
         device: device,
+        facebookSDK: facebookSDK,
         isVoiceOverRunning: isVoiceOverRunning,
         ksrAnalytics: ksrAnalytics,
         language: language,
@@ -258,6 +280,7 @@ public struct AppEnvironment: AppEnvironmentType {
     debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
     debugData: DebugData? = AppEnvironment.current.debugData,
     device: UIDeviceType = AppEnvironment.current.device,
+    facebookSDK: FacebookSDKType.Type = AppEnvironment.current.facebookSDK,
     isVoiceOverRunning: @escaping (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
     ksrAnalytics: KSRAnalytics = AppEnvironment.current.ksrAnalytics,
     language: Language = AppEnvironment.current.language,
@@ -294,6 +317,7 @@ public struct AppEnvironment: AppEnvironmentType {
         debounceInterval: debounceInterval,
         debugData: debugData,
         device: device,
+        facebookSDK: facebookSDK,
         isVoiceOverRunning: isVoiceOverRunning,
         ksrAnalytics: ksrAnalytics,
         language: language,

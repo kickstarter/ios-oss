@@ -1,6 +1,5 @@
 import BrazeKit
 import BrazeUI
-import FacebookCore
 import Firebase
 import Foundation
 import KDS
@@ -42,8 +41,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     // FBSDK initialization
-    ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-    Settings.shared.isEventDataUsageLimited = true
+    let facebookAppID = Bundle.main.infoDictionary?["FacebookAppID"] as? String
+    AppEnvironment.configureFacebookSDK(
+      appID: facebookAppID,
+      application: application,
+      launchOptions: launchOptions
+    )
 
     // Braze expects to be configured immediately, but segment destination plugins are initialized
     // async. This method bridges that gap.
@@ -334,7 +337,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     options: [UIApplication.OpenURLOptionsKey: Any] = [:]
   ) -> Bool {
     // If this is not a Facebook login call, handle the potential deep-link
-    guard !ApplicationDelegate.shared.application(app, open: url, options: options) else {
+    guard !AppEnvironment.current.facebookSDK.handleOpenURL(app, open: url, options: options) else {
       return true
     }
 
