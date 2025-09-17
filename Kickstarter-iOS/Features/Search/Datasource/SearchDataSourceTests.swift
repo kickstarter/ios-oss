@@ -197,7 +197,7 @@ class SearchDataSourceTests: XCTestCase {
 
     XCTAssertTrue(
       datasource[IndexPath(row: 0, section: emptySection)] is SearchEmptyStateSearchData,
-      "First value in the empty section should be a DiscoveryParams"
+      "First value in the empty section should be a SearchEmptyStateSearchData"
     )
 
     XCTAssertNil(

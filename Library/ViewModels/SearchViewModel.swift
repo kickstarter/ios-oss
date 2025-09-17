@@ -228,7 +228,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         }
       }
 
-    let shouldShowNewEmptyState = Signal.combineLatest(paginatedProjects, isLoading)
+    let shouldShowEmptyState = Signal.combineLatest(paginatedProjects, isLoading)
       .map { projects, isLoading in
         if isLoading { return false }
         return projects.isEmpty
@@ -236,7 +236,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .skipRepeats()
 
     self.showEmptyState = requestFirstPageWith
-      .takePairWhen(shouldShowNewEmptyState)
+      .takePairWhen(shouldShowEmptyState)
 
     self.goToProject = Signal.combineLatest(searchResults, queryText)
       .takePairWhen(self.tappedProjectIndexSignal)
