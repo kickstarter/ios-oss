@@ -4,7 +4,7 @@ import Library
 import Prelude
 import UIKit
 
-@IBDesignable internal final class DiscoveryProjectCategoryView: UIView, NibLoading {
+internal final class DiscoveryProjectCategoryView: UIView, NibLoading {
   private let viewModel: DiscoveryProjectCategoryViewModelType = DiscoveryProjectCategoryViewModel()
 
   @IBOutlet private var blurView: UIImageView!
