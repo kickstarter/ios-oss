@@ -193,9 +193,16 @@ public final class ManagePledgeViewModel:
 
     self.paymentMethodViewHidden = Signal.combineLatest(
       userIsCreatorOfProject,
-      backing.map { backing in backing.paymentSource }
+      backing
     )
-    .map { userIsCreatorOfProject, creditCard in userIsCreatorOfProject || creditCard == nil }
+    .map { userIsCreatorOfProject, backing in
+      // Never show payment method view if the user is the creator.
+      if userIsCreatorOfProject { return true }
+      // Always show payment method view if the fix button should be shown.
+      if shouldShowFixPaymentMethodButton(for: backing) { return false }
+      // Otherwise, show payment method view if we have a payment method to display.
+      return backing.paymentSource == nil
+    }
     .skipRepeats()
 
     self.loadProjectAndRewardsIntoDataSource = projectAndReward.combineLatest(with: backing)
@@ -614,16 +621,22 @@ private func cancelPledgeViewData(
   )
 }
 
+private func shouldShowFixPaymentMethodButton(for backing: Backing) -> Bool {
+  // For PLOT pledges, the fix button is always hidden because the fix action
+  // is handled by the `PledgeStatusLabelView`.
+  if isPledgeOverTime(with: backing) { return false }
+  return backing.status == .errored
+}
+
 private func managePledgePaymentMethodViewData(
   with backing: Backing
 ) -> ManagePledgePaymentMethodViewData {
   ManagePledgePaymentMethodViewData(
-    backingState: backing.status,
+    showFixPaymentButton: shouldShowFixPaymentMethodButton(for: backing),
     expirationDate: backing.paymentSource?.expirationDate,
     lastFour: backing.paymentSource?.lastFour,
     creditCardType: backing.paymentSource?.type,
-    paymentType: backing.paymentSource?.paymentType,
-    isPledgeOverTime: !backing.paymentIncrements.isEmpty
+    paymentType: backing.paymentSource?.paymentType
   )
 }
 
