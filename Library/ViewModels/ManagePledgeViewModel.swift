@@ -629,10 +629,12 @@ private func managePledgePaymentMethodViewData(
   with backing: Backing
 ) -> ManagePledgePaymentMethodViewData {
   ManagePledgePaymentMethodViewData(
+    backingState: backing.status,
     expirationDate: backing.paymentSource?.expirationDate,
     lastFour: backing.paymentSource?.lastFour,
     creditCardType: backing.paymentSource?.type,
-    paymentType: backing.paymentSource?.paymentType
+    paymentType: backing.paymentSource?.paymentType,
+    isPledgeOverTime: !backing.paymentIncrements.isEmpty
   )
 }
 

@@ -132,10 +132,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
+      backingState: .pledged,
       expirationDate: "2019-09-30",
       lastFour: "1111",
       creditCardType: .visa,
-      paymentType: .creditCard
+      paymentType: .creditCard,
+      isPledgeOverTime: false
     )
 
     withEnvironment(apiService: mockService) {
@@ -862,10 +864,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
+      backingState: .pledged,
       expirationDate: "2019-09-30",
       lastFour: "1111",
       creditCardType: .visa,
-      paymentType: .creditCard
+      paymentType: .creditCard,
+      isPledgeOverTime: false
     )
 
     let initialBackingEnvelope = envelope

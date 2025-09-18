@@ -29,10 +29,12 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
     self.expirationDateText.assertDidNotEmitValue()
 
     let data = ManagePledgePaymentMethodViewData(
+      backingState: .pledged,
       expirationDate: "2019-09-30",
       lastFour: "1111",
       creditCardType: .visa,
-      paymentType: .creditCard
+      paymentType: .creditCard,
+      isPledgeOverTime: false
     )
 
     self.vm.inputs.configureWith(data: data)
@@ -50,10 +52,12 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
     self.expirationDateText.assertDidNotEmitValue()
 
     let data = ManagePledgePaymentMethodViewData(
+      backingState: .pledged,
       expirationDate: "2019-10-19",
       lastFour: "1111",
       creditCardType: .visa,
-      paymentType: .applePay
+      paymentType: .applePay,
+      isPledgeOverTime: false
     )
 
     self.vm.inputs.configureWith(data: data)
@@ -71,10 +75,12 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
     self.expirationDateText.assertDidNotEmitValue()
 
     let data = ManagePledgePaymentMethodViewData(
+      backingState: .pledged,
       expirationDate: "2019-10-19",
       lastFour: "4111",
       creditCardType: .visa,
-      paymentType: .googlePay
+      paymentType: .googlePay,
+      isPledgeOverTime: false
     )
 
     self.vm.inputs.configureWith(data: data)
