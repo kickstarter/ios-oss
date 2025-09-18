@@ -1,4 +1,3 @@
-import KDS
 import KsApi
 import Library
 import Prelude
@@ -61,22 +60,11 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   private lazy var paymentMethodView: ManagePledgePaymentMethodView = {
     ManagePledgePaymentMethodView(frame: .zero)
-  }()
-
-  private lazy var fixPaymentButton: KSRButton = {
-    let button = KSRButton(style: .filledDestructive)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.addTarget(
-      self,
-      action: #selector(ManagePledgeViewController.fixButtonTapped),
-      for: .touchUpInside
-    )
-    button.setTitle(Strings.Fix_payment_method(), for: .normal)
-    return button
+      |> \.delegate .~ self
   }()
 
   private lazy var paymentMethodViews = {
-    [self.paymentMethodView, self.fixPaymentButton, self.paymentMethodSectionSeparator]
+    [self.paymentMethodView, self.paymentMethodSectionSeparator]
   }()
 
   private lazy var plotPaymentScheduleViewController: PledgeOverTimePaymentScheduleViewController = {
@@ -210,16 +198,10 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.pledgeDetailsSectionLabel.rac.text = self.viewModel.outputs.pledgeDetailsSectionLabelText
 
-    self.viewModel.outputs.fixButtonHidden
-      .observeForUI()
-      .observeValues { [weak self] hidden in
-        self?.fixPaymentButton.isHidden = hidden
-      }
     self.viewModel.outputs.paymentMethodViewHidden
       .observeForUI()
       .observeValues { [weak self] hidden in
-        self?.paymentMethodView.isHidden = hidden
-        self?.paymentMethodSectionSeparator.isHidden = hidden
+        self?.paymentMethodViews.forEach { $0.isHidden = hidden }
       }
 
     self.viewModel.outputs.rightBarButtonItemHidden
@@ -469,10 +451,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.viewModel.inputs.menuButtonTapped()
   }
 
-  @objc private func fixButtonTapped() {
-    self.viewModel.inputs.fixButtonTapped()
-  }
-
   @objc private func beginRefresh() {
     self.viewModel.inputs.beginRefresh()
   }
@@ -582,6 +560,12 @@ extension ManagePledgeViewController: CancelPledgeViewControllerDelegate {
     didCancelPledgeWithMessage message: String
   ) {
     self.viewModel.inputs.cancelPledgeDidFinish(with: message)
+  }
+}
+
+extension ManagePledgeViewController: ManagePledgePaymentMethodViewDelegate {
+  func managePledgePaymentMethodViewDidTapFixButton(_: ManagePledgePaymentMethodView) {
+    self.viewModel.inputs.fixButtonTapped()
   }
 }
 

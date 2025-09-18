@@ -24,7 +24,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let loadPullToRefreshHeaderView = TestObserver<(), Never>()
   private let notifyDelegateManagePledgeViewControllerFinishedWithMessage
     = TestObserver<String?, Never>()
-  private let fixButtonHidden = TestObserver<Bool, Never>()
   private let paymentMethodViewHidden = TestObserver<Bool, Never>()
   private let pledgeDetailsSectionLabelText = TestObserver<String, Never>()
   private let plotPaymentScheduleViewHidden = TestObserver<Bool, Never>()
@@ -59,7 +58,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.outputs.goToRewards.observe(self.goToRewards.observer)
     self.vm.outputs.notifyDelegateManagePledgeViewControllerFinishedWithMessage
       .observe(self.notifyDelegateManagePledgeViewControllerFinishedWithMessage.observer)
-    self.vm.outputs.fixButtonHidden.observe(self.fixButtonHidden.observer)
     self.vm.outputs.paymentMethodViewHidden.observe(self.paymentMethodViewHidden.observer)
     self.vm.outputs.pledgeDetailsSectionLabelText.observe(self.pledgeDetailsSectionLabelText.observer)
     self.vm.outputs.rightBarButtonItemHidden.observe(self.rightBarButtonItemHidden.observer)
@@ -1466,7 +1464,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
-  func testPaymentMethodViewNotHidden_UserIsNotCreatorOfProject() {
+  func testPaymentMethodViewHidden_UserIsNotCreatorOfProject() {
     self.paymentMethodViewHidden.assertDidNotEmitValue()
 
     let user = User.template
@@ -1489,128 +1487,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.paymentMethodViewHidden.assertValues([false])
-    }
-  }
-
-  func testPaymentMethodViewHidden_NoPaymentMethod() {
-    self.paymentMethodViewHidden.assertDidNotEmitValue()
-
-    let project = Project.cosmicSurgery
-    let backing = Backing.template
-      |> Backing.lens.paymentSource .~ nil
-    let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndBacking),
-      fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
-    )
-
-    withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      self.paymentMethodViewHidden.assertValues([true])
-    }
-  }
-
-  func testFixPaymentButtonNotHidden() {
-    self.paymentMethodViewHidden.assertDidNotEmitValue()
-    self.fixButtonHidden.assertDidNotEmitValue()
-
-    let project = Project.cosmicSurgery
-    let backing = Backing.template
-      |> Backing.lens.paymentSource .~ nil
-      |> Backing.lens.status .~ .errored
-    let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndBacking),
-      fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
-    )
-
-    withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      self.paymentMethodViewHidden.assertLastValue(false)
-      self.fixButtonHidden.assertLastValue(false)
-    }
-  }
-
-  func testFixPaymentButtonHidden_PaymentSuccess() {
-    self.fixButtonHidden.assertDidNotEmitValue()
-
-    let project = Project.cosmicSurgery
-    let backing = Backing.template
-    let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndBacking),
-      fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
-    )
-
-    withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      self.fixButtonHidden.assertLastValue(true)
-    }
-  }
-
-  func testFixPaymentButtonHidden_PlotError() {
-    self.fixButtonHidden.assertDidNotEmitValue()
-
-    let project = Project.cosmicSurgery
-    let backing = Backing.templatePlot
-      |> Backing.lens.status .~ .errored
-    let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndBacking),
-      fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
-    )
-
-    withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      self.fixButtonHidden.assertLastValue(true)
-    }
-  }
-
-  func testFixPaymentButtonHidden_PlotAuthenticationRequired() {
-    self.fixButtonHidden.assertDidNotEmitValue()
-
-    let project = Project.cosmicSurgery
-    let backing = Backing.templatePlot
-      |> Backing.lens.status .~ .authenticationRequired
-    let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndBacking),
-      fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
-    )
-
-    withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      self.fixButtonHidden.assertLastValue(true)
     }
   }
 
