@@ -87,34 +87,4 @@ final class RewardsUseCaseTests: TestCase {
       self.goToRewards.assertDidNotEmitValue()
     }
   }
-
-  // MARK: - Feature flag Off
-
-  func test_goToRewards_whenUserIsLoggedIn_andHasSecretRewardToken_FeatureFlagOff() {
-    withEnvironment(currentUser: .template) {
-      self.secretRewardTokenObserver.send(value: "secret-reward-token")
-
-      self.goToLoginWithIntent.assertDidNotEmitValue()
-      self.goToRewards.assertDidNotEmitValue()
-
-      self.goToRewardsTappedObserver.send(value: ())
-
-      self.goToLoginWithIntent.assertDidNotEmitValue()
-      self.goToRewards.assertDidEmitValue()
-    }
-  }
-
-  func test_goToRewards_whenUserIsLoggedOut_andHasSecretRewardToken_FeatureFlagOff() {
-    withEnvironment(currentUser: nil) {
-      self.secretRewardTokenObserver.send(value: "secret-reward-token")
-
-      self.goToLoginWithIntent.assertDidNotEmitValue()
-      self.goToRewards.assertDidNotEmitValue()
-
-      self.goToRewardsTappedObserver.send(value: ())
-
-      self.goToLoginWithIntent.assertDidNotEmitValue()
-      self.goToRewards.assertDidEmitValue()
-    }
-  }
 }
