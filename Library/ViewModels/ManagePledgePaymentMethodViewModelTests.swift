@@ -35,12 +35,11 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
     self.notifyDelegateFixButtonTapped.assertDidNotEmitValue()
 
     let data = ManagePledgePaymentMethodViewData(
-      backingState: .pledged,
+      showFixPaymentButton: false,
       expirationDate: "2019-09-30",
       lastFour: "1111",
       creditCardType: .visa,
-      paymentType: .creditCard,
-      isPledgeOverTime: false
+      paymentType: .creditCard
     )
 
     self.vm.inputs.configureWith(data: data)
@@ -62,12 +61,11 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
     self.notifyDelegateFixButtonTapped.assertDidNotEmitValue()
 
     let data = ManagePledgePaymentMethodViewData(
-      backingState: .pledged,
+      showFixPaymentButton: false,
       expirationDate: "2019-10-19",
       lastFour: "1111",
       creditCardType: .visa,
-      paymentType: .applePay,
-      isPledgeOverTime: false
+      paymentType: .applePay
     )
 
     self.vm.inputs.configureWith(data: data)
@@ -89,12 +87,11 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
     self.notifyDelegateFixButtonTapped.assertDidNotEmitValue()
 
     let data = ManagePledgePaymentMethodViewData(
-      backingState: .pledged,
+      showFixPaymentButton: false,
       expirationDate: "2019-10-19",
       lastFour: "4111",
       creditCardType: .visa,
-      paymentType: .googlePay,
-      isPledgeOverTime: false
+      paymentType: .googlePay
     )
 
     self.vm.inputs.configureWith(data: data)
@@ -116,12 +113,11 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
     self.notifyDelegateFixButtonTapped.assertDidNotEmitValue()
 
     let data = ManagePledgePaymentMethodViewData(
-      backingState: .errored,
+      showFixPaymentButton: true,
       expirationDate: "2019-09-30",
       lastFour: "1111",
       creditCardType: .visa,
-      paymentType: .creditCard,
-      isPledgeOverTime: false
+      paymentType: .creditCard
     )
 
     self.vm.inputs.configureWith(data: data)
@@ -141,59 +137,5 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
     self.expirationDateText.assertValues(["Expires 09/2019"])
     self.fixButtonHidden.assertValues([false])
     self.notifyDelegateFixButtonTapped.assertValueCount(1)
-  }
-
-  func testFixButton_IsHidden_WhenPlotErrored() {
-    self.cardImageName.assertDidNotEmitValue()
-    self.cardNumberAccessibilityLabel.assertDidNotEmitValue()
-    self.cardNumberTextShortStyle.assertDidNotEmitValue()
-    self.expirationDateText.assertDidNotEmitValue()
-    self.fixButtonHidden.assertDidNotEmitValue()
-    self.notifyDelegateFixButtonTapped.assertDidNotEmitValue()
-
-    let data = ManagePledgePaymentMethodViewData(
-      backingState: .errored,
-      expirationDate: "2019-09-30",
-      lastFour: "1111",
-      creditCardType: .visa,
-      paymentType: .creditCard,
-      isPledgeOverTime: true
-    )
-
-    self.vm.inputs.configureWith(data: data)
-
-    self.cardImageName.assertValues(["icon--visa"])
-    self.cardNumberAccessibilityLabel.assertValues(["Visa, Card ending in 1111"])
-    self.cardNumberTextShortStyle.assertValues(["Ending in 1111"])
-    self.expirationDateText.assertValues(["Expires 09/2019"])
-    self.fixButtonHidden.assertValues([true])
-    self.notifyDelegateFixButtonTapped.assertDidNotEmitValue()
-  }
-
-  func testFixButton_IsHidden_WhenPlotAuthenticationRequired() {
-    self.cardImageName.assertDidNotEmitValue()
-    self.cardNumberAccessibilityLabel.assertDidNotEmitValue()
-    self.cardNumberTextShortStyle.assertDidNotEmitValue()
-    self.expirationDateText.assertDidNotEmitValue()
-    self.fixButtonHidden.assertDidNotEmitValue()
-    self.notifyDelegateFixButtonTapped.assertDidNotEmitValue()
-
-    let data = ManagePledgePaymentMethodViewData(
-      backingState: .authenticationRequired,
-      expirationDate: "2019-09-30",
-      lastFour: "1111",
-      creditCardType: .visa,
-      paymentType: .creditCard,
-      isPledgeOverTime: true
-    )
-
-    self.vm.inputs.configureWith(data: data)
-
-    self.cardImageName.assertValues(["icon--visa"])
-    self.cardNumberAccessibilityLabel.assertValues(["Visa, Card ending in 1111"])
-    self.cardNumberTextShortStyle.assertValues(["Ending in 1111"])
-    self.expirationDateText.assertValues(["Expires 09/2019"])
-    self.fixButtonHidden.assertValues([true])
-    self.notifyDelegateFixButtonTapped.assertDidNotEmitValue()
   }
 }

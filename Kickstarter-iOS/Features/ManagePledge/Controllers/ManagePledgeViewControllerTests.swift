@@ -351,6 +351,13 @@ final class ManagePledgeViewControllerTests: TestCase {
         controller.tableView.layoutIfNeeded()
         controller.tableView.reloadData()
 
+        // Scroll down to top of table view to ensure the fix payment button is on screen.
+        controller.tableView.selectRow(
+          at: IndexPath(item: 0, section: 0),
+          animated: false,
+          scrollPosition: .bottom
+        )
+
         assertSnapshot(
           matching: parent.view,
           as: .image(perceptualPrecision: 0.98),
