@@ -958,7 +958,7 @@ private func fetchProject(
   let projectAndBackingProducer = projectAndBackingIdProducer
     .switchMap { projectPamphletData -> SignalProducer<Project, ErrorEnvelope> in
       guard let backingId = projectPamphletData.backingId else {
-        return addUserToSecretRewardGroupIfNeeded(
+        return RewardsUseCase.addUserToSecretRewardGroupIfNeeded(
           project: projectPamphletData.project,
           secretRewardToken: secretRewardToken
         )
@@ -976,7 +976,7 @@ private func fetchProject(
             // INFO: Seems like in the `fetchBacking` call we nil out the chosen currency set by `fetchProject` b/c the query for backing doesn't have `me { chosenCurrency }`, so its' being included here.
             |> Project.lens.stats.userCurrency .~ projectPamphletData.project.stats.userCurrency
 
-          return addUserToSecretRewardGroupIfNeeded(
+          return RewardsUseCase.addUserToSecretRewardGroupIfNeeded(
             project: updatedProjectWithBacking,
             secretRewardToken: secretRewardToken
           )
@@ -991,36 +991,6 @@ private func fetchProject(
   }
 
   return projectAndBackingProducer
-}
-
-// TODO: Consider relocating this logic to `RewardsUseCase` to consolidate secret reward handling.
-// Ticket: [MBL-2478](https://kickstarter.atlassian.net/browse/MBL-2478)
-//
-/// Attempts to add the user to the secret reward group if logged in and a valid token is present.
-/// - Returns: `true` if the GraphQL mutation `addUserToSecretRewardGroup` was triggered successfully.
-///            `false` if the user is not logged in or the token is missing/empty, thus skipping the mutation.
-private func addUserToSecretRewardGroupIfNeeded(
-  project: Project,
-  secretRewardToken: String?
-) -> SignalProducer<Bool, ErrorEnvelope> {
-  let isUserLoggedIn = AppEnvironment.current.currentUser != nil
-
-  guard isUserLoggedIn,
-        let secretRewardToken = secretRewardToken,
-        !secretRewardToken.isEmpty else {
-    return SignalProducer(value: false)
-  }
-
-  let input = AddUserToSecretRewardGroupInput(
-    projectId: project.graphID,
-    secretRewardToken: secretRewardToken
-  )
-  return AppEnvironment.current.apiService
-    .addUserToSecretRewardGroup(input: input)
-    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-    .switchMap { _ -> SignalProducer<Bool, ErrorEnvelope> in
-      SignalProducer(value: true)
-    }
 }
 
 private func fetchProjectRewards(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
