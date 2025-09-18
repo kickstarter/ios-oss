@@ -16,8 +16,11 @@ final class ManagePledgePaymentMethodView: UIView {
   private lazy var cardLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var cardNumberLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var expirationDateLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var fixButton: UIButton = { UIButton(type: .custom)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  private lazy var fixButton: KSRButton = {
+    let button = KSRButton(style: .filledDestructive)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle(Strings.Fix_payment_method(), for: .normal)
+    return button
   }()
 
   private lazy var paymentMethodAdaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -54,12 +57,11 @@ final class ManagePledgePaymentMethodView: UIView {
 
     _ = ([
       self.paymentMethodImageView,
-      self.cardLabelsStackView,
-      self.fixButton
+      self.cardLabelsStackView
     ], self.paymentMethodAdaptableStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.titleLabel, self.paymentMethodAdaptableStackView], self.rootStackView)
+    _ = ([self.titleLabel, self.paymentMethodAdaptableStackView, self.fixButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self)
@@ -74,9 +76,6 @@ final class ManagePledgePaymentMethodView: UIView {
       action: #selector(ManagePledgePaymentMethodView.fixButtonTapped),
       for: .touchUpInside
     )
-
-    self.fixButton.setContentHuggingPriority(.required, for: .horizontal)
-    self.fixButton.setContentCompressionResistancePriority(.required, for: .horizontal)
   }
 
   // MARK: - Styles
@@ -107,11 +106,6 @@ final class ManagePledgePaymentMethodView: UIView {
     _ = self.titleLabel
       |> checkoutTitleLabelStyle
       |> \.text %~ { _ in Strings.Payment_method() }
-
-    self.fixButton.applyStyleConfiguration(KSRButtonStyle.filledDestructive)
-
-    _ = self.fixButton
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Fix() }
   }
 
   // MARK: - View model
