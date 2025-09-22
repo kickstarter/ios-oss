@@ -17,6 +17,7 @@ public struct CompleteOnSessionCheckoutInput: InputObject {
     paymentSourceId: GraphQLNullable<String> = nil,
     paymentSourceReusable: GraphQLNullable<Bool> = nil,
     applePay: GraphQLNullable<ApplePayInput> = nil,
+    refParam: GraphQLNullable<String> = nil,
     clientMutationId: GraphQLNullable<String> = nil
   ) {
     __data = InputDict([
@@ -25,6 +26,7 @@ public struct CompleteOnSessionCheckoutInput: InputObject {
       "paymentSourceId": paymentSourceId,
       "paymentSourceReusable": paymentSourceReusable,
       "applePay": applePay,
+      "refParam": refParam,
       "clientMutationId": clientMutationId
     ])
   }
@@ -57,6 +59,11 @@ public struct CompleteOnSessionCheckoutInput: InputObject {
   public var applePay: GraphQLNullable<ApplePayInput> {
     get { __data["applePay"] }
     set { __data["applePay"] = newValue }
+  }
+
+  public var refParam: GraphQLNullable<String> {
+    get { __data["refParam"] }
+    set { __data["refParam"] = newValue }
   }
 
   /// A unique identifier for the client performing the mutation.

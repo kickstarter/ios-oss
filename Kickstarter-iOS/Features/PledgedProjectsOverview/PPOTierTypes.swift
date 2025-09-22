@@ -22,4 +22,22 @@ public enum PPOTierType: String {
       .pledgeManagement
     ]
   }
+
+  public static func projectAlertGraphQLTypes() -> [GraphQLEnum<PledgeProjectsOverviewSort>] {
+    return self.projectAlertTypes().map { $0.toGraphQLEnum() }
+  }
+
+  public func toGraphQLEnum() -> GraphQLEnum<PledgeProjectsOverviewSort> {
+    return GraphQLEnum.case(self.toPledgeProjectsOverviewSort())
+  }
+
+  public func toPledgeProjectsOverviewSort() -> PledgeProjectsOverviewSort {
+    switch self {
+    case .fixPayment: return .tier1PaymentFailed
+    case .confirmAddress: return .tier1AddressLockingSoon
+    case .openSurvey: return .tier1OpenSurvey
+    case .authenticateCard: return .tier1PaymentAuthenticationRequired
+    case .pledgeManagement: return .pledgeManagement
+    }
+  }
 }

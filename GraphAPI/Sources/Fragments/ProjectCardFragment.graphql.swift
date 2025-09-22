@@ -47,7 +47,7 @@ public struct ProjectCardFragment: GraphAPI.SelectionSet, Fragment {
   public var deadlineAt: GraphAPI.DateTime? { __data["deadlineAt"] }
   /// What percent the project has towards meeting its funding goal.
   public var percentFunded: Int { __data["percentFunded"] }
-  /// Whether a project has activated prelaunch.
+  /// Whether a project has activated prelaunch (can return true if project has been launched)
   public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
   /// When the project launched
   public var launchedAt: GraphAPI.DateTime? { __data["launchedAt"] }
@@ -79,7 +79,7 @@ public struct ProjectCardFragment: GraphAPI.SelectionSet, Fragment {
   public var creator: Creator? { __data["creator"] }
   /// The project's currency code.
   public var currency: GraphQLEnum<GraphAPI.CurrencyCode> { __data["currency"] }
-  /// Whether a project has activated prelaunch.
+  /// Whether a project has activated prelaunch (can return true if project has been launched)
   public var isPrelaunchActivated: Bool { __data["isPrelaunchActivated"] }
   /// Tags project has been tagged with
   public var projectTags: [ProjectTag?] { __data["projectTags"] }

@@ -16,4 +16,10 @@ public enum PaymentIncrementState: String, EnumType {
   case chargebackLost = "CHARGEBACK_LOST"
   /// Payment increment has been refunded
   case refunded = "REFUNDED"
+  /// Payment increment amount has been adjusted due to refund and is unattempted
+  case unattemptedAdjusted = "UNATTEMPTED_ADJUSTED"
+  /// Payment increment amount has been adjusted due to refund and is collected
+  case collectedAdjusted = "COLLECTED_ADJUSTED"
+  /// Payment increment amount has been adjusted due to refund and is cancelled
+  case cancelledAdjusted = "CANCELLED_ADJUSTED"
 }

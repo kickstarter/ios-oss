@@ -25,6 +25,7 @@ public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
   /// The payment increment amount represented in various formats
   public var amount: Amount { __data["amount"] }
   public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
+  /// The state of the payment increment
   public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
   public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
   /// The original amount minus the refunded amount formatted in the project native currency

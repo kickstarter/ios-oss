@@ -440,8 +440,11 @@ public protocol ServiceType {
   func confirmBackingAddress(backingId: String, addressId: String) -> AnyPublisher<Bool, ErrorEnvelope>
 
   /// Fetch data for the pledged projects overview.
-  func fetchPledgedProjects(cursor: String?, limit: Int?)
-    -> AnyPublisher<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope>
+  func fetchPledgedProjects(
+    tierTypes: [GraphQLEnum<PledgeProjectsOverviewSort>],
+    cursor: String?,
+    limit: Int?
+  ) -> AnyPublisher<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope>
 }
 
 extension ServiceType {

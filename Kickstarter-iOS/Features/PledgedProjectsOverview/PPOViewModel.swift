@@ -91,6 +91,8 @@ enum PPONavigationEvent: Equatable {
 
 final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutputs {
   init() {
+    let tierTypes = PPOTierType.projectAlertGraphQLTypes()
+
     let paginator: PPOViewModelPaginator = Paginator(
       valuesFromEnvelope: { data -> [PPOProjectCardViewModel] in
         data.pledgeProjectsOverview?.pledges?.edges?
@@ -101,10 +103,18 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       cursorFromEnvelope: { data in data.pledgeProjectsOverview?.pledges?.pageInfo.endCursor },
       totalFromEnvelope: { data in data.pledgeProjectsOverview?.pledges?.totalCount },
       requestFromParams: { () in
-        AppEnvironment.current.apiService.fetchPledgedProjects(cursor: nil, limit: Constants.pageSize)
+        AppEnvironment.current.apiService.fetchPledgedProjects(
+          tierTypes: tierTypes,
+          cursor: nil,
+          limit: Constants.pageSize
+        )
       },
       requestFromCursor: { cursor in
-        AppEnvironment.current.apiService.fetchPledgedProjects(cursor: cursor, limit: Constants.pageSize)
+        AppEnvironment.current.apiService.fetchPledgedProjects(
+          tierTypes: tierTypes,
+          cursor: cursor,
+          limit: Constants.pageSize
+        )
       }
     )
     self.paginator = paginator

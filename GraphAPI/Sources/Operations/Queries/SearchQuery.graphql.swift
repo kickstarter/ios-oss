@@ -183,7 +183,7 @@ public class SearchQuery: GraphQLQuery {
         public var pledged: Pledged { __data["pledged"] }
         /// The project has launched
         public var isLaunched: Bool { __data["isLaunched"] }
-        /// Whether a project has activated prelaunch.
+        /// Whether a project has activated prelaunch (can return true if project has been launched)
         public var projectPrelaunchActivated: Bool { __data["projectPrelaunchActivated"] }
         /// When is the project scheduled to end?
         public var deadlineAt: GraphAPI.DateTime? { __data["deadlineAt"] }
@@ -215,7 +215,7 @@ public class SearchQuery: GraphQLQuery {
         public var isInPostCampaignPledgingPhase: Bool { __data["isInPostCampaignPledgingPhase"] }
         /// What percent the project has towards meeting its funding goal.
         public var percentFunded: Int { __data["percentFunded"] }
-        /// Whether a project has activated prelaunch.
+        /// Whether a project has activated prelaunch (can return true if project has been launched)
         public var isPrelaunchActivated: Bool { __data["isPrelaunchActivated"] }
         /// Tags project has been tagged with
         public var projectTags: [ProjectTag?] { __data["projectTags"] }
@@ -233,7 +233,7 @@ public class SearchQuery: GraphQLQuery {
         public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
         /// Project updates.
         public var posts: Posts { __data["posts"] }
-        /// Whether a project has activated prelaunch.
+        /// Whether a project has activated prelaunch (can return true if project has been launched)
         public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
         /// A URL to the project's page.
         public var url: String { __data["url"] }

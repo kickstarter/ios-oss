@@ -40,7 +40,7 @@ public struct BackerDashboardProjectCellFragment: GraphAPI.SelectionSet, Fragmen
   public var pledged: Pledged { __data["pledged"] }
   /// The project has launched
   public var isLaunched: Bool { __data["isLaunched"] }
-  /// Whether a project has activated prelaunch.
+  /// Whether a project has activated prelaunch (can return true if project has been launched)
   public var projectPrelaunchActivated: Bool { __data["projectPrelaunchActivated"] }
   /// When is the project scheduled to end?
   public var deadlineAt: GraphAPI.DateTime? { __data["deadlineAt"] }

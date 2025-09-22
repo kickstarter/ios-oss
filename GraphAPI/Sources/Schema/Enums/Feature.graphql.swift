@@ -135,7 +135,9 @@ public enum Feature: String, EnumType {
   case includeCanadaItemTaxesInPrice = "include_canada_item_taxes_in_price"
   case allowEditingShippingRates2025 = "allow_editing_shipping_rates_2025"
   case pmBackerPreview2025 = "pm_backer_preview_2025"
+  case pledgeAndOrderCombinedRefundCharge2025 = "pledge_and_order_combined_refund_charge_2025"
   case includeUkVatInItemPrices = "include_uk_vat_in_item_prices"
   case includeEuVatInItemPrices = "include_eu_vat_in_item_prices"
   case pledgeManagerEligibilityQuestionnaire2025 = "pledge_manager_eligibility_questionnaire_2025"
+  case pmOrderEditing2025 = "pm_order_editing_2025"
 }
