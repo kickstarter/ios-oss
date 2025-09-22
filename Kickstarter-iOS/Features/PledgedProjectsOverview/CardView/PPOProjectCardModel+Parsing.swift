@@ -7,17 +7,7 @@ import Library
 private struct PPOParsedAction {
   let primaryAction: PPOProjectCardModel.Action
   let secondaryAction: PPOProjectCardModel.Action?
-  let tierType: PPOProjectCardModel.TierType
-}
-
-// Source of truth for enum values can be found at
-// https://github.com/kickstarter/kickstarter/blob/main/app/models/open_search/pledged_projects_overview.rb
-private enum PPOProjectCardModelConstants {
-  static let paymentFailed = "Tier1PaymentFailed"
-  static let confirmAddress = "Tier1AddressLockingSoon"
-  static let completeSurvey = "Tier1OpenSurvey"
-  static let authenticationRequired = "Tier1PaymentAuthenticationRequired"
-  static let pledgeManagement = "PledgeManagement"
+  let tierType: PPOTierType
 }
 
 extension PPOProjectCardModel {
@@ -63,20 +53,22 @@ extension PPOProjectCardModel {
     let alerts: [PPOProjectCardModel.Alert] = card.flags?
       .compactMap { PPOProjectCardModel.Alert(flag: $0) } ?? []
 
-    let actions: PPOParsedAction?
-    switch card.tierType {
-    case PPOProjectCardModelConstants.paymentFailed:
-      actions = Self.actionsForPaymentFailed()
-    case PPOProjectCardModelConstants.confirmAddress:
-      actions = Self.actionsForConfirmAddress(address: addressWithoutName, addressId: addressId)
-    case PPOProjectCardModelConstants.completeSurvey:
-      actions = Self.actionsForSurvey()
-    case PPOProjectCardModelConstants.authenticationRequired:
-      actions = Self.actionsForAuthentication(clientSecret: backing?.clientSecret)
-    case PPOProjectCardModelConstants.pledgeManagement:
-      actions = Self.actionsForPledgeManagement()
-    default:
+    guard let cardTierType = card.tierType, let tierType = PPOTierType(rawValue: cardTierType)
+    else {
       return nil
+    }
+    let actions: PPOParsedAction?
+    switch tierType {
+    case .fixPayment:
+      actions = Self.actionsForPaymentFailed()
+    case .confirmAddress:
+      actions = Self.actionsForConfirmAddress(address: addressWithoutName, addressId: addressId)
+    case .openSurvey:
+      actions = Self.actionsForSurvey()
+    case .authenticateCard:
+      actions = Self.actionsForAuthentication(clientSecret: backing?.clientSecret)
+    case .pledgeManagement:
+      actions = Self.actionsForPledgeManagement()
     }
 
     let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
