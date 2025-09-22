@@ -13,6 +13,12 @@ public enum PPOTierType: String {
   case authenticateCard = "Tier1PaymentAuthenticationRequired"
   case pledgeManagement = "PledgeManagement"
 
+  case surveySubmitted = "SurveySubmitted"
+  case pledgeCollected = "PledgeCollected"
+  case addressConfirmed = "AddressConfirmed"
+  case awaitingReward = "AwaitingReward"
+  case rewardReceived = "RewardReceived"
+
   public static func projectAlertTypes() -> [PPOTierType] {
     return [
       .fixPayment,
@@ -27,6 +33,20 @@ public enum PPOTierType: String {
     return self.projectAlertTypes().map { $0.toGraphQLEnum() }
   }
 
+  public static func backingsDashV2Types() -> [PPOTierType] {
+    return self.projectAlertTypes() + [
+      .surveySubmitted,
+      .pledgeCollected,
+      .addressConfirmed,
+      .awaitingReward,
+      .rewardReceived
+    ]
+  }
+
+  public static func backingsDashV2GraphQLTypes() -> [GraphQLEnum<PledgeProjectsOverviewSort>] {
+    return self.backingsDashV2Types().map { $0.toGraphQLEnum() }
+  }
+
   public func toGraphQLEnum() -> GraphQLEnum<PledgeProjectsOverviewSort> {
     return GraphQLEnum.case(self.toPledgeProjectsOverviewSort())
   }
@@ -38,6 +58,12 @@ public enum PPOTierType: String {
     case .openSurvey: return .tier1OpenSurvey
     case .authenticateCard: return .tier1PaymentAuthenticationRequired
     case .pledgeManagement: return .pledgeManagement
+
+    case .surveySubmitted: return .surveySubmitted
+    case .pledgeCollected: return .pledgeCollected
+    case .addressConfirmed: return .addressConfirmed
+    case .awaitingReward: return .awaitingReward
+    case .rewardReceived: return .rewardReceived
     }
   }
 }

@@ -91,7 +91,9 @@ enum PPONavigationEvent: Equatable {
 
 final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutputs {
   init() {
-    let tierTypes = PPOTierType.projectAlertGraphQLTypes()
+    let tierTypes = featurePledgedProjectsOverviewV2Enabled()
+      ? PPOTierType.backingsDashV2GraphQLTypes()
+      : PPOTierType.projectAlertGraphQLTypes()
 
     let paginator: PPOViewModelPaginator = Paginator(
       valuesFromEnvelope: { data -> [PPOProjectCardViewModel] in
@@ -413,6 +415,9 @@ extension Sequence where Element == PPOProjectCardViewModel {
         addressLocksSoonCount += 1
       case .pledgeManagement:
         pledgeManagementCount += 1
+      case .surveySubmitted, .pledgeCollected, .addressConfirmed, .awaitingReward, .rewardReceived:
+        // TODO(MBL-2818): Add analytics for PPO v2.
+        break
       }
     }
 
