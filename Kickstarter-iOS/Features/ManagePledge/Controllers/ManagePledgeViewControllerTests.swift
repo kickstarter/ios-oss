@@ -351,6 +351,77 @@ final class ManagePledgeViewControllerTests: TestCase {
         controller.tableView.layoutIfNeeded()
         controller.tableView.reloadData()
 
+        // Scroll down to top of table view to ensure the fix payment button is on screen.
+        controller.tableView.selectRow(
+          at: IndexPath(item: 0, section: 0),
+          animated: false,
+          scrollPosition: .bottom
+        )
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
+  // Generally, when a backing is attempted, we expect to know what the payment method was.
+  // If they somehow have an errored pledge and a missing payment method, we should still show
+  // the fix pledge button, to give them a chance to fix their pledge.
+  func testView_ErroredBacking_noPaymentMethod() {
+    let user = User.template
+      |> User.lens.id .~ 1
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.remaining .~ 49
+      |> Reward.lens.localPickup .~ nil
+
+    let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
+
+    let backing = Backing.template
+      |> Backing.lens.addOns .~ addOns
+      |> Backing.lens.amount .~ 22
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.rewardId .~ reward.id
+      |> Backing.lens.paymentSource .~ nil
+      |> Backing.lens.status .~ .errored
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ backing
+
+    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([reward])
+    )
+
+    orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(apiService: mockService, currentUser: user, language: language) {
+        let controller = ManagePledgeViewController.instantiate()
+        controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+        // Network request completes
+        self.scheduler.advance()
+
+        // endRefreshing is delayed by 300ms for animation duration
+        self.scheduler.advance(by: .milliseconds(300))
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
+
+        // Scroll down to top of table view to ensure the fix payment button is on screen.
+        controller.tableView.selectRow(
+          at: IndexPath(item: 0, section: 0),
+          animated: false,
+          scrollPosition: .bottom
+        )
+
         assertSnapshot(
           matching: parent.view,
           as: .image(perceptualPrecision: 0.98),

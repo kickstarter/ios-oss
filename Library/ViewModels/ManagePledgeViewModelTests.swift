@@ -130,12 +130,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
-      backingState: .pledged,
+      showFixPaymentButton: false,
       expirationDate: "2019-09-30",
       lastFour: "1111",
       creditCardType: .visa,
-      paymentType: .creditCard,
-      isPledgeOverTime: false
+      paymentType: .creditCard
     )
 
     withEnvironment(apiService: mockService) {
@@ -147,7 +146,152 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.configurePaymentMethodView.assertValues([pledgePaymentMethodViewData])
+      self.configurePaymentMethodView.assertLastValue(pledgePaymentMethodViewData)
+    }
+  }
+
+  func testConfigurePaymentMethodViewController_showFixPayment() {
+    self.configurePaymentMethodView.assertDidNotEmitValue()
+
+    let project = Project.template
+    let backing = Backing.template
+      |> Backing.lens.status .~ .errored
+    let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectAndBacking),
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([.template])
+    )
+
+    let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
+      showFixPaymentButton: true,
+      expirationDate: "2019-09-30",
+      lastFour: "1111",
+      creditCardType: .visa,
+      paymentType: .creditCard
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodView.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.configurePaymentMethodView.assertLastValue(pledgePaymentMethodViewData)
+    }
+  }
+
+  func testConfigurePaymentMethodViewController_showFixPayment_noPaymentMethod() {
+    self.configurePaymentMethodView.assertDidNotEmitValue()
+
+    let project = Project.template
+    let backing = Backing.template
+      |> Backing.lens.paymentSource .~ nil
+      |> Backing.lens.status .~ .errored
+    let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectAndBacking),
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([.template])
+    )
+
+    let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
+      showFixPaymentButton: true,
+      expirationDate: nil,
+      lastFour: nil,
+      creditCardType: nil,
+      paymentType: nil
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodView.assertDidNotEmitValue()
+      self.paymentMethodViewHidden.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.configurePaymentMethodView.assertLastValue(pledgePaymentMethodViewData)
+      self.paymentMethodViewHidden.assertLastValue(false)
+    }
+  }
+
+  func testConfigurePaymentMethodViewController_PlotError() {
+    self.configurePaymentMethodView.assertDidNotEmitValue()
+
+    let project = Project.template
+    let backing = Backing.templatePlot
+      |> Backing.lens.status .~ .errored
+    let envelope = ProjectAndBackingEnvelope(project: project, backing: backing)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(envelope),
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([.template])
+    )
+
+    let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
+      // Don't show fix payment button for PLOT payments. PLOT errors are handled separately.
+      showFixPaymentButton: false,
+      expirationDate: "2019-09-30",
+      lastFour: "1111",
+      creditCardType: .visa,
+      paymentType: .creditCard
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodView.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.configurePaymentMethodView.assertLastValue(pledgePaymentMethodViewData)
+    }
+  }
+
+  func testConfigurePaymentMethodViewController_plotAuthenticationRequired() {
+    self.configurePaymentMethodView.assertDidNotEmitValue()
+
+    let project = Project.template
+    let backing = Backing.templatePlot
+      |> Backing.lens.status .~ .authenticationRequired
+    let envelope = ProjectAndBackingEnvelope(project: project, backing: backing)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(envelope),
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([.template])
+    )
+
+    let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
+      // Don't show fix payment button for PLOT payments. PLOT issues are handled separately.
+      showFixPaymentButton: false,
+      expirationDate: "2019-09-30",
+      lastFour: "1111",
+      creditCardType: .visa,
+      paymentType: .creditCard
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodView.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.configurePaymentMethodView.assertLastValue(pledgePaymentMethodViewData)
     }
   }
 
@@ -862,12 +1006,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
-      backingState: .pledged,
+      showFixPaymentButton: false,
       expirationDate: "2019-09-30",
       lastFour: "1111",
       creditCardType: .visa,
-      paymentType: .creditCard,
-      isPledgeOverTime: false
+      paymentType: .creditCard
     )
 
     let initialBackingEnvelope = envelope
@@ -1460,7 +1603,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.paymentMethodViewHidden.assertValues([true])
+      self.paymentMethodViewHidden.assertLastValue(true)
     }
   }
 
@@ -1486,7 +1629,31 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.paymentMethodViewHidden.assertValues([false])
+      self.paymentMethodViewHidden.assertLastValue(false)
+    }
+  }
+
+  func testPaymentMethodViewHidden_NoPaymentMethod() {
+    self.paymentMethodViewHidden.assertDidNotEmitValue()
+
+    let project = Project.cosmicSurgery
+    let backing = Backing.template
+      |> Backing.lens.paymentSource .~ nil
+    let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectAndBacking),
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([.template])
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.paymentMethodViewHidden.assertLastValue(true)
     }
   }
 
