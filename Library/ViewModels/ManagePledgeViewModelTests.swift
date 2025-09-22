@@ -146,7 +146,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.configurePaymentMethodView.assertValues([pledgePaymentMethodViewData])
+      self.configurePaymentMethodView.assertLastValue(pledgePaymentMethodViewData)
     }
   }
 
@@ -181,7 +181,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.configurePaymentMethodView.assertValues([pledgePaymentMethodViewData])
+      self.configurePaymentMethodView.assertLastValue(pledgePaymentMethodViewData)
     }
   }
 
@@ -218,7 +218,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.configurePaymentMethodView.assertValues([pledgePaymentMethodViewData])
+      self.configurePaymentMethodView.assertLastValue(pledgePaymentMethodViewData)
       self.paymentMethodViewHidden.assertLastValue(false)
     }
   }
@@ -238,6 +238,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
+      // Don't show fix payment button for PLOT payments. PLOT errors are handled separately.
       showFixPaymentButton: false,
       expirationDate: "2019-09-30",
       lastFour: "1111",
@@ -254,7 +255,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.configurePaymentMethodView.assertValues([pledgePaymentMethodViewData])
+      self.configurePaymentMethodView.assertLastValue(pledgePaymentMethodViewData)
     }
   }
 
@@ -273,6 +274,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
+      // Don't show fix payment button for PLOT payments. PLOT issues are handled separately.
       showFixPaymentButton: false,
       expirationDate: "2019-09-30",
       lastFour: "1111",
@@ -289,7 +291,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.configurePaymentMethodView.assertValues([pledgePaymentMethodViewData])
+      self.configurePaymentMethodView.assertLastValue(pledgePaymentMethodViewData)
     }
   }
 
@@ -1601,7 +1603,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.paymentMethodViewHidden.assertValues([true])
+      self.paymentMethodViewHidden.assertLastValue(true)
     }
   }
 
@@ -1627,7 +1629,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.paymentMethodViewHidden.assertValues([false])
+      self.paymentMethodViewHidden.assertLastValue(false)
     }
   }
 
@@ -1651,7 +1653,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.paymentMethodViewHidden.assertValues([true])
+      self.paymentMethodViewHidden.assertLastValue(true)
     }
   }
 
