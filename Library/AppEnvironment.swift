@@ -335,6 +335,14 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
+  private static func logKeychainError(_ error: KeychainError) {
+    Crashlytics.crashlytics().record(error: error.nsError)
+  }
+
+  private static func logUnknownError(_ error: Error) {
+    Crashlytics.crashlytics().record(error: error)
+  }
+
   internal static let accountNameForKeychain = "kickstarter_currently_logged_in_user"
 
   private static func storeOAuthTokenToKeychain(_ oauthToken: String) -> Bool {
@@ -346,8 +354,10 @@ public struct AppEnvironment: AppEnvironmentType {
     do {
       try Keychain.storePassword(oauthToken, forAccount: self.accountNameForKeychain)
       return true
+    } catch let error as KeychainError {
+      logKeychainError(error)
     } catch {
-      Crashlytics.crashlytics().record(error: error)
+      self.logUnknownError(error)
     }
 
     return false
@@ -361,8 +371,10 @@ public struct AppEnvironment: AppEnvironmentType {
 
     do {
       return try Keychain.fetchPassword(forAccount: self.accountNameForKeychain)
+    } catch let error as KeychainError {
+      logKeychainError(error)
     } catch {
-      Crashlytics.crashlytics().record(error: error)
+      self.logUnknownError(error)
     }
 
     return nil
@@ -374,8 +386,10 @@ public struct AppEnvironment: AppEnvironmentType {
     do {
       try Keychain.deletePassword(forAccount: self.accountNameForKeychain)
       return true
+    } catch let error as KeychainError {
+      logKeychainError(error)
     } catch {
-      Crashlytics.crashlytics().record(error: error)
+      self.logUnknownError(error)
     }
 
     return false
