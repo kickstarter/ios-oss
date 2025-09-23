@@ -994,7 +994,7 @@ public struct Service: ServiceType {
   }
 
   public func fetchPledgedProjects(
-    tierTypes: [GraphQLEnum<PledgeProjectsOverviewSort>],
+    tierTypes: [PledgeProjectsOverviewSort],
     cursor: String? = nil,
     limit: Int? = nil
   ) -> AnyPublisher<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope> {
@@ -1002,7 +1002,7 @@ public struct Service: ServiceType {
       .fetch(query: GraphAPI.FetchPledgedProjectsQuery(
         first: GraphQLNullable.someOrNil(limit),
         after: GraphQLNullable.someOrNil(cursor),
-        tierTypes: GraphQLNullable.some(tierTypes)
+        tierTypes: GraphQLNullable.some(tierTypes.map { GraphQLEnum($0) })
       ))
       .eraseToAnyPublisher()
   }

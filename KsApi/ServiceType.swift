@@ -441,7 +441,7 @@ public protocol ServiceType {
 
   /// Fetch data for the pledged projects overview.
   func fetchPledgedProjects(
-    tierTypes: [GraphQLEnum<PledgeProjectsOverviewSort>],
+    tierTypes: [PledgeProjectsOverviewSort],
     cursor: String?,
     limit: Int?
   ) -> AnyPublisher<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope>

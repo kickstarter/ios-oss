@@ -29,8 +29,8 @@ public enum PPOTierType: String {
     ]
   }
 
-  public static func projectAlertGraphQLTypes() -> [GraphQLEnum<PledgeProjectsOverviewSort>] {
-    return self.projectAlertTypes().map { $0.toGraphQLEnum() }
+  public static func projectAlertGraphQLTypes() -> [PledgeProjectsOverviewSort] {
+    return self.projectAlertTypes().map { $0.toPledgeProjectsOverviewSort() }
   }
 
   public static func fundedProjectTypes() -> [PPOTierType] {
@@ -43,12 +43,8 @@ public enum PPOTierType: String {
     ]
   }
 
-  public static func fundedProjectGraphQLTypes() -> [GraphQLEnum<PledgeProjectsOverviewSort>] {
-    return self.fundedProjectTypes().map { $0.toGraphQLEnum() }
-  }
-
-  public func toGraphQLEnum() -> GraphQLEnum<PledgeProjectsOverviewSort> {
-    return GraphQLEnum.case(self.toPledgeProjectsOverviewSort())
+  public static func fundedProjectGraphQLTypes() -> [PledgeProjectsOverviewSort] {
+    return self.fundedProjectTypes().map { $0.toPledgeProjectsOverviewSort() }
   }
 
   public func toPledgeProjectsOverviewSort() -> PledgeProjectsOverviewSort {
