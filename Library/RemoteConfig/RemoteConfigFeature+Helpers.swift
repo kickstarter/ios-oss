@@ -46,7 +46,3 @@ public func featureSimilarProjectsCarouselEnabled() -> Bool {
 public func featureSecretRewardsEnabled() -> Bool {
   featureEnabled(feature: .secretRewards)
 }
-
-public func featureNetNewBackersGoToPMEnabled() -> Bool {
-  featureEnabled(feature: .netNewBackersGoToPM)
-}
