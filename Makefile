@@ -7,7 +7,7 @@ PLATFORM ?= iOS
 RELEASE ?= itunes
 # Keep simulator in sync with `Library/TestHelpers/TestCase.swift` and `.circleci/config.yml`
 IOS_VERSION ?= 26.0 
-IPHONE_NAME ?= iPhone SE (3rd generation)
+IPHONE_NAME ?= iPhone 16e
 BRANCH ?= main
 DIST_BRANCH = $(RELEASE)-dist
 COMMIT ?= $(CIRCLE_SHA1)

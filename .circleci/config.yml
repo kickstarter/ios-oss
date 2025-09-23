@@ -11,7 +11,7 @@ aws_cli_setup: &aws_cli_setup
 # Keep xcode version in sync with `.fastlane/Fastfile`
 # circle-ci xcode versions supported: https://circleci.com/docs/testing-ios/
 xcode_version: &xcode_version 26.0.0
-iphone_name: &iphone_name iPhone SE (3rd generation)
+iphone_name: &iphone_name iPhone 16e
 
 # Works around an issue in xcodebuild where it requires GitHub to have been added to the known_hosts in order for it to clone dependencies.
 spm_ssh_workaround: &spm_ssh_workaround for ip in $(dig @1.1.1.1 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
