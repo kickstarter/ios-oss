@@ -55,7 +55,7 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
   public var stateChangedAt: GraphAPI.DateTime { __data["stateChangedAt"] }
   /// The project's primary image.
   public var image: Image? { __data["image"] }
-  /// Whether a project has activated prelaunch.
+  /// Whether a project has activated prelaunch (can return true if project has been launched)
   public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
   /// The current user's backing of this project.  Does not include inactive backings.
   public var backing: Backing? { __data["backing"] }

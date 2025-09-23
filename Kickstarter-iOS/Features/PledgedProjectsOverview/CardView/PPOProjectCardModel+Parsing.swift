@@ -7,17 +7,7 @@ import Library
 private struct PPOParsedAction {
   let primaryAction: PPOProjectCardModel.Action
   let secondaryAction: PPOProjectCardModel.Action?
-  let tierType: PPOProjectCardModel.TierType
-}
-
-// Source of truth for enum values can be found at
-// https://github.com/kickstarter/kickstarter/blob/main/app/models/open_search/pledged_projects_overview.rb
-private enum PPOProjectCardModelConstants {
-  static let paymentFailed = "Tier1PaymentFailed"
-  static let confirmAddress = "Tier1AddressLockingSoon"
-  static let completeSurvey = "Tier1OpenSurvey"
-  static let authenticationRequired = "Tier1PaymentAuthenticationRequired"
-  static let pledgeManagement = "PledgeManagement"
+  let tierType: PPOTierType
 }
 
 extension PPOProjectCardModel {
@@ -63,19 +53,24 @@ extension PPOProjectCardModel {
     let alerts: [PPOProjectCardModel.Alert] = card.flags?
       .compactMap { PPOProjectCardModel.Alert(flag: $0) } ?? []
 
+    guard let cardTierType = card.tierType, let tierType = PPOTierType(rawValue: cardTierType)
+    else {
+      return nil
+    }
     let actions: PPOParsedAction?
-    switch card.tierType {
-    case PPOProjectCardModelConstants.paymentFailed:
+    switch tierType {
+    case .fixPayment:
       actions = Self.actionsForPaymentFailed()
-    case PPOProjectCardModelConstants.confirmAddress:
+    case .confirmAddress:
       actions = Self.actionsForConfirmAddress(address: addressWithoutName, addressId: addressId)
-    case PPOProjectCardModelConstants.completeSurvey:
+    case .openSurvey:
       actions = Self.actionsForSurvey()
-    case PPOProjectCardModelConstants.authenticationRequired:
+    case .authenticateCard:
       actions = Self.actionsForAuthentication(clientSecret: backing?.clientSecret)
-    case PPOProjectCardModelConstants.pledgeManagement:
+    case .pledgeManagement:
       actions = Self.actionsForPledgeManagement()
-    default:
+    case .surveySubmitted, .pledgeCollected, .addressConfirmed, .awaitingReward, .rewardReceived:
+      // TODO(MBL-2094): Handle new cards.
       return nil
     }
 

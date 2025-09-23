@@ -160,7 +160,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
       public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
       /// Project updates.
       public var posts: Posts { __data["posts"] }
-      /// Whether a project has activated prelaunch.
+      /// Whether a project has activated prelaunch (can return true if project has been launched)
       public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
       /// The text of the currently applied project notice, empty if there is no notice
       public var projectNotice: String? { __data["projectNotice"] }

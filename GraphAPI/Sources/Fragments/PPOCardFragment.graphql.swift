@@ -193,7 +193,7 @@ public struct PPOCardFragment: GraphAPI.SelectionSet, Fragment {
       public var isWatched: Bool { __data["isWatched"] }
       /// What percent the project has towards meeting its funding goal.
       public var percentFunded: Int { __data["percentFunded"] }
-      /// Whether a project has activated prelaunch.
+      /// Whether a project has activated prelaunch (can return true if project has been launched)
       public var isPrelaunchActivated: Bool { __data["isPrelaunchActivated"] }
       /// Tags project has been tagged with
       public var projectTags: [ProjectTag?] { __data["projectTags"] }

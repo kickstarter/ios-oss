@@ -1,5 +1,5 @@
-query FetchPledgedProjects($first: Int = null, $after: String = null) {
-  pledgeProjectsOverview {
+query FetchPledgedProjects($first: Int = null, $after: String = null, $tierTypes: [PledgeProjectsOverviewSort!]) {
+  pledgeProjectsOverview(tierTypes: $tierTypes) {
     pledges(first: $first, after: $after) {
       totalCount
       edges {
@@ -17,5 +17,3 @@ query FetchPledgedProjects($first: Int = null, $after: String = null) {
     }
   }
 }
-
-

@@ -14,7 +14,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public let creatorName: String
   public let address: String?
   public let actions: (Action, Action?)
-  public let tierType: TierType
+  public let tierType: PPOTierType
   public let backingDetailsUrl: String
   public let backingId: Int
   public let backingGraphId: String
@@ -56,14 +56,6 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
       lhs.creatorName == rhs.creatorName &&
       lhs.address == rhs.address &&
       lhs.actions == rhs.actions
-  }
-
-  public enum TierType: Equatable {
-    case fixPayment
-    case authenticateCard
-    case openSurvey
-    case confirmAddress
-    case pledgeManagement
   }
 
   public enum Action: Identifiable, Equatable, Hashable {

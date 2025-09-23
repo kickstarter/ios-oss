@@ -755,6 +755,7 @@ public class FetchBackingQuery: GraphQLQuery {
         /// The payment increment amount represented in various formats
         public var amount: Amount { __data["amount"] }
         public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
+        /// The state of the payment increment
         public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
         public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
 
@@ -1316,7 +1317,7 @@ public class FetchBackingQuery: GraphQLQuery {
         public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
         /// Project updates.
         public var posts: Posts { __data["posts"] }
-        /// Whether a project has activated prelaunch.
+        /// Whether a project has activated prelaunch (can return true if project has been launched)
         public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
         /// The text of the currently applied project notice, empty if there is no notice
         public var projectNotice: String? { __data["projectNotice"] }

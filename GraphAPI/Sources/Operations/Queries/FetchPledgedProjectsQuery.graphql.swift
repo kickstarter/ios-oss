@@ -7,24 +7,28 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
   public static let operationName: String = "FetchPledgedProjects"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchPledgedProjects($first: Int = null, $after: String = null) { pledgeProjectsOverview { __typename pledges(first: $first, after: $after) { __typename totalCount edges { __typename cursor node { __typename ...PPOCardFragment } } pageInfo { __typename hasNextPage endCursor hasPreviousPage startCursor } } } }"#,
+      #"query FetchPledgedProjects($first: Int = null, $after: String = null, $tierTypes: [PledgeProjectsOverviewSort!]) { pledgeProjectsOverview(tierTypes: $tierTypes) { __typename pledges(first: $first, after: $after) { __typename totalCount edges { __typename cursor node { __typename ...PPOCardFragment } } pageInfo { __typename hasNextPage endCursor hasPreviousPage startCursor } } } }"#,
       fragments: [MoneyFragment.self, PPOBackingFragment.self, PPOCardFragment.self, PPOProjectFragment.self, ProjectAnalyticsFragment.self]
     ))
 
   public var first: GraphQLNullable<Int>
   public var after: GraphQLNullable<String>
+  public var tierTypes: GraphQLNullable<[GraphQLEnum<PledgeProjectsOverviewSort>]>
 
   public init(
     first: GraphQLNullable<Int> = .null,
-    after: GraphQLNullable<String> = .null
+    after: GraphQLNullable<String> = .null,
+    tierTypes: GraphQLNullable<[GraphQLEnum<PledgeProjectsOverviewSort>]>
   ) {
     self.first = first
     self.after = after
+    self.tierTypes = tierTypes
   }
 
   public var __variables: Variables? { [
     "first": first,
-    "after": after
+    "after": after,
+    "tierTypes": tierTypes
   ] }
 
   public struct Data: GraphAPI.SelectionSet {
@@ -33,7 +37,7 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
 
     public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Query }
     public static var __selections: [ApolloAPI.Selection] { [
-      .field("pledgeProjectsOverview", PledgeProjectsOverview?.self),
+      .field("pledgeProjectsOverview", PledgeProjectsOverview?.self, arguments: ["tierTypes": .variable("tierTypes")]),
     ] }
 
     /// Provides an overview of pledge projects
@@ -351,7 +355,7 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                 public var isWatched: Bool { __data["isWatched"] }
                 /// What percent the project has towards meeting its funding goal.
                 public var percentFunded: Int { __data["percentFunded"] }
-                /// Whether a project has activated prelaunch.
+                /// Whether a project has activated prelaunch (can return true if project has been launched)
                 public var isPrelaunchActivated: Bool { __data["isPrelaunchActivated"] }
                 /// Tags project has been tagged with
                 public var projectTags: [ProjectTag?] { __data["projectTags"] }

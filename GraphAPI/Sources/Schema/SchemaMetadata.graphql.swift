@@ -25,40 +25,40 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "Mutation": return GraphAPI.Objects.Mutation
     case "UpdateBackingPayload": return GraphAPI.Objects.UpdateBackingPayload
     case "Checkout": return GraphAPI.Objects.Checkout
-    case "SavedSearchSegment": return GraphAPI.Objects.SavedSearchSegment
-    case "Backing": return GraphAPI.Objects.Backing
-    case "Reward": return GraphAPI.Objects.Reward
-    case "Photo": return GraphAPI.Objects.Photo
-    case "RewardItem": return GraphAPI.Objects.RewardItem
+    case "User": return GraphAPI.Objects.User
+    case "UserUrl": return GraphAPI.Objects.UserUrl
+    case "Location": return GraphAPI.Objects.Location
     case "Project": return GraphAPI.Objects.Project
     case "CreatorInterview": return GraphAPI.Objects.CreatorInterview
     case "FreeformPost": return GraphAPI.Objects.FreeformPost
     case "Comment": return GraphAPI.Objects.Comment
-    case "User": return GraphAPI.Objects.User
+    case "Backing": return GraphAPI.Objects.Backing
     case "Address": return GraphAPI.Objects.Address
+    case "RewardItem": return GraphAPI.Objects.RewardItem
+    case "Reward": return GraphAPI.Objects.Reward
+    case "Photo": return GraphAPI.Objects.Photo
+    case "ShippingRule": return GraphAPI.Objects.ShippingRule
     case "Conversation": return GraphAPI.Objects.Conversation
     case "Message": return GraphAPI.Objects.Message
-    case "CuratedPage": return GraphAPI.Objects.CuratedPage
-    case "Location": return GraphAPI.Objects.Location
-    case "Organization": return GraphAPI.Objects.Organization
-    case "UserUrl": return GraphAPI.Objects.UserUrl
-    case "Category": return GraphAPI.Objects.Category
+    case "Order": return GraphAPI.Objects.Order
+    case "AdjustmentSummary": return GraphAPI.Objects.AdjustmentSummary
+    case "Refund": return GraphAPI.Objects.Refund
+    case "AttachedAudio": return GraphAPI.Objects.AttachedAudio
+    case "AttachedVideo": return GraphAPI.Objects.AttachedVideo
     case "AiDisclosure": return GraphAPI.Objects.AiDisclosure
-    case "Flagging": return GraphAPI.Objects.Flagging
+    case "Category": return GraphAPI.Objects.Category
+    case "ProjectProfile": return GraphAPI.Objects.ProjectProfile
+    case "Tag": return GraphAPI.Objects.Tag
     case "Video": return GraphAPI.Objects.Video
     case "VideoTrack": return GraphAPI.Objects.VideoTrack
     case "VideoTrackCue": return GraphAPI.Objects.VideoTrackCue
-    case "Order": return GraphAPI.Objects.Order
-    case "AttachedAudio": return GraphAPI.Objects.AttachedAudio
-    case "AttachedVideo": return GraphAPI.Objects.AttachedVideo
-    case "ProjectProfile": return GraphAPI.Objects.ProjectProfile
-    case "Tag": return GraphAPI.Objects.Tag
-    case "InterviewAnswer": return GraphAPI.Objects.InterviewAnswer
-    case "InterviewQuestion": return GraphAPI.Objects.InterviewQuestion
+    case "Flagging": return GraphAPI.Objects.Flagging
     case "CreatorPrompt": return GraphAPI.Objects.CreatorPrompt
-    case "ShippingRule": return GraphAPI.Objects.ShippingRule
-    case "AdjustmentSummary": return GraphAPI.Objects.AdjustmentSummary
-    case "Refund": return GraphAPI.Objects.Refund
+    case "InterviewQuestion": return GraphAPI.Objects.InterviewQuestion
+    case "InterviewAnswer": return GraphAPI.Objects.InterviewAnswer
+    case "Organization": return GraphAPI.Objects.Organization
+    case "CuratedPage": return GraphAPI.Objects.CuratedPage
+    case "SavedSearchSegment": return GraphAPI.Objects.SavedSearchSegment
     case "Survey": return GraphAPI.Objects.Survey
     case "PostCommentPayload": return GraphAPI.Objects.PostCommentPayload
     case "CommentConnection": return GraphAPI.Objects.CommentConnection

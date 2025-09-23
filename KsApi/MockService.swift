@@ -1925,6 +1925,7 @@
     }
 
     func fetchPledgedProjects(
+      tierTypes _: [PledgeProjectsOverviewSort],
       cursor _: String?,
       limit _: Int?
     ) -> AnyPublisher<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope> {
