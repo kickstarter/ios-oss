@@ -119,42 +119,26 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
   }
 
   func testPledgeCTA_NetNewBackerGoToPM() {
-    let mockConfigClient = MockRemoteConfigClient()
+    let project = Project.netNewBacker
 
-    mockConfigClient.features = [
-      RemoteConfigFeature.netNewBackersGoToPM.rawValue: true
-    ]
-
-    withEnvironment(remoteConfigClient: mockConfigClient) {
-      let project = Project.netNewBacker
-
-      self.vm.inputs.configureWith(value: (.left((project, nil)), false))
-      self.buttonStyleType.assertValues([ButtonStyleType.black])
-      self.buttonTitleText.assertValues([Strings.Go_to_pledge_manager()])
-      self.spacerIsHidden.assertValues([true])
-      self.stackViewIsHidden.assertValues([true])
-    }
+    self.vm.inputs.configureWith(value: (.left((project, nil)), false))
+    self.buttonStyleType.assertValues([ButtonStyleType.black])
+    self.buttonTitleText.assertValues([Strings.Go_to_pledge_manager()])
+    self.spacerIsHidden.assertValues([true])
+    self.stackViewIsHidden.assertValues([true])
   }
 
   func testPledgeCTA_ExistingBackerGoToPM() {
-    let mockConfigClient = MockRemoteConfigClient()
+    let project = Project.netNewBacker
+      |> Project.lens.personalization.backing .~ Backing.template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.pledgeManager .~ nil
 
-    mockConfigClient.features = [
-      RemoteConfigFeature.netNewBackersGoToPM.rawValue: true
-    ]
-
-    withEnvironment(remoteConfigClient: mockConfigClient) {
-      let project = Project.netNewBacker
-        |> Project.lens.personalization.backing .~ Backing.template
-        |> Project.lens.personalization.isBacking .~ true
-        |> Project.lens.pledgeManager .~ nil
-
-      self.vm.inputs.configureWith(value: (.left((project, nil)), false))
-      self.buttonStyleType.assertValues([ButtonStyleType.black])
-      self.buttonTitleText.assertValues([Strings.Go_to_pledge_manager()])
-      self.spacerIsHidden.assertValues([true])
-      self.stackViewIsHidden.assertValues([true])
-    }
+    self.vm.inputs.configureWith(value: (.left((project, nil)), false))
+    self.buttonStyleType.assertValues([ButtonStyleType.black])
+    self.buttonTitleText.assertValues([Strings.Go_to_pledge_manager()])
+    self.spacerIsHidden.assertValues([true])
+    self.stackViewIsHidden.assertValues([true])
   }
 
   func testPledgeCTA_dummyPledgeGoToPM() {

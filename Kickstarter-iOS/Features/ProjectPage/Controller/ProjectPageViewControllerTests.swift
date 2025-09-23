@@ -963,11 +963,6 @@ internal final class ProjectPageViewControllerTests: TestCase {
   }
 
   func testNetNewBacker_GoToPledgeManager() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.netNewBackersGoToPM.rawValue: true
-    ]
-
     let config = Config.template
     let project = Project.netNewBacker
 
@@ -981,8 +976,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     orthogonalCombos([Language.en], [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
-        config: config, currentUser: nil, language: language,
-        remoteConfigClient: mockConfigClient
+        config: config, currentUser: nil, language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
           projectOrParam: .left(project), refInfo: nil

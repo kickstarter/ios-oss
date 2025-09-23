@@ -240,12 +240,7 @@ internal final class MessagesViewModelTests: TestCase {
 
     let backingDetailsPageURL = backing.backingDetailsPageRoute
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.netNewBackersWebView.rawValue: true
-    ]
-
-    withEnvironment(apiService: apiService, currentUser: currentUser, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: apiService, currentUser: currentUser) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
 
       self.vm.inputs.viewDidLoad()

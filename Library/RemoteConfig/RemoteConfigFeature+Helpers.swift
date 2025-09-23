@@ -35,10 +35,6 @@ public func featurePledgeOverTimeEnabled() -> Bool {
   featureEnabled(feature: .pledgeOverTime)
 }
 
-public func featureNetNewBackersWebViewEnabled() -> Bool {
-  featureEnabled(feature: .netNewBackersWebView)
-}
-
 public func featureRewardShipmentTrackingEnabled() -> Bool {
   featureEnabled(feature: .rewardShipmentTracking)
 }
@@ -49,8 +45,4 @@ public func featureSimilarProjectsCarouselEnabled() -> Bool {
 
 public func featureSecretRewardsEnabled() -> Bool {
   featureEnabled(feature: .secretRewards)
-}
-
-public func featureNetNewBackersGoToPMEnabled() -> Bool {
-  featureEnabled(feature: .netNewBackersGoToPM)
 }
