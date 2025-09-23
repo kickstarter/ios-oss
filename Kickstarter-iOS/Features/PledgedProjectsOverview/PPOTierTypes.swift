@@ -33,7 +33,7 @@ public enum PPOTierType: String {
     return self.projectAlertTypes().map { $0.toGraphQLEnum() }
   }
 
-  public static func backingsDashV2Types() -> [PPOTierType] {
+  public static func fundedProjectTypes() -> [PPOTierType] {
     return self.projectAlertTypes() + [
       .surveySubmitted,
       .pledgeCollected,
@@ -43,8 +43,8 @@ public enum PPOTierType: String {
     ]
   }
 
-  public static func backingsDashV2GraphQLTypes() -> [GraphQLEnum<PledgeProjectsOverviewSort>] {
-    return self.backingsDashV2Types().map { $0.toGraphQLEnum() }
+  public static func fundedProjectGraphQLTypes() -> [GraphQLEnum<PledgeProjectsOverviewSort>] {
+    return self.fundedProjectTypes().map { $0.toGraphQLEnum() }
   }
 
   public func toGraphQLEnum() -> GraphQLEnum<PledgeProjectsOverviewSort> {

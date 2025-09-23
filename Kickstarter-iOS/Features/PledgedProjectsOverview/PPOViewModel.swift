@@ -92,7 +92,7 @@ enum PPONavigationEvent: Equatable {
 final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutputs {
   init() {
     let tierTypes = featurePledgedProjectsOverviewV2Enabled()
-      ? PPOTierType.backingsDashV2GraphQLTypes()
+      ? PPOTierType.fundedProjectGraphQLTypes()
       : PPOTierType.projectAlertGraphQLTypes()
 
     let paginator: PPOViewModelPaginator = Paginator(
