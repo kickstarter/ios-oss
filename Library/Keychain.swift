@@ -5,7 +5,7 @@ public enum KeychainError: Error {
   case unexpectedStatus(OSStatus)
   case unableToDecodePasswordData
 
-  public var errorMessage: String {
+  private var errorMessage: String {
     switch self {
     case let .unexpectedStatus(status):
       let errString = SecCopyErrorMessageString(status, nil) as String?
@@ -13,6 +13,25 @@ public enum KeychainError: Error {
     case .unableToDecodePasswordData:
       return "Unable to decode password data from keychain."
     }
+  }
+
+  private var errorCode: Int {
+    switch self {
+    case let .unexpectedStatus(status):
+      return Int(status)
+    case .unableToDecodePasswordData:
+      return -999
+    }
+  }
+
+  public var nsError: NSError {
+    return NSError(
+      domain: "Library.KeychainError",
+      code: self.errorCode,
+      userInfo: [
+        NSLocalizedDescriptionKey: self.errorMessage
+      ]
+    )
   }
 }
 
