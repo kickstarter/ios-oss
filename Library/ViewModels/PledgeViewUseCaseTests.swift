@@ -26,104 +26,40 @@ final class PledgeViewUseCaseTests: TestCase {
     self.useCase.outputs.goToPledgeManagementPledgeView.observe(self.goToPledgeManagementPledgeView.observer)
   }
 
-  func test_goToPledgeManagementPledgeView_when_isBacker_And_Featureflag_On() {
+  func test_goToPledgeManagementPledgeView_when_isBacker() {
     var project = Project.template
     project.personalization.isBacking = .some(true)
 
     let backing = Backing.templateMadeWithPledgeManagment
     let expectedURL = backing.backingDetailsPageRoute
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.netNewBackersWebView.rawValue: true
-    ]
 
-    withEnvironment(remoteConfigClient: mockConfigClient) {
-      self.projectAndBackingObserver.send(value: (project, backing))
+    self.projectAndBackingObserver.send(value: (project, backing))
 
-      self.goToNativePledgeViewProjectParam.assertDidNotEmitValue()
-      self.goToNativePledgeViewBackingParam.assertDidNotEmitValue()
-      self.goToPledgeManagementPledgeView.assertDidNotEmitValue()
+    self.goToNativePledgeViewProjectParam.assertDidNotEmitValue()
+    self.goToNativePledgeViewBackingParam.assertDidNotEmitValue()
+    self.goToPledgeManagementPledgeView.assertDidNotEmitValue()
 
-      self.useCase.inputs.goToPledgeViewTapped()
+    self.useCase.inputs.goToPledgeViewTapped()
 
-      self.goToNativePledgeViewProjectParam.assertDidNotEmitValue()
-      self.goToNativePledgeViewBackingParam.assertDidNotEmitValue()
-      self.goToPledgeManagementPledgeView.assertValue(expectedURL)
-    }
+    self.goToNativePledgeViewProjectParam.assertDidNotEmitValue()
+    self.goToNativePledgeViewBackingParam.assertDidNotEmitValue()
+    self.goToPledgeManagementPledgeView.assertValue(expectedURL)
   }
 
-  func test_goToNativePledgeView_when_isBacker_And_Featureflag_Off() {
-    var project = Project.template
-    project.personalization.isBacking = .some(true)
-
-    let backing = Backing.templateMadeWithPledgeManagment
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.netNewBackersWebView.rawValue: false
-    ]
-
-    withEnvironment(remoteConfigClient: mockConfigClient) {
-      self.projectAndBackingObserver.send(value: (project, backing))
-
-      self.goToNativePledgeViewProjectParam.assertDidNotEmitValue()
-      self.goToNativePledgeViewBackingParam.assertDidNotEmitValue()
-      self.goToPledgeManagementPledgeView.assertDidNotEmitValue()
-
-      self.useCase.inputs.goToPledgeViewTapped()
-
-      self.goToNativePledgeViewProjectParam.assertLastValue(.slug(project.slug))
-      self.goToNativePledgeViewBackingParam.assertLastValue(.id(backing.id))
-      self.goToPledgeManagementPledgeView.assertDidNotEmitValue()
-    }
-  }
-
-  func test_goToNativePledgeView_when_isCreator_And_Featureflag_On() {
+  func test_goToNativePledgeView_when_isCreator() {
     var project = Project.template
     project.personalization.isBacking = .some(false)
-
     let backing = Backing.templateMadeWithPledgeManagment
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.netNewBackersWebView.rawValue: false
-    ]
+    self.projectAndBackingObserver.send(value: (project, backing))
 
-    withEnvironment(remoteConfigClient: mockConfigClient) {
-      self.projectAndBackingObserver.send(value: (project, backing))
+    self.goToNativePledgeViewProjectParam.assertDidNotEmitValue()
+    self.goToNativePledgeViewBackingParam.assertDidNotEmitValue()
+    self.goToPledgeManagementPledgeView.assertDidNotEmitValue()
 
-      self.goToNativePledgeViewProjectParam.assertDidNotEmitValue()
-      self.goToNativePledgeViewBackingParam.assertDidNotEmitValue()
-      self.goToPledgeManagementPledgeView.assertDidNotEmitValue()
+    self.useCase.inputs.goToPledgeViewTapped()
 
-      self.useCase.inputs.goToPledgeViewTapped()
-
-      self.goToNativePledgeViewProjectParam.assertLastValue(.slug(project.slug))
-      self.goToNativePledgeViewBackingParam.assertLastValue(.id(backing.id))
-      self.goToPledgeManagementPledgeView.assertDidNotEmitValue()
-    }
-  }
-
-  func test_goToNativePledgeView_when_isCreator_And_Featureflag_Off() {
-    var project = Project.template
-    project.personalization.isBacking = .some(false)
-
-    let backing = Backing.templateMadeWithPledgeManagment
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.netNewBackersWebView.rawValue: false
-    ]
-
-    withEnvironment(remoteConfigClient: mockConfigClient) {
-      self.projectAndBackingObserver.send(value: (project, backing))
-
-      self.goToNativePledgeViewProjectParam.assertDidNotEmitValue()
-      self.goToNativePledgeViewBackingParam.assertDidNotEmitValue()
-      self.goToPledgeManagementPledgeView.assertDidNotEmitValue()
-
-      self.useCase.inputs.goToPledgeViewTapped()
-
-      self.goToNativePledgeViewProjectParam.assertLastValue(.slug(project.slug))
-      self.goToNativePledgeViewBackingParam.assertLastValue(.id(backing.id))
-      self.goToPledgeManagementPledgeView.assertDidNotEmitValue()
-    }
+    self.goToNativePledgeViewProjectParam.assertLastValue(.slug(project.slug))
+    self.goToNativePledgeViewBackingParam.assertLastValue(.id(backing.id))
+    self.goToPledgeManagementPledgeView.assertDidNotEmitValue()
   }
 }

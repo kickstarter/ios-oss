@@ -29,8 +29,6 @@ public final class ViewPledgeUseCase: ViewPledgeUseCaseType,
     let shouldGoToPledgeManagementPledgeView = projectAndBacking
       .takeWhen(goToPledgeViewSignal)
       .map { project, backing -> Bool in
-        guard featureNetNewBackersWebViewEnabled() else { return false }
-
         guard let order = backing.order, let isBacking = project.personalization.isBacking,
               isBacking else { return false }
 

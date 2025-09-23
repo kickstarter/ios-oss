@@ -1123,12 +1123,7 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testGoToPledgeManagementWebview_ManagingPledge() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.netNewBackersWebView.rawValue: true
-    ]
-
-    withEnvironment(config: .template, remoteConfigClient: mockConfigClient) {
+    withEnvironment(config: .template) {
       let reward = Project.cosmicSurgery.rewards.first!
       let backing = Backing.templateMadeWithPledgeManagment
         |> Backing.lens.reward .~ reward
@@ -1155,12 +1150,7 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testGoToPledgeManagementWebview_ViewingPledge() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.netNewBackersWebView.rawValue: true
-    ]
-
-    withEnvironment(config: .template, currentUser: .template, remoteConfigClient: mockConfigClient) {
+    withEnvironment(config: .template, currentUser: .template) {
       let reward = Project.cosmicSurgery.rewards.first!
       let backing = Backing.templateMadeWithPledgeManagment
         |> Backing.lens.reward .~ reward
