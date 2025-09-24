@@ -313,5 +313,5 @@ private func createMockProjectNode(
     ]
   }
 
-  return try! testGraphObject<GraphAPI.FetchSimilarProjectsQuery.Data.Project.Node>(data: resultMap)
+  return try! testGraphObject<GraphAPI.FetchSimilarProjectsQuery.Data.Projects.Node>(data: resultMap)
 }
