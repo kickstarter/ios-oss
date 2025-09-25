@@ -12,7 +12,7 @@ struct PPOProjectDetails: View {
   let leadingColumnWidth: CGFloat
 
   var body: some View {
-    HStack {
+    HStack(alignment: .top) {
       KFImage(source: self.image)
         .placeholder {
           LegacyColors.ksr_support_200.swiftUIColor()
@@ -50,6 +50,13 @@ struct PPOProjectDetails: View {
           .lineLimit(Constants.subtitleLineLimit)
           .multilineTextAlignment(Constants.multilineTextAlignment)
       }
+      Image(PPOStyles.chevronRight)
+        .resizable()
+        .scaledToFit()
+        .frame(width: Spacing.unit_04, height: Spacing.unit_04)
+        .padding(Spacing.unit_01)
+        .background(.clear)
+        .foregroundStyle(Color(PPOStyles.subtitle.color))
     }
     .fixedSize(horizontal: false, vertical: true)
     .frame(maxWidth: .infinity)
