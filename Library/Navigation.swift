@@ -160,7 +160,8 @@ private let allRoutes: [String: (RouteParamsDecoded) -> Navigation?] = [
   "/projects/:creator_param/:project_param/surveys/:survey_param/edit": pledgeManagerWebview,
   "/projects/:creator_param/:project_param/surveys/:survey_param/edit_address": pledgeManagerWebview,
   "/settings/:notification_param/:enabled_param": settingsNotifications,
-  "/users/:user_param/surveys/:survey_response_id": userSurvey
+  "/users/:user_param/surveys/:survey_response_id": userSurvey,
+  "/projects/:creator_param/:project_param/order_edits/:order_edit_id/checkout": pledgeManagerWebview
 ]
 
 private let deepLinkRoutes: [String: (RouteParamsDecoded) -> Navigation?] = allRoutes.restrict(
@@ -186,7 +187,8 @@ private let deepLinkRoutes: [String: (RouteParamsDecoded) -> Navigation?] = allR
     "/projects/:creator_param/:project_param/surveys/:survey_param/edit_address",
     "/projects/:creator_param/:project_param/pledge",
     "/settings/:notification_param/:enabled_param",
-    "/users/:user_param/surveys/:survey_response_id"
+    "/users/:user_param/surveys/:survey_response_id",
+    "/projects/:creator_param/:project_param/order_edits/:order_edit_id/checkout"
   ]
 )
 
@@ -634,6 +636,7 @@ extension RouteParamsDecoded {
     case surveyParam = "survey_param"
     case userParam = "user_param"
     case surveyResponseId = "survey_response_id"
+    case orderEditId = "order_edit_id"
   }
 
   public func comment() -> String? {
@@ -723,6 +726,11 @@ extension RouteParamsDecoded {
 
   public func surveyResponseId() -> Int? {
     let key = CodingKeys.surveyResponseId.rawValue
+    return self[key].flatMap { Int($0) }
+  }
+
+  public func orderEditParam() -> Int? {
+    let key = CodingKeys.orderEditId.rawValue
     return self[key].flatMap { Int($0) }
   }
 }
