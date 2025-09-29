@@ -44,7 +44,7 @@ enum PPONavigationEvent: Equatable {
   case fix3DSChallenge(clientSecret: String, onProgress: (PPOActionState) -> Void)
   case survey(url: String)
   case managePledge(url: String)
-  case backingDetails(url: String)
+  case backingDetails(projectId: Int)
   case editAddress(url: String)
   case confirmAddress(
     backingId: String,
@@ -60,8 +60,8 @@ enum PPONavigationEvent: Equatable {
       return lhsUrl == rhsUrl
     case let (.managePledge(lhsUrl), .managePledge(rhsUrl)):
       return lhsUrl == rhsUrl
-    case let (.backingDetails(lhsUrl), .backingDetails(rhsUrl)):
-      return lhsUrl == rhsUrl
+    case let (.backingDetails(lhsId), .backingDetails(rhsId)):
+      return lhsId == rhsId
     case let (.editAddress(lhsUrl), .editAddress(rhsUrl)):
       return lhsUrl == rhsUrl
     case let (.contactCreator(lhsSubject), .contactCreator(rhsSubject)):
@@ -169,7 +169,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         .map { viewModel in PPONavigationEvent.managePledge(url: viewModel.backingDetailsUrl) }
         .eraseToAnyPublisher(),
       self.viewBackingDetailsSubject
-        .map { viewModel in PPONavigationEvent.survey(url: viewModel.backingDetailsUrl) }
+        .map { viewModel in PPONavigationEvent.backingDetails(projectId: viewModel.projectId) }
         .eraseToAnyPublisher(),
       self.editAddressSubject
         .map { viewModel in PPONavigationEvent.editAddress(url: viewModel.backingDetailsUrl) }

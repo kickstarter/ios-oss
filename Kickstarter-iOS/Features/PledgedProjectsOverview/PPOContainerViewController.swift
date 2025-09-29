@@ -3,6 +3,7 @@ import Foundation
 import KDS
 import KsApi
 import Library
+import Prelude
 import Stripe
 import SwiftUI
 
@@ -74,7 +75,9 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       switch nav {
       case .backedProjects:
         tabBarController?.switchToProfile()
-      case let .editAddress(url), let .survey(url), let .backingDetails(url), let .managePledge(url):
+      case let .backingDetails(projectId):
+        self?.openProjectPage(projectId)
+      case let .editAddress(url), let .survey(url), let .managePledge(url):
         self?.openSurvey(url)
       case let .contactCreator(messageSubject):
         self?.messageCreator(messageSubject)
@@ -171,6 +174,20 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     nav.presentationController?.delegate = self
 
     self.navigationController?.present(nav, animated: true)
+  }
+
+  private func openProjectPage(_ projectId: Int) {
+    let projectParam = Either<Project, any ProjectPageParam>(right: Param.id(projectId))
+    let vc = ProjectPageViewController.configuredWith(
+      projectOrParam: projectParam,
+      refInfo: nil
+    )
+
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
+    nav.presentationController?.delegate = self
+
+    self.present(nav, animated: true, completion: nil)
   }
 
   private func messageCreator(_ messageSubject: MessageSubject) {
