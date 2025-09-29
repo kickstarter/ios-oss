@@ -27,7 +27,7 @@ protocol PPOViewModelInputs {
   )
   func openSurvey(from: PPOProjectCardModel)
   func managePledge(from: PPOProjectCardModel)
-  func viewBackingDetails(from: PPOProjectCardModel)
+  func viewProjectDetails(from: PPOProjectCardModel)
   func editAddress(from: PPOProjectCardModel)
   func confirmAddress(from: PPOProjectCardModel, address: String, addressId: String)
   func contactCreator(from: PPOProjectCardModel)
@@ -44,7 +44,7 @@ enum PPONavigationEvent: Equatable {
   case fix3DSChallenge(clientSecret: String, onProgress: (PPOActionState) -> Void)
   case survey(url: String)
   case managePledge(url: String)
-  case backingDetails(projectId: Int)
+  case projectDetails(projectId: Int)
   case editAddress(url: String)
   case confirmAddress(
     backingId: String,
@@ -60,7 +60,7 @@ enum PPONavigationEvent: Equatable {
       return lhsUrl == rhsUrl
     case let (.managePledge(lhsUrl), .managePledge(rhsUrl)):
       return lhsUrl == rhsUrl
-    case let (.backingDetails(lhsId), .backingDetails(rhsId)):
+    case let (.projectDetails(lhsId), .projectDetails(rhsId)):
       return lhsId == rhsId
     case let (.editAddress(lhsUrl), .editAddress(rhsUrl)):
       return lhsUrl == rhsUrl
@@ -168,8 +168,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       self.managePledgeSubject
         .map { viewModel in PPONavigationEvent.managePledge(url: viewModel.backingDetailsUrl) }
         .eraseToAnyPublisher(),
-      self.viewBackingDetailsSubject
-        .map { viewModel in PPONavigationEvent.backingDetails(projectId: viewModel.projectId) }
+      self.viewProjectDetailsSubject
+        .map { viewModel in PPONavigationEvent.projectDetails(projectId: viewModel.projectId) }
         .eraseToAnyPublisher(),
       self.editAddressSubject
         .map { viewModel in PPONavigationEvent.editAddress(url: viewModel.backingDetailsUrl) }
@@ -339,8 +339,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.managePledgeSubject.send(from)
   }
 
-  func viewBackingDetails(from: PPOProjectCardModel) {
-    self.viewBackingDetailsSubject.send(from)
+  func viewProjectDetails(from: PPOProjectCardModel) {
+    self.viewProjectDetailsSubject.send(from)
   }
 
   func editAddress(from: PPOProjectCardModel) {
@@ -378,7 +378,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   >()
   private let openSurveySubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let managePledgeSubject = PassthroughSubject<PPOProjectCardModel, Never>()
-  private let viewBackingDetailsSubject = PassthroughSubject<PPOProjectCardModel, Never>()
+  private let viewProjectDetailsSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let editAddressSubject = PassthroughSubject<PPOProjectCardModel, Never>()
   private let confirmAddressSubject = PassthroughSubject<(PPOProjectCardModel, String, String), Never>()
   private let confirmAddressProgressSubject = PassthroughSubject<

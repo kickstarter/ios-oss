@@ -75,7 +75,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       switch nav {
       case .backedProjects:
         tabBarController?.switchToProfile()
-      case let .backingDetails(projectId):
+      case let .projectDetails(projectId):
         self?.openProjectPage(projectId)
       case let .editAddress(url), let .survey(url), let .managePledge(url):
         self?.openSurvey(url)
