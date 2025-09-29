@@ -720,7 +720,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   }
 
   private func goToPledgeManagementWebViewController(with backingDetailsURL: String) {
-    let vc = SurveyResponseViewController.configuredWith(surveyUrl: backingDetailsURL)
+    let vc = PledgeManagerWebViewController.configuredWith(url: backingDetailsURL)
 
     let nc = RewardPledgeNavigationController(rootViewController: vc)
 

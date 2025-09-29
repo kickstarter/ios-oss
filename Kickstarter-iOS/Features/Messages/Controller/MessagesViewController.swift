@@ -195,7 +195,7 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
   }
 
   fileprivate func goToPMPledeView(with url: String) {
-    let vc = SurveyResponseViewController.configuredWith(surveyUrl: url)
+    let vc = PledgeManagerWebViewController.configuredWith(url: url)
     self.present(vc, animated: true)
   }
 

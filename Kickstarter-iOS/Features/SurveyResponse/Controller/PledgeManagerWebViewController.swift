@@ -4,20 +4,20 @@ import Prelude
 import UIKit
 import WebKit
 
-internal protocol SurveyResponseViewControllerDelegate: AnyObject {
+internal protocol PledgeManagerWebViewControllerDelegate: AnyObject {
   /// Called when the delegate should notify the parent that self was dismissed.
-  func surveyResponseViewControllerDismissed()
+  func pledgeManagerWebViewControllerDismissed()
 }
 
-internal final class SurveyResponseViewController: WebViewController {
-  internal weak var delegate: SurveyResponseViewControllerDelegate?
+internal final class PledgeManagerWebViewController: WebViewController {
+  internal weak var delegate: PledgeManagerWebViewControllerDelegate?
   private var sessionStartedObserver: Any?
-  fileprivate let viewModel: SurveyResponseViewModelType = SurveyResponseViewModel()
+  fileprivate let viewModel: PledgeManagerWebViewModelType = PledgeManagerWebViewModel()
 
-  internal static func configuredWith(surveyUrl: String)
-    -> SurveyResponseViewController {
-    let vc = SurveyResponseViewController()
-    vc.viewModel.inputs.configureWith(surveyUrl: surveyUrl)
+  internal static func configuredWith(url: String)
+    -> PledgeManagerWebViewController {
+    let vc = PledgeManagerWebViewController()
+    vc.viewModel.inputs.configureWith(url: url)
     return vc
   }
 
@@ -52,7 +52,7 @@ internal final class SurveyResponseViewController: WebViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.navigationController?.dismiss(animated: true, completion: nil)
-        self?.delegate?.surveyResponseViewControllerDismissed()
+        self?.delegate?.pledgeManagerWebViewControllerDismissed()
       }
 
     self.viewModel.outputs.goToLoginSignup

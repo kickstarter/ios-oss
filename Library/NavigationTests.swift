@@ -129,14 +129,14 @@ public final class NavigationTests: XCTestCase {
     withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
       self.assertProjectMatch(
         path: "/projects/creator/project/surveys/3",
-        navigation: .surveyWebview("https://www.kickstarter.com/projects/creator/project/surveys/3")
+        navigation: .pledgeManagerWebview("https://www.kickstarter.com/projects/creator/project/surveys/3")
       )
     }
 
     withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
       self.assertProjectMatch(
         path: "/projects/1234567890/project/backing/survey_responses",
-        navigation: .surveyWebview(
+        navigation: .pledgeManagerWebview(
           "https://www.kickstarter.com/projects/1234567890/project/backing/survey_responses"
         )
       )
@@ -145,7 +145,7 @@ public final class NavigationTests: XCTestCase {
       // This mimics the runtime fallback applied to avoid re-auth issues in the WebView.
       self.assertProjectMatch(
         path: "/projects/1234567890/project/backing/details",
-        navigation: .surveyWebview(
+        navigation: .pledgeManagerWebview(
           "https://www.kickstarter.com/projects/1234567890/project/backing/survey_responses"
         )
       )
