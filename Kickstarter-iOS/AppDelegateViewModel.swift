@@ -1,3 +1,4 @@
+import FirebaseCrashlytics
 import KsApi
 import Library
 import Prelude
@@ -550,13 +551,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .filter { $0 == .tab(.me) }
       .ignoreValues()
 
-    let resolvedRedirectUrl = Signal.merge(
+    self.goToMobileSafari = Signal.merge(
       deepLinkUrl,
       urlFromBraze
     )
-    .filter { Navigation.deepLinkMatch($0) == nil }
-
-    self.goToMobileSafari = resolvedRedirectUrl
+    .filter(shouldOpenUrlInBrowser)
 
     let projectRootLink = Signal.merge(projectLink, projectPreviewLink)
       .filter { _, subpage, _, _ in subpage == .root }
@@ -1024,6 +1023,28 @@ private func deviceToken(fromData data: Data) -> String {
   return data
     .map { String(format: "%02.2hhx", $0 as CVarArg) }
     .joined()
+}
+
+private func shouldOpenUrlInBrowser(_ url: URL) -> Bool {
+  // If url has a deeplink match, never attempt to open the url in the browser.
+  if Navigation.deepLinkMatch(url) != nil {
+    return false
+  }
+  // Never attempt to open `ksr` urls in the browser; they'll redirect straight back to our app.
+  if let scheme = url.scheme, scheme == "ksr" {
+    print(
+      "Error: Unable to open 'ksr' deeplink. Please doublecheck that the url "
+        + "is included in the list of deeplinks and that you're not trying to "
+        + "use a staging url in prod (or vice versa)."
+    )
+    let error = NSError(domain: "Kickstarter.Deeplink", code: 0, userInfo: [
+      NSLocalizedDescriptionKey: "Unable to open unsupported ksr deeplink."
+    ])
+    Crashlytics.crashlytics().record(error: error)
+    return false
+  }
+  // Otherwise, open url in browser.
+  return true
 }
 
 private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? {
