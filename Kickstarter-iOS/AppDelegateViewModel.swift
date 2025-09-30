@@ -1,3 +1,4 @@
+import FirebaseCrashlytics
 import KsApi
 import Library
 import Prelude
@@ -1036,6 +1037,10 @@ private func shouldOpenUrlInBrowser(_ url: URL) -> Bool {
         + "is included in the list of deeplinks and that you're not trying to "
         + "use a staging url in prod (or vice versa)."
     )
+    let error = NSError(domain: "Kickstarter.Deeplink", code: 0, userInfo: [
+      NSLocalizedDescriptionKey: "Unable to open unsupported ksr deeplink."
+    ])
+    Crashlytics.crashlytics().record(error: error)
     return false
   }
   // Otherwise, open url in browser.
