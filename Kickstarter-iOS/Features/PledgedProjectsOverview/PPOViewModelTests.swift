@@ -325,11 +325,11 @@ class PPOViewModelTests: XCTestCase {
     )
   }
 
-  func testNavigationViewBackingDetails() {
+  func testNavigationViewProjectDetails() {
     self.verifyNavigationEvent(
-      // This could be tested with any template. All cards allow the user to view backing details.
-      { self.viewModel.openSurvey(from: PPOProjectCardModel.fixPaymentTemplate) },
-      event: .survey(url: PPOProjectCardModel.fixPaymentTemplate.backingDetailsUrl)
+      // This could be tested with any template. All cards allow the user to view project details.
+      { self.viewModel.viewProjectDetails(from: PPOProjectCardModel.fixPaymentTemplate) },
+      event: .projectDetails(projectId: PPOProjectCardModel.fixPaymentTemplate.projectId)
     )
   }
 
