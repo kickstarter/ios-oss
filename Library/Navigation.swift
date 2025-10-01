@@ -447,8 +447,8 @@ private func pledgeManagerWebview(_ params: RouteParamsDecoded) -> Navigation? {
 
     let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + path
     let refInfo = refInfoFromParams(params)
-    let survey = Navigation.Project.pledgeManagerWebview(url)
-    return Navigation.project(projectParam, survey, refInfo: refInfo)
+    let pmWebview = Navigation.Project.pledgeManagerWebview(url)
+    return Navigation.project(projectParam, pmWebview, refInfo: refInfo)
   }
 
   return nil
