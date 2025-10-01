@@ -5,8 +5,8 @@ import ReactiveExtensions_TestHelpers
 import WebKit
 import XCTest
 
-final class SurveyResponseViewModelTests: TestCase {
-  fileprivate let vm: SurveyResponseViewModelType = SurveyResponseViewModel()
+final class PledgeManagerWebViewModelTests: TestCase {
+  fileprivate let vm: PledgeManagerWebViewModelType = PledgeManagerWebViewModel()
 
   fileprivate let dismissViewController = TestObserver<Void, Never>()
   fileprivate let goToPledge = TestObserver<Param, Never>()
@@ -35,7 +35,7 @@ final class SurveyResponseViewModelTests: TestCase {
   }
 
   func testDismissViewControllerOnCloseButtonTapped() {
-    self.vm.inputs.configureWith(surveyUrl: SurveyResponse.template.urls.web.survey)
+    self.vm.inputs.configureWith(url: SurveyResponse.template.urls.web.survey)
     self.vm.inputs.viewDidLoad()
     self.dismissViewController.assertDidNotEmitValue()
 
@@ -49,7 +49,7 @@ final class SurveyResponseViewModelTests: TestCase {
       |> SurveyResponse.lens.id .~ 123
       |> SurveyResponse.lens.project .~ project
 
-    self.vm.inputs.configureWith(surveyUrl: surveyResponse.urls.web.survey)
+    self.vm.inputs.configureWith(url: surveyResponse.urls.web.survey)
     self.vm.inputs.viewDidLoad()
 
     // 1. Load survey.
@@ -150,7 +150,7 @@ final class SurveyResponseViewModelTests: TestCase {
     let surveyResponse = .template
       |> SurveyResponse.lens.project .~ project
 
-    self.vm.inputs.configureWith(surveyUrl: surveyResponse.urls.web.survey)
+    self.vm.inputs.configureWith(url: surveyResponse.urls.web.survey)
     self.vm.inputs.viewDidLoad()
 
     self.goToPledge.assertDidNotEmitValue()
@@ -175,7 +175,7 @@ final class SurveyResponseViewModelTests: TestCase {
     let surveyResponse = .template
       |> SurveyResponse.lens.project .~ project
 
-    self.vm.inputs.configureWith(surveyUrl: surveyResponse.urls.web.survey)
+    self.vm.inputs.configureWith(url: surveyResponse.urls.web.survey)
     self.vm.inputs.viewDidLoad()
 
     self.goToProjectParam.assertDidNotEmitValue()
@@ -203,7 +203,7 @@ final class SurveyResponseViewModelTests: TestCase {
 
     let update = Update.template
 
-    self.vm.inputs.configureWith(surveyUrl: surveyResponse.urls.web.survey)
+    self.vm.inputs.configureWith(url: surveyResponse.urls.web.survey)
     self.vm.inputs.viewDidLoad()
 
     withEnvironment(apiService: MockService(
@@ -237,7 +237,7 @@ final class SurveyResponseViewModelTests: TestCase {
     withEnvironment(currentUser: nil) {
       let surveyResponse = SurveyResponse.template
 
-      self.vm.inputs.configureWith(surveyUrl: surveyResponse.urls.web.survey)
+      self.vm.inputs.configureWith(url: surveyResponse.urls.web.survey)
       self.vm.inputs.viewDidLoad()
 
       self.goToLoginSignup.assertValue(.generic)
@@ -248,7 +248,7 @@ final class SurveyResponseViewModelTests: TestCase {
     withEnvironment(currentUser: nil) {
       let surveyResponse = SurveyResponse.template
 
-      self.vm.inputs.configureWith(surveyUrl: surveyResponse.urls.web.survey)
+      self.vm.inputs.configureWith(url: surveyResponse.urls.web.survey)
       self.vm.inputs.viewDidLoad()
 
       // Request should not send when user is logged out.

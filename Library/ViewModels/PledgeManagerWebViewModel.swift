@@ -4,12 +4,12 @@ import ReactiveExtensions
 import ReactiveSwift
 import WebKit
 
-public protocol SurveyResponseViewModelInputs {
+public protocol PledgeManagerWebViewModelInputs {
   /// Call when the close button is tapped.
   func closeButtonTapped()
 
   /// Call to configure with a survey url.
-  func configureWith(surveyUrl: String)
+  func configureWith(url: String)
 
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
   func decidePolicyFor(navigationAction: WKNavigationActionData) -> WKNavigationActionPolicy
@@ -21,7 +21,7 @@ public protocol SurveyResponseViewModelInputs {
   func viewDidLoad()
 }
 
-public protocol SurveyResponseViewModelOutputs {
+public protocol PledgeManagerWebViewModelOutputs {
   /// Emits when the view controller should be dismissed.
   var dismissViewController: Signal<Void, Never> { get }
 
@@ -44,12 +44,13 @@ public protocol SurveyResponseViewModelOutputs {
   var webViewLoadRequest: Signal<URLRequest, Never> { get }
 }
 
-public protocol SurveyResponseViewModelType: SurveyResponseViewModelInputs, SurveyResponseViewModelOutputs {
-  var inputs: SurveyResponseViewModelInputs { get }
-  var outputs: SurveyResponseViewModelOutputs { get }
+public protocol PledgeManagerWebViewModelType: PledgeManagerWebViewModelInputs,
+  PledgeManagerWebViewModelOutputs {
+  var inputs: PledgeManagerWebViewModelInputs { get }
+  var outputs: PledgeManagerWebViewModelOutputs { get }
 }
 
-public final class SurveyResponseViewModel: SurveyResponseViewModelType {
+public final class PledgeManagerWebViewModel: PledgeManagerWebViewModelType {
   public init() {
     let initialIsLoggedIn = self.viewDidLoadProperty.signal.compactMap {
       AppEnvironment.current.currentUser != nil
@@ -66,7 +67,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
     // Wait until user is logged in before handling survey response.
     let surveyResponse = Signal.combineLatest(
-      self.initialSurveyProperty.signal.skipNil(),
+      self.initialUrlProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal,
       isLoggedIn.filter(isTrue)
     )
@@ -85,7 +86,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
     self.title = Signal.merge(initialRequest, newRequest)
       .compactMap { request in
-        if isSurvey(request: request) {
+        if isSupportedRequest(request: request) {
           // Only update the title based on the main survey url.
           return request.url
         }
@@ -102,9 +103,9 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
         }
       }
 
-    let newSurveyRequest = newRequest
+    let newUnpreparedRequest = newRequest
       .filter { request in
-        isUnpreparedSurvey(request: request)
+        isUnpreparedSupportedRequest(request: request)
       }
 
     self.dismissViewController = self.closeButtonTappedProperty.signal
@@ -162,13 +163,13 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
           return false
         }
 
-        return isSurvey(request: request)
+        return isSupportedRequest(request: request)
       }
       .map { $0 ? .allow : .cancel }
 
     self.webViewLoadRequest = Signal.merge(
       initialRequest,
-      newSurveyRequest
+      newUnpreparedRequest
     )
     .map { request in AppEnvironment.current.apiService.preparedRequest(forRequest: request) }
   }
@@ -183,9 +184,9 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
     return self.policyDecisionProperty.value
   }
 
-  fileprivate let initialSurveyProperty = MutableProperty<String?>(nil)
-  public func configureWith(surveyUrl: String) {
-    self.initialSurveyProperty.value = surveyUrl
+  fileprivate let initialUrlProperty = MutableProperty<String?>(nil)
+  public func configureWith(url: String) {
+    self.initialUrlProperty.value = url
   }
 
   fileprivate let userSessionStartedProperty = MutableProperty(())
@@ -204,17 +205,17 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   public let goToLoginSignup: Signal<LoginIntent, Never>
   public let title: Signal<String?, Never>
 
-  public var inputs: SurveyResponseViewModelInputs { return self }
-  public var outputs: SurveyResponseViewModelOutputs { return self }
+  public var inputs: PledgeManagerWebViewModelInputs { return self }
+  public var outputs: PledgeManagerWebViewModelOutputs { return self }
 }
 
-private func isUnpreparedSurvey(request: URLRequest) -> Bool {
+private func isUnpreparedSupportedRequest(request: URLRequest) -> Bool {
   guard !AppEnvironment.current.apiService.isPrepared(request: request) else { return false }
-  return isSurvey(request: request)
+  return isSupportedRequest(request: request)
 }
 
-private func isSurvey(request: URLRequest) -> Bool {
-  guard case (.project(_, .surveyWebview, _, _))? = Navigation.match(request) else { return false }
+private func isSupportedRequest(request: URLRequest) -> Bool {
+  guard case (.project(_, .pledgeManagerWebview, _, _))? = Navigation.match(request) else { return false }
   return true
 }
 

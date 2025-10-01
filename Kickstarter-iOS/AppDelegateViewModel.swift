@@ -613,17 +613,17 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let surveyUrlFromProjectLink = deepLink
       .map { link -> String? in
-        if case let .project(_, .surveyWebview(surveyUrl), _, _) = link {
+        if case let .project(_, .pledgeManagerWebview(surveyUrl), _, _) = link {
           return surveyUrl
         }
         return nil
       }
       .skipNil()
 
-    let surveyResponseLink = Signal.merge(surveyUrlFromProjectLink, surveyUrlFromUserLink)
+    let pledgeManagerLink = Signal.merge(surveyUrlFromProjectLink, surveyUrlFromUserLink)
       .observeForUI()
       .map { url -> [UIViewController] in
-        [SurveyResponseViewController.configuredWith(surveyUrl: url)]
+        [PledgeManagerWebViewController.configuredWith(url: url)]
       }
 
     let updatesLink = projectLink
@@ -702,7 +702,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         projectRootLink,
         projectCommentsLink,
         projectCommentThreadLink,
-        surveyResponseLink,
+        pledgeManagerLink,
         updatesLink,
         updateRootLink,
         updateCommentsLink,
@@ -1092,7 +1092,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   if let pledgeRedemption = envelope.pledgeRedemption {
     let path = pledgeRedemption.pledgeManagerPath
     let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + path
-    return .project(.id(pledgeRedemption.projectId), .surveyWebview(url), refInfo: RefInfo(.push))
+    return .project(.id(pledgeRedemption.projectId), .pledgeManagerWebview(url), refInfo: RefInfo(.push))
   }
 
   if let project = envelope.project {
@@ -1106,7 +1106,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   if let survey = envelope.survey {
     let path = survey.urls.web.survey
     let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + path
-    return .project(.id(survey.projectId), .surveyWebview(url), refInfo: RefInfo(.push))
+    return .project(.id(survey.projectId), .pledgeManagerWebview(url), refInfo: RefInfo(.push))
   }
 
   if let update = envelope.update {
