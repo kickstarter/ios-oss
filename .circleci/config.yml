@@ -32,7 +32,7 @@ base_job: &base_job
   macos:
     xcode: *xcode_version
   working_directory: ~/kickstarter
-  resource_class: macos.m1.medium.gen1
+  resource_class: m4pro.medium
 
 test_job: &test_job
   steps:
