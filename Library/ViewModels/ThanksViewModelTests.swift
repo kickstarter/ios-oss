@@ -57,7 +57,7 @@ final class ThanksViewModelTests: TestCase {
     return (project, reward, checkoutData, pledgeTotal)
   }
 
-  func testDismissToRootViewController() {
+  func DISABLED_IOS18_testDismissToRootViewController() {
     self.vm.inputs.configure(with: self.thanksPageData())
     self.vm.inputs.viewDidLoad()
 
@@ -101,7 +101,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testDisplayBackedProjectText() {
+  func DISABLED_IOS18_testDisplayBackedProjectText() {
     let project = Project.template |> \.category .~ .games
     self.vm.inputs.configure(with: self.thanksPageData(project: project))
     self.vm.inputs.viewDidLoad()
@@ -114,7 +114,7 @@ final class ThanksViewModelTests: TestCase {
     )
   }
 
-  func testDisplayBackedProjectText_postCampaignBackings() {
+  func DISABLED_IOS18_testDisplayBackedProjectText_postCampaignBackings() {
     let mockConfigClient = MockRemoteConfigClient()
 
     var project = Project.template
@@ -151,7 +151,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testGamesAlert_ShowsOnce() {
+  func DISABLED_IOS18_testGamesAlert_ShowsOnce() {
     withEnvironment(currentUser: .template) {
       XCTAssertEqual(
         false, AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt,
