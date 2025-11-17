@@ -1,4 +1,4 @@
-import SwiftUICore
+import SwiftUI
 import UIKit
 
 public protocol AdaptiveColor {
