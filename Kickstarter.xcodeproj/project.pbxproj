@@ -1234,6 +1234,7 @@
 		AA7452B42D91BB8100DCB655 /* SearchFiltersUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7452A72D91BB8100DCB655 /* SearchFiltersUseCaseTests.swift */; };
 		AA7BB45F2CF67DC200E2B2D4 /* GraphUserSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7BB45E2CF67DC200E2B2D4 /* GraphUserSetup.swift */; };
 		AA89B2562D010DA100B4D52E /* PPOProjectCardModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */; };
+		AA8E4AB82E7B5F3A00A926CF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8E4AB72E7B5F3700A926CF /* SceneDelegate.swift */; };
 		AAA71B292DB2C53700031C1F /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA71B282DB2C53000031C1F /* FlowLayout.swift */; };
 		AAB4CBDD2D41BB030057BADB /* PPOUserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBDC2D41BB030057BADB /* PPOUserSettings.swift */; };
 		AAB4CBDF2D42F3860057BADB /* PPOProjectCardModel+Templates.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBDE2D42F3810057BADB /* PPOProjectCardModel+Templates.swift */; };
@@ -2989,6 +2990,7 @@
 		AA7452A72D91BB8100DCB655 /* SearchFiltersUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersUseCaseTests.swift; sourceTree = "<group>"; };
 		AA7BB45E2CF67DC200E2B2D4 /* GraphUserSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserSetup.swift; sourceTree = "<group>"; };
 		AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardModelTests.swift; sourceTree = "<group>"; };
+		AA8E4AB72E7B5F3700A926CF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		AAA592782C5C708000482087 /* PPOProjectDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectDetails.swift; sourceTree = "<group>"; };
 		AAA71B282DB2C53000031C1F /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
 		AAB4CBDC2D41BB030057BADB /* PPOUserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOUserSettings.swift; sourceTree = "<group>"; };
@@ -6736,6 +6738,7 @@
 				A7D1F9551C850B7C000D41D5 /* Info.plist */,
 				600944E22E5CB3A7004A089F /* InfoPlist.strings */,
 				60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */,
+				AA8E4AB72E7B5F3700A926CF /* SceneDelegate.swift */,
 				A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */,
 				A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */,
 				A7ED205D1E83256700BFFA01 /* AppDelegateViewModelTests.swift */,
@@ -9427,6 +9430,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A73924041D272404004524C3 /* AppDelegate.swift in Sources */,
+				AA8E4AB82E7B5F3A00A926CF /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
