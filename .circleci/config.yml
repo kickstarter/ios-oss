@@ -45,7 +45,7 @@ test_job: &test_job
         # more info: https://circle-macos-docs.s3.amazonaws.com/image-manifest/v15723/manifest.txt
         version: "26.0"
         platform: "iOS"
-        device: "iPhone SE (3rd generation)"
+        device: "iPhone 16e"
     - run:
         name: Run tests
         command: make test
