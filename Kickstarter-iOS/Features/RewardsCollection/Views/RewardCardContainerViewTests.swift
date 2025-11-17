@@ -447,7 +447,12 @@ private func rewardCardInViewController(
     view.bottomAnchor.constraint(lessThanOrEqualTo: controller.view.layoutMarginsGuide.bottomAnchor)
   ])
 
-  view.configure(with: (project: project, reward: reward, context: .pledge, currentShippingRule: nil))
+  view.configure(with: RewardCardViewData(
+    project: project,
+    reward: reward,
+    context: .pledge,
+    currentShippingLocation: nil
+  ))
 
   return parent
 }

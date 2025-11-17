@@ -106,7 +106,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     )
 
     self.setupConstraints()
-    self.viewModel.inputs.shippingRuleSelected(nil)
+    self.viewModel.inputs.shippingLocationSelected(nil)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -386,9 +386,9 @@ extension RewardsCollectionViewController: RewardCellDelegate {
 extension RewardsCollectionViewController: PledgeShippingLocationViewControllerDelegate {
   func pledgeShippingLocationViewController(
     _: PledgeShippingLocationViewController,
-    didSelect shippingRule: ShippingRule
+    didSelect location: Location
   ) {
-    self.viewModel.inputs.shippingRuleSelected(shippingRule)
+    self.viewModel.inputs.shippingLocationSelected(location)
   }
 
   func pledgeShippingLocationViewControllerLayoutDidUpdate(
