@@ -1,5 +1,5 @@
-//swiftlint:disable type_body_length
-//swiftlint:disable file_length
+// swiftlint:disable:next type_body_length
+// swiftlint:disable file_length
 
 @testable import KsApi
 @testable import Library
