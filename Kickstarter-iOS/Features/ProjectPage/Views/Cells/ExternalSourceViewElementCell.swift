@@ -57,7 +57,9 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
       .observeValues { [weak self] htmlText in
         guard let url = URL(string: htmlText + "?playsinline=1") else { return }
 
-        let request = URLRequest(url: url)
+        var request = URLRequest(url: url)
+        let referer = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString
+        request.addValue(referer, forHTTPHeaderField: "Referer")
 
         self?.webView.load(request)
       }
