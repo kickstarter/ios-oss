@@ -10,8 +10,8 @@ aws_cli_setup: &aws_cli_setup
 
 # Keep xcode version in sync with `.fastlane/Fastfile`
 # circle-ci xcode versions supported: https://circleci.com/docs/testing-ios/
-xcode_version: &xcode_version 26.0.0
-iphone_name: &iphone_name iPhone 16e
+xcode_version: &xcode_version 16.4.0
+iphone_name: &iphone_name iPad mini (A17 Pro)
 
 # Works around an issue in xcodebuild where it requires GitHub to have been added to the known_hosts in order for it to clone dependencies.
 spm_ssh_workaround: &spm_ssh_workaround for ip in $(dig @1.1.1.1 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
@@ -41,11 +41,11 @@ test_job: &test_job
         at: .
     - macos/preboot-simulator:
         # Keep simulator in sync with `Library/TestHelpers/TestCase.swift` and `Makefile`
-        # iOS 26.0 is minimum supported runtime by circle-ci -> 26.0.0 (16A242d)
-        # more info: https://circle-macos-docs.s3.amazonaws.com/image-manifest/v15723/manifest.txt
-        version: "26.0"
+        # iOS 18.5 is minimum supported runtime by circle-ci -> 18.5.0 (16A242d)
+        # more info: https://circle-macos-docs.s3.amazonaws.com/image-manifest/v15338/manifest.txt
+        version: "18.5"
         platform: "iOS"
-        device: "iPhone 16e"
+        device: "iPad mini (A17 Pro)"
     - run:
         name: Run tests
         command: make test
@@ -66,6 +66,9 @@ distribute_job: &distribute_job
     - run:
         name: Install lane dependency xcodes
         command: brew install robotsandpencils/made/xcodes
+    - run:
+        name: Set Ruby Version
+        command: 'echo "ruby-3.4.3" > ~/.ruby-version'
     - run:
         name: Fastlane
         command: bundle exec fastlane $LANE --verbose

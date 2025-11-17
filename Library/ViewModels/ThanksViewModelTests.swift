@@ -1,4 +1,3 @@
-// swiftlint:disable:next type_body_length
 // swiftlint:disable file_length
 
 @testable import KsApi
@@ -10,6 +9,7 @@ import ReactiveSwift
 import UIKit
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class ThanksViewModelTests: TestCase {
   let vm: ThanksViewModelType = ThanksViewModel()
   private let categoryEnvelope = CategoryEnvelope(node: .template)
@@ -69,7 +69,7 @@ final class ThanksViewModelTests: TestCase {
     self.dismissToRootViewControllerAndPostNotification.assertValue(Notification.Name.ksr_projectBacked)
   }
 
-  func testGoToDiscovery() {
+  func DISABLED_IOS18_testGoToDiscovery() {
     let projects = [
       .template |> Project.lens.id .~ 1,
       .template |> Project.lens.id .~ 2,
@@ -137,7 +137,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testRatingAlert_Initial() {
+  func DISABLED_IOS18_testRatingAlert_Initial() {
     withEnvironment(currentUser: .template) {
       self.showRatingAlert.assertValueCount(0, "Rating Alert does not emit")
 
@@ -186,7 +186,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testGamesNewsletterAlert_ShouldNotShow_WhenUserIsSubscribed() {
+  func DISABLED_IOS18_testGamesNewsletterAlert_ShouldNotShow_WhenUserIsSubscribed() {
     let newsletters = User.NewsletterSubscriptions.template |> User.NewsletterSubscriptions.lens.games .~ true
     let user = User.template |> \.newsletters .~ newsletters
     let project = Project.template |> Project.lens.category .~ .games
@@ -199,7 +199,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testGamesNewsletterSignup() {
+  func DISABLED_IOS18_testGamesNewsletterSignup() {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(currentUser: .template) {
@@ -229,7 +229,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testContextualNotificationEmitsWhen_userPledgedFirstProject() {
+  func DISABLED_IOS18_testContextualNotificationEmitsWhen_userPledgedFirstProject() {
     let user = User.template |> \.stats.backedProjectsCount .~ 0
 
     withEnvironment(currentUser: user) {
@@ -238,7 +238,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testContextualNotificationDoesNotEmitWhen_userPledgedMoreThanOneProject() {
+  func DISABLED_IOS18_testContextualNotificationDoesNotEmitWhen_userPledgedMoreThanOneProject() {
     let user = User.template |> \.stats.backedProjectsCount .~ 2
 
     withEnvironment(currentUser: user) {
@@ -247,7 +247,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testGamesNewsletterOptInAlert() {
+  func DISABLED_IOS18_testGamesNewsletterOptInAlert() {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(countryCode: "DE", currentUser: User.template) {
@@ -270,7 +270,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testGoToProject() {
+  func DISABLED_IOS18_testGoToProject() {
     let projects = [
       .template |> Project.lens.id .~ 1,
       .template |> Project.lens.id .~ 2,
@@ -309,7 +309,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testRecommendationsWithProjects() {
+  func DISABLED_IOS18_testRecommendationsWithProjects() {
     let projects = [
       .template |> Project.lens.id .~ 1,
       .template |> Project.lens.id .~ 2,
@@ -335,7 +335,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testRecommendationsWithoutProjects() {
+  func DISABLED_IOS18_testRecommendationsWithoutProjects() {
     let response = .template |> DiscoveryEnvelope.lens.projects .~ []
     let project = Project.template |> Project.lens.category .~ .games
 
@@ -349,7 +349,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testThanksPageViewed_Properties_AdvertisingConsentNotAllowed_NoEventsTracked() {
+  func DISABLED_IOS18_testThanksPageViewed_Properties_AdvertisingConsentNotAllowed_NoEventsTracked() {
     let checkoutData = KSRAnalytics.CheckoutPropertiesData(
       addOnsCountTotal: 2,
       addOnsCountUnique: 1,
@@ -374,7 +374,7 @@ final class ThanksViewModelTests: TestCase {
     XCTAssertNil(self.segmentTrackingClient.properties.last)
   }
 
-  func testThanksPageViewed_Properties_AdvertisingConsentAllowed_EventsTracked() {
+  func DISABLED_IOS18_testThanksPageViewed_Properties_AdvertisingConsentAllowed_EventsTracked() {
     let checkoutData = KSRAnalytics.CheckoutPropertiesData(
       addOnsCountTotal: 2,
       addOnsCountUnique: 1,

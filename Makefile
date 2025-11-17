@@ -6,8 +6,8 @@ TARGET ?= Kickstarter-Framework
 PLATFORM ?= iOS
 RELEASE ?= itunes
 # Keep simulator in sync with `Library/TestHelpers/TestCase.swift` and `.circleci/config.yml`
-IOS_VERSION ?= 26.0
-IPHONE_NAME ?= iPhone 16e
+IOS_VERSION ?= 18.5
+IPHONE_NAME ?= iPad mini (A17 Pro)
 BRANCH ?= main
 DIST_BRANCH = $(RELEASE)-dist
 COMMIT ?= $(CIRCLE_SHA1)
