@@ -26,7 +26,6 @@ final class PledgeShippingLocationViewController: UIViewController {
   private let viewModel: PledgeShippingLocationViewModelType = PledgeShippingLocationViewModel()
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var shippingLocationButton: UIButton = { UIButton(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -45,7 +44,7 @@ final class PledgeShippingLocationViewController: UIViewController {
     super.viewDidLoad()
 
     _ = self
-      |> \.accessibilityElements .~ [self.titleLabel, self.shippingLocationButton, self.amountLabel]
+      |> \.accessibilityElements .~ [self.titleLabel, self.shippingLocationButton]
 
     _ = (self.rootStackView, self.view)
       |> ksr_addSubviewToParent()
@@ -54,7 +53,7 @@ final class PledgeShippingLocationViewController: UIViewController {
     _ = ([self.titleLabel, self.adaptableStackView, self.shimmerLoadingView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.shippingLocationButton, self.spacer, self.amountLabel], self.adaptableStackView)
+    _ = ([self.shippingLocationButton, self.spacer], self.adaptableStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     self.shippingLocationButton.addTarget(
@@ -64,8 +63,6 @@ final class PledgeShippingLocationViewController: UIViewController {
     )
 
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
-
-    self.amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -82,11 +79,6 @@ final class PledgeShippingLocationViewController: UIViewController {
       |> adaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
-
-    _ = self.amountLabel
-      |> checkoutBackgroundStyle
-    _ = self.amountLabel
-      |> amountLabelStyle
 
     _ = self.shippingLocationButton
       |> countryButtonStyle
@@ -112,16 +104,8 @@ final class PledgeShippingLocationViewController: UIViewController {
     super.bindViewModel()
 
     self.adaptableStackView.rac.hidden = self.viewModel.outputs.adaptableStackViewIsHidden
-    self.amountLabel.rac.attributedText = self.viewModel.outputs.amountAttributedText
-    self.amountLabel.rac.hidden = self.viewModel.outputs.amountLabelIsHidden
     self.shimmerLoadingView.rac.hidden = self.viewModel.outputs.shimmerLoadingViewIsHidden
     self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocationButtonTitle
-
-    self.viewModel.outputs.amountLabelIsHidden
-      .observeForUI()
-      .observeValues { [weak self] isHidden in
-        self?.shimmerLoadingView.amountPlaceholder.alpha = isHidden ? 0 : 1
-      }
 
     /**
      When any layout updates occur we need to notify the delegate. This is only necessary when
@@ -130,13 +114,11 @@ final class PledgeShippingLocationViewController: UIViewController {
      */
     Signal.combineLatest(
       self.viewModel.outputs.adaptableStackViewIsHidden,
-      self.viewModel.outputs.amountAttributedText,
-      self.viewModel.outputs.amountLabelIsHidden,
       self.viewModel.outputs.shimmerLoadingViewIsHidden,
       self.viewModel.outputs.shippingLocationButtonTitle
     )
     .observeForUI()
-    .observeValues { [weak self] _, _, _, shimmerLoadingViewIsHidden, _ in
+    .observeValues { [weak self] _, shimmerLoadingViewIsHidden, _ in
       guard let self = self else { return }
       self.delegate?.pledgeShippingLocationViewControllerLayoutDidUpdate(self, shimmerLoadingViewIsHidden)
     }
