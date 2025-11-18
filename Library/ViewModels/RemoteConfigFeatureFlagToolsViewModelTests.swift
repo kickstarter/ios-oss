@@ -100,7 +100,7 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
         nil
       )
 
-      self.vm.inputs.setFeatureAtIndexEnabled(index: 0, isEnabled: true)
+      self.vm.inputs.setFeatureAtIndexEnabled(index: 1, isEnabled: true)
 
       self.scheduler.advance()
 
