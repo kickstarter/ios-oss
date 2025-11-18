@@ -169,18 +169,28 @@ final class PledgeShippingLocationViewController: UIViewController {
   // MARK: - Functions
 
   private func presentShippingRules(
-    _ project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule
+    _: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule
   ) {
-    let viewController = ShippingRulesTableViewController.instantiate()
-    viewController.configureWith(
-      project, shippingRules: shippingRules,
-      selectedShippingRule: selectedShippingRule
-    )
-    viewController.delegate = self
+    let viewController = ShippingLocationsViewController(
+      withLocations: shippingRules.map { $0.location },
+      selectedLocation: selectedShippingRule.location
+    ) { _ in
+      // TODO:
+    }
+    self.presentViewControllerWithSheetOverlay(viewController, offset: Layout.Sheet.offset)
 
-    let navigationController = UINavigationController(rootViewController: viewController)
+    /*
+     let viewController = ShippingRulesTableViewController.instantiate()
+     viewController.configureWith(
+       project, shippingRules: shippingRules,
+       selectedShippingRule: selectedShippingRule
+     )
+     viewController.delegate = self
 
-    self.presentViewControllerWithSheetOverlay(navigationController, offset: Layout.Sheet.offset)
+     let navigationController = UINavigationController(rootViewController: viewController)
+
+     self.presentViewControllerWithSheetOverlay(navigationController, offset: Layout.Sheet.offset)
+      */
   }
 }
 

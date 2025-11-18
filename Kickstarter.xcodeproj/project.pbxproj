@@ -1671,6 +1671,7 @@
 		E158030B2D836C370000BAB3 /* SearchQuery_EmptyResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E15803052D83632F0000BAB3 /* SearchQuery_EmptyResults.json */; };
 		E16794282B7EAA5200064063 /* OAuthTokenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16794272B7EAA5200064063 /* OAuthTokenExchange.swift */; };
 		E167942A2B85136900064063 /* OAuthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16794292B85136900064063 /* OAuthTests.swift */; };
+		E16D0B0C2ECCD3AA004F28CC /* ShippingLocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16D0B0B2ECCD3A3004F28CC /* ShippingLocationsView.swift */; };
 		E16ECA702C245A34002A1D25 /* PagedContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16ECA6F2C245A34002A1D25 /* PagedContainerViewController.swift */; };
 		E16ECA722C245A51002A1D25 /* PagedContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16ECA712C245A51002A1D25 /* PagedContainerViewModel.swift */; };
 		E170B9112B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E170B9102B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift */; };
@@ -3436,6 +3437,7 @@
 		E15E22CD2E54B91B00EE6BB0 /* KDS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = KDS; sourceTree = "<group>"; };
 		E16794272B7EAA5200064063 /* OAuthTokenExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenExchange.swift; sourceTree = "<group>"; };
 		E16794292B85136900064063 /* OAuthTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTests.swift; sourceTree = "<group>"; };
+		E16D0B0B2ECCD3A3004F28CC /* ShippingLocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingLocationsView.swift; sourceTree = "<group>"; };
 		E16ECA6F2C245A34002A1D25 /* PagedContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedContainerViewController.swift; sourceTree = "<group>"; };
 		E16ECA712C245A51002A1D25 /* PagedContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedContainerViewModel.swift; sourceTree = "<group>"; };
 		E170B9102B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockGraphQLClient+CombineTests.swift"; sourceTree = "<group>"; };
@@ -4859,6 +4861,7 @@
 		19450C5228C82CEF00C60F97 /* ShippingRules */ = {
 			isa = PBXGroup;
 			children = (
+				E16D0B0B2ECCD3A3004F28CC /* ShippingLocationsView.swift */,
 				19450C5328C82D6500C60F97 /* Views */,
 				19450C5528C82D7100C60F97 /* Datasource */,
 				19450C5628C82D7900C60F97 /* Controller */,
@@ -9253,6 +9256,7 @@
 				A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,
 				063D2D0A2846767F00CEDE33 /* PledgeLocalPickupView.swift in Sources */,
 				37059843226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift in Sources */,
+				E16D0B0C2ECCD3AA004F28CC /* ShippingLocationsView.swift in Sources */,
 				01940B291D467ECE0074FCE3 /* HelpWebViewController.swift in Sources */,
 				8AA3DB35250AE46D009AC8EA /* SettingsAccountViewModel.swift in Sources */,
 				60E1BB352C74F7E4007D723B /* EstimatedShippingCheckoutView.swift in Sources */,
