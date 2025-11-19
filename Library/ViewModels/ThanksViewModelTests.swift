@@ -60,6 +60,7 @@ final class ThanksViewModelTests: TestCase {
     return (project, reward, checkoutData, pledgeTotal)
   }
 
+  // FIXME MBL-2857
   func DISABLED_IOS18_testDismissToRootViewController() {
     self.vm.inputs.configure(with: self.thanksPageData())
     self.vm.inputs.viewDidLoad()
@@ -69,6 +70,7 @@ final class ThanksViewModelTests: TestCase {
     self.dismissToRootViewControllerAndPostNotification.assertValue(Notification.Name.ksr_projectBacked)
   }
 
+  // FIXME MBL-2857
   func DISABLED_IOS18_testGoToDiscovery() {
     let projects = [
       .template |> Project.lens.id .~ 1,
@@ -104,6 +106,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
+  // FIXME MBL-2857
   func DISABLED_IOS18_testDisplayBackedProjectText() {
     let project = Project.template |> \.category .~ .games
     self.vm.inputs.configure(with: self.thanksPageData(project: project))
@@ -117,6 +120,7 @@ final class ThanksViewModelTests: TestCase {
     )
   }
 
+  // FIXME MBL-2857
   func DISABLED_IOS18_testDisplayBackedProjectText_postCampaignBackings() {
     let mockConfigClient = MockRemoteConfigClient()
 
@@ -137,6 +141,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
+  // FIXME MBL-2857
   func DISABLED_IOS18_testRatingAlert_Initial() {
     withEnvironment(currentUser: .template) {
       self.showRatingAlert.assertValueCount(0, "Rating Alert does not emit")
@@ -154,6 +159,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
+  // FIXME MBL-2857
   func DISABLED_IOS18_testGamesAlert_ShowsOnce() {
     withEnvironment(currentUser: .template) {
       XCTAssertEqual(
@@ -186,6 +192,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
+  // FIXME MBL-2857
   func DISABLED_IOS18_testGamesNewsletterAlert_ShouldNotShow_WhenUserIsSubscribed() {
     let newsletters = User.NewsletterSubscriptions.template |> User.NewsletterSubscriptions.lens.games .~ true
     let user = User.template |> \.newsletters .~ newsletters
@@ -199,6 +206,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
+  // FIXME MBL-2857
   func DISABLED_IOS18_testGamesNewsletterSignup() {
     let project = Project.template |> Project.lens.category .~ .games
 
@@ -229,6 +237,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
+  // FIXME MBL-2857
   func DISABLED_IOS18_testContextualNotificationEmitsWhen_userPledgedFirstProject() {
     let user = User.template |> \.stats.backedProjectsCount .~ 0
 
@@ -238,6 +247,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
+  // FIXME MBL-2857
   func DISABLED_IOS18_testContextualNotificationDoesNotEmitWhen_userPledgedMoreThanOneProject() {
     let user = User.template |> \.stats.backedProjectsCount .~ 2
 
@@ -247,6 +257,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
+  // FIXME MBL-2857
   func DISABLED_IOS18_testGamesNewsletterOptInAlert() {
     let project = Project.template |> Project.lens.category .~ .games
 
@@ -270,6 +281,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
+  // FIXME MBL-2857
   func DISABLED_IOS18_testGoToProject() {
     let projects = [
       .template |> Project.lens.id .~ 1,
@@ -309,6 +321,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
+  // FIXME MBL-2857
   func DISABLED_IOS18_testRecommendationsWithProjects() {
     let projects = [
       .template |> Project.lens.id .~ 1,
@@ -335,6 +348,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
+  // FIXME MBL-2857
   func DISABLED_IOS18_testRecommendationsWithoutProjects() {
     let response = .template |> DiscoveryEnvelope.lens.projects .~ []
     let project = Project.template |> Project.lens.category .~ .games
@@ -349,6 +363,7 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
+  // FIXME MBL-2857
   func DISABLED_IOS18_testThanksPageViewed_Properties_AdvertisingConsentNotAllowed_NoEventsTracked() {
     let checkoutData = KSRAnalytics.CheckoutPropertiesData(
       addOnsCountTotal: 2,
@@ -374,6 +389,7 @@ final class ThanksViewModelTests: TestCase {
     XCTAssertNil(self.segmentTrackingClient.properties.last)
   }
 
+  // FIXME MBL-2857
   func DISABLED_IOS18_testThanksPageViewed_Properties_AdvertisingConsentAllowed_EventsTracked() {
     let checkoutData = KSRAnalytics.CheckoutPropertiesData(
       addOnsCountTotal: 2,

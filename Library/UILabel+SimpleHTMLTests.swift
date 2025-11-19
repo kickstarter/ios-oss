@@ -2,6 +2,7 @@
 import XCTest
 
 final class UILabelSimpleHTMLTests: XCTestCase {
+  // FIXME MBL-2857
   func DISABLED_IOS18_testSetHTML() {
     let label = UILabel()
     label.textColor = .red
