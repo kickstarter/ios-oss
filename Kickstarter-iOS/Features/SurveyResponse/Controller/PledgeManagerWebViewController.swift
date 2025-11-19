@@ -66,22 +66,21 @@ internal final class PledgeManagerWebViewController: WebViewController {
         self?.viewModel.inputs.userSessionStarted()
       }
 
-    self.viewModel.outputs.goToProject
+    self.viewModel.outputs.goToNativeScreen
       .observeForControllerAction()
-      .observeValues { [weak self] param, refTag in
-        self?.goToProject(param: param, refTag: refTag)
+      .observeValues { [weak self] nativeNavigationRequest in
+        switch nativeNavigationRequest {
+        case let .goToProject(param, refTag): self?.goToProject(param: param, refTag: refTag)
+        case let .goToPledge(param): self?.goToPledge(param: param)
+        case let .goToUpdate(param, updateId):
+          self?.viewModel.inputs.goToUpdateRequested(param: param, updateId: updateId)
+        }
       }
 
     self.viewModel.outputs.goToUpdate
       .observeForControllerAction()
       .observeValues { [weak self] project, update in
         self?.goToUpdate(project: project, update: update)
-      }
-
-    self.viewModel.outputs.goToPledge
-      .observeForControllerAction()
-      .observeValues { [weak self] param in
-        self?.goToPledge(param: param)
       }
 
     self.viewModel.outputs.webViewLoadRequest

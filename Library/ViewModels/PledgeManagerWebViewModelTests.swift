@@ -9,8 +9,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
   fileprivate let vm: PledgeManagerWebViewModelType = PledgeManagerWebViewModel()
 
   fileprivate let dismissViewController = TestObserver<Void, Never>()
-  fileprivate let goToPledge = TestObserver<Param, Never>()
-  fileprivate let goToProjectParam = TestObserver<Param, Never>()
+  fileprivate let goToNativeScreen = TestObserver<NativeNatigationRequest, Never>()
   fileprivate let goToUpdate = TestObserver<(Project, Update), Never>()
   fileprivate let goToLoginSignup = TestObserver<LoginIntent, Never>()
   fileprivate let title = TestObserver<String?, Never>()
@@ -21,8 +20,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
-    self.vm.outputs.goToPledge.observe(self.goToPledge.observer)
-    self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProjectParam.observer)
+    self.vm.outputs.goToNativeScreen.observe(self.goToNativeScreen.observer)
     self.vm.outputs.goToUpdate.observe(self.goToUpdate.observer)
     self.vm.outputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
     self.vm.outputs.title.observe(self.title.observer)
@@ -153,7 +151,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     self.vm.inputs.configureWith(url: surveyResponse.urls.web.survey)
     self.vm.inputs.viewDidLoad()
 
-    self.goToPledge.assertDidNotEmitValue()
+    self.goToNativeScreen.assertDidNotEmitValue()
 
     let request = URLRequest(url: URL(string: project.urls.web.project + "/pledge/edit")!)
     let navigationAction = WKNavigationActionData(
@@ -167,7 +165,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
 
     self.dismissViewController.assertDidNotEmitValue()
-    self.goToPledge.assertValues([.slug(project.slug)])
+    self.goToNativeScreen.assertLastValue(.goToPledge(param: .slug(project.slug)))
   }
 
   func testGoToProject() {
@@ -178,7 +176,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     self.vm.inputs.configureWith(url: surveyResponse.urls.web.survey)
     self.vm.inputs.viewDidLoad()
 
-    self.goToProjectParam.assertDidNotEmitValue()
+    self.goToNativeScreen.assertDidNotEmitValue()
 
     let request = URLRequest(url: URL(string: project.urls.web.project)!)
     let navigationAction = WKNavigationActionData(
@@ -193,7 +191,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
 
     self.dismissViewController.assertDidNotEmitValue()
-    self.goToProjectParam.assertValues([.slug(project.slug)])
+    self.goToNativeScreen.assertLastValue(.goToProject(param: .slug(project.slug), refTag: nil))
   }
 
   func testGoToUpdate() {
@@ -211,8 +209,10 @@ final class PledgeManagerWebViewModelTests: TestCase {
       fetchUpdateResponse: update
     )) {
       self.goToUpdate.assertDidNotEmitValue()
+      self.goToNativeScreen.assertDidNotEmitValue()
 
-      let request = URLRequest(url: URL(string: project.urls.web.project + "/posts/1")!)
+      let updateId = 1
+      let request = URLRequest(url: URL(string: project.urls.web.project + "/posts/\(updateId)")!)
       let navigationAction = WKNavigationActionData(
         navigationType: .linkActivated,
         request: request,
@@ -222,6 +222,10 @@ final class PledgeManagerWebViewModelTests: TestCase {
 
       let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
       XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
+
+      self.goToNativeScreen.assertLastValue(.goToUpdate(param: .slug(project.slug), updateId: updateId))
+
+      self.vm.inputs.goToUpdateRequested(param: .slug(project.slug), updateId: updateId)
 
       self.dismissViewController.assertDidNotEmitValue()
       self.goToUpdate.assertValueCount(1)
