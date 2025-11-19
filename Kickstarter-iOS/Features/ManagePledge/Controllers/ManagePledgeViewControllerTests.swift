@@ -175,7 +175,6 @@ final class ManagePledgeViewControllerTests: TestCase {
           orientation: .portrait,
           child: controller
         )
-        parent.view.frame.size.height = 1_600
 
         // Network request completes
         self.scheduler.advance()
@@ -239,7 +238,6 @@ final class ManagePledgeViewControllerTests: TestCase {
           orientation: .portrait,
           child: controller
         )
-        parent.view.frame.size.height = 1_600
 
         // Network request completes
         self.scheduler.advance()
@@ -293,7 +291,6 @@ final class ManagePledgeViewControllerTests: TestCase {
           orientation: .portrait,
           child: controller
         )
-        parent.view.frame.size.height = 1_600
 
         // Network request completes
         self.scheduler.advance()
