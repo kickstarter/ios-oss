@@ -286,7 +286,9 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.locationStackViewHidden = params.map { $0 != nil }
 
-    self.locationLabelText = configuredProject.map(\.location.name)
+    self.locationLabelText = configuredProject.map { proj in
+      proj.location?.name ?? ""
+    }
   }
 
   fileprivate let configureWithValueProperty = MutableProperty<DiscoveryProjectCellRowValue?>(nil)

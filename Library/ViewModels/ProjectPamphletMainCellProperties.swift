@@ -128,7 +128,7 @@ extension Project: HasProjectPamphletMainCellProperties {
       isBacking: self.personalization.isBacking,
       backersCount: self.stats.backersCount,
       categoryName: self.category.name,
-      locationName: self.location.displayableName,
+      locationName: self.location?.displayableName ?? "",
       deadline: self.dates.deadline,
       fxRate: self.stats.userCurrencyRate ?? self.stats.staticUsdRate,
       usdExchangeRate: self.stats.staticUsdRate,
