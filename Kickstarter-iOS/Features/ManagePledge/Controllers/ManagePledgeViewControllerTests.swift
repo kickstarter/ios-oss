@@ -1,5 +1,4 @@
 // swiftlint:disable file_length
-// swiftlint:disable type_body_length
 
 @testable import Kickstarter_Framework
 @testable import KsApi
@@ -8,6 +7,7 @@ import Prelude
 import SnapshotTesting
 import UIKit
 
+// swiftlint:disable:next type_body_length
 final class ManagePledgeViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
