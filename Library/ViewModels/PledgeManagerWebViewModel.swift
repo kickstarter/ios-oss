@@ -1,3 +1,4 @@
+import FirebaseCrashlytics
 import KsApi
 import Prelude
 import ReactiveExtensions
@@ -158,7 +159,10 @@ public final class PledgeManagerWebViewModel: PledgeManagerWebViewModelType {
           return false
         }
 
-        // TODO: add error logging for navigation actions that make it here
+        // Log unrecognized urls.
+        if let error = errorForUnrecognizedUrl(request: request) {
+          Crashlytics.crashlytics().record(error: error)
+        }
 
         // Never show unsupported kickstarter navigation requests, since these
         // can get the user into bad/weird states.
@@ -268,4 +272,36 @@ private func isStripeHost(_ host: String) -> Bool {
 
   let withoutSubdomain = host.lowercased().split(separator: ".").suffix(2).joined(separator: ".")
   return stripeDomains.contains(withoutSubdomain)
+}
+
+private func errorForUnrecognizedUrl(request: URLRequest) -> NSError? {
+  let errorDomain = "Kickstarter.PledgeManagerWebView"
+  enum ErrorCode: Int {
+    case unhandledKickstarterUrl = 1
+    case unrecognizedUrl = 2
+  }
+
+  // If there's no url present, don't log an error. The "about:blank" happens
+  // every time the web view loads, so logging these would be too noisy.
+  guard let url = request.url, url.absoluteString != "about:blank" else {
+    return nil
+  }
+
+  if isKickstarterRequest(request) {
+    return NSError(
+      domain: errorDomain,
+      code: ErrorCode.unhandledKickstarterUrl.rawValue,
+      userInfo: [
+        NSLocalizedDescriptionKey: "Found unhandled kickstarter url"
+      ]
+    )
+  }
+
+  return NSError(
+    domain: errorDomain,
+    code: ErrorCode.unrecognizedUrl.rawValue,
+    userInfo: [
+      NSLocalizedDescriptionKey: "Found unrecongnized url request with host: \(url.host() ?? "Unknown")"
+    ]
+  )
 }
