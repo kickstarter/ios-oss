@@ -1,3 +1,6 @@
+// swiftlint:disable file_length
+// swiftlint:disable type_body_length
+
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
