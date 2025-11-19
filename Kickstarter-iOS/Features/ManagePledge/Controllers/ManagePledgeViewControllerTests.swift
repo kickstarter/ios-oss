@@ -108,6 +108,7 @@ final class ManagePledgeViewControllerTests: TestCase {
         let controller = ManagePledgeViewController.instantiate()
         controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_600
 
         // Network request completes
         self.scheduler.advance()
@@ -171,6 +172,7 @@ final class ManagePledgeViewControllerTests: TestCase {
           orientation: .portrait,
           child: controller
         )
+        parent.view.frame.size.height = 1_600
 
         // Network request completes
         self.scheduler.advance()
@@ -234,6 +236,7 @@ final class ManagePledgeViewControllerTests: TestCase {
           orientation: .portrait,
           child: controller
         )
+        parent.view.frame.size.height = 1_600
 
         // Network request completes
         self.scheduler.advance()
@@ -287,6 +290,7 @@ final class ManagePledgeViewControllerTests: TestCase {
           orientation: .portrait,
           child: controller
         )
+        parent.view.frame.size.height = 1_600
 
         // Network request completes
         self.scheduler.advance()
@@ -341,6 +345,7 @@ final class ManagePledgeViewControllerTests: TestCase {
         let controller = ManagePledgeViewController.instantiate()
         controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_700
 
         // Network request completes
         self.scheduler.advance()
@@ -405,6 +410,7 @@ final class ManagePledgeViewControllerTests: TestCase {
         let controller = ManagePledgeViewController.instantiate()
         controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_700
 
         // Network request completes
         self.scheduler.advance()
