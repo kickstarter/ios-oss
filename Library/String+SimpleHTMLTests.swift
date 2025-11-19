@@ -2,7 +2,7 @@
 import XCTest
 
 final class StringSimpleHTMLTests: XCTestCase {
-  // FIXME MBL-2857
+  // FIXME: MBL-2857
   func DISABLED_IOS18_testHtmlParsing() {
     let font = UIFont.ksr_caption1()
     let html = "<b>Hello</b> <i>Brandon</i>, how are you?"
@@ -16,7 +16,7 @@ final class StringSimpleHTMLTests: XCTestCase {
     XCTAssertEqual(string.string, stripped)
   }
 
-  // FIXME MBL-2857
+  // FIXME: MBL-2857
   func DISABLED_IOS18_testHtmlWithAllFontsSpecified() {
     let font = UIFont.ksr_caption1()
     let bold = UIFont.ksr_caption1(size: 14.0).bolded
@@ -56,7 +56,7 @@ final class StringSimpleHTMLTests: XCTestCase {
     }
   }
 
-  // FIXME MBL-2857
+  // FIXME: MBL-2857
   func DISABLED_IOS18_testHtmlWithFallbackFonts() {
     let font = UIFont.ksr_caption1()
 
@@ -101,13 +101,13 @@ final class StringSimpleHTMLTests: XCTestCase {
     }
   }
 
-  // FIXME MBL-2857
+  // FIXME: MBL-2857
   func DISABLED_IOS18_test_htmlStripped_WithSimpleHtml() {
     let html = "<b>Hello</b> <i>Brandon</i>, how are you?"
     XCTAssertEqual("Hello Brandon, how are you?", html.htmlStripped())
   }
 
-  // FIXME MBL-2857
+  // FIXME: MBL-2857
   func DISABLED_IOS18_test_htmlStripped_WithParagraphTags() {
     let html = "<b>Hello</b> <i>Brandon</i>,<p>how are you?</p>"
     XCTAssertEqual("Hello Brandon,\nhow are you?", html.htmlStripped())
