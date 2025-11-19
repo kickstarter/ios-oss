@@ -16,7 +16,7 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
     XCTAssertEqual(envelope.id, 1_606_532_881)
     XCTAssertEqual(envelope.slug, "peppermint-fox-press-notebooks-and-stationery")
     XCTAssertEqual(envelope.state, KsApi.Project.State.live)
-    XCTAssertEqual(envelope.location.name, "Launceston")
+    XCTAssertEqual(envelope.location?.name, "Launceston")
 
     XCTAssertTrue(envelope.hasAddOns)
     XCTAssertEqual(envelope.addOns?.count, 1)
