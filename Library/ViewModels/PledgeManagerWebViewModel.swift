@@ -145,13 +145,28 @@ public final class PledgeManagerWebViewModel: PledgeManagerWebViewModelType {
           return true
         }
 
+        // A supported request will be prepared by logic elsewhere in the class and loaded into
+        // the web view from there. Never allow the unprepared version of these to render.
         let request = action.request
+        if isSupportedRequest(request: request) {
+          return AppEnvironment.current.apiService.isPrepared(request: request)
+        }
 
-        if !AppEnvironment.current.apiService.isPrepared(request: request) {
+        // If the corresponding native navigation request exists,
+        // this request will be handled elsewhere.
+        if nativeNavigationRequestForURLRequest(request) != nil {
           return false
         }
 
-        return isSupportedRequest(request: request)
+        // TODO: add error logging for navigation actions that make it here
+
+        // Never show unsupported kickstarter navigation requests, since these
+        // can get the user into bad/weird states.
+        if isKickstarterRequest(request) {
+          return false
+        }
+
+        return featureBypassPledgeManagerDecisionPolicyEnabled()
       }
       .map { $0 ? .allow : .cancel }
 
@@ -218,6 +233,11 @@ private func nativeNavigationRequestForURLRequest(_ request: URLRequest) -> Nati
     return .goToUpdate(param: param, updateId: id)
   }
   return nil
+}
+
+private func isKickstarterRequest(_ request: URLRequest) -> Bool {
+  guard let host = request.url?.host() else { return false }
+  return host.hasSuffix("kickstarter.com")
 }
 
 private func isUnpreparedSupportedRequest(request: URLRequest) -> Bool {
