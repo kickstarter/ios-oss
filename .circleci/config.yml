@@ -67,9 +67,6 @@ distribute_job: &distribute_job
         name: Install lane dependency xcodes
         command: brew install robotsandpencils/made/xcodes
     - run:
-        name: Set Ruby Version
-        command: 'echo "ruby-3.4.3" > ~/.ruby-version'
-    - run:
         name: Fastlane
         command: bundle exec fastlane $LANE --verbose
         no_output_timeout: "30m" # 30 minutes
