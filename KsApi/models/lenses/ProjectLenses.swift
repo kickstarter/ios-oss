@@ -362,8 +362,8 @@ extension Project {
       ) }
     )
 
-    /// Allows setting `location.displayableName` in  `ProjectTemplates` and `LocationTemplates` even though `Project.location` is optional.
-    /// Safely unwraps the location, updates it and writes it back to the project.
+    /// Allows setting `location.displayableName` in  `ProjectTemplates` and `LocationTemplates` since `Project.location` is optional.
+    /// Safely unwraps the location, updates it and writes it back in the project.
     public static let locationDisplayableName = Lens<Project, String>(
       view: { $0.location?.displayableName ?? "" },
       set: { newDisplayableName, project in
