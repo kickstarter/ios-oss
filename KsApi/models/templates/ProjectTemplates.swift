@@ -95,7 +95,7 @@ extension Project {
     |> Project.lens.stats.projectCurrency .~ Project.Country.gb.currencyCode
     |> Project.lens.stats.userCurrency .~ "USD"
     |> Project.lens.stats.userCurrencyRate .~ 1.31
-    |> (Project.lens.location .. Location.lens.displayableName) .~ "Hastings, UK"
+    |> Project.lens.locationDisplayableName .~ "Hastings, UK"
     |> Project.lens.country .~ .gb
     |> Project.lens.creator .~ (
       User.template
@@ -118,7 +118,7 @@ extension Project {
     |> Project.lens.stats.backersCount .~ 5_770
     |> Project.lens.stats.pledged .~ 406_237
     |> Project.lens.stats.goal .~ 200_000
-    |> (Project.lens.location .. Location.lens.displayableName) .~ "Burbank, CA"
+    |> Project.lens.locationDisplayableName .~ "Burbank, CA"
 
   internal static let netNewBacker = Project.template
     |> Project.lens.personalization.backing .~ nil

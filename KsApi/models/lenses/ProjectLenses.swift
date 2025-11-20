@@ -333,7 +333,7 @@ extension Project {
       ) }
     )
 
-    public static let location = Lens<Project, Location>(
+    public static let location = Lens<Project, Location?>(
       view: { $0.location },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
@@ -360,6 +360,62 @@ extension Project {
         video: $1.video, watchesCount: $1.watchesCount,
         isPledgeOverTimeAllowed: $1.isPledgeOverTimeAllowed
       ) }
+    )
+
+    /// Allows setting `location.displayableName` in  `ProjectTemplates` and `LocationTemplates` since `Project.location` is optional.
+    /// Safely unwraps the location, updates it and writes it back in the project.
+    public static let locationDisplayableName = Lens<Project, String>(
+      view: { $0.location?.displayableName ?? "" },
+      set: { newDisplayableName, project in
+        /// Only update if we actually have a Location
+        var updatedLocation: Location?
+        if let location = project.location {
+          updatedLocation = Location.lens.displayableName.set(newDisplayableName, location)
+        } else {
+          updatedLocation = project.location
+        }
+
+        return Project(
+          availableCardTypes: project.availableCardTypes,
+          blurb: project.blurb,
+          category: project.category,
+          country: project.country,
+          creator: project.creator,
+          extendedProjectProperties: project.extendedProjectProperties,
+          memberData: project.memberData,
+          dates: project.dates,
+          displayPrelaunch: project.displayPrelaunch,
+          flagging: project.flagging,
+          id: project.id,
+          lastWave: project.lastWave,
+          location: updatedLocation,
+          name: project.name,
+          pledgeManager: project.pledgeManager,
+          pledgeOverTimeCollectionPlanChargeExplanation: project
+            .pledgeOverTimeCollectionPlanChargeExplanation,
+          pledgeOverTimeCollectionPlanChargedAsNPayments: project
+            .pledgeOverTimeCollectionPlanChargedAsNPayments,
+          pledgeOverTimeCollectionPlanShortPitch: project.pledgeOverTimeCollectionPlanShortPitch,
+          pledgeOverTimeMinimumExplanation: project.pledgeOverTimeMinimumExplanation,
+          personalization: project.personalization,
+          photo: project.photo,
+          isInPostCampaignPledgingPhase: project.isInPostCampaignPledgingPhase,
+          postCampaignPledgingEnabled: project.postCampaignPledgingEnabled,
+          prelaunchActivated: project.prelaunchActivated,
+          redemptionPageUrl: project.redemptionPageUrl,
+          rewardData: project.rewardData,
+          sendMetaCapiEvents: project.sendMetaCapiEvents,
+          slug: project.slug,
+          staffPick: project.staffPick,
+          state: project.state,
+          stats: project.stats,
+          tags: project.tags,
+          urls: project.urls,
+          video: project.video,
+          watchesCount: project.watchesCount,
+          isPledgeOverTimeAllowed: project.isPledgeOverTimeAllowed
+        )
+      }
     )
 
     public static let memberData = Lens<Project, Project.MemberData>(
@@ -1074,13 +1130,13 @@ extension Lens where Whole == Project, Part == User {
   }
 }
 
-extension Lens where Whole == Project, Part == Location {
-  public var name: Lens<Project, String> {
-    return Project.lens.location .. Location.lens.name
+extension Project {
+  public var locationName: String? {
+    self.location?.name
   }
 
-  public var displayableName: Lens<Project, String> {
-    return Project.lens.location .. Location.lens.displayableName
+  public var locationDisplayableName: String? {
+    self.location?.displayableName
   }
 }
 
