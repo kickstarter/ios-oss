@@ -115,7 +115,7 @@ jobs:
           command: xcodebuild -version > xcode_version.txt
       - run:
           name: Bootstrap SPM
-          command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
+          command: xcodebuild -resolvePackageDependencies -disablePackageRepositoryCache -clonedSourcePackagesDirPath SourcePackages
       - run:
           name: Bootstrap
           command: make bootstrap
