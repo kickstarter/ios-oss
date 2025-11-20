@@ -13,7 +13,7 @@ internal final class CommentCellHeaderStackViewTests: TestCase {
     CommentCellHeaderStackView(frame: CGRect(
       x: 0,
       y: 0,
-      width: UIScreen.main.bounds.width,
+      width: 375,
       height: Styles.grid(9)
     ))
 
