@@ -123,19 +123,19 @@ final class PledgeShippingLocationViewController: UIViewController {
       self.delegate?.pledgeShippingLocationViewControllerLayoutDidUpdate(self, shimmerLoadingViewIsHidden)
     }
 
-    self.viewModel.outputs.notifyDelegateOfSelectedShippingRule
+    self.viewModel.outputs.notifyDelegateOfSelectedShippingLocation
       .observeForUI()
-      .observeValues { [weak self] shippingRule in
+      .observeValues { [weak self] location in
         guard let self = self else { return }
 
-        self.delegate?.pledgeShippingLocationViewController(self, didSelect: shippingRule.location)
+        self.delegate?.pledgeShippingLocationViewController(self, didSelect: location)
       }
 
     self.viewModel.outputs.presentShippingRules
       .observeForUI()
-      .observeValues { [weak self] project, shippingRules, selectedShippingRule in
+      .observeValues { [weak self] project, shippingRules, location in
         self?.presentShippingRules(
-          project, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule
+          project, shippingRules: shippingRules, selectedLocation: location
         )
       }
 
@@ -169,41 +169,29 @@ final class PledgeShippingLocationViewController: UIViewController {
   // MARK: - Functions
 
   private func presentShippingRules(
-    _: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule
+    _: Project, shippingRules: [ShippingRule], selectedLocation: Location
   ) {
     let viewController = ShippingLocationsViewController(
       withLocations: shippingRules.map { $0.location },
-      selectedLocation: selectedShippingRule.location
-    ) { _ in
-      // TODO:
+      selectedLocation: selectedLocation
+    ) { location in
+
+      self.viewModel.inputs.shippingLocationUpdated(to: location)
     }
     self.presentViewControllerWithSheetOverlay(viewController, offset: Layout.Sheet.offset)
-
-    /*
-     let viewController = ShippingRulesTableViewController.instantiate()
-     viewController.configureWith(
-       project, shippingRules: shippingRules,
-       selectedShippingRule: selectedShippingRule
-     )
-     viewController.delegate = self
-
-     let navigationController = UINavigationController(rootViewController: viewController)
-
-     self.presentViewControllerWithSheetOverlay(navigationController, offset: Layout.Sheet.offset)
-      */
   }
 }
 
 extension PledgeShippingLocationViewController: ShippingRulesTableViewControllerDelegate {
   func shippingRulesTableViewControllerCancelButtonTapped() {
-    self.viewModel.inputs.shippingRulesCancelButtonTapped()
+    // self.viewModel.inputs.shippingLocationCancelButtonTapped()
   }
 
   func shippingRulesTableViewController(
     _: ShippingRulesTableViewController,
-    didSelect shippingRule: ShippingRule
+    didSelect _: ShippingRule
   ) {
-    self.viewModel.inputs.shippingRuleUpdated(to: shippingRule)
+    //  self.viewModel.inputs.shippingLocationUpdated(to: lo)
   }
 }
 

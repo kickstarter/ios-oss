@@ -12,16 +12,16 @@ public struct PledgeShippingLocationViewData {
 public protocol PledgeShippingLocationViewModelInputs {
   func configureWith(data: PledgeShippingLocationViewData)
   func shippingLocationButtonTapped()
-  func shippingRulesCancelButtonTapped()
-  func shippingRuleUpdated(to rule: ShippingRule)
+  func shippingLocationCancelButtonTapped()
+  func shippingLocationUpdated(to rule: Location)
   func viewDidLoad()
 }
 
 public protocol PledgeShippingLocationViewModelOutputs {
   var adaptableStackViewIsHidden: Signal<Bool, Never> { get }
   var dismissShippingRules: Signal<Void, Never> { get }
-  var presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never> { get }
-  var notifyDelegateOfSelectedShippingRule: Signal<ShippingRule, Never> { get }
+  var presentShippingRules: Signal<(Project, [ShippingRule], Location), Never> { get }
+  var notifyDelegateOfSelectedShippingLocation: Signal<Location, Never> { get }
   var shimmerLoadingViewIsHidden: Signal<Bool, Never> { get }
   var shippingLocationButtonTitle: Signal<String, Never> { get }
   var shippingRulesError: Signal<String, Never> { get }
@@ -76,29 +76,30 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
       selectedLocationId
     )
     .map(determineShippingRule)
+    .map { $0?.location }
 
     self.shippingRulesError = shippingRulesEvent.errors().map { _ in
       Strings.We_were_unable_to_load_the_shipping_destinations()
     }
 
-    self.notifyDelegateOfSelectedShippingRule = Signal.merge(
+    self.notifyDelegateOfSelectedShippingLocation = Signal.merge(
       initialShippingRule.skipNil(),
-      self.shippingRuleUpdatedSignal
+      self.shippingLocationUpdatedSignal
     )
 
     self.presentShippingRules = Signal.combineLatest(
       project,
       shippingRulesEvent.values(),
-      self.notifyDelegateOfSelectedShippingRule
+      self.notifyDelegateOfSelectedShippingLocation
     )
     .takeWhen(self.shippingLocationButtonTappedSignal)
 
-    self.shippingLocationButtonTitle = self.notifyDelegateOfSelectedShippingRule
-      .map { $0.location.localizedName }
+    self.shippingLocationButtonTitle = self.notifyDelegateOfSelectedShippingLocation
+      .map { $0.localizedName }
 
     self.dismissShippingRules = Signal.merge(
-      self.shippingRulesCancelButtonTappedProperty.signal,
-      self.shippingRuleUpdatedSignal.signal
+      self.shippingLocationCancelButtonTappedProperty.signal,
+      self.shippingLocationUpdatedSignal.signal
         .ignoreValues()
         .ksr_debounce(.milliseconds(300), on: AppEnvironment.current.scheduler)
     )
@@ -115,14 +116,15 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
     self.shippingLocationButtonTappedObserver.send(value: ())
   }
 
-  private let shippingRulesCancelButtonTappedProperty = MutableProperty(())
-  public func shippingRulesCancelButtonTapped() {
-    self.shippingRulesCancelButtonTappedProperty.value = ()
+  private let shippingLocationCancelButtonTappedProperty = MutableProperty(())
+  public func shippingLocationCancelButtonTapped() {
+    self.shippingLocationCancelButtonTappedProperty.value = ()
   }
 
-  private let (shippingRuleUpdatedSignal, shippingRuleUpdatedObserver) = Signal<ShippingRule, Never>.pipe()
-  public func shippingRuleUpdated(to rule: ShippingRule) {
-    self.shippingRuleUpdatedObserver.send(value: rule)
+  private let (shippingLocationUpdatedSignal, shippingLocationUpdatedObserver) = Signal<Location, Never>
+    .pipe()
+  public func shippingLocationUpdated(to location: Location) {
+    self.shippingLocationUpdatedObserver.send(value: location)
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -132,8 +134,8 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
 
   public let adaptableStackViewIsHidden: Signal<Bool, Never>
   public let dismissShippingRules: Signal<Void, Never>
-  public let presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never>
-  public let notifyDelegateOfSelectedShippingRule: Signal<ShippingRule, Never>
+  public let presentShippingRules: Signal<(Project, [ShippingRule], Location), Never>
+  public let notifyDelegateOfSelectedShippingLocation: Signal<Location, Never>
   public let shimmerLoadingViewIsHidden: Signal<Bool, Never>
   public let shippingLocationButtonTitle: Signal<String, Never>
   public let shippingRulesError: Signal<String, Never>
