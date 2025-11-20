@@ -15,7 +15,7 @@ public struct Project {
   public var flagging: Bool?
   public var id: Int
   public var lastWave: LastWave?
-  public var location: Location
+  public var location: Location?
   public var name: String
   public var pledgeManager: PledgeManager?
   public var pledgeOverTimeCollectionPlanChargeExplanation: String?

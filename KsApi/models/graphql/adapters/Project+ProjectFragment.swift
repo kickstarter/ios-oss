@@ -27,14 +27,17 @@ extension Project {
       let categoryFragment = projectFragment.category?.fragments.categoryFragment,
       let category = Project.Category.category(from: categoryFragment),
       let dates = projectDates(from: projectFragment),
-      let locationFragment = projectFragment.location?.fragments.locationFragment,
-      let location = Location.location(from: locationFragment),
       let memberData = projectMemberData(from: projectFragment),
       let photo = projectPhoto(from: projectFragment),
       let state = projectState(from: projectFragment.state.value),
       let userFragment = projectFragment.creator?.fragments.userFragment,
       let creator = User.user(from: userFragment)
     else { return nil }
+
+    var location: Location?
+    if let locationFragment = projectFragment.location?.fragments.locationFragment {
+      location = Location.location(from: locationFragment)
+    }
 
     let urls = Project.UrlsEnvelope(
       web: UrlsEnvelope.WebEnvelope(project: projectFragment.url, updates: projectFragment.url + "/posts")
