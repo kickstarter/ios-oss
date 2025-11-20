@@ -48,7 +48,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
       XCTAssertEqual(project.lastWave!.id, 259)
       XCTAssertTrue(project.lastWave!.active)
 
-      XCTAssertEqual(project.location.country, "US")
+      XCTAssertEqual(project.location?.country, "US")
       XCTAssertEqual(project.name, "FINAL GAMBLE Issue #1")
 
       XCTAssertNotNil(project.pledgeManager)

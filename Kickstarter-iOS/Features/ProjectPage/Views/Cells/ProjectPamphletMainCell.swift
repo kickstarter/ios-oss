@@ -279,6 +279,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.fundingProgressBarView.rac.backgroundColor =
       self.viewModel.outputs.fundingProgressBarViewBackgroundColor
     self.locationNameLabel.rac.text = self.viewModel.outputs.locationNameLabelText
+    self.locationStackView.rac.hidden = self.viewModel.outputs.locationStackViewHidden
     self.pledgeSubtitleLabel.rac.text = self.viewModel.outputs.pledgedSubtitleLabelText
     self.pledgeSubtitleLabel.rac.textColor = self.viewModel.outputs.pledgedTitleLabelTextColor
     self.pledgedTitleLabel.rac.text = self.viewModel.outputs.pledgedTitleLabelText

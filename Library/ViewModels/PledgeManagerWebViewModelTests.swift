@@ -9,8 +9,8 @@ final class PledgeManagerWebViewModelTests: TestCase {
   fileprivate let vm: PledgeManagerWebViewModelType = PledgeManagerWebViewModel()
 
   fileprivate let dismissViewController = TestObserver<Void, Never>()
-  fileprivate let goToNativeScreen = TestObserver<NativeNatigationRequest, Never>()
-  fileprivate let goToUpdate = TestObserver<(Project, Update), Never>()
+  fileprivate let goToNativeScreen = TestObserver<PledgeManagerNativeNatigationRequest, Never>()
+  fileprivate let presentUpdateVC = TestObserver<(Project, Update), Never>()
   fileprivate let goToLoginSignup = TestObserver<LoginIntent, Never>()
   fileprivate let title = TestObserver<String?, Never>()
   fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, Never>()
@@ -21,7 +21,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
 
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.vm.outputs.goToNativeScreen.observe(self.goToNativeScreen.observer)
-    self.vm.outputs.goToUpdate.observe(self.goToUpdate.observer)
+    self.vm.outputs.presentUpdateVC.observe(self.presentUpdateVC.observer)
     self.vm.outputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
     self.vm.outputs.title.observe(self.title.observer)
     self.vm.outputs.webViewLoadRequest
@@ -208,7 +208,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
       fetchProjectResult: .success(project),
       fetchUpdateResponse: update
     )) {
-      self.goToUpdate.assertDidNotEmitValue()
+      self.presentUpdateVC.assertDidNotEmitValue()
       self.goToNativeScreen.assertDidNotEmitValue()
 
       let updateId = 1
@@ -225,11 +225,11 @@ final class PledgeManagerWebViewModelTests: TestCase {
 
       self.goToNativeScreen.assertLastValue(.goToUpdate(param: .slug(project.slug), updateId: updateId))
 
-      self.vm.inputs.goToUpdateRequested(param: .slug(project.slug), updateId: updateId)
+      self.vm.inputs.fetchUpdateVCData(param: .slug(project.slug), updateId: updateId)
 
       self.dismissViewController.assertDidNotEmitValue()
-      self.goToUpdate.assertValueCount(1)
-      let (projectResult, updateResult) = self.goToUpdate.lastValue!
+      self.presentUpdateVC.assertValueCount(1)
+      let (projectResult, updateResult) = self.presentUpdateVC.lastValue!
       XCTAssertEqual(project, projectResult, "Update project is wrong.")
       XCTAssertEqual(update, updateResult, " Update is wrong.")
     }

@@ -69,6 +69,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string to use for the location name label.
   var locationNameLabelText: Signal<String, Never> { get }
 
+  /// Emits a bool for if the location stack view should be hidden.
+  var locationStackViewHidden: Signal<Bool, Never> { get }
+
   /// Emits the project when we should go to the creator's view for the project.
   var notifyDelegateToGoToCreator: Signal<any ProjectPamphletMainCellConfiguration, Never> { get }
 
@@ -245,6 +248,8 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     self.locationNameLabelText = properties.map { $0.locationName }
 
+    self.locationStackViewHidden = properties.map { $0.locationName.isEmpty }
+
     self.pledgedTitleLabelText = propertiesAndNeedsConversion.map { properties, needsConversion in
       pledgedText(for: properties, needsConversion)
     }
@@ -334,6 +339,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let isPrelaunchProject: Signal<Bool, Never>
   public let fundingProgressBarViewBackgroundColor: Signal<UIColor, Never>
   public let locationNameLabelText: Signal<String, Never>
+  public let locationStackViewHidden: Signal<Bool, Never>
   public let notifyDelegateToGoToCreator: Signal<any ProjectPamphletMainCellConfiguration, Never>
   public let notifyDelegateToGoToProjectNotice: Signal<(), Never>
   public let opacityForViews: Signal<CGFloat, Never>

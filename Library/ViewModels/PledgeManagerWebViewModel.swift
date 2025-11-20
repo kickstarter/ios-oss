@@ -7,7 +7,7 @@ import WebKit
 
 // All requests that can be intercepted from the web view and opened natively
 // should be defined in this enum.
-public enum NativeNatigationRequest: Equatable {
+public enum PledgeManagerNativeNatigationRequest: Equatable {
   case goToProject(param: Param, refTag: RefTag?)
   case goToUpdate(param: Param, updateId: Int)
   case goToPledge(param: Param)
@@ -24,7 +24,7 @@ public protocol PledgeManagerWebViewModelInputs {
   func decidePolicyFor(navigationAction: WKNavigationActionData) -> WKNavigationActionPolicy
 
   /// Call when view model should handle fetching the necessary data and trigger `goToUpdate`.
-  func goToUpdateRequested(param: Param, updateId: Int)
+  func fetchUpdateVCData(param: Param, updateId: Int)
 
   /// Call when the user session starts.
   func userSessionStarted()
@@ -38,10 +38,10 @@ public protocol PledgeManagerWebViewModelOutputs {
   var dismissViewController: Signal<Void, Never> { get }
 
   /// Emits native navigation request for the view controller to handle.
-  var goToNativeScreen: Signal<NativeNatigationRequest, Never> { get }
+  var goToNativeScreen: Signal<PledgeManagerNativeNatigationRequest, Never> { get }
 
   /// Emits a project and update that should be used to present the update view controller.
-  var goToUpdate: Signal<(Project, Update), Never> { get }
+  var presentUpdateVC: Signal<(Project, Update), Never> { get }
 
   /// Emits a login intent that should be used to log in.
   var goToLoginSignup: Signal<LoginIntent, Never> { get }
@@ -124,7 +124,7 @@ public final class PledgeManagerWebViewModel: PledgeManagerWebViewModelType {
       .map(nativeNavigationRequestForURLRequest)
       .skipNil()
 
-    self.goToUpdate = self.goToUpdateRequestedProperty.signal.skipNil()
+    self.presentUpdateVC = self.fetchUpdateVCDataProperty.signal.skipNil()
       .switchMap { (param: Param, updateId: Int) in
         AppEnvironment.current.apiService.fetchProject(param: param)
           .demoteErrors()
@@ -196,9 +196,9 @@ public final class PledgeManagerWebViewModel: PledgeManagerWebViewModelType {
     self.initialUrlProperty.value = url
   }
 
-  fileprivate let goToUpdateRequestedProperty = MutableProperty<(Param, Int)?>(nil)
-  public func goToUpdateRequested(param: Param, updateId: Int) {
-    self.goToUpdateRequestedProperty.value = (param, updateId)
+  fileprivate let fetchUpdateVCDataProperty = MutableProperty<(Param, Int)?>(nil)
+  public func fetchUpdateVCData(param: Param, updateId: Int) {
+    self.fetchUpdateVCDataProperty.value = (param, updateId)
   }
 
   fileprivate let userSessionStartedProperty = MutableProperty(())
@@ -210,8 +210,8 @@ public final class PledgeManagerWebViewModel: PledgeManagerWebViewModelType {
   public func viewDidLoad() { self.viewDidLoadProperty.value = () }
 
   public let dismissViewController: Signal<Void, Never>
-  public let goToNativeScreen: Signal<NativeNatigationRequest, Never>
-  public let goToUpdate: Signal<(Project, Update), Never>
+  public let goToNativeScreen: Signal<PledgeManagerNativeNatigationRequest, Never>
+  public let presentUpdateVC: Signal<(Project, Update), Never>
   public let webViewLoadRequest: Signal<URLRequest, Never>
   public let goToLoginSignup: Signal<LoginIntent, Never>
   public let title: Signal<String?, Never>
@@ -224,24 +224,17 @@ public final class PledgeManagerWebViewModel: PledgeManagerWebViewModelType {
 // the view controller so it can open their native views. Any request that
 // doesn't have a corresponding native request will either be displayed in the
 // webview or be discarded.
-private func nativeNavigationRequestForURLRequest(_ request: URLRequest) -> NativeNatigationRequest? {
-  if case let (.project(param, .root, refInfo, _))? = Navigation.match(request) {
+private func nativeNavigationRequestForURLRequest(_ request: URLRequest)
+  -> PledgeManagerNativeNatigationRequest? {
+  switch Navigation.match(request) {
+  case let (.project(param, .root, refInfo, _))?:
     return .goToProject(param: param, refTag: refInfo?.refTag)
-  }
-
-  if case let (.project(param, .pledge, _, _))? = Navigation.match(request) {
+  case let (.project(param, .pledge, _, _))?:
     return .goToPledge(param: param)
-  }
-
-  if case let (.project(param, .update(id, _), _, _))? = Navigation.match(request) {
+  case let (.project(param, .update(id, _), _, _))?:
     return .goToUpdate(param: param, updateId: id)
+  default: return nil
   }
-  return nil
-}
-
-private func isKickstarterRequest(_ request: URLRequest) -> Bool {
-  guard let host = request.url?.host() else { return false }
-  return host.hasSuffix("kickstarter.com")
 }
 
 private func isUnpreparedSupportedRequest(request: URLRequest) -> Bool {

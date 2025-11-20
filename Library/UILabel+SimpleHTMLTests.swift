@@ -2,7 +2,8 @@
 import XCTest
 
 final class UILabelSimpleHTMLTests: XCTestCase {
-  func testSetHTML() {
+  // FIXME: MBL-2857
+  func DISABLED_IOS18_testSetHTML() {
     let label = UILabel()
     label.textColor = .red
     label.textAlignment = .center

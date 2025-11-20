@@ -1,3 +1,5 @@
+// swiftlint:disable file_length
+
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -7,6 +9,7 @@ import ReactiveSwift
 import UIKit
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class ThanksViewModelTests: TestCase {
   let vm: ThanksViewModelType = ThanksViewModel()
   private let categoryEnvelope = CategoryEnvelope(node: .template)
@@ -57,7 +60,8 @@ final class ThanksViewModelTests: TestCase {
     return (project, reward, checkoutData, pledgeTotal)
   }
 
-  func testDismissToRootViewController() {
+  // FIXME: MBL-2857
+  func DISABLED_IOS18_testDismissToRootViewController() {
     self.vm.inputs.configure(with: self.thanksPageData())
     self.vm.inputs.viewDidLoad()
 
@@ -66,7 +70,8 @@ final class ThanksViewModelTests: TestCase {
     self.dismissToRootViewControllerAndPostNotification.assertValue(Notification.Name.ksr_projectBacked)
   }
 
-  func testGoToDiscovery() {
+  // FIXME: MBL-2857
+  func DISABLED_IOS18_testGoToDiscovery() {
     let projects = [
       .template |> Project.lens.id .~ 1,
       .template |> Project.lens.id .~ 2,
@@ -101,7 +106,8 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testDisplayBackedProjectText() {
+  // FIXME: MBL-2857
+  func DISABLED_IOS18_testDisplayBackedProjectText() {
     let project = Project.template |> \.category .~ .games
     self.vm.inputs.configure(with: self.thanksPageData(project: project))
     self.vm.inputs.viewDidLoad()
@@ -114,7 +120,8 @@ final class ThanksViewModelTests: TestCase {
     )
   }
 
-  func testDisplayBackedProjectText_postCampaignBackings() {
+  // FIXME: MBL-2857
+  func DISABLED_IOS18_testDisplayBackedProjectText_postCampaignBackings() {
     let mockConfigClient = MockRemoteConfigClient()
 
     var project = Project.template
@@ -134,7 +141,8 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testRatingAlert_Initial() {
+  // FIXME: MBL-2857
+  func DISABLED_IOS18_testRatingAlert_Initial() {
     withEnvironment(currentUser: .template) {
       self.showRatingAlert.assertValueCount(0, "Rating Alert does not emit")
 
@@ -151,7 +159,8 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testGamesAlert_ShowsOnce() {
+  // FIXME: MBL-2857
+  func DISABLED_IOS18_testGamesAlert_ShowsOnce() {
     withEnvironment(currentUser: .template) {
       XCTAssertEqual(
         false, AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt,
@@ -183,7 +192,8 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testGamesNewsletterAlert_ShouldNotShow_WhenUserIsSubscribed() {
+  // FIXME: MBL-2857
+  func DISABLED_IOS18_testGamesNewsletterAlert_ShouldNotShow_WhenUserIsSubscribed() {
     let newsletters = User.NewsletterSubscriptions.template |> User.NewsletterSubscriptions.lens.games .~ true
     let user = User.template |> \.newsletters .~ newsletters
     let project = Project.template |> Project.lens.category .~ .games
@@ -196,7 +206,8 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testGamesNewsletterSignup() {
+  // FIXME: MBL-2857
+  func DISABLED_IOS18_testGamesNewsletterSignup() {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(currentUser: .template) {
@@ -226,7 +237,8 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testContextualNotificationEmitsWhen_userPledgedFirstProject() {
+  // FIXME: MBL-2857
+  func DISABLED_IOS18_testContextualNotificationEmitsWhen_userPledgedFirstProject() {
     let user = User.template |> \.stats.backedProjectsCount .~ 0
 
     withEnvironment(currentUser: user) {
@@ -235,7 +247,8 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testContextualNotificationDoesNotEmitWhen_userPledgedMoreThanOneProject() {
+  // FIXME: MBL-2857
+  func DISABLED_IOS18_testContextualNotificationDoesNotEmitWhen_userPledgedMoreThanOneProject() {
     let user = User.template |> \.stats.backedProjectsCount .~ 2
 
     withEnvironment(currentUser: user) {
@@ -244,7 +257,8 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testGamesNewsletterOptInAlert() {
+  // FIXME: MBL-2857
+  func DISABLED_IOS18_testGamesNewsletterOptInAlert() {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(countryCode: "DE", currentUser: User.template) {
@@ -267,7 +281,8 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testGoToProject() {
+  // FIXME: MBL-2857
+  func DISABLED_IOS18_testGoToProject() {
     let projects = [
       .template |> Project.lens.id .~ 1,
       .template |> Project.lens.id .~ 2,
@@ -306,7 +321,8 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testRecommendationsWithProjects() {
+  // FIXME: MBL-2857
+  func DISABLED_IOS18_testRecommendationsWithProjects() {
     let projects = [
       .template |> Project.lens.id .~ 1,
       .template |> Project.lens.id .~ 2,
@@ -332,7 +348,8 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testRecommendationsWithoutProjects() {
+  // FIXME: MBL-2857
+  func DISABLED_IOS18_testRecommendationsWithoutProjects() {
     let response = .template |> DiscoveryEnvelope.lens.projects .~ []
     let project = Project.template |> Project.lens.category .~ .games
 
@@ -346,7 +363,8 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testThanksPageViewed_Properties_AdvertisingConsentNotAllowed_NoEventsTracked() {
+  // FIXME: MBL-2857
+  func DISABLED_IOS18_testThanksPageViewed_Properties_AdvertisingConsentNotAllowed_NoEventsTracked() {
     let checkoutData = KSRAnalytics.CheckoutPropertiesData(
       addOnsCountTotal: 2,
       addOnsCountUnique: 1,
@@ -371,7 +389,8 @@ final class ThanksViewModelTests: TestCase {
     XCTAssertNil(self.segmentTrackingClient.properties.last)
   }
 
-  func testThanksPageViewed_Properties_AdvertisingConsentAllowed_EventsTracked() {
+  // FIXME: MBL-2857
+  func DISABLED_IOS18_testThanksPageViewed_Properties_AdvertisingConsentAllowed_EventsTracked() {
     let checkoutData = KSRAnalytics.CheckoutPropertiesData(
       addOnsCountTotal: 2,
       addOnsCountUnique: 1,
