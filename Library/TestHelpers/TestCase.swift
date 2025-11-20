@@ -102,7 +102,14 @@ internal class TestCase: XCTestCase {
     let deviceName = ProcessInfo().environment["SIMULATOR_VERSION_INFO"]
     let iOSVersion = ProcessInfo().environment["SIMULATOR_RUNTIME_VERSION"]
 
-    // Keep this check in sync with the device specified in `.cicleci/config.yml` and `Makefile`.
+    // FIXME: The reason for this version mismatch is that CircleCI uses iOS simulators on 18.5,
+    // but we cannot seem to create them unless they are on 18.6. Apple's release notes suggest
+    // that 18.5 -> 18.6 is a minor change that mostly affects security and stability, so this
+    // is likely not a big deal for our own use, but it may introduce hard-to-debug CI failures
+    // because the versions aren't exactly equal. This change should be removed as soon as is
+    // possible, and only one version should be required here.
+    // https://kickstarter.atlassian.net/browse/MBL-2861
+    // NOTE: Keep this check in sync with the device specified in `.cicleci/config.yml` and `Makefile`.
     guard
       deviceName!.localizedStandardContains("iPad mini (A17 Pro)"),
       iOSVersion == "18.5" || iOSVersion == "18.6"
