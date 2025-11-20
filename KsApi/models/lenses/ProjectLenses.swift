@@ -391,12 +391,11 @@ extension Project {
           location: updatedLocation,
           name: project.name,
           pledgeManager: project.pledgeManager,
-          pledgeOverTimeCollectionPlanChargeExplanation:
-          project.pledgeOverTimeCollectionPlanChargeExplanation,
-          pledgeOverTimeCollectionPlanChargedAsNPayments:
-          project.pledgeOverTimeCollectionPlanChargedAsNPayments,
-          pledgeOverTimeCollectionPlanShortPitch:
-          project.pledgeOverTimeCollectionPlanShortPitch,
+          pledgeOverTimeCollectionPlanChargeExplanation: project
+            .pledgeOverTimeCollectionPlanChargeExplanation,
+          pledgeOverTimeCollectionPlanChargedAsNPayments: project
+            .pledgeOverTimeCollectionPlanChargedAsNPayments,
+          pledgeOverTimeCollectionPlanShortPitch: project.pledgeOverTimeCollectionPlanShortPitch,
           pledgeOverTimeMinimumExplanation: project.pledgeOverTimeMinimumExplanation,
           personalization: project.personalization,
           photo: project.photo,

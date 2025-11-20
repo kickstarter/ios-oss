@@ -286,8 +286,8 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.locationStackViewHidden = params.map { $0 != nil }
 
-    self.locationLabelText = configuredProject.map { proj in
-      proj.location?.name ?? ""
+    self.locationLabelText = configuredProject.map { project in
+      project.location?.name ?? ""
     }
   }
 
