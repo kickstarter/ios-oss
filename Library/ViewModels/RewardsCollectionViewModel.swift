@@ -133,8 +133,10 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       hasShippableRewards.filter(isTrue)
     )
     .map { project, _ in
-      // TODO: Reward will be removed from  ShippingLocationViewData once we remove the selector from Add-Ons
-      (project, project.rewards[0], false, nil)
+      PledgeShippingLocationViewData(
+        project: project,
+        selectedLocationId: nil
+      )
     }
 
     let selectedRewardFromId = rewards
