@@ -3561,6 +3561,7 @@
 		E1BBB66D2E035BDD00291D48 /* FetchLocationsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLocationsUseCase.swift; sourceTree = "<group>"; };
 		E1BBB66E2E035BDD00291D48 /* FetchLocationsUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLocationsUseCaseTests.swift; sourceTree = "<group>"; };
 		E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiscoveryParams_Sort+SortOption.swift"; sourceTree = "<group>"; };
+		E1D529FC2ED4D21A00923AA9 /* ShippableLocationsQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ShippableLocationsQuery.graphql; sourceTree = "<group>"; };
 		E1D569B92E09D5CB00C78297 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
 		E1D569C52E0C787800C78297 /* AmountRaisedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountRaisedView.swift; sourceTree = "<group>"; };
 		E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersHeaderViewTests.swift; sourceTree = "<group>"; };
@@ -7741,6 +7742,7 @@
 				E190EB672E29944E006A6DB6 /* FetchUserSetup.graphql */,
 				E190EB682E29944E006A6DB6 /* FetchUserStoredCards.graphql */,
 				E190EB692E29944E006A6DB6 /* LocationsByTermQuery.graphql */,
+				E1D529FC2ED4D21A00923AA9 /* ShippableLocationsQuery.graphql */,
 				E190EB6A2E29944E006A6DB6 /* SearchQuery.graphql */,
 				E190EB6B2E29944E006A6DB6 /* SimilarProjectQuery.graphql */,
 				E190EB6C2E29944E006A6DB6 /* ValidateCheckout.graphql */,

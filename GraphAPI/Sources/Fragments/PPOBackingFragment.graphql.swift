@@ -164,7 +164,7 @@ public struct PPOBackingFragment: GraphAPI.SelectionSet, Fragment {
     public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
     /// Project rewards.
     public var rewards: Rewards? { __data["rewards"] }
-    /// The project's current state.
+    /// The project's current state in the state machine.
     public var state: GraphQLEnum<GraphAPI.ProjectState> { __data["state"] }
     /// A project video.
     public var video: Video? { __data["video"] }

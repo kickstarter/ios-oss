@@ -37,4 +37,13 @@ extension Location {
       return KsApi.Location.location(from: fragment)
     }
   }
+
+  public static func locations(from data: GraphAPI.ShippableLocationsQuery.Data) -> [Location] {
+    let nodes = data.shippingCountryLocations
+
+    return nodes.compactMap { node in
+      let fragment = node.fragments.locationFragment
+      return KsApi.Location.location(from: fragment)
+    }
+  }
 }

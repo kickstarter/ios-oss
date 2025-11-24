@@ -44,6 +44,7 @@ public enum Feature: String, EnumType {
   case ksr10BuildOverview = "ksr10_build_overview"
   case meGenerativeArt = "me_generative_art"
   case projectBuildRewardsExplorer = "project_build_rewards_explorer"
+  case projectBuildIntercom = "project_build_intercom"
   case projectBuildZendesk = "project_build_zendesk"
   case projectBuildMilestones = "project_build_milestones"
   case userMenuDraftProject = "user_menu_draft_project"
