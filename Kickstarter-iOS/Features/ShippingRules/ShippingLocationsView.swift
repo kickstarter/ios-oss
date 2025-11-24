@@ -57,10 +57,9 @@ private struct ShippingLocationsView: View {
       }
       .searchable(
         text: self.$searchText,
-        placement: .navigationBarDrawer(displayMode: .always),
-        prompt: Strings.Location_searchbox_placeholder() // TODO: what string
+        placement: .navigationBarDrawer(displayMode: .always)
       )
-      .navigationTitle(Strings.Location()) // TODO: what title
+      .navigationTitle(Strings.Location())
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button(Strings.Cancel()) {
