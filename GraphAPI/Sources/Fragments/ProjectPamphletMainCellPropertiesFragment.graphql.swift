@@ -49,7 +49,7 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
   public var projectDescription: String { __data["projectDescription"] }
   /// The project's creator.
   public var creator: Creator? { __data["creator"] }
-  /// The project's current state.
+  /// The project's current state in the state machine.
   public var state: GraphQLEnum<GraphAPI.ProjectState> { __data["state"] }
   /// The last time a project's state changed, time since epoch
   public var stateChangedAt: GraphAPI.DateTime { __data["stateChangedAt"] }

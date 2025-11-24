@@ -1,0 +1,5 @@
+query ShippableLocations {
+  shippingCountryLocations {
+    ...LocationFragment
+  }
+}
