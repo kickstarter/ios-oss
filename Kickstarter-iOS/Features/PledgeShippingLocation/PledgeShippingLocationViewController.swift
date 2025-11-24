@@ -174,25 +174,11 @@ final class PledgeShippingLocationViewController: UIViewController {
   ) {
     let viewController = ShippingLocationsViewController(
       withLocations: locations,
-      selectedLocation: selectedLocation
-    ) { location in
-
-      self.viewModel.inputs.shippingLocationUpdated(to: location)
-    }
+      selectedLocation: selectedLocation,
+      onSelectedLocation: { self.viewModel.inputs.shippingLocationUpdated(to: $0) },
+      onCancelled: { self.viewModel.inputs.shippingLocationCancelButtonTapped() }
+    )
     self.presentViewControllerWithSheetOverlay(viewController, offset: Layout.Sheet.offset)
-  }
-}
-
-extension PledgeShippingLocationViewController: ShippingRulesTableViewControllerDelegate {
-  func shippingRulesTableViewControllerCancelButtonTapped() {
-    // self.viewModel.inputs.shippingLocationCancelButtonTapped()
-  }
-
-  func shippingRulesTableViewController(
-    _: ShippingRulesTableViewController,
-    didSelect _: ShippingRule
-  ) {
-    //  self.viewModel.inputs.shippingLocationUpdated(to: lo)
   }
 }
 
