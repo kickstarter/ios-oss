@@ -51,12 +51,12 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
     let shippingShouldBeginLoading = project
       .mapConst(true)
 
-    let shippingLocationsEvent = project
-      .switchMap { project in
-        shippingLocations(forProject: project)
-      }
+    let locations: Signal<[Location], Never> = project.switchMap { p -> SignalProducer<[Location], Never> in
+      shippingLocations(forProject: p)
+        .demoteErrors(replaceErrorWith: [])
+    }
 
-    let shippingRulesLoadingCompleted = shippingLocationsEvent
+    let shippingRulesLoadingCompleted = locations
       .mapConst(false)
       .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
 
@@ -70,12 +70,13 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
 
     let initialShippingLocation = Signal.combineLatest(
       project,
-      shippingLocationsEvent,
+      locations,
       selectedLocationId
     )
     .map(determineShippingLocation)
 
-    self.shippingRulesError = Signal.never // TODO:
+    self.shippingRulesError = locations.map { $0 == [] ? "Shoot" : nil }
+      .skipNil()
 
     self.notifyDelegateOfSelectedShippingLocation = Signal.merge(
       initialShippingLocation.skipNil(),
@@ -83,7 +84,7 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
     )
 
     self.presentShippingLocations = Signal.combineLatest(
-      shippingLocationsEvent,
+      locations,
       self.notifyDelegateOfSelectedShippingLocation
     )
     .takeWhen(self.shippingLocationButtonTappedSignal)
