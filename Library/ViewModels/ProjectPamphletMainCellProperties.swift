@@ -28,7 +28,7 @@ public struct ProjectPamphletMainCellProperties {
   public let displayPrelaunch: Bool?
   public let isBacking: Bool?
   public let backersCount: Int
-  public let categoryName: String
+  public let categoryName: String?
   public let locationName: String
   public let deadline: TimeInterval?
   public let fxRate: Float
@@ -58,7 +58,7 @@ public struct ProjectPamphletMainCellProperties {
     displayPrelaunch: Bool?,
     isBacking: Bool?,
     backersCount: Int,
-    categoryName: String,
+    categoryName: String?,
     locationName: String,
     deadline: TimeInterval?,
     fxRate: Float,
@@ -127,7 +127,7 @@ extension Project: HasProjectPamphletMainCellProperties {
       displayPrelaunch: self.displayPrelaunch,
       isBacking: self.personalization.isBacking,
       backersCount: self.stats.backersCount,
-      categoryName: self.category.name,
+      categoryName: self.category?.name,
       locationName: self.location?.displayableName ?? "",
       deadline: self.dates.deadline,
       fxRate: self.stats.userCurrencyRate ?? self.stats.staticUsdRate,

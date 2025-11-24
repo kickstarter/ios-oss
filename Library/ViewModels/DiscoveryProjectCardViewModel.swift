@@ -171,7 +171,7 @@ private func projectCategoryTagShouldHide(for project: Project, in category: KsA
     return false
   }
 
-  return project.category.id == category.intID
+  return project.category?.id == category.intID
 }
 
 private func projectPWLTagShouldHide(project: Project) -> Bool {
@@ -194,10 +194,10 @@ private func projectTags(project: Project, category: KsApi.Category?) -> [Discov
     tags.append(pwlTag)
   }
 
-  if shouldShowCategoryTag {
+  if shouldShowCategoryTag, let category = project.category {
     let categoryTag = DiscoveryPillData(
       imageName: "icon--compass",
-      text: project.category.name,
+      text: category.name,
       type: .grey
     )
 

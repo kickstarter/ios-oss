@@ -54,15 +54,15 @@ extension Project: HasProjectAnalyticsProperties {
 
 extension Project: ProjectAnalyticsProperties {
   public var categoryAnalyticsName: String? {
-    self.category.analyticsName
+    self.category?.analyticsName
   }
 
   public var categoryParentAnalyticsName: String? {
-    self.category.parentAnalyticsName
+    self.category?.parentAnalyticsName
   }
 
   public var categoryParentId: String? {
-    self.category.parentId.flatMap(String.init)
+    self.category?.parentId.flatMap(String.init)
   }
 
   public var countryCode: String {

@@ -105,7 +105,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     let shouldShowGamesAlert = project
       .map { project in
-        project.category.rootId == KsApi.Category.gamesId &&
+        project.category?.rootId == KsApi.Category.gamesId &&
           !(AppEnvironment.current.currentUser?.newsletters.games ?? false) &&
           !AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt
       }
@@ -138,7 +138,9 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       }
 
     let rootCategory: Signal<KsApi.Category, Never> = project
-      .map { toBase64($0.category) }
+      .map { $0.category }
+      .skipNil()
+      .map(toBase64)
       .flatMap {
         AppEnvironment.current.apiService.fetchGraphCategory(id: $0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)

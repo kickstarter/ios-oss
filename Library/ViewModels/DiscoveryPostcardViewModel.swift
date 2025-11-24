@@ -29,7 +29,7 @@ private enum PostcardMetadataType {
         iconAndTextColor: LegacyColors.ksr_create_700.uiColor()
       )
     case .featured:
-      guard let rootCategory = project.category.parentName else { return nil }
+      guard let rootCategory = project.category?.parentName else { return nil }
       return PostcardMetadataData(
         iconImage: image(named: "metadata-featured"),
         labelText: Strings.discovery_baseball_card_metadata_featured_project(
@@ -224,7 +224,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map(fundingStatusText(forProject:))
 
     self.projectCategoryName = configuredProject
-      .map { $0.category.name }
+      .map { $0.category?.name ?? "" }
 
     self.projectCategoryViewHidden = Signal.combineLatest(
       configuredProject,
@@ -235,9 +235,11 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
         return false
       }
 
-      // if we are in a subcategory, compare categories
-      if !category.isRoot {
-        return Int(project.category.id) == category.intID
+      if let projectCategory = project.category {
+        // if we are in a subcategory, compare categories
+        if !category.isRoot {
+          return Int(projectCategory.id) == category.intID
+        }
       }
 
       // otherwise, always show category
