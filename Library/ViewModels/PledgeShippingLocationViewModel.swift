@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 import KsApi
 import Prelude
 import ReactiveExtensions
@@ -20,7 +21,7 @@ public protocol PledgeShippingLocationViewModelInputs {
 public protocol PledgeShippingLocationViewModelOutputs {
   var adaptableStackViewIsHidden: Signal<Bool, Never> { get }
   var dismissShippingRules: Signal<Void, Never> { get }
-  var presentShippingRules: Signal<(Project, [ShippingRule], Location), Never> { get }
+  var presentShippingLocations: Signal<([Location], Location), Never> { get }
   var notifyDelegateOfSelectedShippingLocation: Signal<Location, Never> { get }
   var shimmerLoadingViewIsHidden: Signal<Bool, Never> { get }
   var shippingLocationButtonTitle: Signal<String, Never> { get }
@@ -50,13 +51,12 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
     let shippingShouldBeginLoading = project
       .mapConst(true)
 
-    let shippingRulesEvent = project
-      .switchMap { project -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, Never> in
-        getShippingRulesForAllRewards(in: project)
+    let shippingLocationsEvent = project
+      .switchMap { project in
+        shippingLocations(forProject: project)
       }
 
-    let shippingRulesLoadingCompleted = shippingRulesEvent
-      .filter { $0.isTerminating }
+    let shippingRulesLoadingCompleted = shippingLocationsEvent
       .mapConst(false)
       .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
 
@@ -68,28 +68,22 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
     self.adaptableStackViewIsHidden = isLoading
     self.shimmerLoadingViewIsHidden = isLoading.negate()
 
-    let shippingRules = shippingRulesEvent.values()
-
-    let initialShippingRule = Signal.combineLatest(
+    let initialShippingLocation = Signal.combineLatest(
       project,
-      shippingRules,
+      shippingLocationsEvent,
       selectedLocationId
     )
-    .map(determineShippingRule)
-    .map { $0?.location }
+    .map(determineShippingLocation)
 
-    self.shippingRulesError = shippingRulesEvent.errors().map { _ in
-      Strings.We_were_unable_to_load_the_shipping_destinations()
-    }
+    self.shippingRulesError = Signal.never // TODO:
 
     self.notifyDelegateOfSelectedShippingLocation = Signal.merge(
-      initialShippingRule.skipNil(),
+      initialShippingLocation.skipNil(),
       self.shippingLocationUpdatedSignal
     )
 
-    self.presentShippingRules = Signal.combineLatest(
-      project,
-      shippingRulesEvent.values(),
+    self.presentShippingLocations = Signal.combineLatest(
+      shippingLocationsEvent,
       self.notifyDelegateOfSelectedShippingLocation
     )
     .takeWhen(self.shippingLocationButtonTappedSignal)
@@ -134,7 +128,7 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
 
   public let adaptableStackViewIsHidden: Signal<Bool, Never>
   public let dismissShippingRules: Signal<Void, Never>
-  public let presentShippingRules: Signal<(Project, [ShippingRule], Location), Never>
+  public let presentShippingLocations: Signal<([Location], Location), Never>
   public let notifyDelegateOfSelectedShippingLocation: Signal<Location, Never>
   public let shimmerLoadingViewIsHidden: Signal<Bool, Never>
   public let shippingLocationButtonTitle: Signal<String, Never>
@@ -163,18 +157,31 @@ private func shippingValue(of project: Project, with shippingRuleCost: Double) -
   return Format.attributedPlusSign(combinedAttributes) + attributedCurrency
 }
 
-private func determineShippingRule(
+private func determineShippingLocation(
   with project: Project,
-  shippingRules: [ShippingRule],
+  locations: [Location],
   selectedLocationId: Int?
-) -> ShippingRule? {
+) -> Location? {
   if
     let locationId = selectedLocationId ?? project.personalization.backing?.locationId,
-    let selectedShippingRule = shippingRules.first(where: { $0.location.id == locationId }) {
-    return selectedShippingRule
+    let selectedShippingLocation = locations.first(where: { $0.id == locationId }) {
+    return selectedShippingLocation
   }
 
-  return defaultShippingRule(fromShippingRules: shippingRules)
+  return defaultShippingLocation(fromLocations: locations)
+}
+
+private func shippingLocations(forProject _: Project) -> SignalProducer<[Location], ErrorEnvelope> {
+  let query = GraphAPI.LocationsByTermQuery(
+    term: GraphQLNullable.some("America"),
+    first: GraphQLNullable.some(25)
+  )
+  let signal = AppEnvironment.current.apiService.fetch(query: query)
+    .map { data in
+      let locations = Location.locations(from: data)
+      return locations
+    }
+  return signal
 }
 
 /*

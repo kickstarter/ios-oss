@@ -131,11 +131,11 @@ final class PledgeShippingLocationViewController: UIViewController {
         self.delegate?.pledgeShippingLocationViewController(self, didSelect: location)
       }
 
-    self.viewModel.outputs.presentShippingRules
+    self.viewModel.outputs.presentShippingLocations
       .observeForUI()
-      .observeValues { [weak self] project, shippingRules, location in
-        self?.presentShippingRules(
-          project: project, shippingRules: shippingRules, selectedLocation: location
+      .observeValues { [weak self] locations, location in
+        self?.presentShippingLocations(
+          locations: locations, selectedLocation: location
         )
       }
 
@@ -168,21 +168,10 @@ final class PledgeShippingLocationViewController: UIViewController {
 
   // MARK: - Functions
 
-  private func presentShippingRules(
-    project: Project, shippingRules _: [ShippingRule], selectedLocation: Location
+  private func presentShippingLocations(
+    locations: [Location],
+    selectedLocation: Location
   ) {
-    let locations: [Location] = project.rewards.map { $0.shippingRulesExpanded }
-      .map { rules in
-        rules?.map { $0.location }
-      }
-      .reduce([]) { allLocations, locations in
-        guard let locations = locations else {
-          return allLocations
-        }
-
-        return allLocations + locations
-      }
-
     let viewController = ShippingLocationsViewController(
       withLocations: locations,
       selectedLocation: selectedLocation
