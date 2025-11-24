@@ -114,11 +114,11 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     )
 
     /// Project Category
-    XCTAssertEqual(project.category.name, "Photobooks")
-    XCTAssertEqual(project.category.id, decompose(id: "Q2F0ZWdvcnktMjgw"))
-    XCTAssertEqual(project.category.analyticsName, "Photobooks")
-    XCTAssertEqual(project.category.parentId, decompose(id: "Q2F0ZWdvcnktMTU="))
-    XCTAssertEqual(project.category.parentName, "Photography")
+    XCTAssertEqual(project.category?.name, "Photobooks")
+    XCTAssertEqual(project.category?.id, decompose(id: "Q2F0ZWdvcnktMjgw"))
+    XCTAssertEqual(project.category?.analyticsName, "Photobooks")
+    XCTAssertEqual(project.category?.parentId, decompose(id: "Q2F0ZWdvcnktMTU="))
+    XCTAssertEqual(project.category?.parentName, "Photography")
 
     /// Project Country
     XCTAssertEqual(project.country.countryCode, "CA")
