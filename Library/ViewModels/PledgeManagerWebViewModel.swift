@@ -239,7 +239,7 @@ private func nativeNavigationRequestForURLRequest(_ request: URLRequest)
 
 private func isKickstarterRequest(_ request: URLRequest) -> Bool {
   guard let host = request.url?.host() else { return false }
-  return host.hasSuffix("kickstarter.com")
+  return host == AppEnvironment.current.apiService.serverConfig.webBaseUrl.host()
 }
 
 private func isUnpreparedSupportedRequest(request: URLRequest) -> Bool {

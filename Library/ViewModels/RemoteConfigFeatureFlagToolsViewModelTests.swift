@@ -60,33 +60,31 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
     }
   }
 
-  func testUpdateUserDefaultsWithFeature_FeatureIsEnabled() {
+  func testUpdateUserDefaultsWithFeature_FeatureIsDisabledAndEnabled() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [
-        RemoteConfigFeature.editPledgeOverTimeEnabled.rawValue: false
-      ]
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
       self.vm.inputs.viewDidLoad()
-
       self.scheduler.advance()
-
       self.updateUserDefaultsWithFeatures.assertDidNotEmitValue()
 
-      self.vm.inputs.setFeatureAtIndexEnabled(index: 0, isEnabled: true)
-
+      self.vm.inputs.setFeatureAtIndexEnabled(index: 0, isEnabled: false)
       self.scheduler.advance()
+      let (_, isEnabled1) = self.updateUserDefaultsWithFeatures.lastValue![0]
+      XCTAssertFalse(isEnabled1)
 
-      let (_, isEnabled1) = self.updateUserDefaultsWithFeatures.values[0][0]
-
-      XCTAssertTrue(isEnabled1)
+      self.vm.inputs.setFeatureAtIndexEnabled(index: 0, isEnabled: true)
+      self.scheduler.advance()
+      let (_, isEnabled2) = self.updateUserDefaultsWithFeatures.lastValue![0]
+      XCTAssertTrue(isEnabled2)
     }
   }
 
   func testUpdateUserDefaultsWithFeatures_ReloadWithData_UserDefaultsIsUpdated() {
+    let feature = RemoteConfigFeature.editPledgeOverTimeEnabled
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
-        RemoteConfigFeature.editPledgeOverTimeEnabled.rawValue: false
+        feature.rawValue: false
       ]
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient, userDefaults: userDefaults) {
@@ -94,13 +92,18 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
+      guard let index = (self.reloadWithData.lastValue?.firstIndex { $0.0 == feature }) else {
+        XCTFail("Expected to find feature \(feature) in the list of features.")
+        return
+      }
+
       XCTAssertEqual(
         userDefaults
           .dictionary(forKey: "com.kickstarter.KeyValueStoreType.remoteConfigFeatureFlags") as? [String: Bool],
         nil
       )
 
-      self.vm.inputs.setFeatureAtIndexEnabled(index: 1, isEnabled: true)
+      self.vm.inputs.setFeatureAtIndexEnabled(index: index, isEnabled: true)
 
       self.scheduler.advance()
 
@@ -112,7 +115,7 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
         userDefaults
           .dictionary(forKey: "com.kickstarter.KeyValueStoreType.remoteConfigFeatureFlags") as? [String: Bool],
         [
-          RemoteConfigFeature.editPledgeOverTimeEnabled.rawValue: true
+          feature.rawValue: true
         ]
       )
     }
