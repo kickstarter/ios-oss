@@ -196,7 +196,9 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
 
   fileprivate func goToPMPledeView(with url: String) {
     let vc = PledgeManagerWebViewController.configuredWith(url: url)
-    self.present(vc, animated: true)
+    let nav = NavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .pageSheet
+    self.present(nav, animated: true)
   }
 
   private func updateTableViewBottomContentInset() {

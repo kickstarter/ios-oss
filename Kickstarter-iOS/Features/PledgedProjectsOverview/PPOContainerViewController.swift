@@ -167,7 +167,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     let vc = PledgeManagerWebViewController.configuredWith(url: url)
     vc.delegate = self
     let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = .formSheet
+    nav.modalPresentationStyle = .pageSheet
     nav.presentationController?.delegate = self
 
     self.navigationController?.present(nav, animated: true)
