@@ -15,6 +15,10 @@ func featureEnabled(feature: RemoteConfigFeature) -> Bool {
   return false
 }
 
+public func featureBypassPledgeManagerDecisionPolicyEnabled() -> Bool {
+  return featureEnabled(feature: .bypassPledgeManagerDecisionPolicy)
+}
+
 public func featureEditPledgeOverTimeEnabled() -> Bool {
   return featureEnabled(feature: .editPledgeOverTimeEnabled)
 }

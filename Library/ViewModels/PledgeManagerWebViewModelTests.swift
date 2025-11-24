@@ -267,6 +267,21 @@ final class PledgeManagerWebViewModelTests: TestCase {
 
   // MARK: - Decision policy tests
 
+  func testDecisionPolicyBypass() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.bypassPledgeManagerDecisionPolicy.rawValue: true
+    ]
+
+    withEnvironment(remoteConfigClient: mockConfigClient) {
+      let navigationData = navigationData("https://www.fake.com/unrecognized-url")
+      XCTAssertEqual(
+        self.vm.decidePolicyFor(navigationAction: navigationData),
+        WKNavigationActionPolicy.allow
+      )
+    }
+  }
+
   func testBadRequest() {
     let navigationData = navigationData("https://www.fake.com/bad-url")
     XCTAssertEqual(

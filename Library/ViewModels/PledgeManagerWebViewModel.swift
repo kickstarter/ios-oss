@@ -1,3 +1,4 @@
+import FirebaseCrashlytics
 import KsApi
 import Prelude
 import ReactiveExtensions
@@ -145,13 +146,31 @@ public final class PledgeManagerWebViewModel: PledgeManagerWebViewModelType {
           return true
         }
 
+        // A supported request will be prepared by logic elsewhere in the class and loaded into
+        // the web view from there. Never allow the unprepared version of these to render.
         let request = action.request
+        if isSupportedRequest(request: request) {
+          return AppEnvironment.current.apiService.isPrepared(request: request)
+        }
 
-        if !AppEnvironment.current.apiService.isPrepared(request: request) {
+        // If the corresponding native navigation request exists,
+        // this request will be handled elsewhere.
+        if nativeNavigationRequestForURLRequest(request) != nil {
           return false
         }
 
-        return isSupportedRequest(request: request)
+        // Log unrecognized urls.
+        if let error = errorForUnrecognizedUrl(request: request) {
+          Crashlytics.crashlytics().record(error: error)
+        }
+
+        // Never show unsupported kickstarter navigation requests, since these
+        // can get the user into bad/weird states.
+        if isKickstarterRequest(request) {
+          return false
+        }
+
+        return featureBypassPledgeManagerDecisionPolicyEnabled()
       }
       .map { $0 ? .allow : .cancel }
 
@@ -218,6 +237,11 @@ private func nativeNavigationRequestForURLRequest(_ request: URLRequest)
   }
 }
 
+private func isKickstarterRequest(_ request: URLRequest) -> Bool {
+  guard let host = request.url?.host() else { return false }
+  return host == AppEnvironment.current.apiService.serverConfig.webBaseUrl.host()
+}
+
 private func isUnpreparedSupportedRequest(request: URLRequest) -> Bool {
   guard !AppEnvironment.current.apiService.isPrepared(request: request) else { return false }
   return isSupportedRequest(request: request)
@@ -246,4 +270,36 @@ private func isStripeHost(_ host: String) -> Bool {
 
   let withoutSubdomain = host.lowercased().split(separator: ".").suffix(2).joined(separator: ".")
   return stripeDomains.contains(withoutSubdomain)
+}
+
+private func errorForUnrecognizedUrl(request: URLRequest) -> NSError? {
+  let errorDomain = "Kickstarter.PledgeManagerWebView"
+  enum ErrorCode: Int {
+    case unhandledKickstarterUrl = 1
+    case unrecognizedUrl = 2
+  }
+
+  // If there's no url present, don't log an error. The "about:blank" happens
+  // every time the web view loads, so logging these would be too noisy.
+  guard let url = request.url, url.absoluteString != "about:blank" else {
+    return nil
+  }
+
+  if isKickstarterRequest(request) {
+    return NSError(
+      domain: errorDomain,
+      code: ErrorCode.unhandledKickstarterUrl.rawValue,
+      userInfo: [
+        NSLocalizedDescriptionKey: "Found unhandled kickstarter url"
+      ]
+    )
+  }
+
+  return NSError(
+    domain: errorDomain,
+    code: ErrorCode.unrecognizedUrl.rawValue,
+    userInfo: [
+      NSLocalizedDescriptionKey: "Found unrecongnized url request with host: \(url.host() ?? "Unknown")"
+    ]
+  )
 }
