@@ -20,7 +20,7 @@ public protocol RewardsCollectionViewModelInputs {
   func rewardCellShouldShowDividerLine(_ show: Bool)
   func rewardSelected(with rewardId: Int)
   func shippingLocationViewDidFailToLoad()
-  func shippingRuleSelected(_ shippingRule: ShippingRule?)
+  func shippingLocationSelected(_ location: Location?)
   func traitCollectionDidChange(_ traitCollection: UITraitCollection)
   func viewDidAppear()
   func viewDidLayoutSubviews()
@@ -72,7 +72,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     let rewards = project
       .map(allowableSortedProjectRewards)
 
-    let filteredByLocationRewards = Signal.combineLatest(rewards, self.shippingRuleSelectedSignal)
+    let filteredByLocationRewards = Signal.combineLatest(rewards, self.shippingLocationSelectedSignal)
       .map(filteredRewardsByLocation)
 
     self.title = configData
@@ -98,17 +98,23 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     .skipNil()
     .take(first: 1)
 
+    let selectedShippingRule: Signal<ShippingRule?, Never> = self.selectedRewardProperty.signal.skipNil()
+      .combineLatest(with: self.shippingLocationSelectedSignal.signal)
+      .map { reward, location in
+        shippingRule(forReward: reward, selectedLocation: location)
+      }
+
     self.reloadDataWithValues = Signal.combineLatest(
       project,
       rewards,
       filteredByLocationRewards,
-      self.shippingRuleSelectedSignal.signal
+      self.shippingLocationSelectedSignal.signal
     )
-    .map { project, rewards, filteredByLocationRewards, shippingRule in
+    .map { project, rewards, filteredByLocationRewards, location in
       if !filteredByLocationRewards.isEmpty {
         filteredByLocationRewards
           .filter { reward in isStartDateBeforeToday(for: reward) }
-          .map { reward in (project, reward, .pledge, shippingRule) }
+          .map { reward in (project, reward, .pledge, location) }
       } else {
         rewards
           .filter { reward in isStartDateBeforeToday(for: reward) }
@@ -155,7 +161,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       project,
       selectedRewardFromId,
       refTag,
-      self.shippingRuleSelectedSignal.signal
+      selectedShippingRule
     )
     .takeWhen(self.rewardSelectedWithRewardIdProperty.signal)
     .filter { project, reward, _, _ in
@@ -402,9 +408,10 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.shippingLocationViewDidFailToLoadProperty.value = ()
   }
 
-  private let (shippingRuleSelectedSignal, shippingRuleSelectedObserver) = Signal<ShippingRule?, Never>.pipe()
-  public func shippingRuleSelected(_ shippingRule: ShippingRule?) {
-    self.shippingRuleSelectedObserver.send(value: shippingRule)
+  private let (shippingLocationSelectedSignal, shippingLocationSelectedObserver) = Signal<Location?, Never>
+    .pipe()
+  public func shippingLocationSelected(_ location: Location?) {
+    self.shippingLocationSelectedObserver.send(value: location)
   }
 
   private let traitCollectionChangedProperty = MutableProperty<UITraitCollection?>(nil)
@@ -555,7 +562,7 @@ private func allowableSortedProjectRewards(from project: Project) -> [Reward] {
 
 private func filteredRewardsByLocation(
   _ rewards: [Reward],
-  shippingRule: ShippingRule?
+  location: Location?
 ) -> [Reward] {
   return rewards.filter { reward in
     var shouldDisplayReward = false
@@ -570,7 +577,7 @@ private func filteredRewardsByLocation(
 
       // If restricted shipping, compare against selected shipping location.
     } else if isRestrictedShippingReward {
-      shouldDisplayReward = rewardShipsTo(selectedLocation: shippingRule?.location.id, reward)
+      shouldDisplayReward = rewardShipsTo(selectedLocation: location?.id, reward)
     }
 
     return shouldDisplayReward
@@ -591,4 +598,34 @@ private func rewardShipsTo(
   }
 
   return shippingLocationIds.contains(selectedLocationId)
+}
+
+private func shippingRule(forReward reward: Reward, selectedLocation location: Location?) -> ShippingRule? {
+  guard let selectedLocation = location else {
+    return nil
+  }
+
+  // Whether or not this is a "shippable" reward.
+  // "No Reward", digital rewards and local pickup rewards are not shippable.
+  let hasShipping = reward.isRestrictedShippingPreference || reward.isUnRestrictedShippingPreference
+
+  guard let rules = reward.shippingRulesExpanded else {
+    assert(
+      !hasShipping,
+      "This reward is shippable, but no shipping rules were included on the reward. The backer may not be able to complete this pledge."
+    )
+
+    return nil
+  }
+
+  guard let rule = rules.first(where: { $0.location.id == selectedLocation.id }) else {
+    assert(
+      !hasShipping,
+      "This reward is shippable, but no shipping rule matched the selected location. The backer may not be able to complete this pledge."
+    )
+
+    return nil
+  }
+
+  return rule
 }

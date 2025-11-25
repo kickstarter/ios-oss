@@ -8,7 +8,7 @@ import UIKit
 protocol PledgeShippingLocationViewControllerDelegate: AnyObject {
   func pledgeShippingLocationViewController(
     _ viewController: PledgeShippingLocationViewController,
-    didSelect shippingRule: ShippingRule
+    didSelect location: Location
   )
   func pledgeShippingLocationViewControllerLayoutDidUpdate(
     _ viewController: PledgeShippingLocationViewController,
@@ -128,7 +128,7 @@ final class PledgeShippingLocationViewController: UIViewController {
       .observeValues { [weak self] shippingRule in
         guard let self = self else { return }
 
-        self.delegate?.pledgeShippingLocationViewController(self, didSelect: shippingRule)
+        self.delegate?.pledgeShippingLocationViewController(self, didSelect: shippingRule.location)
       }
 
     self.viewModel.outputs.presentShippingRules

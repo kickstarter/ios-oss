@@ -19,7 +19,7 @@ public typealias RewardCardViewData = (
   project: Project,
   reward: Reward,
   context: RewardCardViewContext,
-  currentShippingRule: ShippingRule?
+  currentShippingLocation: Location?
 )
 
 public protocol RewardCardViewModelInputs {
@@ -66,7 +66,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
 
     let project: Signal<Project, Never> = configData.map(\.project)
     let reward: Signal<Reward, Never> = configData.map(\.reward)
-    let currentShippingRule: Signal<ShippingRule?, Never> = configData.map(\.currentShippingRule)
+    let currentShippingLocation: Signal<Location?, Never> = configData.map(\.currentShippingLocation)
 
     let projectAndReward = Signal.zip(project, reward)
 
@@ -134,9 +134,9 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
     self.rewardLocationStackViewHidden = reward
       .map { !isRewardLocalPickup($0) }
 
-    self.estimatedShippingLabelText = Signal.combineLatest(reward, project, currentShippingRule)
-      .map { reward, project, shippingRule in
-        guard let locationId = shippingRule?.location.id else { return nil }
+    self.estimatedShippingLabelText = Signal.combineLatest(reward, project, currentShippingLocation)
+      .map { reward, project, location in
+        guard let locationId = location?.id else { return nil }
 
         return estimatedShippingText(for: [reward], project: project, locationId: locationId)
       }
