@@ -602,15 +602,31 @@ private func rewardShipsTo(
 }
 
 private func shippingRule(forReward reward: Reward, selectedLocation location: Location?) -> ShippingRule? {
+  guard let selectedLocation = location else {
+    return nil
+  }
+
+  // Whether or not this is a "shippable" reward.
+  // "No Reward", digital rewards and local pickup rewards are not shippable.
+  let hasShipping = reward.isRestrictedShippingPreference || reward.isUnRestrictedShippingPreference
+
   guard let rules = reward.shippingRulesExpanded else {
-    let hasShipping = reward.isRestrictedShippingPreference || reward.isUnRestrictedShippingPreference
     assert(
       !hasShipping,
-      "This reward is shippable, but no shipping rules were set. The backer may not be charged correctly for shipping."
+      "This reward is shippable, but no shipping rules were included on the reward. The backer may not be able to complete this pledge."
     )
 
     return nil
   }
 
-  return rules.first(where: { $0.location.id == location?.id })
+  guard let rule = rules.first(where: { $0.location.id == selectedLocation.id }) else {
+    assert(
+      !hasShipping,
+      "This reward is shippable, but no shipping rule matched the selected location. The backer may not be able to complete this pledge."
+    )
+
+    return nil
+  }
+
+  return rule
 }
