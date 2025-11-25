@@ -59,6 +59,7 @@ enum PPOStyles {
   static let timeImage = ImageResource.iconLimitedTime
   static let alertImage = ImageResource.iconNotice
   static let sendMessageImage = ImageResource.iconSendMessage
+  static let chevronRight = ImageResource.chevronRight
 
   static let badgeColor = LegacyColors.Badge.Notification.background.uiColor()
 }
