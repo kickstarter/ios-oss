@@ -15,16 +15,16 @@ func featureEnabled(feature: RemoteConfigFeature) -> Bool {
   return false
 }
 
+public func featureBypassPledgeManagerDecisionPolicyEnabled() -> Bool {
+  return featureEnabled(feature: .bypassPledgeManagerDecisionPolicy)
+}
+
 public func featureEditPledgeOverTimeEnabled() -> Bool {
   return featureEnabled(feature: .editPledgeOverTimeEnabled)
 }
 
 public func featureUseKeychainForOAuthTokenEnabled() -> Bool {
   featureEnabled(feature: .useKeychainForOAuthToken)
-}
-
-public func featureOnboardingFlowEnabled() -> Bool {
-  featureEnabled(feature: .onboardingFlow)
 }
 
 public func featurePledgedProjectsOverviewV2Enabled() -> Bool {

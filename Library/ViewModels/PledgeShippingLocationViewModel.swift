@@ -4,12 +4,10 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-public typealias PledgeShippingLocationViewData = (
-  project: Project,
-  reward: Reward,
-  showAmount: Bool,
-  selectedLocationId: Int?
-)
+public struct PledgeShippingLocationViewData {
+  let project: Project
+  let selectedLocationId: Int?
+}
 
 public protocol PledgeShippingLocationViewModelInputs {
   func configureWith(data: PledgeShippingLocationViewData)
@@ -21,8 +19,6 @@ public protocol PledgeShippingLocationViewModelInputs {
 
 public protocol PledgeShippingLocationViewModelOutputs {
   var adaptableStackViewIsHidden: Signal<Bool, Never> { get }
-  var amountAttributedText: Signal<NSAttributedString, Never> { get }
-  var amountLabelIsHidden: Signal<Bool, Never> { get }
   var dismissShippingRules: Signal<Void, Never> { get }
   var presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never> { get }
   var notifyDelegateOfSelectedShippingRule: Signal<ShippingRule, Never> { get }
@@ -47,17 +43,15 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
     .map(first)
 
     let project = configData
-      .map { $0.0 }
-    let reward = configData
-      .map { $0.1 }
+      .map { $0.project }
     let selectedLocationId = configData
-      .map { $0.3 }
+      .map { $0.selectedLocationId }
 
-    let shippingShouldBeginLoading = reward
+    let shippingShouldBeginLoading = project
       .mapConst(true)
 
-    let shippingRulesEvent = Signal.zip(project, reward)
-      .switchMap { project, _ -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, Never> in
+    let shippingRulesEvent = project
+      .switchMap { project -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, Never> in
         getShippingRulesForAllRewards(in: project)
       }
 
@@ -92,21 +86,12 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
       self.shippingRuleUpdatedSignal
     )
 
-    let shippingAmount = Signal.merge(
-      self.notifyDelegateOfSelectedShippingRule.map { $0.cost },
-      configData.mapConst(0)
-    )
-
     self.presentShippingRules = Signal.combineLatest(
       project,
       shippingRulesEvent.values(),
       self.notifyDelegateOfSelectedShippingRule
     )
     .takeWhen(self.shippingLocationButtonTappedSignal)
-
-    self.amountAttributedText = Signal.combineLatest(project, shippingAmount)
-      .map { project, shippingAmount in shippingValue(of: project, with: shippingAmount) }
-      .skipNil()
 
     self.shippingLocationButtonTitle = self.notifyDelegateOfSelectedShippingRule
       .map { $0.location.localizedName }
@@ -117,8 +102,6 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
         .ignoreValues()
         .ksr_debounce(.milliseconds(300), on: AppEnvironment.current.scheduler)
     )
-
-    self.amountLabelIsHidden = configData.map { $0.2 }.negate()
   }
 
   private let configDataProperty = MutableProperty<PledgeShippingLocationViewData?>(nil)
@@ -148,8 +131,6 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
   }
 
   public let adaptableStackViewIsHidden: Signal<Bool, Never>
-  public let amountAttributedText: Signal<NSAttributedString, Never>
-  public let amountLabelIsHidden: Signal<Bool, Never>
   public let dismissShippingRules: Signal<Void, Never>
   public let presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never>
   public let notifyDelegateOfSelectedShippingRule: Signal<ShippingRule, Never>

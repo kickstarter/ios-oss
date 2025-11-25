@@ -572,7 +572,7 @@ private func pledgePaymentMethodCellDataAndSelectedCard(
       card: card,
       isEnabled: isAvailableCardType,
       isSelected: false,
-      projectCountry: project.location.displayableName,
+      projectCountry: project.location?.displayableName ?? "",
       isErroredPaymentMethod: isErroredPaymentMethod
     )
   }

@@ -2571,6 +2571,54 @@ final class AppDelegateViewModelTests: TestCase {
     self.presentViewController.assertValues([])
   }
 
+  func testGoToMobileSafari_unrecognizedDeeplink() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    let url = URL(string: "https://fake-url.com")!
+    _ = self.vm.inputs.applicationOpenUrl(application: nil, url: url, options: [:])
+
+    self.goToMobileSafari.assertLastValue(url)
+  }
+
+  func testGoToMobileSafari_deeplinkFound() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    let url = URL(string: "https://kickstarter.com/activity")!
+    _ = self.vm.inputs.applicationOpenUrl(application: nil, url: url, options: [:])
+
+    self.goToMobileSafari.assertDidNotEmitValue()
+  }
+
+  func testGoToMobileSafari_ksrUnrecognizedDeeplink() throws {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    let url = URL(string: "ksr://fake-url.com")!
+    _ = self.vm.inputs.applicationOpenUrl(application: nil, url: url, options: [:])
+
+    self.goToMobileSafari.assertDidNotEmitValue()
+  }
+
+  func testGoToMobileSafari_ksrDeeplinkFound() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    let url = URL(string: "https://kickstarter.com/activity")!
+    _ = self.vm.inputs.applicationOpenUrl(application: nil, url: url, options: [:])
+
+    self.goToMobileSafari.assertDidNotEmitValue()
+  }
+
   func testRemoteConfigClientConfiguredNotification_Success() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 

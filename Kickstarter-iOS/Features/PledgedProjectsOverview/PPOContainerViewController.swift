@@ -167,7 +167,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
   }
 
   private func openSurvey(_ url: String) {
-    let vc = SurveyResponseViewController.configuredWith(surveyUrl: url)
+    let vc = PledgeManagerWebViewController.configuredWith(url: url)
     vc.delegate = self
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .formSheet
@@ -313,8 +313,8 @@ extension PPOContainerViewController: STPAuthenticationContext {
   }
 }
 
-extension PPOContainerViewController: SurveyResponseViewControllerDelegate {
-  public func surveyResponseViewControllerDismissed() {
+extension PPOContainerViewController: PledgeManagerWebViewControllerDelegate {
+  public func pledgeManagerWebViewControllerDismissed() {
     self.viewModel.actionFinishedPerforming()
   }
 }

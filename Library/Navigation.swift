@@ -52,7 +52,9 @@ public enum Navigation: Equatable {
     case pledge(Navigation.Project.Pledge)
     case updates
     case update(Int, Navigation.Project.Update)
-    case surveyWebview(String)
+    /// Redirects to an authenticated web view which can support pledge manager workflows.
+    /// Argument is a fully-qualified URL for the web view.
+    case pledgeManagerWebview(String)
 
     public enum Checkout: Equatable {
       case thanks(racing: Bool?)
@@ -136,7 +138,7 @@ private let allRoutes: [String: (RouteParamsDecoded) -> Navigation?] = [
   "/search": search,
   "/signup": signup,
   "/projects/:creator_param/:project_param": project,
-  "/projects/:creator_param/:project_param/backing/:backing_tab": projectSurvey,
+  "/projects/:creator_param/:project_param/backing/:backing_tab": pledgeManagerWebview,
   "/projects/:creator_param/:project_param/checkouts/:checkout_param/thanks": thanks,
   "/projects/:creator_param/:project_param/comments": projectComments,
   "/projects/:creator_param/:project_param/creator_bio": creatorBio,
@@ -154,11 +156,12 @@ private let allRoutes: [String: (RouteParamsDecoded) -> Navigation?] = [
   "/projects/:creator_param/:project_param/posts/:update_param": update,
   "/projects/:creator_param/:project_param/updates": updates,
   "/projects/:creator_param/:project_param/posts/:update_param/comments": updateComments,
-  "/projects/:creator_param/:project_param/surveys/:survey_param": projectSurvey,
-  "/projects/:creator_param/:project_param/surveys/:survey_param/edit": projectSurvey,
-  "/projects/:creator_param/:project_param/surveys/:survey_param/edit_address": projectSurvey,
+  "/projects/:creator_param/:project_param/surveys/:survey_param": pledgeManagerWebview,
+  "/projects/:creator_param/:project_param/surveys/:survey_param/edit": pledgeManagerWebview,
+  "/projects/:creator_param/:project_param/surveys/:survey_param/edit_address": pledgeManagerWebview,
   "/settings/:notification_param/:enabled_param": settingsNotifications,
-  "/users/:user_param/surveys/:survey_response_id": userSurvey
+  "/users/:user_param/surveys/:survey_response_id": userSurvey,
+  "/projects/:creator_param/:project_param/order_edits/:order_edit_id/checkout": pledgeManagerWebview
 ]
 
 private let deepLinkRoutes: [String: (RouteParamsDecoded) -> Navigation?] = allRoutes.restrict(
@@ -184,7 +187,8 @@ private let deepLinkRoutes: [String: (RouteParamsDecoded) -> Navigation?] = allR
     "/projects/:creator_param/:project_param/surveys/:survey_param/edit_address",
     "/projects/:creator_param/:project_param/pledge",
     "/settings/:notification_param/:enabled_param",
-    "/users/:user_param/surveys/:survey_response_id"
+    "/users/:user_param/surveys/:survey_response_id",
+    "/projects/:creator_param/:project_param/order_edits/:order_edit_id/checkout"
   ]
 )
 
@@ -430,7 +434,7 @@ private func posts(_ params: RouteParamsDecoded) -> Navigation? {
   return nil
 }
 
-private func projectSurvey(_ params: RouteParamsDecoded) -> Navigation? {
+private func pledgeManagerWebview(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam(),
      var path = params.path() {
     // Fallback logic for deeplinks: replace `backing/details` with `backing/survey_responses`
@@ -445,8 +449,8 @@ private func projectSurvey(_ params: RouteParamsDecoded) -> Navigation? {
 
     let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + path
     let refInfo = refInfoFromParams(params)
-    let survey = Navigation.Project.surveyWebview(url)
-    return Navigation.project(projectParam, survey, refInfo: refInfo)
+    let pmWebview = Navigation.Project.pledgeManagerWebview(url)
+    return Navigation.project(projectParam, pmWebview, refInfo: refInfo)
   }
 
   return nil
@@ -632,6 +636,7 @@ extension RouteParamsDecoded {
     case surveyParam = "survey_param"
     case userParam = "user_param"
     case surveyResponseId = "survey_response_id"
+    case orderEditId = "order_edit_id"
   }
 
   public func comment() -> String? {
@@ -721,6 +726,11 @@ extension RouteParamsDecoded {
 
   public func surveyResponseId() -> Int? {
     let key = CodingKeys.surveyResponseId.rawValue
+    return self[key].flatMap { Int($0) }
+  }
+
+  public func orderEditParam() -> Int? {
+    let key = CodingKeys.orderEditId.rawValue
     return self[key].flatMap { Int($0) }
   }
 }

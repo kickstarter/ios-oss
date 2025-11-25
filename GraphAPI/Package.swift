@@ -1,11 +1,11 @@
-// swift-tools-version:5.7
+// swift-tools-version:5.10
 
 import PackageDescription
 
 let package = Package(
   name: "GraphAPI",
   platforms: [
-    .iOS(.v12),
+    .iOS(.v17), // should be v18 but that isn't supported until Swift 6
     .macOS(.v10_14),
     .tvOS(.v12),
     .watchOS(.v5),
