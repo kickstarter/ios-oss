@@ -262,4 +262,60 @@ final class RewardsCollectionViewModelTests: TestCase {
       )
     }
   }
+
+  func test_selectLocation_outputsNilShippingRule_forProjectWithNoShippableRewards() {
+    let noReward = Reward.noReward
+    let digitalReward = Reward.template
+      |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.shippingRulesExpanded .~ []
+      |> Reward.lens.shipping .~ Reward.Shipping(
+        enabled: true,
+        location: nil,
+        preference: Reward.Shipping.Preference.none,
+        summary: "Digital reward",
+        type: .noShipping
+      )
+
+    let localShippingReward = Reward.template
+      |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.shippingRulesExpanded .~ []
+      |> Reward.lens.shipping .~ Reward.Shipping(
+        enabled: true,
+        location: Reward.Shipping.Location(
+          id: 1,
+          localizedName: "Pickup your stuff"
+        ),
+        preference: Reward.Shipping.Preference.local,
+        summary: "Digital reward",
+        type: .noShipping
+      )
+
+    let rewards = [
+      noReward,
+      digitalReward,
+      localShippingReward
+    ]
+
+    let testProject = Project.template
+      |> Project.lens.rewardData.rewards .~ rewards
+
+    self.vm.configure(with: testProject, refTag: nil, context: .createPledge, secretRewardToken: nil)
+    // Because the shipping location is powered by the available shipping rules,
+    // if there are no shippable rewards, the location element may be hidden and output `nil` once.
+    self.vm.inputs.shippingLocationSelected(nil)
+    self.vm.viewDidLoad()
+    self.vm.viewDidLayoutSubviews()
+
+    self.vm.inputs.rewardSelected(with: digitalReward.id)
+
+    self.goToCustomizeYourReward.assertDidEmitValue()
+
+    if let pledgeData = self.goToCustomizeYourReward.lastValue {
+      XCTAssertEqual(
+        pledgeData.selectedShippingRule,
+        nil,
+        "Pledge data should have no shipping rule, because the reward is digital"
+      )
+    }
+  }
 }
