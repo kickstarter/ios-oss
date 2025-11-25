@@ -184,7 +184,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     )
 
     let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = .formSheet
+    nav.modalPresentationStyle = .pageSheet
     nav.presentationController?.delegate = self
 
     self.present(nav, animated: true, completion: nil)
