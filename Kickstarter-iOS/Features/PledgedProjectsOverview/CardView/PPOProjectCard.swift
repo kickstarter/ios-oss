@@ -8,7 +8,7 @@ struct PPOProjectCard: View {
   @StateObject var viewModel: PPOProjectCardViewModel
   var parentSize: CGSize
 
-  var onViewBackingDetails: ((PPOProjectCardModel) -> Void)? = nil
+  var onViewProjectDetails: ((PPOProjectCardModel) -> Void)? = nil
   var onSendMessage: ((PPOProjectCardModel) -> Void)? = nil
   var onPerformAction: ((PPOProjectCardModel, PPOProjectCardModel.Action) -> Void)? = nil
 
@@ -41,7 +41,7 @@ struct PPOProjectCard: View {
 
     // Handle actions
     .onReceive(self.viewModel.viewBackingDetailsTapped) {
-      self.onViewBackingDetails?(self.viewModel.card)
+      self.onViewProjectDetails?(self.viewModel.card)
     }
     .onReceive(self.viewModel.sendMessageTapped) {
       self.onSendMessage?(self.viewModel.card)
