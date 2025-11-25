@@ -565,7 +565,6 @@ private func filteredRewardsByLocation(
   location: Location?
 ) -> [Reward] {
   return rewards.filter { reward in
-
     var shouldDisplayReward = false
 
     let isRewardLocalOrDigital = isRewardDigital(reward) || isRewardLocalPickup(reward)
