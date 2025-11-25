@@ -1,3 +1,5 @@
+// swiftlint:disable file_length
+
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
@@ -5,6 +7,7 @@ import Prelude
 import SnapshotTesting
 import UIKit
 
+// swiftlint:disable:next type_body_length
 final class ManagePledgeViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
@@ -108,6 +111,7 @@ final class ManagePledgeViewControllerTests: TestCase {
         let controller = ManagePledgeViewController.instantiate()
         controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_600
 
         // Network request completes
         self.scheduler.advance()
@@ -341,6 +345,7 @@ final class ManagePledgeViewControllerTests: TestCase {
         let controller = ManagePledgeViewController.instantiate()
         controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_700
 
         // Network request completes
         self.scheduler.advance()
@@ -405,6 +410,7 @@ final class ManagePledgeViewControllerTests: TestCase {
         let controller = ManagePledgeViewController.instantiate()
         controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_700
 
         // Network request completes
         self.scheduler.advance()

@@ -227,7 +227,7 @@ internal final class ActivitiesViewController: UITableViewController {
 
   fileprivate func goToSurveyResponse(surveyResponse: SurveyResponse) {
     let url = surveyResponse.urls.web.survey
-    let vc = SurveyResponseViewController.configuredWith(surveyUrl: url)
+    let vc = PledgeManagerWebViewController.configuredWith(url: url)
     vc.delegate = self
 
     let nav = UINavigationController(rootViewController: vc)
@@ -277,8 +277,8 @@ extension ActivitiesViewController: EmptyStatesViewControllerDelegate {
   func emptyStatesViewControllerGoToFriends() {}
 }
 
-extension ActivitiesViewController: SurveyResponseViewControllerDelegate {
-  func surveyResponseViewControllerDismissed() {
+extension ActivitiesViewController: PledgeManagerWebViewControllerDelegate {
+  func pledgeManagerWebViewControllerDismissed() {
     self.viewModel.inputs.surveyResponseViewControllerDismissed()
   }
 }

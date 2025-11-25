@@ -1,3 +1,4 @@
+import FirebaseCrashlytics
 import KsApi
 import Library
 import Prelude
@@ -550,13 +551,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .filter { $0 == .tab(.me) }
       .ignoreValues()
 
-    let resolvedRedirectUrl = Signal.merge(
+    self.goToMobileSafari = Signal.merge(
       deepLinkUrl,
       urlFromBraze
     )
-    .filter { Navigation.deepLinkMatch($0) == nil }
-
-    self.goToMobileSafari = resolvedRedirectUrl
+    .filter(shouldOpenUrlInBrowser)
 
     let projectRootLink = Signal.merge(projectLink, projectPreviewLink)
       .filter { _, subpage, _, _ in subpage == .root }
@@ -614,17 +613,17 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let surveyUrlFromProjectLink = deepLink
       .map { link -> String? in
-        if case let .project(_, .surveyWebview(surveyUrl), _, _) = link {
+        if case let .project(_, .pledgeManagerWebview(surveyUrl), _, _) = link {
           return surveyUrl
         }
         return nil
       }
       .skipNil()
 
-    let surveyResponseLink = Signal.merge(surveyUrlFromProjectLink, surveyUrlFromUserLink)
+    let pledgeManagerLink = Signal.merge(surveyUrlFromProjectLink, surveyUrlFromUserLink)
       .observeForUI()
       .map { url -> [UIViewController] in
-        [SurveyResponseViewController.configuredWith(surveyUrl: url)]
+        [PledgeManagerWebViewController.configuredWith(url: url)]
       }
 
     let updatesLink = projectLink
@@ -703,7 +702,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         projectRootLink,
         projectCommentsLink,
         projectCommentThreadLink,
-        surveyResponseLink,
+        pledgeManagerLink,
         updatesLink,
         updateRootLink,
         updateCommentsLink,
@@ -1026,6 +1025,28 @@ private func deviceToken(fromData data: Data) -> String {
     .joined()
 }
 
+private func shouldOpenUrlInBrowser(_ url: URL) -> Bool {
+  // If url has a deeplink match, never attempt to open the url in the browser.
+  if Navigation.deepLinkMatch(url) != nil {
+    return false
+  }
+  // Never attempt to open `ksr` urls in the browser; they'll redirect straight back to our app.
+  if let scheme = url.scheme, scheme == "ksr" {
+    print(
+      "Error: Unable to open 'ksr' deeplink. Please doublecheck that the url "
+        + "is included in the list of deeplinks and that you're not trying to "
+        + "use a staging url in prod (or vice versa)."
+    )
+    let error = NSError(domain: "Kickstarter.Deeplink", code: 0, userInfo: [
+      NSLocalizedDescriptionKey: "Unable to open unsupported ksr deeplink."
+    ])
+    Crashlytics.crashlytics().record(error: error)
+    return false
+  }
+  // Otherwise, open url in browser.
+  return true
+}
+
 private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? {
   if let activity = envelope.activity {
     switch activity.category {
@@ -1071,7 +1092,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   if let pledgeRedemption = envelope.pledgeRedemption {
     let path = pledgeRedemption.pledgeManagerPath
     let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + path
-    return .project(.id(pledgeRedemption.projectId), .surveyWebview(url), refInfo: RefInfo(.push))
+    return .project(.id(pledgeRedemption.projectId), .pledgeManagerWebview(url), refInfo: RefInfo(.push))
   }
 
   if let project = envelope.project {
@@ -1085,7 +1106,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   if let survey = envelope.survey {
     let path = survey.urls.web.survey
     let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + path
-    return .project(.id(survey.projectId), .surveyWebview(url), refInfo: RefInfo(.push))
+    return .project(.id(survey.projectId), .pledgeManagerWebview(url), refInfo: RefInfo(.push))
   }
 
   if let update = envelope.update {

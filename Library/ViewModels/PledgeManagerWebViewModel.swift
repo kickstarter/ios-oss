@@ -1,18 +1,30 @@
+import FirebaseCrashlytics
 import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 import WebKit
 
-public protocol SurveyResponseViewModelInputs {
+// All requests that can be intercepted from the web view and opened natively
+// should be defined in this enum.
+public enum PledgeManagerNativeNatigationRequest: Equatable {
+  case goToProject(param: Param, refTag: RefTag?)
+  case goToUpdate(param: Param, updateId: Int)
+  case goToPledge(param: Param)
+}
+
+public protocol PledgeManagerWebViewModelInputs {
   /// Call when the close button is tapped.
   func closeButtonTapped()
 
   /// Call to configure with a survey url.
-  func configureWith(surveyUrl: String)
+  func configureWith(url: String)
 
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
   func decidePolicyFor(navigationAction: WKNavigationActionData) -> WKNavigationActionPolicy
+
+  /// Call when view model should handle fetching the necessary data and trigger `goToUpdate`.
+  func fetchUpdateVCData(param: Param, updateId: Int)
 
   /// Call when the user session starts.
   func userSessionStarted()
@@ -21,17 +33,15 @@ public protocol SurveyResponseViewModelInputs {
   func viewDidLoad()
 }
 
-public protocol SurveyResponseViewModelOutputs {
+public protocol PledgeManagerWebViewModelOutputs {
   /// Emits when the view controller should be dismissed.
   var dismissViewController: Signal<Void, Never> { get }
 
-  /// Emits a project and ref tag that should be used to present a project controller.
-  var goToProject: Signal<(Param, RefTag?), Never> { get }
+  /// Emits native navigation request for the view controller to handle.
+  var goToNativeScreen: Signal<PledgeManagerNativeNatigationRequest, Never> { get }
 
-  var goToUpdate: Signal<(Project, Update), Never> { get }
-
-  /// Emits a project param that should be used to present the manage pledge view controller
-  var goToPledge: Signal<Param, Never> { get }
+  /// Emits a project and update that should be used to present the update view controller.
+  var presentUpdateVC: Signal<(Project, Update), Never> { get }
 
   /// Emits a login intent that should be used to log in.
   var goToLoginSignup: Signal<LoginIntent, Never> { get }
@@ -44,12 +54,13 @@ public protocol SurveyResponseViewModelOutputs {
   var webViewLoadRequest: Signal<URLRequest, Never> { get }
 }
 
-public protocol SurveyResponseViewModelType: SurveyResponseViewModelInputs, SurveyResponseViewModelOutputs {
-  var inputs: SurveyResponseViewModelInputs { get }
-  var outputs: SurveyResponseViewModelOutputs { get }
+public protocol PledgeManagerWebViewModelType: PledgeManagerWebViewModelInputs,
+  PledgeManagerWebViewModelOutputs {
+  var inputs: PledgeManagerWebViewModelInputs { get }
+  var outputs: PledgeManagerWebViewModelOutputs { get }
 }
 
-public final class SurveyResponseViewModel: SurveyResponseViewModelType {
+public final class PledgeManagerWebViewModel: PledgeManagerWebViewModelType {
   public init() {
     let initialIsLoggedIn = self.viewDidLoadProperty.signal.compactMap {
       AppEnvironment.current.currentUser != nil
@@ -66,7 +77,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
     // Wait until user is logged in before handling survey response.
     let surveyResponse = Signal.combineLatest(
-      self.initialSurveyProperty.signal.skipNil(),
+      self.initialUrlProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal,
       isLoggedIn.filter(isTrue)
     )
@@ -85,7 +96,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
     self.title = Signal.merge(initialRequest, newRequest)
       .compactMap { request in
-        if isSurvey(request: request) {
+        if isSupportedRequest(request: request) {
           // Only update the title based on the main survey url.
           return request.url
         }
@@ -102,39 +113,18 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
         }
       }
 
-    let newSurveyRequest = newRequest
+    let newUnpreparedRequest = newRequest
       .filter { request in
-        isUnpreparedSurvey(request: request)
+        isUnpreparedSupportedRequest(request: request)
       }
 
     self.dismissViewController = self.closeButtonTappedProperty.signal
 
-    self.goToProject = newRequest
-      .map { request -> (Param, RefTag?)? in
-        if case let (.project(param, .root, refInfo, _))? = Navigation.match(request) {
-          return (param, refInfo?.refTag)
-        }
-        return nil
-      }
+    self.goToNativeScreen = newRequest
+      .map(nativeNavigationRequestForURLRequest)
       .skipNil()
 
-    self.goToPledge = newRequest
-      .map { request -> (Param)? in
-        if case let (.project(param, .pledge, refInfo, _))? = Navigation.match(request) {
-          return param
-        }
-        return nil
-      }
-      .skipNil()
-
-    self.goToUpdate = newRequest
-      .map { (request: URLRequest) -> (Param, Int)? in
-        if case let (.project(param, .update(id, _), _, _))? = Navigation.match(request) {
-          return (param, id)
-        }
-        return nil
-      }
-      .skipNil()
+    self.presentUpdateVC = self.fetchUpdateVCDataProperty.signal.skipNil()
       .switchMap { (param: Param, updateId: Int) in
         AppEnvironment.current.apiService.fetchProject(param: param)
           .demoteErrors()
@@ -156,19 +146,37 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
           return true
         }
 
+        // A supported request will be prepared by logic elsewhere in the class and loaded into
+        // the web view from there. Never allow the unprepared version of these to render.
         let request = action.request
+        if isSupportedRequest(request: request) {
+          return AppEnvironment.current.apiService.isPrepared(request: request)
+        }
 
-        if !AppEnvironment.current.apiService.isPrepared(request: request) {
+        // If the corresponding native navigation request exists,
+        // this request will be handled elsewhere.
+        if nativeNavigationRequestForURLRequest(request) != nil {
           return false
         }
 
-        return isSurvey(request: request)
+        // Log unrecognized urls.
+        if let error = errorForUnrecognizedUrl(request: request) {
+          Crashlytics.crashlytics().record(error: error)
+        }
+
+        // Never show unsupported kickstarter navigation requests, since these
+        // can get the user into bad/weird states.
+        if isKickstarterRequest(request) {
+          return false
+        }
+
+        return featureBypassPledgeManagerDecisionPolicyEnabled()
       }
       .map { $0 ? .allow : .cancel }
 
     self.webViewLoadRequest = Signal.merge(
       initialRequest,
-      newSurveyRequest
+      newUnpreparedRequest
     )
     .map { request in AppEnvironment.current.apiService.preparedRequest(forRequest: request) }
   }
@@ -183,9 +191,14 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
     return self.policyDecisionProperty.value
   }
 
-  fileprivate let initialSurveyProperty = MutableProperty<String?>(nil)
-  public func configureWith(surveyUrl: String) {
-    self.initialSurveyProperty.value = surveyUrl
+  fileprivate let initialUrlProperty = MutableProperty<String?>(nil)
+  public func configureWith(url: String) {
+    self.initialUrlProperty.value = url
+  }
+
+  fileprivate let fetchUpdateVCDataProperty = MutableProperty<(Param, Int)?>(nil)
+  public func fetchUpdateVCData(param: Param, updateId: Int) {
+    self.fetchUpdateVCDataProperty.value = (param, updateId)
   }
 
   fileprivate let userSessionStartedProperty = MutableProperty(())
@@ -197,24 +210,45 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   public func viewDidLoad() { self.viewDidLoadProperty.value = () }
 
   public let dismissViewController: Signal<Void, Never>
-  public let goToProject: Signal<(Param, RefTag?), Never>
-  public let goToUpdate: Signal<(Project, Update), Never>
-  public let goToPledge: Signal<Param, Never>
+  public let goToNativeScreen: Signal<PledgeManagerNativeNatigationRequest, Never>
+  public let presentUpdateVC: Signal<(Project, Update), Never>
   public let webViewLoadRequest: Signal<URLRequest, Never>
   public let goToLoginSignup: Signal<LoginIntent, Never>
   public let title: Signal<String?, Never>
 
-  public var inputs: SurveyResponseViewModelInputs { return self }
-  public var outputs: SurveyResponseViewModelOutputs { return self }
+  public var inputs: PledgeManagerWebViewModelInputs { return self }
+  public var outputs: PledgeManagerWebViewModelOutputs { return self }
 }
 
-private func isUnpreparedSurvey(request: URLRequest) -> Bool {
+// All navigation requests returned by this function should be passed along to
+// the view controller so it can open their native views. Any request that
+// doesn't have a corresponding native request will either be displayed in the
+// webview or be discarded.
+private func nativeNavigationRequestForURLRequest(_ request: URLRequest)
+  -> PledgeManagerNativeNatigationRequest? {
+  switch Navigation.match(request) {
+  case let (.project(param, .root, refInfo, _))?:
+    return .goToProject(param: param, refTag: refInfo?.refTag)
+  case let (.project(param, .pledge, _, _))?:
+    return .goToPledge(param: param)
+  case let (.project(param, .update(id, _), _, _))?:
+    return .goToUpdate(param: param, updateId: id)
+  default: return nil
+  }
+}
+
+private func isKickstarterRequest(_ request: URLRequest) -> Bool {
+  guard let host = request.url?.host() else { return false }
+  return host == AppEnvironment.current.apiService.serverConfig.webBaseUrl.host()
+}
+
+private func isUnpreparedSupportedRequest(request: URLRequest) -> Bool {
   guard !AppEnvironment.current.apiService.isPrepared(request: request) else { return false }
-  return isSurvey(request: request)
+  return isSupportedRequest(request: request)
 }
 
-private func isSurvey(request: URLRequest) -> Bool {
-  guard case (.project(_, .surveyWebview, _, _))? = Navigation.match(request) else { return false }
+private func isSupportedRequest(request: URLRequest) -> Bool {
+  guard case (.project(_, .pledgeManagerWebview, _, _))? = Navigation.match(request) else { return false }
   return true
 }
 
@@ -236,4 +270,36 @@ private func isStripeHost(_ host: String) -> Bool {
 
   let withoutSubdomain = host.lowercased().split(separator: ".").suffix(2).joined(separator: ".")
   return stripeDomains.contains(withoutSubdomain)
+}
+
+private func errorForUnrecognizedUrl(request: URLRequest) -> NSError? {
+  let errorDomain = "Kickstarter.PledgeManagerWebView"
+  enum ErrorCode: Int {
+    case unhandledKickstarterUrl = 1
+    case unrecognizedUrl = 2
+  }
+
+  // If there's no url present, don't log an error. The "about:blank" happens
+  // every time the web view loads, so logging these would be too noisy.
+  guard let url = request.url, url.absoluteString != "about:blank" else {
+    return nil
+  }
+
+  if isKickstarterRequest(request) {
+    return NSError(
+      domain: errorDomain,
+      code: ErrorCode.unhandledKickstarterUrl.rawValue,
+      userInfo: [
+        NSLocalizedDescriptionKey: "Found unhandled kickstarter url"
+      ]
+    )
+  }
+
+  return NSError(
+    domain: errorDomain,
+    code: ErrorCode.unrecognizedUrl.rawValue,
+    userInfo: [
+      NSLocalizedDescriptionKey: "Found unrecongnized url request with host: \(url.host() ?? "Unknown")"
+    ]
+  )
 }

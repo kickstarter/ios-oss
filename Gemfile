@@ -11,5 +11,12 @@ gem 'xcode-install'
 gem 'json'
 gem 'plist'
 
+# Apparently needed for Ruby 3.4
+gem 'abbrev'
+gem 'ostruct'
+gem 'mutex_m'
+gem 'logger'
+gem 'bigdecimal'
+
 plugins_path = File.join(File.dirname(__FILE__), '.fastlane', 'Pluginfile')
 eval_gemfile(plugins_path) if File.exist?(plugins_path)

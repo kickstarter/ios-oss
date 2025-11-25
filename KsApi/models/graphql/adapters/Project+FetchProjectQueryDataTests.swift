@@ -83,11 +83,11 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertEqual(project.stats.userCurrencyRate, 1.49547966)
 
     /// Project Location
-    XCTAssertEqual(project.location.country, "DE")
-    XCTAssertEqual(project.location.displayableName, "München, Germany")
-    XCTAssertEqual(project.location.localizedName, "München")
-    XCTAssertEqual(project.location.name, "München")
-    XCTAssertEqual(project.location.id, decompose(id: "TG9jYXRpb24tNjc2NzU2"))
+    XCTAssertEqual(project.location?.country, "DE")
+    XCTAssertEqual(project.location?.displayableName, "München, Germany")
+    XCTAssertEqual(project.location?.localizedName, "München")
+    XCTAssertEqual(project.location?.name, "München")
+    XCTAssertEqual(project.location?.id, decompose(id: "TG9jYXRpb24tNjc2NzU2"))
 
     /// Project Personalization
     XCTAssertNil(project.personalization.backing)

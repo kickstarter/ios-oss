@@ -5,13 +5,12 @@ import ReactiveExtensions_TestHelpers
 import WebKit
 import XCTest
 
-final class SurveyResponseViewModelTests: TestCase {
-  fileprivate let vm: SurveyResponseViewModelType = SurveyResponseViewModel()
+final class PledgeManagerWebViewModelTests: TestCase {
+  fileprivate let vm: PledgeManagerWebViewModelType = PledgeManagerWebViewModel()
 
   fileprivate let dismissViewController = TestObserver<Void, Never>()
-  fileprivate let goToPledge = TestObserver<Param, Never>()
-  fileprivate let goToProjectParam = TestObserver<Param, Never>()
-  fileprivate let goToUpdate = TestObserver<(Project, Update), Never>()
+  fileprivate let goToNativeScreen = TestObserver<PledgeManagerNativeNatigationRequest, Never>()
+  fileprivate let presentUpdateVC = TestObserver<(Project, Update), Never>()
   fileprivate let goToLoginSignup = TestObserver<LoginIntent, Never>()
   fileprivate let title = TestObserver<String?, Never>()
   fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, Never>()
@@ -21,9 +20,8 @@ final class SurveyResponseViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
-    self.vm.outputs.goToPledge.observe(self.goToPledge.observer)
-    self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProjectParam.observer)
-    self.vm.outputs.goToUpdate.observe(self.goToUpdate.observer)
+    self.vm.outputs.goToNativeScreen.observe(self.goToNativeScreen.observer)
+    self.vm.outputs.presentUpdateVC.observe(self.presentUpdateVC.observer)
     self.vm.outputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
     self.vm.outputs.title.observe(self.title.observer)
     self.vm.outputs.webViewLoadRequest
@@ -35,7 +33,7 @@ final class SurveyResponseViewModelTests: TestCase {
   }
 
   func testDismissViewControllerOnCloseButtonTapped() {
-    self.vm.inputs.configureWith(surveyUrl: SurveyResponse.template.urls.web.survey)
+    self.vm.inputs.configureWith(url: SurveyResponse.template.urls.web.survey)
     self.vm.inputs.viewDidLoad()
     self.dismissViewController.assertDidNotEmitValue()
 
@@ -49,7 +47,7 @@ final class SurveyResponseViewModelTests: TestCase {
       |> SurveyResponse.lens.id .~ 123
       |> SurveyResponse.lens.project .~ project
 
-    self.vm.inputs.configureWith(surveyUrl: surveyResponse.urls.web.survey)
+    self.vm.inputs.configureWith(url: surveyResponse.urls.web.survey)
     self.vm.inputs.viewDidLoad()
 
     // 1. Load survey.
@@ -150,10 +148,10 @@ final class SurveyResponseViewModelTests: TestCase {
     let surveyResponse = .template
       |> SurveyResponse.lens.project .~ project
 
-    self.vm.inputs.configureWith(surveyUrl: surveyResponse.urls.web.survey)
+    self.vm.inputs.configureWith(url: surveyResponse.urls.web.survey)
     self.vm.inputs.viewDidLoad()
 
-    self.goToPledge.assertDidNotEmitValue()
+    self.goToNativeScreen.assertDidNotEmitValue()
 
     let request = URLRequest(url: URL(string: project.urls.web.project + "/pledge/edit")!)
     let navigationAction = WKNavigationActionData(
@@ -167,7 +165,7 @@ final class SurveyResponseViewModelTests: TestCase {
     XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
 
     self.dismissViewController.assertDidNotEmitValue()
-    self.goToPledge.assertValues([.slug(project.slug)])
+    self.goToNativeScreen.assertLastValue(.goToPledge(param: .slug(project.slug)))
   }
 
   func testGoToProject() {
@@ -175,10 +173,10 @@ final class SurveyResponseViewModelTests: TestCase {
     let surveyResponse = .template
       |> SurveyResponse.lens.project .~ project
 
-    self.vm.inputs.configureWith(surveyUrl: surveyResponse.urls.web.survey)
+    self.vm.inputs.configureWith(url: surveyResponse.urls.web.survey)
     self.vm.inputs.viewDidLoad()
 
-    self.goToProjectParam.assertDidNotEmitValue()
+    self.goToNativeScreen.assertDidNotEmitValue()
 
     let request = URLRequest(url: URL(string: project.urls.web.project)!)
     let navigationAction = WKNavigationActionData(
@@ -193,7 +191,7 @@ final class SurveyResponseViewModelTests: TestCase {
     XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
 
     self.dismissViewController.assertDidNotEmitValue()
-    self.goToProjectParam.assertValues([.slug(project.slug)])
+    self.goToNativeScreen.assertLastValue(.goToProject(param: .slug(project.slug), refTag: nil))
   }
 
   func testGoToUpdate() {
@@ -203,16 +201,18 @@ final class SurveyResponseViewModelTests: TestCase {
 
     let update = Update.template
 
-    self.vm.inputs.configureWith(surveyUrl: surveyResponse.urls.web.survey)
+    self.vm.inputs.configureWith(url: surveyResponse.urls.web.survey)
     self.vm.inputs.viewDidLoad()
 
     withEnvironment(apiService: MockService(
       fetchProjectResult: .success(project),
       fetchUpdateResponse: update
     )) {
-      self.goToUpdate.assertDidNotEmitValue()
+      self.presentUpdateVC.assertDidNotEmitValue()
+      self.goToNativeScreen.assertDidNotEmitValue()
 
-      let request = URLRequest(url: URL(string: project.urls.web.project + "/posts/1")!)
+      let updateId = 1
+      let request = URLRequest(url: URL(string: project.urls.web.project + "/posts/\(updateId)")!)
       let navigationAction = WKNavigationActionData(
         navigationType: .linkActivated,
         request: request,
@@ -223,9 +223,13 @@ final class SurveyResponseViewModelTests: TestCase {
       let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
       XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
 
+      self.goToNativeScreen.assertLastValue(.goToUpdate(param: .slug(project.slug), updateId: updateId))
+
+      self.vm.inputs.fetchUpdateVCData(param: .slug(project.slug), updateId: updateId)
+
       self.dismissViewController.assertDidNotEmitValue()
-      self.goToUpdate.assertValueCount(1)
-      let (projectResult, updateResult) = self.goToUpdate.lastValue!
+      self.presentUpdateVC.assertValueCount(1)
+      let (projectResult, updateResult) = self.presentUpdateVC.lastValue!
       XCTAssertEqual(project, projectResult, "Update project is wrong.")
       XCTAssertEqual(update, updateResult, " Update is wrong.")
     }
@@ -237,7 +241,7 @@ final class SurveyResponseViewModelTests: TestCase {
     withEnvironment(currentUser: nil) {
       let surveyResponse = SurveyResponse.template
 
-      self.vm.inputs.configureWith(surveyUrl: surveyResponse.urls.web.survey)
+      self.vm.inputs.configureWith(url: surveyResponse.urls.web.survey)
       self.vm.inputs.viewDidLoad()
 
       self.goToLoginSignup.assertValue(.generic)
@@ -248,7 +252,7 @@ final class SurveyResponseViewModelTests: TestCase {
     withEnvironment(currentUser: nil) {
       let surveyResponse = SurveyResponse.template
 
-      self.vm.inputs.configureWith(surveyUrl: surveyResponse.urls.web.survey)
+      self.vm.inputs.configureWith(url: surveyResponse.urls.web.survey)
       self.vm.inputs.viewDidLoad()
 
       // Request should not send when user is logged out.
@@ -262,6 +266,21 @@ final class SurveyResponseViewModelTests: TestCase {
   }
 
   // MARK: - Decision policy tests
+
+  func testDecisionPolicyBypass() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.bypassPledgeManagerDecisionPolicy.rawValue: true
+    ]
+
+    withEnvironment(remoteConfigClient: mockConfigClient) {
+      let navigationData = navigationData("https://www.fake.com/unrecognized-url")
+      XCTAssertEqual(
+        self.vm.decidePolicyFor(navigationAction: navigationData),
+        WKNavigationActionPolicy.allow
+      )
+    }
+  }
 
   func testBadRequest() {
     let navigationData = navigationData("https://www.fake.com/bad-url")

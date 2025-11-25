@@ -6,7 +6,6 @@ import UIKit
 final class PledgeShippingLocationShimmerLoadingView: UIView {
   // MARK: - Properties
 
-  internal lazy var amountPlaceholder: UIView = { UIView(frame: .zero) }()
   private lazy var buttonPlaceholder: UIView = { UIView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
@@ -41,9 +40,6 @@ final class PledgeShippingLocationShimmerLoadingView: UIView {
 
     _ = self.buttonPlaceholder
       |> roundedStyle(cornerRadius: Styles.gridHalf(3))
-
-    _ = self.amountPlaceholder
-      |> roundedStyle(cornerRadius: Styles.gridHalf(3))
   }
 
   // MARK: - Subviews
@@ -53,16 +49,14 @@ final class PledgeShippingLocationShimmerLoadingView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.buttonPlaceholder, UIView(), self.amountPlaceholder], self.rootStackView)
+    _ = ([self.buttonPlaceholder, UIView()], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.buttonPlaceholder.heightAnchor.constraint(equalToConstant: Styles.grid(3)),
-      self.amountPlaceholder.heightAnchor.constraint(equalToConstant: Styles.grid(3)),
-      self.buttonPlaceholder.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.4),
-      self.amountPlaceholder.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.2)
+      self.buttonPlaceholder.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.4)
     ])
   }
 }
@@ -71,6 +65,6 @@ final class PledgeShippingLocationShimmerLoadingView: UIView {
 
 extension PledgeShippingLocationShimmerLoadingView: ShimmerLoading {
   func shimmerViews() -> [UIView] {
-    return [self.amountPlaceholder, self.buttonPlaceholder]
+    return [self.buttonPlaceholder]
   }
 }

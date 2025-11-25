@@ -4,20 +4,20 @@ import Prelude
 import UIKit
 import WebKit
 
-internal protocol SurveyResponseViewControllerDelegate: AnyObject {
+internal protocol PledgeManagerWebViewControllerDelegate: AnyObject {
   /// Called when the delegate should notify the parent that self was dismissed.
-  func surveyResponseViewControllerDismissed()
+  func pledgeManagerWebViewControllerDismissed()
 }
 
-internal final class SurveyResponseViewController: WebViewController {
-  internal weak var delegate: SurveyResponseViewControllerDelegate?
+internal final class PledgeManagerWebViewController: WebViewController {
+  internal weak var delegate: PledgeManagerWebViewControllerDelegate?
   private var sessionStartedObserver: Any?
-  fileprivate let viewModel: SurveyResponseViewModelType = SurveyResponseViewModel()
+  fileprivate let viewModel: PledgeManagerWebViewModelType = PledgeManagerWebViewModel()
 
-  internal static func configuredWith(surveyUrl: String)
-    -> SurveyResponseViewController {
-    let vc = SurveyResponseViewController()
-    vc.viewModel.inputs.configureWith(surveyUrl: surveyUrl)
+  internal static func configuredWith(url: String)
+    -> PledgeManagerWebViewController {
+    let vc = PledgeManagerWebViewController()
+    vc.viewModel.inputs.configureWith(url: url)
     return vc
   }
 
@@ -52,7 +52,7 @@ internal final class SurveyResponseViewController: WebViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.navigationController?.dismiss(animated: true, completion: nil)
-        self?.delegate?.surveyResponseViewControllerDismissed()
+        self?.delegate?.pledgeManagerWebViewControllerDismissed()
       }
 
     self.viewModel.outputs.goToLoginSignup
@@ -66,22 +66,21 @@ internal final class SurveyResponseViewController: WebViewController {
         self?.viewModel.inputs.userSessionStarted()
       }
 
-    self.viewModel.outputs.goToProject
+    self.viewModel.outputs.goToNativeScreen
       .observeForControllerAction()
-      .observeValues { [weak self] param, refTag in
-        self?.goToProject(param: param, refTag: refTag)
+      .observeValues { [weak self] (nativeNavigationRequest: PledgeManagerNativeNatigationRequest) in
+        switch nativeNavigationRequest {
+        case let .goToProject(param, refTag): self?.goToProject(param: param, refTag: refTag)
+        case let .goToPledge(param): self?.goToPledge(param: param)
+        case let .goToUpdate(param, updateId):
+          self?.viewModel.inputs.fetchUpdateVCData(param: param, updateId: updateId)
+        }
       }
 
-    self.viewModel.outputs.goToUpdate
+    self.viewModel.outputs.presentUpdateVC
       .observeForControllerAction()
       .observeValues { [weak self] project, update in
         self?.goToUpdate(project: project, update: update)
-      }
-
-    self.viewModel.outputs.goToPledge
-      .observeForControllerAction()
-      .observeValues { [weak self] param in
-        self?.goToPledge(param: param)
       }
 
     self.viewModel.outputs.webViewLoadRequest

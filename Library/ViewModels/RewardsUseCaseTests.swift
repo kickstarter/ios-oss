@@ -33,12 +33,7 @@ final class RewardsUseCaseTests: TestCase {
   }
 
   func test_goToRewards_whenUserIsLoggedOut_andNoSecretRewardToken() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.secretRewards.rawValue: true
-    ]
-
-    withEnvironment(currentUser: nil, remoteConfigClient: mockConfigClient) {
+    withEnvironment(currentUser: nil) {
       self.secretRewardTokenObserver.send(value: nil)
 
       self.goToLoginWithIntent.assertDidNotEmitValue()
@@ -52,12 +47,7 @@ final class RewardsUseCaseTests: TestCase {
   }
 
   func test_goToRewards_whenUserIsLoggedIn_andNoSecretRewardToken() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.secretRewards.rawValue: true
-    ]
-
-    withEnvironment(currentUser: .template, remoteConfigClient: mockConfigClient) {
+    withEnvironment(currentUser: .template) {
       self.secretRewardTokenObserver.send(value: nil)
 
       self.goToLoginWithIntent.assertDidNotEmitValue()
@@ -71,12 +61,7 @@ final class RewardsUseCaseTests: TestCase {
   }
 
   func test_goToRewards_whenUserIsLoggedIn_andHasSecretRewardToken() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.secretRewards.rawValue: true
-    ]
-
-    withEnvironment(currentUser: .template, remoteConfigClient: mockConfigClient) {
+    withEnvironment(currentUser: .template) {
       self.secretRewardTokenObserver.send(value: "secret-reward-token")
 
       self.goToLoginWithIntent.assertDidNotEmitValue()
@@ -90,12 +75,7 @@ final class RewardsUseCaseTests: TestCase {
   }
 
   func test_goToLogin_whenUserIsLoggedOut_andHasSecretRewardToken() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.secretRewards.rawValue: true
-    ]
-
-    withEnvironment(currentUser: nil, remoteConfigClient: mockConfigClient) {
+    withEnvironment(currentUser: nil) {
       self.secretRewardTokenObserver.send(value: "secret-reward-token")
 
       self.goToLoginWithIntent.assertDidNotEmitValue()
@@ -105,46 +85,6 @@ final class RewardsUseCaseTests: TestCase {
 
       self.goToLoginWithIntent.assertValues([.backProject])
       self.goToRewards.assertDidNotEmitValue()
-    }
-  }
-
-  // MARK: - Feature flag Off
-
-  func test_goToRewards_whenUserIsLoggedIn_andHasSecretRewardToken_FeatureFlagOff() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.secretRewards.rawValue: false
-    ]
-
-    withEnvironment(currentUser: .template, remoteConfigClient: mockConfigClient) {
-      self.secretRewardTokenObserver.send(value: "secret-reward-token")
-
-      self.goToLoginWithIntent.assertDidNotEmitValue()
-      self.goToRewards.assertDidNotEmitValue()
-
-      self.goToRewardsTappedObserver.send(value: ())
-
-      self.goToLoginWithIntent.assertDidNotEmitValue()
-      self.goToRewards.assertDidEmitValue()
-    }
-  }
-
-  func test_goToRewards_whenUserIsLoggedOut_andHasSecretRewardToken_FeatureFlagOff() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.secretRewards.rawValue: false
-    ]
-
-    withEnvironment(currentUser: nil, remoteConfigClient: mockConfigClient) {
-      self.secretRewardTokenObserver.send(value: "secret-reward-token")
-
-      self.goToLoginWithIntent.assertDidNotEmitValue()
-      self.goToRewards.assertDidNotEmitValue()
-
-      self.goToRewardsTappedObserver.send(value: ())
-
-      self.goToLoginWithIntent.assertDidNotEmitValue()
-      self.goToRewards.assertDidEmitValue()
     }
   }
 }

@@ -44,9 +44,7 @@ public final class RewardsUseCase: RewardsUseCaseType, RewardsUseCaseOutputs {
     let requiresLoginForSecretRewards = isSecretReward
       .combineLatest(with: isLoggedIn)
       .compactMap { isSecretReward, isLoggedIn -> Bool in
-        guard featureSecretRewardsEnabled() else { return false }
-
-        return isSecretReward && !isLoggedIn
+        isSecretReward && !isLoggedIn
       }
 
     self.goToRewards = requiresLoginForSecretRewards
@@ -61,6 +59,35 @@ public final class RewardsUseCase: RewardsUseCaseType, RewardsUseCaseOutputs {
       .filter { $0 == true }
       .map { _ -> LoginIntent in
         LoginIntent.backProject
+      }
+  }
+
+  // MARK: Utilities
+
+  /// Attempts to add the user to the secret reward group if logged in and a valid token is present.
+  /// - Returns: `true` if the GraphQL mutation `addUserToSecretRewardGroup` was triggered successfully.
+  ///            `false` if the user is not logged in or the token is missing/empty, thus skipping the mutation.
+  static func addUserToSecretRewardGroupIfNeeded(
+    project: Project,
+    secretRewardToken: String?
+  ) -> SignalProducer<Bool, ErrorEnvelope> {
+    let isUserLoggedIn = AppEnvironment.current.currentUser != nil
+
+    guard isUserLoggedIn,
+          let secretRewardToken = secretRewardToken,
+          !secretRewardToken.isEmpty else {
+      return SignalProducer(value: false)
+    }
+
+    let input = AddUserToSecretRewardGroupInput(
+      projectId: project.graphID,
+      secretRewardToken: secretRewardToken
+    )
+    return AppEnvironment.current.apiService
+      .addUserToSecretRewardGroup(input: input)
+      .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+      .switchMap { _ -> SignalProducer<Bool, ErrorEnvelope> in
+        SignalProducer(value: true)
       }
   }
 
