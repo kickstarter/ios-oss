@@ -55,8 +55,6 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
       .ignoreValues()
       .switchMap { _ in
         shippableLocations()
-          .wrapInOptional()
-          .demoteErrors(replaceErrorWith: nil)
       }
 
     let loadedLocations = locations.skipNil()
@@ -178,12 +176,15 @@ private func determineShippingLocation(
   return defaultShippingLocation(fromLocations: locations)
 }
 
-private func shippableLocations() -> SignalProducer<[Location], ErrorEnvelope> {
+private func shippableLocations() -> SignalProducer<[Location]?, Never> {
   let query = GraphAPI.ShippableLocationsQuery()
-  let signal = AppEnvironment.current.apiService.fetch(query: query)
+  let producer = AppEnvironment.current.apiService.fetch(query: query)
     .map { data in
       let locations = Location.locations(from: data)
       return locations
     }
-  return signal
+
+  return producer
+    .wrapInOptional()
+    .demoteErrors(replaceErrorWith: nil)
 }
