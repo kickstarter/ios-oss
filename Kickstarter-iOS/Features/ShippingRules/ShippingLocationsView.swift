@@ -21,25 +21,25 @@ public func ShippingLocationsViewController(
   return UIHostingController(rootView: view)
 }
 
-private struct ShippingLocationsView: View {
-  @StateObject var viewModel: ShippingLocationsViewModel
+private struct ShippingLocationsView<T: ShippingLocationsViewModelType>: View {
+  @StateObject var viewModel: T
   @State private var searchText: String = ""
 
   @ViewBuilder var locationsList: some View {
-    VStack(alignment: .leading, spacing: Constants.spacing) {
-      ForEach(self.viewModel.displayedLocations) { location in
+    VStack(alignment: .leading, spacing: Spacing.unit_06) {
+      ForEach(self.viewModel.outputs.displayedLocations) { location in
         Button {
-          self.viewModel.selectedLocation(location)
+          self.viewModel.inputs.selectedLocation(location)
         } label: {
           ShippingLocationsRow(
             title: location.localizedName,
-            isSelected: self.viewModel.isLocationSelected(location)
+            isSelected: self.viewModel.outputs.isLocationSelected(location)
           )
         }
         .id(location.id)
       }
     }
-    .padding(Constants.padding)
+    .padding(Spacing.unit_06)
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
   }
 
@@ -50,7 +50,7 @@ private struct ShippingLocationsView: View {
           self.locationsList
         }
         .onAppear {
-          if let selectedLocation = self.viewModel.selectedLocation {
+          if let selectedLocation = self.viewModel.outputs.selectedLocation {
             reader.scrollTo(selectedLocation.id, anchor: .center)
           }
         }
@@ -63,20 +63,14 @@ private struct ShippingLocationsView: View {
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button(Strings.Cancel()) {
-            self.viewModel.tappedCancel()
+            self.viewModel.inputs.tappedCancel()
           }
         }
       }
     }
-    .onChange(of: self.searchText) { newValue in
-      self.viewModel.filteredLocations(withTerm: newValue)
+    .onChange(of: self.searchText) { _, newValue in
+      self.viewModel.inputs.filteredLocations(withTerm: newValue)
     }
-  }
-
-  internal enum Constants {
-    static let padding = Spacing.unit_06
-    static let spacing = Spacing.unit_06
-    static let buttonLabelSpacing = Spacing.unit_02
   }
 }
 

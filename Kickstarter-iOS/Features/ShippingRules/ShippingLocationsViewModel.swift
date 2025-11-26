@@ -1,13 +1,50 @@
 import KsApi
 import SwiftUICore
 
-public class ShippingLocationsViewModel: ObservableObject {
+protocol ShippingLocationsViewModelInputs {
+  func tappedCancel()
+  func selectedLocation(_ location: Location)
+  func filteredLocations(withTerm searchTerm: String)
+}
+
+protocol ShippingLocationsViewModelOutputs {
+  func isLocationSelected(_ location: Location) -> Bool
+  var displayedLocations: [Location] { get }
+  var selectedLocation: Location? { get }
+}
+
+protocol ShippingLocationsViewModelType: ObservableObject {
+  var inputs: ShippingLocationsViewModelInputs { get }
+  var outputs: ShippingLocationsViewModelOutputs { get }
+}
+
+class ShippingLocationsViewModel: ObservableObject, ShippingLocationsViewModelType,
+  ShippingLocationsViewModelInputs, ShippingLocationsViewModelOutputs {
   @Published var displayedLocations: [Location]
   @Published var selectedLocation: Location?
   let onSelectedLocation: (Location) -> Void
   let onCancelled: () -> Void
 
+  // All the possible locations, used for filtering.
   private var allLocations: [Location]
+
+  init(
+    withLocations locations: [Location],
+    selectedLocation: Location?,
+    onSelectedLocation: @escaping (Location) -> Void,
+    onCancelled: @escaping () -> Void
+  ) {
+    let sortedLocations = locations.sorted { a, b in
+      a.localizedName <= b.localizedName
+    }
+
+    self.allLocations = sortedLocations
+    self.selectedLocation = selectedLocation
+    self.displayedLocations = sortedLocations
+
+    self.onSelectedLocation = onSelectedLocation
+    self.onCancelled = onCancelled
+  }
 
   func isLocationSelected(_ location: Location) -> Bool {
     return location.id == self.selectedLocation?.id
@@ -34,21 +71,11 @@ public class ShippingLocationsViewModel: ObservableObject {
     }
   }
 
-  init(
-    withLocations locations: [Location],
-    selectedLocation: Location?,
-    onSelectedLocation: @escaping (Location) -> Void,
-    onCancelled: @escaping () -> Void
-  ) {
-    let sortedLocations = locations.sorted { a, b in
-      a.localizedName <= b.localizedName
-    }
+  var outputs: any ShippingLocationsViewModelOutputs {
+    return self
+  }
 
-    self.allLocations = sortedLocations
-    self.selectedLocation = selectedLocation
-    self.displayedLocations = sortedLocations
-
-    self.onSelectedLocation = onSelectedLocation
-    self.onCancelled = onCancelled
+  var inputs: any ShippingLocationsViewModelInputs {
+    return self
   }
 }
