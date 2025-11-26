@@ -224,8 +224,8 @@ public func defaultShippingLocation(fromLocations locations: [Location]) -> Loca
     return currentLocation
   }
 
-  if let 🇺🇸🦅 = locations.first(where: { $0.country == "US" }) {
-    return 🇺🇸🦅
+  if let usaLocation = locations.first(where: { $0.country == "US" }) {
+    return usaLocation
   }
 
   return locations.first
