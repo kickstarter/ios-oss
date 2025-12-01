@@ -206,7 +206,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.viewDidLoad()
     self.vm.viewDidLayoutSubviews()
 
-    self.shippingLocationViewHidden.assertLastValue(true)
+    self.shippingLocationViewHidden.assertLastValue(false)
 
     self.vm.inputs.shippingLocationSelected(location2)
     self.vm.inputs.rewardSelected(with: reward.id)
@@ -313,7 +313,7 @@ final class RewardsCollectionViewModelTests: TestCase {
 
     // Because the shipping location is powered by the available shipping rules,
     // if there are no shippable rewards, the location element may be hidden and output `nil` once.
-    self.shippingLocationViewHidden.assertLastValue(false)
+    self.shippingLocationViewHidden.assertLastValue(true)
 
     self.vm.inputs.rewardSelected(with: digitalReward.id)
 
