@@ -123,7 +123,6 @@ public enum Feature: String, EnumType {
   case digitalRewards2025 = "digital_rewards_2025"
   case digitalRewards_UploadButton2025 = "digital_rewards__upload_button_2025"
   case pledgeOverTimeEditPledge2025 = "pledge_over_time_edit_pledge_2025"
-  case pledgeOverTimeMidPlotRefunds2025 = "pledge_over_time_mid_plot_refunds_2025"
   case eufymakeBackerReport = "eufymake_backer_report"
   case multiVatIds2025 = "multi_vat_ids_2025"
   case shopifySyncIntegration2025 = "shopify_sync_integration_2025"
@@ -141,4 +140,5 @@ public enum Feature: String, EnumType {
   case includeEuVatInItemPrices = "include_eu_vat_in_item_prices"
   case pledgeManagerEligibilityQuestionnaire2025 = "pledge_manager_eligibility_questionnaire_2025"
   case pmOrderEditing2025 = "pm_order_editing_2025"
+  case followersOnlyUpdates = "followers_only_updates"
 }

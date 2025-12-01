@@ -16,6 +16,24 @@ extension Location {
     )
   }
 
+  static func location(from rule: GraphAPI.SimpleShippingRuleLocationFragment?) -> Location? {
+    guard let rule = rule,
+          let name = rule.locationName,
+          let graphId = rule.locationId,
+          let id = decompose(id: graphId)
+    else {
+      return nil
+    }
+
+    return Location(
+      country: rule.country,
+      displayableName: name,
+      id: id,
+      localizedName: name,
+      name: name
+    )
+  }
+
   public static func locations(from data: GraphAPI.DefaultLocationsQuery.Data) -> [Location] {
     guard let nodes = data.locations?.nodes else {
       return []
@@ -38,12 +56,38 @@ extension Location {
     }
   }
 
-  public static func locations(from data: GraphAPI.ShippableLocationsQuery.Data) -> [Location] {
-    let nodes = data.shippingCountryLocations
+  public static func locations(from data: GraphAPI.ShippableLocationsForProjectQuery.Data) -> [Location] {
+    let allLocations = allLocations(from: data)
+    return self.flattenAndDedupeLocations(from: allLocations)
+  }
 
-    return nodes.compactMap { node in
-      let fragment = node.fragments.locationFragment
-      return KsApi.Location.location(from: fragment)
+  static func allLocations(from data: GraphAPI.ShippableLocationsForProjectQuery.Data) -> [[Location]] {
+    return data.project?.rewards?.nodes?.compactMap { reward in
+      reward?.simpleShippingRulesExpanded.compactMap { rule -> Location? in
+        Location.location(from: rule?.fragments.simpleShippingRuleLocationFragment)
+      }
+    } ?? []
+  }
+
+  static func flattenAndDedupeLocations(from rewardLocations: [[Location]]) -> [Location] {
+    // Flatten the list of locations from all rewards into one list
+    let locations = rewardLocations.reduce(into: []) { partialResults, location in
+      partialResults += location
     }
+
+    // ...and then filter out any duplicates
+    var filteredLocations: [Location] = []
+    var seenLocationIds = Set<Int>()
+
+    for location in locations {
+      if seenLocationIds.contains(location.id) {
+        continue
+      }
+
+      filteredLocations.append(location)
+      seenLocationIds.insert(location.id)
+    }
+
+    return filteredLocations
   }
 }

@@ -21,7 +21,6 @@ public class Query: MockObject {
     @Field<Project>("project") public var project
     @Field<ProjectsConnectionWithTotalCount>("projects") public var projects
     @Field<[Category]>("rootCategories") public var rootCategories
-    @Field<[Location]>("shippingCountryLocations") public var shippingCountryLocations
   }
 }
 
@@ -37,8 +36,7 @@ public extension Mock where O == Query {
     post: AnyMock? = nil,
     project: Mock<Project>? = nil,
     projects: Mock<ProjectsConnectionWithTotalCount>? = nil,
-    rootCategories: [Mock<Category>]? = nil,
-    shippingCountryLocations: [Mock<Location>]? = nil
+    rootCategories: [Mock<Category>]? = nil
   ) {
     self.init()
     _setEntity(backing, for: \.backing)
@@ -52,6 +50,5 @@ public extension Mock where O == Query {
     _setEntity(project, for: \.project)
     _setEntity(projects, for: \.projects)
     _setList(rootCategories, for: \.rootCategories)
-    _setList(shippingCountryLocations, for: \.shippingCountryLocations)
   }
 }

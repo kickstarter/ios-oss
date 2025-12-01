@@ -1,0 +1,5 @@
+fragment SimpleShippingRuleLocationFragment on SimpleShippingRule {
+  locationId
+  locationName
+  country
+}
