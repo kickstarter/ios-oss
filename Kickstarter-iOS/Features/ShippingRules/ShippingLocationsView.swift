@@ -11,18 +11,23 @@ public func ShippingLocationsViewController(
 ) -> UIViewController {
   let viewModel = ShippingLocationsViewModel(
     withLocations: locations,
-    selectedLocation: selectedLocation,
+    selectedLocation: selectedLocation
+  )
+
+  let view = ShippingLocationsView<ShippingLocationsViewModel>(
+    viewModel: viewModel,
     onSelectedLocation: onSelectedLocation,
     onCancelled: onCancelled
   )
-
-  let view = ShippingLocationsView(viewModel: viewModel)
 
   return UIHostingController(rootView: view)
 }
 
 private struct ShippingLocationsView<T: ShippingLocationsViewModelType>: View {
   @StateObject var viewModel: T
+  let onSelectedLocation: (Location) -> Void
+  let onCancelled: () -> Void
+
   @State private var searchText: String = ""
 
   @ViewBuilder var locationsList: some View {
@@ -63,13 +68,18 @@ private struct ShippingLocationsView<T: ShippingLocationsViewModelType>: View {
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button(Strings.Cancel()) {
-            self.viewModel.inputs.tappedCancel()
+            self.onCancelled()
           }
         }
       }
     }
     .onChange(of: self.searchText) { _, newValue in
       self.viewModel.inputs.filteredLocations(withTerm: newValue)
+    }
+    .onChange(of: self.viewModel.outputs.selectedLocation) { _, newValue in
+      if let newValue {
+        self.onSelectedLocation(newValue)
+      }
     }
   }
 }

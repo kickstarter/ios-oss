@@ -2,7 +2,6 @@ import KsApi
 import SwiftUICore
 
 protocol ShippingLocationsViewModelInputs {
-  func tappedCancel()
   func selectedLocation(_ location: Location)
   func filteredLocations(withTerm searchTerm: String)
 }
@@ -22,17 +21,13 @@ class ShippingLocationsViewModel: ObservableObject, ShippingLocationsViewModelTy
   ShippingLocationsViewModelInputs, ShippingLocationsViewModelOutputs {
   @Published var displayedLocations: [Location]
   @Published var selectedLocation: Location?
-  let onSelectedLocation: (Location) -> Void
-  let onCancelled: () -> Void
 
   // All the possible locations, used for filtering.
   private var allLocations: [Location]
 
   init(
     withLocations locations: [Location],
-    selectedLocation: Location?,
-    onSelectedLocation: @escaping (Location) -> Void,
-    onCancelled: @escaping () -> Void
+    selectedLocation: Location?
   ) {
     let sortedLocations = locations.sorted { a, b in
       a.localizedName <= b.localizedName
@@ -41,9 +36,6 @@ class ShippingLocationsViewModel: ObservableObject, ShippingLocationsViewModelTy
     self.allLocations = sortedLocations
     self.selectedLocation = selectedLocation
     self.displayedLocations = sortedLocations
-
-    self.onSelectedLocation = onSelectedLocation
-    self.onCancelled = onCancelled
   }
 
   func isLocationSelected(_ location: Location) -> Bool {
@@ -52,12 +44,6 @@ class ShippingLocationsViewModel: ObservableObject, ShippingLocationsViewModelTy
 
   func selectedLocation(_ location: Location) {
     self.selectedLocation = location
-
-    self.onSelectedLocation(location)
-  }
-
-  func tappedCancel() {
-    self.onCancelled()
   }
 
   func filteredLocations(withTerm searchTerm: String) {
