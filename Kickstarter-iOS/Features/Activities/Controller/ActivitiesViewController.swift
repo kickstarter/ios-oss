@@ -231,7 +231,7 @@ internal final class ActivitiesViewController: UITableViewController {
     vc.delegate = self
 
     let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = .formSheet
+    nav.modalPresentationStyle = .pageSheet
 
     self.present(nav, animated: true, completion: nil)
   }
