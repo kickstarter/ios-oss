@@ -139,7 +139,7 @@ final class PledgeShippingLocationViewController: UIViewController {
         )
       }
 
-    self.viewModel.outputs.dismissShippingRules
+    self.viewModel.outputs.dismissShippingLocations
       .observeForUI()
       .observeValues { [weak self] in
         self?.dismiss(animated: true)

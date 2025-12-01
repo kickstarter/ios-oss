@@ -20,7 +20,7 @@ public protocol PledgeShippingLocationViewModelInputs {
 
 public protocol PledgeShippingLocationViewModelOutputs {
   var adaptableStackViewIsHidden: Signal<Bool, Never> { get }
-  var dismissShippingRules: Signal<Void, Never> { get }
+  var dismissShippingLocations: Signal<Void, Never> { get }
   var presentShippingLocations: Signal<([Location], Location), Never> { get }
   var notifyDelegateOfSelectedShippingLocation: Signal<Location, Never> { get }
   var shimmerLoadingViewIsHidden: Signal<Bool, Never> { get }
@@ -51,18 +51,18 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
     let shippingShouldBeginLoading = project
       .mapConst(true)
 
-    let locations: Signal<[Location]?, Never> = configData
-      .ignoreValues()
+    let locationsQuery = configData
       .switchMap { _ in
-        shippableLocations()
+        shippableLocations().materialize()
       }
 
-    let loadedLocations = locations.skipNil()
-    let erroredLocations = locations.filter { $0.isNil }
+    let loadedLocations = locationsQuery.values()
+    let erroredLocations = locationsQuery.errors()
 
-    let shippingRulesLoadingCompleted = locations
-      .demoteErrors(replaceErrorWith: [])
-      .mapConst(false)
+    let shippingRulesLoadingCompleted = Signal.merge(
+      loadedLocations.ignoreValues(),
+      erroredLocations.ignoreValues()
+    ).mapConst(false)
 
     let isLoading = Signal.merge(
       shippingShouldBeginLoading,
@@ -96,7 +96,7 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
     self.shippingLocationButtonTitle = self.notifyDelegateOfSelectedShippingLocation
       .map { $0.localizedName }
 
-    self.dismissShippingRules = Signal.merge(
+    self.dismissShippingLocations = Signal.merge(
       self.shippingLocationCancelButtonTappedProperty.signal,
       self.shippingLocationUpdatedSignal.signal
         .ignoreValues()
@@ -132,7 +132,7 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
   }
 
   public let adaptableStackViewIsHidden: Signal<Bool, Never>
-  public let dismissShippingRules: Signal<Void, Never>
+  public let dismissShippingLocations: Signal<Void, Never>
   public let presentShippingLocations: Signal<([Location], Location), Never>
   public let notifyDelegateOfSelectedShippingLocation: Signal<Location, Never>
   public let shimmerLoadingViewIsHidden: Signal<Bool, Never>
@@ -176,15 +176,14 @@ private func determineShippingLocation(
   return defaultShippingLocation(fromLocations: locations)
 }
 
-private func shippableLocations() -> SignalProducer<[Location]?, Never> {
+private func shippableLocations() -> SignalProducer<[Location], ErrorEnvelope> {
   let query = GraphAPI.ShippableLocationsQuery()
   let producer = AppEnvironment.current.apiService.fetch(query: query)
     .map { data in
       let locations = Location.locations(from: data)
       return locations
     }
+    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 
   return producer
-    .wrapInOptional()
-    .demoteErrors(replaceErrorWith: nil)
 }
