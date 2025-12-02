@@ -61,7 +61,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   // FIXME: MBL-2857
-  func DISABLED_IOS18_testDismissToRootViewController() {
+  func testDismissToRootViewController() {
     self.vm.inputs.configure(with: self.thanksPageData())
     self.vm.inputs.viewDidLoad()
 
@@ -71,7 +71,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   // FIXME: MBL-2857
-  func DISABLED_IOS18_testGoToDiscovery() {
+  func testGoToDiscovery() {
     let projects = [
       .template |> Project.lens.id .~ 1,
       .template |> Project.lens.id .~ 2,
@@ -107,7 +107,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   // FIXME: MBL-2857
-  func DISABLED_IOS18_testDisplayBackedProjectText() {
+  func testDisplayBackedProjectText() {
     let project = Project.template |> \.category .~ .games
     self.vm.inputs.configure(with: self.thanksPageData(project: project))
     self.vm.inputs.viewDidLoad()
@@ -121,7 +121,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   // FIXME: MBL-2857
-  func DISABLED_IOS18_testDisplayBackedProjectText_postCampaignBackings() {
+  func testDisplayBackedProjectText_postCampaignBackings() {
     let mockConfigClient = MockRemoteConfigClient()
 
     var project = Project.template
@@ -142,7 +142,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   // FIXME: MBL-2857
-  func DISABLED_IOS18_testRatingAlert_Initial() {
+  func testRatingAlert_Initial() {
     withEnvironment(currentUser: .template) {
       self.showRatingAlert.assertValueCount(0, "Rating Alert does not emit")
 
@@ -160,7 +160,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   // FIXME: MBL-2857
-  func DISABLED_IOS18_testGamesAlert_ShowsOnce() {
+  func testGamesAlert_ShowsOnce() {
     withEnvironment(currentUser: .template) {
       XCTAssertEqual(
         false, AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt,
@@ -193,7 +193,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   // FIXME: MBL-2857
-  func DISABLED_IOS18_testGamesNewsletterAlert_ShouldNotShow_WhenUserIsSubscribed() {
+  func testGamesNewsletterAlert_ShouldNotShow_WhenUserIsSubscribed() {
     let newsletters = User.NewsletterSubscriptions.template |> User.NewsletterSubscriptions.lens.games .~ true
     let user = User.template |> \.newsletters .~ newsletters
     let project = Project.template |> Project.lens.category .~ .games
@@ -207,7 +207,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   // FIXME: MBL-2857
-  func DISABLED_IOS18_testGamesNewsletterSignup() {
+  func testGamesNewsletterSignup() {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(currentUser: .template) {
@@ -238,7 +238,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   // FIXME: MBL-2857
-  func DISABLED_IOS18_testContextualNotificationEmitsWhen_userPledgedFirstProject() {
+  func testContextualNotificationEmitsWhen_userPledgedFirstProject() {
     let user = User.template |> \.stats.backedProjectsCount .~ 0
 
     withEnvironment(currentUser: user) {
@@ -248,7 +248,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   // FIXME: MBL-2857
-  func DISABLED_IOS18_testContextualNotificationDoesNotEmitWhen_userPledgedMoreThanOneProject() {
+  func testContextualNotificationDoesNotEmitWhen_userPledgedMoreThanOneProject() {
     let user = User.template |> \.stats.backedProjectsCount .~ 2
 
     withEnvironment(currentUser: user) {
@@ -258,7 +258,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   // FIXME: MBL-2857
-  func DISABLED_IOS18_testGamesNewsletterOptInAlert() {
+  func testGamesNewsletterOptInAlert() {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(countryCode: "DE", currentUser: User.template) {
@@ -282,7 +282,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   // FIXME: MBL-2857
-  func DISABLED_IOS18_testGoToProject() {
+  func testGoToProject() {
     let projects = [
       .template |> Project.lens.id .~ 1,
       .template |> Project.lens.id .~ 2,
@@ -322,7 +322,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   // FIXME: MBL-2857
-  func DISABLED_IOS18_testRecommendationsWithProjects() {
+  func testRecommendationsWithProjects() {
     let projects = [
       .template |> Project.lens.id .~ 1,
       .template |> Project.lens.id .~ 2,
@@ -349,7 +349,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   // FIXME: MBL-2857
-  func DISABLED_IOS18_testRecommendationsWithoutProjects() {
+  func testRecommendationsWithoutProjects() {
     let response = .template |> DiscoveryEnvelope.lens.projects .~ []
     let project = Project.template |> Project.lens.category .~ .games
 
@@ -364,7 +364,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   // FIXME: MBL-2857
-  func DISABLED_IOS18_testThanksPageViewed_Properties_AdvertisingConsentNotAllowed_NoEventsTracked() {
+  func testThanksPageViewed_Properties_AdvertisingConsentNotAllowed_NoEventsTracked() {
     let checkoutData = KSRAnalytics.CheckoutPropertiesData(
       addOnsCountTotal: 2,
       addOnsCountUnique: 1,
@@ -390,7 +390,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   // FIXME: MBL-2857
-  func DISABLED_IOS18_testThanksPageViewed_Properties_AdvertisingConsentAllowed_EventsTracked() {
+  func testThanksPageViewed_Properties_AdvertisingConsentAllowed_EventsTracked() {
     let checkoutData = KSRAnalytics.CheckoutPropertiesData(
       addOnsCountTotal: 2,
       addOnsCountUnique: 1,
