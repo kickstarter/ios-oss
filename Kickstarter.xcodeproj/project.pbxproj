@@ -10319,7 +10319,6 @@
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KickDebug";
 			};
 			name = "Internal Beta";
 		};
@@ -10468,7 +10467,6 @@
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KickDebug";
 			};
 			name = Release;
 		};
@@ -11141,7 +11139,6 @@
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KickDebug";
 			};
 			name = "Internal Alpha";
 		};
