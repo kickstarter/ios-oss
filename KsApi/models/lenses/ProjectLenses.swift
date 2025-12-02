@@ -104,7 +104,7 @@ extension Project {
       ) }
     )
 
-    public static let category = Lens<Project, Project.Category>(
+    public static let category = Lens<Project, Project.Category?>(
       view: { $0.category },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $0, country: $1.country,
@@ -131,6 +131,47 @@ extension Project {
         video: $1.video, watchesCount: $1.watchesCount,
         isPledgeOverTimeAllowed: $1.isPledgeOverTimeAllowed
       ) }
+    )
+
+    public static let categoryName = Lens<Project, String>(
+      view: { $0.category?.name ?? "" },
+      set: { newName, project in
+        let updatedCategory: Project.Category? = project.category.map { category in
+          Project.Category(id: category.id, name: newName)
+        }
+
+        return Project(
+          availableCardTypes: project.availableCardTypes,
+          blurb: project.blurb,
+          category: updatedCategory,
+          country: project.country,
+          creator: project.creator,
+          extendedProjectProperties: project.extendedProjectProperties,
+          memberData: project.memberData, dates: project.dates,
+          displayPrelaunch: project.displayPrelaunch, flagging: project.flagging, id: project.id,
+          lastWave: project.lastWave,
+          location: project.location,
+          name: project.name,
+          pledgeManager: project.pledgeManager,
+          pledgeOverTimeCollectionPlanChargeExplanation: project
+            .pledgeOverTimeCollectionPlanChargeExplanation,
+          pledgeOverTimeCollectionPlanChargedAsNPayments: project
+            .pledgeOverTimeCollectionPlanChargedAsNPayments,
+          pledgeOverTimeCollectionPlanShortPitch: project.pledgeOverTimeCollectionPlanShortPitch,
+          pledgeOverTimeMinimumExplanation: project.pledgeOverTimeMinimumExplanation,
+          personalization: project.personalization, photo: project.photo,
+          isInPostCampaignPledgingPhase: project.isInPostCampaignPledgingPhase,
+          postCampaignPledgingEnabled: project.postCampaignPledgingEnabled,
+          prelaunchActivated: project.prelaunchActivated,
+          redemptionPageUrl: project.redemptionPageUrl,
+          rewardData: project.rewardData,
+          sendMetaCapiEvents: project.sendMetaCapiEvents, slug: project.slug,
+          staffPick: project.staffPick, state: project.state, stats: project.stats, tags: project.tags,
+          urls: project.urls,
+          video: project.video, watchesCount: project.watchesCount,
+          isPledgeOverTimeAllowed: project.isPledgeOverTimeAllowed
+        )
+      }
     )
 
     public static let country = Lens<Project, Country>(

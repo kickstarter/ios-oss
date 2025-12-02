@@ -116,11 +116,11 @@ final class ProjectTests: XCTestCase {
     ])
 
     XCTAssertEqual("US", project.country.countryCode)
-    XCTAssertEqual("Ceramics", project.category.analyticsName)
-    XCTAssertEqual(1, project.category.id)
-    XCTAssertEqual("Ceramics", project.category.name)
-    XCTAssertEqual(5, project.category.parentId)
-    XCTAssertEqual("Art", project.category.parentName)
+    XCTAssertEqual("Ceramics", project.category?.analyticsName)
+    XCTAssertEqual(1, project.category?.id)
+    XCTAssertEqual("Ceramics", project.category?.name)
+    XCTAssertEqual(5, project.category?.parentId)
+    XCTAssertEqual("Art", project.category?.parentName)
   }
 
   func testJSONParsing_WithCompleteData_SpanishCategory() {
@@ -185,11 +185,11 @@ final class ProjectTests: XCTestCase {
     ])
 
     XCTAssertEqual("US", project.country.countryCode)
-    XCTAssertEqual("Ceramics", project.category.analyticsName)
-    XCTAssertEqual(1, project.category.id)
-    XCTAssertEqual("Cerámica", project.category.name)
-    XCTAssertEqual(5, project.category.parentId)
-    XCTAssertEqual("Art", project.category.parentName)
+    XCTAssertEqual("Ceramics", project.category?.analyticsName)
+    XCTAssertEqual(1, project.category?.id)
+    XCTAssertEqual("Cerámica", project.category?.name)
+    XCTAssertEqual(5, project.category?.parentId)
+    XCTAssertEqual("Art", project.category?.parentName)
   }
 
   func testJSONParsing_WithMemberData() {

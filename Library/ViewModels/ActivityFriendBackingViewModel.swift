@@ -52,7 +52,7 @@ public final class ActivityFriendBackingViewModel: ActivityFriendBackingViewMode
     self.friendTitle = activity
       .map { activity in
         let stringCategoryId = (
-          activity.project?.category.parentId ?? activity.project?.category.id
+          activity.project?.category?.parentId ?? activity.project?.category?.id
         )
         .map(String.init)
 

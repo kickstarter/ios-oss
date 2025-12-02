@@ -5,7 +5,7 @@ import ReactiveSwift
 public struct Project {
   public var availableCardTypes: [String]?
   public var blurb: String
-  public var category: Category
+  public var category: Category?
   public var country: Country
   public var creator: User
   public var extendedProjectProperties: ExtendedProjectProperties?

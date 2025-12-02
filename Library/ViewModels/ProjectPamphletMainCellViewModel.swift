@@ -219,7 +219,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     self.backersTitleLabelText = backersTitleAndSubtitleText.map { title, _ in title ?? "" }
     self.backersSubtitleLabelText = backersTitleAndSubtitleText.map { _, subtitle in subtitle ?? "" }
 
-    self.categoryNameLabelText = properties.map { $0.categoryName }
+    self.categoryNameLabelText = properties.map { $0.categoryName ?? "" }
 
     let deadlineTitleAndSubtitle = properties.map { properties -> (String, String) in
       var durationValue = ("", "")

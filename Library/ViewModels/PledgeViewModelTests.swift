@@ -4399,10 +4399,7 @@ final class PledgeViewModelTests: TestCase {
 
   func testTrackingEvents_PledgeScreenViewed_LoggedOut() {
     let project = Project.template
-      |> \.category.analyticsName .~ Project.Category.illustration.name
-      |> \.category.name .~ Project.Category.illustration.name
-      |> \.category.parentId .~ Project.Category.art.id
-      |> \.category.parentName .~ Project.Category.art.name
+      |> \.category .~ Project.Category.illustration
 
     let reward = Reward.template
 
@@ -4461,10 +4458,7 @@ final class PledgeViewModelTests: TestCase {
 
     withEnvironment(currentUser: user, ksrAnalytics: ksrAnalytics) {
       let project = Project.template
-        |> \.category.name .~ Project.Category.illustration.name
-        |> \.category.analyticsName .~ Project.Category.illustration.name
-        |> \.category.parentId .~ Project.Category.art.id
-        |> \.category.parentName .~ Project.Category.art.name
+        |> \.category .~ Project.Category.illustration
         |> Project.lens.stats.userCurrency .~ "USD"
         |> \.personalization.isStarred .~ true
 

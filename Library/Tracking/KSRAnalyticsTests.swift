@@ -302,7 +302,10 @@ final class KSRAnalyticsTests: TestCase {
       project.stats.percentFunded,
       segmentClientProperties?["project_percent_raised"] as? Int
     )
-    XCTAssertEqual(project.category.analyticsName, segmentClientProperties?["project_subcategory"] as? String)
+    XCTAssertEqual(
+      project.category?.analyticsName,
+      segmentClientProperties?["project_subcategory"] as? String
+    )
     XCTAssertEqual("Art", segmentClientProperties?["project_category"] as? String)
     XCTAssertEqual(String(project.creator.id), segmentClientProperties?["project_creator_uid"] as? String)
     XCTAssertEqual(24 * 15, segmentClientProperties?["project_hours_remaining"] as? Int)
@@ -451,7 +454,10 @@ final class KSRAnalyticsTests: TestCase {
 
     let segmentClientProperties = segmentClient.properties.last
 
-    XCTAssertEqual(project.category.analyticsName, segmentClientProperties?["project_subcategory"] as? String)
+    XCTAssertEqual(
+      project.category?.analyticsName,
+      segmentClientProperties?["project_subcategory"] as? String
+    )
     XCTAssertEqual("Art", segmentClientProperties?["project_category"] as? String)
   }
 

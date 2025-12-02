@@ -105,9 +105,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let backedProject = .template
       |> Project.lens.personalization.isBacking .~ true
 
-    let featuredProject = Project.template
-      |> \.category.parentId .~ Project.Category.art.id
-      |> \.category.parentName .~ Project.Category.art.name
+    let featuredProject = .template
+      |> \.category .~ Project.Category.art
       |> Project.lens.dates.featuredAt .~ featuredAt
 
     let backedColor: UIColor = LegacyColors.ksr_create_700.uiColor()
@@ -143,7 +142,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       self.metadataIconTintColor.assertValues([backedColor])
 
       self.vm.inputs.configure(with: (featuredProject, nil, nil))
-      guard let parentName = featuredProject.category.parentName else { return }
+      guard let parentName = featuredProject.category?.parentName else { return }
       self.metadataLabelText.assertValues(
         [
           Strings.discovery_baseball_card_metadata_backer(),

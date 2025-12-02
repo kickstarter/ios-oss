@@ -76,7 +76,7 @@ extension Project {
     |> Project.lens.photo.small .~ "https://i.kickstarter.com/assets/012/224/660/847bc4da31e6863e9351bee4e55b8005_original.jpg?fit=pad&height=90&origin=ugc&q=92&width=160&sig=rOHQ6Fif6TxwI%2BL8F9RQY0wUgN%2F4yusD%2FTGXhYW8w%2FQ%3D"
     |> Project.lens.name .~ "Today"
     |> Project.lens.blurb .~ "A 24-hour timepiece beautifully designed to change the way you see your day."
-    |> \.category.name .~ "Product Design"
+    |> Project.lens.categoryName .~ "Product Design"
     |> Project.lens.stats.backersCount .~ 1_090
     |> Project.lens.stats.pledged .~ 212_870
     |> Project.lens.stats.goal .~ 24_000
@@ -87,7 +87,7 @@ extension Project {
     |> Project.lens.photo.small .~ "https://i.kickstarter.com/assets/012/347/230/2eddca8c4a06ecb69b8787b985201b92_original.jpg?fit=contain&origin=ugc&q=92&width=460&sig=ewWbTA9q%2BTNYpB9KQnwXKCfjCJum57sWhpZkp%2FiwHKY%3D"
     |> Project.lens.name .~ "Cosmic Surgery"
     |> Project.lens.blurb .~ "Cosmic Surgery is a photo book, set in the not too distant future where the world of cosmetic surgery is about to be transformed."
-    |> \.category.name .~ "Photo Books"
+    |> Project.lens.categoryName .~ "Photo Books"
     |> Project.lens.stats.backersCount .~ 329
     |> Project.lens.stats.pledged .~ 22_318
     |> Project.lens.stats.goal .~ 22_000
@@ -114,7 +114,7 @@ extension Project {
     |> Project.lens.photo.med .~ "https://i.kickstarter.com/assets/005/055/025/6e0d27710c9ae20d661e2974e99fe239_original.jpg?fit=contain&origin=ugc&q=92&width=460&sig=C05wZhm%2Fm7cw9lbn9H05zOhA8ApoQ%2Bu%2FCAO%2FuGJDMo0%3D"
     |> Project.lens.name .~ "Charlie Kaufman's Anomalisa"
     |> Project.lens.blurb .~ "From writer Charlie Kaufman (Being John Malkovich, Eternal Sunshine of the Spotless Mind) and Duke Johnson (Moral Orel, Frankenhole) comes Anomalisa."
-    |> \.category.name .~ "Animation"
+    |> Project.lens.categoryName .~ "Animation"
     |> Project.lens.stats.backersCount .~ 5_770
     |> Project.lens.stats.pledged .~ 406_237
     |> Project.lens.stats.goal .~ 200_000

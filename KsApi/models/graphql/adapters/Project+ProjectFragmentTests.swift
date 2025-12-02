@@ -38,7 +38,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
         project.blurb,
         "In this unforgiving Hell, people are forced to fight to the death in an elite gamble for their souls."
       )
-      XCTAssertEqual(project.category.name, "Comic Books")
+      XCTAssertEqual(project.category?.name, "Comic Books")
       XCTAssertEqual(project.creator.id, decompose(id: "VXNlci0xMDA3NTM5MDAy"))
       XCTAssertEqual(project.memberData.permissions.last, .comment)
       XCTAssertEqual(project.dates.deadline, 1_630_591_053)

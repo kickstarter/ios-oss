@@ -25,7 +25,6 @@ extension Project {
         currency: projectFragment.currency.value
       ),
       let categoryFragment = projectFragment.category?.fragments.categoryFragment,
-      let category = Project.Category.category(from: categoryFragment),
       let dates = projectDates(from: projectFragment),
       let memberData = projectMemberData(from: projectFragment),
       let photo = projectPhoto(from: projectFragment),
@@ -33,6 +32,11 @@ extension Project {
       let userFragment = projectFragment.creator?.fragments.userFragment,
       let creator = User.user(from: userFragment)
     else { return nil }
+
+    var category: Category?
+    if let categoryFragment = projectFragment.category?.fragments.categoryFragment {
+      category = Project.Category.category(from: categoryFragment)
+    }
 
     var location: Location?
     if let locationFragment = projectFragment.location?.fragments.locationFragment {
