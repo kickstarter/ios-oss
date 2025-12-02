@@ -65,7 +65,7 @@ distribute_job: &distribute_job
         command: agvtool new-version -all $(($(date +%s)/1000))
     - run:
         name: Install lane dependency xcodes
-        command: brew install robotsandpencils/made/xcodes
+        command: brew install xcodes
     - run:
         name: Fastlane
         command: bundle exec fastlane $LANE --verbose
