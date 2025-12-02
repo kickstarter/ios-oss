@@ -79,11 +79,7 @@ public struct OnboardingView: View {
       self.viewModel.outputs.didCompletePushNotificationSystemDialog
         .observeForUI()
         .observeValues {
-          UNUserNotificationCenter.current().getNotificationSettings { settings in
-            self.viewModel.inputs.didCompletePushNotificationsDialog(with: settings.authorizationStatus)
-          }
-
-          self.goToNextItem()
+          self.didCompletePushNotificationSystemDialog()
         }
 
       /// Trigger app tracking permission popup
@@ -167,8 +163,19 @@ public struct OnboardingView: View {
 
   private func presentAppTrackingPopup() {
     Library.AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus { authStatus in
-      self.viewModel.inputs.didCompleteAppTrackingDialog(with: authStatus)
-      self.goToNextItem()
+      DispatchQueue.main.async {
+        self.viewModel.inputs.didCompleteAppTrackingDialog(with: authStatus)
+        self.goToNextItem()
+      }
+    }
+  }
+
+  private func didCompletePushNotificationSystemDialog() {
+    UNUserNotificationCenter.current().getNotificationSettings { settings in
+      DispatchQueue.main.async {
+        self.viewModel.inputs.didCompletePushNotificationsDialog(with: settings.authorizationStatus)
+        self.goToNextItem()
+      }
     }
   }
 
