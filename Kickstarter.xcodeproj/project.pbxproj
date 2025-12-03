@@ -1234,6 +1234,12 @@
 		AA7452B42D91BB8100DCB655 /* SearchFiltersUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7452A72D91BB8100DCB655 /* SearchFiltersUseCaseTests.swift */; };
 		AA7BB45F2CF67DC200E2B2D4 /* GraphUserSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7BB45E2CF67DC200E2B2D4 /* GraphUserSetup.swift */; };
 		AA89B2562D010DA100B4D52E /* PPOProjectCardModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */; };
+		AAA526DD2EDFEAA500792064 /* ServerDrivenUI in Frameworks */ = {isa = PBXBuildFile; productRef = AAA526DC2EDFEAA500792064 /* ServerDrivenUI */; };
+		AAA526EB2EE0DB9100792064 /* GraphAPI in Frameworks */ = {isa = PBXBuildFile; productRef = AAA526EA2EE0DB9100792064 /* GraphAPI */; };
+		AAA526ED2EE0DB9500792064 /* GraphAPITestMocks in Frameworks */ = {isa = PBXBuildFile; productRef = AAA526EC2EE0DB9500792064 /* GraphAPITestMocks */; };
+		AAA526EF2EE0DB9900792064 /* GraphAPITestMocks in Frameworks */ = {isa = PBXBuildFile; productRef = AAA526EE2EE0DB9900792064 /* GraphAPITestMocks */; };
+		AAA526F12EE0DBA300792064 /* GraphAPITestMocks in Frameworks */ = {isa = PBXBuildFile; productRef = AAA526F02EE0DBA300792064 /* GraphAPITestMocks */; };
+		AAA526F32EE0DC9C00792064 /* GraphAPI in Frameworks */ = {isa = PBXBuildFile; productRef = AAA526F22EE0DC9C00792064 /* GraphAPI */; };
 		AAA71B292DB2C53700031C1F /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA71B282DB2C53000031C1F /* FlowLayout.swift */; };
 		AAB4CBDD2D41BB030057BADB /* PPOUserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBDC2D41BB030057BADB /* PPOUserSettings.swift */; };
 		AAB4CBDF2D42F3860057BADB /* PPOProjectCardModel+Templates.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB4CBDE2D42F3810057BADB /* PPOProjectCardModel+Templates.swift */; };
@@ -2989,6 +2995,7 @@
 		AA7452A72D91BB8100DCB655 /* SearchFiltersUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersUseCaseTests.swift; sourceTree = "<group>"; };
 		AA7BB45E2CF67DC200E2B2D4 /* GraphUserSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserSetup.swift; sourceTree = "<group>"; };
 		AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectCardModelTests.swift; sourceTree = "<group>"; };
+		AAA526DB2EDFE90B00792064 /* ServerDrivenUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ServerDrivenUI; sourceTree = "<group>"; };
 		AAA592782C5C708000482087 /* PPOProjectDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOProjectDetails.swift; sourceTree = "<group>"; };
 		AAA71B282DB2C53000031C1F /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
 		AAB4CBDC2D41BB030057BADB /* PPOUserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOUserSettings.swift; sourceTree = "<group>"; };
@@ -3584,8 +3591,10 @@
 				3976B3702E5CBDC300D2DD50 /* SegmentBrazeUI in Frameworks */,
 				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
 				600A0EEB2DD23BAA00954829 /* Lottie in Frameworks */,
+				AAA526EB2EE0DB9100792064 /* GraphAPI in Frameworks */,
 				E147F2902E5F7A6A00825650 /* KDS in Frameworks */,
 				6078106F2A04191C0050D4F7 /* FirebaseAnalytics in Frameworks */,
+				AAA526DD2EDFEAA500792064 /* ServerDrivenUI in Frameworks */,
 				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
 				6078106B2A0419130050D4F7 /* FirebaseCrashlytics in Frameworks */,
 				19A6665F2A045F2A00708F8B /* FirebaseRemoteConfig in Frameworks */,
@@ -3601,6 +3610,7 @@
 			files = (
 				AA645EA02C772DC90034705A /* SnapshotTesting in Frameworks */,
 				19A666632A0488F500708F8B /* Library.framework in Frameworks */,
+				AAA526ED2EE0DB9500792064 /* GraphAPITestMocks in Frameworks */,
 				191A4B4C28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3609,6 +3619,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAA526F32EE0DC9C00792064 /* GraphAPI in Frameworks */,
 				E1F1DB3F2B7BC09C004EA80B /* Prelude in Frameworks */,
 				A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */,
 			);
@@ -3631,6 +3642,7 @@
 			files = (
 				A724BA641D2BFCC80041863C /* Kickstarter_Framework.framework in Frameworks */,
 				70495690299D53ED00B273DF /* SnapshotTesting in Frameworks */,
+				AAA526F12EE0DBA300792064 /* GraphAPITestMocks in Frameworks */,
 				1998BCB028F60EC300D04077 /* ReactiveExtensions-TestHelpers in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3658,6 +3670,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAA526EF2EE0DB9900792064 /* GraphAPITestMocks in Frameworks */,
 				E113BD852B7D255000D3A809 /* Library.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6771,6 +6784,7 @@
 				A7C725771C85D36D005A016B /* Library */,
 				E15E22CD2E54B91B00EE6BB0 /* KDS */,
 				E1B33F502E538157008903BA /* GraphAPI */,
+				AAA526DB2EDFE90B00792064 /* ServerDrivenUI */,
 				E190EB6F2E29944E006A6DB6 /* graphql */,
 				A7E06C7A1C5A6EB300EBDCC2 /* Products */,
 			);
@@ -7929,6 +7943,8 @@
 				600A0EEA2DD23BAA00954829 /* Lottie */,
 				3976B36F2E5CBDC300D2DD50 /* SegmentBrazeUI */,
 				E147F28F2E5F7A6A00825650 /* KDS */,
+				AAA526DC2EDFEAA500792064 /* ServerDrivenUI */,
+				AAA526EA2EE0DB9100792064 /* GraphAPI */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -7952,6 +7968,7 @@
 			packageProductDependencies = (
 				191A4B4B28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers */,
 				AA645E9F2C772DC90034705A /* SnapshotTesting */,
+				AAA526EC2EE0DB9500792064 /* GraphAPITestMocks */,
 			);
 			productName = "Library-iOSTests";
 			productReference = A75511451C8642B3005355CF /* Library-iOSTests.xctest */;
@@ -7974,6 +7991,7 @@
 			name = "Kickstarter-Framework-iOS";
 			packageProductDependencies = (
 				E1F1DB3E2B7BC09C004EA80B /* Prelude */,
+				AAA526F22EE0DC9C00792064 /* GraphAPI */,
 			);
 			productName = "Kickstarter-iOS-Framework";
 			productReference = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */;
@@ -8024,6 +8042,7 @@
 			packageProductDependencies = (
 				1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */,
 				7049568F299D53ED00B273DF /* SnapshotTesting */,
+				AAA526F02EE0DBA300792064 /* GraphAPITestMocks */,
 			);
 			productName = KickstarterTests;
 			productReference = A7D1F95A1C850B7C000D41D5 /* Kickstarter-Framework-iOSTests.xctest */;
@@ -11935,6 +11954,30 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
 			productName = SnapshotTesting;
+		};
+		AAA526DC2EDFEAA500792064 /* ServerDrivenUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ServerDrivenUI;
+		};
+		AAA526EA2EE0DB9100792064 /* GraphAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GraphAPI;
+		};
+		AAA526EC2EE0DB9500792064 /* GraphAPITestMocks */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GraphAPITestMocks;
+		};
+		AAA526EE2EE0DB9900792064 /* GraphAPITestMocks */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GraphAPITestMocks;
+		};
+		AAA526F02EE0DBA300792064 /* GraphAPITestMocks */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GraphAPITestMocks;
+		};
+		AAA526F22EE0DC9C00792064 /* GraphAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GraphAPI;
 		};
 		E113BD902B7D615000D3A809 /* Prelude */ = {
 			isa = XCSwiftPackageProductDependency;

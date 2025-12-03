@@ -20,6 +20,20 @@
                ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "ServerDrivenUITests"
+               BuildableName = "ServerDrivenUITests"
+               BlueprintName = "ServerDrivenUITests"
+               ReferencedContainer = "container:ServerDrivenUI">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -69,6 +83,16 @@
                BuildableName = "KDSTests"
                BlueprintName = "KDSTests"
                ReferencedContainer = "container:KDS">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "ServerDrivenUITests"
+               BuildableName = "ServerDrivenUITests"
+               BlueprintName = "ServerDrivenUITests"
+               ReferencedContainer = "container:ServerDrivenUI">
             </BuildableReference>
          </TestableReference>
       </Testables>
