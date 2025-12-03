@@ -52,22 +52,24 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     let projectsTypeAndSort = self.configureWithProjectsTypeAndSortProperty.signal.skipNil()
     let projectsType = projectsTypeAndSort.map(first)
 
-    let userUpdatedProjectsCount = Signal.merge(
+    let userUpdated = Signal.merge(
       self.viewDidAppearProperty.signal.ignoreValues(),
       self.currentUserUpdatedProperty.signal
     )
-    .map { _ -> (Int, Int) in
-      (
-        AppEnvironment.current.currentUser?.stats.backedProjectsCount ?? 0,
-        AppEnvironment.current.currentUser?.stats.starredProjectsCount ?? 0
-      )
-    }
-    .skipRepeats { $0 == $1 }
+
+    let userUpdatedProjectCount = projectsType.takeWhen(userUpdated)
+      .map { type -> Int in
+        switch type {
+        case .backed: return AppEnvironment.current.currentUser?.stats.backedProjectsCount ?? 0
+        case .saved: return AppEnvironment.current.currentUser?.stats.starredProjectsCount ?? 0
+        }
+      }
+      .skipRepeats { $0 == $1 }
 
     let requestFirstPageWith = projectsType
       .takeWhen(
         Signal.merge(
-          userUpdatedProjectsCount.ignoreValues(),
+          userUpdatedProjectCount.ignoreValues(),
           self.refreshProperty.signal
         )
       )

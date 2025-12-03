@@ -171,4 +171,45 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       )
     }
   }
+
+  func testRefresh() {
+    let projects = (1...3).map { .template |> Project.lens.id .~ $0 }
+    let env = FetchProjectsEnvelope(type: .backed, projects: projects, hasNextPage: true, totalCount: 5)
+    let user = User.template
+
+    withEnvironment(apiService: MockService(fetchBackerBackedProjectsResponse: env), currentUser: user) {
+      self.vm.inputs.configureWith(projectsType: .backed, sort: .endingSoon)
+      self.vm.inputs.viewDidAppear(false)
+      self.vm.inputs.currentUserUpdated()
+
+      self.isRefreshing.assertLastValue(true)
+
+      // Load all projects to end refreshing.
+      self.scheduler.advance()
+      self.isRefreshing.assertLastValue(false)
+
+      // Test that updating the saved projects count doesn't trigger re-fetching backed projects.
+      let userSavedCountChanged = user |> \.stats.starredProjectsCount .~ 3
+      withEnvironment(
+        apiService: MockService(fetchBackerBackedProjectsResponse: env),
+        currentUser: userSavedCountChanged
+      ) {
+        self.vm.inputs.viewDidAppear(true)
+        self.isRefreshing.assertLastValue(false)
+      }
+
+      // Test that updating the backed projects count triggers re-fetching backed projects.
+      let userBackedCountChanged = userSavedCountChanged |> \.stats.backedProjectsCount .~ 1
+      withEnvironment(
+        apiService: MockService(fetchBackerBackedProjectsResponse: env),
+        currentUser: userBackedCountChanged
+      ) {
+        self.vm.inputs.viewDidAppear(true)
+        self.isRefreshing.assertLastValue(true)
+
+        self.scheduler.advance()
+        self.isRefreshing.assertLastValue(false)
+      }
+    }
+  }
 }
