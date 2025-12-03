@@ -619,6 +619,7 @@
 		60C996EE2AC2030C006BE4F4 /* CreateFlaggingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996ED2AC2030C006BE4F4 /* CreateFlaggingInput.swift */; };
 		60C996F12AC2043A006BE4F4 /* CreateFlaggingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996EF2AC20314006BE4F4 /* CreateFlaggingInputTests.swift */; };
 		60C996F22AC20487006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E92AC1FDE3006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift */; };
+		60CC71222EDF399E00A99ABB /* BottomNavPillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CC71212EDF399D00A99ABB /* BottomNavPillView.swift */; };
 		60CC7CA32E26A82D0055BE8F /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CC7CA22E26A82D0055BE8F /* OnboardingViewModel.swift */; };
 		60CC7CA42E26AFD70055BE8F /* onboarding-flow-welcome-en.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914F12E1590D90030BB90 /* onboarding-flow-welcome-en.json */; };
 		60CC7CA52E26B0A30055BE8F /* onboarding-flow-save-projects-ja.json in Resources */ = {isa = PBXBuildFile; fileRef = 605914EF2E1590D90030BB90 /* onboarding-flow-save-projects-ja.json */; };
@@ -2397,6 +2398,7 @@
 		60C996E92AC1FDE3006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift"; sourceTree = "<group>"; };
 		60C996ED2AC2030C006BE4F4 /* CreateFlaggingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingInput.swift; sourceTree = "<group>"; };
 		60C996EF2AC20314006BE4F4 /* CreateFlaggingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingInputTests.swift; sourceTree = "<group>"; };
+		60CC71212EDF399D00A99ABB /* BottomNavPillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNavPillView.swift; sourceTree = "<group>"; };
 		60CC7CA22E26A82D0055BE8F /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		60CC7CC42E280E2A0055BE8F /* OnboardingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModelTests.swift; sourceTree = "<group>"; };
 		60E1BB262C6D230A007D723B /* PledgeViewCTAContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewCTAContainerView.swift; sourceTree = "<group>"; };
@@ -4218,6 +4220,7 @@
 			isa = PBXGroup;
 			children = (
 				A775B51F1CA8705B00BBB587 /* RootTabBarViewController.swift */,
+				60CC71212EDF399D00A99ABB /* BottomNavPillView.swift */,
 			);
 			path = RootTabBar;
 			sourceTree = "<group>";
@@ -9347,6 +9350,7 @@
 				77752F5E219B39EA00E7DA7D /* SettingsAccountWarningCell.swift in Sources */,
 				3780C8622208F8C8002117D1 /* SettingsTextInputCell.swift in Sources */,
 				597073A01D07277100B00444 /* ProjectNotificationsDataSource.swift in Sources */,
+				60CC71222EDF399E00A99ABB /* BottomNavPillView.swift in Sources */,
 				A757E9EF1D19C37F00A5C978 /* ActivitySurveyResponseCell.swift in Sources */,
 				D63BBCDA217E7802007E01F0 /* CreditCardCell.swift in Sources */,
 				191E601F2A93F318001413B2 /* ProjectTabAIGenerationCell.swift in Sources */,
