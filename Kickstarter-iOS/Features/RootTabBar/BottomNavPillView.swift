@@ -6,9 +6,9 @@ import UIKit
 
 enum BottomNavPillConstants {
   // Icons
-  static let discoveryIcon = "house.fill"
-  static let searchIcon = "magnifyingglass"
-  static let profileIcon = "person.crop.circle"
+  static let discoveryIcon = "pill-tabbar-icon-home"
+  static let searchIcon = "pill-tabbar-icon-search"
+  static let profileIcon = "pill-tabbar-icon-profile"
 
   // Layout
   static let spacing: CGFloat = 10
@@ -29,7 +29,6 @@ enum BottomNavPillConstants {
   static let indicatorColor: Color = Colors.Nav.iconHighlight.swiftUIColor()
 
   // Icon Styles
-  static let iconFontSize: CGFloat = 22
   static let iconFrameSize: CGFloat = 40
   static let selectedIconColor: Color = Colors.Nav.iconColorSelected.swiftUIColor()
   static let unselectedIconColor: Color = Colors.Nav.iconColorUnselected.swiftUIColor()
@@ -104,11 +103,8 @@ struct BottomNavPillView: View {
           )
         }
 
-        Image(systemName: iconImageName)
-          .font(.system(
-            size: BottomNavPillConstants.iconFontSize,
-            weight: .semibold
-          ))
+        Image(iconImageName)
+          .renderingMode(.template)
           .foregroundColor(
             isSelected
               ? BottomNavPillConstants.selectedIconColor
