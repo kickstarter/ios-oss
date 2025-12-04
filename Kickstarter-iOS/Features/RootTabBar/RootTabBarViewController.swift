@@ -17,9 +17,9 @@ extension TabBarControllerScrollable where Self: UIViewController {
   }
 }
 
-// MARK: - New Bottom Nav Pill Stuff
+// MARK: - Floating Tab Bar Stuff
 
-public var isBottomNavPillEnabled: Bool = true
+public var isFloatingTabBarEnabled: Bool = true
 
 public final class RootTabBarViewController: UITabBarController, MessageBannerViewControllerPresenting {
   private var applicationWillEnterForegroundObserver: Any?
@@ -32,11 +32,11 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
 
   fileprivate let viewModel: RootViewModelType = RootViewModel()
 
-  // MARK: - New Bottom Nav Pill Stuff
+  // MARK: - Floating Tab Bar Stuff
 
-  /// SwiftUI hosting controller that renders the new bottom pill nav instead of the legacy tab bar.
-  private var pillController: BottomNavPillHostingController?
-  /// Cached profile tab images so the SwiftUI pill can reuse the same avatar art
+  /// SwiftUI hosting controller that renders the new floating tab bar instead of the legacy tab bar.
+  private var floatingTabBarController: FloatingTabBarHostingController?
+  /// Cached profile tab images so the floating tab bar can reuse the same profile image
   /// that we already generate for the existing UITabBar.
   private var profileDefaultImage: UIImage?
   private var profileSelectedImage: UIImage?
@@ -85,14 +85,14 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
         AppEnvironment.updateCurrentUser(user)
         NotificationCenter.default.post(.init(name: .ksr_userUpdated))
 
-        guard let self = self, isBottomNavPillEnabled else { return }
+        guard let self = self, isFloatingTabBarEnabled else { return }
 
-        /// When the user object changes (login/logout), reset cached pill tab bar profile tab avatar
+        /// When the user object changes (login/logout), reset cached floating tab bar profile tab.
         self.profileDefaultImage = nil
         self.profileSelectedImage = nil
 
-        /// Keep the pill’s visual state in sync with the current user and tab selection.
-        self.updatePillSelection()
+        /// Keep the floating tab bar state in sync with the current user and tab selection.
+        self.updateFloatingTabBar()
       }
 
     self.userLocalePreferencesChangedObserver = NotificationCenter
@@ -108,9 +108,9 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
-    /// When the pill nav is enabled, build it once and hide the legacy UITabBar
-    if isBottomNavPillEnabled {
-      self.setupPill()
+    /// When the floating tab bar is enabled, build it once and hide the legacy UITabBar
+    if isFloatingTabBarEnabled {
+      self.setupFloatingTabBar()
       self.tabBar.isHidden = true
     }
 
@@ -121,12 +121,12 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
     super.viewDidLayoutSubviews()
   }
 
-  // MARK: - New Bottom Nav Pill Stuff
+  // MARK: - Floating Tab Bar Stuff
 
-  /// Adds  the SwiftUI pill view and pins it to the bottom safe area,
-  private func setupPill() {
-    let pill = BottomNavPillHostingController(
-      selected: RootTab(rawValue: self.selectedIndex) ?? .discovery,
+  /// Adds the floating tab bar and pins it to the bottom safe area.
+  private func setupFloatingTabBar() {
+    let tabBar = FloatingTabBarHostingController(
+      selected: FloatingTabBarTab(rawValue: self.selectedIndex) ?? .discovery,
       onSelect: { [weak self] tab in
         self?.switchToTab(tab)
       },
@@ -134,49 +134,49 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       profileSelectedImage: self.profileSelectedImage
     )
 
-    self.addChild(pill)
-    self.view.addSubview(pill.view)
-    pill.didMove(toParent: self)
+    self.addChild(tabBar)
+    self.view.addSubview(tabBar.view)
+    tabBar.didMove(toParent: self)
 
-    pill.view.translatesAutoresizingMaskIntoConstraints = false
+    tabBar.view.translatesAutoresizingMaskIntoConstraints = false
 
     NSLayoutConstraint.activate([
-      pill.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      pill.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8)
+      tabBar.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      tabBar.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8)
     ])
 
-    self.pillController = pill
+    self.floatingTabBarController = tabBar
   }
 
-  /// Rebuilds the SwiftUI pill tab bar with the current selected tab + cached profile images
+  /// Rebuilds the SwiftUI floating tab bar with the current selected tab + cached profile images
   /// so it stays visually aligned with UITabBar’s  state.
-  private func updatePillSelection() {
-    guard let pillController = self.pillController else { return }
+  private func updateFloatingTabBar() {
+    guard let tabBarController = self.floatingTabBarController else { return }
 
-    let selectedTab = RootTab(rawValue: self.selectedIndex) ?? .discovery
-    pillController.update(
+    let selectedTab = FloatingTabBarTab(rawValue: self.selectedIndex) ?? .discovery
+    tabBarController.update(
       selected: selectedTab,
       profileDefaultImage: self.profileDefaultImage,
       profileSelectedImage: self.profileSelectedImage
     )
   }
 
-  /// Bridgesthe new  pill tab bar taps into the existing tab-selection flow so that our new
+  /// Bridgesthe new floating tab bar taps into the existing tab-selection flow so that our new
   /// UI can be a  wrapper over the same tab bar  behavior.
-  private func switchToTab(_ tab: RootTab) {
+  private func switchToTab(_ tab: FloatingTabBarTab) {
     switch tab {
     case .discovery:
-      self.selectedIndex = RootTab.discovery.rawValue
+      self.selectedIndex = FloatingTabBarTab.discovery.rawValue
 
     case .search:
-      self.selectedIndex = RootTab.search.rawValue
+      self.selectedIndex = FloatingTabBarTab.search.rawValue
 
     case .profile:
-      self.selectedIndex = RootTab.profile.rawValue
+      self.selectedIndex = FloatingTabBarTab.profile.rawValue
     }
 
-    if isBottomNavPillEnabled {
-      self.updatePillSelection()
+    if isFloatingTabBarEnabled {
+      self.updateFloatingTabBar()
     }
   }
 
@@ -207,10 +207,8 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
   public override func bindStyles() {
     super.bindStyles()
 
-    /// When the pill is active we bypass legacy UITabBar styling
-    guard isBottomNavPillEnabled == false else {
-      return
-    }
+    /// When the floating tab bar is enabled we bypass legacy UITabBar styling
+    guard isFloatingTabBarEnabled == false else { return }
 
     _ = self.tabBar
       |> UITabBar.lens.tintColor .~ tabBarSelectedColor
@@ -229,11 +227,11 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
 
         self.setViewControllers(controllers, animated: false)
 
-        /// After controllers are set, make sure the pill tab bar points at the correct
+        /// After controllers are set, make sure the floating tab bar points at the correct
         /// initial tab so we don’t show an “unselected” state on first load.
-        if isBottomNavPillEnabled {
-          self.selectedIndex = RootTab.discovery.rawValue
-          self.updatePillSelection()
+        if isFloatingTabBarEnabled {
+          self.selectedIndex = FloatingTabBarTab.discovery.rawValue
+          self.updateFloatingTabBar()
         }
       }
 
@@ -245,12 +243,12 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
         self.selectedIndex = index
 
         /// Anytime the VM changes the selected tab, sync that change down
-        /// into the SwiftUI pill tab bar so the highlight matches.
-        if isBottomNavPillEnabled {
+        /// into the SwiftUI floating tab bar so the highlight matches.
+        if isFloatingTabBarEnabled {
           self.profileDefaultImage = nil
           self.profileSelectedImage = nil
 
-          self.updatePillSelection()
+          self.updateFloatingTabBar()
         }
       }
 
@@ -349,15 +347,15 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
         if data.isLoggedIn == true, let avatarUrl = avatarUrl {
           /// Logged in: existing behavior for the legacy tab bar.
           self.setProfileImage(with: data, avatarUrl: avatarUrl, index: index)
-        } else if isBottomNavPillEnabled {
-          /// When logged out and pill tab bar is enabled, explicitly clear the cached profile image
-          /// so the SwiftUI pill falls back to the generic tab icon.
+        } else if isFloatingTabBarEnabled {
+          /// When logged out and floating tab bar is enabled, explicitly clear the cached profile image
+          /// so the floating tab bar falls back to the generic tab icon.
           self.profileDefaultImage = nil
           self.profileSelectedImage = nil
 
-          if let pill = self.pillController {
-            let selectedTab = RootTab(rawValue: self.selectedIndex) ?? .discovery
-            pill.update(
+          if let tabBar = self.floatingTabBarController {
+            let selectedTab = FloatingTabBarTab(rawValue: self.selectedIndex) ?? .discovery
+            tabBar.update(
               selected: selectedTab,
               profileDefaultImage: nil,
               profileSelectedImage: nil
@@ -386,13 +384,13 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
         ?|> UITabBarItem.lens.image .~ defaultImage
         ?|> UITabBarItem.lens.selectedImage .~ selectedImage
 
-      if isBottomNavPillEnabled {
+      if isFloatingTabBarEnabled {
         /// When profile image  is ready, mirror the same default/selected images into
-        /// the pill tab bar so both tab UIs stay visually consistent.
+        /// the floating tab bar so both tab UIs stay visually consistent.
         self.profileDefaultImage = defaultImage
         self.profileSelectedImage = selectedImage
-        self.pillController?.update(
-          selected: RootTab(rawValue: self.selectedIndex) ?? .discovery,
+        self.floatingTabBarController?.update(
+          selected: FloatingTabBarTab(rawValue: self.selectedIndex) ?? .discovery,
           profileDefaultImage: defaultImage,
           profileSelectedImage: selectedImage
         )
@@ -410,13 +408,16 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
           ?|> UITabBarItem.lens.image .~ defaultImage
           ?|> UITabBarItem.lens.selectedImage .~ selectedImage
 
-        if isBottomNavPillEnabled {
+        if isFloatingTabBarEnabled {
           /// Same as above, but for the async-load path: once we have the profile image,
-          /// push it into the pill tab bar view as well.
+          /// push it into the floating tab bar view as well.
           self?.profileDefaultImage = defaultImage
           self?.profileSelectedImage = selectedImage
-          self?.pillController?.update(
-            selected: RootTab(rawValue: self?.selectedIndex ?? RootTab.discovery.rawValue) ?? .discovery,
+          self?.floatingTabBarController?.update(
+            selected: FloatingTabBarTab(
+              rawValue: self?.selectedIndex ?? FloatingTabBarTab.discovery
+                .rawValue
+            ) ?? .discovery,
             profileDefaultImage: defaultImage,
             profileSelectedImage: selectedImage
           )
@@ -483,10 +484,10 @@ extension RootTabBarViewController: UITabBarControllerDelegate {
   ) {
     self.viewModel.inputs.didSelect(index: tabBarController.selectedIndex)
 
-    /// Keep pill tab bar selection in sync when the user taps the legacy tab bar,
+    /// Keep floating tab bar selection in sync when the user taps the legacy tab bar,
     /// in case the feature flag is toggled while both UIs are visible during dev.
-    if isBottomNavPillEnabled {
-      self.updatePillSelection()
+    if isFloatingTabBarEnabled {
+      self.updateFloatingTabBar()
     }
   }
 
@@ -511,11 +512,11 @@ private func tabbarAvatarImageFromData(_ data: Data) -> (defaultImage: UIImage?,
     .af.imageAspectScaled(toFit: tabBarAvatarSize)
   avatar?.af.inflate()
 
-  /// When the pill tab bar is enabled, we reuse different border colors for the avatar
+  /// When the floating tab bar is enabled, we reuse different border colors for the avatar
   /// to better match the new nav design, but otherwise we keep the legacy colors.
-  let deselectedImageBorderColor: UIColor = isBottomNavPillEnabled ?
+  let deselectedImageBorderColor: UIColor = isFloatingTabBarEnabled ?
     UIColor(Colors.Nav.profileIconImageBorderColorDefault.swiftUIColor()) : tabBarDeselectedColor
-  let selectedImageBorderColor: UIColor = isBottomNavPillEnabled ?
+  let selectedImageBorderColor: UIColor = isFloatingTabBarEnabled ?
     UIColor(Colors.Nav.profileIconImageBorderColorSelected.swiftUIColor()) : tabBarSelectedColor
 
   let deselectedImage = strokedRoundImage(
@@ -549,7 +550,7 @@ private func strokedRoundImage(
   circle.lineWidth = lineWidth
   circle.stroke()
 
-  if isBottomNavPillEnabled {
+  if isFloatingTabBarEnabled {
     return UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysTemplate)
   } else {
     return UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysOriginal)
