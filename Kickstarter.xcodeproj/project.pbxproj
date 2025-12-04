@@ -3547,7 +3547,6 @@
 		E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildPaymentPlanQueryTestData.swift; sourceTree = "<group>"; };
 		E1A310252D2840680062646C /* PledgeOverTimeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimeUseCase.swift; sourceTree = "<group>"; };
 		E1A310272D2845CB0062646C /* PledgeOverTimeUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimeUseCaseTests.swift; sourceTree = "<group>"; };
-		E1A530372EDE2F97000D8CC3 /* SimpleShippingRuleLocationFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = SimpleShippingRuleLocationFragment.graphql; sourceTree = "<group>"; };
 		E1B33F502E538157008903BA /* GraphAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = GraphAPI; sourceTree = "<group>"; };
 		E1B813C62BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMyBackedProjectsQueryRequestForTests.graphql_test; sourceTree = "<group>"; };
 		E1B813C82BC851E100DF33CF /* FetchMyBackedProjectsQuery.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FetchMyBackedProjectsQuery.json; sourceTree = "<group>"; };
@@ -7677,7 +7676,6 @@
 				E190EB322E29944E006A6DB6 /* ProjectPamphletMainCellPropertiesFragment.graphql */,
 				E190EB332E29944E006A6DB6 /* RewardFragment.graphql */,
 				E190EB342E29944E006A6DB6 /* ShippingRuleFragment.graphql */,
-				E1A530372EDE2F97000D8CC3 /* SimpleShippingRuleLocationFragment.graphql */,
 				E190EB352E29944E006A6DB6 /* UserEmailFragment.graphql */,
 				E190EB362E29944E006A6DB6 /* UserFeaturesFragment.graphql */,
 				E190EB372E29944E006A6DB6 /* UserFragment.graphql */,

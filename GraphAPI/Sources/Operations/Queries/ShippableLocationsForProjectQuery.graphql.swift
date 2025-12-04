@@ -7,8 +7,8 @@ public class ShippableLocationsForProjectQuery: GraphQLQuery {
   public static let operationName: String = "ShippableLocationsForProject"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query ShippableLocationsForProject($id: Int!) { project(pid: $id) { __typename rewards { __typename nodes { __typename simpleShippingRulesExpanded { __typename ...SimpleShippingRuleLocationFragment } } } } }"#,
-      fragments: [SimpleShippingRuleLocationFragment.self]
+      #"query ShippableLocationsForProject($id: Int!) { project(pid: $id) { __typename shippableCountriesExpanded { __typename ...LocationFragment } } }"#,
+      fragments: [LocationFragment.self]
     ))
 
   public var id: Int
@@ -55,19 +55,19 @@ public class ShippableLocationsForProjectQuery: GraphQLQuery {
       public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Project }
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
-        .field("rewards", Rewards?.self),
+        .field("shippableCountriesExpanded", [ShippableCountriesExpanded].self),
       ] }
 
-      /// Project rewards.
-      public var rewards: Rewards? { __data["rewards"] }
+      /// All countries in which this project has a shippable reward. Expands results to the country level (ie EU -> [ Austria, Belgium ...])Returns all countries if the project has an unrestricted reward. If this project has only digital or local rewards, returns an empty array.
+      public var shippableCountriesExpanded: [ShippableCountriesExpanded] { __data["shippableCountriesExpanded"] }
 
       public init(
-        rewards: Rewards? = nil
+        shippableCountriesExpanded: [ShippableCountriesExpanded]
       ) {
         self.init(_dataDict: DataDict(
           data: [
             "__typename": GraphAPI.Objects.Project.typename,
-            "rewards": rewards._fieldData,
+            "shippableCountriesExpanded": shippableCountriesExpanded._fieldData,
           ],
           fulfilledFragments: [
             ObjectIdentifier(ShippableLocationsForProjectQuery.Data.Project.self)
@@ -75,109 +75,57 @@ public class ShippableLocationsForProjectQuery: GraphQLQuery {
         ))
       }
 
-      /// Project.Rewards
+      /// Project.ShippableCountriesExpanded
       ///
-      /// Parent Type: `ProjectRewardConnection`
-      public struct Rewards: GraphAPI.SelectionSet {
+      /// Parent Type: `Location`
+      public struct ShippableCountriesExpanded: GraphAPI.SelectionSet {
         public let __data: DataDict
         public init(_dataDict: DataDict) { __data = _dataDict }
 
-        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.ProjectRewardConnection }
+        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Location }
         public static var __selections: [ApolloAPI.Selection] { [
           .field("__typename", String.self),
-          .field("nodes", [Node?]?.self),
+          .fragment(LocationFragment.self),
         ] }
 
-        /// A list of nodes.
-        public var nodes: [Node?]? { __data["nodes"] }
+        /// The country code.
+        public var country: String { __data["country"] }
+        /// The localized country name.
+        public var countryName: String? { __data["countryName"] }
+        /// The displayable name. It includes the state code for US cities. ex: 'Seattle, WA'
+        public var displayableName: String { __data["displayableName"] }
+        public var id: GraphAPI.ID { __data["id"] }
+        /// The localized name
+        public var name: String { __data["name"] }
 
-        public init(
-          nodes: [Node?]? = nil
-        ) {
-          self.init(_dataDict: DataDict(
-            data: [
-              "__typename": GraphAPI.Objects.ProjectRewardConnection.typename,
-              "nodes": nodes._fieldData,
-            ],
-            fulfilledFragments: [
-              ObjectIdentifier(ShippableLocationsForProjectQuery.Data.Project.Rewards.self)
-            ]
-          ))
-        }
-
-        /// Project.Rewards.Node
-        ///
-        /// Parent Type: `Reward`
-        public struct Node: GraphAPI.SelectionSet {
+        public struct Fragments: FragmentContainer {
           public let __data: DataDict
           public init(_dataDict: DataDict) { __data = _dataDict }
 
-          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Reward }
-          public static var __selections: [ApolloAPI.Selection] { [
-            .field("__typename", String.self),
-            .field("simpleShippingRulesExpanded", [SimpleShippingRulesExpanded?].self),
-          ] }
+          public var locationFragment: LocationFragment { _toFragment() }
+        }
 
-          /// Simple shipping rules expanded as a faster alternative to shippingRulesExpanded since connection type is slow
-          public var simpleShippingRulesExpanded: [SimpleShippingRulesExpanded?] { __data["simpleShippingRulesExpanded"] }
-
-          public init(
-            simpleShippingRulesExpanded: [SimpleShippingRulesExpanded?]
-          ) {
-            self.init(_dataDict: DataDict(
-              data: [
-                "__typename": GraphAPI.Objects.Reward.typename,
-                "simpleShippingRulesExpanded": simpleShippingRulesExpanded._fieldData,
-              ],
-              fulfilledFragments: [
-                ObjectIdentifier(ShippableLocationsForProjectQuery.Data.Project.Rewards.Node.self)
-              ]
-            ))
-          }
-
-          /// Project.Rewards.Node.SimpleShippingRulesExpanded
-          ///
-          /// Parent Type: `SimpleShippingRule`
-          public struct SimpleShippingRulesExpanded: GraphAPI.SelectionSet {
-            public let __data: DataDict
-            public init(_dataDict: DataDict) { __data = _dataDict }
-
-            public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.SimpleShippingRule }
-            public static var __selections: [ApolloAPI.Selection] { [
-              .field("__typename", String.self),
-              .fragment(SimpleShippingRuleLocationFragment.self),
-            ] }
-
-            public var locationId: GraphAPI.ID? { __data["locationId"] }
-            public var locationName: String? { __data["locationName"] }
-            public var country: String { __data["country"] }
-
-            public struct Fragments: FragmentContainer {
-              public let __data: DataDict
-              public init(_dataDict: DataDict) { __data = _dataDict }
-
-              public var simpleShippingRuleLocationFragment: SimpleShippingRuleLocationFragment { _toFragment() }
-            }
-
-            public init(
-              locationId: GraphAPI.ID? = nil,
-              locationName: String? = nil,
-              country: String
-            ) {
-              self.init(_dataDict: DataDict(
-                data: [
-                  "__typename": GraphAPI.Objects.SimpleShippingRule.typename,
-                  "locationId": locationId,
-                  "locationName": locationName,
-                  "country": country,
-                ],
-                fulfilledFragments: [
-                  ObjectIdentifier(ShippableLocationsForProjectQuery.Data.Project.Rewards.Node.SimpleShippingRulesExpanded.self),
-                  ObjectIdentifier(SimpleShippingRuleLocationFragment.self)
-                ]
-              ))
-            }
-          }
+        public init(
+          country: String,
+          countryName: String? = nil,
+          displayableName: String,
+          id: GraphAPI.ID,
+          name: String
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Location.typename,
+              "country": country,
+              "countryName": countryName,
+              "displayableName": displayableName,
+              "id": id,
+              "name": name,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(ShippableLocationsForProjectQuery.Data.Project.ShippableCountriesExpanded.self),
+              ObjectIdentifier(LocationFragment.self)
+            ]
+          ))
         }
       }
     }

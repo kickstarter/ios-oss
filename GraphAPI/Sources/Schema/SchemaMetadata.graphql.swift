@@ -105,7 +105,6 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "PostConnection": return GraphAPI.Objects.PostConnection
     case "VideoSources": return GraphAPI.Objects.VideoSources
     case "VideoSourceInfo": return GraphAPI.Objects.VideoSourceInfo
-    case "SimpleShippingRule": return GraphAPI.Objects.SimpleShippingRule
     case "ProjectsConnectionWithTotalCount": return GraphAPI.Objects.ProjectsConnectionWithTotalCount
     case "PageInfo": return GraphAPI.Objects.PageInfo
     case "RewardTotalCountConnection": return GraphAPI.Objects.RewardTotalCountConnection
@@ -121,6 +120,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "CommentEdge": return GraphAPI.Objects.CommentEdge
     case "LocationsConnection": return GraphAPI.Objects.LocationsConnection
     case "ProjectBackerFriendsConnection": return GraphAPI.Objects.ProjectBackerFriendsConnection
+    case "SimpleShippingRule": return GraphAPI.Objects.SimpleShippingRule
     case "RewardShippingRulesConnection": return GraphAPI.Objects.RewardShippingRulesConnection
     case "PledgeProjectsOverview": return GraphAPI.Objects.PledgeProjectsOverview
     case "PledgedProjectsOverviewPledgesConnection": return GraphAPI.Objects.PledgedProjectsOverviewPledgesConnection

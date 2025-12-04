@@ -1,11 +1,7 @@
 query ShippableLocationsForProject($id: Int!) {
   project(pid: $id) {
-    rewards {
-      nodes {
-        simpleShippingRulesExpanded {
-          ...SimpleShippingRuleLocationFragment
-        }
-      }
+    shippableCountriesExpanded {
+      ...LocationFragment
     }
   }
 }
