@@ -590,5 +590,17 @@ public struct Colors {
       lightMode: .white,
       darkMode: .gray_1050
     )
+
+    public static let profileIconImageBorderColorSelected = SemanticColor(
+      "nav/icon/image-border",
+      lightMode: .white,
+      darkMode: .white
+    )
+
+    public static let profileIconImageBorderColorDefault = SemanticColor(
+      "nav/icon/image-border",
+      lightMode: .white,
+      darkMode: .gray_1050
+    )
   }
 }

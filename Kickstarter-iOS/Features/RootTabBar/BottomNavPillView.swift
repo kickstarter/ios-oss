@@ -2,13 +2,17 @@ import KDS
 import SwiftUI
 import UIKit
 
-// MARK: - Constants
-
 enum BottomNavPillConstants {
   // Icons
   static let discoveryIcon = "pill-tabbar-icon-home"
   static let searchIcon = "pill-tabbar-icon-search"
   static let profileIcon = "pill-tabbar-icon-profile"
+
+  // Icon Styles
+  static let iconFrameSize: CGFloat = 40
+  static let profileImageIconFrameSize: CGFloat = 30
+  static let selectedIconColor: Color = Colors.Nav.iconColorSelected.swiftUIColor()
+  static let unselectedIconColor: Color = Colors.Nav.iconColorUnselected.swiftUIColor()
 
   // Layout
   static let spacing: CGFloat = 10
@@ -28,18 +32,11 @@ enum BottomNavPillConstants {
   static let indicatorCornerRadius: CGFloat = 8
   static let indicatorColor: Color = Colors.Nav.iconHighlight.swiftUIColor()
 
-  // Icon Styles
-  static let iconFrameSize: CGFloat = 40
-  static let selectedIconColor: Color = Colors.Nav.iconColorSelected.swiftUIColor()
-  static let unselectedIconColor: Color = Colors.Nav.iconColorUnselected.swiftUIColor()
-
   // Animation
   static let animationResponse: CGFloat = 0.01
   static let animationDamping: CGFloat = 0.5
   static let animationID = "selectedTabIndicator"
 }
-
-// MARK: - Root Tabs
 
 enum RootTab: Int {
   case discovery = 0
@@ -52,6 +49,8 @@ enum RootTab: Int {
 struct BottomNavPillView: View {
   let selectedTab: RootTab
   let onSelect: (RootTab) -> Void
+  let profileDefaultImage: UIImage?
+  let profileSelectedImage: UIImage?
 
   @Namespace private var animation
 
@@ -59,7 +58,14 @@ struct BottomNavPillView: View {
     HStack(spacing: BottomNavPillConstants.spacing) {
       self.pillItem(.discovery, iconImageName: BottomNavPillConstants.discoveryIcon)
       self.pillItem(.search, iconImageName: BottomNavPillConstants.searchIcon)
-      self.pillItem(.profile, iconImageName: BottomNavPillConstants.profileIcon)
+
+      // profile uses default / selected avatar images
+      self.pillItem(
+        .profile,
+        iconImageName: BottomNavPillConstants.profileIcon,
+        profileImageDefault: self.profileDefaultImage,
+        profileImageSelected: self.profileSelectedImage
+      )
     }
     .padding(.horizontal, BottomNavPillConstants.horizontalPadding)
     .padding(.vertical, BottomNavPillConstants.verticalPadding)
@@ -84,7 +90,12 @@ struct BottomNavPillView: View {
   }
 
   @ViewBuilder
-  private func pillItem(_ tab: RootTab, iconImageName: String) -> some View {
+  private func pillItem(
+    _ tab: RootTab,
+    iconImageName: String,
+    profileImageDefault: UIImage? = nil,
+    profileImageSelected: UIImage? = nil
+  ) -> some View {
     let isSelected = self.selectedTab == tab
 
     Button {
@@ -101,20 +112,39 @@ struct BottomNavPillView: View {
             id: BottomNavPillConstants.animationID,
             in: self.animation
           )
-        }
-
-        Image(iconImageName)
-          .renderingMode(.template)
-          .foregroundColor(
-            isSelected
-              ? BottomNavPillConstants.selectedIconColor
-              : BottomNavPillConstants.unselectedIconColor
-          )
           .frame(
             width: BottomNavPillConstants.iconFrameSize,
             height: BottomNavPillConstants.iconFrameSize
           )
+        }
+
+        if let profileImage = (isSelected ? profileImageSelected : profileImageDefault) {
+          Image(uiImage: profileImage)
+            .renderingMode(.original)
+            .resizable()
+            .scaledToFit()
+            .frame(
+              width: BottomNavPillConstants.profileImageIconFrameSize,
+              height: BottomNavPillConstants.profileImageIconFrameSize
+            )
+        } else {
+          Image(iconImageName)
+            .renderingMode(.template)
+            .foregroundColor(
+              isSelected
+                ? BottomNavPillConstants.selectedIconColor
+                : BottomNavPillConstants.unselectedIconColor
+            )
+            .frame(
+              width: BottomNavPillConstants.iconFrameSize,
+              height: BottomNavPillConstants.iconFrameSize
+            )
+        }
       }
+      .frame(
+        width: BottomNavPillConstants.iconFrameSize,
+        height: BottomNavPillConstants.iconFrameSize
+      )
     }
     .buttonStyle(.plain)
   }
@@ -123,8 +153,29 @@ struct BottomNavPillView: View {
 // MARK: - Hosting Controller
 
 final class BottomNavPillHostingController: UIHostingController<BottomNavPillView> {
-  init(selected: RootTab, onSelect: @escaping (RootTab) -> Void) {
-    let rootView = BottomNavPillView(selectedTab: selected, onSelect: onSelect)
+  private var selected: RootTab
+  private let onSelect: (RootTab) -> Void
+  private var profileDefaultImage: UIImage?
+  private var profileSelectedImage: UIImage?
+
+  init(
+    selected: RootTab,
+    onSelect: @escaping (RootTab) -> Void,
+    profileDefaultImage: UIImage? = nil,
+    profileSelectedImage: UIImage? = nil
+  ) {
+    self.selected = selected
+    self.onSelect = onSelect
+    self.profileDefaultImage = profileDefaultImage
+    self.profileSelectedImage = profileSelectedImage
+
+    let rootView = BottomNavPillView(
+      selectedTab: selected,
+      onSelect: onSelect,
+      profileDefaultImage: profileDefaultImage,
+      profileSelectedImage: profileSelectedImage
+    )
+
     super.init(rootView: rootView)
     self.view.backgroundColor = .clear
   }
@@ -132,5 +183,22 @@ final class BottomNavPillHostingController: UIHostingController<BottomNavPillVie
   @available(*, unavailable)
   @objc required dynamic init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  func update(
+    selected: RootTab,
+    profileDefaultImage: UIImage? = nil,
+    profileSelectedImage: UIImage? = nil
+  ) {
+    self.selected = selected
+    self.profileDefaultImage = profileDefaultImage
+    self.profileSelectedImage = profileSelectedImage
+
+    self.rootView = BottomNavPillView(
+      selectedTab: self.selected,
+      onSelect: self.onSelect,
+      profileDefaultImage: self.profileDefaultImage,
+      profileSelectedImage: self.profileSelectedImage
+    )
   }
 }
