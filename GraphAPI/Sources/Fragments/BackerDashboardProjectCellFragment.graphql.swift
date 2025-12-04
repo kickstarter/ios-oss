@@ -30,7 +30,7 @@ public struct BackerDashboardProjectCellFragment: GraphAPI.SelectionSet, Fragmen
   public var projectId: GraphAPI.ID { __data["projectId"] }
   /// The project's name.
   public var name: String { __data["name"] }
-  /// The project's current state.
+  /// The project's current state in the state machine.
   public var projectState: GraphQLEnum<GraphAPI.ProjectState> { __data["projectState"] }
   /// The project's primary image.
   public var image: Image? { __data["image"] }

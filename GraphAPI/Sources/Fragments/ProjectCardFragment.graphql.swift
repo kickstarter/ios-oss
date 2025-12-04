@@ -39,7 +39,7 @@ public struct ProjectCardFragment: GraphAPI.SelectionSet, Fragment {
   public var pid: Int { __data["pid"] }
   /// The project's name.
   public var name: String { __data["name"] }
-  /// The project's current state.
+  /// The project's current state in the state machine.
   public var state: GraphQLEnum<GraphAPI.ProjectState> { __data["state"] }
   /// The project has launched
   public var isLaunched: Bool { __data["isLaunched"] }
