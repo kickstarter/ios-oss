@@ -172,7 +172,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
       public var sendMetaCapiEvents: Bool { __data["sendMetaCapiEvents"] }
       /// The project's unique URL identifier.
       public var slug: String { __data["slug"] }
-      /// The project's current state.
+      /// The project's current state in the state machine.
       public var state: GraphQLEnum<GraphAPI.ProjectState> { __data["state"] }
       /// The last time a project's state changed, time since epoch
       public var stateChangedAt: GraphAPI.DateTime { __data["stateChangedAt"] }
