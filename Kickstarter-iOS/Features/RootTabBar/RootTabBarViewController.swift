@@ -1,4 +1,5 @@
 import AlamofireImage
+import KDS
 import KsApi
 import Library
 import Prelude
@@ -16,6 +17,10 @@ extension TabBarControllerScrollable where Self: UIViewController {
   }
 }
 
+// MARK: - New Bottom Nav Pill Stuff
+
+public var isBottomNavPillEnabled: Bool = true
+
 public final class RootTabBarViewController: UITabBarController, MessageBannerViewControllerPresenting {
   private var applicationWillEnterForegroundObserver: Any?
   public var messageBannerViewController: MessageBannerViewController?
@@ -26,6 +31,15 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
   private var voiceOverStatusDidChangeObserver: Any?
 
   fileprivate let viewModel: RootViewModelType = RootViewModel()
+
+  // MARK: - New Bottom Nav Pill Stuff
+
+  /// SwiftUI hosting controller that renders the new bottom pill nav instead of the legacy tab bar.
+  private var pillController: BottomNavPillHostingController?
+  /// Cached profile tab images so the SwiftUI pill can reuse the same avatar art
+  /// that we already generate for the existing UITabBar.
+  private var profileDefaultImage: UIImage?
+  private var profileSelectedImage: UIImage?
 
   public override func viewDidLoad() {
     super.viewDidLoad()
@@ -67,9 +81,18 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       }
 
     self.viewModel.outputs.updateUserInEnvironment
-      .observeValues { user in
+      .observeValues { [weak self] user in
         AppEnvironment.updateCurrentUser(user)
         NotificationCenter.default.post(.init(name: .ksr_userUpdated))
+
+        guard let self = self, isBottomNavPillEnabled else { return }
+
+        /// When the user object changes (login/logout), reset cached pill tab bar profile tab avatar
+        self.profileDefaultImage = nil
+        self.profileSelectedImage = nil
+
+        /// Keep the pill’s visual state in sync with the current user and tab selection.
+        self.updatePillSelection()
       }
 
     self.userLocalePreferencesChangedObserver = NotificationCenter
@@ -85,7 +108,87 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
+    /// When the pill nav is enabled, build it once and hide the legacy UITabBar
+    if isBottomNavPillEnabled {
+      self.setupPill()
+      self.tabBar.isHidden = true
+    }
+
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  public override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+  }
+
+  // MARK: - New Bottom Nav Pill Stuff
+
+  /// Adds  the SwiftUI pill view and pins it to the bottom safe area,
+  private func setupPill() {
+    let pill = BottomNavPillHostingController(
+      selected: RootTab(rawValue: self.selectedIndex) ?? .discovery,
+      onSelect: { [weak self] tab in
+        self?.switchToTab(tab)
+      },
+      profileDefaultImage: self.profileDefaultImage,
+      profileSelectedImage: self.profileSelectedImage
+    )
+
+    self.addChild(pill)
+    self.view.addSubview(pill.view)
+    pill.didMove(toParent: self)
+
+    pill.view.translatesAutoresizingMaskIntoConstraints = false
+
+    NSLayoutConstraint.activate([
+      pill.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      pill.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8)
+    ])
+
+    self.pillController = pill
+  }
+
+  /// Rebuilds the SwiftUI pill tab bar with the current selected tab + cached profile images
+  /// so it stays visually aligned with UITabBar’s  state.
+  private func updatePillSelection() {
+    guard let pillController = self.pillController else { return }
+
+    let selectedTab = RootTab(rawValue: self.selectedIndex) ?? .discovery
+    pillController.update(
+      selected: selectedTab,
+      profileDefaultImage: self.profileDefaultImage,
+      profileSelectedImage: self.profileSelectedImage
+    )
+  }
+
+  /// Bridgesthe new  pill tab bar taps into the existing tab-selection flow so that our new
+  /// UI can be a  wrapper over the same tab bar  behavior.
+  private func switchToTab(_ tab: RootTab) {
+    switch tab {
+    case .discovery:
+      self.selectedIndex = RootTab.discovery.rawValue
+
+    case .search:
+      self.selectedIndex = RootTab.search.rawValue
+
+    case .profile:
+      self.selectedIndex = RootTab.profile.rawValue
+    }
+
+    if isBottomNavPillEnabled {
+      self.updatePillSelection()
+    }
+  }
+
+  private func styleTabBarTransparent() {
+    let appearance = UITabBarAppearance()
+    appearance.configureWithTransparentBackground()
+
+    tabBar.standardAppearance = appearance
+    tabBar.scrollEdgeAppearance = appearance
+    tabBar.backgroundImage = UIImage()
+    tabBar.shadowImage = UIImage()
+    tabBar.isTranslucent = true
   }
 
   deinit {
@@ -104,6 +207,11 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
   public override func bindStyles() {
     super.bindStyles()
 
+    /// When the pill is active we bypass legacy UITabBar styling
+    guard isBottomNavPillEnabled == false else {
+      return
+    }
+
     _ = self.tabBar
       |> UITabBar.lens.tintColor .~ tabBarSelectedColor
       |> UITabBar.lens.barTintColor .~ tabBarTintColor
@@ -116,13 +224,35 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       .observeForUI()
       .map { $0.map { RootTabBarViewController.viewController(from: $0) }.compact() }
       .map { $0.map(UINavigationController.init(rootViewController:)) }
-      .observeValues { [weak self] in
-        self?.setViewControllers($0, animated: false)
+      .observeValues { [weak self] controllers in
+        guard let self = self else { return }
+
+        self.setViewControllers(controllers, animated: false)
+
+        /// After controllers are set, make sure the pill tab bar points at the correct
+        /// initial tab so we don’t show an “unselected” state on first load.
+        if isBottomNavPillEnabled {
+          self.selectedIndex = RootTab.discovery.rawValue
+          self.updatePillSelection()
+        }
       }
 
     self.viewModel.outputs.selectedIndex
       .observeForUI()
-      .observeValues { [weak self] in self?.selectedIndex = $0 }
+      .observeValues { [weak self] index in
+        guard let self = self else { return }
+
+        self.selectedIndex = index
+
+        /// Anytime the VM changes the selected tab, sync that change down
+        /// into the SwiftUI pill tab bar so the highlight matches.
+        if isBottomNavPillEnabled {
+          self.profileDefaultImage = nil
+          self.profileSelectedImage = nil
+
+          self.updatePillSelection()
+        }
+      }
 
     self.viewModel.outputs.scrollToTop
       .observeForControllerAction()
@@ -205,15 +335,35 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       switch item {
       case let .home(index):
         _ = self.tabBarItem(atIndex: index) ?|> homeTabBarItemStyle
+
       case let .activity(index):
         _ = self.tabBarItem(atIndex: index) ?|> activityTabBarItemStyle
+
       case let .search(index):
         _ = self.tabBarItem(atIndex: index) ?|> searchTabBarItemStyle
+
       case let .profile(avatarUrl, index):
         _ = self.tabBarItem(atIndex: index)
           ?|> profileTabBarItemStyle(isLoggedIn: data.isLoggedIn)
 
-        self.setProfileImage(with: data, avatarUrl: avatarUrl, index: index)
+        if data.isLoggedIn == true, let avatarUrl = avatarUrl {
+          /// Logged in: existing behavior for the legacy tab bar.
+          self.setProfileImage(with: data, avatarUrl: avatarUrl, index: index)
+        } else if isBottomNavPillEnabled {
+          /// When logged out and pill tab bar is enabled, explicitly clear the cached profile image
+          /// so the SwiftUI pill falls back to the generic tab icon.
+          self.profileDefaultImage = nil
+          self.profileSelectedImage = nil
+
+          if let pill = self.pillController {
+            let selectedTab = RootTab(rawValue: self.selectedIndex) ?? .discovery
+            pill.update(
+              selected: selectedTab,
+              profileDefaultImage: nil,
+              profileSelectedImage: nil
+            )
+          }
+        }
       }
     }
   }
@@ -235,6 +385,18 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
         ?|> profileTabBarItemStyle(isLoggedIn: true)
         ?|> UITabBarItem.lens.image .~ defaultImage
         ?|> UITabBarItem.lens.selectedImage .~ selectedImage
+
+      if isBottomNavPillEnabled {
+        /// When profile image  is ready, mirror the same default/selected images into
+        /// the pill tab bar so both tab UIs stay visually consistent.
+        self.profileDefaultImage = defaultImage
+        self.profileSelectedImage = selectedImage
+        self.pillController?.update(
+          selected: RootTab(rawValue: self.selectedIndex) ?? .discovery,
+          profileDefaultImage: defaultImage,
+          profileSelectedImage: selectedImage
+        )
+      }
     } else {
       let sessionConfig = URLSessionConfiguration.default
       let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: .main)
@@ -247,6 +409,18 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
           ?|> profileTabBarItemStyle(isLoggedIn: true)
           ?|> UITabBarItem.lens.image .~ defaultImage
           ?|> UITabBarItem.lens.selectedImage .~ selectedImage
+
+        if isBottomNavPillEnabled {
+          /// Same as above, but for the async-load path: once we have the profile image,
+          /// push it into the pill tab bar view as well.
+          self?.profileDefaultImage = defaultImage
+          self?.profileSelectedImage = selectedImage
+          self?.pillController?.update(
+            selected: RootTab(rawValue: self?.selectedIndex ?? RootTab.discovery.rawValue) ?? .discovery,
+            profileDefaultImage: defaultImage,
+            profileSelectedImage: selectedImage
+          )
+        }
       }
       dataTask.resume()
     }
@@ -308,6 +482,12 @@ extension RootTabBarViewController: UITabBarControllerDelegate {
     didSelect _: UIViewController
   ) {
     self.viewModel.inputs.didSelect(index: tabBarController.selectedIndex)
+
+    /// Keep pill tab bar selection in sync when the user taps the legacy tab bar,
+    /// in case the feature flag is toggled while both UIs are visible during dev.
+    if isBottomNavPillEnabled {
+      self.updatePillSelection()
+    }
   }
 
   public func tabBarController(
@@ -331,15 +511,22 @@ private func tabbarAvatarImageFromData(_ data: Data) -> (defaultImage: UIImage?,
     .af.imageAspectScaled(toFit: tabBarAvatarSize)
   avatar?.af.inflate()
 
+  /// When the pill tab bar is enabled, we reuse different border colors for the avatar
+  /// to better match the new nav design, but otherwise we keep the legacy colors.
+  let deselectedImageBorderColor: UIColor = isBottomNavPillEnabled ?
+    UIColor(Colors.Nav.profileIconImageBorderColorDefault.swiftUIColor()) : tabBarDeselectedColor
+  let selectedImageBorderColor: UIColor = isBottomNavPillEnabled ?
+    UIColor(Colors.Nav.profileIconImageBorderColorSelected.swiftUIColor()) : tabBarSelectedColor
+
   let deselectedImage = strokedRoundImage(
     fromImage: avatar,
     size: tabBarAvatarSize,
-    color: tabBarDeselectedColor
+    color: deselectedImageBorderColor
   )
   let selectedImage = strokedRoundImage(
     fromImage: avatar,
     size: tabBarAvatarSize,
-    color: tabBarSelectedColor,
+    color: selectedImageBorderColor,
     lineWidth: 2.0
   )
 
@@ -362,7 +549,11 @@ private func strokedRoundImage(
   circle.lineWidth = lineWidth
   circle.stroke()
 
-  return UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysOriginal)
+  if isBottomNavPillEnabled {
+    return UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysTemplate)
+  } else {
+    return UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysOriginal)
+  }
 }
 
 private func extractViewController(_ viewController: UIViewController) -> UIViewController {
