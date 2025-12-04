@@ -19,7 +19,7 @@ final class ShippingLocationsViewTests: TestCase {
       onCancelled: {}
     )
 
-    vc.view.frame = CGRect(0, 0, 350, 500)
+    vc.view.frame = CGRect(x: 0, y: 0, width: 350, height: 500)
 
     assertSnapshot(of: vc.view, as: .image, named: "locationView")
   }
