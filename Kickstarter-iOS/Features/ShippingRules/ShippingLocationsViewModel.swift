@@ -29,13 +29,9 @@ class ShippingLocationsViewModel: ObservableObject, ShippingLocationsViewModelTy
     withLocations locations: [Location],
     selectedLocation: Location?
   ) {
-    let sortedLocations = locations.sorted { a, b in
-      a.localizedName <= b.localizedName
-    }
-
-    self.allLocations = sortedLocations
+    self.allLocations = locations
     self.selectedLocation = selectedLocation
-    self.displayedLocations = sortedLocations
+    self.displayedLocations = locations
   }
 
   func isLocationSelected(_ location: Location) -> Bool {

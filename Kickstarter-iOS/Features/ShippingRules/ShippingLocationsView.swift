@@ -3,7 +3,7 @@ import KsApi
 import Library
 import SwiftUI
 
-public func ShippingLocationsViewController(
+public func shippingLocationsViewController(
   withLocations locations: [Location],
   selectedLocation: Location?,
   onSelectedLocation: @escaping (Location) -> Void,
@@ -23,8 +23,8 @@ public func ShippingLocationsViewController(
 
 private struct ShippingLocationsView<T: ShippingLocationsViewModelType>: View {
   @StateObject var viewModel: T
-  var onSelectedLocation: ((Location) -> Void)? = nil
-  var onCancelled: (() -> Void)? = nil
+  var onSelectedLocation: ((Location) -> Void)?
+  var onCancelled: (() -> Void)?
 
   @State private var searchText: String = ""
 

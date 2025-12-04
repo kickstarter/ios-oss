@@ -12,14 +12,14 @@ final class ShippingLocationsViewTests: TestCase {
       Location.usa
     ]
 
-    let vc = ShippingLocationsViewController(
+    let vc = shippingLocationsViewController(
       withLocations: allCountries,
       selectedLocation: Location.australia,
       onSelectedLocation: { _ in },
       onCancelled: {}
     )
 
-    vc.view.frame = CGRectMake(0, 0, 350, 500)
+    vc.view.frame = CGRect(0, 0, 350, 500)
 
     assertSnapshot(of: vc.view, as: .image, named: "locationView")
   }
