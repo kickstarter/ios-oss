@@ -10,6 +10,7 @@ final class RewardsCollectionViewModelTests: TestCase {
   private let reloadDataWithValues = TestObserver<[Reward], Never>()
   private let scrollToRewardIndex = TestObserver<Int, Never>()
   private let goToCustomizeYourReward = TestObserver<PledgeViewData, Never>()
+  private let shippingLocationViewHidden = TestObserver<Bool, Never>()
 
   private let vm = RewardsCollectionViewModel()
 
@@ -22,6 +23,8 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.outputs.scrollToRewardIndexPath.map { $0.row }.observe(self.scrollToRewardIndex.observer)
 
     self.vm.outputs.goToCustomizeYourReward.observe(self.goToCustomizeYourReward.observer)
+
+    self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
   }
 
   func testRewardsOrdered() {
@@ -203,6 +206,8 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.viewDidLoad()
     self.vm.viewDidLayoutSubviews()
 
+    self.shippingLocationViewHidden.assertLastValue(false)
+
     self.vm.inputs.shippingLocationSelected(location2)
     self.vm.inputs.rewardSelected(with: reward.id)
 
@@ -248,6 +253,8 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.inputs.shippingLocationSelected(nil)
     self.vm.viewDidLoad()
     self.vm.viewDidLayoutSubviews()
+
+    self.shippingLocationViewHidden.assertLastValue(true)
 
     self.vm.inputs.shippingLocationSelected(location1)
     self.vm.inputs.rewardSelected(with: reward.id)
@@ -300,11 +307,13 @@ final class RewardsCollectionViewModelTests: TestCase {
       |> Project.lens.rewardData.rewards .~ rewards
 
     self.vm.configure(with: testProject, refTag: nil, context: .createPledge, secretRewardToken: nil)
-    // Because the shipping location is powered by the available shipping rules,
-    // if there are no shippable rewards, the location element may be hidden and output `nil` once.
     self.vm.inputs.shippingLocationSelected(nil)
     self.vm.viewDidLoad()
     self.vm.viewDidLayoutSubviews()
+
+    // Because the shipping location is powered by the available shipping rules,
+    // if there are no shippable rewards, the location element may be hidden and output `nil` once.
+    self.shippingLocationViewHidden.assertLastValue(true)
 
     self.vm.inputs.rewardSelected(with: digitalReward.id)
 

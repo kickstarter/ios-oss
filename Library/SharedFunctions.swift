@@ -217,6 +217,20 @@ public func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule])
   return shippingRuleInUSA ?? shippingRules.first
 }
 
+public func defaultShippingLocation(fromLocations locations: [Location]) -> Location? {
+  let environmentCountry = AppEnvironment.current.config?.countryCode
+  if let currentLocation = locations
+    .first(where: { $0.country == environmentCountry }) {
+    return currentLocation
+  }
+
+  if let usaLocation = locations.first(where: { $0.country == "US" }) {
+    return usaLocation
+  }
+
+  return locations.first
+}
+
 public func formattedAmountForRewardOrBacking(
   project: Project,
   rewardOrBacking: Either<Reward, Backing>
