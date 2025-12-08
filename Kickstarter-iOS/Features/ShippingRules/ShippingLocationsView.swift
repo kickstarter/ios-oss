@@ -3,7 +3,8 @@ import KsApi
 import Library
 import SwiftUI
 
-public func shippingLocationsViewController(
+// swiftlint:disable:next identifier_name
+public func ShippingLocationsViewController(
   withLocations locations: [Location],
   selectedLocation: Location?,
   onSelectedLocation: @escaping (Location) -> Void,

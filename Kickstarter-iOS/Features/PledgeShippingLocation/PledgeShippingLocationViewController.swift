@@ -172,7 +172,7 @@ final class PledgeShippingLocationViewController: UIViewController {
     locations: [Location],
     selectedLocation: Location
   ) {
-    let viewController = shippingLocationsViewController(
+    let viewController = ShippingLocationsViewController(
       withLocations: locations,
       selectedLocation: selectedLocation,
       onSelectedLocation: { self.viewModel.inputs.shippingLocationUpdated(to: $0) },
