@@ -1688,6 +1688,10 @@
 		E182B7E52DB2ABE6000C4067 /* DiscoveryParams+SearchFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182B7E42DB2ABE1000C4067 /* DiscoveryParams+SearchFilters.swift */; };
 		E182E5BA2B8CDFDE0008DD69 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */; };
 		E182E5BC2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */; };
+		E1855EBC2EE0BF3300B4E408 /* ShippingLocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1855EBA2EE0BF3300B4E408 /* ShippingLocationsView.swift */; };
+		E1855EBD2EE0BF3300B4E408 /* ShippingLocationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1855EBB2EE0BF3300B4E408 /* ShippingLocationsViewModel.swift */; };
+		E1855EC02EE0BF7400B4E408 /* ShippingLocationsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1855EBE2EE0BF6600B4E408 /* ShippingLocationsViewModelTests.swift */; };
+		E1855EC32EE0C82200B4E408 /* ShippingLocationsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1855EC12EE0C7E000B4E408 /* ShippingLocationsViewTests.swift */; };
 		E18A674E2E28236D00BA0376 /* ApolloTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = E18A674D2E28236D00BA0376 /* ApolloTestSupport */; };
 		E18A67532E28241F00BA0376 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		E19900A32DDE26C40082F05E /* PercentRaisedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19900A22DDE26C10082F05E /* PercentRaisedView.swift */; };
@@ -3451,6 +3455,10 @@
 		E182B7DC2DB2A845000C4067 /* SelectedSearchFilters+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SelectedSearchFilters+TestHelpers.swift"; sourceTree = "<group>"; };
 		E182B7E42DB2ABE1000C4067 /* DiscoveryParams+SearchFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiscoveryParams+SearchFilters.swift"; sourceTree = "<group>"; };
 		E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppEnvironmentTests+OAuthInKeychain.swift"; sourceTree = "<group>"; };
+		E1855EBA2EE0BF3300B4E408 /* ShippingLocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingLocationsView.swift; sourceTree = "<group>"; };
+		E1855EBB2EE0BF3300B4E408 /* ShippingLocationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingLocationsViewModel.swift; sourceTree = "<group>"; };
+		E1855EBE2EE0BF6600B4E408 /* ShippingLocationsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingLocationsViewModelTests.swift; sourceTree = "<group>"; };
+		E1855EC12EE0C7E000B4E408 /* ShippingLocationsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingLocationsViewTests.swift; sourceTree = "<group>"; };
 		E1889D8D2B6065D6004FBE21 /* CombineTestObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserverTests.swift; sourceTree = "<group>"; };
 		E190EB1B2E29944E006A6DB6 /* BackerDashboardProjectCellFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BackerDashboardProjectCellFragment.graphql; sourceTree = "<group>"; };
 		E190EB1C2E29944E006A6DB6 /* BackingFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BackingFragment.graphql; sourceTree = "<group>"; };
@@ -4858,6 +4866,10 @@
 		19450C5228C82CEF00C60F97 /* ShippingRules */ = {
 			isa = PBXGroup;
 			children = (
+				E1855EBA2EE0BF3300B4E408 /* ShippingLocationsView.swift */,
+				E1855EC12EE0C7E000B4E408 /* ShippingLocationsViewTests.swift */,
+				E1855EBB2EE0BF3300B4E408 /* ShippingLocationsViewModel.swift */,
+				E1855EBE2EE0BF6600B4E408 /* ShippingLocationsViewModelTests.swift */,
 				19450C5328C82D6500C60F97 /* Views */,
 				19450C5528C82D7100C60F97 /* Datasource */,
 				19450C5628C82D7900C60F97 /* Controller */,
@@ -9221,6 +9233,8 @@
 				AAE7C9A72C75948B00800E03 /* PPOProjectCardViewModel.swift in Sources */,
 				3708DD43220A5A5700F8E569 /* SettingsGroupedFooterView.swift in Sources */,
 				60AE9F062ABB897900FB3A96 /* ReportProjectInfoListItem.swift in Sources */,
+				E1855EBC2EE0BF3300B4E408 /* ShippingLocationsView.swift in Sources */,
+				E1855EBD2EE0BF3300B4E408 /* ShippingLocationsViewModel.swift in Sources */,
 				604453242BA08EEA00B8F485 /* PostCampaignPledgeRewardsSummaryViewController.swift in Sources */,
 				47F4CA63267A7B2300356DBF /* RemoteConfigFeatureFlagToolsViewController.swift in Sources */,
 				A7CA8BB71D8F14260086A3E9 /* ProjectPamphletMainCell.swift in Sources */,
@@ -9435,6 +9449,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				19E9F01729C0F9A20002AD69 /* MockAppTrackingTransparency.swift in Sources */,
+				E1855EC02EE0BF7400B4E408 /* ShippingLocationsViewModelTests.swift in Sources */,
 				A7ED20631E83256700BFFA01 /* HelpWebViewModelTests.swift in Sources */,
 				39F48E252D5521BE00090D6C /* AlertBannerTests.swift in Sources */,
 				8AD7952F239EBDF600998C79 /* MockTrackingClient.swift in Sources */,
@@ -9467,6 +9482,7 @@
 				D72370942119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift in Sources */,
 				77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */,
 				19450C2628C8225200C60F97 /* SearchViewControllerTests.swift in Sources */,
+				E1855EC32EE0C82200B4E408 /* ShippingLocationsViewTests.swift in Sources */,
 				209B0E3A265801D70006DB7D /* CommentComposerViewTests.swift in Sources */,
 				3767EDA922CFFE770088E8E4 /* ShippingRulesDataSourceTests.swift in Sources */,
 				8A8C6136243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift in Sources */,
