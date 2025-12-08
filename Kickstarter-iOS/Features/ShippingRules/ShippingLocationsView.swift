@@ -9,22 +9,27 @@ public func shippingLocationsViewController(
   onSelectedLocation: @escaping (Location) -> Void,
   onCancelled: @escaping () -> Void
 ) -> UIViewController {
-  let viewModel = ShippingLocationsViewModel(
+  var view = ShippingLocationsView(
     withLocations: locations,
     selectedLocation: selectedLocation
   )
-
-  var view = ShippingLocationsView(viewModel: viewModel)
   view.onSelectedLocation = onSelectedLocation
   view.onCancelled = onCancelled
 
   return UIHostingController(rootView: view)
 }
 
-private struct ShippingLocationsView<T: ShippingLocationsViewModelType>: View {
-  @StateObject var viewModel: T
-  var onSelectedLocation: ((Location) -> Void)?
-  var onCancelled: (() -> Void)?
+private struct ShippingLocationsView: View {
+  @StateObject private var viewModel: ShippingLocationsViewModel
+  fileprivate var onSelectedLocation: ((Location) -> Void)?
+  fileprivate var onCancelled: (() -> Void)?
+
+  init(withLocations locations: [Location], selectedLocation: Location?) {
+    self._viewModel = StateObject(wrappedValue: ShippingLocationsViewModel(
+      withLocations: locations,
+      selectedLocation: selectedLocation
+    ))
+  }
 
   @State private var searchText: String = ""
 
