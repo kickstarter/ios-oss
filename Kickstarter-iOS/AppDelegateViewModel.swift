@@ -1089,10 +1089,10 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
     }
   }
 
-  if let pledgeRedemption = envelope.pledgeRedemption {
-    let path = pledgeRedemption.pledgeManagerPath
+  if let order = envelope.order {
+    let path = order.pledgeManagerPath
     let url = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + path
-    return .project(.id(pledgeRedemption.projectId), .pledgeManagerWebview(url), refInfo: RefInfo(.push))
+    return .project(.id(order.projectId), .pledgeManagerWebview(url), refInfo: RefInfo(.push))
   }
 
   if let project = envelope.project {
