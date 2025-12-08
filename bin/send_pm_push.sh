@@ -7,7 +7,7 @@ read -r -d '' APNS_DATA << EOF
     "aps": {
         "alert": "This is a pledge manager push notification.",
     },
-    "pledgeRedemption": {
+    "order": {
         "id": 123456,
         "project_id": 123456,
         "pledge_manager_path": "$PM_PATH"

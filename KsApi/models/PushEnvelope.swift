@@ -6,7 +6,7 @@ public struct PushEnvelope {
   public let erroredPledge: ErroredPledge?
   public let forCreator: Bool?
   public let message: Message?
-  public let pledgeRedemption: PledgeRedemption?
+  public let order: Order?
   public let project: Project?
   public let survey: Survey?
   public let update: Update?
@@ -35,7 +35,7 @@ public struct PushEnvelope {
     public let projectId: Int
   }
 
-  public struct PledgeRedemption {
+  public struct Order {
     public let id: Int
     public let projectId: Int
     public let pledgeManagerPath: String
@@ -75,7 +75,7 @@ extension PushEnvelope: Decodable {
     case erroredPledge = "errored_pledge"
     case forCreator = "for_creator"
     case message
-    case pledgeRedemption
+    case order
     case project
     case survey
     case update
@@ -90,7 +90,7 @@ extension PushEnvelope: Decodable {
     self.forCreator = try values.decodeIfPresent(Bool.self, forKey: .forCreator)
     self.message = try values.decodeIfPresent(Message.self, forKey: .message)
     self.project = try values.decodeIfPresent(Project.self, forKey: .project)
-    self.pledgeRedemption = try values.decodeIfPresent(PledgeRedemption.self, forKey: .pledgeRedemption)
+    self.order = try values.decodeIfPresent(Order.self, forKey: .order)
     self.survey = try values.decodeIfPresent(Survey.self, forKey: .survey)
     if values.contains(.update) {
       self.update = try values.decodeIfPresent(Update.self, forKey: .update)
@@ -132,7 +132,7 @@ extension PushEnvelope.Message: Decodable {
   }
 }
 
-extension PushEnvelope.PledgeRedemption: Decodable {
+extension PushEnvelope.Order: Decodable {
   enum CodingKeys: String, CodingKey {
     case id
     case projectId = "project_id"

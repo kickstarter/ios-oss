@@ -1301,7 +1301,6 @@
 		D01588BD1EEB2ED7006E7684 /* ProjectStatsEnvelope.RewardDistributionLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587B71EEB2ED7006E7684 /* ProjectStatsEnvelope.RewardDistributionLenses.swift */; };
 		D01588BF1EEB2ED7006E7684 /* ProjectStatsEnvelope.VideoStatsLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587B81EEB2ED7006E7684 /* ProjectStatsEnvelope.VideoStatsLenses.swift */; };
 		D01588C11EEB2ED7006E7684 /* ProjectStatsEnvelopeLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587B91EEB2ED7006E7684 /* ProjectStatsEnvelopeLenses.swift */; };
-		D01588C31EEB2ED7006E7684 /* PushEnvelopeLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587BA1EEB2ED7006E7684 /* PushEnvelopeLenses.swift */; };
 		D01588C51EEB2ED7006E7684 /* Reward.ShippingLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587BB1EEB2ED7006E7684 /* Reward.ShippingLenses.swift */; };
 		D01588C71EEB2ED7006E7684 /* RewardItemLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587BC1EEB2ED7006E7684 /* RewardItemLenses.swift */; };
 		D01588C91EEB2ED7006E7684 /* RewardLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587BD1EEB2ED7006E7684 /* RewardLenses.swift */; };
@@ -3076,7 +3075,6 @@
 		D01587B71EEB2ED7006E7684 /* ProjectStatsEnvelope.RewardDistributionLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectStatsEnvelope.RewardDistributionLenses.swift; sourceTree = "<group>"; };
 		D01587B81EEB2ED7006E7684 /* ProjectStatsEnvelope.VideoStatsLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectStatsEnvelope.VideoStatsLenses.swift; sourceTree = "<group>"; };
 		D01587B91EEB2ED7006E7684 /* ProjectStatsEnvelopeLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectStatsEnvelopeLenses.swift; sourceTree = "<group>"; };
-		D01587BA1EEB2ED7006E7684 /* PushEnvelopeLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushEnvelopeLenses.swift; sourceTree = "<group>"; };
 		D01587BB1EEB2ED7006E7684 /* Reward.ShippingLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reward.ShippingLenses.swift; sourceTree = "<group>"; };
 		D01587BC1EEB2ED7006E7684 /* RewardItemLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardItemLenses.swift; sourceTree = "<group>"; };
 		D01587BD1EEB2ED7006E7684 /* RewardLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardLenses.swift; sourceTree = "<group>"; };
@@ -7475,7 +7473,6 @@
 				D01587B71EEB2ED7006E7684 /* ProjectStatsEnvelope.RewardDistributionLenses.swift */,
 				D01587B81EEB2ED7006E7684 /* ProjectStatsEnvelope.VideoStatsLenses.swift */,
 				D01587B91EEB2ED7006E7684 /* ProjectStatsEnvelopeLenses.swift */,
-				D01587BA1EEB2ED7006E7684 /* PushEnvelopeLenses.swift */,
 				D01587BB1EEB2ED7006E7684 /* Reward.ShippingLenses.swift */,
 				D01587BC1EEB2ED7006E7684 /* RewardItemLenses.swift */,
 				D01587BD1EEB2ED7006E7684 /* RewardLenses.swift */,
@@ -9605,7 +9602,6 @@
 				D775EC3020812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift in Sources */,
 				8AE3F72E24DA27BE002B03C3 /* ProjectAndBackingEnvelope.swift in Sources */,
 				D0158A321EEB30A2006E7684 /* User.StatsTemplates.swift in Sources */,
-				D01588C31EEB2ED7006E7684 /* PushEnvelopeLenses.swift in Sources */,
 				D015887B1EEB2ED7006E7684 /* Item.swift in Sources */,
 				D0158A231EEB30A2006E7684 /* ProjectTemplates.swift in Sources */,
 				D6B9DF3F1F72E25A0064A4D8 /* Category.swift in Sources */,

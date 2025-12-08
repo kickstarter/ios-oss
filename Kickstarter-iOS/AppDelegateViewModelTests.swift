@@ -1075,15 +1075,15 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.didReceive(remoteNotification: badPushData)
   }
 
-  func testOpenNotification_PledgeRedemption() {
-    self.vm.inputs.didReceive(remoteNotification: pledgeRedemptionPushData)
+  func testOpenNotification_Order() {
+    self.vm.inputs.didReceive(remoteNotification: orderPushData)
 
     self.presentViewController.assertValueCount(1)
   }
 
-  func testOpenNotification_PledgeRedemption_BadData() {
-    var badPushData = pledgeRedemptionPushData
-    badPushData["pledgeRedemption"]?["id"] = nil
+  func testOpenNotification_Order_BadData() {
+    var badPushData = orderPushData
+    badPushData["order"]?["id"] = nil
 
     self.vm.inputs.didReceive(remoteNotification: badPushData)
 
@@ -2731,11 +2731,11 @@ private let projectCommentPushData = [
   ]
 ]
 
-private let pledgeRedemptionPushData = [
+private let orderPushData = [
   "aps": [
     "alert": "Response needed! Get your reward for backing some project."
   ],
-  "pledgeRedemption": [
+  "order": [
     "id": 1,
     "project_id": 1,
     "pledge_manager_path": "/projects/fakeCreatorId/1/backing/redeem"
