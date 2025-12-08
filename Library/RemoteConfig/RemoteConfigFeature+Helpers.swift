@@ -27,6 +27,10 @@ public func featureUseKeychainForOAuthTokenEnabled() -> Bool {
   featureEnabled(feature: .useKeychainForOAuthToken)
 }
 
+public func featurePillViewTabBarEnabled() -> Bool {
+  featureEnabled(feature: .pillTabBar)
+}
+
 public func featurePledgedProjectsOverviewV2Enabled() -> Bool {
   featureEnabled(feature: .pledgedProjectsOverviewV2Enabled)
 }
