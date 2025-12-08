@@ -141,4 +141,6 @@ public enum Feature: String, EnumType {
   case pledgeManagerEligibilityQuestionnaire2025 = "pledge_manager_eligibility_questionnaire_2025"
   case pmOrderEditing2025 = "pm_order_editing_2025"
   case followersOnlyUpdates = "followers_only_updates"
+  case sauceUserMenu = "sauce_user_menu"
+  case accessPmConfigPostLaunch2025 = "access_pm_config_post_launch_2025"
 }
