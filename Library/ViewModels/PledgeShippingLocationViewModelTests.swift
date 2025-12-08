@@ -240,7 +240,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
 
-    // Leaving the mock unimplemented gives us an ErrorEnvelope, which is what we want to te
+    // Leaving the mock unimplemented gives us an ErrorEnvelope, which is what we want to test
     withEnvironment {
       self.vm.inputs.configureWith(data: PledgeShippingLocationViewData(
         project: project,
