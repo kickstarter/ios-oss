@@ -24,6 +24,9 @@ private struct ShippingLocationsView: View {
   fileprivate var onSelectedLocation: ((Location) -> Void)?
   fileprivate var onCancelled: (() -> Void)?
 
+  // This pattern can lead to unexpected behavior if this view becomes
+  // a child view of another SwiftUI view. If you're refactoring this to be embedded
+  // in anything _other_ than UIHostingViewController, refactor away this init method.
   init(withLocations locations: [Location], selectedLocation: Location?) {
     self._viewModel = StateObject(wrappedValue: ShippingLocationsViewModel(
       withLocations: locations,
