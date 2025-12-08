@@ -23,16 +23,21 @@ struct CallToActionView: View {
           action: self.onPrimaryTap,
           for: self.item
         )
-        /// Empty secondary button allows the primary button to be in the same position througout the onboarding flow.
-        self.secondaryButton(title: "", action: {})
+        self.noSecondaryButton()
       case .enableNotifications:
-        self.primaryButton(title: Strings.Get_notified(), action: self.onPrimaryTap, for: self.item)
-        self.secondaryButton(title: Strings.Not_right_now(), action: self.onSecondaryTap)
-
+        self.primaryButton(
+          title: Strings.project_checkout_navigation_next(),
+          action: self.onPrimaryTap,
+          for: self.item
+        )
+        self.noSecondaryButton()
       case .allowTracking:
-        self.primaryButton(title: Strings.Allow_tracking(), action: self.onPrimaryTap, for: self.item)
-        self.secondaryButton(title: Strings.Not_right_now(), action: self.onSecondaryTap)
-
+        self.primaryButton(
+          title: Strings.project_checkout_navigation_next(),
+          action: self.onPrimaryTap,
+          for: self.item
+        )
+        self.noSecondaryButton()
       case .loginSignUp:
         self.primaryButton(title: Strings.Sign_up_or_log_in(), action: self.onPrimaryTap, for: self.item)
         self.secondaryButton(title: Strings.Explore_the_app(), action: self.onSecondaryTap)
@@ -69,6 +74,16 @@ struct CallToActionView: View {
       Text(title)
         .font(Font(OnboardingStyles.ctaFont))
         .foregroundColor(OnboardingStyles.secondaryButtonForegroundColor)
+        .frame(maxWidth: .infinity)
+        .padding()
+    }
+  }
+
+  /// Used to maintain primary button poistioning across the onboarding flow
+  @ViewBuilder
+  private func noSecondaryButton() -> some View {
+    Button(action: {}) {
+      Text("")
         .frame(maxWidth: .infinity)
         .padding()
     }
