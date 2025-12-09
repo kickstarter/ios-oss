@@ -12,7 +12,7 @@ final class ShippingLocationsViewTests: TestCase {
       Location.usa
     ]
 
-    let vc = ShippingLocationsViewController(
+    let vc = ShippingLocations.viewController(
       withLocations: allCountries,
       selectedLocation: Location.australia,
       onSelectedLocation: { _ in },
