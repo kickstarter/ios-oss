@@ -39,9 +39,12 @@ extension Location {
   }
 
   public static func locations(from data: GraphAPI.ShippableLocationsForProjectQuery.Data) -> [Location] {
-    return data.project?.shippableCountriesExpanded.compactMap { node in
+    let locations: [Location] = data.project?.shippableCountriesExpanded.compactMap { node in
       let fragment = node.fragments.locationFragment
       return KsApi.Location.location(from: fragment)
     } ?? []
+
+    return locations
+      .sorted(by: { left, right in left.displayableName < right.displayableName })
   }
 }
