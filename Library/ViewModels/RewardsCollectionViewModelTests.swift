@@ -223,7 +223,32 @@ final class RewardsCollectionViewModelTests: TestCase {
   }
 
   func test_selectLocation_outputsNilShippingRule_forRewardWithoutShipping() {
-    let reward = Reward.template
+    let shippingRule1 = ShippingRule(
+      cost: 10,
+      id: 1,
+      location: Location.usa,
+      estimatedMin: nil,
+      estimatedMax: nil
+    )
+
+    let physicalReward = Reward.template
+      |> Reward.lens.title .~ "Physical Reward"
+      |> Reward.lens.id .~ 1
+      |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.shippingRulesExpanded .~ [
+        shippingRule1
+      ]
+      |> Reward.lens.shipping .~ Reward.Shipping(
+        enabled: true,
+        location: nil,
+        preference: .restricted,
+        summary: "Physical reward",
+        type: .singleLocation
+      )
+
+    let digitalReward = Reward.template
+      |> Reward.lens.title .~ "Digital Reward"
+      |> Reward.lens.id .~ 2
       |> Reward.lens.isAvailable .~ true
       |> Reward.lens.shippingRulesExpanded .~ []
       |> Reward.lens.shipping .~ Reward.Shipping(
@@ -235,26 +260,26 @@ final class RewardsCollectionViewModelTests: TestCase {
       )
 
     let rewards = [
-      reward
+      physicalReward,
+      digitalReward
     ]
 
     let testProject = Project.template
       |> Project.lens.rewardData.rewards .~ rewards
 
     self.vm.configure(with: testProject, refTag: nil, context: .createPledge, secretRewardToken: nil)
-    // Because the shipping location is powered by the available shipping rules,
-    // if there are no shippable rewards, the location element will be hidden.
-    // The rewards carousel should input `nil` once when the page loads.
     self.vm.inputs.shippingLocationSelected(nil)
     self.vm.viewDidLoad()
     self.vm.viewDidLayoutSubviews()
 
     self.shippingLocationViewHidden.assertLastValue(
-      true,
-      "Because there are no shippable rewards, the shipping location view should be hidden."
+      false,
+      "There is a shippable reward, so the shipping location view should be shown."
     )
 
-    self.vm.inputs.rewardSelected(with: reward.id)
+    self.vm.inputs.shippingLocationSelected(Location.usa)
+
+    self.vm.inputs.rewardSelected(with: digitalReward.id)
 
     self.goToCustomizeYourReward.assertDidEmitValue()
 
@@ -270,6 +295,7 @@ final class RewardsCollectionViewModelTests: TestCase {
   func test_selectLocation_outputsNilShippingRule_forProjectWithNoShippableRewards() {
     let noReward = Reward.noReward
     let digitalReward = Reward.template
+      |> Reward.lens.id .~ 1
       |> Reward.lens.isAvailable .~ true
       |> Reward.lens.shippingRulesExpanded .~ []
       |> Reward.lens.shipping .~ Reward.Shipping(
@@ -281,6 +307,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       )
 
     let localShippingReward = Reward.template
+      |> Reward.lens.id .~ 2
       |> Reward.lens.isAvailable .~ true
       |> Reward.lens.shippingRulesExpanded .~ []
       |> Reward.lens.shipping .~ Reward.Shipping(
@@ -316,7 +343,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       "Because there are no shippable rewards, the shipping location view should be hidden."
     )
 
-    self.vm.inputs.rewardSelected(with: digitalReward.id)
+    self.vm.inputs.rewardSelected(with: localShippingReward.id)
 
     self.goToCustomizeYourReward.assertDidEmitValue()
 
@@ -324,7 +351,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       XCTAssertEqual(
         pledgeData.selectedShippingRule,
         nil,
-        "Pledge data should have no shipping rule, because the reward is digital"
+        "Pledge data should have no shipping rule, because the reward is local."
       )
     }
   }
