@@ -223,14 +223,6 @@ final class RewardsCollectionViewModelTests: TestCase {
   }
 
   func test_selectLocation_outputsNilShippingRule_forRewardWithoutShipping() {
-    let location1 = Location(
-      country: "Country 1",
-      displayableName: "Country 1",
-      id: 1,
-      localizedName: "Country 1",
-      name: "Country 1"
-    )
-
     let reward = Reward.template
       |> Reward.lens.isAvailable .~ true
       |> Reward.lens.shippingRulesExpanded .~ []
@@ -250,13 +242,18 @@ final class RewardsCollectionViewModelTests: TestCase {
       |> Project.lens.rewardData.rewards .~ rewards
 
     self.vm.configure(with: testProject, refTag: nil, context: .createPledge, secretRewardToken: nil)
+    // Because the shipping location is powered by the available shipping rules,
+    // if there are no shippable rewards, the location element will be hidden.
+    // The rewards carousel should input `nil` once when the page loads.
     self.vm.inputs.shippingLocationSelected(nil)
     self.vm.viewDidLoad()
     self.vm.viewDidLayoutSubviews()
 
-    self.shippingLocationViewHidden.assertLastValue(true)
+    self.shippingLocationViewHidden.assertLastValue(
+      true,
+      "Because there are no shippable rewards, the shipping location view should be hidden."
+    )
 
-    self.vm.inputs.shippingLocationSelected(location1)
     self.vm.inputs.rewardSelected(with: reward.id)
 
     self.goToCustomizeYourReward.assertDidEmitValue()
@@ -307,13 +304,17 @@ final class RewardsCollectionViewModelTests: TestCase {
       |> Project.lens.rewardData.rewards .~ rewards
 
     self.vm.configure(with: testProject, refTag: nil, context: .createPledge, secretRewardToken: nil)
+    // Because the shipping location is powered by the available shipping rules,
+    // if there are no shippable rewards, the location element will be hidden.
+    // The rewards carousel should input `nil` once when the page loads.
     self.vm.inputs.shippingLocationSelected(nil)
     self.vm.viewDidLoad()
     self.vm.viewDidLayoutSubviews()
 
-    // Because the shipping location is powered by the available shipping rules,
-    // if there are no shippable rewards, the location element may be hidden and output `nil` once.
-    self.shippingLocationViewHidden.assertLastValue(true)
+    self.shippingLocationViewHidden.assertLastValue(
+      true,
+      "Because there are no shippable rewards, the shipping location view should be hidden."
+    )
 
     self.vm.inputs.rewardSelected(with: digitalReward.id)
 
