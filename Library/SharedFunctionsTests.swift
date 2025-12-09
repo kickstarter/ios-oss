@@ -61,11 +61,15 @@ final class SharedFunctionsTests: TestCase {
     }
   }
 
-  func testDefaultShippingRule_Empty() {
-    XCTAssertEqual(nil, defaultShippingRule(fromShippingRules: []))
+  func testDefaultShippingLocation_Empty() {
+    XCTAssertEqual(
+      nil,
+      defaultShippingLocation(fromLocations: []),
+      "Default shipping location is nil if there are no shipping locations."
+    )
   }
 
-  func testDefaultShippingRule_DoesNotMatchCountryCode_DoesNotMatchUSA() {
+  func testDefaultShippingLocation_DoesNotMatchCountryCode_DoesNotMatchUSA() {
     let config = Config.template
       |> Config.lens.countryCode .~ "JP"
 
@@ -75,31 +79,36 @@ final class SharedFunctionsTests: TestCase {
         Location.template |> Location.lens.country .~ "CZ",
         Location.template |> Location.lens.country .~ "CA"
       ]
-      let shippingRule = defaultShippingRule(
-        fromShippingRules: locations.map { ShippingRule.template |> ShippingRule.lens.location .~ $0 }
+      let location = defaultShippingLocation(fromLocations: locations)
+
+      XCTAssertEqual(
+        "DE",
+        location?.country,
+        "Default shipping location should be the first available location, if there is no match to the user's config, and the user's config is not in the US."
       )
-      XCTAssertEqual("DE", shippingRule?.location.country)
     }
   }
 
-  func testDefaultShippingRule_DoesNotMatchCountryCode_MatchesUSA() {
+  func testDefaultShippingLocation_DoesNotMatchCountryCode_MatchesUSA() {
     let config = Config.template
       |> Config.lens.countryCode .~ "JP"
 
     withEnvironment(config: config) {
       let locations = [
-        Location.template |> Location.lens.country .~ "US",
         Location.template |> Location.lens.country .~ "CZ",
+        Location.template |> Location.lens.country .~ "US",
         Location.template |> Location.lens.country .~ "CA"
       ]
-      let shippingRule = defaultShippingRule(
-        fromShippingRules: locations.map { ShippingRule.template |> ShippingRule.lens.location .~ $0 }
+      let location = defaultShippingLocation(fromLocations: locations)
+      XCTAssertEqual(
+        "US",
+        location?.country,
+        "Default shipping location should be the US, if there is no match to the user's config, and a US shipping location is available."
       )
-      XCTAssertEqual("US", shippingRule?.location.country)
     }
   }
 
-  func testDefaultShippingRule_MatchesCountryCode() {
+  func testDefaultShippingLocation_MatchesCountryCode() {
     let config = Config.template
       |> Config.lens.countryCode .~ "CZ"
 
@@ -109,10 +118,12 @@ final class SharedFunctionsTests: TestCase {
         Location.template |> Location.lens.country .~ "CZ",
         Location.template |> Location.lens.country .~ "CA"
       ]
-      let shippingRule = defaultShippingRule(
-        fromShippingRules: locations.map { ShippingRule.template |> ShippingRule.lens.location .~ $0 }
+      let location = defaultShippingLocation(fromLocations: locations)
+      XCTAssertEqual(
+        "CZ",
+        location?.country,
+        "Default shipping location should match the user's configured location, if it is an available shipping option."
       )
-      XCTAssertEqual("CZ", shippingRule?.location.country)
     }
   }
 
