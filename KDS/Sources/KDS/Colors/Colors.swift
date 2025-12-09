@@ -565,4 +565,30 @@ public struct Colors {
       )
     }
   }
+
+  public struct Nav {
+    public static let iconHighlight = SemanticColor(
+      "nav/background/highlight",
+      lightMode: .green_11,
+      darkMode: .green_11
+    )
+
+    public static let iconColorSelected = SemanticColor(
+      "nav/icon/selected",
+      lightMode: .black,
+      darkMode: .black
+    )
+
+    public static let iconColorUnselected = SemanticColor(
+      "nav/icon",
+      lightMode: .black,
+      darkMode: .white
+    )
+
+    public static let background = SemanticColor(
+      "nav/background",
+      lightMode: .white,
+      darkMode: .gray_1050
+    )
+  }
 }
