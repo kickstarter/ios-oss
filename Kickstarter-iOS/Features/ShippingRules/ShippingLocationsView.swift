@@ -3,20 +3,27 @@ import KsApi
 import Library
 import SwiftUI
 
-public func shippingLocationsViewController(
-  withLocations locations: [Location],
-  selectedLocation: Location?,
-  onSelectedLocation: @escaping (Location) -> Void,
-  onCancelled: @escaping () -> Void
-) -> UIViewController {
-  var view = ShippingLocationsView(
-    withLocations: locations,
-    selectedLocation: selectedLocation
-  )
-  view.onSelectedLocation = onSelectedLocation
-  view.onCancelled = onCancelled
+/// This class exists merely to provide a namespace for `ShippingLocations.viewController(...)`.
+/// This is an experiment in improving decoupling between view controllers and SwiftUI views
+/// by only exposing an opaque `UIViewController` type.
+/// `ShippingLocationsView` is intentionally left private.
+/// We should revisit this pattern and explore other naming conventions.
+class ShippingLocations {
+  public static func viewController(
+    withLocations locations: [Location],
+    selectedLocation: Location?,
+    onSelectedLocation: @escaping (Location) -> Void,
+    onCancelled: @escaping () -> Void
+  ) -> UIViewController {
+    var view = ShippingLocationsView(
+      withLocations: locations,
+      selectedLocation: selectedLocation
+    )
+    view.onSelectedLocation = onSelectedLocation
+    view.onCancelled = onCancelled
 
-  return UIHostingController(rootView: view)
+    return UIHostingController(rootView: view)
+  }
 }
 
 private struct ShippingLocationsView: View {
