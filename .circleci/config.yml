@@ -10,7 +10,7 @@ aws_cli_setup: &aws_cli_setup
 
 # Keep xcode version in sync with `.fastlane/Fastfile`
 # circle-ci xcode versions supported: https://circleci.com/docs/testing-ios/
-xcode_version: &xcode_version 16.4.0
+xcode_version: &xcode_version 26.1.1
 iphone_name: &iphone_name iPad mini (A17 Pro)
 
 # Works around an issue in xcodebuild where it requires GitHub to have been added to the known_hosts in order for it to clone dependencies.
