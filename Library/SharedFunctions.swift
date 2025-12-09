@@ -203,20 +203,6 @@ public func updatedUserWithClearedActivityCountProducer() -> SignalProducer<User
     .demoteErrors()
 }
 
-public func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule]) -> ShippingRule? {
-  let shippingRuleFromCurrentLocation = shippingRules
-    .first { shippingRule in shippingRule.location.country == AppEnvironment.current.config?.countryCode }
-
-  if let shippingRuleFromCurrentLocation = shippingRuleFromCurrentLocation {
-    return shippingRuleFromCurrentLocation
-  }
-
-  let shippingRuleInUSA = shippingRules
-    .first { shippingRule in shippingRule.location.country == "US" }
-
-  return shippingRuleInUSA ?? shippingRules.first
-}
-
 public func defaultShippingLocation(fromLocations locations: [Location]) -> Location? {
   let environmentCountry = AppEnvironment.current.config?.countryCode
   if let currentLocation = locations
