@@ -286,7 +286,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
     let shippingLocation: Signal<String?, Never> = Signal.combineLatest(project, selectedShippingRule)
       .map { project, shippingRule in
         if let shippingRule {
-          return shippingRule.location.localizedName
+          return shippingRule.localizedLocationNameForCheckout
         }
         if let backing = project.personalization.backing {
           return backing.locationName

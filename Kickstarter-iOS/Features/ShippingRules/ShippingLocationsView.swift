@@ -109,10 +109,10 @@ struct ShippingLocationsRow: View {
         .font(InterFont.bodyLG.swiftUIFont())
         .multilineTextAlignment(.leading)
         .foregroundStyle(Colors.Text.primary.swiftUIColor())
-
-      if self.isSelected, let checkmark = Library.image(named: "checkmark") {
-        Spacer()
+      Spacer()
+      if let checkmark = Library.image(named: "checkmark") {
         Image(uiImage: checkmark)
+          .opacity(self.isSelected ? 1 : 0)
       }
     }
   }

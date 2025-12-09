@@ -178,9 +178,9 @@ final class PledgeShippingLocationViewModelTests: TestCase {
 
       self.dismissShippingLocations.assertDidNotEmitValue()
       self.presentShippingLocationsAllLocations.assertValues([[
-        Location.usa,
+        Location.australia,
         Location.canada,
-        Location.australia
+        Location.usa
       ]])
       self.presentShippingLocationsSelectedLocation.assertValues([defaultShippingLocation])
 
@@ -390,11 +390,11 @@ private let shippingLocationsData = GraphAPI.ShippableLocationsForProjectQuery.D
   project: GraphAPI.ShippableLocationsForProjectQuery.Data.Project(
     shippableCountriesExpanded: [
       GraphLocation(
-        country: "US",
-        countryName: "United States",
-        displayableName: "United States",
-        id: encodeToBase64("Location-5"),
-        name: "United States"
+        country: "AU",
+        countryName: "Australia",
+        displayableName: "Australia",
+        id: encodeToBase64("Location-8"),
+        name: "Australia"
       ),
       GraphLocation(
         country: "CA",
@@ -404,11 +404,11 @@ private let shippingLocationsData = GraphAPI.ShippableLocationsForProjectQuery.D
         name: "Canada"
       ),
       GraphLocation(
-        country: "AU",
-        countryName: "Australia",
-        displayableName: "Australia",
-        id: encodeToBase64("Location-8"),
-        name: "Australia"
+        country: "US",
+        countryName: "United States",
+        displayableName: "United States",
+        id: encodeToBase64("Location-5"),
+        name: "United States"
       )
     ]
   )

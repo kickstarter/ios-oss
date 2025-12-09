@@ -245,7 +245,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       let projectCurrency = data.project.statsCurrency
       let shippingSummary = data.selectedShippingRule.flatMap {
         PledgeShippingSummaryViewData(
-          locationName: $0.location.localizedName,
+          locationName: $0.localizedLocationNameForCheckout,
           omitUSCurrencyCode: omitUSCurrencyCode,
           currencyCode: projectCurrency,
           total: shippingTotal
