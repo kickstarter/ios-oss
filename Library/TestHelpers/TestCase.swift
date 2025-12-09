@@ -112,10 +112,10 @@ internal class TestCase: XCTestCase {
     // NOTE: Keep this check in sync with the device specified in `.cicleci/config.yml` and `Makefile`.
     guard
       deviceName!.localizedStandardContains("iPad mini (A17 Pro)"),
-      iOSVersion == "18.5" || iOSVersion == "18.6"
+      iOSVersion == "18.6"
     else {
       fatalError(
-        "Please only test and record screenshots on an iPad mini (A17 Pro) simulator running iOS 18.5 or 18.6"
+        "Please only test and record screenshots on an iPad mini (A17 Pro) simulator running iOS 18.6"
       )
     }
   }

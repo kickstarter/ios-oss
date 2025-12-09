@@ -41,9 +41,9 @@ test_job: &test_job
         at: .
     - macos/preboot-simulator:
         # Keep simulator in sync with `Library/TestHelpers/TestCase.swift` and `Makefile`
-        # iOS 18.5 is minimum supported runtime by circle-ci -> 18.5.0 (16A242d)
+        # iOS 18.6 is minimum supported runtime by circle-ci -> 26.1.1 (17B100)
         # more info: https://circle-macos-docs.s3.amazonaws.com/image-manifest/v15338/manifest.txt
-        version: "18.5"
+        version: "18.6"
         platform: "iOS"
         device: "iPad mini (A17 Pro)"
     - run:
