@@ -33,5 +33,6 @@ let package = Package(
       ],
       path: "./GraphAPITestMocks"
     ),
-  ]
+  ],
+  swiftLanguageModes: [.v5]
 )
