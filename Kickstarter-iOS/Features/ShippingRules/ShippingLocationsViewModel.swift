@@ -1,5 +1,5 @@
 import KsApi
-import SwiftUICore
+import SwiftUI
 
 protocol ShippingLocationsViewModelInputs {
   func selectedLocation(_ location: Location)
