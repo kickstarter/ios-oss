@@ -98,9 +98,14 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     .skipNil()
     .take(first: 1)
 
-    let selectedShippingRule: Signal<ShippingRule?, Never> = self.selectedRewardProperty.signal.skipNil()
-      .combineLatest(with: self.shippingLocationSelectedSignal.signal)
-      .map { reward, location in
+    let shippingLocation = Signal.merge(
+      configData.mapConst(nil), // Default selected shipping location to nil
+      self.shippingLocationSelectedSignal
+    )
+
+    let selectedShippingRule: Signal<ShippingRule?, Never> = shippingLocation
+      .takePairWhen(self.selectedRewardProperty.signal.skipNil())
+      .map { location, reward in
         shippingRule(forReward: reward, selectedLocation: location)
       }
 
