@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
   name: "GraphAPI",
   platforms: [
-    .iOS(.v17), // should be v18 but that isn't supported until Swift 6
+    .iOS(.v18),
     .macOS(.v10_14),
     .tvOS(.v12),
     .watchOS(.v5),
