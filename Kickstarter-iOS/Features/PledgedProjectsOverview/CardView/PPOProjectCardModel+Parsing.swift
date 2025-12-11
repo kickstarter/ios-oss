@@ -50,6 +50,9 @@ extension PPOProjectCardModel {
       return name + "\n" + address
     }
 
+    let cardDisplayAddress = card.showShippingAddress ? addressWithName : nil
+    let showEditAddress = card.showEditAddressAction
+
     let alerts: [PPOProjectCardModel.Alert] = card.flags?
       .compactMap { PPOProjectCardModel.Alert(flag: $0) } ?? []
 
@@ -62,7 +65,11 @@ extension PPOProjectCardModel {
     case .fixPayment:
       actions = Self.actionsForPaymentFailed()
     case .confirmAddress:
-      actions = Self.actionsForConfirmAddress(address: addressWithoutName, addressId: addressId)
+      actions = Self.actionsForConfirmAddress(
+        showAddress: card.showShippingAddress,
+        address: addressWithoutName,
+        addressId: addressId
+      )
     case .openSurvey:
       actions = Self.actionsForSurvey()
     case .authenticateCard:
@@ -95,7 +102,8 @@ extension PPOProjectCardModel {
         projectId: projectId,
         pledge: formattedPledge,
         creatorName: creatorName,
-        address: addressWithName,
+        address: cardDisplayAddress,
+        showEditAddressButton: showEditAddress,
         actions: (actions.primaryAction, actions.secondaryAction),
         tierType: actions.tierType,
         backingDetailsUrl: backingDetailsUrl,
@@ -116,9 +124,10 @@ extension PPOProjectCardModel {
     )
   }
 
-  private static func actionsForConfirmAddress(address: String?, addressId: String?)
+  private static func actionsForConfirmAddress(showAddress: Bool, address: String?, addressId: String?)
     -> PPOParsedAction? {
-    guard let address = address,
+    guard showAddress == true,
+          let address = address,
           let addressId = addressId else {
       return PPOParsedAction(
         primaryAction: .completeSurvey,

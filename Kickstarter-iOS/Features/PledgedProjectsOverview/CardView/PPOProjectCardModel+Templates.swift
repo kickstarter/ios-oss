@@ -29,6 +29,7 @@ import KsApi
         Los Angeles, CA 90025-1234
         United States
       """,
+      showEditAddressButton: true,
       actions: (.confirmAddress(
         address: """
           123 First Street, Apt #5678
@@ -56,6 +57,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: nil,
+      showEditAddressButton: false,
       actions: (.completeSurvey, nil),
       tierType: .openSurvey,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -80,6 +82,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: nil,
+      showEditAddressButton: false,
       actions: (.fixPayment, nil),
       tierType: .fixPayment,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -104,6 +107,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: nil,
+      showEditAddressButton: false,
       actions: (.authenticateCard(clientSecret: "seti_asdqwe_secret_x"), nil),
       tierType: .authenticateCard,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -123,6 +127,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: nil,
+      showEditAddressButton: false,
       actions: (.completeSurvey, nil),
       tierType: .openSurvey,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -142,6 +147,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: nil,
+      showEditAddressButton: false,
       actions: (.managePledge, nil),
       tierType: .pledgeManagement,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -195,6 +201,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "Bob",
       address: nil,
+      showEditAddressButton: false,
       actions: (.completeSurvey, nil),
       tierType: .openSurvey,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -228,6 +235,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "Bob",
       address: nil,
+      showEditAddressButton: false,
       actions: (.completeSurvey, nil),
       tierType: .openSurvey,
       backingDetailsUrl: "fakeBackingDetailsUrl",
