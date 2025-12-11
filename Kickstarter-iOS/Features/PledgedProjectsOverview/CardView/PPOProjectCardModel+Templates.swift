@@ -36,7 +36,7 @@ import KsApi
           United States
         """,
         addressId: "fake-address-id"
-      ), .editAddress),
+      ), nil),
       tierType: .confirmAddress,
       backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,

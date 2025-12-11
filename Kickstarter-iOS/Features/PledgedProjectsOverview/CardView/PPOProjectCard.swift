@@ -10,6 +10,7 @@ struct PPOProjectCard: View {
 
   var onViewProjectDetails: ((PPOProjectCardModel) -> Void)? = nil
   var onSendMessage: ((PPOProjectCardModel) -> Void)? = nil
+  var onEditAddress: ((PPOProjectCardModel) -> Void)? = nil
   var onPerformAction: ((PPOProjectCardModel, PPOProjectCardModel.Action) -> Void)? = nil
 
   var body: some View {

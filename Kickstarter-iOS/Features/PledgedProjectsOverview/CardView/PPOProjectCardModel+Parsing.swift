@@ -129,7 +129,7 @@ extension PPOProjectCardModel {
 
     return PPOParsedAction(
       primaryAction: .confirmAddress(address: address, addressId: addressId),
-      secondaryAction: .editAddress,
+      secondaryAction: nil,
       tierType: .confirmAddress
     )
   }

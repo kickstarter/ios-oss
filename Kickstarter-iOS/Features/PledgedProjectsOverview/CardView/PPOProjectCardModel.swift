@@ -60,7 +60,6 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
 
   public enum Action: Identifiable, Equatable, Hashable {
     case confirmAddress(address: String, addressId: String)
-    case editAddress
     case completeSurvey
     case managePledge
     case fixPayment
@@ -70,8 +69,6 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
       switch self {
       case .confirmAddress:
         Strings.Confirm()
-      case .editAddress:
-        Strings.Edit()
       case .completeSurvey:
         Strings.Take_survey()
       case .managePledge:
@@ -87,8 +84,6 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
       switch self {
       case .confirmAddress:
         .green
-      case .editAddress:
-        .black
       case .completeSurvey:
         .green
       case .managePledge:
