@@ -6,12 +6,14 @@ import Library
 protocol PPOProjectCardViewModelInputs {
   func viewBackingDetails()
   func sendCreatorMessage()
+  func editAddress()
   func performAction(action: PPOProjectCardModel.Action)
 }
 
 protocol PPOProjectCardViewModelOutputs {
   var viewBackingDetailsTapped: AnyPublisher<Void, Never> { get }
   var sendMessageTapped: AnyPublisher<Void, Never> { get }
+  var editAddressTapped: AnyPublisher<Void, Never> { get }
   var actionPerformed: AnyPublisher<PPOProjectCardModel.Action, Never> { get }
 
   var card: PPOProjectCardModel { get }
@@ -59,6 +61,10 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
 
   // MARK: - Inputs
 
+  func editAddress() {
+    self.editAddressSubject.send()
+  }
+
   func sendCreatorMessage() {
     self.sendCreatorMessageSubject.send()
   }
@@ -78,10 +84,12 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
   }
 
   var sendMessageTapped: AnyPublisher<(), Never> { self.sendCreatorMessageSubject.eraseToAnyPublisher() }
+  var editAddressTapped: AnyPublisher<(), Never> { self.editAddressSubject.eraseToAnyPublisher() }
   var actionPerformed: AnyPublisher<Action, Never> { self.actionPerformedSubject.eraseToAnyPublisher() }
 
   private let viewBackingDetailsSubject = PassthroughSubject<Void, Never>()
   private let sendCreatorMessageSubject = PassthroughSubject<Void, Never>()
+  private let editAddressSubject = PassthroughSubject<Void, Never>()
   private let actionPerformedSubject = PassthroughSubject<PPOProjectCardModel.Action, Never>()
 
   // MARK: - Helpers
