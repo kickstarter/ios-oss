@@ -191,7 +191,10 @@ final class PPOProjectCardModelTests: XCTestCase {
                     "type": "alert"
                   }
                 ],
-                "webviewUrl": "https://staging.kickstarter.com/projects/2071399561/ppo-failed-payment-0/backing/custom"
+                "webviewUrl": "https://staging.kickstarter.com/projects/2071399561/ppo-failed-payment-0/backing/custom",
+                "showShippingAddress": \(addressJSON.isEmpty ? "false" : "true"),
+                "showEditAddressAction": false,
+                "showRewardReceivedToggle": false
               }
         """)
       return PPOProjectCardModel(node: node)

@@ -9,4 +9,7 @@ fragment PPOCardFragment on PledgeProjectOverviewItem {
     type
   }
   webviewUrl
+  showShippingAddress
+  showEditAddressAction
+  showRewardReceivedToggle
 }
