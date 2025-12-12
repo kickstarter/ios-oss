@@ -13,7 +13,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public let pledge: String
   public let creatorName: String
   public let address: DisplayAddress
-  public let actions: (Action, Action?)
+  public let action: Action?
   public let tierType: PPOTierType
   public let backingDetailsUrl: String
   public let backingId: Int
@@ -29,8 +29,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
     hasher.combine(self.pledge)
     hasher.combine(self.creatorName)
     hasher.combine(self.address)
-    hasher.combine(self.actions.0)
-    hasher.combine(self.actions.1)
+    hasher.combine(self.action)
     hasher.combine(self.tierType)
   }
 
@@ -39,23 +38,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   // Create the card's id from the project id, tier type, and actions.
   // If any other fields change, the card should be considered the same card, just modified.
   public var id: String {
-    "\(self.projectId)-\(self.tierType)-\(self.actions.0.id)-\(self.actions.1?.id ?? "")"
-  }
-
-  // MARK: - Equatable
-
-  // For some reason this isn't generated because of the `actions` tuple
-  // If that ever is fixed, this can be removed in favor of a synthesized Equatable implementation
-  public static func == (lhs: PPOProjectCardModel, rhs: PPOProjectCardModel) -> Bool {
-    lhs.isUnread == rhs.isUnread &&
-      lhs.alerts == rhs.alerts &&
-      lhs.image == rhs.image &&
-      lhs.projectName == rhs.projectName &&
-      lhs.projectId == rhs.projectId &&
-      lhs.pledge == rhs.pledge &&
-      lhs.creatorName == rhs.creatorName &&
-      lhs.address == rhs.address &&
-      lhs.actions == rhs.actions
+    "\(self.projectId)-\(self.tierType)-\(self.action?.id ?? "")"
   }
 
   public enum DisplayAddress: Equatable, Hashable {

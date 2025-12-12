@@ -29,14 +29,14 @@ import KsApi
         Los Angeles, CA 90025-1234
         United States
       """),
-      actions: (.confirmAddress(
+      action: .confirmAddress(
         address: """
           123 First Street, Apt #5678
           Los Angeles, CA 90025-1234
           United States
         """,
         addressId: "fake-address-id"
-      ), nil),
+      ),
       tierType: .confirmAddress,
       backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
@@ -56,7 +56,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: .hidden,
-      actions: (.completeSurvey, nil),
+      action: .completeSurvey,
       tierType: .openSurvey,
       backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
@@ -80,7 +80,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: .hidden,
-      actions: (.fixPayment, nil),
+      action: .fixPayment,
       tierType: .fixPayment,
       backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
@@ -104,7 +104,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: .hidden,
-      actions: (.authenticateCard(clientSecret: "seti_asdqwe_secret_x"), nil),
+      action: .authenticateCard(clientSecret: "seti_asdqwe_secret_x"),
       tierType: .authenticateCard,
       backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
@@ -123,7 +123,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: .hidden,
-      actions: (.completeSurvey, nil),
+      action: .completeSurvey,
       tierType: .openSurvey,
       backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
@@ -142,7 +142,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: .hidden,
-      actions: (.managePledge, nil),
+      action: .managePledge,
       tierType: .pledgeManagement,
       backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
@@ -195,7 +195,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "Bob",
       address: .hidden,
-      actions: (.completeSurvey, nil),
+      action: .completeSurvey,
       tierType: .openSurvey,
       backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
@@ -228,7 +228,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "Bob",
       address: .hidden,
-      actions: (.completeSurvey, nil),
+      action: .completeSurvey,
       tierType: .openSurvey,
       backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,

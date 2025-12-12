@@ -20,19 +20,9 @@ protocol PPOProjectCardViewModelOutputs {
 }
 
 extension PPOProjectCardViewModelOutputs {
-  var primaryAction: PPOProjectCardModel.Action {
-    let (primary, _) = self.card.actions
-    return primary
-  }
-
-  var secondaryAction: PPOProjectCardModel.Action? {
-    let (_, secondary) = self.card.actions
-    return secondary
-  }
-
-  // Action details related to the primary action, if any.
+  // Action details related to the action, if any.
   var actionDetails: String? {
-    switch self.card.actions.0 {
+    switch self.card.action {
     case .managePledge:
       return Strings.This_may_involve_submitting_a_delivery_address()
     default:

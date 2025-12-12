@@ -21,7 +21,10 @@ struct PPOProjectCard: View {
       self.projectCreator
       self.divider
       self.addressDetails(leadingColumnWidth: self.parentSize.width * Constants.firstColumnWidth)
-      self.actionButtons
+      if self.showDividerBeforeAction() {
+        self.divider
+      }
+      self.actionButton
       self.actionDetails
     }
     .padding(.vertical)
@@ -150,6 +153,7 @@ struct PPOProjectCard: View {
     Button(action.label) { [weak viewModel] () in
       viewModel?.performAction(action: action)
     }
+    .padding([.horizontal])
   }
 
   @ViewBuilder
@@ -176,15 +180,10 @@ struct PPOProjectCard: View {
   }
 
   @ViewBuilder
-  private var actionButtons: some View {
-    HStack {
-      if let secondaryAction = self.viewModel.secondaryAction {
-        self.button(for: secondaryAction)
-      }
-
-      self.button(for: self.viewModel.primaryAction)
+  private var actionButton: some View {
+    if let action = self.viewModel.card.action {
+      self.button(for: action)
     }
-    .padding([.horizontal])
   }
 
   @ViewBuilder
@@ -204,6 +203,14 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private var divider: some View {
     Divider()
+  }
+
+  // Always show a divider before the action section, unless the action is .confirmAddress.
+  private func showDividerBeforeAction() -> Bool {
+    switch self.viewModel.card.action {
+    case .confirmAddress: return false
+    default: return true
+    }
   }
 
   private enum Constants {
