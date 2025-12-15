@@ -124,6 +124,9 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
 
         /// First, check if push notifications have already been authorized.
         return pushRegistrationType.hasAuthorizedNotifications()
+          // hasAuthorizedNotifications() sends its events on a background thread.
+          // `observeForUI` is a bit of a misnomer. We're not observing the `SignalProducer`,
+          // just making sure it forwards all its events on the UI scheduler before flatMap is called.
           .observeForUI()
           .flatMap { hasAuthorized -> SignalProducer<Bool, Never> in
             if hasAuthorized {
