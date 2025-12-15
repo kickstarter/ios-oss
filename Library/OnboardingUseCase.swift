@@ -124,6 +124,7 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
 
         /// First, check if push notifications have already been authorized.
         return pushRegistrationType.hasAuthorizedNotifications()
+          .observeForUI()
           .flatMap { hasAuthorized -> SignalProducer<Bool, Never> in
             if hasAuthorized {
               /// If already authorized, do nothing.
