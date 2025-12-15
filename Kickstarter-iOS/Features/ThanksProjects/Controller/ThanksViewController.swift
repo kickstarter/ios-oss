@@ -209,9 +209,8 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   }
 
   fileprivate func goToProject(_ project: Project, projects _: [Project], refTag: RefTag) {
-    let projectParam = Either<Project, any ProjectPageParam>(left: project)
     let vc = ProjectPageViewController.configuredWith(
-      projectOrParam: projectParam,
+      param: project.projectPageParam,
       refInfo: RefInfo(refTag)
     )
 

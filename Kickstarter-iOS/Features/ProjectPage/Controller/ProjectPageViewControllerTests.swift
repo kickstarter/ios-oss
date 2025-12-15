@@ -110,7 +110,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         config: config, currentUser: .template, language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -161,7 +161,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -210,7 +210,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         config: config, currentUser: .template, language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -256,7 +256,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         config: config, currentUser: currentUser, language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -302,7 +302,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       language: language
     ) {
       let vc = ProjectPageViewController.configuredWith(
-        projectOrParam: .left(project), refInfo: nil
+        param: project.projectPageParam, refInfo: nil
       )
 
       vc.overrideUserInterfaceStyle = .dark
@@ -347,7 +347,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         config: config, currentUser: .template, language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -393,7 +393,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         config: config, currentUser: currentUser, language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -434,7 +434,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         config: config, currentUser: .template, language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -476,7 +476,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         config: config, currentUser: .template, language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -529,7 +529,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         config: config, currentUser: .template, language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -582,7 +582,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         config: config, currentUser: .template, language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -635,7 +635,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         config: config, currentUser: .template, language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -688,7 +688,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         config: config, currentUser: .template, language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -731,7 +731,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         config: config, currentUser: .template, language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -774,7 +774,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         config: config, currentUser: .template, language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -816,7 +816,10 @@ internal final class ProjectPageViewControllerTests: TestCase {
         apiService: mockService,
         config: config, currentUser: nil, language: language
       ) {
-        let vc = ProjectPageViewController.configuredWith(projectOrParam: .left(liveProject), refInfo: nil)
+        let vc = ProjectPageViewController.configuredWith(
+          param: liveProject.projectPageParam,
+          refInfo: nil
+        )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
@@ -855,7 +858,10 @@ internal final class ProjectPageViewControllerTests: TestCase {
         apiService: mockService,
         config: config, currentUser: nil, language: language
       ) {
-        let vc = ProjectPageViewController.configuredWith(projectOrParam: .left(liveProject), refInfo: nil)
+        let vc = ProjectPageViewController.configuredWith(
+          param: liveProject.projectPageParam,
+          refInfo: nil
+        )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
@@ -896,7 +902,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         config: config, currentUser: nil, language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -946,7 +952,10 @@ internal final class ProjectPageViewControllerTests: TestCase {
         apiService: mockService,
         config: config, currentUser: nil, language: language
       ) {
-        let vc = ProjectPageViewController.configuredWith(projectOrParam: .left(liveProject), refInfo: nil)
+        let vc = ProjectPageViewController.configuredWith(
+          param: liveProject.projectPageParam,
+          refInfo: nil
+        )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
@@ -979,7 +988,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         config: config, currentUser: nil, language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -1018,7 +1027,10 @@ internal final class ProjectPageViewControllerTests: TestCase {
         language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(projectWithNoUserImageURL),
+          param: ProjectPageParamBox(
+            param: .id(projectWithNoUserImageURL.id),
+            initialProject: projectWithNoUserImageURL
+          ),
           refInfo: nil
         )
 
@@ -1058,7 +1070,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -1096,7 +1108,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -1135,7 +1147,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -1262,7 +1274,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         remoteConfigClient: mockRemoteConfigClient
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -1300,7 +1312,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refInfo: nil
+          param: project.projectPageParam, refInfo: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
