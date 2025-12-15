@@ -63,14 +63,14 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   internal var overlayView: OverlayView? = OverlayView(frame: .zero)
 
   public static func configuredWith(
-    projectOrParam: Either<Project, any ProjectPageParam>,
+    param: any ProjectPageParam,
     refInfo: RefInfo?,
     secretRewardToken: String? = nil
   ) -> ProjectPageViewController {
     let vc = ProjectPageViewController.instantiate()
 
     vc.viewModel.inputs.configureWith(
-      projectOrParam: projectOrParam,
+      projectOrParam: Either(right: param),
       refInfo: refInfo,
       secretRewardToken: secretRewardToken
     )
@@ -601,7 +601,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { [weak self] project in
         guard let self else { return }
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: Either<Project, any ProjectPageParam>.right(project.projectPageParam),
+          param: project.projectPageParam,
           refInfo: RefInfo(.similarProjects)
         )
         if let nav = self.navigationController {

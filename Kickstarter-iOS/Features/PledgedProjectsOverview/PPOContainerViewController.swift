@@ -177,9 +177,8 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
   }
 
   private func openProjectPage(_ projectId: Int) {
-    let projectParam = Either<Project, any ProjectPageParam>(right: Param.id(projectId))
     let vc = ProjectPageViewController.configuredWith(
-      projectOrParam: projectParam,
+      param: Param.id(projectId),
       refInfo: nil
     )
 

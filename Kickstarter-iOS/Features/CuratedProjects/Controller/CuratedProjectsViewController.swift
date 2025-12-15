@@ -159,9 +159,8 @@ final class CuratedProjectsViewController: UIViewController {
   // MARK: - Functions
 
   fileprivate func goToProject(_ project: Project, projects _: [Project], refTag: RefTag) {
-    let projectParam = Either<Project, any ProjectPageParam>(left: project)
     let vc = ProjectPageViewController.configuredWith(
-      projectOrParam: projectParam,
+      param: project.projectPageParam,
       refInfo: RefInfo(refTag)
     )
 
