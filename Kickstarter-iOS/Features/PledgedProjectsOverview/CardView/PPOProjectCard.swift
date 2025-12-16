@@ -30,6 +30,10 @@ struct PPOProjectCard: View {
       }
       self.actionButton
       self.actionDetails
+      if self.showRewardToggle() {
+        self.divider
+        self.rewardReceivedToggle
+      }
     }
     .padding(.vertical)
     .frame(maxWidth: .infinity)
@@ -205,6 +209,15 @@ struct PPOProjectCard: View {
   }
 
   @ViewBuilder
+  private var rewardReceivedToggle: some View {
+    Toggle(Strings.Reward_received(), isOn: self.$viewModel.rewardToggleEnabled)
+      .font(Font(PPOStyles.title.font))
+      .foregroundStyle(Color(PPOStyles.title.color))
+      .tint(Colors.Background.Accent.Green.bold.swiftUIColor())
+      .padding([.horizontal])
+  }
+
+  @ViewBuilder
   private var divider: some View {
     Divider()
   }
@@ -220,6 +233,14 @@ struct PPOProjectCard: View {
     case .confirmAddress: return false
     case .some: return true
     case nil: return false
+    }
+  }
+
+  // Show reward toggle if the toggle is not hidden.
+  private func showRewardToggle() -> Bool {
+    switch self.viewModel.card.rewardReceivedToggleState {
+    case .hidden: return false
+    case .rewardReceived, .notReceived: return true
     }
   }
 
