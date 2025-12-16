@@ -59,6 +59,18 @@ public struct SemanticColor: AdaptiveColor {
       }
     }
   }
+
+  /// For CoreColorV2 Semantic Colors
+  public init(_ name: String, lightMode: CoreColorV2, darkMode: CoreColorV2) {
+    self.name = name
+
+    let lightModeColor = UIColor(coreColorV2: lightMode)
+    let darkModeColor = UIColor(coreColorV2: darkMode)
+
+    self.dynamicColor = UIColor { traits in
+      traits.userInterfaceStyle == .dark ? darkModeColor : lightModeColor
+    }
+  }
 }
 
 /// Used for old design system colors which can't be mapped directly to the Kickstarter color palette.

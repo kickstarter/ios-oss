@@ -564,31 +564,35 @@ public struct Colors {
         darkMode: .green_08
       )
     }
-  }
 
-  public struct Nav {
-    public static let iconHighlight = SemanticColor(
-      "nav/background/highlight",
-      lightMode: .green_11,
-      darkMode: .green_11
-    )
-
-    public static let iconColorSelected = SemanticColor(
-      "nav/icon/selected",
+    public static let dark = SemanticColor(
+      "icon/dark",
       lightMode: .black,
       darkMode: .black
     )
 
-    public static let iconColorUnselected = SemanticColor(
-      "nav/icon",
+    public static let `default` = SemanticColor(
+      "icon/default",
       lightMode: .black,
       darkMode: .white
     )
+  }
 
-    public static let background = SemanticColor(
-      "nav/background",
-      lightMode: .white,
-      darkMode: .gray_1050
+  public struct Elevation {
+    public struct Surface {
+      public static let raised = SemanticColor(
+        "elevation/surface/raised",
+        lightMode: CoreColorV2.white,
+        darkMode: CoreColorV2.gray_1050
+      )
+    }
+  }
+
+  public struct Surface {
+    public static let highlight = SemanticColor(
+      "surface/highlight",
+      lightMode: CoreColorV2.green_200,
+      darkMode: CoreColorV2.green_200
     )
   }
 }

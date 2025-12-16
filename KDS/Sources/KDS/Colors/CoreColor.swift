@@ -18,7 +18,6 @@ public enum CoreColor: Int {
   case gray_900 = 0x2C2C2C
   case gray_950 = 0x212121
   case gray_1000 = 0x171717
-  case gray_1050 = 0x272727
 
   case green_01 = 0xEBFEF6
   case green_02 = 0xD2FEEB
@@ -30,7 +29,6 @@ public enum CoreColor: Int {
   case green_08 = 0x024629
   case green_09 = 0x01321D
   case green_10 = 0x011E11
-  case green_11 = 0xA3FF55
 
   case yellow_01 = 0xFEFAF0
   case yellow_02 = 0xFDF2D3
