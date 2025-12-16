@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -3571,6 +3571,10 @@
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		6067ED182EF1C793009712C4 /* FloatingTabBar */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FloatingTabBar; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		A75511381C8642B3005355CF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -5075,6 +5079,7 @@
 				1937A6E528C92C8500DD732D /* FeatureFlagTools */,
 				19A97D1128C7ED500031B857 /* FindFriends */,
 				607972882EF9A7E40099E774 /* FloatingTabBar */,
+				6067ED182EF1C793009712C4 /* FloatingTabBar */,
 				19A97D1828C7EF190031B857 /* Help */,
 				1937A6E628C92C8E00DD732D /* HelpWeb */,
 				1937A6EA28C92DD000DD732D /* Login */,
@@ -7948,6 +7953,9 @@
 			);
 			dependencies = (
 				A76E0A4C1D00C00500EC525A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				6067ED182EF1C793009712C4 /* FloatingTabBar */,
 			);
 			name = "Kickstarter-Framework-iOS";
 			packageProductDependencies = (

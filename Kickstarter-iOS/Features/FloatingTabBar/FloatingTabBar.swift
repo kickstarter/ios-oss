@@ -1,11 +1,11 @@
 import KDS
 import UIKit
 
-/* A custom floating-style `UITabBar` that visually groups tab items inside a
+/* A custom floating-style `UITabBar`.
  - Sets tabs in a centered container using a horizontal `UIStackView`.
  - Draws a background “pill” behind the tab items, including shadow.
- - Animates a selection indicator view behind the currently selected tab
- - Hides tab item titles and presents an icon-only navigation experience.
+ - Animates a selection indicator view behind the currently selected tab.
+ - Hides tab item titles and presents an icon only.
  */
 
 final class FloatingTabBar: UITabBar {
