@@ -10,9 +10,8 @@ disabled_rules:
   - comma
   - comment_spacing
 
-# Setting up swiftlint on 9/15/25.
 # We only want to catch future violations, so creating a baseline.
-#baseline: swiftlint_baseline_09_15_2025.json
+baseline: swiftlint_baseline_12_16_2025.json
 
 opt_in_rules:
   - closure_body_length
