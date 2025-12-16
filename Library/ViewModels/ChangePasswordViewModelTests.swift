@@ -6,6 +6,7 @@ import XCTest
 @testable import Library
 import ReactiveExtensions_TestHelpers
 
+// swiftlint:disable:next type_body_length
 final class ChangePasswordViewModelTests: TestCase {
   private let vm: ChangePasswordViewModelType = ChangePasswordViewModel()
 
@@ -86,6 +87,7 @@ final class ChangePasswordViewModelTests: TestCase {
     self.activityIndicatorShouldShow.assertValueCount(0)
   }
 
+  // swiftlint:disable:next function_body_length
   func testValidationErrors_VoiceOverON() {
     withEnvironment(isVoiceOverRunning: { true }) {
       self.vm.inputs.viewDidAppear()
@@ -194,6 +196,7 @@ final class ChangePasswordViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testValidationErrors_VoiceOverOFF() {
     withEnvironment(isVoiceOverRunning: { false }) {
       self.vm.inputs.viewDidAppear()

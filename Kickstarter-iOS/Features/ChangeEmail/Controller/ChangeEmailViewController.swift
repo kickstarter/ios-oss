@@ -105,6 +105,7 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
       |> resendVerificationEmailButtonStyle
   }
 
+  // swiftlint:disable:next function_body_length
   override func bindViewModel() {
     super.bindViewModel()
 

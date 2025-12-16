@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import KDS
 import KsApi
@@ -6,6 +7,7 @@ import PassKit
 import Prelude
 import UIKit
 
+// swiftlint:disable:next type_body_length
 final class DesignSystemViewController: UIViewController {
   private lazy var scrollView = { UIScrollView(frame: .zero) }()
   private lazy var rootStackView = { UIStackView(frame: .zero) }()
@@ -95,6 +97,7 @@ final class DesignSystemViewController: UIViewController {
 
   // MARK: - Configuration
 
+  // swiftlint:disable:next function_body_length
   private func configureViews() {
     _ = (self.scrollView, self.view)
       |> ksr_addSubviewToParent()
@@ -270,6 +273,7 @@ final class DesignSystemViewController: UIViewController {
 
   // MARK: - Styles
 
+  // swiftlint:disable:next function_body_length
   override func bindStyles() {
     super.bindStyles()
 

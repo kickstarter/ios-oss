@@ -3,6 +3,7 @@
 import Prelude
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class UpdateBackingInput_ConstructorTests: TestCase {
   func testUpdateBackingInput_UpdateBackingData_NotApplePay_NotPaymentSource() {
     let reward = Reward.template

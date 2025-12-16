@@ -9,6 +9,7 @@ import SwiftUI
 ///
 /// This object is read-only outside of the `Library-iOS` Framework.
 /// `SearchFiltersUseCase` owns and updates this object.
+// swiftlint:disable:next type_body_length
 public class SearchFilters: ObservableObject {
   public struct CategoryOptions {
     public var categories: [KsApi.Category]
@@ -217,6 +218,7 @@ public class SearchFilters: ObservableObject {
     return self.has(filter: type)
   }
 
+  // swiftlint:disable:next function_body_length
   private func updatePills() {
     var pills: [SearchFilterPill] = []
 

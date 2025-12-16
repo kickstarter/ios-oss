@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Apollo
 import ApolloAPI
 import Combine

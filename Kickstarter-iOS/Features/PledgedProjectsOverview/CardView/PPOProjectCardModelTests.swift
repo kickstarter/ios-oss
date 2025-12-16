@@ -88,6 +88,7 @@ final class PPOProjectCardModelTests: XCTestCase {
     ])
   }
 
+  // swiftlint:disable:next function_body_length
   private func mockModel(addressJSON: String) -> PPOProjectCardModel? {
     do {
       let node: GraphAPI.FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge

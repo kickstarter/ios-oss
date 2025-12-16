@@ -83,6 +83,7 @@ public protocol VideoViewModelType {
 }
 
 public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, VideoViewModelType {
+  // swiftlint:disable:next function_body_length
   public init() {
     let project = Signal.combineLatest(
       self.projectProperty.signal.skipNil(),

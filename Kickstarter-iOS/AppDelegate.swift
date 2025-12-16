@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import BrazeKit
 import BrazeUI
 import Firebase
@@ -21,6 +22,7 @@ import UIKit
 import UserNotifications
 
 @UIApplicationMain
+// swiftlint:disable:next type_body_length
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   fileprivate let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
@@ -36,6 +38,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     return self.window?.rootViewController as? RootTabBarViewController
   }
 
+  // swiftlint:disable:next function_body_length
   func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?

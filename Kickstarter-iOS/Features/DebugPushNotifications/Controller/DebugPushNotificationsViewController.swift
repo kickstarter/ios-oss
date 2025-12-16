@@ -16,6 +16,7 @@ internal final class DebugPushNotificationsViewController: UIViewController {
       |> \.title .~ "Push notifications"
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 

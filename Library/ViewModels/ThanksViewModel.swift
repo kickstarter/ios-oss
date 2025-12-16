@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import KsApi
 import Prelude
 import ReactiveExtensions
@@ -75,6 +76,7 @@ public protocol ThanksViewModelType {
 }
 
 public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, ThanksViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let project = self.configureWithDataProperty.signal
       .skipNil()

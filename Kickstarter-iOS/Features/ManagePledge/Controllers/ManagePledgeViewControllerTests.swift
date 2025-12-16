@@ -564,6 +564,7 @@ final class ManagePledgeViewControllerTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testView_CurrentUser_IsBacker_PledgeOverTime_PaymentSchedule_Expanded() {
     let user = User.template
       |> User.lens.id .~ 1

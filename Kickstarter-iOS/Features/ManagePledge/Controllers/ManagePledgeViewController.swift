@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import KsApi
 import Library
 import Prelude
@@ -12,6 +13,7 @@ protocol ManagePledgeViewControllerDelegate: AnyObject {
   func managePledgeViewControllerDidDismiss(_ viewController: ManagePledgeViewController)
 }
 
+// swiftlint:disable:next type_body_length
 final class ManagePledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
   weak var delegate: ManagePledgeViewControllerDelegate?
   private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
@@ -193,6 +195,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   // MARK: - View model
 
+  // swiftlint:disable:next function_body_length
   override func bindViewModel() {
     super.bindViewModel()
 

@@ -16,6 +16,7 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
     super.tearDown()
   }
 
+  // swiftlint:disable:next function_body_length
   func testProjects() {
     let deadline = self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 14.0
     let deadline2 = self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 2.0

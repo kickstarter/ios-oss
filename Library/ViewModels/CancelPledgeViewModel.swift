@@ -39,6 +39,7 @@ public protocol CancelPledgeViewModelType {
 
 public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledgeViewModelInputs,
   CancelPledgeViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let data = Signal.combineLatest(
       self.configureWithDataProperty.signal.skipNil(),

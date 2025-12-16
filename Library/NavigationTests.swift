@@ -24,6 +24,7 @@ public final class NavigationTests: XCTestCase {
     XCTAssertNil(projectRoute)
   }
 
+  // swiftlint:disable:next function_body_length
   func testRecognizesURLs() {
     KSRAssertMatch(
       .checkout(1, .payments(.new)),

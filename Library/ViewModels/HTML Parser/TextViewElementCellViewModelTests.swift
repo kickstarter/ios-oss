@@ -189,6 +189,7 @@ internal final class TextElementCellViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testListElement() {
     let expectedBulletStartTextValue = ""
     let expectedFirstListValue = "•  sample attributed string\n"

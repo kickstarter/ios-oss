@@ -24,6 +24,7 @@ protocol PPOContainerViewModelOutputs {
 }
 
 final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   init() {
     let sessionStarted = NotificationCenter.default
       .publisher(for: .ksr_sessionStarted)

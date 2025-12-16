@@ -1,9 +1,11 @@
+// swiftlint:disable file_length
 @testable import KsApi
 @testable import Library
 import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
+// swiftlint:disable:next type_body_length
 internal final class WatchProjectViewModelTests: TestCase {
   internal let vm = WatchProjectViewModel()
 
@@ -274,6 +276,7 @@ internal final class WatchProjectViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testLoggedInUser_WatchesAndUnwatchesProject_SegmentEvents_Success() {
     AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
 

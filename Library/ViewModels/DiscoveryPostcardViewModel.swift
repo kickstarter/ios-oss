@@ -151,6 +151,7 @@ public protocol DiscoveryPostcardViewModelType {
 
 public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   DiscoveryPostcardViewModelInputs, DiscoveryPostcardViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let configuredProject = self.configureWithValueProperty.signal.skipNil().map(first)
     let configuredCategory = self.configureWithValueProperty.signal.skipNil().map(second)

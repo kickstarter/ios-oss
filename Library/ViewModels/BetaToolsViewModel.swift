@@ -102,6 +102,7 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
     return self
   }
 
+  // swiftlint:disable:next function_body_length
   public init() {
     let languageFromAppEnvironment = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.language }

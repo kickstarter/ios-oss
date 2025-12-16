@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import KDS
 @testable import KsApi
@@ -8,6 +9,7 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class RewardCardViewModelTests: TestCase {
   fileprivate let vm: RewardCardViewModelType = RewardCardViewModel()
 

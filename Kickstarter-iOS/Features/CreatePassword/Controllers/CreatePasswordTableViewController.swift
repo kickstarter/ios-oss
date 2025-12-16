@@ -93,6 +93,7 @@ final class CreatePasswordTableViewController: UITableViewController {
 
   // MARK: - View model
 
+  // swiftlint:disable:next function_body_length
   override func bindViewModel() {
     super.bindViewModel()
 

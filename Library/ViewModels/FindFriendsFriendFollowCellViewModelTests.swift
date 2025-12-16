@@ -7,6 +7,7 @@ import ReactiveSwift
 import UIKit.UIActivity
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class FindFriendsFriendFollowCellViewModelTests: TestCase {
   let vm: FindFriendsFriendFollowCellViewModelType = FindFriendsFriendFollowCellViewModel()
 
@@ -90,6 +91,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     self.hideProjectsCreated.assertValues([true], "Hide projects created text")
   }
 
+  // swiftlint:disable:next function_body_length
   func testFollowing_Friend() {
     let friend = User.template
       |> \.name .~ "Jed"
@@ -193,6 +195,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     )
   }
 
+  // swiftlint:disable:next function_body_length
   func testFollowing_NonFriend() {
     let friend = User.template
       |> \.name .~ "Zed"

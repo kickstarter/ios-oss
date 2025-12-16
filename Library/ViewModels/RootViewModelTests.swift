@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
@@ -7,6 +8,7 @@ import ReactiveSwift
 import UIKit
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class RootViewModelTests: TestCase {
   let vm: RootViewModelType = RootViewModel()
   let viewControllerNames = TestObserver<[String], Never>()

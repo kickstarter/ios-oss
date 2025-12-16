@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Combine
 @testable import Library
 import XCTest
@@ -22,6 +23,7 @@ struct TestEnvelope {
 
 struct ConcreteError: Error {}
 
+// swiftlint:disable:next type_body_length
 final class PaginatorTests: XCTestCase {
   let valuesFromEnvelope: (TestEnvelope) -> [Int] = { $0.values }
   let cursorFromEnvelope: (TestEnvelope) -> Int? = { $0.cursor }

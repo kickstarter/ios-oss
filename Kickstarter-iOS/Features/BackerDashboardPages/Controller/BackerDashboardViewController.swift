@@ -1,9 +1,11 @@
+// swiftlint:disable file_length
 import KDS
 import KsApi
 import Library
 import Prelude
 import UIKit
 
+// swiftlint:disable:next type_body_length
 internal final class BackerDashboardViewController: UIViewController {
   @IBOutlet private var avatarImageView: CircleAvatarImageView!
   @IBOutlet private var backedMenuButton: UIButton!
@@ -88,6 +90,7 @@ internal final class BackerDashboardViewController: UIViewController {
     self.viewModel.inputs.viewWillAppear(animated)
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 

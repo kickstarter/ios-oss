@@ -34,6 +34,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     self.vm.outputs.updateCurrencyDidSucceed.observe(self.updateCurrencyDidSucceed.observer)
   }
 
+  // swiftlint:disable:next function_body_length
   func testUpdateCurrency_Success() {
     self.activityIndicatorShouldShow.assertValues([])
     self.deselectCellAtIndex.assertValues([])
@@ -97,6 +98,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testUpdateCurrency_Failure() {
     self.activityIndicatorShouldShow.assertValues([])
     self.deselectCellAtIndex.assertValues([])

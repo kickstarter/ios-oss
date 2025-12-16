@@ -1,9 +1,11 @@
+// swiftlint:disable file_length
 @testable import KsApi
 @testable import Library
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class SearchFiltersUseCaseTests: TestCase {
   private var useCase: SearchFiltersUseCase!
 

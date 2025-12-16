@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import KDS
 import KsApi
 import Prelude
@@ -134,6 +135,7 @@ public protocol ProjectPamphletMainCellViewModelType {
 
 public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellViewModelType,
   ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let data = Signal.combineLatest(
       self.dataProperty.signal.skipNil(),

@@ -2,6 +2,7 @@
 import XCTest
 
 final class ProjectStatsEnvelopeTests: XCTestCase {
+  // swiftlint:disable:next function_body_length
   func testJSONDecoding() {
     let fundingStats: [[String: Any]] = [
       [

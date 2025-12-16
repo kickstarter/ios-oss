@@ -41,6 +41,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     self.dismissViewController.assertValueCount(1)
   }
 
+  // swiftlint:disable:next function_body_length
   func testRespondToSurvey() {
     let project = Project.template
     let surveyResponse = .template

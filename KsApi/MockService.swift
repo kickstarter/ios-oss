@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 #if DEBUG
   import Apollo
   import Combine
@@ -6,6 +7,7 @@
   import Prelude
   import ReactiveSwift
 
+  // swiftlint:disable:next type_body_length
   internal struct MockService: ServiceType {
     internal let apolloClient: ApolloClientType?
     internal let appId: String
@@ -235,6 +237,7 @@
       )
     }
 
+    // swiftlint:disable:next function_body_length
     internal init(
       appId: String = "com.kickstarter.kickstarter.mock",
       serverConfig: ServerConfigType = ServerConfig.production,
@@ -1279,6 +1282,7 @@
       }
     }
 
+    // swiftlint:disable:next function_body_length
     internal func fetchProject(projectParam: Param, configCurrency _: String?)
       -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope> {
       guard let client = self.apolloClient else {

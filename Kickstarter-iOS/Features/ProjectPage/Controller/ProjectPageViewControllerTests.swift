@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
@@ -5,6 +6,7 @@ import Prelude
 import SnapshotTesting
 import XCTest
 
+// swiftlint:disable:next type_body_length
 internal final class ProjectPageViewControllerTests: TestCase {
   private var project: Project = .cosmicSurgery
   private let extendedProjectProperties = ExtendedProjectProperties(
@@ -1166,6 +1168,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testLoggedOut_NonBacker_LiveProjectSwitchedToUseOfAITab_Success() {
     let config = Config.template
 

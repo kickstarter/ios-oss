@@ -51,6 +51,7 @@ public enum RefTag {
 
    - returns: A ref tag.
    */
+  // swiftlint:disable:next function_body_length
   public init(code: String) {
     switch code {
     case "activity": self = .activity

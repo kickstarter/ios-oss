@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import GraphAPI
 @testable import KsApi
@@ -7,6 +8,7 @@ import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class PledgeShippingLocationViewModelTests: TestCase {
   private let vm: PledgeShippingLocationViewModelType = PledgeShippingLocationViewModel()
 
@@ -310,6 +312,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testShippingLocationFromBackingIsDefault_ProjectCountryEqualsProjectCurrencyCountry_US_NewRewardDoesNotHaveSelectedRule(
   ) {
     let shippingDataWithoutCanada = GraphAPI.ShippableLocationsForProjectQuery.Data(

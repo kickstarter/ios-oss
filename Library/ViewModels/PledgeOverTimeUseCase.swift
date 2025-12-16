@@ -43,6 +43,7 @@ public protocol PledgeOverTimeUseCaseType {
 
 public final class PledgeOverTimeUseCase: PledgeOverTimeUseCaseType, PledgeOverTimeUseCaseInputs,
   PledgeOverTimeUseCaseOutputs {
+  // swiftlint:disable:next function_body_length
   init(
     project: Signal<Project, Never>,
     pledgeTotal: Signal<Double, Never>,

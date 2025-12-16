@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import GraphAPI
 import KsApi
@@ -80,11 +81,13 @@ public protocol PostCampaignCheckoutViewModelType {
   var outputs: PostCampaignCheckoutViewModelOutputs { get }
 }
 
+// swiftlint:disable:next type_body_length
 public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   PostCampaignCheckoutViewModelInputs,
   PostCampaignCheckoutViewModelOutputs {
   let stripeIntentService: StripeIntentServiceType
 
+  // swiftlint:disable:next function_body_length
   public init(stripeIntentService: StripeIntentServiceType) {
     self.stripeIntentService = stripeIntentService
 

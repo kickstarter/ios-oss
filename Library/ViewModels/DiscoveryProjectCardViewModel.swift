@@ -59,6 +59,7 @@ public protocol DiscoveryProjectCardViewModelType {
 
 public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelType,
   DiscoveryProjectCardViewModelInputs, DiscoveryProjectCardViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let project = self.configureWithValueProperty.signal.skipNil().map(first)
 

@@ -6,6 +6,7 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class ChangeEmailViewModelTests: TestCase {
   fileprivate let vm: ChangeEmailViewModelType = ChangeEmailViewModel()
   fileprivate let fetchUserQueryData = GraphUserEnvelopeTemplates.fetchUser

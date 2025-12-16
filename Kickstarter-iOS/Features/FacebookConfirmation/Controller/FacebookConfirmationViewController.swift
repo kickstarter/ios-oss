@@ -73,6 +73,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
     applyLoginRootStackViewStyle(self.rootStackView, useLargerMargins: isPad)
   }
 
+  // swiftlint:disable:next function_body_length
   override func bindViewModel() {
     super.bindViewModel()
 

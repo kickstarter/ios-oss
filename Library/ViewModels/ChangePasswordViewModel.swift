@@ -35,6 +35,7 @@ public protocol ChangePasswordViewModelType {
 
 public class ChangePasswordViewModel: ChangePasswordViewModelType,
   ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let currentPasswordSignal = self.currentPasswordProperty.signal
 

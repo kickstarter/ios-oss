@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import GraphAPI
 import KsApi
 import PassKit
@@ -52,10 +53,12 @@ public protocol PledgePaymentMethodsViewModelType {
   var outputs: PledgePaymentMethodsViewModelOutputs { get }
 }
 
+// swiftlint:disable:next type_body_length
 public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelType,
   PledgePaymentMethodsViewModelInputs, PledgePaymentMethodsViewModelOutputs {
   let stripeIntentService: StripeIntentServiceType
 
+  // swiftlint:disable:next function_body_length
   public init(stripeIntentService: StripeIntentServiceType) {
     self.stripeIntentService = stripeIntentService
 

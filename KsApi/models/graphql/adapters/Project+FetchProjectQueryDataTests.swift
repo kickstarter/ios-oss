@@ -32,6 +32,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertEqual(backingId, decompose(id: "QmFja2luZy0xNDgwMTQwMzQ="))
   }
 
+  // swiftlint:disable:next function_body_length
   private func testProjectProperties_Success(project: Project) {
     /// Project
     XCTAssertEqual(project.name, "The Quiet")

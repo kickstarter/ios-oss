@@ -13,6 +13,7 @@ internal protocol DiscoveryPostcardCellDelegate: AnyObject {
   func discoveryPostcardCellGoToLoginTout()
 }
 
+// swiftlint:disable:next type_body_length
 internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: DiscoveryPostcardViewModelType = DiscoveryPostcardViewModel()
   private let watchProjectViewModel: WatchProjectViewModelType = WatchProjectViewModel()
@@ -107,6 +108,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 
@@ -230,6 +232,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> locationImageViewStyle
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 

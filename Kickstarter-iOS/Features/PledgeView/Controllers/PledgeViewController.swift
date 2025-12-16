@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import KDS
 import KsApi
 import Library
@@ -26,6 +27,7 @@ protocol PledgeViewControllerDelegate: AnyObject {
   )
 }
 
+// swiftlint:disable:next type_body_length
 final class PledgeViewController: UIViewController,
   MessageBannerViewControllerPresenting, ProcessingViewPresenting {
   // MARK: - Properties
@@ -248,6 +250,7 @@ final class PledgeViewController: UIViewController,
 
   // MARK: - View model
 
+  // swiftlint:disable:next function_body_length
   override func bindViewModel() {
     super.bindViewModel()
 

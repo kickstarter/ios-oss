@@ -81,6 +81,7 @@ internal final class PaymentMethodSettingsViewController: UIViewController,
       |> tableViewSeparatorStyle
   }
 
+  // swiftlint:disable:next function_body_length
   override func bindViewModel() {
     super.bindViewModel()
 

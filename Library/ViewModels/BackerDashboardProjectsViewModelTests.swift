@@ -26,6 +26,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     self.vm.outputs.projects.observe(self.projects.observer)
   }
 
+  // swiftlint:disable:next function_body_length
   func testProjects() {
     let projects = (1...3).map { .template |> Project.lens.id .~ $0 }
     let projectsWithNewProject = (1...4).map { .template |> Project.lens.id .~ $0 }

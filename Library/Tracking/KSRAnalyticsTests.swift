@@ -1,9 +1,11 @@
+// swiftlint:disable file_length
 @testable import KsApi
 @testable import Library
 import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class KSRAnalyticsTests: TestCase {
   // MARK: - Session Properties Tests
 
@@ -269,6 +271,7 @@ final class KSRAnalyticsTests: TestCase {
 
   // MARK: - Project Properties Tests
 
+  // swiftlint:disable:next function_body_length
   func testProjectProperties() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
@@ -1467,6 +1470,7 @@ final class KSRAnalyticsTests: TestCase {
     )
   }
 
+  // swiftlint:disable:next function_body_length
   func testTrackDiscoveryModalSelectedFilter() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
@@ -1777,6 +1781,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("1111", segmentClient.properties.last?["interaction_target_uid"] as? String)
   }
 
+  // swiftlint:disable:next function_body_length
   func testContextLocationProperties() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(

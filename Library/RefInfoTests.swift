@@ -75,6 +75,7 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual("category".hashValue, RefTag.category.hashValue)
   }
 
+  // swiftlint:disable:next function_body_length
   func testInit() {
     XCTAssertEqual(RefTag.activity, RefTag(code: RefTag.activity.stringTag))
 

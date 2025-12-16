@@ -1,9 +1,11 @@
+// swiftlint:disable file_length
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
 import Prelude
 import XCTest
 
+// swiftlint:disable:next type_body_length
 class CommentRepliesDataSourceTests: XCTestCase {
   let commentSection = CommentRepliesDataSource.Section.rootComment.rawValue
   let repliesSection = CommentRepliesDataSource.Section.replies.rawValue

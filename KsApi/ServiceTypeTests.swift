@@ -1,6 +1,7 @@
 @testable import KsApi
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class ServiceTypeTests: XCTestCase {
   private let service = Service(
     appId: "com.kickstarter.test",

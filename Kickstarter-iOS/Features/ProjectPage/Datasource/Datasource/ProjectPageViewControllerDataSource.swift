@@ -1,9 +1,11 @@
+// swiftlint:disable file_length
 import AVFoundation
 import KsApi
 import Library
 import Prelude
 import UIKit
 
+// swiftlint:disable:next type_body_length
 internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case overviewCreatorHeader
@@ -74,6 +76,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
   private var preexistingAudioVideoViewElementsWithPlayer =
     [(element: AudioVideoViewElement, player: AVPlayer?, image: UIImage?)]()
 
+  // swiftlint:disable:next function_body_length
   func load(
     navigationSection: NavigationSection,
     project: Either<Project, any ProjectPageParam>,

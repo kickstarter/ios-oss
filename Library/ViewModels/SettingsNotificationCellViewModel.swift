@@ -29,6 +29,7 @@ public protocol SettingsNotificationCellViewModelType {
 public final class SettingsNotificationCellViewModel: SettingsNotificationCellViewModelInputs,
   SettingsNotificationCellViewModelOutputs,
   SettingsNotificationCellViewModelType {
+  // swiftlint:disable:next function_body_length
   public init() {
     let initialUser = self.initialUserProperty.signal.skipNil()
 

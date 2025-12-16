@@ -75,6 +75,7 @@ extension User {
     return newslettersSubscriptions
   }
 
+  // swiftlint:disable:next function_body_length
   private static func notifications(
     userFragment: GraphAPI
       .UserFragment

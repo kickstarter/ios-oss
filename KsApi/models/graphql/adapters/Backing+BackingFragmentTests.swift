@@ -1,9 +1,11 @@
+// swiftlint:disable file_length
 import Apollo
 import GraphAPI
 @testable import KsApi
 import XCTest
 
 final class Backing_BackingFragmentTests: XCTestCase {
+  // swiftlint:disable:next function_body_length
   func test() {
     do {
       let variables = [
@@ -91,6 +93,7 @@ final class Backing_BackingFragmentTests: XCTestCase {
   }
 }
 
+// swiftlint:disable:next function_body_length
 private func backingDictionary() -> [String: Any] {
   let json = """
   {

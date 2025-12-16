@@ -5,6 +5,7 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class SimilarProjectsUseCaseTests: TestCase {
   private var useCase: SimilarProjectsUseCase!
   private let projectTappedObserver = TestObserver<ProjectCardProperties, Never>()

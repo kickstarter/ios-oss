@@ -1,7 +1,9 @@
+// swiftlint:disable file_length
 import Apollo
 import GraphAPI
 @testable import KsApi
 
+// swiftlint:disable:next type_body_length
 public enum FetchProjectQueryTemplate {
   case valid
   case errored

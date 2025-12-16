@@ -36,6 +36,7 @@ public protocol PledgeShippingLocationViewModelType {
 public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewModelType,
   PledgeShippingLocationViewModelInputs,
   PledgeShippingLocationViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let configData = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),

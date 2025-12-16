@@ -13,6 +13,7 @@ internal protocol ProjectPamphletMainCellDelegate: VideoViewControllerDelegate {
   func projectPamphletMainCellGoToProjectNotice(_ cell: ProjectPamphletMainCell)
 }
 
+// swiftlint:disable:next type_body_length
 internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   internal weak var delegate: ProjectPamphletMainCellDelegate? {
     didSet {
@@ -103,6 +104,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     )
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 
@@ -262,6 +264,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 

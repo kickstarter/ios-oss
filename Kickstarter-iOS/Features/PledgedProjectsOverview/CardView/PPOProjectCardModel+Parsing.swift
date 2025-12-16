@@ -11,6 +11,7 @@ private struct PPOParsedAction {
 }
 
 extension PPOProjectCardModel {
+  // swiftlint:disable:next function_body_length
   init?(node: GraphAPI.FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node) {
     let card = node.fragments.pPOCardFragment
     let backing = card.backing?.fragments.pPOBackingFragment

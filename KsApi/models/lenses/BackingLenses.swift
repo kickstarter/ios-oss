@@ -1,7 +1,9 @@
+// swiftlint:disable file_length
 import Foundation
 import Prelude
 
 extension Backing {
+  // swiftlint:disable:next type_body_length
   public enum lens {
     public static let addOns = Lens<Backing, [Reward]?>(
       view: { $0.addOns },

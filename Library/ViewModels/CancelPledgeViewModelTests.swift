@@ -5,6 +5,7 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class CancelPledgeViewModelTests: TestCase {
   private let vm: CancelPledgeViewModelType = CancelPledgeViewModel()
 
@@ -32,6 +33,7 @@ final class CancelPledgeViewModelTests: TestCase {
     self.vm.outputs.popCancelPledgeViewController.observe(self.popCancelPledgeViewController.observer)
   }
 
+  // swiftlint:disable:next function_body_length
   func testConfigureCancelPledgeView() {
     let project = Project.cosmicSurgery
       |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode

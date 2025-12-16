@@ -81,6 +81,7 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
     return DiscoveryParams.recommendedDefaults
   }
 
+  // swiftlint:disable:next function_body_length
   public init() {
     let remoteConfigReadyOrContinue = Signal.merge(
       self.remoteConfigClientConfiguredProperty.signal,

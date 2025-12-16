@@ -37,6 +37,7 @@ public protocol CreatePasswordViewModelType {
 
 public class CreatePasswordViewModel: CreatePasswordViewModelType,
   CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     self.newPasswordTextFieldDidBecomeFirstResponder = self.viewDidAppearProperty.signal
     self.newPasswordConfirmationTextFieldDidBecomeFirstResponder = self.newPasswordDidReturnProperty.signal

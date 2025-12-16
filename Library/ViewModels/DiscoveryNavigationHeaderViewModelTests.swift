@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -6,6 +7,7 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable:next type_body_length
 internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
   fileprivate let vm: DiscoveryNavigationHeaderViewModelType = DiscoveryNavigationHeaderViewModel()
 
@@ -162,6 +164,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.dismissDiscoveryFilters.assertValueCount(1, "Dismissing is not emitted.")
   }
 
+  // swiftlint:disable:next function_body_length
   func testTitleData() {
     self.arrowOpacity.assertValueCount(0)
     self.primaryLabelOpacity.assertValueCount(0)
@@ -384,6 +387,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.notifyDelegateFilterSelectedParams.assertValues([DiscoveryParams.defaults, self.categoryParams])
   }
 
+  // swiftlint:disable:next function_body_length
   func testFavoriting() {
     let artSelectableRow = self.selectableRow |> SelectableRow.lens.params .~ self.categoryParams
 

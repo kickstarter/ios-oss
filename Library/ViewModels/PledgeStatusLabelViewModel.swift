@@ -71,6 +71,7 @@ public class PledgeStatusLabelViewModel: PledgeStatusLabelViewModelType,
 
 // MARK: - Functions
 
+// swiftlint:disable:next function_body_length
 private func statusLabelText(with data: PledgeStatusLabelViewData) -> NSAttributedString? {
   let currentUserIsCreatorOfProject = data.currentUserIsCreatorOfProject
 

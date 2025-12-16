@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import GraphAPI
 @testable import Kickstarter_Framework
 @testable import KsApi
@@ -9,6 +10,7 @@ import ReactiveSwift
 import UserNotifications
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class AppDelegateViewModelTests: TestCase {
   var vm: AppDelegateViewModelType!
 
@@ -299,6 +301,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testPresentViewController() {
     let apiService = MockService(
       fetchProjectResult: .success(.template),

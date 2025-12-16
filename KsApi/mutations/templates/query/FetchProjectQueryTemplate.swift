@@ -3,6 +3,7 @@ import Foundation
 import GraphAPI
 @testable import KsApi
 
+// swiftlint:disable:next type_body_length
 public enum FetchProjectQueryTemplate {
   case valid
 

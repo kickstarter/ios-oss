@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import KDS
 @testable import KsApi
 @testable import Library
@@ -6,6 +7,7 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 /* swiftlint:disable force_unwrapping */
+// swiftlint:disable:next type_body_length
 internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let vm = DiscoveryPostcardViewModel()
   internal let backersTitleLabelText = TestObserver<String, Never>()
@@ -198,6 +200,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     )
   }
 
+  // swiftlint:disable:next function_body_length
   func testSocialData() {
     let oneFriend = [User.template |> \.name .~ "Milky"]
 
@@ -284,6 +287,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.socialStackViewHidden.assertValues([true, false])
   }
 
+  // swiftlint:disable:next function_body_length
   func testStatsAndStateViews() {
     let canceled = .template |> Project.lens.state .~ .canceled
     let failed = .template |> Project.lens.state .~ .failed

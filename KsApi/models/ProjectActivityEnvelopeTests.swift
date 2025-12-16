@@ -2,6 +2,7 @@
 import XCTest
 
 final class ProjectActivityEnvelopeTests: XCTestCase {
+  // swiftlint:disable:next function_body_length
   func test() {
     let dict: [String: Any] = [
       "urls": [

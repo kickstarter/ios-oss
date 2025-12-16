@@ -3,6 +3,7 @@ import Prelude
 import XCTest
 
 final class BackingTests: XCTestCase {
+  // swiftlint:disable:next function_body_length
   func testJSONDecoding_WithCompleteData() {
     let backing: Backing? = Backing.decodeJSONDictionary([
       "add_ons": [

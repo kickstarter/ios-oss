@@ -96,6 +96,7 @@ final class CommentRepliesViewController: UITableViewController, MessageBannerVi
     self.viewModel.inputs.viewDidLoad()
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 

@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -6,6 +7,7 @@ import ReactiveSwift
 import UIKit
 import XCTest
 
+// swiftlint:disable:next type_body_length
 internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate var vm: DiscoveryPageViewModelType = DiscoveryPageViewModel()
 
@@ -71,6 +73,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.projectsAreLoadingAnimated.map { $0.0 }.observe(self.projectsAreLoading.observer)
   }
 
+  // swiftlint:disable:next function_body_length
   func testPaginating() {
     let params = DiscoveryParams.defaults
       |> \.sort .~ .magic
@@ -308,6 +311,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.contentInset.assertValues([UIEdgeInsets.zero])
   }
 
+  // swiftlint:disable:next function_body_length
   func testGoToProject() {
     let project = Project.template
     let discoveryEnvelope = .template

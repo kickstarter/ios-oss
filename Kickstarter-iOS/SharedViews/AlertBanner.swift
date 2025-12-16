@@ -24,6 +24,7 @@ final class AlertBanner: UIView {
     self.configureViews()
   }
 
+  // swiftlint:disable:next function_body_length
   private func configureViews() {
     self.backgroundColor = Colors.Background.Danger.subtle.uiColor()
     self.layer.cornerRadius = Dimension.CornerRadius.small

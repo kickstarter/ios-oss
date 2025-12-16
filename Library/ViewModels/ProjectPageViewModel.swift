@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import GraphAPI
 import KsApi
@@ -226,8 +227,10 @@ public protocol ProjectPageViewModelType {
   var outputs: ProjectPageViewModelOutputs { get }
 }
 
+// swiftlint:disable:next type_body_length
 public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageViewModelInputs,
   ProjectPageViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let isLoading = MutableProperty(false)
 

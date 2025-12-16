@@ -93,6 +93,7 @@ public protocol DiscoveryNavigationHeaderViewModelType {
 
 public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeaderViewModelType,
   DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let currentParams = Signal.merge(
       self.paramsProperty.signal.skipNil().skipRepeats(),

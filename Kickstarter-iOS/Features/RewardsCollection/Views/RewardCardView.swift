@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import KDS
 import KsApi
 import Library
@@ -8,6 +9,7 @@ protocol RewardCardViewDelegate: AnyObject {
   func rewardCardView(_ rewardCardView: RewardCardView, didTapWithRewardId rewardId: Int)
 }
 
+// swiftlint:disable:next type_body_length
 public final class RewardCardView: UIView {
   // MARK: - Properties
 
@@ -61,6 +63,7 @@ public final class RewardCardView: UIView {
     self.pillsViewHeightConstraint?.constant = self.pillsView.intrinsicContentSize.height
   }
 
+  // swiftlint:disable:next function_body_length
   public override func bindStyles() {
     super.bindStyles()
 
@@ -151,6 +154,7 @@ public final class RewardCardView: UIView {
     )
   }
 
+  // swiftlint:disable:next function_body_length
   public override func bindViewModel() {
     super.bindViewModel()
 

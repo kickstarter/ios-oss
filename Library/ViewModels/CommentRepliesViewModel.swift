@@ -85,6 +85,7 @@ public protocol CommentRepliesViewModelType {
 public final class CommentRepliesViewModel: CommentRepliesViewModelType,
   CommentRepliesViewModelInputs,
   CommentRepliesViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let rootCommentProject = Signal.combineLatest(
       self.commentProjectProperty.signal.skipNil(),

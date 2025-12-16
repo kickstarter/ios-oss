@@ -114,6 +114,7 @@ internal final class CommentsViewController: UITableViewController, MessageBanne
 
   // MARK: - View Model
 
+  // swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 

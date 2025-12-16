@@ -138,6 +138,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
    - returns: An optional `IndexPath?`representing where a given `Comment` needs to be inserted/appended.
    */
   @discardableResult
+  // swiftlint:disable:next function_body_length
   private func loadValue(
     _ comment: Comment,
     project: Project,

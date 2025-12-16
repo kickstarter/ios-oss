@@ -4,6 +4,7 @@ import Prelude
 import XCTest
 
 final class Reward_RewardFragmentTests: XCTestCase {
+  // swiftlint:disable:next function_body_length
   func test() {
     do {
       let variables = ["includeShippingRules": true, "includeLocalPickup": true]
@@ -71,6 +72,7 @@ final class Reward_RewardFragmentTests: XCTestCase {
   }
 }
 
+// swiftlint:disable:next function_body_length
 private func rewardDictionary() -> [String: Any] {
   let json = """
   {

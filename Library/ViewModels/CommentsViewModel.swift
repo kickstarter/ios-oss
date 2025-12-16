@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import KsApi
 import Prelude
@@ -80,11 +81,13 @@ public protocol CommentsViewModelType {
   var outputs: CommentsViewModelOutputs { get }
 }
 
+// swiftlint:disable:next type_body_length
 public final class CommentsViewModel: CommentsViewModelType,
   CommentsViewModelInputs,
   CommentsViewModelOutputs {
   // MARK: Initializers
 
+  // swiftlint:disable:next function_body_length
   public init() {
     let projectOrUpdate = Signal.combineLatest(
       self.projectAndUpdateProperty.signal.skipNil(),

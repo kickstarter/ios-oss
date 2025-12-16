@@ -58,6 +58,7 @@ public protocol SortPagerViewModelType {
 
 public final class SortPagerViewModel: SortPagerViewModelType, SortPagerViewModelInputs,
   SortPagerViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let sorts: Signal<[DiscoveryParams.Sort], Never> = Signal.combineLatest(
       self.sortsProperty.signal.skipNil(),

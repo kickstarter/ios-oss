@@ -62,6 +62,7 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
       |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_reply() }
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 

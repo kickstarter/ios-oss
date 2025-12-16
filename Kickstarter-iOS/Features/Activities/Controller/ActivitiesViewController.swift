@@ -90,6 +90,7 @@ internal final class ActivitiesViewController: UITableViewController {
       |> UINavigationItem.lens.title %~ { _ in Strings.activity_navigation_title_activity() }
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 

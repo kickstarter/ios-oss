@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -48,6 +49,7 @@ private let categories =
     Category.filmAndVideo
   ]
 
+// swiftlint:disable:next type_body_length
 internal final class DiscoveryFiltersViewModelTests: TestCase {
   private let vm: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
 
@@ -103,6 +105,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.animateInView.assertValueCount(1)
   }
 
+  // swiftlint:disable:next function_body_length
   func testKSRAnalyticsEventsTrack() {
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()
@@ -320,6 +323,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.loadTopRowsInitialId.assertValues([1])
   }
 
+  // swiftlint:disable:next function_body_length
   func testExpandingCategoryFilters() {
     withEnvironment(apiService: MockService(fetchGraphCategoriesResult: .success(
       self

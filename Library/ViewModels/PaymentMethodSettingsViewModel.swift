@@ -39,6 +39,7 @@ public final class PaymentMethodSettingsViewModel: PaymentMethodsViewModelType,
   PaymentMethodSettingsViewModelInputs, PaymentMethodSettingsViewModelOutputs {
   let stripeIntentService: StripeIntentServiceType
 
+  // swiftlint:disable:next function_body_length
   public init(stripeIntentService: StripeIntentServiceType) {
     self.stripeIntentService = stripeIntentService
 

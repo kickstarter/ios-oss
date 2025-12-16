@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 @testable import KsApi
 @testable import Library
@@ -7,6 +8,7 @@ import ReactiveSwift
 @testable import Stripe
 import XCTest
 
+// swiftlint:disable:next type_body_length
 internal final class PaymentMethodSettingsViewModelTests: TestCase {
   private var vm = PaymentMethodSettingsViewModel(stripeIntentService: MockStripeIntentService())
   private let mockStripeIntentService = MockStripeIntentService()
@@ -411,6 +413,7 @@ internal final class PaymentMethodSettingsViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testDeletePaymentMethod_SuccessThenError() {
     guard let card = UserCreditCards.template.storedCards.first else {
       XCTFail("Card should exist")

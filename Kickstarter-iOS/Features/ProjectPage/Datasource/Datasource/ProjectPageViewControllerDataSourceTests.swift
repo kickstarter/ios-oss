@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import AVFoundation
 import GraphAPI
 @testable import Kickstarter_Framework
@@ -6,6 +7,7 @@ import GraphAPI
 import Prelude
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class ProjectPageViewControllerDataSourceTests: XCTestCase {
   private let dataSource = ProjectPageViewControllerDataSource()
   private let tableView = UITableView()
@@ -390,6 +392,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testUseOfAI_AllSectionsShown_Success() {
     let project = Project.template
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
@@ -466,6 +469,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testUseOfAI_NoFundingAndDetailsSection_Success() {
     var updatedUseOfAIDisclosure = self.useOfAIDisclosure
 
@@ -912,6 +916,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     )
   }
 
+  // swiftlint:disable:next function_body_length
   func testUpdatingCampaign_WithImageViewElementImage_Success() {
     let project = Project.template
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
@@ -976,6 +981,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testCampaign_WithImageViewElementRetrieval_Success() {
     let project = Project.template
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
@@ -1302,6 +1308,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testCampaign_AudioVideoViewElementWithNoSeektime_Updated_Success() {
     let project = Project.template
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(

@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import AppTrackingTransparency
 import KsApi
 import PassKit
@@ -5,6 +6,7 @@ import Prelude
 import SegmentBrazeUI
 import UIKit
 
+// swiftlint:disable:next type_body_length
 public final class KSRAnalytics {
   private let bundle: NSBundleType
   internal private(set) var config: Config?

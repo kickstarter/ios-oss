@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Apollo
 import Combine
 import Foundation
@@ -16,6 +17,7 @@ public extension Bundle {
 /**
  A `ServerType` that requests data from an API webservice.
  */
+// swiftlint:disable:next type_body_length
 public struct Service: ServiceType {
   public let appId: String
   public let serverConfig: ServerConfigType

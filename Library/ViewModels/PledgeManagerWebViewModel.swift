@@ -61,6 +61,7 @@ public protocol PledgeManagerWebViewModelType: PledgeManagerWebViewModelInputs,
 }
 
 public final class PledgeManagerWebViewModel: PledgeManagerWebViewModelType {
+  // swiftlint:disable:next function_body_length
   public init() {
     let initialIsLoggedIn = self.viewDidLoadProperty.signal.compactMap {
       AppEnvironment.current.currentUser != nil

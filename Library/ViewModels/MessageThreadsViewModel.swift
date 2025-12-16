@@ -56,6 +56,7 @@ public protocol MessageThreadsViewModelType {
 
 public final class MessageThreadsViewModel: MessageThreadsViewModelType, MessageThreadsViewModelInputs,
   MessageThreadsViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .filter { _, total in total > 1 }

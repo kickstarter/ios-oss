@@ -82,6 +82,7 @@ final class PostCampaignCheckoutViewControllerTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testView_ShowsEstimatedShippingView() {
     let project = Project.template
       |> Project.lens.state .~ .successful

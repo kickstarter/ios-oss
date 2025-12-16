@@ -34,6 +34,7 @@ internal enum Orientation: CaseIterable {
   case landscape
 }
 
+// swiftlint:disable:next function_body_length
 internal func traitControllers(
   device: Device = .phone4_7inch,
   orientation: Orientation = .portrait,

@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import KsApi
 import Prelude
 import ReactiveExtensions
@@ -127,8 +128,10 @@ public protocol DiscoveryPageViewModelType {
   var outputs: DiscoveryPageViewModelOutputs { get }
 }
 
+// swiftlint:disable:next type_body_length
 public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, DiscoveryPageViewModelInputs,
   DiscoveryPageViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let currentUser = Signal.merge(
       self.userSessionStartedProperty.signal,

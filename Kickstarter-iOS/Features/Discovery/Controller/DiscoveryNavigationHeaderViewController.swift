@@ -10,6 +10,7 @@ internal protocol DiscoveryNavigationHeaderViewDelegate: AnyObject {
   func discoveryNavigationHeaderFilterSelectedParams(_ params: DiscoveryParams)
 }
 
+// swiftlint:disable:next type_body_length
 internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   fileprivate let viewModel: DiscoveryNavigationHeaderViewModelType = DiscoveryNavigationHeaderViewModel()
 
@@ -74,6 +75,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       : UIFont.ksr_body(size: 17)
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 
@@ -270,6 +272,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     )
   }
 
+  // swiftlint:disable:next function_body_length
   fileprivate func updateFavoriteButton(selected: Bool, animated: Bool) {
     let duration = animated ? 0.4 : 0.0
 

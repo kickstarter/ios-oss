@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
@@ -5,6 +6,7 @@ import Prelude
 import SnapshotTesting
 import UIKit
 
+// swiftlint:disable:next type_body_length
 final class RewardAddOnSelectionViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
@@ -156,6 +158,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testView_EmptyState() {
     let shippingRules = [
       ShippingRule.template

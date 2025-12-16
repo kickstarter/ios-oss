@@ -53,6 +53,7 @@ public protocol PledgeAmountViewModelType {
 
 public final class PledgeAmountViewModel: PledgeAmountViewModelType,
   PledgeAmountViewModelInputs, PledgeAmountViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let configData = self.projectAndRewardProperty.signal
       .skipNil()

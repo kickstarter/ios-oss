@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import GraphAPI
 @testable import Kickstarter_Framework
 @testable import KsApi
@@ -6,6 +7,7 @@ import Prelude
 import SnapshotTesting
 import UIKit
 
+// swiftlint:disable:next type_body_length
 final class PledgeViewControllerTests: TestCase {
   private let userWithCards = GraphUser.template |> \.storedCards .~ UserCreditCards(
     storedCards: [

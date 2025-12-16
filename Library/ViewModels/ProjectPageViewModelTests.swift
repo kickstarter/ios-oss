@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import AVFoundation
 @testable import KsApi
 @testable import Library
@@ -6,6 +7,7 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class ProjectPageViewModelTests: TestCase {
   private let releaseBundle = MockBundle(
     bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
@@ -65,6 +67,7 @@ final class ProjectPageViewModelTests: TestCase {
   private let updateFAQsInDataSourceIsExpandedValues = TestObserver<[Bool], Never>()
   private let updateWatchProjectWithPrelaunchProjectState = TestObserver<PledgeCTAPrelaunchState, Never>()
 
+  // swiftlint:disable:next function_body_length
   internal override func setUp() {
     super.setUp()
 
@@ -541,6 +544,7 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   // Tests that ref tags and referral credit cookies are tracked and saved like we expect.
+  // swiftlint:disable:next function_body_length
   func testTracksRefTag() {
     let project = Project.template
     let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
@@ -613,6 +617,7 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   // Tests that ref tags for similar projects and referral credit cookies are tracked and saved like we expect.
+  // swiftlint:disable:next function_body_length
   func testTracksRefTag_SimilarProjects() {
     let project = Project.template
     let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
@@ -787,6 +792,7 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testTracksRefTag_WithBadData() {
     let project = Project.template
     let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
@@ -1250,6 +1256,7 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testConfigurePledgeCTAView_ReloadsUponBackProject() {
     let config = Config.template
     let project = Project.template
@@ -1327,6 +1334,7 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testConfigurePledgeCTAView_ReloadsUponUpdatePledge() {
     let config = Config.template
     let project = Project.template
@@ -1412,6 +1420,7 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testConfigurePledgeCTAView_ReloadsUponRetryButtonTappedEvent() {
     let config = Config.template
     let project = Project.template
@@ -1848,6 +1857,7 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testOutputForNonEmptyAudioVideoURLS_UpdatedPrepareAudioVideoIndexPath() {
     let campaignSection = NavigationSection.campaign.rawValue
     let expectedTime = CMTime(

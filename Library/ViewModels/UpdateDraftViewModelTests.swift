@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -6,6 +7,7 @@ import ReactiveSwift
 import UIKit
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class UpdateDraftViewModelTests: TestCase {
   let vm: UpdateDraftViewModelType = UpdateDraftViewModel()
   let attachmentAdded = TestObserver<UpdateDraft.Attachment, Never>()

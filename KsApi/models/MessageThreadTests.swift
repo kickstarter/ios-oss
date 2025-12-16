@@ -2,6 +2,7 @@
 import XCTest
 
 internal final class MessageThreadTests: XCTestCase {
+  // swiftlint:disable:next function_body_length
   func testDecoding() {
     let result: MessageThread = try! MessageThread.decodeJSONDictionary([
       "closed": false,

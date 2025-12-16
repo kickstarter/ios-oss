@@ -103,6 +103,7 @@ public protocol BackerDashboardViewModelType {
 
 public final class BackerDashboardViewModel: BackerDashboardViewModelType, BackerDashboardViewModelInputs,
   BackerDashboardViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     self.configurePagesDataSource = self.viewDidLoadProperty.signal
       .map { (.backed, DiscoveryParams.Sort.endingSoon) }

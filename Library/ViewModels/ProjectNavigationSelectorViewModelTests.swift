@@ -6,6 +6,7 @@ import ReactiveSwift
 import UIKit
 import XCTest
 
+// swiftlint:disable:next type_body_length
 internal final class ProjectNavigationSelectorViewModelTests: TestCase {
   fileprivate let vm: ProjectNavigationSelectorViewModelType = ProjectNavigationSelectorViewModel()
 
@@ -193,6 +194,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
     self.updateNavigationSelectorUI.assertValues([0, 0, 3])
   }
 
+  // swiftlint:disable:next function_body_length
   func testOutput_TestSegmentTracking() {
     var project = Project.template
     project.extendedProjectProperties = self.projectPropertiesWithEnvironmentalCommitments

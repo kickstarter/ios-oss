@@ -151,6 +151,7 @@ final class ProjectNavigationSelectorView: UIView {
     ])
   }
 
+  // swiftlint:disable:next function_body_length
   private func setupConstraintsForSelectedButtonBorderView(sections: [NavigationSection]) {
     let buttonViews: [UIButton] = sections.map { section in
       var sectionIndex = 0

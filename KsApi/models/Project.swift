@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import Prelude
 import ReactiveSwift
@@ -309,6 +310,7 @@ extension Project: Decodable {
     case isPledgeOverTimeAllowed
   }
 
+  // swiftlint:disable:next function_body_length
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     self.availableCardTypes = try values.decodeIfPresent([String].self, forKey: .availableCardTypes)

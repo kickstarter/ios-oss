@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import KDS
 import KsApi
 import Library
@@ -160,6 +161,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> checkoutBackgroundStyle
   }
 
+  // swiftlint:disable:next function_body_length
   override func bindViewModel() {
     super.bindViewModel()
 

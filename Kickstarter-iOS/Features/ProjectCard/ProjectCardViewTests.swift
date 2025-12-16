@@ -185,6 +185,7 @@ private func wrappedViewController(subview: UIView, device: Device) -> UIViewCon
 }
 
 // Helper method to create mock project nodes for testing
+// swiftlint:disable:next function_body_length
 private func createMockProjectNode(
   id: Int = 123,
   name: String = "Test Project",

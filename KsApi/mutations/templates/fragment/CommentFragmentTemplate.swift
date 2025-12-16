@@ -17,6 +17,7 @@ public enum CommentFragmentTemplate {
 
   // MARK: Private Properties
 
+  // swiftlint:disable:next function_body_length
   private func validResultMap() -> [String: Any] {
     let json = """
     {

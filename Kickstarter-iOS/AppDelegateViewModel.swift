@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import FirebaseCrashlytics
 import KsApi
 import Library
@@ -185,8 +186,10 @@ public protocol AppDelegateViewModelType {
   var outputs: AppDelegateViewModelOutputs { get }
 }
 
+// swiftlint:disable:next type_body_length
 public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateViewModelInputs,
   AppDelegateViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let currentUserEvent = Signal
       .merge(
@@ -1047,6 +1050,7 @@ private func shouldOpenUrlInBrowser(_ url: URL) -> Bool {
   return true
 }
 
+// swiftlint:disable:next function_body_length
 private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? {
   if let activity = envelope.activity {
     switch activity.category {

@@ -107,6 +107,7 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
       }
   }
 
+  // swiftlint:disable:next function_body_length
   override func bindViewModel() {
     super.bindViewModel()
 

@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -9,6 +10,7 @@ private enum Constants {
   static let communityLink = "https://www.kickstarter.com/help/community"
 }
 
+// swiftlint:disable:next type_body_length
 internal final class CommentCellViewModelTests: TestCase {
   let vm: CommentCellViewModelType = CommentCellViewModel()
 

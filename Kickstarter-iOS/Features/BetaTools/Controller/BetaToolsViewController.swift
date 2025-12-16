@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import KDS
 import KsApi
 import Library
@@ -7,6 +8,7 @@ import SafariServices
 import SwiftUI
 import UIKit
 
+// swiftlint:disable:next type_body_length
 internal final class BetaToolsViewController: UITableViewController {
   // MARK: - Properties
 
@@ -51,6 +53,7 @@ internal final class BetaToolsViewController: UITableViewController {
       ?|> UINavigationController.lens.isNavigationBarHidden .~ false
   }
 
+  // swiftlint:disable:next function_body_length
   override func bindViewModel() {
     self.viewModel.outputs.reloadWithData
       .observeForUI()

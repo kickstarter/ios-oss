@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Combine
 import GraphAPI
 @testable import Kickstarter_Framework
@@ -5,6 +6,7 @@ import GraphAPI
 @testable import Library
 import XCTest
 
+// swiftlint:disable:next type_body_length
 class PPOViewModelTests: XCTestCase {
   var viewModel: PPOViewModel!
   var cancellables: Set<AnyCancellable>!
@@ -137,6 +139,7 @@ class PPOViewModelTests: XCTestCase {
     XCTAssertEqual(secondData.count, 2)
   }
 
+  // swiftlint:disable:next function_body_length
   func testPullToRefresh_Twice() async throws {
     let initialLoadExpectation = XCTestExpectation(description: "Initial load")
     initialLoadExpectation.expectedFulfillmentCount = 3
@@ -505,6 +508,7 @@ class PPOViewModelTests: XCTestCase {
     """
   }
 
+  // swiftlint:disable:next function_body_length
   private func projectNodeJSON(
     projectName: String = UUID().uuidString
   ) -> String {

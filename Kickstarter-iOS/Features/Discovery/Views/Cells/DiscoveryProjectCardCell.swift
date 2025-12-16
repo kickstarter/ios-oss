@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import KDS
 import KsApi
@@ -10,6 +11,7 @@ private enum FacepileAvatarSize {
   static let width: CGFloat = 26.0
 }
 
+// swiftlint:disable:next type_body_length
 final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   internal weak var delegate: DiscoveryPostcardCellDelegate?
 
@@ -98,6 +100,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.pillsViewHeightConstraint?.constant = self.pillsView.intrinsicContentSize.height
   }
 
+  // swiftlint:disable:next function_body_length
   override func bindStyles() {
     super.bindStyles()
 
@@ -199,6 +202,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       |> youreABackerLabelStyle
   }
 
+  // swiftlint:disable:next function_body_length
   override func bindViewModel() {
     super.bindViewModel()
 
@@ -377,6 +381,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       |> ksr_addArrangedSubviewsToStackView()
   }
 
+  // swiftlint:disable:next function_body_length
   private func setupConstraints() {
     _ = [
       self.rootStackView,

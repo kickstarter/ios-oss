@@ -106,6 +106,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     }
   }
 
+  // swiftlint:disable:next function_body_length
   override func bindViewModel() {
     super.bindViewModel()
 

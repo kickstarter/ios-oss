@@ -33,6 +33,7 @@ public protocol SelectCurrencyViewModelType {
 
 public final class SelectCurrencyViewModel: SelectCurrencyViewModelType, SelectCurrencyViewModelInputs,
   SelectCurrencyViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let initialChosenCurrency = Signal.combineLatest(
       self.selectedCurrencySignal,

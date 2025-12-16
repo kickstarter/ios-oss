@@ -1,6 +1,8 @@
+// swiftlint:disable file_length
 import Prelude
 
 extension User {
+  // swiftlint:disable:next type_body_length
   public enum lens {
     public static let avatar = Lens<User, User.Avatar>(
       view: { $0.avatar },

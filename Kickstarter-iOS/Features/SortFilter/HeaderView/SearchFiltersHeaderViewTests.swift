@@ -5,6 +5,7 @@ import SwiftUI
 import XCTest
 
 final class SearchFiltersHeaderViewTests: TestCase {
+  // swiftlint:disable:next function_body_length
   func testHeaderView() {
     orthogonalCombos(
       [Device.phone5_5inch, Device.pad],

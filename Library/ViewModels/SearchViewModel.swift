@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import GraphAPI
 import KsApi
@@ -83,7 +84,9 @@ public protocol SearchViewModelType {
   var outputs: SearchViewModelOutputs { get }
 }
 
+// swiftlint:disable:next type_body_length
 public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, SearchViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     self.categoriesUseCase = FetchCategoriesUseCase(
       initialSignal: self.viewDidLoadProperty.signal

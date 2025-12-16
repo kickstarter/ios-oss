@@ -40,6 +40,7 @@ public protocol PledgeSummaryViewModelType {
 
 public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
   PledgeSummaryViewModelInputs, PledgeSummaryViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let initialData = Signal.combineLatest(
       self.configureWithDataProperty.signal.skipNil(),

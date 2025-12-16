@@ -56,6 +56,7 @@ public protocol WatchProjectViewModelType {
 
 public final class WatchProjectViewModel: WatchProjectViewModelType,
   WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let viewReady = Signal.merge(self.viewDidLoadProperty.signal, self.awakeFromNibProperty.signal)
     let projectProperty = self.configureWithValueProperty.signal.skipNil().map { $0.project }

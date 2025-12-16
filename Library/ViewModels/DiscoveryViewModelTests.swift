@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -6,6 +7,7 @@ import ReactiveSwift
 import UIKit
 import XCTest
 
+// swiftlint:disable:next type_body_length
 internal final class DiscoveryViewModelTests: TestCase {
   fileprivate let vm: DiscoveryViewModelType = DiscoveryViewModel()
 
@@ -341,6 +343,7 @@ internal final class DiscoveryViewModelTests: TestCase {
   /**
    Tests that events are tracked correctly while swiping sorts and selecting sorts from the page.
    */
+  // swiftlint:disable:next function_body_length
   func testSortSwipeEventTracking() {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)

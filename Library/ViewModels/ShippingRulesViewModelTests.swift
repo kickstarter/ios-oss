@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 @testable import KsApi
 @testable import Library
@@ -23,6 +24,7 @@ private let shippingRules = [
     |> ShippingRule.lens.location .~ .usa
 ]
 
+// swiftlint:disable:next type_body_length
 final class ShippingRulesViewModelTests: TestCase {
   private let vm: ShippingRulesViewModelType = ShippingRulesViewModel()
 
@@ -60,6 +62,7 @@ final class ShippingRulesViewModelTests: TestCase {
     self.flashScrollIndicators.assertValueCount(1)
   }
 
+  // swiftlint:disable:next function_body_length
   func testDataIsSortedBasedOnLocalizedName() {
     let shippingRulesUnsorted = [
       ShippingRule.template
@@ -187,6 +190,7 @@ final class ShippingRulesViewModelTests: TestCase {
     - Shows: Canada
 
    */
+  // swiftlint:disable:next function_body_length
   func testSearch() {
     let project = Project.template
     let selectedShippingRule = shippingRules[0]
@@ -589,6 +593,7 @@ final class ShippingRulesViewModelTests: TestCase {
     - Selected rule: Canada
 
    */
+  // swiftlint:disable:next function_body_length
   func testSearchAndSelection() {
     let project = Project.template
     let selectedShippingRule = shippingRules[0]
@@ -910,6 +915,7 @@ final class ShippingRulesViewModelTests: TestCase {
     - Selected rule: Great Britain
 
    */
+  // swiftlint:disable:next function_body_length
   func testSelection() {
     let project = Project.template
     let selectedShippingRule = shippingRules[1]

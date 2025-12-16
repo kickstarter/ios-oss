@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import GraphAPI
 import KsApi
 import ReactiveSwift
@@ -48,11 +49,13 @@ public protocol SearchFiltersUseCaseDataOutputs {
   var selectedToggles: Signal<SearchFilterToggles, Never> { get }
 }
 
+// swiftlint:disable:next type_body_length
 public final class SearchFiltersUseCase: SearchFiltersUseCaseType, SearchFiltersUseCaseInputs,
   SearchFiltersUseCaseUIOutputs, SearchFiltersUseCaseDataOutputs {
   /// @param initialSignal - An initial signal pulse. Must be sent once for default values of `selectedSort` and `selectedCategory` to emit.
   /// @param categories - A list of possible filter categories. Must be sent for `showCategoryFilters` and `selectedSortOption` to work.
 
+  // swiftlint:disable:next function_body_length
   public init(
     initialSignal: Signal<Void, Never>,
     categories: Signal<[KsApi.Category], Never>,

@@ -3,6 +3,7 @@ import Apollo
 import XCTest
 
 final class Project_FetchAddOnsQueryDataTests: XCTestCase {
+  // swiftlint:disable:next function_body_length
   func testFetchAddOnsQueryData_Success() {
     let data = FetchAddsOnsQueryTemplate.valid.data
     let producer = Project.projectProducer(from: data)

@@ -1,9 +1,11 @@
+// swiftlint:disable file_length
 @testable import Library
 import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class PaginateTests: TestCase {
   let (newRequest, newRequestObserver) = Signal<Int, Never>.pipe()
   let (nextPage, nextPageObserver) = Signal<(), Never>.pipe()
@@ -143,6 +145,7 @@ final class PaginateTests: TestCase {
     loadingTest.assertValues([true, false, true, false])
   }
 
+  // swiftlint:disable:next function_body_length
   func testPaginateFlow() {
     let (values, loading, _, _) = paginate(
       requestFirstPageWith: newRequest,
@@ -306,6 +309,7 @@ final class PaginateTests: TestCase {
     errorsTest.assertValueCount(1, "Error does not emit again.")
   }
 
+  // swiftlint:disable:next function_body_length
   func testPaginateFlow_With_Repeats() {
     let (values, loading, _, _) = paginate(
       requestFirstPageWith: newRequest,

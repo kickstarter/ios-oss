@@ -42,6 +42,7 @@ public final class TextViewElementCellViewModel:
   public var outputs: TextViewElementCellViewModelOutputs { self }
 }
 
+// swiftlint:disable:next function_body_length
 private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAttributedString, Never> {
   let completedAttributedText = NSMutableAttributedString()
 

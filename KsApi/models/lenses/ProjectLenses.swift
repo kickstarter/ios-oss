@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import Prelude
 
@@ -19,6 +20,7 @@ extension ExtendedProjectProperties {
 }
 
 extension Project {
+  // swiftlint:disable:next type_body_length
   public enum lens {
     public static let availableCardTypes = Lens<Project, [String]?>(
       view: { $0.availableCardTypes },

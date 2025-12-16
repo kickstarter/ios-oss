@@ -1,8 +1,10 @@
+// swiftlint:disable file_length
 import Apollo
 import Foundation
 import GraphAPI
 @testable import KsApi
 
+// swiftlint:disable:next type_body_length
 public enum FetchCommentRepliesQueryTemplate {
   case valid
   case errored

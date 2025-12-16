@@ -1,5 +1,7 @@
+// swiftlint:disable file_length
 import UIKit
 
+// swiftlint:disable:next type_body_length
 public struct Colors {
   public static let scrim = SemanticColor(
     "scrim",

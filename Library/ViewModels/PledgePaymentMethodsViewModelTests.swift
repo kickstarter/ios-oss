@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 @testable import KsApi
 @testable import Library
@@ -7,6 +8,7 @@ import ReactiveExtensions_TestHelpers
 @testable import StripePaymentSheet
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class PledgePaymentMethodsViewModelTests: TestCase {
   private var vm: PledgePaymentMethodsViewModelType =
     PledgePaymentMethodsViewModel(stripeIntentService: MockStripeIntentService())
@@ -67,6 +69,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
   // MARK: - New card added
 
+  // swiftlint:disable:next function_body_length
   func testReloadPaymentMethods_NewCardAdded_UnavailableIsLast() {
     let sampleSetupIntent = "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
 
@@ -209,6 +212,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testReloadPaymentMethods_NewCardAdded_ProjectHasBacking() {
     let setupIntent = "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
     let cards = UserCreditCards.withCards([
@@ -373,6 +377,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testReloadPaymentMethods_NewCardAdded_NoStoredCards() {
     let emptyTemplate = GraphUser.template |> \.storedCards .~ .emptyTemplate
     let response = UserEnvelope<GraphUser>(me: emptyTemplate)
@@ -461,6 +466,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testReloadPaymentMethods_NewPaymentSheetCardAdded_WithExistingStoredCard_Success() {
     let userTemplate = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([
       UserCreditCards.masterCard
@@ -556,6 +562,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testReloadPaymentMethods_NewPaymentSheetCardAdded_WithExistingStoredCard_ErroredBacking_Success() {
     let userTemplate = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([
       UserCreditCards.masterCard
@@ -652,6 +659,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testSelectNewPaymentSheetCard_ViceVersa_AfterNewPaymentSheetCardsAdded_Success() {
     let userTemplate = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([
       UserCreditCards.masterCard
@@ -1484,6 +1492,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testAddNewStripeCard_MultipleCards_StoresAllCards_WithMostRecentCardFirst() {
     let project = Project.template
     let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([UserCreditCards.visa])
@@ -1902,6 +1911,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testAddNewUnavailablePaymentMethod_afterAddingAvailableCard_onlyAvailableCardSelected() {
     let cards = UserCreditCards.withCards([])
 

@@ -1,9 +1,11 @@
+// swiftlint:disable file_length
 @testable import KsApi
 @testable import Library
 import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class ActivitiesViewModelTests: TestCase {
   fileprivate let vm: ActivitiesViewModelType! = ActivitiesViewModel()
 

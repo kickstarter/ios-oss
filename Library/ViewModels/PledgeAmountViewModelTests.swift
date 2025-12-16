@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import KDS
 @testable import KsApi
 @testable import Library
@@ -5,6 +6,7 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
+// swiftlint:disable:next type_body_length
 internal final class PledgeAmountViewModelTests: TestCase {
   private let vm: PledgeAmountViewModelType = PledgeAmountViewModel()
 
@@ -1124,6 +1126,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.textFieldTextColor.assertValues([green, red, green, red, green])
   }
 
+  // swiftlint:disable:next function_body_length
   func testTextFieldValueChangedRounding() {
     let green = LegacyColors.ksr_create_700.uiColor()
     let red = LegacyColors.ksr_alert.uiColor()

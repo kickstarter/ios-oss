@@ -76,6 +76,7 @@ public final class VideoViewController: UIViewController {
       |> ignoresInvertColorsImageViewStyle
   }
 
+  // swiftlint:disable:next function_body_length
   public override func bindViewModel() {
     super.bindViewModel()
 

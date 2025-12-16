@@ -1,8 +1,10 @@
+// swiftlint:disable file_length
 import GraphAPI
 import KsApi
 @testable import Library
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class FormatTests: TestCase {
   func testWholeNumber() {
     withEnvironment(locale: Locale(identifier: "en")) {
@@ -103,6 +105,7 @@ final class FormatTests: TestCase {
     XCTAssertEqual(Format.decimalCurrency(for: 10.511), "10.51", "Rounds down to 2 fraction digits")
   }
 
+  // swiftlint:disable:next function_body_length
   func testAttributedCurrency() {
     withEnvironment(locale: Locale(identifier: "en")) {
       withEnvironment(countryCode: "US") {
@@ -189,6 +192,7 @@ final class FormatTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testCurrency() {
     withEnvironment(locale: Locale(identifier: "en")) {
       withEnvironment(countryCode: "US") {
@@ -563,6 +567,7 @@ final class FormatTests: TestCase {
     XCTAssertTrue(expectedAttributes == attributes)
   }
 
+  // swiftlint:disable:next function_body_length
   func testDate() {
     let date = 434_592_000.0 // Oct 10 1983 in UTC
     let UTC = TimeZone(abbreviation: "UTC")!
@@ -801,6 +806,7 @@ final class FormatTests: TestCase {
     XCTAssertEqual("secs to go", Format.duration(secondsInUTC: sixDaysPast, useToGo: true).unit)
   }
 
+  // swiftlint:disable:next function_body_length
   func testRelative() {
     let now = self.dateType.init()
     let justNow = now.timeIntervalSince1970 - 30

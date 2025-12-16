@@ -6,6 +6,7 @@ import GraphAPITestMocks
 import XCTest
 
 final class User_UserFragmentTests: XCTestCase {
+  // swiftlint:disable:next function_body_length
   func testUserCreation_FromFragment_Success() {
     let user = User.user(from: self.mockUserFragment())
 
@@ -62,6 +63,7 @@ final class User_UserFragmentTests: XCTestCase {
     XCTAssertTrue(user!.newsletters.alumni!)
   }
 
+  // swiftlint:disable:next function_body_length
   func mockUserFragment() -> GraphAPI.UserFragment {
     let mock = Mock<GraphAPITestMocks.User>()
 

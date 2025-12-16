@@ -43,6 +43,7 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ChangeEmailViewMo
   public var saveTriggered: PassthroughSubject<Bool, Never> = .init()
   public var resetEditableText: PassthroughSubject<Bool, Never> = .init()
 
+  // swiftlint:disable:next function_body_length
   public init() {
     let changeEmailEvent = self.updateEmailAndPasswordProperty.signal.skipNil()
       .map(ChangeEmailInput.init(email:currentPassword:))

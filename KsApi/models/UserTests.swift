@@ -12,6 +12,7 @@ final class UserTests: XCTestCase {
     XCTAssertNotEqual("", User.template.debugDescription)
   }
 
+  // swiftlint:disable:next function_body_length
   func testJsonParsing() {
     let json: [String: Any] = [
       "id": 1,

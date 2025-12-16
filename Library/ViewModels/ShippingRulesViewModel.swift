@@ -36,6 +36,7 @@ public protocol ShippingRulesViewModelType {
 
 public final class ShippingRulesViewModel: ShippingRulesViewModelType,
   ShippingRulesViewModelInputs, ShippingRulesViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let initialData = Signal.combineLatest(
       self.viewDidLoadProperty.signal,

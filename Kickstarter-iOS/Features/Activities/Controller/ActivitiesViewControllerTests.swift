@@ -24,6 +24,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
     super.tearDown()
   }
 
+  // swiftlint:disable:next function_body_length
   func testActivities_All() {
     let daysAgoDate = self.dateType.init().timeIntervalSince1970 - 60 * 60 * 24 * 2
 

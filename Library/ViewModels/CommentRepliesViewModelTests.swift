@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -6,6 +7,7 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable:next type_body_length
 internal final class CommentRepliesViewModelTests: TestCase {
   private let vm: CommentRepliesViewModelType = CommentRepliesViewModel()
 
@@ -427,6 +429,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testOutput_LoadRepliesProjectAndTotalCountIntoDataSource_PaginationFailedThenSuccesful() {
     let project = Project.template
     let envelope = CommentRepliesEnvelope.successfulRepliesTemplate
@@ -640,6 +643,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testRetryCommentFlow_Success() {
     let envelope = CommentRepliesEnvelope.singleReplyTemplate
 
@@ -745,6 +749,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testRetryCommentFlow_Error() {
     let envelope = CommentRepliesEnvelope.singleReplyTemplate
 

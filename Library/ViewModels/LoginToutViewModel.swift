@@ -100,6 +100,7 @@ public protocol LoginToutViewModelType {
 
 public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewModelInputs,
   LoginToutViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let intent: Signal<LoginIntent, Never> = self.loginIntentProperty.signal.skipNil()
       .takeWhen(self.viewWillAppearProperty.signal)

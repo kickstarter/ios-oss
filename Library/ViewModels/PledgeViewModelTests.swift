@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import GraphAPI
 @testable import KsApi
@@ -13,6 +14,7 @@ private struct MockStripePaymentHandlerActionStatus: StripePaymentHandlerActionS
   let status: StripePaymentHandlerActionStatus
 }
 
+// swiftlint:disable:next type_body_length
 final class PledgeViewModelTests: TestCase {
   private let vm: PledgeViewModelType = PledgeViewModel()
 
@@ -72,6 +74,7 @@ final class PledgeViewModelTests: TestCase {
   let shippingRule = ShippingRule.template
     |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 55)
 
+  // swiftlint:disable:next function_body_length
   override func setUp() {
     super.setUp()
 
@@ -315,6 +318,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testChangePaymentMethodContext() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
@@ -379,6 +383,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testFixPaymentMethodContext() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
@@ -1108,6 +1113,7 @@ final class PledgeViewModelTests: TestCase {
     )
   }
 
+  // swiftlint:disable:next function_body_length
   func testApplePay_GoToThanks() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
@@ -1197,6 +1203,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testApplePay_GoToThanks_NonUSDProject() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
@@ -1286,6 +1293,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testApplePay_GoToThanks_WhenRefTag_IsNil() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
@@ -1484,6 +1492,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testCreateBacking_Success() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
@@ -1594,6 +1603,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testCreateBacking_Success_AddOns() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
@@ -1743,6 +1753,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testUpdateReward_Success() {
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
@@ -1821,6 +1832,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testUpdateReward_Failure() {
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
@@ -1989,6 +2001,7 @@ final class PledgeViewModelTests: TestCase {
     self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
   }
 
+  // swiftlint:disable:next function_body_length
   func testChangePaymentMethod_ApplePay_Success() {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
@@ -2157,6 +2170,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testChangePaymentMethod_ApplePay_StripeTokenFailure() {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
@@ -2306,6 +2320,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testChangePaymentMethod_ApplePay_Failure() {
     let mockService = MockService(
       updateBackingResult: .failure(.couldNotParseJSON)
@@ -2457,6 +2472,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testApplePayBackingFails_ThenSucceeds_SignalsDoNotOverlap_ChangePaymentMethodContext() {
     let mockService1 = MockService(
       updateBackingResult: .failure(.couldNotParseJSON)
@@ -2746,6 +2762,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testApplePayBackingFails_ThenStoredCardSucceeds_SignalsDoNotOverlap_ChangePaymentMethodContext() {
     let mockService1 = MockService(
       updateBackingResult: .failure(.couldNotParseJSON)
@@ -2993,6 +3010,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testStoredCardFails_ThenApplePaySucceeds_SignalsDoNotOverlap_ChangePaymentMethodContext() {
     let mockService1 = MockService(
       updateBackingResult: .failure(.couldNotParseJSON)
@@ -3201,6 +3219,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testStoredCardFails_ThenApplePayFails_SignalsDoNotOverlap_ChangePaymentMethodContext() {
     let mockService = MockService(
       updateBackingResult: .failure(.couldNotParseJSON)
@@ -3419,6 +3438,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testCreateBacking_RequiresSCA_Success() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
@@ -3541,6 +3561,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testCreateBacking_RequiresSCA_Failed() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
@@ -3643,6 +3664,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testCreateBacking_RequiresSCA_Canceled() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
@@ -3731,6 +3753,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testChangePaymentMethod_RequiresSCA_Success() {
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
@@ -3835,6 +3858,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testChangePaymentMethod_RequiresSCA_Failed() {
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
@@ -3936,6 +3960,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testChangePaymentMethod_RequiresSCA_Canceled() {
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
@@ -4105,6 +4130,7 @@ final class PledgeViewModelTests: TestCase {
     ])
   }
 
+  // swiftlint:disable:next function_body_length
   func testCreateBacking_WithNewPaymentSheetCard_TappedPledgeButton_Success() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
@@ -4198,6 +4224,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testCreateBacking_WithNewPaymentSheetCard_TappedApplePayButton_Success() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
@@ -4840,6 +4867,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testCreateBacking_projectEligibleForPledgeOverTime_Success() {
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [

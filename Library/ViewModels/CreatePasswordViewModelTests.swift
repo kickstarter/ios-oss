@@ -5,6 +5,7 @@ import XCTest
 @testable import Library
 import ReactiveExtensions_TestHelpers
 
+// swiftlint:disable:next type_body_length
 final class CreatePasswordViewModelTests: TestCase {
   private let vm: CreatePasswordViewModelType = CreatePasswordViewModel()
   private let failureService =
@@ -133,6 +134,7 @@ final class CreatePasswordViewModelTests: TestCase {
     self.cellAtIndexPathDidBecomeFirstResponder.assertValues([indexPath])
   }
 
+  // swiftlint:disable:next function_body_length
   func testValidationErrorsWithVoiceOverOn() {
     withEnvironment(isVoiceOverRunning: { true }) {
       self.vm.inputs.viewDidAppear()
@@ -240,6 +242,7 @@ final class CreatePasswordViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testValidationErrorsWithVoiceOverOff() {
     withEnvironment(isVoiceOverRunning: { false }) {
       self.vm.inputs.viewDidAppear()

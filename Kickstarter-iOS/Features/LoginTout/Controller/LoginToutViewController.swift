@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import AuthenticationServices
 import FacebookLogin
 import Foundation
@@ -9,6 +10,7 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
+// swiftlint:disable:next type_body_length
 public final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate,
   ProcessingViewPresenting {
   // MARK: - Properties
@@ -164,6 +166,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
   // MARK: - View Model
 
+  // swiftlint:disable:next function_body_length
   public override func bindViewModel() {
     self.viewModel.outputs.startOAuthSignupOrLogin
       .observeForControllerAction()

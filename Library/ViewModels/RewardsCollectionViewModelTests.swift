@@ -6,6 +6,7 @@ import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class RewardsCollectionViewModelTests: TestCase {
   private let reloadDataWithValues = TestObserver<[Reward], Never>()
   private let scrollToRewardIndex = TestObserver<Int, Never>()
@@ -152,6 +153,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.scrollToRewardIndex.assertDidNotEmitValue()
   }
 
+  // swiftlint:disable:next function_body_length
   func test_selectLocation_outputsShippingRule_forRewardWithShipping() {
     let location1 = Location(
       country: "Country 1",
@@ -222,6 +224,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func test_selectLocation_outputsNilShippingRule_forRewardWithoutShipping() {
     let shippingRule1 = ShippingRule(
       cost: 10,

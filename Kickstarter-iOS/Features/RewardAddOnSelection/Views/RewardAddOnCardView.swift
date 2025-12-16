@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import KDS
 import KsApi
 import Library
@@ -126,6 +127,7 @@ public final class RewardAddOnCardView: UIView {
     applyRewardImageViewStyle(self.rewardImageView)
   }
 
+  // swiftlint:disable:next function_body_length
   public override func bindViewModel() {
     super.bindViewModel()
 

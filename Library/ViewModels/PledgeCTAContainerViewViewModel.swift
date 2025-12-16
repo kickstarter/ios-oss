@@ -43,6 +43,7 @@ public protocol PledgeCTAContainerViewViewModelType {
 
 public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewModelType,
   PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let projectOrError = self.configData.signal
       .skipNil()

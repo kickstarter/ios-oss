@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -6,6 +7,7 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class RewardAddOnSelectionViewModelTests: TestCase {
   private let vm: RewardAddOnSelectionViewModelType = RewardAddOnSelectionViewModel()
 
@@ -169,6 +171,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testLoadAddOnRewardsIntoDataSource_Error_SuccessOnRefresh() {
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
 
@@ -240,6 +243,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testLoadAddOnRewardsIntoDataSource_DigitalOnlyBaseReward() {
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
 
@@ -310,6 +314,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testLoadAddOnRewardsIntoDataSource_FilteredOutUnavailableUnbackedAddOns() {
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
 
@@ -443,6 +448,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testLoadAddOnRewardsIntoDataSource_UnrestrictedShippingBaseReward() {
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
 
@@ -551,6 +557,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testLoadAddOnRewardsIntoDataSource_RestrictedShippingBaseReward() {
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
 
@@ -654,6 +661,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testLoadAddOnRewardsIntoDataSource_RestrictedShippingBaseReward_MatchBasedOnAddOnLocation() {
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
 
@@ -752,6 +760,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testUpdatingQuantities() {
     self.configureContinueCTAViewWithDataQuantity.assertDidNotEmitValue()
     self.configureContinueCTAViewWithDataIsValid.assertDidNotEmitValue()
@@ -877,6 +886,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testUpdatingQuantities_ProjectBacked() {
     self.configureContinueCTAViewWithDataQuantity.assertDidNotEmitValue()
     self.configureContinueCTAViewWithDataIsValid.assertDidNotEmitValue()
@@ -1021,6 +1031,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testGoToPledge_AddOnsSkipped() {
     let shippingRule = ShippingRule.template
       |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
@@ -1107,6 +1118,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.goToPledge.assertValues([expectedGoToPledgeData])
   }
 
+  // swiftlint:disable:next function_body_length
   func testGoToPledge_AddOnsAndBonus() {
     let shippingRule = ShippingRule.template
       |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
@@ -1251,6 +1263,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     XCTAssertEqual(self.goToPledge.values.last?.rewards.count, 1)
   }
 
+  // swiftlint:disable:next function_body_length
   func testGoToPledge_NoAddOns() {
     let shippingRule = ShippingRule.template
       |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)

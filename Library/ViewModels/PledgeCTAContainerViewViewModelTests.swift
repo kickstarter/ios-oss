@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 @testable import KsApi
 @testable import Library
@@ -6,6 +7,7 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable:next type_body_length
 internal final class PledgeCTAContainerViewViewModelTests: TestCase {
   let vm: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
 

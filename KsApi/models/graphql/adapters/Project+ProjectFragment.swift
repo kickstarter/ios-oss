@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import GraphAPI
 
@@ -9,6 +10,7 @@ extension Project {
   /**
    Returns a minimal `Project` from a `ProjectFragment`
    */
+  // swiftlint:disable:next function_body_length
   static func project(
     from projectFragment: GraphAPI.ProjectFragment,
     flagging: Bool? = nil,

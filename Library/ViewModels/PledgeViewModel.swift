@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import KsApi
 import PassKit
@@ -113,8 +114,10 @@ public protocol PledgeViewModelType {
   var outputs: PledgeViewModelOutputs { get }
 }
 
+// swiftlint:disable:next type_body_length
 public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs,
   PledgeViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let initialData = Signal.combineLatest(
       self.configureWithDataProperty.signal,

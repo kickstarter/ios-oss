@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Apollo
 import GraphAPI
 @testable import KsApi
@@ -6,6 +7,7 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class PostCampaignCheckoutViewModelTests: TestCase {
   private var vm = PostCampaignCheckoutViewModel(stripeIntentService: MockStripeIntentService())
   private let mockStripeIntentService = MockStripeIntentService()
@@ -451,6 +453,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testApplePay_completesCheckoutFlow() {
     // Mock data for API requests
     let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
@@ -568,6 +571,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
 
   // MARK: - Pledge
 
+  // swiftlint:disable:next function_body_length
   func testPledge_completesCheckoutFlow() {
     // Mock data for API requests
     let validateCheckout = ValidateCheckoutEnvelope(messages: ["message"])

@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import KDS
 import KsApi
 import Library
@@ -18,6 +19,7 @@ private enum Layout {
   }
 }
 
+// swiftlint:disable:next type_body_length
 final class PostCampaignCheckoutViewController: UIViewController,
   MessageBannerViewControllerPresenting,
   ProcessingViewPresenting {
@@ -204,6 +206,7 @@ final class PostCampaignCheckoutViewController: UIViewController,
 
   // MARK: - View model
 
+  // swiftlint:disable:next function_body_length
   override func bindViewModel() {
     super.bindViewModel()
 

@@ -63,6 +63,7 @@ public protocol PostCampaignPledgeRewardsSummaryViewModelType {
 
 public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledgeRewardsSummaryViewModelType,
   PostCampaignPledgeRewardsSummaryViewModelInputs, PostCampaignPledgeRewardsSummaryViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let data = Signal.combineLatest(
       self.configureWithDataProperty.signal.skipNil(),
@@ -164,6 +165,7 @@ public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledge
 
 // MARK: - Functions
 
+// swiftlint:disable:next function_body_length
 private func items(
   with data: PostCampaignRewardsSummaryViewData,
   selectedQuantities: SelectedRewardQuantities,

@@ -1,7 +1,9 @@
+// swiftlint:disable file_length
 @testable import KsApi
 @testable import Library
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class AppEnvironmentTests_OAuthInKeychain: XCTestCase {
   override func setUp() {
     AppEnvironment.resetStackForUnitTests()

@@ -122,6 +122,7 @@ public final class CommentDialogViewModel: CommentDialogViewModelType,
   public var outputs: CommentDialogViewModelOutputs { return self }
   public var errors: CommentDialogViewModelErrors { return self }
 
+  // swiftlint:disable:next function_body_length
   public init() {
     let isLoading = MutableProperty(false)
 

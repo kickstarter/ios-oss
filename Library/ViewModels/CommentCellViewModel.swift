@@ -80,6 +80,7 @@ public protocol CommentCellViewModelType {
 
 public final class CommentCellViewModel:
   CommentCellViewModelType, CommentCellViewModelInputs, CommentCellViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let comment = self.commentAndProject.signal.skipNil()
       .map { comment, _ in comment }

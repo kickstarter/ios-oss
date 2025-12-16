@@ -63,6 +63,7 @@ public protocol FindFriendsFriendFollowCellViewModelType {
 
 public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollowCellViewModelType,
   FindFriendsFriendFollowCellViewModelInputs, FindFriendsFriendFollowCellViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let friend: Signal<User, Never> = self.configureWithFriendProperty.signal.skipNil()
       .map(cached(friend:))

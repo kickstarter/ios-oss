@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import AVFoundation
 import Combine
 import KDS
@@ -29,6 +30,7 @@ protocol AudioVideoViewControllerPlaybackDelegate: AnyObject {
   func pauseAudioVideoPlayback()
 }
 
+// swiftlint:disable:next type_body_length
 public final class ProjectPageViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: Properties
 
@@ -300,6 +302,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       )
   }
 
+  // swiftlint:disable:next function_body_length
   private func bindProjectPageViewModel() {
     self.navigationBarView.rac.hidden = self.viewModel.outputs.navigationBarIsHidden
 

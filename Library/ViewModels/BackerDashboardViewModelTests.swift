@@ -114,6 +114,7 @@ internal final class BackerDashboardViewModelTests: TestCase {
     self.configurePagesDataSourceSort.assertValues([.endingSoon])
   }
 
+  // swiftlint:disable:next function_body_length
   func testTabNavigation() {
     let userEnvelope = UserEnvelope(me: User.template)
 

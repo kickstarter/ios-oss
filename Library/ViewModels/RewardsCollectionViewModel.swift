@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import KsApi
 import Prelude
 import ReactiveSwift
@@ -51,9 +52,11 @@ public protocol RewardsCollectionViewModelType {
   var outputs: RewardsCollectionViewModelOutputs { get }
 }
 
+// swiftlint:disable:next type_body_length
 public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   RewardsCollectionViewModelInputs,
   RewardsCollectionViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let configData = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),

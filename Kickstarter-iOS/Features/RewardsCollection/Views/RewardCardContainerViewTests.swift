@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 @testable import Kickstarter_Framework
 @testable import KsApi
@@ -7,6 +8,7 @@ import SnapshotTesting
 import UIKit
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class RewardCardContainerViewTests: TestCase {
   func testLive_BackedProject_BackedReward() {
     combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in

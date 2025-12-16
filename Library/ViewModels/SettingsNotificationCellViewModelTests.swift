@@ -4,6 +4,7 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class SettingsNotificationCellViewModelTests: TestCase {
   private let vm = SettingsNotificationCellViewModel()
 

@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import GraphAPI
 import KsApi
@@ -5,6 +6,7 @@ import Prelude
 
 public let UTCTimeZone = TimeZone(secondsFromGMT: 0)!
 
+// swiftlint:disable:next type_body_length
 public enum Format {
   /**
    Formats an int into a string.

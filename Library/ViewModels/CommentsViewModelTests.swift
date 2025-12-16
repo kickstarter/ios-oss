@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -6,6 +7,7 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable:next type_body_length
 internal final class CommentsViewModelTests: TestCase {
   private let vm: CommentsViewModelType = CommentsViewModel()
 
@@ -815,6 +817,7 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testRetryCommentFlow_Success() {
     let envelope = CommentsEnvelope.singleCommentTemplate
 
@@ -916,6 +919,7 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testRetryCommentFlow_Error() {
     let envelope = CommentsEnvelope.singleCommentTemplate
 

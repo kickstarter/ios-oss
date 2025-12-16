@@ -37,6 +37,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.vm.outputs.unavailableCardText.observe(self.unavailableCardText.observer)
   }
 
+  // swiftlint:disable:next function_body_length
   func testCardInfoForSupportedCards() {
     self.cardImageName.assertDidNotEmitValue()
     self.cardNumberAccessibilityLabel.assertDidNotEmitValue()

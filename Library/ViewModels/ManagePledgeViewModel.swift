@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import KsApi
 import Prelude
@@ -61,8 +62,10 @@ public protocol ManagePledgeViewModelType {
   var outputs: ManagePledgeViewModelOutputs { get }
 }
 
+// swiftlint:disable:next type_body_length
 public final class ManagePledgeViewModel:
   ManagePledgeViewModelType, ManagePledgeViewModelInputs, ManagePledgeViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let params = Signal.combineLatest(
       self.configureWithProjectOrParamSignal,

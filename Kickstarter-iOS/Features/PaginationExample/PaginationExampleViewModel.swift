@@ -17,6 +17,7 @@ internal class PaginationExampleViewModel: ObservableObject {
   @Published var showProgressView: Bool = true
   @Published var statusText: String = ""
 
+  // swiftlint:disable:next function_body_length
   init() {
     self.paginator = Paginator(
       valuesFromEnvelope: {

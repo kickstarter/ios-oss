@@ -53,6 +53,7 @@ public protocol RewardAddOnCardViewModelType {
 
 public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, RewardAddOnCardViewModelInputs,
   RewardAddOnCardViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let configData = self.configDataProperty.signal
       .skipNil()

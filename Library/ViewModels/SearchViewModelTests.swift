@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import GraphAPI
 @testable import KsApi
@@ -8,6 +9,7 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable:next type_body_length
 internal final class SearchViewModelTests: TestCase {
   fileprivate let vm: SearchViewModelType! = SearchViewModel()
 
@@ -166,6 +168,7 @@ internal final class SearchViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testClearSearchText_clearsFilters() {
     let categories: [KsApi.Category] = [
       .art,
@@ -230,6 +233,7 @@ internal final class SearchViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testEmptySearchText_clearsFilters() {
     let categories: [KsApi.Category] = [
       .art,
@@ -295,6 +299,7 @@ internal final class SearchViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testChangingSearchText_keepsOriginalFilters() {
     let categories: [KsApi.Category] = [
       .art,
@@ -391,6 +396,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   // Tests a standard flow of searching for projects.
+  // swiftlint:disable:next function_body_length
   func testFlow() {
     let popularResponse = [(
       GraphAPI.SearchQuery.self,
@@ -499,6 +505,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   // Tests a flow of searching and updating the sort
+  // swiftlint:disable:next function_body_length
   func test_flow_sort() {
     let popularResponse = [(
       GraphAPI.SearchQuery.self,
@@ -595,6 +602,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   // Tests a flow of searching and updating the sort
+  // swiftlint:disable:next function_body_length
   func test_flow_filterByCategory() {
     let popularResponse = [(
       GraphAPI.SearchQuery.self,
@@ -702,6 +710,7 @@ internal final class SearchViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testShowNoSearchResults() {
     let popularResponse = [(
       GraphAPI.SearchQuery.self,
@@ -865,6 +874,7 @@ internal final class SearchViewModelTests: TestCase {
 
   // Confirms that entering new search terms cancels previously in-flight API requests for projects,
   // and that ultimately only one set of projects is returned.
+  // swiftlint:disable:next function_body_length
   func testCancelingOfSearchResultsWhenEnteringNewSearchTerms() {
     let apiDelay = DispatchTimeInterval.seconds(2)
     let debounceDelay = DispatchTimeInterval.seconds(1)
@@ -945,6 +955,7 @@ internal final class SearchViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testSlowTyping() {
     let apiDelay = DispatchTimeInterval.seconds(2)
     let debounceDelay = DispatchTimeInterval.seconds(1)

@@ -1,9 +1,12 @@
+// swiftlint:disable file_length
 import GraphAPI
 @testable import KsApi
 import Prelude
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class Project_ProjectFragmentTests: XCTestCase {
+  // swiftlint:disable:next function_body_length
   func test() {
     do {
       let variables = [
@@ -189,6 +192,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   private func projectDictionary() -> [String: Any] {
     let json = """
     {

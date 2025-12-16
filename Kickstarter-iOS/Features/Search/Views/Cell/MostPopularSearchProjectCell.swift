@@ -27,6 +27,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.configureWith(project: value)
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindStyles() {
     super.bindStyles()
 

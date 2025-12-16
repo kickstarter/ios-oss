@@ -4,6 +4,7 @@ import Library
 import XCTest
 
 class SearchDataSourceTests: XCTestCase {
+  // swiftlint:disable:next function_body_length
   func test_indexOfProject_withTitleRow_returnsCorrectProjectIndex() {
     let datasource = SearchDataSource()
 
@@ -90,6 +91,7 @@ class SearchDataSourceTests: XCTestCase {
     )
   }
 
+  // swiftlint:disable:next function_body_length
   func test_indexOfProject_withCountRow_returnsCorrectProjectIndex() {
     let datasource = SearchDataSource()
 

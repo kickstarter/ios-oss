@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import FacebookCore
 import FirebaseCrashlytics
 import Foundation
@@ -8,6 +9,7 @@ import ReactiveSwift
 /**
  A global stack that captures the current state of global objects that the app wants access to.
  */
+// swiftlint:disable:next type_body_length
 public struct AppEnvironment: AppEnvironmentType {
   internal static let environmentStorageKey = "com.kickstarter.AppEnvironment.current"
   internal static let oauthTokenStorageKey = "com.kickstarter.AppEnvironment.oauthToken"
@@ -396,6 +398,7 @@ public struct AppEnvironment: AppEnvironmentType {
   }
 
   // Returns the last saved environment from user defaults.
+  // swiftlint:disable:next function_body_length
   public static func fromStorage(
     ubiquitousStore _: KeyValueStoreType,
     userDefaults: KeyValueStoreType

@@ -2,6 +2,7 @@
 import XCTest
 
 final class FindFriendsEnvelopeTests: XCTestCase {
+  // swiftlint:disable:next function_body_length
   func testJsonDecoding() {
     let json: [String: Any] = [
       "contacts_imported": true,

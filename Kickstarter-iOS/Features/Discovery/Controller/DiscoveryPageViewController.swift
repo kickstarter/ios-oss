@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import KDS
 import KsApi
 import Library
@@ -11,6 +12,7 @@ protocol DiscoveryPageViewControllerDelegate: AnyObject {
   )
 }
 
+// swiftlint:disable:next type_body_length
 internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
@@ -34,6 +36,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     return vc
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -146,6 +149,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       |> headerLabelStyle
   }
 
+  // swiftlint:disable:next function_body_length
   internal override func bindViewModel() {
     super.bindViewModel()
 

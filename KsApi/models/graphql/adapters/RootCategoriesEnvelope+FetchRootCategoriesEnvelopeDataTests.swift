@@ -6,6 +6,7 @@ import GraphAPITestMocks
 import XCTest
 
 final class RootCategoryEnvelope_FetchRootCategoriesEnvelopeQueryDataTests: XCTestCase {
+  // swiftlint:disable:next function_body_length
   func testFetchCategoriesQueryData_Success() {
     let mock = Mock<GraphAPITestMocks.Query>()
 

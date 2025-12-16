@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import GraphAPI
 import KDS
 @testable import KsApi
@@ -7,6 +8,7 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable:next type_body_length
 internal final class BackerDashboardProjectCellViewModelTests: TestCase {
   private let vm: BackerDashboardProjectCellViewModelType = BackerDashboardProjectCellViewModel()
 

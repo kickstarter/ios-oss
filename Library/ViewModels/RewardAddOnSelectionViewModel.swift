@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 import KsApi
 import Prelude
@@ -52,9 +53,11 @@ public protocol RewardAddOnSelectionViewModelType {
   var outputs: RewardAddOnSelectionViewModelOutputs { get }
 }
 
+// swiftlint:disable:next type_body_length
 public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelType,
   RewardAddOnSelectionViewModelInputs,
   RewardAddOnSelectionViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let configData = Signal.combineLatest(
       self.configureWithDataProperty.signal.skipNil(),

@@ -11,6 +11,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
   MessageBannerViewControllerPresenting {
   private let viewModel = PPOContainerViewModel()
 
+  // swiftlint:disable:next function_body_length
   public override func viewDidLoad() {
     super.viewDidLoad()
 

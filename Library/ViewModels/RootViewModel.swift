@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import KsApi
 import Prelude
 import ReactiveSwift
@@ -136,6 +137,7 @@ public protocol RootViewModelType {
 }
 
 public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let currentUser = Signal.merge(
       self.viewDidLoadProperty.signal,

@@ -9,6 +9,7 @@ import ReactiveSwift
 import UIKit.UIActivity
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
   let vm: FindFriendsFacebookConnectCellViewModelType = FindFriendsFacebookConnectCellViewModel()
 

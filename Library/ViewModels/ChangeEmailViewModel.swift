@@ -39,6 +39,7 @@ public protocol ChangeEmailViewModelType {
 
 public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailViewModelInputs,
   ChangeEmailViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     self.dismissKeyboard = Signal.merge(
       self.textFieldShouldReturnProperty.signal.skipNil()

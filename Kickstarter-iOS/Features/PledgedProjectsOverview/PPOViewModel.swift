@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Combine
 import Foundation
 import GraphAPI
@@ -89,7 +90,9 @@ enum PPONavigationEvent: Equatable {
   }
 }
 
+// swiftlint:disable:next type_body_length
 final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   init() {
     let tierTypes = featurePledgedProjectsOverviewV2Enabled()
       ? PPOTierType.fundedProjectGraphQLTypes()

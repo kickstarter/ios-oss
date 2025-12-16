@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import Foundation
 @testable import KsApi
 @testable import Library
@@ -6,6 +7,7 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable:next type_body_length
 internal final class ManagePledgeViewModelTests: TestCase {
   private var vm: ManagePledgeViewModelType!
 
@@ -295,6 +297,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testConfigurePledgeSummaryViewController() {
     self.configurePledgeSummaryView.assertDidNotEmitValue()
 
@@ -919,6 +922,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testPledgeViewControllerDidUpdatePledge() {
     let project = Project.cosmicSurgery
       |> Project.lens.personalization.backing .~ (
@@ -1108,6 +1112,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testRefreshing_ProjectErrorThenSuccess() {
     let mockService = MockService(
       fetchProjectResult: .failure(.couldNotParseJSON),
@@ -1195,6 +1200,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testRefreshing_BackingErrorThenSuccess() {
     let reward = Reward.template
     let project = Project.template
@@ -1293,6 +1299,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testRefreshing_BackingSuccessThenError() {
     let reward = Reward.template
     let project = Project.template
@@ -1469,6 +1476,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
+  // swiftlint:disable:next function_body_length
   func testRefreshing_ProjectId_NilBackingId() {
     let reward = Reward.template
     let project = Project.template

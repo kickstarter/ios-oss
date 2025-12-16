@@ -30,6 +30,7 @@ public protocol SettingsNotificationsViewModelType {
 
 public final class SettingsNotificationsViewModel: SettingsNotificationsViewModelType,
   SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let initialUser = self.viewDidLoadProperty.signal
       .flatMap {

@@ -1,7 +1,9 @@
+// swiftlint:disable file_length
 @testable import KsApi
 import Prelude
 import XCTest
 
+// swiftlint:disable:next type_body_length
 final class ProjectTests: XCTestCase {
   func testFundingProgress() {
     let halfFunded = Project.template
@@ -54,6 +56,7 @@ final class ProjectTests: XCTestCase {
     XCTAssertNotEqual("", Project.template.debugDescription)
   }
 
+  // swiftlint:disable:next function_body_length
   func testJSONParsing_WithCompleteData() {
     let project: Project = try! Project.decodeJSONDictionary([
       "id": 1,
@@ -123,6 +126,7 @@ final class ProjectTests: XCTestCase {
     XCTAssertEqual("Art", project.category?.parentName)
   }
 
+  // swiftlint:disable:next function_body_length
   func testJSONParsing_WithCompleteData_SpanishCategory() {
     let project: Project = try! Project.decodeJSONDictionary([
       "id": 1,
@@ -218,6 +222,7 @@ final class ProjectTests: XCTestCase {
     )
   }
 
+  // swiftlint:disable:next function_body_length
   func testJSONParsing_WithPesonalizationData() {
     let project: Project = try! Project.decodeJSONDictionary([
       "id": 1,

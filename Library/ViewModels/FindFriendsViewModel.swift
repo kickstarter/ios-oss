@@ -65,6 +65,7 @@ public protocol FindFriendsViewModelType {
 
 public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsViewModelInputs,
   FindFriendsViewModelOutputs {
+  // swiftlint:disable:next function_body_length
   public init() {
     let source = self.configureWithProperty.signal
 

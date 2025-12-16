@@ -61,6 +61,7 @@ public struct FlowLayout: Layout {
     )
   }
 
+  // swiftlint:disable:next function_body_length
   public func placeSubviews(
     in bounds: CGRect,
     proposal: ProposedViewSize,
