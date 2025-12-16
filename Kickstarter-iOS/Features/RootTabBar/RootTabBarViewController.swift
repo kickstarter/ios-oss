@@ -85,6 +85,9 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
+    let customTabBar = FloatingTabBar()
+    self.setValue(customTabBar, forKey: "tabBar")
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -116,8 +119,10 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       .observeForUI()
       .map { $0.map { RootTabBarViewController.viewController(from: $0) }.compact() }
       .map { $0.map(UINavigationController.init(rootViewController:)) }
-      .observeValues { [weak self] in
-        self?.setViewControllers($0, animated: false)
+      .observeValues { [weak self] controllers in
+        guard let self else { return }
+
+        self.setViewControllers(controllers, animated: false)
       }
 
     self.viewModel.outputs.selectedIndex
@@ -184,6 +189,32 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
     return (vc, param)
   }
 
+  private func configureFloatingTabBarItems(isLoggedIn: Bool) {
+    guard let items = self.tabBar.items, items.count >= 3 else { return }
+
+    if let home = UIImage(named: "floating-tabbar-icon-home")?.withRenderingMode(.alwaysTemplate) {
+      items[0].image = home
+      items[0].selectedImage = home
+    }
+
+    if let search = UIImage(named: "floating-tabbar-icon-search")?.withRenderingMode(.alwaysTemplate) {
+      items[1].image = search
+      items[1].selectedImage = search
+    }
+
+    if isLoggedIn == false,
+       let profile = UIImage(named: "floating-tabbar-icon-profile")?.withRenderingMode(.alwaysTemplate) {
+      items[2].image = profile
+      items[2].selectedImage = profile
+    }
+
+    /// Remove labels + center icons
+    items.forEach {
+      $0.title = nil
+      $0.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
+    }
+  }
+
   public func switchToMessageThread(_ messageThread: MessageThread) {
     self.switchToProfile()
 
@@ -216,6 +247,11 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
         self.setProfileImage(with: data, avatarUrl: avatarUrl, index: index)
       }
     }
+
+    // MARK: - Floating Tab Bar Config
+
+    /// Run last so it overwrites the default tab-bar icons/titles
+    self.configureFloatingTabBarItems(isLoggedIn: data.isLoggedIn)
   }
 
   fileprivate func setProfileImage(with data: TabBarItemsData, avatarUrl: URL?, index: Int) {
