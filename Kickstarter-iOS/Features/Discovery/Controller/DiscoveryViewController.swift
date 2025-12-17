@@ -150,6 +150,38 @@ internal final class DiscoveryViewController: UIViewController {
     )
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.adjustPageViewControllerContainerConstraints()
+  }
+
+  private var hasAdjustedConstraints = false
+
+  private func adjustPageViewControllerContainerConstraints() {
+    guard !hasAdjustedConstraints else { return }
+    guard let pageContainerView = self.pageViewController?.view.superview else { return }
+
+    var constraintToRemove: NSLayoutConstraint?
+
+    for constraint in self.view.constraints {
+      if (constraint.firstItem === pageContainerView && constraint.firstAttribute == .bottom) ||
+         (constraint.secondItem === pageContainerView && constraint.secondAttribute == .bottom) {
+        if constraint.firstItem is UILayoutGuide || constraint.secondItem is UILayoutGuide {
+          constraintToRemove = constraint
+          break
+        }
+      }
+    }
+
+    if let constraint = constraintToRemove {
+      constraint.isActive = false
+      pageContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+      hasAdjustedConstraints = true
+    }
+  }
+ 
+
   private func setPageViewControllerScrollEnabled(_ enabled: Bool) {
     self.pageViewController.dataSource = enabled == false ? nil : self.dataSource
   }

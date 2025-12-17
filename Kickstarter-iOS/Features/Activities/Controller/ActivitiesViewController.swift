@@ -50,6 +50,33 @@ internal final class ActivitiesViewController: UITableViewController {
     super.viewDidLayoutSubviews()
 
     self.emptyStatesController?.view.frame = self.view.bounds
+
+    self.adjustTableViewConstraints()
+  }
+
+  private var hasAdjustedConstraints = false
+
+  private func adjustTableViewConstraints() {
+    guard !hasAdjustedConstraints else { return }
+    guard let tableView = self.tableView else { return }
+
+    var constraintToRemove: NSLayoutConstraint?
+
+    for constraint in self.view.constraints {
+      if (constraint.firstItem === tableView && constraint.firstAttribute == .bottom) ||
+         (constraint.secondItem === tableView && constraint.secondAttribute == .bottom) {
+        if constraint.firstItem is UILayoutGuide || constraint.secondItem is UILayoutGuide {
+          constraintToRemove = constraint
+          break
+        }
+      }
+    }
+
+    if let constraint = constraintToRemove {
+      constraint.isActive = false
+      tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+      hasAdjustedConstraints = true
+    }
   }
 
   internal override func viewDidLoad() {

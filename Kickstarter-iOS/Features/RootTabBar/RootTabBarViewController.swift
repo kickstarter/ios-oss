@@ -104,9 +104,32 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
   public override func bindStyles() {
     super.bindStyles()
 
+    let appearance = UITabBarAppearance()
+    appearance.configureWithOpaqueBackground()
+    appearance.backgroundColor = tabBarTintColor
+    
+    appearance.stackedLayoutAppearance.normal.titlePositionAdjustment = UIOffset.zero
+    appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+      .foregroundColor: tabBarDeselectedColor
+    ]
+    
+    appearance.stackedLayoutAppearance.selected.titlePositionAdjustment = UIOffset.zero
+    appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+      .foregroundColor: tabBarSelectedColor
+    ]
+    
+    self.tabBar.standardAppearance = appearance
+    if #available(iOS 15.0, *) {
+      self.tabBar.scrollEdgeAppearance = appearance
+    }
+
     _ = self.tabBar
       |> UITabBar.lens.tintColor .~ tabBarSelectedColor
       |> UITabBar.lens.barTintColor .~ tabBarTintColor
+    
+    if #available(iOS 10.0, *) {
+      self.tabBar.unselectedItemTintColor = tabBarDeselectedColor
+    }
   }
 
   public override func bindViewModel() {
