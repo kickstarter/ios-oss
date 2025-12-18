@@ -119,17 +119,19 @@ struct PPOProjectCard: View {
 
   @ViewBuilder
   private func addressDetails(leadingColumnWidth: CGFloat) -> some View {
-    if let address = self.viewModel.card.address {
-      if self.viewModel.card.showEditAddressButton {
-        Button { [weak viewModel] () in
-          viewModel?.editAddress()
-        } label: {
-          self.addressContents(leadingColumnWidth: leadingColumnWidth, address: address, editable: true)
-        }
-        .buttonStyle(BorderlessButtonStyle())
-      } else {
-        self.addressContents(leadingColumnWidth: leadingColumnWidth, address: address, editable: false)
+    switch self.viewModel.card.address {
+    case let .editable(address):
+      Button { [weak viewModel] () in
+        viewModel?.editAddress()
+      } label: {
+        self.addressContents(leadingColumnWidth: leadingColumnWidth, address: address, editable: true)
       }
+      .buttonStyle(BorderlessButtonStyle())
+    case let .locked(address):
+      self.addressContents(leadingColumnWidth: leadingColumnWidth, address: address, editable: false)
+    case .hidden:
+      // Explicitly create an empty view, since the ViewBuilder requires consistency.
+      EmptyView()
     }
   }
 

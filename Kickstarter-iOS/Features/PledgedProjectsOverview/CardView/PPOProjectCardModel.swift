@@ -12,8 +12,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public let projectId: Int
   public let pledge: String
   public let creatorName: String
-  public let address: String?
-  public let showEditAddressButton: Bool
+  public let address: DisplayAddress
   public let actions: (Action, Action?)
   public let tierType: PPOTierType
   public let backingDetailsUrl: String
@@ -30,7 +29,6 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
     hasher.combine(self.pledge)
     hasher.combine(self.creatorName)
     hasher.combine(self.address)
-    hasher.combine(self.showEditAddressButton)
     hasher.combine(self.actions.0)
     hasher.combine(self.actions.1)
     hasher.combine(self.tierType)
@@ -58,6 +56,12 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
       lhs.creatorName == rhs.creatorName &&
       lhs.address == rhs.address &&
       lhs.actions == rhs.actions
+  }
+
+  public enum DisplayAddress: Equatable, Hashable {
+    case hidden
+    case locked(address: String)
+    case editable(address: String)
   }
 
   public enum Action: Identifiable, Equatable, Hashable {
