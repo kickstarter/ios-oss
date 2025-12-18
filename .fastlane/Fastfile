@@ -231,7 +231,16 @@ platform :ios do
     )
   end
 
+  def ensure_aws_ca_bundle
+    ca_bundle = ENV["SSL_CERT_FILE"].to_s.empty? ? "/etc/ssl/cert.pem" : ENV["SSL_CERT_FILE"]
+    ca_dir = ENV["SSL_CERT_DIR"].to_s.empty? ? "/etc/ssl/certs" : ENV["SSL_CERT_DIR"]
+    ENV["AWS_CA_BUNDLE"] = ca_bundle if ENV["AWS_CA_BUNDLE"].to_s.empty?
+    ENV["AWS_CA_DIRECTORY"] ||= ca_dir
+  end
+
   private_lane :upload_s3 do |options|
+    ensure_aws_ca_bundle
+
     aws_s3(
       bucket: ENV['AWS_BUCKET'],
       region: ENV['AWS_REGION'],
