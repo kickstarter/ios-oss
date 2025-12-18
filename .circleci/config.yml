@@ -24,6 +24,10 @@ default_environment: &default_environment
   FL_OUTPUT_DIR: output
   LC_ALL: en_US.UTF-8
   LANG: en_US.UTF-8
+  # Fix Ruby/OpenSSL SSL verification failures on CircleCI macOS images by using the system trust store.
+  # Without this, Ruby can fail HTTPS requests (S3, GitHub, etc.) with "certificate verify failed".
+  SSL_CERT_FILE: /etc/ssl/cert.pem
+  SSL_CERT_DIR: /etc/ssl/certs
   IPHONE_NAME: *iphone_name
   XCODE_VERSION: *xcode_version
   PLATFORM: iOS
