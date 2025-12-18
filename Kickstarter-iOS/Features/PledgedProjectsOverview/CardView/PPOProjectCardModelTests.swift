@@ -7,7 +7,7 @@ import XCTest
 final class PPOProjectCardModelTests: XCTestCase {
   func testParsingNoAddress() throws {
     let model = try XCTUnwrap(self.mockModel(addressJSON: "null"))
-    XCTAssertNil(model.address)
+    XCTAssertNil(model.address.rawAddress)
   }
 
   func testParsingBasicAddress_skipsEmptyLines() throws {
@@ -26,7 +26,10 @@ final class PPOProjectCardModelTests: XCTestCase {
     }
     """))
 
-    let lines = (try XCTUnwrap(model.address)).split(separator: "\n", omittingEmptySubsequences: false)
+    let lines = (try XCTUnwrap(model.address.rawAddress)).split(
+      separator: "\n",
+      omittingEmptySubsequences: false
+    )
     XCTAssertEqual(lines, [
       "Firsty Lasty",
       "123 First Street",
@@ -51,7 +54,10 @@ final class PPOProjectCardModelTests: XCTestCase {
     }
     """))
 
-    let lines = (try XCTUnwrap(model.address)).split(separator: "\n", omittingEmptySubsequences: false)
+    let lines = (try XCTUnwrap(model.address.rawAddress)).split(
+      separator: "\n",
+      omittingEmptySubsequences: false
+    )
     XCTAssertEqual(lines, [
       "Firsty Lasty",
       "123 First Street",
@@ -77,7 +83,10 @@ final class PPOProjectCardModelTests: XCTestCase {
     }
     """))
 
-    let lines = (try XCTUnwrap(model.address)).split(separator: "\n", omittingEmptySubsequences: false)
+    let lines = (try XCTUnwrap(model.address.rawAddress)).split(
+      separator: "\n",
+      omittingEmptySubsequences: false
+    )
     XCTAssertEqual(lines, [
       "Firsty Lasty",
       "123 First Street",
