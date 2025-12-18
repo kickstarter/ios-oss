@@ -565,12 +565,14 @@ public struct Colors {
       )
     }
 
+    /// FPO:  temporary semantic color for the new floating tab bar while we wait for the new Color Palette to be finalized
     public static let dark = SemanticColor(
       "icon/dark",
       lightMode: .black,
       darkMode: .black
     )
 
+    /// FPO:  temporary semantic color for the new floating tab bar while we wait for the new Color Palette to be finalized
     public static let `default` = SemanticColor(
       "icon/default",
       lightMode: .black,
@@ -578,21 +580,23 @@ public struct Colors {
     )
   }
 
+  /// FPO:  temporary semantic colors for the new floating tab bar while we wait for the new Color Palette to be finalized
   public struct Elevation {
     public struct Surface {
       public static let raised = SemanticColor(
         "elevation/surface/raised",
-        lightMode: CoreColorV2.white,
-        darkMode: CoreColorV2.gray_1050
+        lightMode: .white,
+        darkMode: .gray_950
       )
     }
   }
 
+  /// FPO:  temporary semantic color for the new floating tab bar while we wait for the new Color Palette to be finalized
   public struct Surface {
     public static let highlight = SemanticColor(
       "surface/highlight",
-      lightMode: CoreColorV2.green_200,
-      darkMode: CoreColorV2.green_200
+      lightMode: .green_02,
+      darkMode: .green_02
     )
   }
 }
