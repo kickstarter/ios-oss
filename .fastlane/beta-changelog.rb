@@ -6,6 +6,16 @@ require 'plist'
 require 'aws-sdk-s3'
 
 #
+# Configure AWS SDK to use the system trust store provided in CI to avoid SSL
+# verification failures when talking to S3.
+#
+Aws.config.update(
+  ssl_ca_bundle: ENV['SSL_CERT_FILE'],
+  ssl_ca_directory: ENV['SSL_CERT_DIR']
+)
+ENV['AWS_CA_BUNDLE'] ||= ENV['SSL_CERT_FILE']
+
+#
 # Interfacing with the builds bucket on S3
 #
 
