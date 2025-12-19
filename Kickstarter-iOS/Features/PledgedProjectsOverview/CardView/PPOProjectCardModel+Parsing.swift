@@ -57,8 +57,7 @@ extension PPOProjectCardModel {
     case .pledgeManagement:
       action = Self.actionForPledgeManagement()
     case .surveySubmitted, .pledgeCollected, .addressConfirmed, .awaitingReward, .rewardReceived:
-      // TODO(MBL-2094): Handle new cards.
-      return nil
+      action = PPOParsedAction(action: nil, tierType: tierType)
     }
 
     let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
