@@ -19,8 +19,12 @@ struct PPOProjectCard: View {
       self.projectDetails(leadingColumnWidth: self.parentSize.width * Constants.firstColumnWidth)
       self.divider
       self.projectCreator
-      self.divider
-      self.addressDetails(leadingColumnWidth: self.parentSize.width * Constants.firstColumnWidth)
+
+      if self.showAddressSection() {
+        self.divider
+        self.addressDetails(leadingColumnWidth: self.parentSize.width * Constants.firstColumnWidth)
+      }
+
       if self.showDividerBeforeAction() {
         self.divider
       }
@@ -205,11 +209,17 @@ struct PPOProjectCard: View {
     Divider()
   }
 
-  // Always show a divider before the action section, unless the action is .confirmAddress.
+  private func showAddressSection() -> Bool {
+    return self.viewModel.card.address != .hidden
+  }
+
+  // Generally, show a divider before the action section, if there is an action.
+  // If it's a confirmAddress card, hide the divider.
   private func showDividerBeforeAction() -> Bool {
     switch self.viewModel.card.action {
     case .confirmAddress: return false
-    default: return true
+    case .some: return true
+    case nil: return false
     }
   }
 
