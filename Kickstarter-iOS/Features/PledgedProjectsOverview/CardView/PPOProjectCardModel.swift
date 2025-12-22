@@ -113,17 +113,17 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
 
   public struct Alert: Identifiable, Equatable, Hashable {
     public let type: AlertType
-    public let icon: AlertIcon
+    public let icon: AlertIcon?
     public let message: String
 
-    public init(type: AlertType, icon: AlertIcon, message: String) {
+    public init(type: AlertType, icon: AlertIcon?, message: String) {
       self.type = type
       self.icon = icon
       self.message = message
     }
 
     public var id: String {
-      "\(self.type)-\(self.icon)-\(self.message)"
+      "\(self.type)-\(self.icon?.id ?? "noIcon")-\(self.message)"
     }
 
     public enum AlertIcon: Identifiable, Equatable {
@@ -143,6 +143,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
     public enum AlertType: Identifiable, Equatable {
       case warning
       case alert
+      case info
 
       public var id: String {
         switch self {
@@ -150,6 +151,8 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
           "warning"
         case .alert:
           "alert"
+        case .info:
+          "info"
         }
       }
     }
@@ -172,12 +175,14 @@ extension PPOProjectCardModel.Alert {
       .alert
     case "warning":
       .warning
+    case "info":
+      .info
     default:
       nil
     }
     let message = flag.message
 
-    guard let alertType, let alertIcon, let message else {
+    guard let alertType, let message else {
       return nil
     }
 
