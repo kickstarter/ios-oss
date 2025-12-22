@@ -55,20 +55,6 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
     }
   }
 
-  public enum DisplayAddress: Equatable, Hashable {
-    case hidden
-    case locked(address: String)
-    case editable(address: String)
-
-    public var rawAddress: String? {
-      switch self {
-      case .hidden: return nil
-      case let .locked(address): return address
-      case let .editable(address): return address
-      }
-    }
-  }
-
   public enum Action: Identifiable, Equatable, Hashable {
     case confirmAddress(address: String, addressId: String)
     case completeSurvey
