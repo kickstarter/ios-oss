@@ -12,7 +12,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public let projectId: Int
   public let pledge: String
   public let creatorName: String
-  public let address: String?
+  public let address: DisplayAddress
   public let actions: (Action, Action?)
   public let tierType: PPOTierType
   public let backingDetailsUrl: String
@@ -58,9 +58,22 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
       lhs.actions == rhs.actions
   }
 
+  public enum DisplayAddress: Equatable, Hashable {
+    case hidden
+    case locked(address: String)
+    case editable(address: String)
+
+    public var rawAddress: String? {
+      switch self {
+      case .hidden: return nil
+      case let .locked(address): return address
+      case let .editable(address): return address
+      }
+    }
+  }
+
   public enum Action: Identifiable, Equatable, Hashable {
     case confirmAddress(address: String, addressId: String)
-    case editAddress
     case completeSurvey
     case managePledge
     case fixPayment
@@ -70,8 +83,6 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
       switch self {
       case .confirmAddress:
         Strings.Confirm()
-      case .editAddress:
-        Strings.Edit()
       case .completeSurvey:
         Strings.Take_survey()
       case .managePledge:
@@ -87,8 +98,6 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
       switch self {
       case .confirmAddress:
         .green
-      case .editAddress:
-        .black
       case .completeSurvey:
         .green
       case .managePledge:

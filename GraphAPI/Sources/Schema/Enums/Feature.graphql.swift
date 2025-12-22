@@ -143,4 +143,5 @@ public enum Feature: String, EnumType {
   case followersOnlyUpdates = "followers_only_updates"
   case sauceUserMenu = "sauce_user_menu"
   case accessPmConfigPostLaunch2025 = "access_pm_config_post_launch_2025"
+  case taxEducation2025 = "tax_education_2025"
 }

@@ -27,28 +27,12 @@ extension PPOProjectCardModel {
     let creatorName = ppoProject?.creator?.name
 
     let addressId: String? = backing?.deliveryAddress?.id
-    let addressWithoutName: String? = backing?.deliveryAddress.flatMap { deliveryAddress in
-      let cityRegionFields: [String?] = [
-        deliveryAddress.city,
-        deliveryAddress.region.flatMap { ", \($0)" },
-        deliveryAddress.postalCode.flatMap { " \($0)" }
-      ]
-      let fields: [String?] = [
-        deliveryAddress.addressLine1,
-        deliveryAddress.addressLine2,
-        cityRegionFields.compactMap { $0 }.joined(),
-        deliveryAddress.countryCode.rawValue,
-        deliveryAddress.phoneNumber
-      ]
-      // Create address from all fields that are not nil and not the empty string.
-      return fields.compactMap { ($0 ?? "").isEmpty ? nil : $0 }.joined(separator: "\n")
-    }
-    let addressWithName = addressWithoutName.flatMap { address in
-      guard let name = backing?.deliveryAddress?.recipientName else {
-        return address
-      }
-      return name + "\n" + address
-    }
+    let addressWithoutName = Self.addressWithoutName(deliveryAddress: backing?.deliveryAddress)
+    let displayAddress = Self.displayAddress(
+      card: card,
+      name: backing?.deliveryAddress?.recipientName,
+      addressWithoutName: addressWithoutName
+    )
 
     let alerts: [PPOProjectCardModel.Alert] = card.flags?
       .compactMap { PPOProjectCardModel.Alert(flag: $0) } ?? []
@@ -62,7 +46,11 @@ extension PPOProjectCardModel {
     case .fixPayment:
       actions = Self.actionsForPaymentFailed()
     case .confirmAddress:
-      actions = Self.actionsForConfirmAddress(address: addressWithoutName, addressId: addressId)
+      actions = Self.actionsForConfirmAddress(
+        showAddress: card.showShippingAddress,
+        address: addressWithoutName,
+        addressId: addressId
+      )
     case .openSurvey:
       actions = Self.actionsForSurvey()
     case .authenticateCard:
@@ -95,7 +83,7 @@ extension PPOProjectCardModel {
         projectId: projectId,
         pledge: formattedPledge,
         creatorName: creatorName,
-        address: addressWithName,
+        address: displayAddress,
         actions: (actions.primaryAction, actions.secondaryAction),
         tierType: actions.tierType,
         backingDetailsUrl: backingDetailsUrl,
@@ -108,6 +96,40 @@ extension PPOProjectCardModel {
     }
   }
 
+  private static func addressWithoutName(deliveryAddress: PPOBackingFragment.DeliveryAddress?) -> String? {
+    guard let deliveryAddress else { return nil }
+    let cityRegionFields: [String?] = [
+      deliveryAddress.city,
+      deliveryAddress.region.flatMap { ", \($0)" },
+      deliveryAddress.postalCode.flatMap { " \($0)" }
+    ]
+    let fields: [String?] = [
+      deliveryAddress.addressLine1,
+      deliveryAddress.addressLine2,
+      cityRegionFields.compactMap { $0 }.joined(),
+      deliveryAddress.countryCode.rawValue,
+      deliveryAddress.phoneNumber
+    ]
+    // Create address from all fields that are not nil and not the empty string.
+    return fields.compactMap { ($0 ?? "").isEmpty ? nil : $0 }.joined(separator: "\n")
+  }
+
+  private static func displayAddress(
+    card: PPOCardFragment,
+    name: String?,
+    addressWithoutName: String?
+  ) -> PPOProjectCardModel.DisplayAddress {
+    guard let addressWithoutName else { return .hidden }
+    if !card.showShippingAddress { return .hidden }
+
+    let address = (name ?? "") + "\n" + addressWithoutName
+
+    if card.showEditAddressAction {
+      return .editable(address: address)
+    }
+    return .locked(address: address)
+  }
+
   private static func actionsForPaymentFailed() -> PPOParsedAction {
     PPOParsedAction(
       primaryAction: .fixPayment,
@@ -116,9 +138,10 @@ extension PPOProjectCardModel {
     )
   }
 
-  private static func actionsForConfirmAddress(address: String?, addressId: String?)
+  private static func actionsForConfirmAddress(showAddress: Bool, address: String?, addressId: String?)
     -> PPOParsedAction? {
-    guard let address = address,
+    guard showAddress == true,
+          let address = address,
           let addressId = addressId else {
       return PPOParsedAction(
         primaryAction: .completeSurvey,
@@ -129,7 +152,7 @@ extension PPOProjectCardModel {
 
     return PPOParsedAction(
       primaryAction: .confirmAddress(address: address, addressId: addressId),
-      secondaryAction: .editAddress,
+      secondaryAction: nil,
       tierType: .confirmAddress
     )
   }

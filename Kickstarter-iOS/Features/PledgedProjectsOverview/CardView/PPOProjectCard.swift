@@ -10,6 +10,7 @@ struct PPOProjectCard: View {
 
   var onViewProjectDetails: ((PPOProjectCardModel) -> Void)? = nil
   var onSendMessage: ((PPOProjectCardModel) -> Void)? = nil
+  var onEditAddress: ((PPOProjectCardModel) -> Void)? = nil
   var onPerformAction: ((PPOProjectCardModel, PPOProjectCardModel.Action) -> Void)? = nil
 
   var body: some View {
@@ -45,6 +46,9 @@ struct PPOProjectCard: View {
     }
     .onReceive(self.viewModel.sendMessageTapped) {
       self.onSendMessage?(self.viewModel.card)
+    }
+    .onReceive(self.viewModel.editAddressTapped) {
+      self.onEditAddress?(self.viewModel.card)
     }
     .onReceive(self.viewModel.actionPerformed) { action in
       self.onPerformAction?(self.viewModel.card, action)
@@ -115,10 +119,30 @@ struct PPOProjectCard: View {
 
   @ViewBuilder
   private func addressDetails(leadingColumnWidth: CGFloat) -> some View {
-    if let address = self.viewModel.card.address {
-      PPOAddressSummary(address: address, leadingColumnWidth: leadingColumnWidth)
-        .padding([.horizontal])
+    switch self.viewModel.card.address {
+    case let .editable(address):
+      Button { [weak viewModel] () in
+        viewModel?.editAddress()
+      } label: {
+        self.addressContents(leadingColumnWidth: leadingColumnWidth, address: address, editable: true)
+      }
+      .buttonStyle(BorderlessButtonStyle())
+    case let .locked(address):
+      self.addressContents(leadingColumnWidth: leadingColumnWidth, address: address, editable: false)
+    case .hidden:
+      // Explicitly create an empty view, since the ViewBuilder requires consistency.
+      EmptyView()
     }
+  }
+
+  @ViewBuilder
+  private func addressContents(leadingColumnWidth: CGFloat, address: String, editable: Bool) -> some View {
+    PPOAddressSummary(
+      address: address,
+      leadingColumnWidth: leadingColumnWidth,
+      editable: editable
+    )
+    .padding([.horizontal])
   }
 
   @ViewBuilder

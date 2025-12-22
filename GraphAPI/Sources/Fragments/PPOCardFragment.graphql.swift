@@ -5,7 +5,7 @@
 
 public struct PPOCardFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment PPOCardFragment on PledgeProjectOverviewItem { __typename backing { __typename ...PPOBackingFragment } tierType flags { __typename icon message type } webviewUrl }"#
+    #"fragment PPOCardFragment on PledgeProjectOverviewItem { __typename backing { __typename ...PPOBackingFragment } tierType flags { __typename icon message type } webviewUrl showShippingAddress showEditAddressAction showRewardReceivedToggle }"#
   }
 
   public let __data: DataDict
@@ -18,6 +18,9 @@ public struct PPOCardFragment: GraphAPI.SelectionSet, Fragment {
     .field("tierType", String?.self),
     .field("flags", [Flag]?.self),
     .field("webviewUrl", String?.self),
+    .field("showShippingAddress", Bool.self),
+    .field("showEditAddressAction", Bool.self),
+    .field("showRewardReceivedToggle", Bool.self),
   ] }
 
   /// backing details
@@ -28,12 +31,21 @@ public struct PPOCardFragment: GraphAPI.SelectionSet, Fragment {
   public var flags: [Flag]? { __data["flags"] }
   /// webview url for survey responses or pledge management
   public var webviewUrl: String? { __data["webviewUrl"] }
+  /// Whether to display the shipping address block on the card
+  public var showShippingAddress: Bool { __data["showShippingAddress"] }
+  /// Whether to display the edit address action (if address is still editable)
+  public var showEditAddressAction: Bool { __data["showEditAddressAction"] }
+  /// Whether to display the reward received toggle (digital/no-reward survey submitted)
+  public var showRewardReceivedToggle: Bool { __data["showRewardReceivedToggle"] }
 
   public init(
     backing: Backing? = nil,
     tierType: String? = nil,
     flags: [Flag]? = nil,
-    webviewUrl: String? = nil
+    webviewUrl: String? = nil,
+    showShippingAddress: Bool,
+    showEditAddressAction: Bool,
+    showRewardReceivedToggle: Bool
   ) {
     self.init(_dataDict: DataDict(
       data: [
@@ -42,6 +54,9 @@ public struct PPOCardFragment: GraphAPI.SelectionSet, Fragment {
         "tierType": tierType,
         "flags": flags._fieldData,
         "webviewUrl": webviewUrl,
+        "showShippingAddress": showShippingAddress,
+        "showEditAddressAction": showEditAddressAction,
+        "showRewardReceivedToggle": showRewardReceivedToggle,
       ],
       fulfilledFragments: [
         ObjectIdentifier(PPOCardFragment.self)

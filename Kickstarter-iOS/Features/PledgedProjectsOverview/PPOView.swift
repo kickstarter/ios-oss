@@ -55,6 +55,9 @@ struct PPOView: View {
         onSendMessage: { card in
           self.viewModel.contactCreator(from: card)
         },
+        onEditAddress: { card in
+          self.viewModel.editAddress(from: card)
+        },
         onPerformAction: { model, action in
           switch action {
           case let .authenticateCard(clientSecret):
@@ -71,8 +74,6 @@ struct PPOView: View {
             self.viewModel.managePledge(from: model)
           case let .confirmAddress(address, addressId):
             self.viewModel.confirmAddress(from: model, address: address, addressId: addressId)
-          case .editAddress:
-            self.viewModel.editAddress(from: model)
           case .fixPayment:
             self.viewModel.fixPaymentMethod(from: model)
           }
