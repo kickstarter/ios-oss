@@ -6,6 +6,19 @@ require 'plist'
 require 'aws-sdk-s3'
 
 #
+# Configure AWS SDK to use the system trust store provided in CI to avoid SSL
+# verification failures when talking to S3. Fall back to the macOS system paths
+# used on CircleCI if the env vars are not present.
+#
+ca_bundle = ENV['SSL_CERT_FILE'].to_s.empty? ? '/etc/ssl/cert.pem' : ENV['SSL_CERT_FILE']
+ca_dir = ENV['SSL_CERT_DIR'].to_s.empty? ? '/etc/ssl/certs' : ENV['SSL_CERT_DIR']
+Aws.config.update(
+  ssl_ca_bundle: ca_bundle,
+  ssl_ca_directory: ca_dir
+)
+ENV['AWS_CA_BUNDLE'] ||= ca_bundle
+
+#
 # Interfacing with the builds bucket on S3
 #
 
