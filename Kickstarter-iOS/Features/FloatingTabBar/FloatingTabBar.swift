@@ -10,16 +10,16 @@ import UIKit
 
 final class FloatingTabBar: UITabBar {
   private enum Constants {
-    static let tabBarItemSize: CGFloat = 40
+    static let tabBarItemSize: CGFloat = Spacing.unit_10
     static let tabBarWidth: CGFloat = 152
-    static let tabBarCornerRadius: CGFloat = 16
+    static let tabBarCornerRadius: CGFloat = Spacing.unit_04
     static let tabBarShadowOpacity: Float = 0.28
-    static let tabBarShadowRadius: CGFloat = 28
-    static let tabBarShadowOffsetY: CGFloat = 8
-    static let tabBarVerticalPadding: CGFloat = 8
-    static let tabBarHorizontalInset: CGFloat = 12
+    static let tabBarShadowRadius: CGFloat = Spacing.unit_07
+    static let tabBarShadowOffsetY: CGFloat = Spacing.unit_02
+    static let tabBarVerticalPadding: CGFloat = Spacing.unit_02
+    static let tabBarHorizontalInset: CGFloat = Spacing.unit_03
 
-    static let selectedTabBackgroundCornerRadius: CGFloat = 8
+    static let selectedTabBackgroundCornerRadius: CGFloat = Spacing.unit_02
     static let selectedTabBackgroundSize: CGSize = CGSize(
       width: Constants.tabBarItemSize,
       height: Constants.tabBarItemSize
@@ -71,8 +71,9 @@ final class FloatingTabBar: UITabBar {
     self.setupSubviews()
   }
 
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
+  @available(*, unavailable)
+  required init?(coder _: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 
   /// Move the green background when the selected item changes.
@@ -103,11 +104,11 @@ final class FloatingTabBar: UITabBar {
     self.selectedTabBackgroundView.layer.cornerRadius = Constants.selectedTabBackgroundCornerRadius
     self.selectedTabBackgroundView.clipsToBounds = true
 
-    addSubview(self.tabBarBackgroundView)
-    addSubview(self.selectedTabBackgroundView)
-    addSubview(self.tabsStackView)
+    self.addSubview(self.tabBarBackgroundView)
+    self.addSubview(self.selectedTabBackgroundView)
+    self.addSubview(self.tabsStackView)
 
-    sendSubviewToBack(self.tabBarBackgroundView)
+    self.sendSubviewToBack(self.tabBarBackgroundView)
   }
 
   /// Centers and lays out the tabs.
@@ -119,10 +120,10 @@ final class FloatingTabBar: UITabBar {
     self.selectedTabBackgroundView.isHidden = isEmpty
     self.tabsStackView.isHidden = isEmpty
 
-    guard isEmpty == false else { return }
+    guard let firstTab = tabViews.first else { return }
 
     let tabHeight = Constants.tabBarItemSize + (Constants.tabBarVerticalPadding * 2)
-    let iconsCenterY = tabViews[0].center.y
+    let iconsCenterY = firstTab.center.y
 
     let tabFrame = CGRect(
       x: (bounds.width - Constants.tabBarWidth) / 2.0,
@@ -187,7 +188,7 @@ final class FloatingTabBar: UITabBar {
     }
   }
 
-  /// Returns the view for the given tab item`.
+  /// Returns the view for the given tab item.
   /// `UITabBar` does not expose item views publicly, but the items and their views are created in the same order, so we can just match them by index.
   private func selectedItemView(for selectedItem: UITabBarItem) -> UIView? {
     guard let items, let selectedIndex = items.firstIndex(of: selectedItem) else { return nil }
