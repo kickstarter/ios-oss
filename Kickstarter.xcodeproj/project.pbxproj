@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -3570,10 +3570,6 @@
 		E1EEED2A2B686829009976D9 /* PKCETest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETest.swift; sourceTree = "<group>"; };
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		6067ED182EF1C793009712C4 /* FloatingTabBar */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FloatingTabBar; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		A75511381C8642B3005355CF /* Frameworks */ = {
@@ -7953,9 +7949,6 @@
 			);
 			dependencies = (
 				A76E0A4C1D00C00500EC525A /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				6067ED182EF1C793009712C4 /* FloatingTabBar */,
 			);
 			name = "Kickstarter-Framework-iOS";
 			packageProductDependencies = (
