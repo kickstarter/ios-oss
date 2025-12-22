@@ -5,8 +5,7 @@ import KsApi
 import Library
 
 private struct PPOParsedAction {
-  let primaryAction: PPOProjectCardModel.Action
-  let secondaryAction: PPOProjectCardModel.Action?
+  let action: PPOProjectCardModel.Action?
   let tierType: PPOTierType
 }
 
@@ -41,25 +40,24 @@ extension PPOProjectCardModel {
     else {
       return nil
     }
-    let actions: PPOParsedAction?
+    let action: PPOParsedAction?
     switch tierType {
     case .fixPayment:
-      actions = Self.actionsForPaymentFailed()
+      action = Self.actionForPaymentFailed()
     case .confirmAddress:
-      actions = Self.actionsForConfirmAddress(
+      action = Self.actionForConfirmAddress(
         showAddress: card.showShippingAddress,
         address: addressWithoutName,
         addressId: addressId
       )
     case .openSurvey:
-      actions = Self.actionsForSurvey()
+      action = Self.actionForSurvey()
     case .authenticateCard:
-      actions = Self.actionsForAuthentication(clientSecret: backing?.clientSecret)
+      action = Self.actionForAuthentication(clientSecret: backing?.clientSecret)
     case .pledgeManagement:
-      actions = Self.actionsForPledgeManagement()
+      action = Self.actionForPledgeManagement()
     case .surveySubmitted, .pledgeCollected, .addressConfirmed, .awaitingReward, .rewardReceived:
-      // TODO(MBL-2094): Handle new cards.
-      return nil
+      action = PPOParsedAction(action: nil, tierType: tierType)
     }
 
     let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
@@ -73,7 +71,7 @@ extension PPOProjectCardModel {
     let backingId = backing.flatMap { decompose(id: $0.id) }
     let backingGraphId = backing?.id
 
-    if let image, let projectName, let projectId, let formattedPledge, let creatorName, let actions,
+    if let image, let projectName, let projectId, let formattedPledge, let creatorName, let action,
        let projectAnalyticsFragment, let backingDetailsUrl, let backingId, let backingGraphId {
       self.init(
         isUnread: true,
@@ -84,8 +82,8 @@ extension PPOProjectCardModel {
         pledge: formattedPledge,
         creatorName: creatorName,
         address: displayAddress,
-        actions: (actions.primaryAction, actions.secondaryAction),
-        tierType: actions.tierType,
+        action: action.action,
+        tierType: action.tierType,
         backingDetailsUrl: backingDetailsUrl,
         backingId: backingId,
         backingGraphId: backingGraphId,
@@ -130,56 +128,50 @@ extension PPOProjectCardModel {
     return .locked(address: address)
   }
 
-  private static func actionsForPaymentFailed() -> PPOParsedAction {
+  private static func actionForPaymentFailed() -> PPOParsedAction {
     PPOParsedAction(
-      primaryAction: .fixPayment,
-      secondaryAction: nil,
+      action: .fixPayment,
       tierType: .fixPayment
     )
   }
 
-  private static func actionsForConfirmAddress(showAddress: Bool, address: String?, addressId: String?)
+  private static func actionForConfirmAddress(showAddress: Bool, address: String?, addressId: String?)
     -> PPOParsedAction? {
     guard showAddress == true,
           let address = address,
           let addressId = addressId else {
       return PPOParsedAction(
-        primaryAction: .completeSurvey,
-        secondaryAction: nil,
+        action: .completeSurvey,
         tierType: .confirmAddress
       )
     }
 
     return PPOParsedAction(
-      primaryAction: .confirmAddress(address: address, addressId: addressId),
-      secondaryAction: nil,
+      action: .confirmAddress(address: address, addressId: addressId),
       tierType: .confirmAddress
     )
   }
 
-  private static func actionsForSurvey() -> PPOParsedAction {
+  private static func actionForSurvey() -> PPOParsedAction {
     PPOParsedAction(
-      primaryAction: .completeSurvey,
-      secondaryAction: nil,
+      action: .completeSurvey,
       tierType: .openSurvey
     )
   }
 
-  private static func actionsForPledgeManagement() -> PPOParsedAction {
+  private static func actionForPledgeManagement() -> PPOParsedAction {
     PPOParsedAction(
-      primaryAction: .managePledge,
-      secondaryAction: nil,
+      action: .managePledge,
       tierType: .pledgeManagement
     )
   }
 
-  private static func actionsForAuthentication(clientSecret: String?)
+  private static func actionForAuthentication(clientSecret: String?)
     -> PPOParsedAction? {
     guard let clientSecret = clientSecret else { return nil }
 
     return PPOParsedAction(
-      primaryAction: .authenticateCard(clientSecret: clientSecret),
-      secondaryAction: nil,
+      action: .authenticateCard(clientSecret: clientSecret),
       tierType: .authenticateCard
     )
   }
