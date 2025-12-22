@@ -32,7 +32,10 @@ public struct PushRegistration: PushRegistrationType {
   /**
    Returns a signal producer that emits a `Bool` value representing whether the user has allowed push
    notification permissions in the past.
+
    The returned producer emits once and completes.
+
+   Note that the returned producer will send values _on a background thread_, not on the main thread.
 
    - returns: A signal producer.
    */

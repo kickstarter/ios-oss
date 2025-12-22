@@ -188,7 +188,7 @@ platform :ios do
 
   private_lane :xcode_check do
     # Keep xcode version in sync with `.circleci/config.yml`
-    xcodes(version: "16.4.0", select_for_current_build_only: true)
+    xcodes(version: "26.1.1", select_for_current_build_only: true)
   end
 
   private_lane :build_the_app do |options|
@@ -231,7 +231,16 @@ platform :ios do
     )
   end
 
+  def ensure_aws_ca_bundle
+    ca_bundle = ENV["SSL_CERT_FILE"].to_s.empty? ? "/etc/ssl/cert.pem" : ENV["SSL_CERT_FILE"]
+    ca_dir = ENV["SSL_CERT_DIR"].to_s.empty? ? "/etc/ssl/certs" : ENV["SSL_CERT_DIR"]
+    ENV["AWS_CA_BUNDLE"] = ca_bundle if ENV["AWS_CA_BUNDLE"].to_s.empty?
+    ENV["AWS_CA_DIRECTORY"] ||= ca_dir
+  end
+
   private_lane :upload_s3 do |options|
+    ensure_aws_ca_bundle
+
     aws_s3(
       bucket: ENV['AWS_BUCKET'],
       region: ENV['AWS_REGION'],

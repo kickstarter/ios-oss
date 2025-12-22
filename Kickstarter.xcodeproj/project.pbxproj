@@ -645,6 +645,7 @@
 		60E5FF0C2D78C80600BE9942 /* ProjectCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E5FF0B2D78C80600BE9942 /* ProjectCardView.swift */; };
 		60E5FF112D78C9F800BE9942 /* SimilarProjectsCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E5FF0F2D78C9F800BE9942 /* SimilarProjectsCardViewModel.swift */; };
 		60ED07BE2D9F063F007779B5 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED07BD2D9F063F007779B5 /* Order.swift */; };
+		60EDE24C2EF1B49500C34E1C /* FloatingTabBarSemanticColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EDE24B2EF1B49500C34E1C /* FloatingTabBarSemanticColors.swift */; };
 		60F03AC12D8AFCE300DB6C01 /* SimilarProjectsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F03AC02D8AFCE300DB6C01 /* SimilarProjectsCollectionViewCell.swift */; };
 		60F03AC42D8AFD6100DB6C01 /* SimilarProjectsCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F03AC32D8AFD6100DB6C01 /* SimilarProjectsCollectionViewDataSource.swift */; };
 		60F03AC62D8B0C1600DB6C01 /* SimilarProjectsLoadingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F03AC52D8B0C1600DB6C01 /* SimilarProjectsLoadingCollectionViewCell.swift */; };
@@ -2398,6 +2399,7 @@
 		60E5FF0B2D78C80600BE9942 /* ProjectCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCardView.swift; sourceTree = "<group>"; };
 		60E5FF0F2D78C9F800BE9942 /* SimilarProjectsCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarProjectsCardViewModel.swift; sourceTree = "<group>"; };
 		60ED07BD2D9F063F007779B5 /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
+		60EDE24B2EF1B49500C34E1C /* FloatingTabBarSemanticColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingTabBarSemanticColors.swift; sourceTree = "<group>"; };
 		60F03AC02D8AFCE300DB6C01 /* SimilarProjectsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarProjectsCollectionViewCell.swift; sourceTree = "<group>"; };
 		60F03AC32D8AFD6100DB6C01 /* SimilarProjectsCollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarProjectsCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		60F03AC52D8B0C1600DB6C01 /* SimilarProjectsLoadingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarProjectsLoadingCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -6418,6 +6420,7 @@
 				A73379101D0E33A600C91445 /* ButtonStyles.swift */,
 				37280250226F878300E0ACBB /* CheckoutStyles.swift */,
 				941710B426557A6A00F5954E /* CommentCellStyles.swift */,
+				60EDE24B2EF1B49500C34E1C /* FloatingTabBarSemanticColors.swift */,
 				064B007927A469C8007B21FE /* HTMLViewElementStyles.swift */,
 				A757EB2A1D1AD89E00A5C978 /* DiscoveryStyles.swift */,
 				A73378FD1D0AE36400C91445 /* LoginStyles.swift */,
@@ -8499,6 +8502,7 @@
 				E1801FAA2BAB6D0900EBB533 /* PaymentSourceSelected.swift in Sources */,
 				3705CF0F222EE7670025D37E /* EnvironmentVariables.swift in Sources */,
 				33A684782DAD97910025B0EE /* ViewPledgeUseCase.swift in Sources */,
+				60EDE24C2EF1B49500C34E1C /* FloatingTabBarSemanticColors.swift in Sources */,
 				A73379601D0EDFEE00C91445 /* UIViewController-Preparation.swift in Sources */,
 				A72C3A951D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */,
 				37EB3E4C228CF4A400076E4C /* NumberFormatter.swift in Sources */,
@@ -10192,7 +10196,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.29.1;
+				MARKETING_VERSION = 5.30.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.beta;
@@ -10527,7 +10531,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.29.1;
+				MARKETING_VERSION = 5.30.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.debug;
@@ -10559,7 +10563,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.29.1;
+				MARKETING_VERSION = 5.30.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
@@ -11036,7 +11040,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.29.1;
+				MARKETING_VERSION = 5.30.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.kickalpha;

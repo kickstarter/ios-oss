@@ -10,7 +10,7 @@ aws_cli_setup: &aws_cli_setup
 
 # Keep xcode version in sync with `.fastlane/Fastfile`
 # circle-ci xcode versions supported: https://circleci.com/docs/testing-ios/
-xcode_version: &xcode_version 16.4.0
+xcode_version: &xcode_version 26.1.1
 iphone_name: &iphone_name iPad mini (A17 Pro)
 
 # Works around an issue in xcodebuild where it requires GitHub to have been added to the known_hosts in order for it to clone dependencies.
@@ -24,6 +24,10 @@ default_environment: &default_environment
   FL_OUTPUT_DIR: output
   LC_ALL: en_US.UTF-8
   LANG: en_US.UTF-8
+  # Fix Ruby/OpenSSL SSL verification failures on CircleCI macOS images by using the system trust store.
+  # Without this, Ruby can fail HTTPS requests (S3, GitHub, etc.) with "certificate verify failed".
+  SSL_CERT_FILE: /etc/ssl/cert.pem
+  SSL_CERT_DIR: /etc/ssl/certs
   IPHONE_NAME: *iphone_name
   XCODE_VERSION: *xcode_version
   PLATFORM: iOS
@@ -41,9 +45,9 @@ test_job: &test_job
         at: .
     - macos/preboot-simulator:
         # Keep simulator in sync with `Library/TestHelpers/TestCase.swift` and `Makefile`
-        # iOS 18.5 is minimum supported runtime by circle-ci -> 18.5.0 (16A242d)
+        # iOS 18.6 is minimum supported runtime by circle-ci -> 26.1.1 (17B100)
         # more info: https://circle-macos-docs.s3.amazonaws.com/image-manifest/v15338/manifest.txt
-        version: "18.5"
+        version: "18.6"
         platform: "iOS"
         device: "iPad mini (A17 Pro)"
     - run:
