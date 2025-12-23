@@ -8,9 +8,9 @@ import KDS
 public extension Colors {
   struct FloatingTabBar {
     public static let background = Colors.Elevation.Surface.raised
-    public static let iconColorSelected = Colors.Icon.dark
+    public static let iconColorSelected = Colors.Icon.light
     public static let iconColorUnselected = Colors.Icon.default
 
-    public static let iconHighlight = Colors.Surface.highlight
+    public static let iconHighlight = Colors.Background.Action.primary
   }
 }
