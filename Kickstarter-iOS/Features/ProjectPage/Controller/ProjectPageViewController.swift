@@ -735,7 +735,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     let vc = commentsViewController(for: project)
     if self.traitCollection.userInterfaceIdiom == .pad {
       let nav = UINavigationController(rootViewController: vc)
-      nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
+      nav.modalPresentationStyle = UIModalPresentationStyle.pageSheet
       self.present(nav, animated: true, completion: nil)
     } else {
       self.viewModel.inputs.showNavigationBar(false)

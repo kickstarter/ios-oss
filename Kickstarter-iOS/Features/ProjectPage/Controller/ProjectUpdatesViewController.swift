@@ -89,7 +89,7 @@ internal final class ProjectUpdatesViewController: WebViewController {
     let vc = commentsViewController(update: update)
     if self.traitCollection.userInterfaceIdiom == .pad {
       let nav = UINavigationController(rootViewController: vc)
-      nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
+      nav.modalPresentationStyle = UIModalPresentationStyle.pageSheet
       self.present(nav, animated: true, completion: nil)
     } else {
       self.navigationController?.pushViewController(vc, animated: true)
