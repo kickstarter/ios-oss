@@ -1,8 +1,10 @@
+import Combine
 import KDS
 import KsApi
 import Library
 import PassKit
 import Prelude
+import SwiftUI
 import UIKit
 
 protocol ProjectPageNavigationBarViewDelegate: AnyObject {
@@ -18,6 +20,26 @@ private enum Layout {
   }
 }
 
+// MARK: - SwiftUI Close Button with Liquid Glass
+
+struct CloseButtonView: View {
+  let onClose: () -> Void
+  
+  var body: some View {
+    Button(action: onClose) {
+      Image(uiImage: image(named: "icon--cross") ?? UIImage())
+        .renderingMode(.template)
+        .foregroundColor(Color(LegacyColors.ksr_support_700.uiColor()))
+        .frame(width: 20, height: 20)
+    }
+    .frame(width: 44, height: 44)
+    .contentShape(Circle())
+    .glassedEffect(in: Circle(), interactive: true)
+    .accessibilityLabel(Strings.accessibility_projects_buttons_close())
+    .accessibilityHint(Strings.Closes_project())
+  }
+}
+
 final class ProjectPageNavigationBarView: UIView {
   // MARK: - Properties
 
@@ -26,16 +48,24 @@ final class ProjectPageNavigationBarView: UIView {
 
   private lazy var navigationShareButton: UIButton = { UIButton(type: .custom) }()
 
-  private lazy var navigationCloseButton: UIButton = {
-    let buttonView = UIButton(type: .custom)
-      |> UIButton.lens.title(for: .normal) .~ nil
-      |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
-      |> UIButton.lens.tintColor .~ LegacyColors.ksr_support_700.uiColor()
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
-      |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
 
-    return buttonView
+  private lazy var closeButtonHostingController: UIHostingController<CloseButtonView> = {
+    let closeButtonView = CloseButtonView { [weak self] in
+      self?.closeButtonTapped()
+    }
+    let hostingController = UIHostingController(rootView: closeButtonView)
+    hostingController.view.backgroundColor = UIColor.clear
+    hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+    return hostingController
   }()
+  
+  private var navigationCloseButton: UIView {
+    guard let view = self.closeButtonHostingController.view else {
+      assertionFailure("UIHostingController view should always exist")
+      return UIView()
+    }
+    return view
+  }
 
   private lazy var navigationSaveButton: UIButton = { UIButton(type: .custom) }()
 
@@ -149,7 +179,13 @@ final class ProjectPageNavigationBarView: UIView {
   private func setupConstraints() {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
+    
+    NSLayoutConstraint.activate([
+      self.rootStackView.topAnchor.constraint(equalTo: self.topAnchor),
+      self.rootStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+      self.rootStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+      self.rootStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+    ])
 
     _ = (
       [
@@ -169,7 +205,9 @@ final class ProjectPageNavigationBarView: UIView {
         self.navigationSaveButton.widthAnchor
           .constraint(equalTo: self.navigationSaveButton.heightAnchor),
         self.navigationCloseButton.widthAnchor
-          .constraint(equalTo: self.navigationCloseButton.heightAnchor)
+          .constraint(equalToConstant: 44),
+        self.navigationCloseButton.heightAnchor
+          .constraint(equalToConstant: 44)
       ])
   }
 
@@ -192,11 +230,6 @@ final class ProjectPageNavigationBarView: UIView {
   }
 
   private func configureSubviews() {
-    self.addTargetAction(
-      buttonItem: self.navigationCloseButton,
-      targetAction: #selector(ProjectPageNavigationBarView.closeButtonTapped),
-      event: .touchUpInside
-    )
     self.addTargetAction(
       buttonItem: self.navigationShareButton,
       targetAction: #selector(ProjectPageNavigationBarView.shareButtonTapped),
@@ -269,5 +302,43 @@ extension ProjectPageNavigationBarView: ProjectPageNavigationBarViewDelegate {
 
   func configureSaveWatchPrelaunchProject(with context: PledgeCTAPrelaunchState) {
     self.watchProjectViewModel.inputs.saveButtonTapped(selected: context.saved)
+  }
+}
+
+// MARK: - Liquid Glass Extensions
+
+extension View {
+  @ViewBuilder
+  fileprivate func glassedEffect(in shape: some Shape, interactive: Bool = false) -> some View {
+    if #available(iOS 26.0, *) {
+      self.glassEffect(interactive ? .regular.interactive() : .regular, in: shape)
+    } else {
+      self.background {
+        shape.glassed()
+      }
+    }
+  }
+}
+
+extension Shape {
+  /// Creates a glass-like effect fallback for iOS < 26
+  fileprivate func glassed() -> some View {
+    self
+      .fill(.ultraThinMaterial)
+      .fill(
+        .linearGradient(
+          colors: [
+            .primary.opacity(0.08),
+            .primary.opacity(0.05),
+            .primary.opacity(0.01),
+            .clear,
+            .clear,
+            .clear
+          ],
+          startPoint: .topLeading,
+          endPoint: .bottomTrailing
+        )
+      )
+      .stroke(.primary.opacity(0.2), lineWidth: 0.7)
   }
 }
