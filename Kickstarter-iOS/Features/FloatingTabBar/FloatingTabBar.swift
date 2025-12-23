@@ -1,13 +1,6 @@
 import KDS
 import UIKit
 
-/* A custom floating-style `UITabBar` that visually groups tab items inside a
- - Sets tabs in a centered container using a horizontal `UIStackView`.
- - Draws a background “pill” behind the tab items, including shadow.
- - Animates a selection indicator view behind the currently selected tab
- - Hides tab item titles and presents an icon-only navigation experience.
- */
-
 final class FloatingTabBar: UITabBar {
   private enum Constants {
     static let tabBarItemSize: CGFloat = Spacing.unit_10
@@ -30,15 +23,6 @@ final class FloatingTabBar: UITabBar {
   private let tabBarBackgroundView = UIView()
   private let selectedTabBackgroundView = UIView()
 
-  private let tabsStackView: UIStackView = {
-    let view = UIStackView()
-    view.axis = .horizontal
-    view.alignment = .center
-    view.distribution = .equalSpacing
-    view.isUserInteractionEnabled = false
-    return view
-  }()
-
   // MARK: - Init
 
   override init(frame: CGRect) {
@@ -57,7 +41,7 @@ final class FloatingTabBar: UITabBar {
     appearance.stackedLayoutAppearance.selected.iconColor = Colors.FloatingTabBar.iconColorSelected.uiColor()
     appearance.stackedLayoutAppearance.normal.iconColor = Colors.FloatingTabBar.iconColorUnselected.uiColor()
 
-    // Hide icon labels.
+    // Hide labels – icons only.
     appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
       .foregroundColor: UIColor.clear
     ]
@@ -65,15 +49,30 @@ final class FloatingTabBar: UITabBar {
       .foregroundColor: UIColor.clear
     ]
 
-    self.standardAppearance = appearance
-    self.scrollEdgeAppearance = appearance
+    standardAppearance = appearance
+    scrollEdgeAppearance = appearance
 
-    self.setupSubviews()
+    // Tab Bar pill background
+    self.tabBarBackgroundView.backgroundColor = Colors.FloatingTabBar.background.uiColor()
+    self.tabBarBackgroundView.layer.cornerRadius = Constants.tabBarCornerRadius
+    self.tabBarBackgroundView.layer.masksToBounds = false
+    self.tabBarBackgroundView.layer.shadowColor = UIColor.black.cgColor
+    self.tabBarBackgroundView.layer.shadowOpacity = Constants.tabBarShadowOpacity
+    self.tabBarBackgroundView.layer.shadowRadius = Constants.tabBarShadowRadius
+    self.tabBarBackgroundView.layer.shadowOffset = CGSize(width: 0, height: Constants.tabBarShadowOffsetY)
+
+    // Selected tab pill
+    self.selectedTabBackgroundView.backgroundColor = Colors.FloatingTabBar.iconHighlight.uiColor()
+    self.selectedTabBackgroundView.layer.cornerRadius = Constants.selectedTabBackgroundCornerRadius
+    self.selectedTabBackgroundView.clipsToBounds = true
+
+    addSubview(self.tabBarBackgroundView)
+    addSubview(self.selectedTabBackgroundView)
+    sendSubviewToBack(self.tabBarBackgroundView)
   }
 
-  @available(*, unavailable)
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+  required init?(coder: NSCoder) {
+    super.init(coder: coder)
   }
 
   /// Move the green background when the selected item changes.
@@ -83,87 +82,68 @@ final class FloatingTabBar: UITabBar {
     }
   }
 
+  // MARK: - Layout
+
   override func layoutSubviews() {
     super.layoutSubviews()
 
-    self.layoutTabs()
+    self.layoutPillAndItems()
 
     self.updateSelection(animated: false)
   }
 
-  private func setupSubviews() {
-    self.tabBarBackgroundView.backgroundColor = Colors.FloatingTabBar.background.uiColor()
-    self.tabBarBackgroundView.layer.cornerRadius = Constants.tabBarCornerRadius
-    self.tabBarBackgroundView.layer.masksToBounds = false
-    self.tabBarBackgroundView.layer.shadowColor = UIColor.black.cgColor
-    self.tabBarBackgroundView.layer.shadowOpacity = Constants.tabBarShadowOpacity
-    self.tabBarBackgroundView.layer.shadowRadius = Constants.tabBarShadowRadius
-    self.tabBarBackgroundView.layer.shadowOffset = CGSize(width: 0, height: Constants.tabBarShadowOffsetY)
+  /// Centers the pill and lays out the tab item views inside it.
+  private func layoutPillAndItems() {
+    guard let itemViews = sortedItemViews(), itemViews.isEmpty == false else {
+      self.tabBarBackgroundView.isHidden = true
+      self.selectedTabBackgroundView.isHidden = true
+      return
+    }
 
-    self.selectedTabBackgroundView.backgroundColor = Colors.FloatingTabBar.iconHighlight.uiColor()
-    self.selectedTabBackgroundView.layer.cornerRadius = Constants.selectedTabBackgroundCornerRadius
-    self.selectedTabBackgroundView.clipsToBounds = true
+    self.tabBarBackgroundView.isHidden = false
+    self.selectedTabBackgroundView.isHidden = false
 
-    self.addSubview(self.tabBarBackgroundView)
-    self.addSubview(self.selectedTabBackgroundView)
-    self.addSubview(self.tabsStackView)
+    let pillHeight = Constants.tabBarItemSize + (Constants.tabBarVerticalPadding * 2)
+    let iconsCenterY = itemViews[0].center.y
 
-    self.sendSubviewToBack(self.tabBarBackgroundView)
-  }
-
-  /// Centers and lays out the tabs.
-  private func layoutTabs() {
-    let tabViews = self.sortedItemViews()
-    let isEmpty = tabViews.isEmpty
-
-    self.tabBarBackgroundView.isHidden = isEmpty
-    self.selectedTabBackgroundView.isHidden = isEmpty
-    self.tabsStackView.isHidden = isEmpty
-
-    guard let firstTab = tabViews.first else { return }
-
-    let tabHeight = Constants.tabBarItemSize + (Constants.tabBarVerticalPadding * 2)
-    let iconsCenterY = firstTab.center.y
-
-    let tabFrame = CGRect(
+    let pillFrame = CGRect(
       x: (bounds.width - Constants.tabBarWidth) / 2.0,
-      y: iconsCenterY - (tabHeight / 2.0),
+      y: iconsCenterY - (pillHeight / 2.0),
       width: Constants.tabBarWidth,
-      height: tabHeight
+      height: pillHeight
     )
-    self.tabBarBackgroundView.frame = tabFrame
+    self.tabBarBackgroundView.frame = pillFrame
 
-    self.tabsStackView.frame = tabFrame.insetBy(
-      dx: Constants.tabBarHorizontalInset,
-      dy: Constants.tabBarVerticalPadding
-    )
+    /// Evenly space icons within the pill with horizontal insets.
+    let count = CGFloat(itemViews.count)
+    let usableWidth = Constants.tabBarWidth - (Constants.tabBarHorizontalInset * 2)
+    let totalIconWidth = count * Constants.tabBarItemSize
+    let spacing = (usableWidth - totalIconWidth) / max(count - 1, 1)
 
-    self.syncStackViewArrangedSubviews(tabViews)
-  }
+    var currentCenterX =
+      pillFrame.minX + Constants.tabBarHorizontalInset + (Constants.tabBarItemSize / 2.0)
 
-  /// Make sure the tab StackView items are in the correct order.
-  /// UITabBar manages these views, so we re-sync them during layout.
-  private func syncStackViewArrangedSubviews(_ tabViews: [UIView]) {
-    guard self.tabsStackView.arrangedSubviews != tabViews else { return }
-
-    for view in self.tabsStackView.arrangedSubviews {
-      self.tabsStackView.removeArrangedSubview(view)
-
-      view.removeFromSuperview()
-    }
-
-    for view in tabViews {
-      view.translatesAutoresizingMaskIntoConstraints = true
-      view.frame.size = CGSize(width: Constants.tabBarItemSize, height: Constants.tabBarItemSize)
-
-      self.tabsStackView.addArrangedSubview(view)
+    for view in itemViews {
+      view.frame = CGRect(
+        x: currentCenterX - (Constants.tabBarItemSize / 2.0),
+        y: pillFrame.midY - (Constants.tabBarItemSize / 2.0),
+        width: Constants.tabBarItemSize,
+        height: Constants.tabBarItemSize
+      )
+      currentCenterX += Constants.tabBarItemSize + spacing
     }
   }
 
-  /// Animates the green selection background behind the selected item.
+  /// Moves the green selection background behind the selected item.
   private func updateSelection(animated: Bool) {
-    guard let selectedItem, let targetItemView = selectedItemView(for: selectedItem) else { return }
+    guard
+      let selectedItem,
+      let itemViews = sortedItemViews(),
+      let selectedIndex = items?.firstIndex(of: selectedItem),
+      selectedIndex < itemViews.count
+    else { return }
 
+    let targetItemView = itemViews[selectedIndex]
     let indicatorSize = Constants.selectedTabBackgroundSize
 
     let frame = CGRect(
@@ -188,22 +168,10 @@ final class FloatingTabBar: UITabBar {
     }
   }
 
-  /// Returns the view for the given tab item.
-  /// `UITabBar` does not expose item views publicly, but the items and their views are created in the same order, so we can just match them by index.
-  private func selectedItemView(for selectedItem: UITabBarItem) -> UIView? {
-    guard let items, let selectedIndex = items.firstIndex(of: selectedItem) else { return nil }
+  /// Internal tab item views sorted left → right.
+  private func sortedItemViews() -> [UIView]? {
+    let controls = subviews.compactMap { $0 as? UIControl }
 
-    let tabViews = self.sortedItemViews()
-
-    guard selectedIndex < tabViews.count else { return nil }
-
-    return tabViews[selectedIndex]
-  }
-
-  /// Sorts views left to right.
-  private func sortedItemViews() -> [UIView] {
-    subviews
-      .compactMap { $0 as? UIControl }
-      .sorted { $0.frame.minX < $1.frame.minX }
+    return controls.isEmpty ? nil : controls.sorted { $0.frame.minX < $1.frame.minX }
   }
 }

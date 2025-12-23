@@ -461,6 +461,13 @@ private func currentUserActivitiesAndErroredPledgeCount() -> Int {
 private func generateViewControllers(isLoggedIn: Bool) -> [RootViewControllerData] {
   var controllers: [RootViewControllerData] = []
   controllers.append(.discovery)
+  
+  guard featurePillViewTabBarEnabled() == false else {
+    controllers.append(.search)
+    controllers.append(.profile(isLoggedIn: isLoggedIn))
+    
+    return controllers
+  }
 
   if isLoggedIn {
     controllers.append(.pledgedProjectsAndActivities)
@@ -475,10 +482,20 @@ private func generateViewControllers(isLoggedIn: Bool) -> [RootViewControllerDat
 }
 
 private func tabData(forUser user: User?) -> TabBarItemsData {
-  let items: [TabBarItem] = [
-    .home(index: 0), .activity(index: 1), .search(index: 2),
-    .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)
-  ]
+  var items: [TabBarItem] = []
+
+    if featurePillViewTabBarEnabled() {
+      items = [
+        .home(index: 0),
+        .search(index: 1),
+        .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 2)
+      ]
+    } else {
+      items = [
+        .home(index: 0), .activity(index: 1), .search(index: 2),
+        .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)
+      ]
+    }
 
   return TabBarItemsData(
     items: items,

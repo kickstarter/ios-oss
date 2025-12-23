@@ -84,6 +84,12 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       )
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+    
+    if featurePillViewTabBarEnabled() {
+      let customTabBar = FloatingTabBar()
+      //TODO: don't use hardcoded key
+      self.setValue(customTabBar, forKey: "tabBar")      
+    }
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -199,6 +205,32 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
 
     profileNav.setViewControllers([profileVC, threadsVC, messageThreadVC], animated: true)
   }
+  
+  private func configureFloatingTabBarItems(isLoggedIn: Bool) {
+      guard let items = self.tabBar.items, items.count >= 3 else { return }
+
+      if let home = UIImage(named: "floating-tabbar-icon-home")?.withRenderingMode(.alwaysTemplate) {
+        items[0].image = home
+        items[0].selectedImage = home
+      }
+
+      if let search = UIImage(named: "floating-tabbar-icon-search")?.withRenderingMode(.alwaysTemplate) {
+        items[1].image = search
+        items[1].selectedImage = search
+      }
+
+      if isLoggedIn == false,
+         let profile = UIImage(named: "floating-tabbar-icon-profile")?.withRenderingMode(.alwaysTemplate) {
+        items[2].image = profile
+        items[2].selectedImage = profile
+      }
+
+      /// Remove labels + center icons
+      items.forEach {
+        $0.title = nil
+        $0.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
+      }
+    }
 
   fileprivate func setTabBarItemStyles(withData data: TabBarItemsData) {
     data.items.forEach { item in
@@ -215,6 +247,11 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
 
         self.setProfileImage(with: data, avatarUrl: avatarUrl, index: index)
       }
+    }
+    
+    if featurePillViewTabBarEnabled() {
+      /// Run last so it overwrites the default tab-bar icons/titles
+      self.configureFloatingTabBarItems(isLoggedIn: data.isLoggedIn)      
     }
   }
 
