@@ -31,12 +31,16 @@ struct PPOView: View {
   }
 
   @ViewBuilder func listViewHeader(numberOfValues: Int) -> some View {
-    Text(Strings.Alerts_count(count: numberOfValues.formatted()))
-      .font(Font(PPOStyles.header.font))
-      .background(Color(PPOStyles.header.background))
-      .foregroundStyle(Color(PPOStyles.header.foreground))
-      .padding(PPOStyles.header.padding)
-      .accessibilityAddTraits(.isHeader)
+    Text(
+      featurePledgedProjectsOverviewV2Enabled() ?
+        Strings.Backings() :
+        Strings.Alerts_count(count: numberOfValues.formatted())
+    )
+    .font(Font(PPOStyles.header.font))
+    .background(Color(PPOStyles.header.background))
+    .foregroundStyle(Color(PPOStyles.header.foreground))
+    .padding(PPOStyles.header.padding)
+    .accessibilityAddTraits(.isHeader)
   }
 
   @ViewBuilder func listView(values: [PPOProjectCardViewModel], parentSize: CGSize) -> some View {
@@ -139,9 +143,12 @@ struct PPOView: View {
         .onAppear(perform: {
           self.viewModel.viewDidAppear()
         })
-        .onChange(of: self.viewModel.results.values.count, perform: { value in
-          self.onCountChange?(value)
-        })
+        .onChange(of: self.viewModel.results.values, initial: true) { _, newValues in
+          let newAlerts = newValues.filter { cardViewModel in
+            PPOTierType.projectAlertTypes().contains(cardViewModel.card.tierType)
+          }
+          self.onCountChange?(newAlerts.count)
+        }
         .onReceive(self.viewModel.navigationEvents, perform: { event in
           self.onNavigate?(event)
         })
