@@ -376,7 +376,7 @@ private func tabbarAvatarImageFromData(_ data: Data) -> (defaultImage: UIImage?,
   let selectedImage = strokedRoundImage(
     fromImage: avatar,
     size: tabBarAvatarSize,
-    color: featureFloatingTabBarEnabled() ? Colors.FloatingTabBar.iconColorSelected
+    color: featureFloatingTabBarEnabled() ? Colors.FloatingTabBar.profileIconBorderColor
       .uiColor() : tabBarSelectedColor,
     lineWidth: 2.0
   )
