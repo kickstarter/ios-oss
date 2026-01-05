@@ -1,4 +1,4 @@
-git_url("https://github.com/kickstarter/ios-certificates")
+git_url("git@github.com:kickstarter/ios-certificates.git")
 
 type("development") # The default type, can be: appstore, adhoc, enterprise or development
 
