@@ -1,0 +1,7 @@
+mutation UpdateBackerCompleted($input: UpdateBackerCompletedInput!) {
+  updateBackerCompleted(input: $input) {
+    backing {
+      backerCompleted
+    }
+  }
+}

@@ -2179,6 +2179,7 @@
 		395A3BC12B8E54C90091A379 /* AttributionTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributionTracking.swift; sourceTree = "<group>"; };
 		395A3BC32B8E56800091A379 /* AttributionTrackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributionTrackingTests.swift; sourceTree = "<group>"; };
 		395A3BCA2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeViewControllerHelpers.swift; sourceTree = "<group>"; };
+		3993AEF72F0C41ED009CC949 /* UpdateBackerCompletedMutation.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UpdateBackerCompletedMutation.graphql; sourceTree = "<group>"; };
 		399603242E81CB0E00E7C9A3 /* PPOTierTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPOTierTypes.swift; sourceTree = "<group>"; };
 		399653672E2EE98D00ED69E5 /* SearchEmptyStateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCell.swift; sourceTree = "<group>"; };
 		399653692E2EEA2300ED69E5 /* SearchEmptyStateCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCellViewModel.swift; sourceTree = "<group>"; };
@@ -7682,6 +7683,7 @@
 				E190EB4A2E29944E006A6DB6 /* SignInWithApple.graphql */,
 				E190EB4B2E29944E006A6DB6 /* TriggerThirdPartyEvent.graphql */,
 				E190EB4C2E29944E006A6DB6 /* UnwatchProject.graphql */,
+				3993AEF72F0C41ED009CC949 /* UpdateBackerCompletedMutation.graphql */,
 				E190EB4D2E29944E006A6DB6 /* UpdateBacking.graphql */,
 				E190EB4E2E29944E006A6DB6 /* UpdateUserAccount.graphql */,
 				E190EB4F2E29944E006A6DB6 /* UpdateUserProfile.graphql */,
