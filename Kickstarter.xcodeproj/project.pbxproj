@@ -592,6 +592,7 @@
 		6078106B2A0419130050D4F7 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6078106A2A0419130050D4F7 /* FirebaseCrashlytics */; };
 		6078106D2A0419170050D4F7 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 6078106C2A0419170050D4F7 /* FirebasePerformance */; };
 		6078106F2A04191C0050D4F7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6078106E2A04191C0050D4F7 /* FirebaseAnalytics */; };
+		607972862EF45DEB0099E774 /* FloatingTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607972852EF45DEB0099E774 /* FloatingTabBar.swift */; };
 		6080DA402AB366680088EF3D /* Text+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6080DA3F2AB366680088EF3D /* Text+HTML.swift */; };
 		608B5B212CADA6CD00BCC5F4 /* PledgeRewardsSummaryDiffableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608B5B202CADA6CD00BCC5F4 /* PledgeRewardsSummaryDiffableDataSource.swift */; };
 		608F974C2B752C4900DBE7D7 /* ValidateCheckoutEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608F974B2B752C4900DBE7D7 /* ValidateCheckoutEnvelope.swift */; };
@@ -2368,6 +2369,7 @@
 		606C45F429FACD78001BA067 /* RemoteConfigFeature+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfigFeature+Helpers.swift"; sourceTree = "<group>"; };
 		606C45F629FACD94001BA067 /* RemoteConfigFeature+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfigFeature+HelpersTests.swift"; sourceTree = "<group>"; };
 		606C45F929FACE17001BA067 /* MockRemoteConfigClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRemoteConfigClient.swift; sourceTree = "<group>"; };
+		607972852EF45DEB0099E774 /* FloatingTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingTabBar.swift; sourceTree = "<group>"; };
 		6080DA3F2AB366680088EF3D /* Text+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+HTML.swift"; sourceTree = "<group>"; };
 		608B5B202CADA6CD00BCC5F4 /* PledgeRewardsSummaryDiffableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRewardsSummaryDiffableDataSource.swift; sourceTree = "<group>"; };
 		608F974B2B752C4900DBE7D7 /* ValidateCheckoutEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateCheckoutEnvelope.swift; sourceTree = "<group>"; };
@@ -5072,6 +5074,7 @@
 				6067BCE5293E47D50036ABB1 /* FacebookResetPasswordViewController */,
 				1937A6E528C92C8500DD732D /* FeatureFlagTools */,
 				19A97D1128C7ED500031B857 /* FindFriends */,
+				607972882EF9A7E40099E774 /* FloatingTabBar */,
 				19A97D1828C7EF190031B857 /* Help */,
 				1937A6E628C92C8E00DD732D /* HelpWeb */,
 				1937A6EA28C92DD000DD732D /* Login */,
@@ -6111,6 +6114,14 @@
 				70B1889329A521000004E293 /* FacebookResetPasswordViewControllerTests.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		607972882EF9A7E40099E774 /* FloatingTabBar */ = {
+			isa = PBXGroup;
+			children = (
+				607972852EF45DEB0099E774 /* FloatingTabBar.swift */,
+			);
+			path = FloatingTabBar;
 			sourceTree = "<group>";
 		};
 		6080DA3E2AB366550088EF3D /* SwiftUI+Extensions */ = {
@@ -9204,6 +9215,7 @@
 				A75798911D6A201F0063CEEC /* DebugPushNotificationsViewController.swift in Sources */,
 				1950DBBE2A8445B500071862 /* ProjectTabCheckmarkListCell.swift in Sources */,
 				06BD75CD26C4322C00A12D4E /* CommentDialogViewController.swift in Sources */,
+				607972862EF45DEB0099E774 /* FloatingTabBar.swift in Sources */,
 				774A76E920D841110012A71F /* BetaToolsViewController.swift in Sources */,
 				A71003DA1CDCFA2500B4F4D7 /* MessageThreadsViewController.swift in Sources */,
 				013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */,
