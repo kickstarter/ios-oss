@@ -15,6 +15,11 @@ internal final class DiscoveryViewController: UIViewController {
   private weak var pageViewController: UIPageViewController!
   private weak var sortPagerViewController: SortPagerViewController!
 
+  /// Bottom constraint when using the system tab bar (respects safe area)
+  @IBOutlet var pagesBottomToSafeArea: NSLayoutConstraint!
+  /// Bottom constraint when using the floating tab bar (full-height)
+  @IBOutlet var pagesBottomToSuperview: NSLayoutConstraint!
+
   internal static func instantiate() -> DiscoveryViewController {
     return Storyboard.Discovery.instantiate(DiscoveryViewController.self)
   }
@@ -64,6 +69,12 @@ internal final class DiscoveryViewController: UIViewController {
       ) { [weak self] _ in
         self?.viewModel.inputs.remoteConfigClientConfigurationFailed()
       }
+
+    /// If Floating Tab Bar is enbaled
+    /// Toggle bottom constraint so this view controller can extend under the floating tab bar.
+    /// When enabled, the pages container view is constrained  to the superview instead of the safe area.
+    self.pagesBottomToSafeArea.isActive = !featureFloatingTabBarEnabled()
+    self.pagesBottomToSuperview.isActive = featureFloatingTabBarEnabled()
 
     self.viewModel.inputs.viewDidLoad()
   }
