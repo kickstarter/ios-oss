@@ -44,7 +44,7 @@ struct PPOProjectCard: View {
     // upper right corner badge
     .overlay(
       alignment: Constants.badgeAlignment,
-      content: { self.badge.opacity(self.viewModel.card.isUnread ? 1 : 0) }
+      content: { self.badge.opacity(self.showCardAlert() ? 1 : 0) }
     )
 
     // Handle actions
@@ -221,6 +221,12 @@ struct PPOProjectCard: View {
     case .some: return true
     case nil: return false
     }
+  }
+
+  // Show a red dot if a card is an alert type and is unread.
+  private func showCardAlert() -> Bool {
+    return PPOTierType.projectAlertTypes().contains(self.viewModel.card.tierType)
+      && self.viewModel.card.isUnread
   }
 
   private enum Constants {
