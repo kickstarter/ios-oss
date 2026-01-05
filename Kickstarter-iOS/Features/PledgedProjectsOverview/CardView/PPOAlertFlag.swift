@@ -9,7 +9,7 @@ struct PPOAlertFlag: View {
   var body: some View {
     HStack {
       if let icon = alert.icon {
-        self.image(icon: icon)
+        self.image(forIcon: icon)
           .renderingMode(.template)
           .aspectRatio(contentMode: .fit)
           .foregroundStyle(self.foregroundColor)
@@ -33,7 +33,7 @@ struct PPOAlertFlag: View {
     .accessibilityAddTraits(.isStaticText)
   }
 
-  private func image(icon: PPOProjectCardModel.Alert.AlertIcon) -> Image {
+  private func image(forIcon icon: PPOProjectCardModel.Alert.AlertIcon) -> Image {
     switch icon {
     case .time:
       Image(PPOStyles.timeImage)
