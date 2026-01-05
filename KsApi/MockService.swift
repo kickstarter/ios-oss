@@ -188,6 +188,8 @@
 
     fileprivate let unfollowFriendError: ErrorEnvelope?
 
+    fileprivate let updateRewardReceivedResult: Result<Bool, ErrorEnvelope>?
+
     fileprivate let updateBackingResult: Result<UpdateBackingEnvelope, ErrorEnvelope>?
 
     fileprivate let updateDraftError: ErrorEnvelope?
@@ -351,6 +353,7 @@
       signupResponse: AccessTokenEnvelope? = nil,
       signupError: ErrorEnvelope? = nil,
       unfollowFriendError: ErrorEnvelope? = nil,
+      updateRewardReceivedResult: Result<Bool, ErrorEnvelope>? = nil,
       updateBackingResult: Result<UpdateBackingEnvelope, ErrorEnvelope>? = nil,
       updateDraftError: ErrorEnvelope? = nil,
       updatePledgeResult: Result<UpdatePledgeEnvelope, ErrorEnvelope>? = nil,
@@ -559,6 +562,8 @@
       self.signupError = signupError
 
       self.unfollowFriendError = unfollowFriendError
+
+      self.updateRewardReceivedResult = updateRewardReceivedResult
 
       self.updateBackingResult = updateBackingResult
 
@@ -1097,6 +1102,24 @@
           |> Backing.lens.projectId .~ project.id
           |> Backing.lens.backerCompleted .~ received
       )
+    }
+
+    func updateRewardReceived(
+      backingId _: String,
+      rewardReceived _: Bool
+    ) -> AnyPublisher<Bool, ErrorEnvelope> {
+      guard let updateRewardReceivedResponse = self.updateRewardReceivedResult else {
+        return Fail(outputType: Bool.self, failure: ErrorEnvelope.couldNotParseErrorEnvelopeJSON)
+          .eraseToAnyPublisher()
+      }
+
+      switch updateRewardReceivedResponse {
+      case let .success(rewardReceivedValue):
+        return Just(rewardReceivedValue).setFailureType(to: ErrorEnvelope.self).eraseToAnyPublisher()
+
+      case let .failure(envelope):
+        return Fail(outputType: Bool.self, failure: envelope).eraseToAnyPublisher()
+      }
     }
 
     internal func fetchDiscovery(paginationUrl: String)

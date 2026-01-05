@@ -800,6 +800,21 @@ public struct Service: ServiceType {
     return request(.backingUpdate(projectId: project.id, backerId: user.id, received: received))
   }
 
+  public func updateRewardReceived(
+    backingId: String,
+    rewardReceived: Bool
+  ) -> AnyPublisher<Bool, ErrorEnvelope> {
+    let input = GraphAPI.UpdateBackerCompletedInput(id: backingId, backerCompleted: rewardReceived)
+    let mutation = GraphAPI.UpdateBackerCompletedMutation(input: input)
+    return GraphQL.shared.client
+      .perform(mutation: mutation)
+      .map { data -> Bool in
+        // Verify success by confirming response value is equal to input.
+        data.updateBackerCompleted?.backing?.backerCompleted == rewardReceived
+      }
+      .eraseToAnyPublisher()
+  }
+
   public func followAllFriends() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
     return request(.followAllFriends)
   }
