@@ -24,6 +24,11 @@ enum PPOStyles {
     background: LegacyColors.ksr_white.uiColor()
   )
 
+  static let infoColor = (
+    foreground: LegacyColors.Tags.Success.foreground.uiColor(),
+    background: LegacyColors.Tags.Success.background.uiColor()
+  )
+
   static let warningColor = (
     foreground: LegacyColors.Tags.Warn.foreground.uiColor(),
     background: LegacyColors.Tags.Warn.background.uiColor()
