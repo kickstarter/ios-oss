@@ -92,6 +92,8 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
           address: address,
           onProgress: onProgress
         )
+      case let .updateRewardReceived(backingId: backingId, rewardReceived: rewardReceived):
+        self?.updateRewardReceived(backingId: backingId, rewardReceived: rewardReceived)
       }
     }.store(in: &self.subscriptions)
 
@@ -225,6 +227,10 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       }
     ))
     self.present(alert, animated: true, completion: nil)
+  }
+
+  private func updateRewardReceived(backingId: String, rewardReceived: Bool) {
+    self.viewModel.updateRewardReceived(backingId: backingId, rewardReceived: rewardReceived)
   }
 
   #if DEBUG

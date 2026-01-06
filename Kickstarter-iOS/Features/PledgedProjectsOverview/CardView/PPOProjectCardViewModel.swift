@@ -6,6 +6,7 @@ import Library
 public enum PPOCardEvent: Equatable {
   case editAddress
   case sendMessage
+  case updateRewardReceived(rewardReceived: Bool)
   case viewProjectDetails
   case confirmAddress(address: String, addressId: String)
   case completeSurvey
@@ -31,6 +32,8 @@ public enum PPOCardEvent: Equatable {
       .authenticateCard(rhsClientSecret, _)
     ):
       return lhsClientSecret == rhsClientSecret
+    case let (.updateRewardReceived(lhsRewardReceived), .updateRewardReceived(rhsRewardReceived)):
+      return lhsRewardReceived == rhsRewardReceived
     default:
       return false
     }
@@ -42,6 +45,8 @@ protocol PPOProjectCardViewModelInputs {
   func eventTriggered(_: PPOCardEvent)
   // Trigger the PPOCardEvent corresponding to the ButtonAction.
   func performAction(_: PPOProjectCardModel.ButtonAction)
+  // React to toggle being flipped.
+  func rewardToggleTapped(toggleOn: Bool)
 }
 
 protocol PPOProjectCardViewModelOutputs {
@@ -71,6 +76,8 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
   @Published var buttonState: PPOButtonState = .active
   @Published var rewardToggleEnabled: Bool
 
+  private var cancellables: Set<AnyCancellable> = []
+
   func hash(into hasher: inout Hasher) {
     hasher.combine(self.card)
   }
@@ -80,6 +87,13 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
   ) {
     self.card = card
     self.rewardToggleEnabled = card.rewardReceivedToggleState == .rewardReceived
+
+    self.rewardToggleTappedSubject
+      .debounce(for: 0.3 /* seconds */, scheduler: DispatchQueue.main)
+      .sink { toggleOn in
+        self.handleEventSubject.send(.updateRewardReceived(rewardReceived: toggleOn))
+      }
+      .store(in: &self.cancellables)
   }
 
   // MARK: - Inputs
@@ -107,6 +121,10 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
     self.handleEventSubject.send(event)
   }
 
+  func rewardToggleTapped(toggleOn: Bool) {
+    self.rewardToggleTappedSubject.send(toggleOn)
+  }
+
   // MARK: - Outputs
 
   var handleEvent: AnyPublisher<PPOCardEvent, Never> {
@@ -114,6 +132,8 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
   }
 
   private let handleEventSubject = PassthroughSubject<PPOCardEvent, Never>()
+
+  private let rewardToggleTappedSubject = PassthroughSubject<Bool, Never>()
 
   // MARK: - Helpers
 

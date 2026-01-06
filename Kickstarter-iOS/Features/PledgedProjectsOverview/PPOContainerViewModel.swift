@@ -114,15 +114,39 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
       }
       .store(in: &self.cancellables)
 
+    // If reward toggle change fails, trigger error banner and refresh.
+    let updateRewardReceivedError = self.updateRewardReceivedSubject
+      .handleEvents()
+      .flatMap { backingId, rewardReceived in
+        AppEnvironment.current.apiService.updateRewardReceived(
+          backingId: backingId, rewardReceived: rewardReceived
+        )
+        .handleEvents()
+        .catch { _ in Just(false) }
+      }
+      .compactMap { success -> MessageBannerConfiguration? in
+        if !success {
+          return (.error, Strings.Something_went_wrong_please_try_again())
+        }
+        return nil
+      }
+
+    updateRewardReceivedError
+      .sink { [weak self] configuration in
+        self?.showBannerSubject.send(configuration)
+      }
+      .store(in: &self.cancellables)
+
     // Force the view to refresh
-    Publishers.Merge3(
+    Publishers.Merge4(
       self.actionFinishedPerformingSubject,
       self.process3DSAuthenticationState
         .filter { $0 == .succeeded }
         .withEmptyValues(),
       self.showBannerSubject
         .filter { $0.type == .success }
-        .withEmptyValues()
+        .withEmptyValues(),
+      updateRewardReceivedError.withEmptyValues()
     )
     .sink { [weak self] () in
       self?.shouldRefreshSubject.send(())
@@ -150,6 +174,10 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
 
   func confirmAddress(addressId: String, backingId: String, onProgress: @escaping (PPOActionState) -> Void) {
     self.confirmAddressSubject.send((addressId: addressId, backingId: backingId, onProgress: onProgress))
+  }
+
+  func updateRewardReceived(backingId: String, rewardReceived: Bool) {
+    self.updateRewardReceivedSubject.send((backingId, rewardReceived))
   }
 
   func actionFinishedPerforming() {
@@ -194,6 +222,10 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
   private let stripeConfigurationSubject = PassthroughSubject<PPOStripeConfiguration, Never>()
   private let confirmAddressSubject = PassthroughSubject<
     (addressId: String, backingId: String, onProgress: (PPOActionState) -> Void),
+    Never
+  >()
+  private let updateRewardReceivedSubject = PassthroughSubject<
+    (backingId: String, rewardReceived: Bool),
     Never
   >()
   private let actionFinishedPerformingSubject = PassthroughSubject<Void, Never>()
