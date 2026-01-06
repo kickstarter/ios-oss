@@ -322,6 +322,10 @@ public protocol ServiceType {
   func backingUpdate(forProject project: Project, forUser user: User, received: Bool)
     -> SignalProducer<Backing, ErrorEnvelope>
 
+  /// Mark reward as received or unreceived. Return Bool is true if success.
+  func updateRewardReceived(backingId: String, rewardReceived: Bool)
+    -> AnyPublisher<Bool, ErrorEnvelope>
+
   /// Follow all friends of current user.
   func followAllFriends() -> SignalProducer<VoidEnvelope, ErrorEnvelope>
 

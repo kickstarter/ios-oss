@@ -88,6 +88,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "PaymentSourceDeletePayload": return GraphAPI.Objects.PaymentSourceDeletePayload
     case "UserCreditCardTypeConnection": return GraphAPI.Objects.UserCreditCardTypeConnection
     case "TriggerThirdPartyEventPayload": return GraphAPI.Objects.TriggerThirdPartyEventPayload
+    case "UpdateBackerCompletedPayload": return GraphAPI.Objects.UpdateBackerCompletedPayload
     case "Query": return GraphAPI.Objects.Query
     case "Country": return GraphAPI.Objects.Country
     case "UserBackingsConnection": return GraphAPI.Objects.UserBackingsConnection
