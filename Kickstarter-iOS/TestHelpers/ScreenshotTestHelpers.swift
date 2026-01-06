@@ -110,18 +110,11 @@ private func snapshotName(
 
   let deviceComponent = sanitizeSnapshotComponent(type.device.snapshotDescription)
   let languageComponent = sanitizeSnapshotComponent(type.language.rawValue)
-  let styleComponent = type.style == .dark ? "dark" : "light"
-  let fontComponent = sanitizeSnapshotComponent(type.contentSizeCategory.rawValue)
-  let orientationComponent = sanitizeSnapshotComponent(type.orientation.snapshotDescription)
-
   return [
     fileComponent,
     functionComponent,
-    "device-\(deviceComponent)",
-    "lang-\(languageComponent)",
-    "style-\(styleComponent)",
-    "font-\(fontComponent)",
-    "orientation-\(orientationComponent)"
+    deviceComponent,
+    languageComponent
   ]
   .joined(separator: "_")
 }
