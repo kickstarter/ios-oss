@@ -113,10 +113,10 @@ internal func assertSnapshot(
   forController controller: UIViewController,
   withType type: ScreenshotType,
   perceptualPrecision: Float? = nil,
-  _ record: Bool = false,
+  record _: Bool = false,
   file: StaticString = #file,
   testName: String = #function,
-  _ line: UInt = #line
+  line _: UInt = #line
 ) {
   let contentSizeTraits = UITraitCollection(
     preferredContentSizeCategory: type.contentSizeCategory
@@ -164,10 +164,10 @@ internal func assertSnapshot(
   size: CGSize? = nil,
   useIntrinsicSize: Bool = false,
   perceptualPrecision: Float? = nil,
-  _ record: Bool = false,
+  record _: Bool = false,
   file: StaticString = #file,
   testName: String = #function,
-  _ line: UInt = #line
+  line _: UInt = #line
 ) {
   let contentSizeTraits = UITraitCollection(
     preferredContentSizeCategory: type.contentSizeCategory
@@ -243,10 +243,10 @@ internal func assertSnapshot<Content: View>(
   size: CGSize? = nil,
   useIntrinsicSize: Bool = false,
   perceptualPrecision: Float? = nil,
-  _ record: Bool = false,
+  record _: Bool = false,
   file: StaticString = #file,
   testName: String = #function,
-  _ line: UInt = #line
+  line _: UInt = #line
 ) {
   let hosting = UIHostingController(rootView: view)
 
