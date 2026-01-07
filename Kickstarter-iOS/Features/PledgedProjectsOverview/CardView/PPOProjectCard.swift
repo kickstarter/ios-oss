@@ -8,10 +8,7 @@ struct PPOProjectCard: View {
   @StateObject var viewModel: PPOProjectCardViewModel
   var parentSize: CGSize
 
-  var onViewProjectDetails: ((PPOProjectCardModel) -> Void)? = nil
-  var onSendMessage: ((PPOProjectCardModel) -> Void)? = nil
-  var onEditAddress: ((PPOProjectCardModel) -> Void)? = nil
-  var onPerformAction: ((PPOProjectCardModel, PPOProjectCardModel.ButtonAction) -> Void)? = nil
+  var onHandleEvent: ((PPOProjectCardModel, PPOProjectCardModel.CardEvent) -> Void)? = nil
 
   var body: some View {
     VStack(spacing: Constants.spacing) {
@@ -47,18 +44,9 @@ struct PPOProjectCard: View {
       content: { self.badge.opacity(self.showCardAlert() ? 1 : 0) }
     )
 
-    // Handle actions
-    .onReceive(self.viewModel.viewBackingDetailsTapped) {
-      self.onViewProjectDetails?(self.viewModel.card)
-    }
-    .onReceive(self.viewModel.sendMessageTapped) {
-      self.onSendMessage?(self.viewModel.card)
-    }
-    .onReceive(self.viewModel.editAddressTapped) {
-      self.onEditAddress?(self.viewModel.card)
-    }
-    .onReceive(self.viewModel.actionPerformed) { action in
-      self.onPerformAction?(self.viewModel.card, action)
+    // Handle events
+    .onReceive(self.viewModel.handleEvent) { event in
+      self.onHandleEvent?(self.viewModel.card, event)
     }
   }
 
@@ -96,7 +84,7 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private func projectDetails(leadingColumnWidth: CGFloat) -> some View {
     Button { [weak viewModel] () in
-      viewModel?.viewBackingDetails()
+      viewModel?.eventTriggered(.viewProjectDetails)
     } label: {
       PPOProjectDetails(
         image: self.viewModel.card.image,
@@ -113,7 +101,7 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private var projectCreator: some View {
     Button { [weak viewModel] () in
-      viewModel?.sendCreatorMessage()
+      viewModel?.eventTriggered(.sendMessage)
     } label: {
       PPOProjectCreator(
         creatorName: self.viewModel.card.creatorName
@@ -129,7 +117,7 @@ struct PPOProjectCard: View {
     switch self.viewModel.card.address {
     case let .editable(address):
       Button { [weak viewModel] () in
-        viewModel?.editAddress()
+        viewModel?.eventTriggered(.editAddress)
       } label: {
         self.addressContents(leadingColumnWidth: leadingColumnWidth, address: address, editable: true)
       }
@@ -155,7 +143,7 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private func baseButton(for action: PPOProjectCardViewModel.ButtonAction) -> some View {
     Button(action.label) { [weak viewModel] () in
-      viewModel?.performAction(action: action)
+      viewModel?.eventTriggered(.performButtonAction(buttonAction: action))
     }
     .padding([.horizontal])
   }

@@ -4,28 +4,31 @@ import Combine
 import XCTest
 
 final class PPOProjectCardViewModelTests: XCTestCase {
-  func testPerformAction() throws {
+  func testAuthenticateCardButtonActionEvent() throws {
     var cancellables: [AnyCancellable] = []
     let viewModel = PPOProjectCardViewModel(
       card: PPOProjectCardModel.authenticateCardTemplate
     )
 
     let expectation = expectation(description: "Waiting for action to be performed")
-    var actions: [PPOProjectCardModel.ButtonAction] = []
-    viewModel.actionPerformed
-      .sink { action in
-        actions.append(action)
+    var events: [PPOProjectCardModel.CardEvent] = []
+    viewModel.handleEvent
+      .sink { event in
+        events.append(event)
         expectation.fulfill()
       }
       .store(in: &cancellables)
 
-    viewModel.performAction(action: .authenticateCard(clientSecret: "test123"))
+    let authenticateCardEvent = PPOProjectCardModel.CardEvent
+      .performButtonAction(buttonAction: .authenticateCard(clientSecret: "test123"))
+
+    viewModel.eventTriggered(authenticateCardEvent)
     waitForExpectations(timeout: 0.1)
 
-    XCTAssertEqual(actions, [.authenticateCard(clientSecret: "test123")])
+    XCTAssertEqual(events, [authenticateCardEvent])
   }
 
-  func testSendMessage() throws {
+  func testSendMessageEvent() throws {
     var cancellables: [AnyCancellable] = []
     let viewModel = PPOProjectCardViewModel(
       card: PPOProjectCardModel.authenticateCardTemplate
@@ -33,14 +36,14 @@ final class PPOProjectCardViewModelTests: XCTestCase {
 
     let expectation = expectation(description: "Waiting for message to be sent")
     var didSendMessage = false
-    viewModel.sendMessageTapped
-      .sink { () in
-        didSendMessage = true
+    viewModel.handleEvent
+      .sink { event in
+        didSendMessage = event == .sendMessage
         expectation.fulfill()
       }
       .store(in: &cancellables)
 
-    viewModel.sendCreatorMessage()
+    viewModel.eventTriggered(.sendMessage)
     waitForExpectations(timeout: 0.1)
 
     XCTAssertTrue(didSendMessage)

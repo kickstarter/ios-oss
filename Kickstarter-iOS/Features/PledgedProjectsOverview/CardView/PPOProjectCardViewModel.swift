@@ -4,17 +4,11 @@ import KsApi
 import Library
 
 protocol PPOProjectCardViewModelInputs {
-  func viewBackingDetails()
-  func sendCreatorMessage()
-  func editAddress()
-  func performAction(action: PPOProjectCardModel.ButtonAction)
+  func eventTriggered(_: PPOProjectCardModel.CardEvent)
 }
 
 protocol PPOProjectCardViewModelOutputs {
-  var viewBackingDetailsTapped: AnyPublisher<Void, Never> { get }
-  var sendMessageTapped: AnyPublisher<Void, Never> { get }
-  var editAddressTapped: AnyPublisher<Void, Never> { get }
-  var actionPerformed: AnyPublisher<PPOProjectCardModel.ButtonAction, Never> { get }
+  var handleEvent: AnyPublisher<PPOProjectCardModel.CardEvent, Never> { get }
 
   var card: PPOProjectCardModel { get }
 }
@@ -51,36 +45,17 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
 
   // MARK: - Inputs
 
-  func editAddress() {
-    self.editAddressSubject.send()
-  }
-
-  func sendCreatorMessage() {
-    self.sendCreatorMessageSubject.send()
-  }
-
-  func performAction(action: ButtonAction) {
-    self.actionPerformedSubject.send(action)
-  }
-
-  func viewBackingDetails() {
-    self.viewBackingDetailsSubject.send()
+  func eventTriggered(_ event: PPOProjectCardModel.CardEvent) {
+    self.handleEventSubject.send(event)
   }
 
   // MARK: - Outputs
 
-  var viewBackingDetailsTapped: AnyPublisher<(), Never> {
-    self.viewBackingDetailsSubject.eraseToAnyPublisher()
+  var handleEvent: AnyPublisher<PPOProjectCardModel.CardEvent, Never> {
+    self.handleEventSubject.eraseToAnyPublisher()
   }
 
-  var sendMessageTapped: AnyPublisher<(), Never> { self.sendCreatorMessageSubject.eraseToAnyPublisher() }
-  var editAddressTapped: AnyPublisher<(), Never> { self.editAddressSubject.eraseToAnyPublisher() }
-  var actionPerformed: AnyPublisher<ButtonAction, Never> { self.actionPerformedSubject.eraseToAnyPublisher() }
-
-  private let viewBackingDetailsSubject = PassthroughSubject<Void, Never>()
-  private let sendCreatorMessageSubject = PassthroughSubject<Void, Never>()
-  private let editAddressSubject = PassthroughSubject<Void, Never>()
-  private let actionPerformedSubject = PassthroughSubject<PPOProjectCardModel.ButtonAction, Never>()
+  private let handleEventSubject = PassthroughSubject<PPOProjectCardModel.CardEvent, Never>()
 
   // MARK: - Helpers
 
@@ -91,10 +66,6 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
 
   static func == (lhs: PPOProjectCardViewModel, rhs: PPOProjectCardViewModel) -> Bool {
     lhs.card == rhs.card
-  }
-
-  func fix3DSChallenge(clientSecret: String) {
-    self.performAction(action: .authenticateCard(clientSecret: clientSecret))
   }
 
   func handle3DSState(_ state: PPOActionState) {
