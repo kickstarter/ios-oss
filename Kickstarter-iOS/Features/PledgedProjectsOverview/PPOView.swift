@@ -53,34 +53,8 @@ struct PPOView: View {
       PPOProjectCard(
         viewModel: card,
         parentSize: parentSize,
-        onViewProjectDetails: { card in
-          self.viewModel.viewProjectDetails(from: card)
-        },
-        onSendMessage: { card in
-          self.viewModel.contactCreator(from: card)
-        },
-        onEditAddress: { card in
-          self.viewModel.editAddress(from: card)
-        },
-        onPerformAction: { model, action in
-          switch action {
-          case let .authenticateCard(clientSecret):
-            self.viewModel.fix3DSChallenge(
-              from: model,
-              clientSecret: clientSecret,
-              onProgress: { [weak card] state in
-                card?.handle3DSState(state)
-              }
-            )
-          case .completeSurvey:
-            self.viewModel.openSurvey(from: model)
-          case .managePledge:
-            self.viewModel.managePledge(from: model)
-          case let .confirmAddress(address, addressId):
-            self.viewModel.confirmAddress(from: model, address: address, addressId: addressId)
-          case .fixPayment:
-            self.viewModel.fixPaymentMethod(from: model)
-          }
+        onPerformAction: { _, cardAction in
+          self.viewModel.performAction(cardAction, from: card)
         }
       )
       .listRowBackground(EmptyView())

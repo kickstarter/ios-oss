@@ -8,10 +8,7 @@ struct PPOProjectCard: View {
   @StateObject var viewModel: PPOProjectCardViewModel
   var parentSize: CGSize
 
-  var onViewProjectDetails: ((PPOProjectCardModel) -> Void)? = nil
-  var onSendMessage: ((PPOProjectCardModel) -> Void)? = nil
-  var onEditAddress: ((PPOProjectCardModel) -> Void)? = nil
-  var onPerformAction: ((PPOProjectCardModel, PPOProjectCardModel.Action) -> Void)? = nil
+  var onPerformAction: ((PPOProjectCardModel, PPOProjectCardModel.CardAction) -> Void)? = nil
 
   var body: some View {
     VStack(spacing: Constants.spacing) {
@@ -52,15 +49,6 @@ struct PPOProjectCard: View {
     )
 
     // Handle actions
-    .onReceive(self.viewModel.viewBackingDetailsTapped) {
-      self.onViewProjectDetails?(self.viewModel.card)
-    }
-    .onReceive(self.viewModel.sendMessageTapped) {
-      self.onSendMessage?(self.viewModel.card)
-    }
-    .onReceive(self.viewModel.editAddressTapped) {
-      self.onEditAddress?(self.viewModel.card)
-    }
     .onReceive(self.viewModel.actionPerformed) { action in
       self.onPerformAction?(self.viewModel.card, action)
     }
@@ -100,7 +88,7 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private func projectDetails(leadingColumnWidth: CGFloat) -> some View {
     Button { [weak viewModel] () in
-      viewModel?.viewBackingDetails()
+      viewModel?.performAction(action: .viewProjectDetails)
     } label: {
       PPOProjectDetails(
         image: self.viewModel.card.image,
@@ -117,7 +105,7 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private var projectCreator: some View {
     Button { [weak viewModel] () in
-      viewModel?.sendCreatorMessage()
+      viewModel?.performAction(action: .sendMessage)
     } label: {
       PPOProjectCreator(
         creatorName: self.viewModel.card.creatorName
@@ -133,7 +121,7 @@ struct PPOProjectCard: View {
     switch self.viewModel.card.address {
     case let .editable(address):
       Button { [weak viewModel] () in
-        viewModel?.editAddress()
+        viewModel?.performAction(action: .editAddress)
       } label: {
         self.addressContents(leadingColumnWidth: leadingColumnWidth, address: address, editable: true)
       }
@@ -157,15 +145,15 @@ struct PPOProjectCard: View {
   }
 
   @ViewBuilder
-  private func baseButton(for action: PPOProjectCardViewModel.Action) -> some View {
+  private func baseButton(for action: PPOProjectCardModel.ButtonAction) -> some View {
     Button(action.label) { [weak viewModel] () in
-      viewModel?.performAction(action: action)
+      viewModel?.performAction(action: .buttonAction(buttonAction: action))
     }
     .padding([.horizontal])
   }
 
   @ViewBuilder
-  private func button(for action: PPOProjectCardViewModel.Action) -> some View {
+  private func button(for action: PPOProjectCardModel.ButtonAction) -> some View {
     ZStack {
       switch action.style {
       case .green:
