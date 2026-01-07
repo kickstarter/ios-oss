@@ -3,12 +3,12 @@ private let eurMinPledge: Int = 1
 
 extension Project {
   public struct Country {
-    public let countryCode: String
-    public let currencyCode: String
-    public let currencySymbol: String
-    public let maxPledge: Int?
-    public let minPledge: Int?
-    public let trailingCode: Bool
+    public internal(set) var countryCode: String
+    public internal(set) var currencyCode: String
+    public internal(set) var currencySymbol: String
+    public internal(set) var maxPledge: Int?
+    public internal(set) var minPledge: Int?
+    public internal(set) var trailingCode: Bool
 
     /*
      FIXME: The amount for maximum pledge can be found here:

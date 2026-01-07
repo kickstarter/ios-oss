@@ -188,14 +188,14 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testAmountCurrencyAndStepper_Country_DoesNotHaveMinMax_NoReward() {
-    let countryWithNilMiniumPledge = Project.Country.us
-      |> Project.Country.lens.minPledge .~ nil
+    var countryWithNilMiniumPledge = Project.Country.us
+    countryWithNilMiniumPledge.minPledge = nil
 
     let launchedCountries = LaunchedCountries(countries: [countryWithNilMiniumPledge])
 
     withEnvironment(launchedCountries: launchedCountries) {
-      let country = Project.Country.us
-        |> Project.Country.lens.minPledge .~ nil
+      var country = Project.Country.us
+      country.minPledge = nil
 
       let project = Project.template
         |> Project.lens.stats.projectCurrency .~ country.currencyCode
@@ -318,9 +318,9 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testDoneButtonIsEnabled_Stepper_ProjectCurrencyCountry_DoesNotHaveMinMax_NoReward() {
-    let country = Project.Country.au
-      |> Project.Country.lens.minPledge .~ nil
-      |> Project.Country.lens.maxPledge .~ nil
+    var country = Project.Country.au
+    country.minPledge = nil
+    country.maxPledge = nil
 
     let project = Project.template
       |> Project.lens.stats.projectCurrency .~ country.currencyCode
@@ -398,9 +398,9 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testDoneButtonIsEnabled_Stepper_ProjectCountryCurrency_DoesNotHaveMinMax_Reward_Minimum_Template() {
-    let country = Project.Country.au
-      |> Project.Country.lens.minPledge .~ nil
-      |> Project.Country.lens.maxPledge .~ nil
+    var country = Project.Country.au
+    country.minPledge = nil
+    country.maxPledge = nil
 
     let project = Project.template
       |> Project.lens.stats.projectCurrency .~ country.currencyCode
@@ -430,9 +430,9 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testDoneButtonIsEnabled_Stepper_ProjectCountryCurrency_DoesNotHaveMinMax_Reward_Minimum_Custom() {
-    let country = Project.Country.au
-      |> Project.Country.lens.minPledge .~ nil
-      |> Project.Country.lens.maxPledge .~ nil
+    var country = Project.Country.au
+    country.minPledge = nil
+    country.maxPledge = nil
 
     let project = Project.template
       |> Project.lens.stats.projectCurrency .~ country.currencyCode
@@ -510,9 +510,9 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testDoneButtonIsEnabled_TextField_ProjectCurrencyCountry_DoesNotHaveMinMax_NoReward() {
-    let country = Project.Country.au
-      |> Project.Country.lens.minPledge .~ nil
-      |> Project.Country.lens.maxPledge .~ nil
+    var country = Project.Country.au
+    country.minPledge = nil
+    country.maxPledge = nil
 
     let project = Project.template
       |> Project.lens.stats.projectCurrency .~ country.currencyCode
@@ -587,9 +587,9 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testDoneButtonIsEnabled_TextField_ProjectCurrencyCountry_DoesNotHaveMinMax_Reward_Minimum_Template() {
-    let country = Project.Country.au
-      |> Project.Country.lens.minPledge .~ nil
-      |> Project.Country.lens.maxPledge .~ nil
+    var country = Project.Country.au
+    country.minPledge = nil
+    country.maxPledge = nil
 
     let project = Project.template
       |> Project.lens.stats.projectCurrency .~ country.currencyCode
@@ -619,9 +619,9 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testDoneButtonIsEnabled_TextField_ProjectCurrencyCountry_DoesNotHaveMinMax_Reward_Minimum_Custom() {
-    let country = Project.Country.au
-      |> Project.Country.lens.minPledge .~ nil
-      |> Project.Country.lens.maxPledge .~ nil
+    var country = Project.Country.au
+    country.minPledge = nil
+    country.maxPledge = nil
 
     let project = Project.template
       |> Project.lens.stats.projectCurrency .~ country.currencyCode
@@ -699,9 +699,9 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testDoneButtonIsEnabled_Combined_ProjectCurrencyCountry_DoesNotHaveMinMax_NoReward() {
-    let country = Project.Country.au
-      |> Project.Country.lens.minPledge .~ nil
-      |> Project.Country.lens.maxPledge .~ nil
+    var country = Project.Country.au
+    country.minPledge = nil
+    country.maxPledge = nil
 
     let project = Project.template
       |> Project.lens.stats.projectCurrency .~ country.currencyCode
@@ -776,9 +776,9 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testDoneButtonIsEnabled_Combined_ProjectCurrencyCountry_DoesNotHaveMinMax_Reward_Minimum_Template() {
-    let country = Project.Country.au
-      |> Project.Country.lens.minPledge .~ nil
-      |> Project.Country.lens.maxPledge .~ nil
+    var country = Project.Country.au
+    country.minPledge = nil
+    country.maxPledge = nil
 
     let project = Project.template
       |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
@@ -808,9 +808,9 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testDoneButtonIsEnabled_Combined_ProjectCurrencyCountry_DoesNotHaveMinMax_Reward_Minimum_Custom() {
-    let country = Project.Country.au
-      |> Project.Country.lens.minPledge .~ nil
-      |> Project.Country.lens.maxPledge .~ nil
+    var country = Project.Country.au
+    country.minPledge = nil
+    country.maxPledge = nil
 
     let project = Project.template
       |> Project.lens.stats.projectCurrency .~ country.currencyCode

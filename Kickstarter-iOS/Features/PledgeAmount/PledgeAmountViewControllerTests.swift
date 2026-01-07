@@ -139,8 +139,11 @@ final class PledgeAmountViewControllerTests: TestCase {
   }
 
   func testView_TextColorIsGreenWhenEqualToMaximumPledgeAmount() {
+    var countryWithMaxPledge = Project.template.country
+    countryWithMaxPledge.maxPledge = 10_000
+
     let project = Project.template
-      |> (Project.lens.country .. Project.Country.lens.maxPledge) .~ 10_000
+      |> Project.lens.country .~ countryWithMaxPledge
 
     let stepper = UIStepper(frame: .zero)
       |> \.maximumValue .~ PledgeAmountStepperConstants.max
@@ -159,8 +162,11 @@ final class PledgeAmountViewControllerTests: TestCase {
   }
 
   func testView_ErrorMessageAppears_And_TextColorIsRedWhenAboveMaximumPledgeAmount() {
+    var countryWithMaxPledge = Project.template.country
+    countryWithMaxPledge.maxPledge = 10_000
+
     let project = Project.template
-      |> (Project.lens.country .. Project.Country.lens.maxPledge) .~ 10_000
+      |> Project.lens.country .~ countryWithMaxPledge
 
     let stepper = UIStepper(frame: .zero)
       |> \.maximumValue .~ PledgeAmountStepperConstants.max

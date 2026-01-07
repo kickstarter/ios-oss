@@ -358,7 +358,6 @@
 		3777F2F72343C7900030BEF5 /* ManageViewPledgeRewardReceivedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3777F2F62343C7900030BEF5 /* ManageViewPledgeRewardReceivedViewModel.swift */; };
 		3777F2F92343C7AB0030BEF5 /* ManageViewPledgeRewardReceivedViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3777F2F82343C7AB0030BEF5 /* ManageViewPledgeRewardReceivedViewModelTests.swift */; };
 		3780C8622208F8C8002117D1 /* SettingsTextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */; };
-		378CA24622C4449F004E3C86 /* CountryLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378CA24522C4449F004E3C86 /* CountryLenses.swift */; };
 		379C00012242DAFF00F6F0C2 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFF12242DAC400F6F0C2 /* WebViewController.swift */; };
 		379CFFFB2242DADB00F6F0C2 /* MFMailComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFEF2242DAC300F6F0C2 /* MFMailComposeViewController.swift */; };
 		379CFFFC2242DAE800F6F0C2 /* Nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFF02242DAC400F6F0C2 /* Nib.swift */; };
@@ -2149,7 +2148,6 @@
 		3777F2F62343C7900030BEF5 /* ManageViewPledgeRewardReceivedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageViewPledgeRewardReceivedViewModel.swift; sourceTree = "<group>"; };
 		3777F2F82343C7AB0030BEF5 /* ManageViewPledgeRewardReceivedViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageViewPledgeRewardReceivedViewModelTests.swift; sourceTree = "<group>"; };
 		3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextInputCell.swift; sourceTree = "<group>"; };
-		378CA24522C4449F004E3C86 /* CountryLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryLenses.swift; sourceTree = "<group>"; };
 		379CFFEA2242DAC200F6F0C2 /* UIImageView+URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+URL.swift"; sourceTree = "<group>"; };
 		379CFFEB2242DAC200F6F0C2 /* NSBundle-Framework.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle-Framework.swift"; sourceTree = "<group>"; };
 		379CFFEE2242DAC300F6F0C2 /* Storyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storyboard.swift; sourceTree = "<group>"; };
@@ -7412,7 +7410,6 @@
 				D01587991EEB2ED6006E7684 /* ActivityLenses.swift */,
 				D015879A1EEB2ED6006E7684 /* BackingLenses.swift */,
 				D015879F1EEB2ED6006E7684 /* ConfigLenses.swift */,
-				378CA24522C4449F004E3C86 /* CountryLenses.swift */,
 				D01587A11EEB2ED6006E7684 /* DiscoveryEnvelopeLenses.swift */,
 				D01587A21EEB2ED6006E7684 /* DiscoveryParamsLenses.swift */,
 				D01587A31EEB2ED6006E7684 /* FindFriendsEnvelopeLenses.swift */,
@@ -9616,7 +9613,6 @@
 				8AC3E0AC2698EFAA00168BF8 /* Project+FetchAddOnsQueryData.swift in Sources */,
 				D01589811EEB2ED7006E7684 /* Update.swift in Sources */,
 				8AC3E00726961E6400168BF8 /* Reward+RewardFragment.swift in Sources */,
-				378CA24622C4449F004E3C86 /* CountryLenses.swift in Sources */,
 				D0158A161EEB30A2006E7684 /* ItemTemplates.swift in Sources */,
 				D63BBD33217F9CDE007E01F0 /* GraphCreditCardTemplate.swift in Sources */,
 				6051C6792B67F36800514202 /* CreatePaymentIntentInput.swift in Sources */,

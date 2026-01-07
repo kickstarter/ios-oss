@@ -18,14 +18,13 @@ extension Project.Country {
     }
 
     var updatedCountryWithProjectCurrency = countryWithCurrencyDefault
-      |> Project.Country.lens.minPledge .~ minPledge
-      |> Project.Country.lens.maxPledge .~ maxPledge
-      |> Project.Country.lens.currencyCode .~ currency.rawValue
+    updatedCountryWithProjectCurrency.minPledge = minPledge
+    updatedCountryWithProjectCurrency.maxPledge = maxPledge
+    updatedCountryWithProjectCurrency.currencyCode = currency.rawValue
 
     if let matchingCurrencySymbol = Project.Country.all
       .first(where: { $0.currencyCode.lowercased() == currency.rawValue.lowercased() })?.currencySymbol {
-      updatedCountryWithProjectCurrency = updatedCountryWithProjectCurrency
-        |> Project.Country.lens.currencySymbol .~ matchingCurrencySymbol
+      updatedCountryWithProjectCurrency.currencySymbol = matchingCurrencySymbol
     }
 
     return updatedCountryWithProjectCurrency

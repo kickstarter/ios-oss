@@ -6,7 +6,7 @@ public struct Project {
   public var availableCardTypes: [String]?
   public var blurb: String
   public var category: Category?
-  public var country: Country
+  public internal(set) var country: Country
   public var creator: User
   public var extendedProjectProperties: ExtendedProjectProperties?
   public var memberData: MemberData
