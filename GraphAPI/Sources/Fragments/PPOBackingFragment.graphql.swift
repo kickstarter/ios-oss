@@ -5,7 +5,7 @@
 
 public struct PPOBackingFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment PPOBackingFragment on Backing { __typename amount { __typename ...MoneyFragment } id project { __typename ...PPOProjectFragment ...ProjectAnalyticsFragment } backingDetailsPageRoute(type: url, tab: survey_responses) deliveryAddress { __typename id addressLine1 addressLine2 city region postalCode phoneNumber recipientName countryCode } clientSecret }"#
+    #"fragment PPOBackingFragment on Backing { __typename amount { __typename ...MoneyFragment } id project { __typename ...PPOProjectFragment ...ProjectAnalyticsFragment } backerCompleted backingDetailsPageRoute(type: url, tab: survey_responses) deliveryAddress { __typename id addressLine1 addressLine2 city region postalCode phoneNumber recipientName countryCode } clientSecret }"#
   }
 
   public let __data: DataDict
@@ -17,6 +17,7 @@ public struct PPOBackingFragment: GraphAPI.SelectionSet, Fragment {
     .field("amount", Amount.self),
     .field("id", GraphAPI.ID.self),
     .field("project", Project?.self),
+    .field("backerCompleted", Bool.self),
     .field("backingDetailsPageRoute", String.self, arguments: [
       "type": "url",
       "tab": "survey_responses"
@@ -30,6 +31,8 @@ public struct PPOBackingFragment: GraphAPI.SelectionSet, Fragment {
   public var id: GraphAPI.ID { __data["id"] }
   /// The project
   public var project: Project? { __data["project"] }
+  /// If the backer_completed_at is set or not
+  public var backerCompleted: Bool { __data["backerCompleted"] }
   /// URL/path for the backing details page
   public var backingDetailsPageRoute: String { __data["backingDetailsPageRoute"] }
   /// The delivery address associated with the backing
@@ -41,6 +44,7 @@ public struct PPOBackingFragment: GraphAPI.SelectionSet, Fragment {
     amount: Amount,
     id: GraphAPI.ID,
     project: Project? = nil,
+    backerCompleted: Bool,
     backingDetailsPageRoute: String,
     deliveryAddress: DeliveryAddress? = nil,
     clientSecret: String? = nil
@@ -51,6 +55,7 @@ public struct PPOBackingFragment: GraphAPI.SelectionSet, Fragment {
         "amount": amount._fieldData,
         "id": id,
         "project": project._fieldData,
+        "backerCompleted": backerCompleted,
         "backingDetailsPageRoute": backingDetailsPageRoute,
         "deliveryAddress": deliveryAddress._fieldData,
         "clientSecret": clientSecret,

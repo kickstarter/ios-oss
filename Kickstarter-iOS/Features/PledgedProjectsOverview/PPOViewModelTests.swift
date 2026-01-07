@@ -522,6 +522,7 @@ class PPOViewModelTests: XCTestCase {
         },
         "deliveryAddress": null,
         "clientSecret": null,
+        "backerCompleted": false,
         "backingDetailsPageRoute": "fake-backings-route",
         "project": {
           "__typename": "Project",
