@@ -1,4 +1,4 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 6.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,12 +6,16 @@ import PackageDescription
 let package = Package(
   name: "KsApi",
   platforms: [
-    .iOS(.v17)
+    .iOS(.v18)
   ],
   products: [
     .library(
       name: "KsApi",
       targets: ["KsApi"]
+    ),
+    .library(
+      name: "KsApiTestHelpers",
+      targets: ["KsApiTestHelpers"]
     )
   ],
   dependencies: [
@@ -29,15 +33,24 @@ let package = Package(
         .product(name: "SwiftSoup", package: "SwiftSoup"),
         .product(name: "ReactiveExtensions", package: "Kickstarter-ReactiveExtensions"),
 
-          .product(name: "Apollo", package: "apollo-ios"),
+        .product(name: "Apollo", package: "apollo-ios"),
 
         .product(name: "GraphAPI", package: "GraphAPI")
+      ]
+    ),
+    .target(
+      name: "KsApiTestHelpers",
+      dependencies: [
+        .product(name: "GraphAPI", package: "GraphAPI"),
+        .product(name: "Apollo", package: "apollo-ios"),
+        .byName(name: "KsApi")
       ]
     ),
     .testTarget(
       name: "KsApiTests",
       dependencies: [
         .byName(name: "KsApi"),
+        .byName(name: "KsApiTestHelpers"),
         .product(name: "GraphAPI", package: "GraphAPI"),
         .product(name: "GraphAPITestMocks", package: "GraphAPI"),
         .product(name: "ReactiveExtensions-TestHelpers", package: "Kickstarter-ReactiveExtensions")
@@ -45,6 +58,7 @@ let package = Package(
       resources: [
         .process("queries/templates/")
       ]
-    ),
-  ]
+    )
+  ],
+  swiftLanguageModes: [.v5]
 )
