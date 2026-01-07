@@ -54,6 +54,7 @@ internal func orthogonalCombos<A, B, C>(_ xs: [A], _ ys: [B], _ zs: [C]) -> [(A,
 
 // Combine four arrays by creating an array where each element is represented at least once.
 // Result consists of `max(A.count, B.count, C.count, D.count)` tuples.
+// swiftlint:disable large_tuple
 internal func orthogonalCombos<A, B, C, D>(
   _ xs: [A],
   _ ys: [B],
@@ -97,3 +98,4 @@ internal func orthogonalCombos<A, B, C, D, E>(
     )
   }
 }
+// swiftlint:enable large_tuple

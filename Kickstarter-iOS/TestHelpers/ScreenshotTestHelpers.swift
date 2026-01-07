@@ -113,10 +113,10 @@ internal func assertSnapshot(
   forController controller: UIViewController,
   withType type: ScreenshotType,
   perceptualPrecision: Float? = nil,
-  record: Bool = false,
+  _ record: Bool = false,
   file: StaticString = #file,
   testName: String = #function,
-  line: UInt = #line
+  _ line: UInt = #line
 ) {
   let contentSizeTraits = UITraitCollection(
     preferredContentSizeCategory: type.contentSizeCategory
@@ -164,10 +164,10 @@ internal func assertSnapshot(
   size: CGSize? = nil,
   useIntrinsicSize: Bool = false,
   perceptualPrecision: Float? = nil,
-  record: Bool = false,
+  _ record: Bool = false,
   file: StaticString = #file,
   testName: String = #function,
-  line: UInt = #line
+  _ line: UInt = #line
 ) {
   let contentSizeTraits = UITraitCollection(
     preferredContentSizeCategory: type.contentSizeCategory
@@ -243,10 +243,10 @@ internal func assertSnapshot<Content: View>(
   size: CGSize? = nil,
   useIntrinsicSize: Bool = false,
   perceptualPrecision: Float? = nil,
-  record: Bool = false,
+  _ record: Bool = false,
   file: StaticString = #file,
   testName: String = #function,
-  line: UInt = #line
+  _ line: UInt = #line
 ) {
   let hosting = UIHostingController(rootView: view)
 
@@ -271,7 +271,6 @@ internal func assertSnapshot<Content: View>(
     perceptualPrecision: perceptualPrecision
   )
 }
-
 
 /// Builds a consistent snapshot name from file, function, and the screenshot configuration.
 private func snapshotName(
