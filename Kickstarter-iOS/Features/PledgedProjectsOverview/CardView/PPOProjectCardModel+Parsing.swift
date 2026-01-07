@@ -62,10 +62,9 @@ extension PPOProjectCardModel {
 
     let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
 
-    // TODO(MBL-2058): Look at `card.showRewardReceivedToggle` to decide if
-    // reward toggle should show at all.
+    // Show the reward toggle if the backend says to show it and the v2 feature flag is on.
     let toggleState: PPORewardToggleState
-    if !featurePledgedProjectsOverviewV2Enabled() {
+    if !featurePledgedProjectsOverviewV2Enabled() || !card.showRewardReceivedToggle {
       toggleState = .hidden
     } else if backing?.backerCompleted == true {
       toggleState = .rewardReceived
