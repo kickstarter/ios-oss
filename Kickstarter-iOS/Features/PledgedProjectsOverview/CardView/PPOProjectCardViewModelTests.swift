@@ -11,7 +11,7 @@ final class PPOProjectCardViewModelTests: XCTestCase {
     )
 
     let expectation = expectation(description: "Waiting for action to be performed")
-    var actions: [PPOProjectCardModel.Action] = []
+    var actions: [PPOProjectCardModel.ButtonAction] = []
     viewModel.actionPerformed
       .sink { action in
         actions.append(action)

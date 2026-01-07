@@ -11,7 +11,7 @@ struct PPOProjectCard: View {
   var onViewProjectDetails: ((PPOProjectCardModel) -> Void)? = nil
   var onSendMessage: ((PPOProjectCardModel) -> Void)? = nil
   var onEditAddress: ((PPOProjectCardModel) -> Void)? = nil
-  var onPerformAction: ((PPOProjectCardModel, PPOProjectCardModel.Action) -> Void)? = nil
+  var onPerformAction: ((PPOProjectCardModel, PPOProjectCardModel.ButtonAction) -> Void)? = nil
 
   var body: some View {
     VStack(spacing: Constants.spacing) {
@@ -153,7 +153,7 @@ struct PPOProjectCard: View {
   }
 
   @ViewBuilder
-  private func baseButton(for action: PPOProjectCardViewModel.Action) -> some View {
+  private func baseButton(for action: PPOProjectCardViewModel.ButtonAction) -> some View {
     Button(action.label) { [weak viewModel] () in
       viewModel?.performAction(action: action)
     }
@@ -161,7 +161,7 @@ struct PPOProjectCard: View {
   }
 
   @ViewBuilder
-  private func button(for action: PPOProjectCardViewModel.Action) -> some View {
+  private func button(for action: PPOProjectCardViewModel.ButtonAction) -> some View {
     ZStack {
       switch action.style {
       case .green:
