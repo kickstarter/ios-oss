@@ -19,7 +19,7 @@ public enum FetchBackerProjectsQueryDataTemplate {
   var savedProjectsData: GraphAPI.FetchMySavedProjectsQuery.Data {
     switch self {
     case .valid:
-      let url = Bundle(for: FetchProjectsEnvelope_FetchBackerProjectsQueryDataTests.self).url(
+      let url = Bundle.module.url(
         forResource: "FetchMySavedProjectsQuery",
         withExtension: "json"
       )
@@ -33,7 +33,7 @@ public enum FetchBackerProjectsQueryDataTemplate {
   var backedProjectsData: GraphAPI.FetchMyBackedProjectsQuery.Data {
     switch self {
     case .valid:
-      let url = Bundle(for: FetchProjectsEnvelope_FetchBackerProjectsQueryDataTests.self).url(
+      let url = Bundle.module.url(
         forResource: "FetchMyBackedProjectsQuery",
         withExtension: "json"
       )
