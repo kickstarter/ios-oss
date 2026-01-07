@@ -142,18 +142,32 @@ internal func assertSnapshot(
       type: type
     )
 
-    let strategy: Snapshotting<UIView, UIImage>
-    if let precision = perceptualPrecision {
-      strategy = .image(perceptualPrecision: precision)
-    } else {
-      strategy = .image
-    }
+    let strategy: Snapshotting<UIView, UIImage> = {
+      if let precision = perceptualPrecision {
+        return .image(perceptualPrecision: precision)
+      }
+      return .image
+    }()
 
-    assertSnapshot(
+    if let failure = verifySnapshot(
       of: parent.view,
       as: strategy,
-      named: name
-    )
+      named: name,
+      record: record,
+      file: file,
+      testName: testName,
+      line: line
+    ) {
+      XCTFail(
+        """
+        Snapshot failed for \(name)
+        device=\(type.device.snapshotDescription), lang=\(type.language.rawValue), style=\(type.style.snapshotDescription), font=\(type.contentSizeCategory.rawValue), orientation=\(type.orientation.snapshotDescription)
+        \(failure)
+        """,
+        file: file,
+        line: line
+      )
+    }
   }
 }
 
@@ -167,7 +181,7 @@ internal func assertSnapshot(
   record _: Bool = false,
   file: StaticString = #file,
   testName: String = #function,
-  line _: UInt = #line
+  line: UInt = #line
 ) {
   let contentSizeTraits = UITraitCollection(
     preferredContentSizeCategory: type.contentSizeCategory
@@ -221,18 +235,32 @@ internal func assertSnapshot(
       type: type
     )
 
-    let strategy: Snapshotting<UIView, UIImage>
-    if let precision = perceptualPrecision {
-      strategy = .image(perceptualPrecision: precision)
-    } else {
-      strategy = .image
-    }
+    let strategy: Snapshotting<UIView, UIImage> = {
+      if let precision = perceptualPrecision {
+        return .image(perceptualPrecision: precision)
+      }
+      return .image
+    }()
 
-    assertSnapshot(
+    if let failure = verifySnapshot(
       of: parent.view,
       as: strategy,
-      named: name
-    )
+      named: name,
+      record: record,
+      file: file,
+      testName: testName,
+      line: line
+    ) {
+      XCTFail(
+        """
+        Snapshot failed for \(name)
+        device=\(type.device.snapshotDescription), lang=\(type.language.rawValue), style=\(type.style.snapshotDescription), font=\(type.contentSizeCategory.rawValue), orientation=\(type.orientation.snapshotDescription)
+        \(failure)
+        """,
+        file: file,
+        line: line
+      )
+    }
   }
 }
 
@@ -246,7 +274,7 @@ internal func assertSnapshot<Content: View>(
   record _: Bool = false,
   file: StaticString = #file,
   testName: String = #function,
-  line _: UInt = #line
+  line: UInt = #line
 ) {
   let hosting = UIHostingController(rootView: view)
 
@@ -268,7 +296,11 @@ internal func assertSnapshot<Content: View>(
   assertSnapshot(
     forController: hosting,
     withType: type,
-    perceptualPrecision: perceptualPrecision
+    perceptualPrecision: perceptualPrecision,
+    record: record,
+    file: file,
+    testName: testName,
+    line: line
   )
 }
 
@@ -288,11 +320,17 @@ private func snapshotName(
 
   let deviceComponent = sanitizeSnapshotComponent(type.device.snapshotDescription)
   let languageComponent = sanitizeSnapshotComponent(type.language.rawValue)
+  let styleComponent = sanitizeSnapshotComponent(type.style.snapshotDescription)
+  let fontComponent = sanitizeSnapshotComponent(type.contentSizeCategory.rawValue)
+  let orientationComponent = sanitizeSnapshotComponent(type.orientation.snapshotDescription)
   return [
     fileComponent,
     functionComponent,
     deviceComponent,
-    languageComponent
+    languageComponent,
+    styleComponent,
+    fontComponent,
+    orientationComponent
   ]
   .joined(separator: "_")
 }
