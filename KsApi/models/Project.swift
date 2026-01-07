@@ -178,11 +178,11 @@ public struct Project {
   }
 
   public struct Dates {
-    public var deadline: TimeInterval?
-    public var featuredAt: TimeInterval?
-    public var finalCollectionDate: TimeInterval?
-    public var launchedAt: TimeInterval?
-    public var stateChangedAt: TimeInterval
+    public internal(set) var deadline: TimeInterval?
+    public internal(set) var featuredAt: TimeInterval?
+    public internal(set) var finalCollectionDate: TimeInterval?
+    public internal(set) var launchedAt: TimeInterval?
+    public internal(set) var stateChangedAt: TimeInterval
 
     /**
      Returns project duration in Days

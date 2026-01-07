@@ -23,14 +23,7 @@ extension Project {
       unreadMessagesCount: nil,
       unseenActivityCount: nil
     ),
-    dates: Project.Dates(
-      deadline: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 15.0,
-      featuredAt: nil,
-      launchedAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970 - 60.0 * 60.0 * 24.0 * 15.0,
-      stateChangedAt: Date(
-        timeIntervalSince1970: 1_475_361_315
-      ).timeIntervalSince1970 - 60.0 * 60.0 * 24.0 * 15.0
-    ),
+    dates: Project.Dates.template,
     displayPrelaunch: nil,
     flagging: false,
     id: 1,

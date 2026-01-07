@@ -69,8 +69,11 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   }
 
   func testStatsStackViewAccessibilityLabel() {
-    let project = .template
-      |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10)
+    var dates = Project.Dates.template
+    dates.deadline = self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10
+
+    let project = Project.template
+      |> Project.lens.dates .~ dates
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.awakeFromNib()
 
@@ -126,8 +129,11 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   }
 
   func testStatsStackViewAccessibilityLabel_defaultCurrency_nonUSUser() {
+    var dates = Project.Dates.template
+    dates.deadline = self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10
+
     let defaultUserCurrency = Project.template
-      |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10)
+      |> Project.lens.dates .~ dates
       |> Project.lens.stats.projectCurrency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.staticUsdRate .~ 2.0
 
@@ -324,8 +330,11 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   }
 
   func testDeadlineLabels() {
-    let project = .template
-      |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 4)
+    var dates = Project.Dates.template
+    dates.deadline = self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 4
+
+    let project = Project.template
+      |> Project.lens.dates .~ dates
 
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.awakeFromNib()

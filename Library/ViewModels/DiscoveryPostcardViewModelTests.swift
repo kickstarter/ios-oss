@@ -102,12 +102,15 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   func testMetadata() {
     let featuredAt = AppEnvironment.current.calendar.startOfDay(for: MockDate().date).timeIntervalSince1970
 
-    let backedProject = .template
+    let backedProject = Project.template
       |> Project.lens.personalization.isBacking .~ true
 
-    let featuredProject = .template
-      |> \.category .~ Project.Category.art
-      |> Project.lens.dates.featuredAt .~ featuredAt
+    var dates = Project.Dates.template
+    dates.featuredAt = featuredAt
+
+    let featuredProject = Project.template
+      |> Project.lens.category .~ Project.Category.art
+      |> Project.lens.dates .~ dates
 
     let backedColor: UIColor = LegacyColors.ksr_create_700.uiColor()
     let featuredColor: UIColor = LegacyColors.ksr_support_700.uiColor()

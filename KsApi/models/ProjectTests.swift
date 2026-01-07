@@ -19,28 +19,33 @@ final class ProjectTests: XCTestCase {
   }
 
   func testEndsIn48Hours_WithJustLaunchedProject() {
+    var dates = Project.Dates.template
+    dates.launchedAt = Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970
+
     let justLaunched = Project.template
-      |> Project.lens.dates.launchedAt .~ Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970
+      |> Project.lens.dates .~ dates
 
     XCTAssertEqual(false, justLaunched.endsIn48Hours(today: Date(timeIntervalSince1970: 1_475_361_315)))
   }
 
   func testEndsIn48Hours_WithEndingSoonProject() {
+    var dates = Project.Dates.template
+    dates.deadline = Date(timeIntervalSince1970: 1_475_361_315)
+      .timeIntervalSince1970 - 60.0 * 60.0
+
     let endingSoon = Project.template
-      |> Project.lens.dates.deadline .~ (
-        Date(timeIntervalSince1970: 1_475_361_315)
-          .timeIntervalSince1970 - 60.0 * 60.0
-      )
+      |> Project.lens.dates .~ dates
 
     XCTAssertEqual(true, endingSoon.endsIn48Hours(today: Date(timeIntervalSince1970: 1_475_361_315)))
   }
 
   func testEndsIn48Hours_WithTimeZoneEdgeCaseProject() {
+    var dates = Project.Dates.template
+    dates.deadline = Date(timeIntervalSince1970: 1_475_361_315)
+      .timeIntervalSince1970 - 60.0 * 60.0 * 47.0
+
     let edgeCase = Project.template
-      |> Project.lens.dates.deadline .~ (
-        Date(timeIntervalSince1970: 1_475_361_315)
-          .timeIntervalSince1970 - 60.0 * 60.0 * 47.0
-      )
+      |> Project.lens.dates .~ dates
 
     XCTAssertEqual(true, edgeCase.endsIn48Hours(today: Date(timeIntervalSince1970: 1_475_361_315)))
   }
@@ -344,9 +349,12 @@ final class ProjectTests: XCTestCase {
     let deadlineInterval = calendar.date(from: deadline)?.timeIntervalSince1970
     let launchedAtInterval = calendar.date(from: launchedAt)?.timeIntervalSince1970
 
+    var dates = Project.Dates.template
+    dates.deadline = deadlineInterval
+    dates.launchedAt = launchedAtInterval
+
     let project = Project.template
-      |> Project.lens.dates.deadline .~ deadlineInterval!
-      |> Project.lens.dates.launchedAt .~ launchedAtInterval!
+      |> Project.lens.dates .~ dates
 
     XCTAssertEqual(30, project.dates.duration(using: calendar))
   }
@@ -369,8 +377,10 @@ final class ProjectTests: XCTestCase {
     let nowDate = calendar.date(from: now)
     let deadlineInterval = calendar.date(from: deadline)?.timeIntervalSince1970
 
+    var dates = Project.Dates.template
+    dates.deadline = deadlineInterval
     let project = Project.template
-      |> Project.lens.dates.deadline .~ deadlineInterval!
+      |> Project.lens.dates .~ dates
 
     XCTAssertEqual(24, project.dates.hoursRemaining(from: nowDate!, using: calendar))
   }
@@ -393,8 +403,10 @@ final class ProjectTests: XCTestCase {
     let nowDate = calendar.date(from: now)
     let deadlineInterval = calendar.date(from: deadline)?.timeIntervalSince1970
 
+    var dates = Project.Dates.template
+    dates.deadline = deadlineInterval
     let project = Project.template
-      |> Project.lens.dates.deadline .~ deadlineInterval!
+      |> Project.lens.dates .~ dates
 
     XCTAssertEqual(0, project.dates.hoursRemaining(from: nowDate!, using: calendar))
   }

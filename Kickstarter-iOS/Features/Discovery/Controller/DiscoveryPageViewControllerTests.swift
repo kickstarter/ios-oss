@@ -109,8 +109,11 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
   }
 
   func testView_Card_NoMetadata() {
+    var dates = Project.Dates.template
+    dates.deadline = self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 6
+
     let project = self.anomalisaNoPhoto
-      |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 6)
+      |> Project.lens.dates .~ dates
 
     let discoveryResponse = .template
       |> DiscoveryEnvelope.lens.projects .~ [project]
@@ -173,10 +176,12 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
   }
 
   func testView_Card_Project_TodaySpecial() {
-    let mockDate = MockDate()
+    var dates = Project.Dates.template
+    dates.featuredAt = MockDate().timeIntervalSince1970
+
     let featuredProj = self.anomalisaNoPhoto
       |> Project.lens.category .~ Project.Category.illustration
-      |> Project.lens.dates.featuredAt .~ mockDate.timeIntervalSince1970
+      |> Project.lens.dates .~ dates
 
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let config = Config.template

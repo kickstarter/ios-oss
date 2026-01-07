@@ -140,8 +140,11 @@ internal final class PledgeSummaryViewModelTests: TestCase {
     withEnvironment(calendar: calendar, locale: Locale(identifier: "en")) {
       let date = AppEnvironment.current.calendar.date(from: dateComponents)
 
+      var dates = Project.Dates.template
+      dates.deadline = date!.timeIntervalSince1970
+
       let project = Project.template
-        |> Project.lens.dates.deadline .~ date!.timeIntervalSince1970
+        |> Project.lens.dates .~ dates
         |> Project.lens.stats.userCurrency .~ Currency.USD.rawValue
         |> Project.lens.stats.projectCurrency .~ Currency.USD.rawValue
 
@@ -170,8 +173,11 @@ internal final class PledgeSummaryViewModelTests: TestCase {
     withEnvironment(calendar: calendar, locale: Locale(identifier: "en")) {
       let date = AppEnvironment.current.calendar.date(from: dateComponents)
 
+      var dates = Project.Dates.template
+      dates.deadline = date!.timeIntervalSince1970
+
       let project = Project.template
-        |> Project.lens.dates.deadline .~ date!.timeIntervalSince1970
+        |> Project.lens.dates .~ dates
         |> Project.lens.stats.userCurrency .~ Currency.USD.rawValue
         |> Project.lens.stats.projectCurrency .~ Currency.USD.rawValue
 
@@ -200,8 +206,11 @@ internal final class PledgeSummaryViewModelTests: TestCase {
     withEnvironment(calendar: calendar, locale: Locale(identifier: "en")) {
       let date = AppEnvironment.current.calendar.date(from: dateComponents)
 
+      var dates = Project.Dates.template
+      dates.deadline = date!.timeIntervalSince1970
+
       let project = Project.template
-        |> Project.lens.dates.deadline .~ date!.timeIntervalSince1970
+        |> Project.lens.dates .~ dates
         |> Project.lens.stats.userCurrency .~ Currency.USD.rawValue
         |> Project.lens.stats.projectCurrency .~ Currency.HKD.rawValue
         |> Project.lens.country .~ .us
@@ -231,8 +240,11 @@ internal final class PledgeSummaryViewModelTests: TestCase {
     withEnvironment(calendar: calendar, locale: Locale(identifier: "en")) {
       let date = AppEnvironment.current.calendar.date(from: dateComponents)
 
+      var dates = Project.Dates.template
+      dates.deadline = date!.timeIntervalSince1970
+
       let project = Project.template
-        |> Project.lens.dates.deadline .~ date!.timeIntervalSince1970
+        |> Project.lens.dates .~ dates
         |> Project.lens.stats.userCurrency .~ Currency.USD.rawValue
         |> Project.lens.stats.projectCurrency .~ Currency.USD.rawValue
 

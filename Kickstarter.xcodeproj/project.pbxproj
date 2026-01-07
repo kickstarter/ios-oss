@@ -1280,7 +1280,6 @@
 		D015889D1EEB2ED7006E7684 /* LocationLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587A71EEB2ED7006E7684 /* LocationLenses.swift */; };
 		D015889F1EEB2ED7006E7684 /* MessageLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587A81EEB2ED7006E7684 /* MessageLenses.swift */; };
 		D01588A11EEB2ED7006E7684 /* MessageThreadLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587A91EEB2ED7006E7684 /* MessageThreadLenses.swift */; };
-		D01588A51EEB2ED7006E7684 /* Project.DatesLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587AB1EEB2ED7006E7684 /* Project.DatesLenses.swift */; };
 		D01588A71EEB2ED7006E7684 /* Project.MemberDataLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587AC1EEB2ED7006E7684 /* Project.MemberDataLenses.swift */; };
 		D01588A91EEB2ED7006E7684 /* Project.PersonalizationLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587AD1EEB2ED7006E7684 /* Project.PersonalizationLenses.swift */; };
 		D01588AB1EEB2ED7006E7684 /* Project.PhotoLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587AE1EEB2ED7006E7684 /* Project.PhotoLenses.swift */; };
@@ -1729,6 +1728,7 @@
 		E1DBB2372DAEBCE10050733F /* SearchFiltersHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */; };
 		E1EEED292B684AA7009976D9 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED282B684AA7009976D9 /* PKCE.swift */; };
 		E1F1DB3F2B7BC09C004EA80B /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = E1F1DB3E2B7BC09C004EA80B /* Prelude */; };
+		E1F8563A2F0EC00600F61726 /* Project.DatesTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F856392F0EBFFE00F61726 /* Project.DatesTemplates.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -3051,7 +3051,6 @@
 		D01587A71EEB2ED7006E7684 /* LocationLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationLenses.swift; sourceTree = "<group>"; };
 		D01587A81EEB2ED7006E7684 /* MessageLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageLenses.swift; sourceTree = "<group>"; };
 		D01587A91EEB2ED7006E7684 /* MessageThreadLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageThreadLenses.swift; sourceTree = "<group>"; };
-		D01587AB1EEB2ED7006E7684 /* Project.DatesLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.DatesLenses.swift; sourceTree = "<group>"; };
 		D01587AC1EEB2ED7006E7684 /* Project.MemberDataLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.MemberDataLenses.swift; sourceTree = "<group>"; };
 		D01587AD1EEB2ED7006E7684 /* Project.PersonalizationLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.PersonalizationLenses.swift; sourceTree = "<group>"; };
 		D01587AE1EEB2ED7006E7684 /* Project.PhotoLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.PhotoLenses.swift; sourceTree = "<group>"; };
@@ -3567,6 +3566,7 @@
 		E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Signal+Combine.swift"; sourceTree = "<group>"; };
 		E1EEED282B684AA7009976D9 /* PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
 		E1EEED2A2B686829009976D9 /* PKCETest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETest.swift; sourceTree = "<group>"; };
+		E1F856392F0EBFFE00F61726 /* Project.DatesTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.DatesTemplates.swift; sourceTree = "<group>"; };
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -7421,7 +7421,6 @@
 				D01587A71EEB2ED7006E7684 /* LocationLenses.swift */,
 				D01587A81EEB2ED7006E7684 /* MessageLenses.swift */,
 				D01587A91EEB2ED7006E7684 /* MessageThreadLenses.swift */,
-				D01587AB1EEB2ED7006E7684 /* Project.DatesLenses.swift */,
 				D01587AC1EEB2ED7006E7684 /* Project.MemberDataLenses.swift */,
 				D01587AD1EEB2ED7006E7684 /* Project.PersonalizationLenses.swift */,
 				D01587AE1EEB2ED7006E7684 /* Project.PhotoLenses.swift */,
@@ -7493,6 +7492,7 @@
 				D01588081EEB2ED7006E7684 /* ProjectStatsEnvelopeTemplates.swift */,
 				77CD894821791B05003066DA /* ProjectStatsTemplate.swift */,
 				D01588091EEB2ED7006E7684 /* ProjectTemplates.swift */,
+				E1F856392F0EBFFE00F61726 /* Project.DatesTemplates.swift */,
 				D015880A1EEB2ED7006E7684 /* RewardsItemTemplates.swift */,
 				D015880B1EEB2ED7006E7684 /* RewardTemplates.swift */,
 				D015880C1EEB2ED7006E7684 /* ShippingRulesEnvelopeTemplates.swift */,
@@ -9651,6 +9651,7 @@
 				19D988482979CA4E00A5EE61 /* BrazePushEnvelope.swift in Sources */,
 				8AC3E0CA269E2E9C00168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInput.swift in Sources */,
 				D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */,
+				E1F8563A2F0EC00600F61726 /* Project.DatesTemplates.swift in Sources */,
 				8AC3E0D2269E338700168BF8 /* CreateBackingEnvelope+CreateBackingMutation.Data.swift in Sources */,
 				D6B686E92191FE5E005F5DA7 /* EmptyInput.swift in Sources */,
 				478E31C726C1CC2E004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInput.swift in Sources */,
@@ -9712,7 +9713,6 @@
 				0655C72C273321B20087281F /* Category+CategoryFragment.swift in Sources */,
 				D63BBD31217F7212007E01F0 /* UserCreditCards.swift in Sources */,
 				D79CF32E219CE51A00ECB73A /* CreatePaymentSourceInput.swift in Sources */,
-				D01588A51EEB2ED7006E7684 /* Project.DatesLenses.swift in Sources */,
 				84264EEC25387B0500D8DF81 /* Param.swift in Sources */,
 				D01588EB1EEB2ED7006E7684 /* MessageSubject.swift in Sources */,
 				D770DDE8217D729300B5319A /* GraphUserTemplates.swift in Sources */,

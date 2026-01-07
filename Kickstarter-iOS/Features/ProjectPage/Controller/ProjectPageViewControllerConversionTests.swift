@@ -10,13 +10,15 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    let deadline = self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 14.0
-    let launchedAt = self.dateType.init().timeIntervalSince1970 - 60.0 * 60.0 * 24.0 * 14.0
+
+    var dates = Project.Dates.template
+    dates.deadline = self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 14.0
+    dates.launchedAt = self.dateType.init().timeIntervalSince1970 - 60.0 * 60.0 * 24.0 * 14.0
+
     let project = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
-      |> Project.lens.dates.deadline .~ deadline
-      |> Project.lens.dates.launchedAt .~ launchedAt
+      |> Project.lens.dates .~ dates
       |> Project.lens.state .~ .live
       |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
       |> Project.lens.stats.convertedPledgedAmount .~ 21_615
@@ -135,7 +137,11 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
   }
 
   func test_USProject_USUser_NonUSLocation_Backer() {
+    var dates = Project.Dates.template
     let deadline = self.dateType.init().addingTimeInterval(-100).timeIntervalSince1970
+    dates.deadline = deadline
+    dates.stateChangedAt = deadline
+
     let backing = .template
       |> Backing.lens.amount .~ (self.cosmicSurgery.rewards.first!.minimum + 5.00)
       |> Backing.lens.rewardId .~ self.cosmicSurgery.rewards.first?.id
@@ -143,8 +149,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
     self.cosmicSurgery = self.cosmicSurgery
       |> Project.lens.rewardData.rewards %~ { rewards in [rewards[0], rewards[2]] }
-      |> Project.lens.dates.stateChangedAt .~ deadline
-      |> Project.lens.dates.deadline .~ deadline
+      |> Project.lens.dates .~ dates
       |> Project.lens.state .~ .successful
       |> Project.lens.country .~ .us
       |> Project.lens.stats.projectCurrency .~ "USD"

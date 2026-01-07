@@ -351,9 +351,12 @@ internal final class WatchProjectViewModelTests: TestCase {
   func testLoggedInUser_WatchEndingSoonProject() {
     AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
 
+    var dates = Project.Dates.template
+    dates.deadline = MockDate().date.timeIntervalSince1970 + 60.0 * 60.0 * 24.0
+
     let project = .template
       |> Project.lens.personalization.isStarred .~ false
-      |> Project.lens.dates.deadline .~ (MockDate().date.timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+      |> Project.lens.dates .~ dates
 
     withEnvironment(apiService: MockService(watchProjectMutationResult: .success(.watchTemplate))) {
       self.vm.inputs.configure(with: (project, .project, nil))

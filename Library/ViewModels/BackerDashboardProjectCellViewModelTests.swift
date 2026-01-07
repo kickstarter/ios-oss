@@ -36,11 +36,14 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
   func testProjectData_Live() {
     let endingInDays = self.endingIn(days: 14)
 
+    var dates = Project.Dates.template
+    dates.deadline = endingInDays
+
     let project = .template
       |> Project.lens.name .~ "Best of Lazy Bathtub Cat"
       |> Project.lens.photo.full .~ "http://www.lazybathtubcat.com/vespa.jpg"
       |> Project.lens.stats.fundingProgress .~ 0.5
-      |> Project.lens.dates.deadline .~ endingInDays
+      |> Project.lens.dates .~ dates
       |> Project.lens.prelaunchActivated .~ false
       |> Project.lens.displayPrelaunch .~ false
 
@@ -154,12 +157,15 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
   }
 
   func testProjectData_Prelaunch_DateIsZero() {
+    var dates = Project.Dates.template
+    dates.launchedAt = 0
+
     let project = .template
       |> Project.lens.name .~ "Best of Lazy Bathtub Cat"
       |> Project.lens.photo.full .~ "http://www.lazybathtubcat.com/vespa.jpg"
       |> Project.lens.prelaunchActivated .~ nil
       |> Project.lens.displayPrelaunch .~ nil
-      |> Project.lens.dates.launchedAt .~ 0
+      |> Project.lens.dates .~ dates
       |> Project.lens.personalization.isStarred .~ true
       |> Project.lens.state .~ .successful
 

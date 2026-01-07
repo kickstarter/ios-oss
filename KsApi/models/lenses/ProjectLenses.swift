@@ -1245,24 +1245,6 @@ extension Lens where Whole == Project, Part == Project.MemberData {
   }
 }
 
-extension Lens where Whole == Project, Part == Project.Dates {
-  public var deadline: Lens<Project, TimeInterval?> {
-    return Project.lens.dates .. Project.Dates.lens.deadline
-  }
-
-  public var featuredAt: Lens<Project, TimeInterval?> {
-    return Project.lens.dates .. Project.Dates.lens.featuredAt
-  }
-
-  public var launchedAt: Lens<Project, TimeInterval?> {
-    return Project.lens.dates .. Project.Dates.lens.launchedAt
-  }
-
-  public var stateChangedAt: Lens<Project, TimeInterval> {
-    return Project.lens.dates .. Project.Dates.lens.stateChangedAt
-  }
-}
-
 extension Lens where Whole == Project, Part == Project.Personalization {
   public var backing: Lens<Project, Backing?> {
     return Project.lens.personalization .. Project.Personalization.lens.backing
