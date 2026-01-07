@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
   name: "GraphAPI",
   platforms: [
-    .iOS(.v18),
+    .iOS(.v17),
     .macOS(.v10_14),
     .tvOS(.v12),
     .watchOS(.v5),
