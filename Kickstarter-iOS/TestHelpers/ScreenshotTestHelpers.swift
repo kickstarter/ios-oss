@@ -1,6 +1,7 @@
 import Foundation
 import Library
 import SnapshotTesting
+import SwiftUI
 import UIKit
 
 // Represents a single screenshot configuration (device, locale, style, font, orientation).
@@ -37,6 +38,71 @@ internal func forEachScreenshotType(
         orientation: orientation
       )
     )
+  }
+}
+
+/// Iterates over screenshot configs plus an additional data set, using orthogonal sampling to keep counts low.
+internal func forEachScreenshotType<T>(
+  withData data: [T],
+  devices: [Device] = Device.allCases,
+  languages: [Language] = Language.allLanguages,
+  styles: [UIUserInterfaceStyle] = [.light, .dark],
+  contentSizes: [UIContentSizeCategory] = [
+    .medium,
+    .accessibilityExtraExtraExtraLarge
+  ],
+  orientation: Orientation = .portrait,
+  body: (ScreenshotType, T) -> Void
+) {
+  orthogonalCombos(devices, languages, styles, contentSizes, data).forEach {
+    device, language, style, contentSize, datum in
+    body(
+      ScreenshotType(
+        device: device,
+        language: language,
+        style: style,
+        contentSizeCategory: contentSize,
+        orientation: orientation
+      ),
+      datum
+    )
+  }
+}
+
+/// Asserts snapshots for all provided (or default) screenshot types, creating a fresh controller each time.
+internal func assertAllSnapshots(
+  forController controllerProvider: () -> UIViewController,
+  types: [ScreenshotType]? = nil,
+  perceptualPrecision: Float? = nil,
+  record: Bool = false,
+  file: StaticString = #file,
+  testName: String = #function,
+  line: UInt = #line
+) {
+  if let types = types {
+    types.forEach { type in
+      assertSnapshot(
+        forController: controllerProvider(),
+        withType: type,
+        perceptualPrecision: perceptualPrecision,
+        record: record,
+        file: file,
+        testName: testName,
+        line: line
+      )
+    }
+  } else {
+    forEachScreenshotType { type in
+      assertSnapshot(
+        forController: controllerProvider(),
+        withType: type,
+        perceptualPrecision: perceptualPrecision,
+        record: record,
+        file: file,
+        testName: testName,
+        line: line
+      )
+    }
   }
 }
 
@@ -82,15 +148,126 @@ internal func assertSnapshot(
     }
 
     assertSnapshot(
-      matching: parent.view,
+      of: parent.view,
       as: strategy,
-      named: name,
-      record: record,
-      file: file,
-      testName: testName,
-      line: line
+      named: name
     )
   }
+}
+
+/// Configures environment, traits, style, font size, and naming before asserting a snapshot of a UIView.
+internal func assertSnapshot(
+  forView view: UIView,
+  withType type: ScreenshotType,
+  size: CGSize? = nil,
+  useIntrinsicSize: Bool = false,
+  perceptualPrecision: Float? = nil,
+  record: Bool = false,
+  file: StaticString = #file,
+  testName: String = #function,
+  line: UInt = #line
+) {
+  let contentSizeTraits = UITraitCollection(
+    preferredContentSizeCategory: type.contentSizeCategory
+  )
+
+  let containerController = UIViewController()
+  containerController.view.addSubview(view)
+  view.translatesAutoresizingMaskIntoConstraints = false
+
+  NSLayoutConstraint.activate([
+    view.leadingAnchor.constraint(equalTo: containerController.view.leadingAnchor),
+    view.trailingAnchor.constraint(equalTo: containerController.view.trailingAnchor),
+    view.topAnchor.constraint(equalTo: containerController.view.topAnchor),
+    view.bottomAnchor.constraint(equalTo: containerController.view.bottomAnchor)
+  ])
+
+  withEnvironment(language: type.language) {
+    let (parent, _) = traitControllers(
+      device: type.device,
+      orientation: type.orientation,
+      child: containerController,
+      additionalTraits: contentSizeTraits
+    )
+
+    containerController.overrideUserInterfaceStyle = type.style
+
+    let targetSize: CGSize = {
+      if let size = size {
+        return size
+      } else if useIntrinsicSize {
+        containerController.view.setNeedsLayout()
+        containerController.view.layoutIfNeeded()
+        let fitting = containerController.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        if fitting.width > 0, fitting.height > 0 {
+          return fitting
+        }
+      }
+      return type.device.deviceSize(in: type.orientation)
+    }()
+
+    parent.view.frame.size = targetSize
+    containerController.view.frame.size = targetSize
+
+    if let testScheduler = AppEnvironment.current.scheduler as? TestScheduler {
+      testScheduler.run()
+    }
+
+    let name = snapshotName(
+      file: file,
+      function: testName,
+      type: type
+    )
+
+    let strategy: Snapshotting<UIView, UIImage>
+    if let precision = perceptualPrecision {
+      strategy = .image(perceptualPrecision: precision)
+    } else {
+      strategy = .image
+    }
+
+    assertSnapshot(
+      of: parent.view,
+      as: strategy,
+      named: name
+    )
+  }
+}
+
+// Configures environment, traits, style, font size, and naming before asserting a snapshot of a SwiftUI View.
+internal func assertSnapshot<Content: View>(
+  forSwiftUIView view: Content,
+  withType type: ScreenshotType,
+  size: CGSize? = nil,
+  useIntrinsicSize: Bool = false,
+  perceptualPrecision: Float? = nil,
+  record: Bool = false,
+  file: StaticString = #file,
+  testName: String = #function,
+  line: UInt = #line
+) {
+  let hosting = UIHostingController(rootView: view)
+
+  let targetSize: CGSize = {
+    if let size = size {
+      return size
+    } else if useIntrinsicSize {
+      let proposed = type.device.deviceSize(in: type.orientation)
+      let fitting = hosting.sizeThatFits(in: CGSize(width: proposed.width, height: .greatestFiniteMagnitude))
+      if fitting.width > 0, fitting.height > 0 {
+        return fitting
+      }
+    }
+    return type.device.deviceSize(in: type.orientation)
+  }()
+
+  hosting.view.frame = CGRect(origin: .zero, size: targetSize)
+
+  assertSnapshot(
+    forController: hosting,
+    withType: type,
+    perceptualPrecision: perceptualPrecision
+  )
 }
 
 

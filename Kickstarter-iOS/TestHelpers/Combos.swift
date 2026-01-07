@@ -73,3 +73,27 @@ internal func orthogonalCombos<A, B, C, D>(
     )
   }
 }
+
+// Combine five arrays by creating an array where each element is represented at least once.
+// Result consists of `max(A.count, B.count, C.count, D.count, E.count)` tuples.
+internal func orthogonalCombos<A, B, C, D, E>(
+  _ xs: [A],
+  _ ys: [B],
+  _ zs: [C],
+  _ ws: [D],
+  _ vs: [E]
+) -> [(A, B, C, D, E)] {
+  let count = max(xs.count, ys.count, zs.count, ws.count, vs.count)
+
+  guard count > 0 else { return [] }
+
+  return (0..<count).map { index in
+    (
+      xs[index % xs.count],
+      ys[index % ys.count],
+      zs[index % zs.count],
+      ws[index % ws.count],
+      vs[index % vs.count]
+    )
+  }
+}
