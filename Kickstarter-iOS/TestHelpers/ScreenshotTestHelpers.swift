@@ -1,8 +1,10 @@
 import Foundation
 import Library
+import ReactiveSwift
 import SnapshotTesting
 import SwiftUI
 import UIKit
+import XCTest
 
 // Represents a single screenshot configuration (device, locale, style, font, orientation).
 internal struct ScreenshotType {
@@ -120,7 +122,7 @@ internal func assertSnapshot(
     preferredContentSizeCategory: type.contentSizeCategory
   )
 
-  withEnvironment(language: type.language) {
+  withLanguage(type.language) {
     let (parent, _) = traitControllers(
       device: type.device,
       orientation: type.orientation,
@@ -182,7 +184,7 @@ internal func assertSnapshot(
     view.bottomAnchor.constraint(equalTo: containerController.view.bottomAnchor)
   ])
 
-  withEnvironment(language: type.language) {
+  withLanguage(type.language) {
     let (parent, _) = traitControllers(
       device: type.device,
       orientation: type.orientation,
@@ -325,5 +327,13 @@ private extension Orientation {
     case .landscape: return "landscape"
     }
   }
+}
+
+// MARK: - Private helpers
+
+private func withLanguage(_ language: Language, body: () -> Void) {
+  AppEnvironment.pushEnvironment(language: language)
+  body()
+  AppEnvironment.popEnvironment()
 }
 
