@@ -33,6 +33,7 @@ struct PPOProjectCard: View {
     }
     .padding(.vertical)
     .frame(maxWidth: .infinity)
+    .background(Color(PPOStyles.background))
 
     // round rectangle around the card
     .clipShape(self.cardRectangle)
