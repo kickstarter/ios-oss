@@ -3,12 +3,26 @@ import Foundation
 import KsApi
 import Library
 
+public enum PPOCardEvent: Equatable, Hashable {
+  case editAddress
+  case sendMessage
+  case viewProjectDetails
+  case confirmAddress(address: String, addressId: String)
+  case completeSurvey
+  case managePledge
+  case fixPayment
+  case authenticateCard(clientSecret: String)
+}
+
 protocol PPOProjectCardViewModelInputs {
-  func eventTriggered(_: PPOProjectCardModel.CardEvent)
+  // Trigger a PPOCardEvent directly.
+  func eventTriggered(_: PPOCardEvent)
+  // Trigger the PPOCardEvent corresponding to the ButtonAction.
+  func performAction(_: PPOProjectCardModel.ButtonAction)
 }
 
 protocol PPOProjectCardViewModelOutputs {
-  var handleEvent: AnyPublisher<PPOProjectCardModel.CardEvent, Never> { get }
+  var handleEvent: AnyPublisher<PPOCardEvent, Never> { get }
 
   var card: PPOProjectCardModel { get }
 }
@@ -45,17 +59,34 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
 
   // MARK: - Inputs
 
-  func eventTriggered(_ event: PPOProjectCardModel.CardEvent) {
+  func eventTriggered(_ event: PPOCardEvent) {
+    self.handleEventSubject.send(event)
+  }
+
+  func performAction(_ action: ButtonAction) {
+    let event: PPOCardEvent
+    switch action {
+    case let .authenticateCard(clientSecret: clientSecret):
+      event = .authenticateCard(clientSecret: clientSecret)
+    case .completeSurvey:
+      event = .completeSurvey
+    case let .confirmAddress(address: address, addressId: addressId):
+      event = .confirmAddress(address: address, addressId: addressId)
+    case .fixPayment:
+      event = .fixPayment
+    case .managePledge:
+      event = .managePledge
+    }
     self.handleEventSubject.send(event)
   }
 
   // MARK: - Outputs
 
-  var handleEvent: AnyPublisher<PPOProjectCardModel.CardEvent, Never> {
+  var handleEvent: AnyPublisher<PPOCardEvent, Never> {
     self.handleEventSubject.eraseToAnyPublisher()
   }
 
-  private let handleEventSubject = PassthroughSubject<PPOProjectCardModel.CardEvent, Never>()
+  private let handleEventSubject = PassthroughSubject<PPOCardEvent, Never>()
 
   // MARK: - Helpers
 

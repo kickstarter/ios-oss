@@ -4,14 +4,15 @@ import Combine
 import XCTest
 
 final class PPOProjectCardViewModelTests: XCTestCase {
-  func testAuthenticateCardButtonActionEvent() throws {
+  func testAuthenticateCardButtonAction() throws {
     var cancellables: [AnyCancellable] = []
     let viewModel = PPOProjectCardViewModel(
       card: PPOProjectCardModel.authenticateCardTemplate
     )
+    let clientSecret = "test123"
 
     let expectation = expectation(description: "Waiting for action to be performed")
-    var events: [PPOProjectCardModel.CardEvent] = []
+    var events: [PPOCardEvent] = []
     viewModel.handleEvent
       .sink { event in
         events.append(event)
@@ -19,10 +20,9 @@ final class PPOProjectCardViewModelTests: XCTestCase {
       }
       .store(in: &cancellables)
 
-    let authenticateCardEvent = PPOProjectCardModel.CardEvent
-      .performButtonAction(buttonAction: .authenticateCard(clientSecret: "test123"))
+    let authenticateCardEvent = PPOCardEvent.authenticateCard(clientSecret: clientSecret)
 
-    viewModel.eventTriggered(authenticateCardEvent)
+    viewModel.performAction(.authenticateCard(clientSecret: clientSecret))
     waitForExpectations(timeout: 0.1)
 
     XCTAssertEqual(events, [authenticateCardEvent])

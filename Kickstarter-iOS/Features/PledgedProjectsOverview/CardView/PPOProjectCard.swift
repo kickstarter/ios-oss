@@ -8,7 +8,7 @@ struct PPOProjectCard: View {
   @StateObject var viewModel: PPOProjectCardViewModel
   var parentSize: CGSize
 
-  var onHandleEvent: ((PPOProjectCardModel, PPOProjectCardModel.CardEvent) -> Void)? = nil
+  var onHandleEvent: ((PPOProjectCardModel, PPOCardEvent) -> Void)? = nil
 
   var body: some View {
     VStack(spacing: Constants.spacing) {
@@ -143,7 +143,7 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private func baseButton(for action: PPOProjectCardViewModel.ButtonAction) -> some View {
     Button(action.label) { [weak viewModel] () in
-      viewModel?.eventTriggered(.performButtonAction(buttonAction: action))
+      viewModel?.performAction(action)
     }
     .padding([.horizontal])
   }

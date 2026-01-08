@@ -55,13 +55,6 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
     }
   }
 
-  public enum CardEvent: Equatable, Hashable {
-    case performButtonAction(buttonAction: ButtonAction)
-    case editAddress
-    case sendMessage
-    case viewProjectDetails
-  }
-
   public enum ButtonAction: Identifiable, Equatable, Hashable {
     case confirmAddress(address: String, addressId: String)
     case completeSurvey
