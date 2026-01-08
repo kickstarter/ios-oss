@@ -113,10 +113,10 @@ internal func assertSnapshot(
   forController controller: UIViewController,
   withType type: ScreenshotType,
   perceptualPrecision: Float? = nil,
-  record _: Bool = false,
+  record: Bool = false,
   file: StaticString = #file,
   testName: String = #function,
-  line _: UInt = #line
+  line: UInt = #line
 ) {
   let contentSizeTraits = UITraitCollection(
     preferredContentSizeCategory: type.contentSizeCategory
@@ -149,11 +149,14 @@ internal func assertSnapshot(
       return .image
     }()
 
+    let directory = snapshotDirectory(for: file)
+
     if let failure = verifySnapshot(
       of: parent.view,
       as: strategy,
       named: name,
       record: record,
+      snapshotDirectory: directory,
       file: file,
       testName: testName,
       line: line
@@ -178,7 +181,7 @@ internal func assertSnapshot(
   size: CGSize? = nil,
   useIntrinsicSize: Bool = false,
   perceptualPrecision: Float? = nil,
-  record _: Bool = false,
+  record: Bool = false,
   file: StaticString = #file,
   testName: String = #function,
   line: UInt = #line
@@ -242,11 +245,14 @@ internal func assertSnapshot(
       return .image
     }()
 
+    let directory = snapshotDirectory(for: file)
+
     if let failure = verifySnapshot(
       of: parent.view,
       as: strategy,
       named: name,
       record: record,
+      snapshotDirectory: directory,
       file: file,
       testName: testName,
       line: line
@@ -271,7 +277,7 @@ internal func assertSnapshot<Content: View>(
   size: CGSize? = nil,
   useIntrinsicSize: Bool = false,
   perceptualPrecision: Float? = nil,
-  record _: Bool = false,
+  record: Bool = false,
   file: StaticString = #file,
   testName: String = #function,
   line: UInt = #line
@@ -366,7 +372,21 @@ private extension Orientation {
   }
 }
 
-// MARK: - Private helpers
+private extension UIUserInterfaceStyle {
+  var snapshotDescription: String {
+    switch self {
+    case .light: return "light"
+    case .dark: return "dark"
+    default: return "unspecified"
+    }
+  }
+}
+
+
+private func snapshotDirectory(for file: StaticString) -> String {
+  let fileURL = URL(fileURLWithPath: "\(file)")
+  return fileURL.deletingLastPathComponent().appendingPathComponent("__Snapshots__").path
+}
 
 private func withLanguage(_ language: Language, body: () -> Void) {
   AppEnvironment.pushEnvironment(language: language)
