@@ -400,4 +400,3 @@ private func withLanguage(_ language: Language, body: () -> Void) {
   body()
   AppEnvironment.popEnvironment()
 }
-
