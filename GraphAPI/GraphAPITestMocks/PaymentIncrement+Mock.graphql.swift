@@ -15,6 +15,8 @@ public class PaymentIncrement: MockObject {
     @Field<PaymentIncrementAmount>("refundedAmount") public var refundedAmount
     @Field<GraphAPI.ISO8601DateTime>("scheduledCollection") public var scheduledCollection
     @Field<GraphQLEnum<GraphAPI.PaymentIncrementState>>("state") public var state
+    @Field<String>("stateBadgeName") public var stateBadgeName
+    @Field<String>("stateBadgeStyle") public var stateBadgeStyle
     @Field<GraphQLEnum<GraphAPI.PaymentIncrementStateReason>>("stateReason") public var stateReason
   }
 }
@@ -26,6 +28,8 @@ public extension Mock where O == PaymentIncrement {
     refundedAmount: Mock<PaymentIncrementAmount>? = nil,
     scheduledCollection: GraphAPI.ISO8601DateTime? = nil,
     state: GraphQLEnum<GraphAPI.PaymentIncrementState>? = nil,
+    stateBadgeName: String? = nil,
+    stateBadgeStyle: String? = nil,
     stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil
   ) {
     self.init()
@@ -34,6 +38,8 @@ public extension Mock where O == PaymentIncrement {
     _setEntity(refundedAmount, for: \.refundedAmount)
     _setScalar(scheduledCollection, for: \.scheduledCollection)
     _setScalar(state, for: \.state)
+    _setScalar(stateBadgeName, for: \.stateBadgeName)
+    _setScalar(stateBadgeStyle, for: \.stateBadgeStyle)
     _setScalar(stateReason, for: \.stateReason)
   }
 }

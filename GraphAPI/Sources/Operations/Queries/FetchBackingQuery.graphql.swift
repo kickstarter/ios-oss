@@ -758,6 +758,10 @@ public class FetchBackingQuery: GraphQLQuery {
         /// The state of the payment increment
         public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
         public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
+        /// A short, localized, user-readable string describing the payment increment.
+        public var stateBadgeName: String? { __data["stateBadgeName"] }
+        /// badge color
+        public var stateBadgeStyle: String? { __data["stateBadgeStyle"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict
@@ -770,7 +774,9 @@ public class FetchBackingQuery: GraphQLQuery {
           amount: Amount,
           scheduledCollection: GraphAPI.ISO8601DateTime,
           state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
-          stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil
+          stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil,
+          stateBadgeName: String? = nil,
+          stateBadgeStyle: String? = nil
         ) {
           self.init(_dataDict: DataDict(
             data: [
@@ -779,6 +785,8 @@ public class FetchBackingQuery: GraphQLQuery {
               "scheduledCollection": scheduledCollection,
               "state": state,
               "stateReason": stateReason,
+              "stateBadgeName": stateBadgeName,
+              "stateBadgeStyle": stateBadgeStyle,
             ],
             fulfilledFragments: [
               ObjectIdentifier(FetchBackingQuery.Data.Backing.PaymentIncrement.self),

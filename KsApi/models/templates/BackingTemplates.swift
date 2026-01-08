@@ -37,9 +37,8 @@ extension Backing {
         amountFormattedInProjectNativeCurrency: "$10.00"
       ),
       scheduledCollection: ApiMockDate().timeIntervalSince1970,
-      state: .collected,
-      stateReason: nil,
-      refundStatus: .unknown
+      stateBadgeName: "Collected",
+      stateBadgeStyle: "green"
     )]
 
   internal static let templateMadeWithPledgeManagment = Backing.template

@@ -5,7 +5,7 @@
 
 public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment PaymentIncrementBackingFragment on PaymentIncrement { __typename amount { __typename amountFormattedInProjectNativeCurrency currency } scheduledCollection state stateReason refundUpdatedAmountInProjectNativeCurrency refundedAmount { __typename currency } }"#
+    #"fragment PaymentIncrementBackingFragment on PaymentIncrement { __typename amount { __typename amountFormattedInProjectNativeCurrency currency } scheduledCollection state stateReason refundUpdatedAmountInProjectNativeCurrency refundedAmount { __typename currency } stateBadgeName stateBadgeStyle }"#
   }
 
   public let __data: DataDict
@@ -20,6 +20,8 @@ public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
     .field("stateReason", GraphQLEnum<GraphAPI.PaymentIncrementStateReason>?.self),
     .field("refundUpdatedAmountInProjectNativeCurrency", String?.self),
     .field("refundedAmount", RefundedAmount?.self),
+    .field("stateBadgeName", String?.self),
+    .field("stateBadgeStyle", String?.self),
   ] }
 
   /// The payment increment amount represented in various formats
@@ -32,6 +34,10 @@ public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
   public var refundUpdatedAmountInProjectNativeCurrency: String? { __data["refundUpdatedAmountInProjectNativeCurrency"] }
   /// The total amount that has been refunded on the payment increment, across potentially multiple adjustments
   public var refundedAmount: RefundedAmount? { __data["refundedAmount"] }
+  /// A short, localized, user-readable string describing the payment increment.
+  public var stateBadgeName: String? { __data["stateBadgeName"] }
+  /// badge color
+  public var stateBadgeStyle: String? { __data["stateBadgeStyle"] }
 
   public init(
     amount: Amount,
@@ -39,7 +45,9 @@ public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
     state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
     stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil,
     refundUpdatedAmountInProjectNativeCurrency: String? = nil,
-    refundedAmount: RefundedAmount? = nil
+    refundedAmount: RefundedAmount? = nil,
+    stateBadgeName: String? = nil,
+    stateBadgeStyle: String? = nil
   ) {
     self.init(_dataDict: DataDict(
       data: [
@@ -50,6 +58,8 @@ public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
         "stateReason": stateReason,
         "refundUpdatedAmountInProjectNativeCurrency": refundUpdatedAmountInProjectNativeCurrency,
         "refundedAmount": refundedAmount._fieldData,
+        "stateBadgeName": stateBadgeName,
+        "stateBadgeStyle": stateBadgeStyle,
       ],
       fulfilledFragments: [
         ObjectIdentifier(PaymentIncrementBackingFragment.self)

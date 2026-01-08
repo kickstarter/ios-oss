@@ -5,7 +5,7 @@
 
 public struct PaymentIncrementFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment PaymentIncrementFragment on PaymentIncrement { __typename amount { __typename amountFormattedInProjectNativeCurrency currency } scheduledCollection state stateReason }"#
+    #"fragment PaymentIncrementFragment on PaymentIncrement { __typename amount { __typename amountFormattedInProjectNativeCurrency currency } scheduledCollection state stateReason stateBadgeName stateBadgeStyle }"#
   }
 
   public let __data: DataDict
@@ -18,6 +18,8 @@ public struct PaymentIncrementFragment: GraphAPI.SelectionSet, Fragment {
     .field("scheduledCollection", GraphAPI.ISO8601DateTime.self),
     .field("state", GraphQLEnum<GraphAPI.PaymentIncrementState>.self),
     .field("stateReason", GraphQLEnum<GraphAPI.PaymentIncrementStateReason>?.self),
+    .field("stateBadgeName", String?.self),
+    .field("stateBadgeStyle", String?.self),
   ] }
 
   /// The payment increment amount represented in various formats
@@ -26,12 +28,18 @@ public struct PaymentIncrementFragment: GraphAPI.SelectionSet, Fragment {
   /// The state of the payment increment
   public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
   public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
+  /// A short, localized, user-readable string describing the payment increment.
+  public var stateBadgeName: String? { __data["stateBadgeName"] }
+  /// badge color
+  public var stateBadgeStyle: String? { __data["stateBadgeStyle"] }
 
   public init(
     amount: Amount,
     scheduledCollection: GraphAPI.ISO8601DateTime,
     state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
-    stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil
+    stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil,
+    stateBadgeName: String? = nil,
+    stateBadgeStyle: String? = nil
   ) {
     self.init(_dataDict: DataDict(
       data: [
@@ -40,6 +48,8 @@ public struct PaymentIncrementFragment: GraphAPI.SelectionSet, Fragment {
         "scheduledCollection": scheduledCollection,
         "state": state,
         "stateReason": stateReason,
+        "stateBadgeName": stateBadgeName,
+        "stateBadgeStyle": stateBadgeStyle,
       ],
       fulfilledFragments: [
         ObjectIdentifier(PaymentIncrementFragment.self)

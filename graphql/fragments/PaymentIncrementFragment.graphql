@@ -6,4 +6,6 @@ fragment PaymentIncrementFragment on PaymentIncrement {
   scheduledCollection
   state
   stateReason
+  stateBadgeName
+  stateBadgeStyle
 }
