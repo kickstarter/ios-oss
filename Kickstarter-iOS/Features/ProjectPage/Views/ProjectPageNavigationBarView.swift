@@ -1,4 +1,3 @@
-import Combine
 import KDS
 import KsApi
 import Library
@@ -17,26 +16,6 @@ protocol ProjectPageNavigationBarViewDelegate: AnyObject {
 private enum Layout {
   enum Button {
     static let height: CGFloat = 15
-  }
-}
-
-// MARK: - SwiftUI Close Button with Liquid Glass
-
-struct CloseButtonView: View {
-  let onClose: () -> Void
-  
-  var body: some View {
-    Button(action: onClose) {
-      Image(uiImage: image(named: "icon--cross") ?? UIImage())
-        .renderingMode(.template)
-        .foregroundColor(Color(LegacyColors.ksr_support_700.uiColor()))
-        .frame(width: 20, height: 20)
-    }
-    .frame(width: 44, height: 44)
-    .contentShape(Circle())
-    .glassedEffect(in: Circle(), interactive: true)
-    .accessibilityLabel(Strings.accessibility_projects_buttons_close())
-    .accessibilityHint(Strings.Closes_project())
   }
 }
 
@@ -302,43 +281,5 @@ extension ProjectPageNavigationBarView: ProjectPageNavigationBarViewDelegate {
 
   func configureSaveWatchPrelaunchProject(with context: PledgeCTAPrelaunchState) {
     self.watchProjectViewModel.inputs.saveButtonTapped(selected: context.saved)
-  }
-}
-
-// MARK: - Liquid Glass Extensions
-
-extension View {
-  @ViewBuilder
-  fileprivate func glassedEffect(in shape: some Shape, interactive: Bool = false) -> some View {
-    if #available(iOS 26.0, *) {
-      self.glassEffect(interactive ? .regular.interactive() : .regular, in: shape)
-    } else {
-      self.background {
-        shape.glassed()
-      }
-    }
-  }
-}
-
-extension Shape {
-  /// Creates a glass-like effect fallback for iOS < 26
-  fileprivate func glassed() -> some View {
-    self
-      .fill(.ultraThinMaterial)
-      .fill(
-        .linearGradient(
-          colors: [
-            .primary.opacity(0.08),
-            .primary.opacity(0.05),
-            .primary.opacity(0.01),
-            .clear,
-            .clear,
-            .clear
-          ],
-          startPoint: .topLeading,
-          endPoint: .bottomTrailing
-        )
-      )
-      .stroke(.primary.opacity(0.2), lineWidth: 0.7)
   }
 }
