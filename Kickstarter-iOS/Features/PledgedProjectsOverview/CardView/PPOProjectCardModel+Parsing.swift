@@ -5,7 +5,7 @@ import KsApi
 import Library
 
 private struct PPOParsedAction {
-  let action: PPOProjectCardModel.Action?
+  let action: PPOProjectCardModel.ButtonAction?
   let tierType: PPOTierType
 }
 
