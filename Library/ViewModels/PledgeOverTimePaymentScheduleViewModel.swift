@@ -90,33 +90,42 @@ public struct PLOTPaymentScheduleItem: Equatable {
 }
 
 private func getAmountString(from increment: PledgePaymentIncrement) -> String {
-  // Only display the adjusted amount if the status is `.collected`.
-  // If the payment increment was fully refunded, display the full payment increment amount.
-  if increment.isCollectedAdjusted,
-     case let .refunded(refundedAmount) = increment.refundStatus {
-    return refundedAmount.amountFormattedInProjectNativeCurrency
-  }
-
   return increment.amount.amountFormattedInProjectNativeCurrency
 }
 
 private func getStateLabelText(from increment: PledgePaymentIncrement) -> String {
-  if increment.isCollectedAdjusted {
-    return Strings.Collected_adjusted()
-  }
-
-  let requiresAction = increment.state == .errored && increment.stateReason == .requiresAction
-
-  return requiresAction ? Strings.Authentication_required() : increment.state.description
+  return increment.stateBadgeName ?? ""
 }
 
 private func getBadgeStyle(from increment: PledgePaymentIncrement) -> BadgeStyle {
-  let requiresAction = increment.state == .errored && increment.stateReason == .requiresAction
+  switch increment.stateBadgeStyle {
+  case "green":
+    return .custom(
+      foregroundColor: Colors.PLOT.Badge.Text.collected.uiColor(),
+      backgroundColor: Colors.PLOT.Badge.Background.collected.uiColor()
+    )
+  case "purple":
+    return .custom(
+      foregroundColor: Colors.PLOT.Badge.Text.refunded.uiColor(),
+      backgroundColor: Colors.PLOT.Badge.Background.refunded.uiColor()
+    )
+  case "danger":
+    return .custom(
+      foregroundColor: Colors.PLOT.Badge.Text.errored.uiColor(),
+      backgroundColor: Colors.PLOT.Badge.Background.errored.uiColor()
+    )
+  case "red":
+    return .custom(
+      foregroundColor: Colors.PLOT.Badge.Text.canceled.uiColor(),
+      backgroundColor: Colors.PLOT.Badge.Background.canceled.uiColor()
+    )
+  case "gray":
+    return .custom(
+      foregroundColor: Colors.PLOT.Badge.Text.scheduled.uiColor(),
+      backgroundColor: Colors.PLOT.Badge.Background.scheduled.uiColor()
+    )
 
-  let requiresActionBadgeStyle = BadgeStyle.custom(
-    foregroundColor: Colors.PLOT.Badge.Text.authentication.uiColor(),
-    backgroundColor: Colors.PLOT.Badge.Background.authentication.uiColor()
-  )
-
-  return requiresAction ? requiresActionBadgeStyle : increment.state.badgeStyle
+  default:
+    return .neutral
+  }
 }

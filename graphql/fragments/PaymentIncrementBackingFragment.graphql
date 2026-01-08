@@ -10,4 +10,6 @@ fragment PaymentIncrementBackingFragment on PaymentIncrement {
   refundedAmount {
     currency
   }
+  stateBadgeName
+  stateBadgeStyle
 }

@@ -1,24 +1,21 @@
 import Foundation
 
 public struct PledgePaymentIncrement: Equatable, Decodable {
-  public let amount: PledgePaymentIncrementAmount
-  public let scheduledCollection: TimeInterval
-  public var state: PledgePaymentIncrementState
-  public var stateReason: PledgePaymentIncrementStateReason?
-  public let refundStatus: RefundStatus
+  public internal(set) var amount: PledgePaymentIncrementAmount
+  public internal(set) var scheduledCollection: TimeInterval
+  public internal(set) var stateBadgeName: String?
+  public internal(set) var stateBadgeStyle: String? // TODO: should be an enum
 
   public init(
     amount: PledgePaymentIncrementAmount,
     scheduledCollection: TimeInterval,
-    state: PledgePaymentIncrementState,
-    stateReason: PledgePaymentIncrementStateReason?,
-    refundStatus: RefundStatus
+    stateBadgeName: String?,
+    stateBadgeStyle: String?
   ) {
     self.amount = amount
     self.scheduledCollection = scheduledCollection
-    self.state = state
-    self.stateReason = stateReason
-    self.refundStatus = refundStatus
+    self.stateBadgeName = stateBadgeName
+    self.stateBadgeStyle = stateBadgeStyle
   }
 }
 
@@ -32,44 +29,5 @@ public struct PledgePaymentIncrementAmount: Equatable, Decodable {
   ) {
     self.currency = currency
     self.amountFormattedInProjectNativeCurrency = amountFormattedInProjectNativeCurrency
-  }
-}
-
-public enum PledgePaymentIncrementState: String, Decodable {
-  case collected = "COLLECTED"
-  case errored = "ERRORED"
-  case unattempted = "UNATTEMPTED"
-  case cancelled = "CANCELLED"
-  case refunded = "REFUNDED"
-}
-
-public enum PledgePaymentIncrementStateReason: String, Decodable {
-  case requiresAction = "REQUIRES_ACTION"
-}
-
-extension PledgePaymentIncrement {
-  /// Indicates whether the payment increment was collected and later partially refunded.
-  public var isCollectedAdjusted: Bool {
-    switch self.refundStatus {
-    case .notRefunded:
-      return false
-    case .refunded:
-      return self.state == .collected
-    case .unknown:
-      assert(false, "isCollectedAdjusted will only return a correct value if refund data has been fetched.")
-      return false
-    }
-  }
-
-  /// Represents the refund status of a payment increment.
-  public enum RefundStatus: Equatable, Decodable {
-    /// No refund has been issued for this payment increment.
-    case notRefunded
-    /// A refund has been issued for this payment increment.
-    /// The associated `PledgePaymentIncrementAmount` equals the total collected amount,
-    /// i.e. the increment minus any refunds.
-    case refunded(PledgePaymentIncrementAmount)
-    /// The refund status could not be determined (e.g. data not fetched).
-    case unknown
   }
 }

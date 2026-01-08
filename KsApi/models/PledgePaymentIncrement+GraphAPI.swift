@@ -16,14 +16,9 @@ extension PledgePaymentIncrement {
       amountFormattedInProjectNativeCurrency: fragment.amount.amountFormattedInProjectNativeCurrency
     )
     self.scheduledCollection = intervalAsTime
-    self.state = PledgePaymentIncrementState(stateValue: stateValue)
 
-    if let stateReason = fragment.stateReason?.rawValue {
-      self.stateReason = PledgePaymentIncrementStateReason(rawValue: stateReason)
-    }
-
-    // Set `refundStatus` to `.unknown` because the refunded field is not available in this fragment
-    self.refundStatus = .unknown
+    self.stateBadgeName = fragment.stateBadgeName
+    self.stateBadgeStyle = fragment.stateBadgeStyle
   }
 
   public init?(withIncrementBackingFragment data: PaymentIncrementBackingFragment) {
@@ -40,11 +35,6 @@ extension PledgePaymentIncrement {
       amountFormattedInProjectNativeCurrency: data.amount.amountFormattedInProjectNativeCurrency
     )
     self.scheduledCollection = intervalAsTime
-    self.state = PledgePaymentIncrementState(stateValue: stateValue)
-
-    if let stateReason = data.stateReason?.rawValue {
-      self.stateReason = PledgePaymentIncrementStateReason(rawValue: stateReason)
-    }
 
     // If we get a `refundedAmount`, it means this increment was refunded
     // so we store the amount. If not, we treat it as not refunded.
@@ -55,15 +45,10 @@ extension PledgePaymentIncrement {
         amountFormattedInProjectNativeCurrency: formattedRefund
       )
 
-      self.refundStatus = .refunded(refundedAmount)
-    } else {
-      self.refundStatus = .notRefunded
+      self.amount = refundedAmount
     }
-  }
-}
 
-extension PledgePaymentIncrementState {
-  init(stateValue value: GraphAPI.PaymentIncrementState) {
-    self = PledgePaymentIncrementState(rawValue: value.rawValue) ?? .unattempted
+    self.stateBadgeName = data.stateBadgeName
+    self.stateBadgeStyle = data.stateBadgeStyle
   }
 }
