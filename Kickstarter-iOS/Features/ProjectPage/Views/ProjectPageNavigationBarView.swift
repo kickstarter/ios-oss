@@ -27,7 +27,6 @@ final class ProjectPageNavigationBarView: UIView {
 
   private lazy var navigationShareButton: UIButton = { UIButton(type: .custom) }()
 
-
   private lazy var closeButtonHostingController: UIHostingController<CloseButtonView> = {
     let closeButtonView = CloseButtonView { [weak self] in
       self?.closeButtonTapped()
@@ -37,7 +36,7 @@ final class ProjectPageNavigationBarView: UIView {
     hostingController.view.translatesAutoresizingMaskIntoConstraints = false
     return hostingController
   }()
-  
+
   private var navigationCloseButton: UIView {
     guard let view = self.closeButtonHostingController.view else {
       assertionFailure("UIHostingController view should always exist")
@@ -158,7 +157,7 @@ final class ProjectPageNavigationBarView: UIView {
   private func setupConstraints() {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
-    
+
     NSLayoutConstraint.activate([
       self.rootStackView.topAnchor.constraint(equalTo: self.topAnchor),
       self.rootStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),

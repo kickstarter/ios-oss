@@ -40,4 +40,3 @@ extension Shape {
       .stroke(.primary.opacity(0.2), lineWidth: 0.7)
   }
 }
-

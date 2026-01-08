@@ -5,13 +5,11 @@ import SwiftUI
 /// A SwiftUI close button with liquid glass effect.
 ///
 /// This view is designed to be used within UIKit views via UIHostingController.
-///
-
 struct CloseButtonView: View {
   let onClose: () -> Void
-  
+
   var body: some View {
-    Button(action: onClose) {
+    Button(action: self.onClose) {
       Image(uiImage: image(named: "icon--cross") ?? UIImage())
         .renderingMode(.template)
         .foregroundColor(Color(LegacyColors.ksr_support_700.uiColor()))
