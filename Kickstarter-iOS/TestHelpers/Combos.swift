@@ -98,4 +98,5 @@ internal func orthogonalCombos<A, B, C, D, E>(
     )
   }
 }
+
 // swiftlint:enable large_tuple

@@ -164,7 +164,11 @@ internal func assertSnapshot(
       XCTFail(
         """
         Snapshot failed for \(name)
-        device=\(type.device.snapshotDescription), lang=\(type.language.rawValue), style=\(type.style.snapshotDescription), font=\(type.contentSizeCategory.rawValue), orientation=\(type.orientation.snapshotDescription)
+        device=\(type.device.snapshotDescription),
+        lang=\(type.language.rawValue),
+        style=\(type.style.snapshotDescription),
+        font=\(type.contentSizeCategory.rawValue),
+        orientation=\(type.orientation.snapshotDescription)
         \(failure)
         """,
         file: file,
@@ -260,7 +264,11 @@ internal func assertSnapshot(
       XCTFail(
         """
         Snapshot failed for \(name)
-        device=\(type.device.snapshotDescription), lang=\(type.language.rawValue), style=\(type.style.snapshotDescription), font=\(type.contentSizeCategory.rawValue), orientation=\(type.orientation.snapshotDescription)
+        device=\(type.device.snapshotDescription),
+        lang=\(type.language.rawValue),
+        style=\(type.style.snapshotDescription),
+        font=\(type.contentSizeCategory.rawValue),
+        orientation=\(type.orientation.snapshotDescription)
         \(failure)
         """,
         file: file,
@@ -381,7 +389,6 @@ private extension UIUserInterfaceStyle {
     }
   }
 }
-
 
 private func snapshotDirectory(for file: StaticString) -> String {
   let fileURL = URL(fileURLWithPath: "\(file)")
