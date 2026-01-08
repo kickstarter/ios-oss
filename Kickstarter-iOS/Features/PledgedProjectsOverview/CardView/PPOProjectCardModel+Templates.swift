@@ -41,6 +41,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay",
       address: .hidden,
+      rewardReceivedToggleState: .hidden,
       action: nil,
       tierType: .pledgeCollected,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -65,6 +66,7 @@ import KsApi
         Los Angeles, CA 90025-1234
         United States
       """),
+      rewardReceivedToggleState: .hidden,
       action: nil,
       tierType: .surveySubmitted,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -89,6 +91,7 @@ import KsApi
         Los Angeles, CA 90025-1234
         United States
       """),
+      rewardReceivedToggleState: .hidden,
       action: nil,
       tierType: .addressConfirmed,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -108,6 +111,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay",
       address: .hidden,
+      rewardReceivedToggleState: .rewardReceived,
       action: nil,
       tierType: .rewardReceived,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -132,6 +136,7 @@ import KsApi
         Los Angeles, CA 90025-1234
         United States
       """),
+      rewardReceivedToggleState: .notReceived,
       action: nil,
       tierType: .awaitingReward,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -158,6 +163,7 @@ import KsApi
         Los Angeles, CA 90025-1234
         United States
       """),
+      rewardReceivedToggleState: .hidden,
       action: .confirmAddress(
         address: """
           123 First Street, Apt #5678
@@ -185,6 +191,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: .hidden,
+      rewardReceivedToggleState: .hidden,
       action: .completeSurvey,
       tierType: .openSurvey,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -209,6 +216,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: .hidden,
+      rewardReceivedToggleState: .hidden,
       action: .fixPayment,
       tierType: .fixPayment,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -233,6 +241,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: .hidden,
+      rewardReceivedToggleState: .hidden,
       action: .authenticateCard(clientSecret: "seti_asdqwe_secret_x"),
       tierType: .authenticateCard,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -252,6 +261,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: .hidden,
+      rewardReceivedToggleState: .hidden,
       action: .completeSurvey,
       tierType: .openSurvey,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -271,6 +281,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: .hidden,
+      rewardReceivedToggleState: .hidden,
       action: .managePledge,
       tierType: .pledgeManagement,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -326,6 +337,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "Bob",
       address: .hidden,
+      rewardReceivedToggleState: .hidden,
       action: .completeSurvey,
       tierType: .openSurvey,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -359,6 +371,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "Bob",
       address: .hidden,
+      rewardReceivedToggleState: .hidden,
       action: .completeSurvey,
       tierType: .openSurvey,
       backingDetailsUrl: "fakeBackingDetailsUrl",

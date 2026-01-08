@@ -62,6 +62,17 @@ extension PPOProjectCardModel {
 
     let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
 
+    // Show the reward toggle if the backend says to show it and the v2 feature flag is on.
+    let showRewardToggle = featurePledgedProjectsOverviewV2Enabled() && card.showRewardReceivedToggle
+    let toggleState: PPORewardToggleState
+    if !showRewardToggle {
+      toggleState = .hidden
+    } else if backing?.backerCompleted == true {
+      toggleState = .rewardReceived
+    } else {
+      toggleState = .notReceived
+    }
+
     // Let backingDetailsUrl default to the card-specific webviewUrl.
     // TODO(MBL-2540): Only set this field for cards that need it, once the open backing details
     // action is replaced by a open project page action instead.
@@ -82,6 +93,7 @@ extension PPOProjectCardModel {
         pledge: formattedPledge,
         creatorName: creatorName,
         address: displayAddress,
+        rewardReceivedToggleState: toggleState,
         action: action.action,
         tierType: action.tierType,
         backingDetailsUrl: backingDetailsUrl,

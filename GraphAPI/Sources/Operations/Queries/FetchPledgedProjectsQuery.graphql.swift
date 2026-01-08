@@ -240,6 +240,8 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
               public var id: GraphAPI.ID { __data["id"] }
               /// The project
               public var project: Project? { __data["project"] }
+              /// If the backer_completed_at is set or not
+              public var backerCompleted: Bool { __data["backerCompleted"] }
               /// URL/path for the backing details page
               public var backingDetailsPageRoute: String { __data["backingDetailsPageRoute"] }
               /// The delivery address associated with the backing
@@ -258,6 +260,7 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                 amount: Amount,
                 id: GraphAPI.ID,
                 project: Project? = nil,
+                backerCompleted: Bool,
                 backingDetailsPageRoute: String,
                 deliveryAddress: DeliveryAddress? = nil,
                 clientSecret: String? = nil
@@ -268,6 +271,7 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                     "amount": amount._fieldData,
                     "id": id,
                     "project": project._fieldData,
+                    "backerCompleted": backerCompleted,
                     "backingDetailsPageRoute": backingDetailsPageRoute,
                     "deliveryAddress": deliveryAddress._fieldData,
                     "clientSecret": clientSecret,
