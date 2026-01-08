@@ -4,6 +4,7 @@ import KsApi
 
 #if targetEnvironment(simulator)
   extension PPOProjectCardModel {
+    // Minimal set of representative templates to keep previews lightweight.
     public static let previewTemplates: [PPOProjectCardModel] = [
       noRewardPledgeCollected,
       awaitingShippableRewardTemplate,
@@ -16,6 +17,9 @@ import KsApi
       completeSurveyTemplate
     ]
 
+    // Minimal set of funded project templates that makes sure each tier type
+    // and each reward type is represented at least once (instead of containing
+    // every possible combination of tier type and reward type).
     public static let fundedProjectTemplates: [PPOProjectCardModel] = [
       noRewardPledgeCollected,
       surveySubmittedTemplate,
