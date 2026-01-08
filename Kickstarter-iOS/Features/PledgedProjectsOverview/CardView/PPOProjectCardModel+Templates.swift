@@ -41,6 +41,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay",
       address: .hidden,
+      rewardReceivedToggleState: .hidden,
       action: nil,
       tierType: .pledgeCollected,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -65,6 +66,7 @@ import KsApi
         Los Angeles, CA 90025-1234
         United States
       """),
+      rewardReceivedToggleState: .hidden,
       action: nil,
       tierType: .surveySubmitted,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -89,6 +91,7 @@ import KsApi
         Los Angeles, CA 90025-1234
         United States
       """),
+      rewardReceivedToggleState: .hidden,
       action: nil,
       tierType: .addressConfirmed,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -108,6 +111,7 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay",
       address: .hidden,
+      rewardReceivedToggleState: .rewardReceived,
       action: nil,
       tierType: .rewardReceived,
       backingDetailsUrl: "fakeBackingDetailsUrl",
@@ -132,6 +136,7 @@ import KsApi
         Los Angeles, CA 90025-1234
         United States
       """),
+      rewardReceivedToggleState: .notReceived,
       action: nil,
       tierType: .awaitingReward,
       backingDetailsUrl: "fakeBackingDetailsUrl",
