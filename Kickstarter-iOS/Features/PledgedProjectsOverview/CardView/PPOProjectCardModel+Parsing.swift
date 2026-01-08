@@ -63,7 +63,7 @@ extension PPOProjectCardModel {
     let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
 
     // Show the reward toggle if the backend says to show it and the v2 feature flag is on.
-    let showRewardToggle = featurePledgedProjectsOverviewV2Enabled() && !card.showRewardReceivedToggle
+    let showRewardToggle = featurePledgedProjectsOverviewV2Enabled() && card.showRewardReceivedToggle
     let toggleState: PPORewardToggleState
     if !showRewardToggle {
       toggleState = .hidden
