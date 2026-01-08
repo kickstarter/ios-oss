@@ -575,8 +575,8 @@ public struct Colors {
     /// FPO:  temporary semantic color for the new floating tab bar while we wait for the new Color Palette to be finalized
     public static let light = SemanticColor(
       "icon/light",
-      lightMode: .gray_200,
-      darkMode: .gray_200
+      lightMode: .white,
+      darkMode: .white
     )
 
     /// FPO:  temporary semantic color for the new floating tab bar while we wait for the new Color Palette to be finalized
@@ -584,6 +584,13 @@ public struct Colors {
       "icon/default",
       lightMode: .black,
       darkMode: .white
+    )
+
+    /// FPO:  temporary semantic colors for the new floating tab bar while we wait for the new Color Palette to be finalized
+    public static let highlight = SemanticColor(
+      "icon/highlight",
+      lightMode: .green_04,
+      darkMode: .green_04
     )
   }
 
@@ -593,7 +600,7 @@ public struct Colors {
       public static let raised = SemanticColor(
         "elevation/surface/raised",
         lightMode: .white,
-        darkMode: .gray_950
+        darkMode: .gray_900
       )
     }
   }
