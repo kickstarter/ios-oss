@@ -9,7 +9,7 @@ typealias PPOStripeConfiguration = (publishableKey: String, merchantIdentifier: 
 protocol PPOContainerViewModelInputs {
   func viewWillAppear()
   func projectAlertsCountChanged(_ count: Int?)
-  func handle(navigationEvent: PPONavigationEvent)
+  func handle(preparedEvent: PPOPreparedEvent)
   func process3DSAuthentication(state: PPOActionState)
   func actionFinishedPerforming()
 }
@@ -17,7 +17,7 @@ protocol PPOContainerViewModelInputs {
 protocol PPOContainerViewModelOutputs {
   var projectAlertsBadge: AnyPublisher<TabBarBadge, Never> { get }
   var activityBadge: AnyPublisher<TabBarBadge, Never> { get }
-  var navigationEvents: AnyPublisher<PPONavigationEvent, Never> { get }
+  var preparedEvents: AnyPublisher<PPOPreparedEvent, Never> { get }
   var showBanner: AnyPublisher<MessageBannerConfiguration, Never> { get }
   var stripeConfiguration: AnyPublisher<PPOStripeConfiguration, Never> { get }
   var shouldRefresh: AnyPublisher<Void, Never> { get }
@@ -140,8 +140,8 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
     self.projectAlertsCountSubject.send(count)
   }
 
-  func handle(navigationEvent: PPONavigationEvent) {
-    self.handleNavigationEventSubject.send(navigationEvent)
+  func handle(preparedEvent: PPOPreparedEvent) {
+    self.handlePreparedEventSubject.send(preparedEvent)
   }
 
   func process3DSAuthentication(state: PPOActionState) {
@@ -166,8 +166,8 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
     self.activityBadgeSubject.eraseToAnyPublisher()
   }
 
-  var navigationEvents: AnyPublisher<PPONavigationEvent, Never> {
-    self.handleNavigationEventSubject.eraseToAnyPublisher()
+  var preparedEvents: AnyPublisher<PPOPreparedEvent, Never> {
+    self.handlePreparedEventSubject.eraseToAnyPublisher()
   }
 
   var showBanner: AnyPublisher<MessageBannerConfiguration, Never> {
@@ -188,7 +188,7 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
   private var projectAlertsCountSubject = CurrentValueSubject<Int?, Never>(nil)
   private var projectAlertsBadgeSubject = CurrentValueSubject<TabBarBadge, Never>(.none)
   private var activityBadgeSubject = CurrentValueSubject<TabBarBadge, Never>(.none)
-  private var handleNavigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
+  private var handlePreparedEventSubject = PassthroughSubject<PPOPreparedEvent, Never>()
   private let showBannerSubject = PassthroughSubject<MessageBannerConfiguration, Never>()
   private let process3DSAuthenticationState = PassthroughSubject<PPOActionState, Never>()
   private let stripeConfigurationSubject = PassthroughSubject<PPOStripeConfiguration, Never>()
