@@ -20,11 +20,10 @@ final class PPOProjectCardViewModelTests: XCTestCase {
       }
       .store(in: &cancellables)
 
-    let authenticateCardEvent = PPOCardEvent.authenticateCard(clientSecret: clientSecret)
-
     viewModel.performAction(.authenticateCard(clientSecret: clientSecret))
     waitForExpectations(timeout: 0.1)
 
+    let authenticateCardEvent = PPOCardEvent.authenticateCard(clientSecret: clientSecret)
     XCTAssertEqual(events, [authenticateCardEvent])
   }
 
