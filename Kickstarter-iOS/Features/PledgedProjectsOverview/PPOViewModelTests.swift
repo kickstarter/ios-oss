@@ -265,10 +265,12 @@ class PPOViewModelTests: XCTestCase {
 
   func testNavigationConfirmAddress() {
     let template = PPOProjectCardModel.confirmAddressTemplate
+    let cardViewModel = PPOProjectCardViewModel(card: template)
     let address = "fake address"
     let addressId = "fake id"
+    let cardEvent = PPOCardEvent.confirmAddress(address: address, addressId: addressId)
     self.verifyNavigationEvent(
-      { self.viewModel.confirmAddress(from: template, address: address, addressId: addressId) },
+      { self.viewModel.handleCardEvent(cardEvent, from: cardViewModel) },
       event: .confirmAddress(
         backingId: template.backingGraphId,
         addressId: addressId,
@@ -279,8 +281,9 @@ class PPOViewModelTests: XCTestCase {
   }
 
   func testNavigationContactCreator() {
+    let cardViewModel = PPOProjectCardViewModel(card: PPOProjectCardModel.addressLockTemplate)
     self.verifyNavigationEvent(
-      { self.viewModel.contactCreator(from: PPOProjectCardModel.addressLockTemplate) },
+      { self.viewModel.handleCardEvent(.sendMessage, from: cardViewModel) },
       event: .contactCreator(messageSubject: MessageSubject.project(
         id: PPOProjectCardModel.addressLockTemplate.projectId,
         name: PPOProjectCardModel.addressLockTemplate.projectName
@@ -291,45 +294,51 @@ class PPOViewModelTests: XCTestCase {
   func testNavigationFix3DSChallenge() {
     let clientSecret = "xyz"
     let onProgress: (PPOActionState) -> Void = { _ in }
+    let cardViewModel = PPOProjectCardViewModel(card: PPOProjectCardModel.authenticateCardTemplate)
+    let cardEvent = PPOCardEvent.authenticateCard(clientSecret: clientSecret)
     self.verifyNavigationEvent(
-      { self.viewModel.fix3DSChallenge(
-        from: PPOProjectCardModel.authenticateCardTemplate,
-        clientSecret: clientSecret,
-        onProgress: onProgress
-      ) },
+      { self.viewModel.handleCardEvent(cardEvent, from: cardViewModel) },
       event: .fix3DSChallenge(clientSecret: clientSecret, onProgress: onProgress)
     )
   }
 
   func testNavigationFixPaymentMethod() {
+    let template = PPOProjectCardModel.fixPaymentTemplate
+    let cardViewModel = PPOProjectCardViewModel(card: template)
     self.verifyNavigationEvent(
-      { self.viewModel.fixPaymentMethod(from: PPOProjectCardModel.fixPaymentTemplate) },
+      { self.viewModel.handleCardEvent(.fixPayment, from: cardViewModel) },
       event: .fixPaymentMethod(
-        projectId: PPOProjectCardModel.fixPaymentTemplate.projectId,
-        backingId: PPOProjectCardModel.fixPaymentTemplate.backingId
+        projectId: template.projectId,
+        backingId: template.backingId
       )
     )
   }
 
   func testNavigationOpenSurvey() {
+    let template = PPOProjectCardModel.completeSurveyTemplate
+    let cardViewModel = PPOProjectCardViewModel(card: template)
     self.verifyNavigationEvent(
-      { self.viewModel.openSurvey(from: PPOProjectCardModel.completeSurveyTemplate) },
-      event: .survey(url: PPOProjectCardModel.completeSurveyTemplate.backingDetailsUrl)
+      { self.viewModel.handleCardEvent(.completeSurvey, from: cardViewModel) },
+      event: .survey(url: template.backingDetailsUrl)
     )
   }
 
   func testNavigationManagePledge() {
+    let template = PPOProjectCardModel.managePledgeTemplate
+    let cardViewModel = PPOProjectCardViewModel(card: template)
     self.verifyNavigationEvent(
-      { self.viewModel.managePledge(from: PPOProjectCardModel.managePledgeTemplate) },
-      event: .managePledge(url: PPOProjectCardModel.managePledgeTemplate.backingDetailsUrl)
+      { self.viewModel.handleCardEvent(.managePledge, from: cardViewModel) },
+      event: .managePledge(url: template.backingDetailsUrl)
     )
   }
 
   func testNavigationViewProjectDetails() {
+    let template = PPOProjectCardModel.fixPaymentTemplate
+    let cardViewModel = PPOProjectCardViewModel(card: template)
     self.verifyNavigationEvent(
       // This could be tested with any template. All cards allow the user to view project details.
-      { self.viewModel.viewProjectDetails(from: PPOProjectCardModel.fixPaymentTemplate) },
-      event: .projectDetails(projectId: PPOProjectCardModel.fixPaymentTemplate.projectId)
+      { self.viewModel.handleCardEvent(.viewProjectDetails, from: cardViewModel) },
+      event: .projectDetails(projectId: template.projectId)
     )
   }
 
@@ -375,9 +384,11 @@ class PPOViewModelTests: XCTestCase {
       self.viewModel.viewDidAppear()
 
       // Trigger some actions that generate analytics
-      self.viewModel.openSurvey(from: PPOProjectCardModel.completeSurveyTemplate)
-      self.viewModel.fixPaymentMethod(from: PPOProjectCardModel.fixPaymentTemplate)
-      self.viewModel.contactCreator(from: PPOProjectCardModel.addressLockTemplate)
+      let openSurveyViewModel = PPOProjectCardViewModel(card: .completeSurveyTemplate)
+      self.viewModel.handleCardEvent(.completeSurvey, from: openSurveyViewModel)
+      let fixPaymentViewModel = PPOProjectCardViewModel(card: .fixPaymentTemplate)
+      self.viewModel.handleCardEvent(.fixPayment, from: fixPaymentViewModel)
+      self.viewModel.handleCardEvent(.sendMessage, from: fixPaymentViewModel)
 
       await fulfillment(of: [initialLoadExpectation], timeout: 0.1)
 
