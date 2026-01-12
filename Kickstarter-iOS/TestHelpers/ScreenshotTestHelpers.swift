@@ -167,7 +167,7 @@ internal func assertSnapshot(
         device=\(type.device.snapshotDescription),
         lang=\(type.language.rawValue),
         style=\(type.style.snapshotDescription),
-        font=\(type.contentSizeCategory.rawValue),
+        font=\(type.contentSizeCategory.snapshotDescription),
         orientation=\(type.orientation.snapshotDescription)
         \(failure)
         """,
@@ -267,7 +267,7 @@ internal func assertSnapshot(
         device=\(type.device.snapshotDescription),
         lang=\(type.language.rawValue),
         style=\(type.style.snapshotDescription),
-        font=\(type.contentSizeCategory.rawValue),
+        font=\(type.contentSizeCategory.snapshotDescription),
         orientation=\(type.orientation.snapshotDescription)
         \(failure)
         """,
@@ -335,11 +335,9 @@ private func snapshotName(
   let deviceComponent = sanitizeSnapshotComponent(type.device.snapshotDescription)
   let languageComponent = sanitizeSnapshotComponent(type.language.rawValue)
   let styleComponent = sanitizeSnapshotComponent(type.style.snapshotDescription)
-  let fontComponent = sanitizeSnapshotComponent(type.contentSizeCategory.rawValue)
+  let fontComponent = sanitizeSnapshotComponent(type.contentSizeCategory.snapshotDescription)
   let orientationComponent = sanitizeSnapshotComponent(type.orientation.snapshotDescription)
   return [
-    fileComponent,
-    functionComponent,
     deviceComponent,
     languageComponent,
     styleComponent,
@@ -374,8 +372,8 @@ private extension Device {
 private extension Orientation {
   var snapshotDescription: String {
     switch self {
-    case .portrait: return "portrait"
-    case .landscape: return "landscape"
+    case .portrait: return "pt"
+    case .landscape: return "ls"
     }
   }
 }
@@ -383,12 +381,39 @@ private extension Orientation {
 private extension UIUserInterfaceStyle {
   var snapshotDescription: String {
     switch self {
-    case .light: return "light"
-    case .dark: return "dark"
-    default: return "unspecified"
+    case .light: return "lt"
+    case .dark: return "dk"
+    default: return "un"
     }
   }
 }
+
+private extension UIContentSizeCategory {
+  var snapshotDescription: String {
+    switch self {
+    case .extraSmall: return "xs"
+    case .small: return "s"
+    case .medium: return "md"
+    case .large: return "lg"
+    case .extraLarge: return "xl"
+    case .extraExtraLarge: return "xxl"
+    case .extraExtraExtraLarge: return "xxxl"
+    case .accessibilityMedium: return "aM"
+    case .accessibilityLarge: return "aL"
+    case .accessibilityExtraLarge: return "aXL"
+    case .accessibilityExtraExtraLarge: return "aXXL"
+    case .accessibilityExtraExtraExtraLarge: return "aXXXL"
+    default: return self.rawValue
+    }
+  }
+}
+
+// Naming legend:
+// device: phone4inch, phone4_7inch, phone5_5inch, phone5_8inch, pad
+// lang:   language rawValue (en, es, fr, de, ja)
+// style:  lt (light), dk (dark), un (unspecified)
+// font:   xs, s, md, lg, xl, xxl, xxxl, aM, aL, aXL, aXXL, aXXXL
+// orient: pt (portrait), ls (landscape)
 
 private func snapshotDirectory(for file: StaticString) -> String {
   let fileURL = URL(fileURLWithPath: "\(file)")
