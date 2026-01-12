@@ -46,6 +46,7 @@ typealias PPOProjectCardViewModelType = Equatable & Hashable & Identifiable & Ob
 final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
   @Published private(set) var card: PPOProjectCardModel
   @Published var buttonState: PPOButtonState = .active
+  @Published var rewardToggleEnabled: Bool
 
   func hash(into hasher: inout Hasher) {
     hasher.combine(self.card)
@@ -55,6 +56,7 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
     card: PPOProjectCardModel
   ) {
     self.card = card
+    self.rewardToggleEnabled = card.rewardReceivedToggleState == .rewardReceived
   }
 
   // MARK: - Inputs
