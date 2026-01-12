@@ -360,10 +360,10 @@ private func sanitizeSnapshotComponent(_ value: String) -> String {
 private extension Device {
   var snapshotDescription: String {
     switch self {
-    case .phone4inch: return "phone4inch"
-    case .phone4_7inch: return "phone4_7inch"
-    case .phone5_5inch: return "phone5_5inch"
-    case .phone5_8inch: return "phone5_8inch"
+    case .phone4inch: return "4in"
+    case .phone4_7inch: return "4-7in"
+    case .phone5_5inch: return "5-5in"
+    case .phone5_8inch: return "5-8in"
     case .pad: return "pad"
     }
   }
