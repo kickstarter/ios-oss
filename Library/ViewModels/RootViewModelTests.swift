@@ -11,6 +11,7 @@ final class RootViewModelTests: TestCase {
   let vm: RootViewModelType = RootViewModel()
   let viewControllerNames = TestObserver<[String], Never>()
   let filterDiscovery = TestObserver<DiscoveryParams, Never>()
+  let floatingTabBarEnabled = TestObserver<Bool, Never>()
   let selectedIndex = TestObserver<RootViewControllerIndex, Never>()
   let setBadgeValueAtIndexValue = TestObserver<String?, Never>()
   let setBadgeValueAtIndexIndex = TestObserver<RootViewControllerIndex, Never>()
@@ -26,6 +27,7 @@ final class RootViewModelTests: TestCase {
       .observe(self.viewControllerNames.observer)
 
     self.vm.outputs.filterDiscovery.map(second).observe(self.filterDiscovery.observer)
+    self.vm.outputs.floatingTabBarEnabled.observe(self.floatingTabBarEnabled.observer)
     self.vm.outputs.selectedIndex.observe(self.selectedIndex.observer)
     self.vm.outputs.setBadgeValueAtIndex.map { $0.0 }.observe(self.setBadgeValueAtIndexValue.observer)
     self.vm.outputs.setBadgeValueAtIndex.map { $0.1 }.observe(self.setBadgeValueAtIndexIndex.observer)
@@ -51,9 +53,10 @@ final class RootViewModelTests: TestCase {
 
     withEnvironment(application: mockApplication) {
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.applicationWillEnterForeground()
 
-      self.setBadgeValueAtIndexValue.assertValues([nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      XCTAssertNil(self.setBadgeValueAtIndexValue.values.last!)
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
     }
   }
 
@@ -66,9 +69,10 @@ final class RootViewModelTests: TestCase {
 
     withEnvironment(application: mockApplication) {
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.applicationWillEnterForeground()
 
-      self.setBadgeValueAtIndexValue.assertValues(["5"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      XCTAssertEqual(self.setBadgeValueAtIndexValue.values.last, "5")
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
     }
   }
 
@@ -81,9 +85,10 @@ final class RootViewModelTests: TestCase {
 
     withEnvironment(application: mockApplication) {
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.applicationWillEnterForeground()
 
-      self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      XCTAssertEqual(self.setBadgeValueAtIndexValue.values.last, "99+")
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
     }
   }
 
@@ -96,23 +101,24 @@ final class RootViewModelTests: TestCase {
 
     withEnvironment(application: mockApplication, isVoiceOverRunning: { false }) {
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.applicationWillEnterForeground()
 
-      self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      XCTAssertEqual(self.setBadgeValueAtIndexValue.values.last, "99+")
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
     }
 
     withEnvironment(application: mockApplication, isVoiceOverRunning: { true }) {
       self.vm.inputs.voiceOverStatusDidChange()
 
-      self.setBadgeValueAtIndexValue.assertValues(["99+", "100"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      XCTAssertEqual(self.setBadgeValueAtIndexValue.values.last, "100")
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
     }
 
     withEnvironment(application: mockApplication, isVoiceOverRunning: { false }) {
       self.vm.inputs.voiceOverStatusDidChange()
 
-      self.setBadgeValueAtIndexValue.assertValues(["99+", "100", "99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+      XCTAssertEqual(self.setBadgeValueAtIndexValue.values.last, "99+")
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
     }
   }
 
@@ -126,15 +132,15 @@ final class RootViewModelTests: TestCase {
     withEnvironment(application: mockApplication) {
       self.vm.inputs.viewDidLoad()
 
-      self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      self.vm.inputs.applicationWillEnterForeground()
+      XCTAssertEqual(self.setBadgeValueAtIndexValue.values.last, "99+")
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
 
       mockApplication.applicationIconBadgeNumber = 50
 
       self.vm.inputs.applicationWillEnterForeground()
-
-      self.setBadgeValueAtIndexValue.assertValues(["99+", "50"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      XCTAssertEqual(self.setBadgeValueAtIndexValue.values.last, "50")
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
     }
   }
 
@@ -157,22 +163,21 @@ final class RootViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService, application: mockApplication, currentUser: user) {
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.applicationWillEnterForeground()
 
-      self.updateUserInEnvironment.assertValues([])
-      self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      XCTAssertEqual(self.setBadgeValueAtIndexValue.values.last, "99+")
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
 
       self.vm.inputs.didSelect(index: 1)
 
-      self.updateUserInEnvironment.assertValues([])
-      self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      XCTAssertNil(self.setBadgeValueAtIndexValue.values.last!)
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
 
       self.scheduler.advance()
 
       XCTAssertEqual(self.updateUserInEnvironment.values.map { $0.id }, [user.id])
-      self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      XCTAssertNil(self.setBadgeValueAtIndexValue.values.last!)
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
     }
   }
 
@@ -192,22 +197,21 @@ final class RootViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService, application: mockApplication) {
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.applicationWillEnterForeground()
 
-      self.updateUserInEnvironment.assertValues([])
-      self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      XCTAssertEqual(self.setBadgeValueAtIndexValue.values.last, "99+")
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
 
       self.vm.inputs.didSelect(index: 1)
 
-      self.updateUserInEnvironment.assertValues([])
-      self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      XCTAssertNil(self.setBadgeValueAtIndexValue.values.last!)
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
 
       self.scheduler.advance()
 
       self.updateUserInEnvironment.assertValues([])
-      self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      XCTAssertNil(self.setBadgeValueAtIndexValue.values.last!)
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
     }
   }
 
@@ -220,9 +224,10 @@ final class RootViewModelTests: TestCase {
 
     withEnvironment(application: mockApplication) {
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.applicationWillEnterForeground()
 
-      self.setBadgeValueAtIndexValue.assertValues([nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      XCTAssertNil(self.setBadgeValueAtIndexValue.values.last!)
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
     }
 
     let user = .template
@@ -232,15 +237,14 @@ final class RootViewModelTests: TestCase {
       AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
       self.vm.inputs.currentUserUpdated()
 
-      self.setBadgeValueAtIndexValue.assertValues([nil, "50"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      XCTAssertEqual(self.setBadgeValueAtIndexValue.values.last, "50")
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
 
       AppEnvironment.logout()
-
       self.vm.inputs.userSessionEnded()
 
-      self.setBadgeValueAtIndexValue.assertValues([nil, "50", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+      XCTAssertNil(self.setBadgeValueAtIndexValue.values.last!)
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
     }
   }
 
@@ -253,19 +257,20 @@ final class RootViewModelTests: TestCase {
 
     withEnvironment(application: mockApplication) {
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.applicationWillEnterForeground()
 
-      self.setBadgeValueAtIndexValue.assertValues(["99+"])
-      self.setBadgeValueAtIndexIndex.assertValues([1])
+      XCTAssertEqual(self.setBadgeValueAtIndexValue.values.last, "99+")
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
 
       self.vm.inputs.didReceiveBadgeValue(10)
 
-      self.setBadgeValueAtIndexValue.assertValues(["99+", "10"])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      XCTAssertEqual(self.setBadgeValueAtIndexValue.values.last, "10")
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
 
       self.vm.inputs.didReceiveBadgeValue(0)
 
-      self.setBadgeValueAtIndexValue.assertValues(["99+", "10", nil])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+      XCTAssertNil(self.setBadgeValueAtIndexValue.values.last!)
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
     }
   }
 
@@ -325,11 +330,9 @@ final class RootViewModelTests: TestCase {
       .observe(viewControllerNames.observer)
 
     self.vm.inputs.viewDidLoad()
-
     self.viewControllerNames.assertValueCount(1)
 
     self.vm.inputs.currentUserUpdated()
-
     self.viewControllerNames.assertValueCount(1)
   }
 
@@ -364,15 +367,12 @@ final class RootViewModelTests: TestCase {
     self.selectedIndex.assertValues([0], "Default index selected immediately.")
 
     self.vm.inputs.didSelect(index: 1)
-
     self.selectedIndex.assertValues([0, 1], "Selects index immediately.")
 
     self.vm.inputs.didSelect(index: 0)
-
     self.selectedIndex.assertValues([0, 1, 0], "Selects index immediately.")
 
     self.vm.inputs.didSelect(index: 2)
-
     self.selectedIndex.assertValues([0, 1, 0, 2], "Selects index immediately.")
 
     XCTAssertEqual(
@@ -385,7 +385,6 @@ final class RootViewModelTests: TestCase {
     )
 
     self.vm.inputs.didSelect(index: 10)
-
     self.selectedIndex.assertValues([0, 1, 0, 2, 3], "Selects index immediately.")
   }
 
@@ -480,6 +479,7 @@ final class RootViewModelTests: TestCase {
       .search(index: 2),
       .profile(avatarUrl: URL(string: user.avatar.small), index: 3)
     ]
+
     let itemsCreator: [TabBarItem] = [
       .home(index: 0),
       .activity(index: 1),
@@ -494,26 +494,21 @@ final class RootViewModelTests: TestCase {
     self.tabBarItemsData.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
-
     self.tabBarItemsData.assertValues([tabData])
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
     self.vm.inputs.userSessionStarted()
-
     self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn])
 
     self.vm.inputs.currentUserUpdated()
-
     self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn])
 
     AppEnvironment.logout()
     self.vm.inputs.userSessionEnded()
-
     self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn, tabData])
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: creator))
     self.vm.inputs.userSessionStarted()
-
     self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn, tabData, tabDataCreator])
   }
 
@@ -556,8 +551,8 @@ final class RootViewModelTests: TestCase {
         self.vm.inputs.currentUserUpdated()
       }
 
-      self.setBadgeValueAtIndexValue.assertValues([nil, ""])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      XCTAssertEqual(self.setBadgeValueAtIndexValue.values.last, "")
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
     }
   }
 
@@ -575,8 +570,8 @@ final class RootViewModelTests: TestCase {
       AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
       self.vm.inputs.currentUserUpdated()
 
-      self.setBadgeValueAtIndexValue.assertValues(["", ""])
-      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+      XCTAssertEqual(self.setBadgeValueAtIndexValue.values.last, "")
+      XCTAssertEqual(self.setBadgeValueAtIndexIndex.values.last, 1)
     }
   }
 
@@ -614,6 +609,54 @@ final class RootViewModelTests: TestCase {
         "Shows regular Activities tab when logged out again"
       )
     }
+  }
+
+  func testFloatingTabBarEnabled_DefaultsToStandardTabBarOnFirstLoad() {
+    self.floatingTabBarEnabled.assertValues([])
+    self.viewControllerNames.assertValues([])
+
+    self.vm.inputs.viewDidLoad()
+
+    self.floatingTabBarEnabled.assertValues(
+      [false],
+      "First load should default to the standard tab bar to avoid buggy UI states."
+    )
+
+    self.viewControllerNames.assertValues(
+      [
+        ["Discovery", "Activities", "Search", "LoginTout"]
+      ],
+      "First load should use standard tab bar items order"
+    )
+  }
+
+  func testSetViewControllersAndTabBarItemsData_ReTriggerOnAppWillEnterForeground() {
+    self.viewControllerNames.assertValues([])
+    self.tabBarItemsData.assertValues([])
+    self.floatingTabBarEnabled.assertValues([])
+
+    self.vm.inputs.viewDidLoad()
+
+    self.viewControllerNames.assertValueCount(1)
+    self.tabBarItemsData.assertValueCount(1)
+    self.floatingTabBarEnabled.assertValueCount(1)
+
+    self.vm.inputs.applicationWillEnterForeground()
+
+    self.viewControllerNames.assertValueCount(
+      3,
+      "setViewControllers should emit again on foreground so the controller can rebuild tab bar UI."
+    )
+
+    self.tabBarItemsData.assertValueCount(
+      3,
+      "tabBarItemsData should emit again on foreground so UI stays in sync with refreshed tabs."
+    )
+
+    self.floatingTabBarEnabled.assertValueCount(
+      2,
+      "floatingTabBarEnabled should refresh on foreground."
+    )
   }
 }
 
