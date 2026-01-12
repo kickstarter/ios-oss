@@ -3,18 +3,26 @@ import Foundation
 import KsApi
 import Library
 
+public enum PPOCardEvent: Equatable, Hashable {
+  case editAddress
+  case sendMessage
+  case viewProjectDetails
+  case confirmAddress(address: String, addressId: String)
+  case completeSurvey
+  case managePledge
+  case fixPayment
+  case authenticateCard(clientSecret: String)
+}
+
 protocol PPOProjectCardViewModelInputs {
-  func viewBackingDetails()
-  func sendCreatorMessage()
-  func editAddress()
-  func performAction(action: PPOProjectCardModel.Action)
+  // Trigger a PPOCardEvent directly.
+  func eventTriggered(_: PPOCardEvent)
+  // Trigger the PPOCardEvent corresponding to the ButtonAction.
+  func performAction(_: PPOProjectCardModel.ButtonAction)
 }
 
 protocol PPOProjectCardViewModelOutputs {
-  var viewBackingDetailsTapped: AnyPublisher<Void, Never> { get }
-  var sendMessageTapped: AnyPublisher<Void, Never> { get }
-  var editAddressTapped: AnyPublisher<Void, Never> { get }
-  var actionPerformed: AnyPublisher<PPOProjectCardModel.Action, Never> { get }
+  var handleEvent: AnyPublisher<PPOCardEvent, Never> { get }
 
   var card: PPOProjectCardModel { get }
 }
@@ -53,50 +61,44 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
 
   // MARK: - Inputs
 
-  func editAddress() {
-    self.editAddressSubject.send()
+  func eventTriggered(_ event: PPOCardEvent) {
+    self.handleEventSubject.send(event)
   }
 
-  func sendCreatorMessage() {
-    self.sendCreatorMessageSubject.send()
-  }
-
-  func performAction(action: Action) {
-    self.actionPerformedSubject.send(action)
-  }
-
-  func viewBackingDetails() {
-    self.viewBackingDetailsSubject.send()
+  func performAction(_ action: ButtonAction) {
+    let event: PPOCardEvent
+    switch action {
+    case let .authenticateCard(clientSecret: clientSecret):
+      event = .authenticateCard(clientSecret: clientSecret)
+    case .completeSurvey:
+      event = .completeSurvey
+    case let .confirmAddress(address: address, addressId: addressId):
+      event = .confirmAddress(address: address, addressId: addressId)
+    case .fixPayment:
+      event = .fixPayment
+    case .managePledge:
+      event = .managePledge
+    }
+    self.handleEventSubject.send(event)
   }
 
   // MARK: - Outputs
 
-  var viewBackingDetailsTapped: AnyPublisher<(), Never> {
-    self.viewBackingDetailsSubject.eraseToAnyPublisher()
+  var handleEvent: AnyPublisher<PPOCardEvent, Never> {
+    self.handleEventSubject.eraseToAnyPublisher()
   }
 
-  var sendMessageTapped: AnyPublisher<(), Never> { self.sendCreatorMessageSubject.eraseToAnyPublisher() }
-  var editAddressTapped: AnyPublisher<(), Never> { self.editAddressSubject.eraseToAnyPublisher() }
-  var actionPerformed: AnyPublisher<Action, Never> { self.actionPerformedSubject.eraseToAnyPublisher() }
-
-  private let viewBackingDetailsSubject = PassthroughSubject<Void, Never>()
-  private let sendCreatorMessageSubject = PassthroughSubject<Void, Never>()
-  private let editAddressSubject = PassthroughSubject<Void, Never>()
-  private let actionPerformedSubject = PassthroughSubject<PPOProjectCardModel.Action, Never>()
+  private let handleEventSubject = PassthroughSubject<PPOCardEvent, Never>()
 
   // MARK: - Helpers
 
-  typealias Action = PPOProjectCardModel.Action
+  typealias ButtonAction = PPOProjectCardModel.ButtonAction
   typealias Alert = PPOProjectCardModel.Alert
 
   // MARK: - Equatable
 
   static func == (lhs: PPOProjectCardViewModel, rhs: PPOProjectCardViewModel) -> Bool {
     lhs.card == rhs.card
-  }
-
-  func fix3DSChallenge(clientSecret: String) {
-    self.performAction(action: .authenticateCard(clientSecret: clientSecret))
   }
 
   func handle3DSState(_ state: PPOActionState) {

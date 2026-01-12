@@ -4,28 +4,30 @@ import Combine
 import XCTest
 
 final class PPOProjectCardViewModelTests: XCTestCase {
-  func testPerformAction() throws {
+  func testAuthenticateCardButtonAction() throws {
     var cancellables: [AnyCancellable] = []
     let viewModel = PPOProjectCardViewModel(
       card: PPOProjectCardModel.authenticateCardTemplate
     )
+    let clientSecret = "test123"
 
     let expectation = expectation(description: "Waiting for action to be performed")
-    var actions: [PPOProjectCardModel.Action] = []
-    viewModel.actionPerformed
-      .sink { action in
-        actions.append(action)
+    var events: [PPOCardEvent] = []
+    viewModel.handleEvent
+      .sink { event in
+        events.append(event)
         expectation.fulfill()
       }
       .store(in: &cancellables)
 
-    viewModel.performAction(action: .authenticateCard(clientSecret: "test123"))
+    viewModel.performAction(.authenticateCard(clientSecret: clientSecret))
     waitForExpectations(timeout: 0.1)
 
-    XCTAssertEqual(actions, [.authenticateCard(clientSecret: "test123")])
+    let authenticateCardEvent = PPOCardEvent.authenticateCard(clientSecret: clientSecret)
+    XCTAssertEqual(events, [authenticateCardEvent])
   }
 
-  func testSendMessage() throws {
+  func testSendMessageEvent() throws {
     var cancellables: [AnyCancellable] = []
     let viewModel = PPOProjectCardViewModel(
       card: PPOProjectCardModel.authenticateCardTemplate
@@ -33,14 +35,14 @@ final class PPOProjectCardViewModelTests: XCTestCase {
 
     let expectation = expectation(description: "Waiting for message to be sent")
     var didSendMessage = false
-    viewModel.sendMessageTapped
-      .sink { () in
-        didSendMessage = true
+    viewModel.handleEvent
+      .sink { event in
+        didSendMessage = event == .sendMessage
         expectation.fulfill()
       }
       .store(in: &cancellables)
 
-    viewModel.sendCreatorMessage()
+    viewModel.eventTriggered(.sendMessage)
     waitForExpectations(timeout: 0.1)
 
     XCTAssertTrue(didSendMessage)
