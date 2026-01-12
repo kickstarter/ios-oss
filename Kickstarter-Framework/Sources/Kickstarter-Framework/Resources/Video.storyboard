@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Video View Controller-->
+        <scene sceneID="fFA-t1-SEC">
+            <objects>
+                <viewController storyboardIdentifier="VideoViewController" id="p8T-Mu-0By" customClass="VideoViewController" customModule="Kickstarter_Framework" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="xk2-fv-789"/>
+                        <viewControllerLayoutGuide type="bottom" id="Up2-lq-jO6"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="qLv-n8-tLe">
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="231"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xRP-Dy-zdg">
+                                <rect key="frame" x="12" y="12" width="376" height="213"/>
+                                <connections>
+                                    <segue destination="W8z-Oz-LNT" kind="embed" id="nEQ-z3-lUb"/>
+                                </connections>
+                            </containerView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Z6Z-Qr-3Gq">
+                                <rect key="frame" x="12" y="12" width="376" height="211.5"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Z6Z-Qr-3Gq" secondAttribute="height" multiplier="16:9" id="D1s-eH-RY5"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eBP-iG-9iY">
+                                <rect key="frame" x="174" y="93" width="52" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="52" id="QIx-Fa-1h4"/>
+                                    <constraint firstAttribute="height" constant="40" id="Vgp-r9-eSD"/>
+                                </constraints>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="Z6Z-Qr-3Gq" firstAttribute="leading" secondItem="qLv-n8-tLe" secondAttribute="leading" constant="12" id="3Ye-cR-oIZ"/>
+                            <constraint firstItem="xRP-Dy-zdg" firstAttribute="leading" secondItem="qLv-n8-tLe" secondAttribute="leading" constant="12" id="3ej-al-UlW"/>
+                            <constraint firstItem="eBP-iG-9iY" firstAttribute="centerX" secondItem="Z6Z-Qr-3Gq" secondAttribute="centerX" id="Ii0-Hd-IF5"/>
+                            <constraint firstItem="eBP-iG-9iY" firstAttribute="centerY" secondItem="Z6Z-Qr-3Gq" secondAttribute="centerY" constant="-4.75" id="KrD-cN-TkA"/>
+                            <constraint firstItem="xRP-Dy-zdg" firstAttribute="top" secondItem="xk2-fv-789" secondAttribute="bottom" constant="12" id="M80-UO-okJ"/>
+                            <constraint firstAttribute="trailing" secondItem="xRP-Dy-zdg" secondAttribute="trailing" constant="12" id="Wc5-gz-wxb"/>
+                            <constraint firstAttribute="trailing" secondItem="Z6Z-Qr-3Gq" secondAttribute="trailing" constant="12" id="ZCJ-kj-dFu"/>
+                            <constraint firstItem="Up2-lq-jO6" firstAttribute="top" secondItem="xRP-Dy-zdg" secondAttribute="bottom" constant="6" id="bxf-rn-7m3"/>
+                            <constraint firstItem="Z6Z-Qr-3Gq" firstAttribute="top" secondItem="xk2-fv-789" secondAttribute="bottom" constant="12" id="wEC-3c-pTG"/>
+                        </constraints>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="400" height="231"/>
+                    <connections>
+                        <outlet property="playButton" destination="eBP-iG-9iY" id="qTG-HO-rbm"/>
+                        <outlet property="projectImageView" destination="Z6Z-Qr-3Gq" id="J2C-u2-4ei"/>
+                        <outlet property="videoContainerView" destination="xRP-Dy-zdg" id="5hO-s9-LSa"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TWx-34-H27" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-880" y="163.26836581709148"/>
+        </scene>
+        <!--AV Player View Controller-->
+        <scene sceneID="rKM-iK-8EW">
+            <objects>
+                <avPlayerViewController videoGravity="AVLayerVideoGravityResizeAspect" id="W8z-Oz-LNT" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sgB-mg-cy8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-243" y="163"/>
+        </scene>
+    </scenes>
+</document>

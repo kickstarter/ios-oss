@@ -105,7 +105,7 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
   // MARK: - Initialization
 
   /// Injecting a bundle so that we can test that the correct Lottie JSON files are being loaded as expected.
-  init(for bundle: Bundle = .main) {
+  init(for bundle: Bundle = .library) {
     let onboardingItems = allOnboardingItems(in: bundle)
 
     self.onboardingItems = SignalProducer(value: onboardingItems)
@@ -184,7 +184,7 @@ public final class OnboardingUseCase: OnboardingUseCaseType, OnboardingUseCaseUI
 // MARK: - Helpers
 
 private func allOnboardingItems(
-  in bundle: Bundle = .main
+  in bundle: Bundle = .library
 ) -> [OnboardingItem] {
   return [
     makeOnboardingItem(
@@ -225,7 +225,7 @@ private func makeOnboardingItem(
   title: String,
   subTitle: String,
   type: OnboardingItemType,
-  in bundle: Bundle = .main
+  in bundle: Bundle = .library
 ) -> OnboardingItem? {
   guard let lottieName = localizedOnboardingLottieFile(for: type.lottieFileName, in: bundle) else {
     assertionFailure("Missing Lottie file for onboarding type: \(type)")

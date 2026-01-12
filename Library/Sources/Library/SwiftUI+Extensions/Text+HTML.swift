@@ -4,7 +4,7 @@ import SwiftUI
 
 extension Text {
   /// Allows Text to be initialized with a string that has html. Option to sepcify a portion of the string that should be a hyperlink.
-  init(html: String, with hyperlinks: [String]) {
+  public init(html: String, with hyperlinks: [String]) {
     do {
       var attrString = try html.htmlToAttributedString()
       attrString.font = .ksr_subhead()

@@ -15,6 +15,10 @@ let package = Package(
     .library(
       name: "Library",
       targets: ["Library"]
+    ),
+    .library(
+      name: "LibraryTestHelpers",
+      targets: ["LibraryTestHelpers"]
     )
   ],
   dependencies: [
@@ -61,10 +65,19 @@ let package = Package(
         .process("Resources")
       ],
     ),
+    .target(
+      name: "LibraryTestHelpers",
+      dependencies: [
+        .byName(name: "Library"),
+        .product(name: "KsApiTestHelpers", package: "KsApi"),
+      ],
+      path: "Sources/LibraryTestHelpers"
+    ),
     .testTarget(
       name: "Library-Tests",
       dependencies: [
         .byName(name: "Library"),
+        .byName(name: "LibraryTestHelpers"),
         .product(name: "KsApiTestHelpers", package: "KsApi"),
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
         .product(name: "ReactiveExtensions-TestHelpers", package: "Kickstarter-ReactiveExtensions")

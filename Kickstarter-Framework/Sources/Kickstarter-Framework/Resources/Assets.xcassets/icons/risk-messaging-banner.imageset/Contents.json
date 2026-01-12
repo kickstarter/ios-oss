@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "risk-messaging-banner.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

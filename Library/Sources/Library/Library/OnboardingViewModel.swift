@@ -40,7 +40,7 @@ public final class OnboardingViewModel: OnboardingViewModelType, Equatable & Ide
 
   // MARK: - Init
 
-  public init(with bundle: Bundle = .main) {
+  public init(with bundle: Bundle = .library) {
     self.useCase = OnboardingUseCase(for: bundle)
 
     self.onboardingItems = self.useCase.uiOutputs.onboardingItems
