@@ -1,5 +1,6 @@
 import Foundation
 import Library
+@testable import LibraryTestHelpers
 import ReactiveSwift
 import SnapshotTesting
 import SwiftUI

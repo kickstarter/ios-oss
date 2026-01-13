@@ -1,5 +1,6 @@
 import GraphAPI
 @testable import KsApi
+@testable import KsApiTestHelpers
 import XCTest
 
 final class CreateFlaggingInputTests: XCTestCase {

@@ -1,4 +1,5 @@
 @testable import Library
+@testable import LibraryTestHelpers
 import SafariServices
 import UIKit
 import XCTest

@@ -1,6 +1,7 @@
 import Apollo
 import GraphAPI
 @testable import KsApi
+@testable import KsApiTestHelpers
 
 public enum CreateSetupIntentMutationTemplate {
   case valid

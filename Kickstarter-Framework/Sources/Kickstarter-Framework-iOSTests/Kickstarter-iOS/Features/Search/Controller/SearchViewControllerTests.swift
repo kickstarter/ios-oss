@@ -1,7 +1,9 @@
 import GraphAPI
 @testable import Kickstarter_Framework
 @testable import KsApi
+@testable import KsApiTestHelpers
 import Library
+@testable import LibraryTestHelpers
 import Prelude
 import SnapshotTesting
 import XCTest

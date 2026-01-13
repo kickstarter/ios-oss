@@ -2,6 +2,7 @@ import ApolloTestSupport
 import GraphAPI
 import GraphAPITestMocks
 @testable import KsApi
+@testable import KsApiTestHelpers
 
 let paymentIncrement = Mock<GraphAPITestMocks.PaymentIncrement>()
 

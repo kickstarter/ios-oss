@@ -2,6 +2,7 @@ import ApolloTestSupport
 import GraphAPI
 import GraphAPITestMocks
 @testable import KsApi
+@testable import KsApiTestHelpers
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import XCTest

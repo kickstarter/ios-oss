@@ -1,6 +1,7 @@
 import AppTrackingTransparency
 import KsApi
 import Library
+@testable import LibraryTestHelpers
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest

@@ -1,6 +1,7 @@
 import Apollo
 import GraphAPI
 @testable import KsApi
+@testable import KsApiTestHelpers
 
 public enum CreateBackingMutationTemplate {
   case valid(checkoutState: GraphAPI.CheckoutState, sca: Bool)

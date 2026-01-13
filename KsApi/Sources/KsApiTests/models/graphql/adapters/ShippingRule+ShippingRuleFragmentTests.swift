@@ -3,6 +3,7 @@ import Foundation
 import GraphAPI
 import GraphAPITestMocks
 @testable import KsApi
+@testable import KsApiTestHelpers
 import XCTest
 
 final class ShippingRule_ShippingRuleFragmentTests: XCTestCase {

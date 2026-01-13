@@ -2,6 +2,7 @@ import Apollo
 import Foundation
 import GraphAPI
 @testable import KsApi
+@testable import KsApiTestHelpers
 
 public enum FetchProjectQueryTemplate {
   case valid

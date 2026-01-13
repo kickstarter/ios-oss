@@ -1,4 +1,5 @@
 @testable import Library
+@testable import LibraryTestHelpers
 import MessageUI
 import Prelude
 import ReactiveExtensions_TestHelpers

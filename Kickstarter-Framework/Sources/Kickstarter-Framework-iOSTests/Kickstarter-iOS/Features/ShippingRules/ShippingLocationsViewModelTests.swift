@@ -1,5 +1,7 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
+@testable import KsApiTestHelpers
+@testable import LibraryTestHelpers
 import SwiftUI
 import XCTest
 

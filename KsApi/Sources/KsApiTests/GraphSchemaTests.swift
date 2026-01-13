@@ -1,4 +1,5 @@
 @testable import KsApi
+@testable import KsApiTestHelpers
 import XCTest
 
 class GraphSchemaTests: XCTestCase {

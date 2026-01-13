@@ -1,7 +1,9 @@
 import KDS
 @testable import Kickstarter_Framework
 @testable import KsApi
+@testable import KsApiTestHelpers
 import Library
+@testable import LibraryTestHelpers
 import Prelude
 import ReactiveExtensions_TestHelpers
 import SnapshotTesting

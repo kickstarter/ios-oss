@@ -1,5 +1,6 @@
 
 @testable import KsApi
+@testable import KsApiTestHelpers
 
 import XCTest
 

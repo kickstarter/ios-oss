@@ -1,4 +1,6 @@
 import Combine
+@testable import KsApi
+@testable import KsApiTestHelpers
 import XCTest
 
 final class ConcreteError: Error {

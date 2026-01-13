@@ -1,6 +1,7 @@
 import Foundation
 @testable import Kickstarter_Framework
 import Library
+@testable import LibraryTestHelpers
 import SnapshotTesting
 
 internal final class FacebookConfirmationViewControllerTests: TestCase {

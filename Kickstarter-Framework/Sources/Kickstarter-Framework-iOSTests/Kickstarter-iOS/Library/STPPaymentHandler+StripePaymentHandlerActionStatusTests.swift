@@ -1,4 +1,5 @@
 import Library
+@testable import LibraryTestHelpers
 import Stripe
 import XCTest
 

@@ -1,5 +1,6 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
+@testable import KsApiTestHelpers
 @testable import Library
 import Prelude
 import XCTest

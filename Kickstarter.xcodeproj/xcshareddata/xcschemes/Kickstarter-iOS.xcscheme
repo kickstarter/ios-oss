@@ -93,6 +93,46 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "KDSTests"
+               BuildableName = "KDSTests"
+               BlueprintName = "KDSTests"
+               ReferencedContainer = "container:KDS">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Kickstarter-Framework-Tests"
+               BuildableName = "Kickstarter-Framework-Tests"
+               BlueprintName = "Kickstarter-Framework-Tests"
+               ReferencedContainer = "container:Kickstarter-Framework">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "KsApiTests"
+               BuildableName = "KsApiTests"
+               BlueprintName = "KsApiTests"
+               ReferencedContainer = "container:KsApi">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Library-Tests"
+               BuildableName = "Library-Tests"
+               BlueprintName = "Library-Tests"
+               ReferencedContainer = "container:Library">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

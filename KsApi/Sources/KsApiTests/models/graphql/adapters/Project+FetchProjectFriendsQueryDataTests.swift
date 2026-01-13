@@ -1,5 +1,6 @@
 import Apollo
 @testable import KsApi
+@testable import KsApiTestHelpers
 import XCTest
 
 final class Project_FetchProjectFriendsQueryDataTests: XCTestCase {

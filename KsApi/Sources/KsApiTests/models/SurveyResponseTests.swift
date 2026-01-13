@@ -1,4 +1,5 @@
 @testable import KsApi
+@testable import KsApiTestHelpers
 import XCTest
 
 internal final class SurveyResponseTests: XCTestCase {

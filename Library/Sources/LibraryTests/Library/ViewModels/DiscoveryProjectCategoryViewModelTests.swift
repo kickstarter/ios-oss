@@ -1,4 +1,5 @@
 @testable import KsApi
+@testable import KsApiTestHelpers
 import Library
 import Prelude
 import ReactiveExtensions_TestHelpers

@@ -1,4 +1,5 @@
 @testable import Library
+@testable import LibraryTestHelpers
 import XCTest
 
 class LocalizedLottieFileTests: XCTestCase {

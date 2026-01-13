@@ -1,5 +1,6 @@
 import Foundation
 @testable import KsApi
+@testable import KsApiTestHelpers
 @testable import Library
 import PassKit
 import Prelude

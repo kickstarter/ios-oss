@@ -1,5 +1,6 @@
 import Foundation
 @testable import KsApi
+@testable import KsApiTestHelpers
 import XCTest
 
 private struct MyStruct: Encodable {

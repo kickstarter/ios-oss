@@ -3,6 +3,7 @@ import ApolloTestSupport
 import GraphAPI
 import GraphAPITestMocks
 @testable import KsApi
+@testable import KsApiTestHelpers
 import XCTest
 
 final class RootCategoryEnvelope_FetchRootCategoriesEnvelopeQueryDataTests: XCTestCase {

@@ -1,13 +1,13 @@
 import AVFoundation
 import KDS
 @testable import KsApi
+@testable import KsApiTestHelpers
 @testable import Library
-import LibraryTestHelpers
 import Prelude
 import ReactiveSwift
 import XCTest
 
-internal class TestCase: XCTestCase {
+class TestCase: XCTestCase {
   internal static let interval = DispatchTimeInterval.milliseconds(1)
 
   internal let apiService = MockService()

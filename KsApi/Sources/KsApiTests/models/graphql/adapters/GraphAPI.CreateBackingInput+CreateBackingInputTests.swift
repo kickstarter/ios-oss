@@ -1,5 +1,6 @@
 import GraphAPI
 @testable import KsApi
+@testable import KsApiTestHelpers
 import XCTest
 
 final class GraphAPI_CreateBackingInput_CreateBackingInputTests: XCTestCase {

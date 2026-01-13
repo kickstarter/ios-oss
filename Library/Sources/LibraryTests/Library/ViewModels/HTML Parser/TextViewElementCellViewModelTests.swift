@@ -1,6 +1,8 @@
 import KDS
 @testable import KsApi
+@testable import KsApiTestHelpers
 @testable import Library
+@testable import LibraryTestHelpers
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest

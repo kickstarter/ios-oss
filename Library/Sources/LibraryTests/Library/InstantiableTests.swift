@@ -1,4 +1,5 @@
 import Foundation
+@testable import LibraryTestHelpers
 import XCTest
 
 private class TestViewController: UIViewController {

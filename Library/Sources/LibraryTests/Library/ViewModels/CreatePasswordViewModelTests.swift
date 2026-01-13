@@ -1,7 +1,9 @@
 import Foundation
+@testable import LibraryTestHelpers
 import XCTest
 
 @testable import KsApi
+@testable import KsApiTestHelpers
 @testable import Library
 import ReactiveExtensions_TestHelpers
 

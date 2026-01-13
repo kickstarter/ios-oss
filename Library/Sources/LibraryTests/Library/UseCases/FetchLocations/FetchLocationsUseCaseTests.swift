@@ -2,6 +2,7 @@ import GraphAPI
 @testable import KsApi
 @testable import KsApiTestHelpers
 import Library
+@testable import LibraryTestHelpers
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest

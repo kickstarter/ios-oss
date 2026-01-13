@@ -1,6 +1,8 @@
 import Foundation
 @testable import KsApi
+@testable import KsApiTestHelpers
 @testable import Library
+@testable import LibraryTestHelpers
 import XCTest
 
 final class PledgePaymentIncrementFormattedTest: TestCase {

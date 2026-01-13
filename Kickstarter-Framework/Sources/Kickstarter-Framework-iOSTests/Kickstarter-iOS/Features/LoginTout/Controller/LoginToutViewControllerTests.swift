@@ -1,5 +1,6 @@
 @testable import Kickstarter_Framework
 import Library
+@testable import LibraryTestHelpers
 import SnapshotTesting
 import XCTest
 

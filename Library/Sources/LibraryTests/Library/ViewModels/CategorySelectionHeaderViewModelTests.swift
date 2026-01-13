@@ -1,4 +1,5 @@
 @testable import Library
+@testable import LibraryTestHelpers
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift

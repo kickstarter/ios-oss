@@ -3,7 +3,9 @@ import Prelude
 import XCTest
 
 @testable import KsApi
+@testable import KsApiTestHelpers
 @testable import Library
+@testable import LibraryTestHelpers
 import ReactiveExtensions_TestHelpers
 
 final class ChangePasswordViewModelTests: TestCase {

@@ -1,6 +1,7 @@
 import GraphAPI
 import KsApi
 @testable import Library
+@testable import LibraryTestHelpers
 import XCTest
 
 final class FormatTests: TestCase {

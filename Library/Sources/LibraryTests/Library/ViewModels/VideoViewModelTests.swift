@@ -1,6 +1,8 @@
 import AVFoundation
 @testable import KsApi
+@testable import KsApiTestHelpers
 @testable import Library
+@testable import LibraryTestHelpers
 import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest

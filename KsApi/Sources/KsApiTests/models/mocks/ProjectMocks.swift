@@ -2,6 +2,7 @@ import ApolloTestSupport
 import GraphAPI
 import GraphAPITestMocks
 @testable import KsApi
+@testable import KsApiTestHelpers
 
 extension GraphAPITestMocks.Project {
   static var mock: Mock<GraphAPITestMocks.Project> {

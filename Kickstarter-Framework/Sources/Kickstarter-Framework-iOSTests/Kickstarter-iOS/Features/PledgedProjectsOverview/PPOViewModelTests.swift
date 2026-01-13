@@ -2,7 +2,9 @@ import Combine
 import GraphAPI
 @testable import Kickstarter_Framework
 @testable import KsApi
+@testable import KsApiTestHelpers
 @testable import Library
+@testable import LibraryTestHelpers
 import XCTest
 
 class PPOViewModelTests: XCTestCase {

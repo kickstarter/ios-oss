@@ -1,5 +1,6 @@
 import KDS
 import Library
+@testable import LibraryTestHelpers
 import UIKit
 
 internal enum Device: CaseIterable {

@@ -1,6 +1,7 @@
 import Foundation
 import GraphAPI
 @testable import KsApi
+@testable import KsApiTestHelpers
 import XCTest
 
 final class Location_LocationFragmentTests: XCTestCase {

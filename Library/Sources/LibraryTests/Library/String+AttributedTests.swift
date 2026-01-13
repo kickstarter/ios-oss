@@ -1,5 +1,6 @@
 import KDS
 @testable import Library
+@testable import LibraryTestHelpers
 import XCTest
 
 final class String_AttributedTests: TestCase {

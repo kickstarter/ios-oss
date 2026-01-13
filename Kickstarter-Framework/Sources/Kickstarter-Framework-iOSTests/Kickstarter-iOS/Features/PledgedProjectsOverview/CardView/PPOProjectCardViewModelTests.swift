@@ -1,6 +1,7 @@
 import Combine
 @testable import Kickstarter_Framework
 @testable import KsApi
+@testable import KsApiTestHelpers
 import XCTest
 
 final class PPOProjectCardViewModelTests: XCTestCase {

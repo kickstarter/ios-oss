@@ -1,6 +1,7 @@
 import Apollo
 import GraphAPI
 @testable import KsApi
+@testable import KsApiTestHelpers
 import XCTest
 
 final class Backing_BackingFragmentTests: XCTestCase {

@@ -46,7 +46,6 @@ let package = Package(
         .product(name: "FirebaseRemoteConfig", package: "firebase-ios-sdk"),
         .product(name: "Stripe", package: "stripe-ios-spm"),
         .product(name: "StripePaymentSheet", package: "stripe-ios-spm"),
-        .product(name: "Prelude", package: "Kickstarter-Prelude"),
         .product(name: "KingfisherWebP", package: "KingfisherWebP"),
         .product(name: "SegmentBrazeUI", package: "braze-segment-swift")
       ],

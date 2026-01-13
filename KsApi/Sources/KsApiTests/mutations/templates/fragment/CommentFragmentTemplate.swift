@@ -1,6 +1,7 @@
 import Apollo
 import Foundation
 @testable import KsApi
+@testable import KsApiTestHelpers
 
 public enum CommentFragmentTemplate {
   case valid

@@ -1,6 +1,7 @@
 @testable import Kickstarter_Framework
 import KsApi
 import Library
+@testable import LibraryTestHelpers
 import XCTest
 
 class SearchDataSourceTests: XCTestCase {

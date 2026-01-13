@@ -1,6 +1,7 @@
 import Apollo
 import GraphAPI
 @testable import KsApi
+@testable import KsApiTestHelpers
 import XCTest
 
 class ApolloInterceptorsTests: XCTestCase {

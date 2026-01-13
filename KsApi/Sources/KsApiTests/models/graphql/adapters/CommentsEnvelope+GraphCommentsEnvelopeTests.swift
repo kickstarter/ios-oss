@@ -1,5 +1,6 @@
 import ApolloAPI
 @testable import KsApi
+@testable import KsApiTestHelpers
 import Prelude
 import XCTest
 

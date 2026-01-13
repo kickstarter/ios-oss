@@ -1,5 +1,6 @@
 import Apollo
 @testable import KsApi
+@testable import KsApiTestHelpers
 import ReactiveSwift
 import XCTest
 
