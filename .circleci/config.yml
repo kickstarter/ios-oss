@@ -285,8 +285,8 @@ workflows:
           context: aws
           filters:
             branches:
-              # matches branch named exactly `itunes-dist`
-              only: itunes-dist
+              # matches branch that begin with `itunes-dist`
+              only: /itunes-dist.*/
           requires: *all_jobs
 
 experimental:
@@ -299,5 +299,5 @@ experimental:
         - /alpha-dist.*/
         # matches all branches that begin with 'beta-dist'
         - /beta-dist-.*/
-        # matches branch named exactly `itunes-dist`
-        - itunes-dist
+        # matches branch that begin with `itunes-dist`
+        - /itunes-dist.*/

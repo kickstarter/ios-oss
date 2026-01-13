@@ -4,6 +4,12 @@ import Kingfisher
 import KsApi
 import Library
 
+public enum PPORewardToggleState: Equatable {
+  case hidden
+  case rewardReceived
+  case notReceived
+}
+
 public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public let isUnread: Bool
   public let alerts: [Alert]
@@ -13,7 +19,8 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public let pledge: String
   public let creatorName: String
   public let address: DisplayAddress
-  public let action: Action?
+  public let rewardReceivedToggleState: PPORewardToggleState
+  public let action: ButtonAction?
   public let tierType: PPOTierType
   public let backingDetailsUrl: String
   public let backingId: Int
@@ -55,7 +62,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
     }
   }
 
-  public enum Action: Identifiable, Equatable, Hashable {
+  public enum ButtonAction: Identifiable, Equatable, Hashable {
     case confirmAddress(address: String, addressId: String)
     case completeSurvey
     case managePledge

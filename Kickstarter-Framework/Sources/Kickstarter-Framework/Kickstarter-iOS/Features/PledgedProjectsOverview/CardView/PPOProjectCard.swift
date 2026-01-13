@@ -7,11 +7,7 @@ import SwiftUI
 struct PPOProjectCard: View {
   @StateObject var viewModel: PPOProjectCardViewModel
   var parentSize: CGSize
-
-  var onViewProjectDetails: ((PPOProjectCardModel) -> Void)? = nil
-  var onSendMessage: ((PPOProjectCardModel) -> Void)? = nil
-  var onEditAddress: ((PPOProjectCardModel) -> Void)? = nil
-  var onPerformAction: ((PPOProjectCardModel, PPOProjectCardModel.Action) -> Void)? = nil
+  var onHandleEvent: ((PPOProjectCardModel, PPOCardEvent) -> Void)?
 
   var body: some View {
     VStack(spacing: Constants.spacing) {
@@ -30,9 +26,14 @@ struct PPOProjectCard: View {
       }
       self.actionButton
       self.actionDetails
+      if self.showRewardToggle() {
+        self.divider
+        self.rewardReceivedToggle
+      }
     }
     .padding(.vertical)
     .frame(maxWidth: .infinity)
+    .background(Color(PPOStyles.background))
 
     // round rectangle around the card
     .clipShape(self.cardRectangle)
@@ -47,18 +48,9 @@ struct PPOProjectCard: View {
       content: { self.badge.opacity(self.showCardAlert() ? 1 : 0) }
     )
 
-    // Handle actions
-    .onReceive(self.viewModel.viewBackingDetailsTapped) {
-      self.onViewProjectDetails?(self.viewModel.card)
-    }
-    .onReceive(self.viewModel.sendMessageTapped) {
-      self.onSendMessage?(self.viewModel.card)
-    }
-    .onReceive(self.viewModel.editAddressTapped) {
-      self.onEditAddress?(self.viewModel.card)
-    }
-    .onReceive(self.viewModel.actionPerformed) { action in
-      self.onPerformAction?(self.viewModel.card, action)
+    // Handle events
+    .onReceive(self.viewModel.handleEvent) { event in
+      self.onHandleEvent?(self.viewModel.card, event)
     }
   }
 
@@ -96,7 +88,7 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private func projectDetails(leadingColumnWidth: CGFloat) -> some View {
     Button { [weak viewModel] () in
-      viewModel?.viewBackingDetails()
+      viewModel?.eventTriggered(.viewProjectDetails)
     } label: {
       PPOProjectDetails(
         image: self.viewModel.card.image,
@@ -113,7 +105,7 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private var projectCreator: some View {
     Button { [weak viewModel] () in
-      viewModel?.sendCreatorMessage()
+      viewModel?.eventTriggered(.sendMessage)
     } label: {
       PPOProjectCreator(
         creatorName: self.viewModel.card.creatorName
@@ -129,7 +121,7 @@ struct PPOProjectCard: View {
     switch self.viewModel.card.address {
     case let .editable(address):
       Button { [weak viewModel] () in
-        viewModel?.editAddress()
+        viewModel?.eventTriggered(.editAddress)
       } label: {
         self.addressContents(leadingColumnWidth: leadingColumnWidth, address: address, editable: true)
       }
@@ -153,15 +145,15 @@ struct PPOProjectCard: View {
   }
 
   @ViewBuilder
-  private func baseButton(for action: PPOProjectCardViewModel.Action) -> some View {
+  private func baseButton(for action: PPOProjectCardViewModel.ButtonAction) -> some View {
     Button(action.label) { [weak viewModel] () in
-      viewModel?.performAction(action: action)
+      viewModel?.performAction(action)
     }
     .padding([.horizontal])
   }
 
   @ViewBuilder
-  private func button(for action: PPOProjectCardViewModel.Action) -> some View {
+  private func button(for action: PPOProjectCardViewModel.ButtonAction) -> some View {
     ZStack {
       switch action.style {
       case .green:
@@ -205,6 +197,15 @@ struct PPOProjectCard: View {
   }
 
   @ViewBuilder
+  private var rewardReceivedToggle: some View {
+    Toggle(Strings.Reward_received(), isOn: self.$viewModel.rewardToggleEnabled)
+      .font(Font(PPOStyles.title.font))
+      .foregroundStyle(Color(PPOStyles.title.color))
+      .tint(Colors.Background.Accent.Green.bold.swiftUIColor())
+      .padding([.horizontal])
+  }
+
+  @ViewBuilder
   private var divider: some View {
     Divider()
   }
@@ -220,6 +221,14 @@ struct PPOProjectCard: View {
     case .confirmAddress: return false
     case .some: return true
     case nil: return false
+    }
+  }
+
+  // Show reward toggle if the toggle is not hidden.
+  private func showRewardToggle() -> Bool {
+    switch self.viewModel.card.rewardReceivedToggleState {
+    case .hidden: return false
+    case .rewardReceived, .notReceived: return true
     }
   }
 

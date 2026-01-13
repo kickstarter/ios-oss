@@ -17,6 +17,36 @@ final class PPOProjectCardTests: TestCase {
     super.tearDown()
   }
 
+  // MARK: Test funded project cards.
+
+  @MainActor
+  func testFundedCards() {
+    orthogonalCombos(
+      PPOProjectCardModel.fundedProjectTemplates,
+      Language.allLanguages,
+      [UIUserInterfaceStyle.light, UIUserInterfaceStyle.dark]
+    ).forEach {
+      cardTemplate, language, interfaceStyle in
+      withEnvironment(
+        language: language
+      ) {
+        let card = VStack {
+          PPOProjectCard(viewModel: PPOProjectCardViewModel(
+            card: cardTemplate
+          ), parentSize: self.size)
+            .frame(width: self.size.width)
+            .frame(maxHeight: .infinity)
+            .padding()
+        }.frame(height: 500)
+
+        let traits = UITraitCollection.init(userInterfaceStyle: interfaceStyle)
+        assertSnapshot(of: card, as: .image(traits: traits), named: cardTemplate.tierType.rawValue)
+      }
+    }
+  }
+
+  // MARK: Test project alert cards.
+
   @MainActor
   func testAddressLocks() async {
     let card =
@@ -101,6 +131,8 @@ final class PPOProjectCardTests: TestCase {
     try? await Task.sleep(nanoseconds: 10_000_000)
     assertSnapshot(matching: card, as: .image, named: "finalizeYourPledge")
   }
+
+  // MARK: Test UI edge cases.
 
   @MainActor
   func testShortTemplateText() async {

@@ -5,43 +5,11 @@ import XCTest
 
 internal final class LoginToutViewControllerTests: TestCase {
   func testLoginToutView() {
-    let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let intents = [LoginIntent.generic, .starProject, .messageCreator, .backProject]
 
-    orthogonalCombos(Language.allLanguages, devices, intents).forEach { language, device, intent in
-      withEnvironment(language: language) {
-        let controller = LoginToutViewController.configuredWith(loginIntent: intent)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-
-        self.scheduler.run()
-
-        assertSnapshot(
-          matching: parent.view,
-          as: .image,
-          named: "intent_\(intent)_lang_\(language)_device_\(device)"
-        )
-      }
-    }
-  }
-
-  func testDarkMode() {
-    let language = Language.en
-    let device = Device.phone5_8inch
-    let intent = LoginIntent.generic
-
-    withEnvironment(language: language) {
+    forEachScreenshotType(withData: intents) { type, intent in
       let controller = LoginToutViewController.configuredWith(loginIntent: intent)
-      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-
-      controller.overrideUserInterfaceStyle = .dark
-
-      self.scheduler.run()
-
-      assertSnapshot(
-        matching: parent.view,
-        as: .image,
-        named: "intent_\(intent)_lang_\(language)_device_\(device)_dark"
-      )
+      assertSnapshot(forController: controller, withType: type)
     }
   }
 
