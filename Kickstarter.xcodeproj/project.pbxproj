@@ -30,9 +30,6 @@
 		013F2FDC1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013F2FDB1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift */; };
 		0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0146E3211CC0296900082C5B /* FacebookConfirmationViewController.swift */; };
 		01483F222F0DDFF900A1D833 /* ScreenshotTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01483F1F2F0DDFF900A1D833 /* ScreenshotTestHelpers.swift */; };
-		E1D2C3B42F12345600000001 /* ScreenshotTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01483F1F2F0DDFF900A1D833 /* ScreenshotTestHelpers.swift */; };
-		E1D2C3B52F12345600000002 /* TraitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20221E83237F00BFFA01 /* TraitController.swift */; };
-		E1D2C3B62F12345600000003 /* Combos.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20211E83237F00BFFA01 /* Combos.swift */; };
 		0148EF911CDD2879000DEFF8 /* ThanksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148EF8F1CDD2879000DEFF8 /* ThanksViewController.swift */; };
 		014A8DEB1CE3C350003BF51C /* ThanksProjectsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014A8DE91CE3C350003BF51C /* ThanksProjectsDataSource.swift */; };
 		014A8E1C1CE3CE34003BF51C /* ThanksCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */; };
@@ -301,7 +298,6 @@
 		33AF01B62D2BBD5C0085A153 /* PledgeOverTimePaymentScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01B52D2BBCC90085A153 /* PledgeOverTimePaymentScheduleViewController.swift */; };
 		33AF01B82D2BC3570085A153 /* PledgeOverTimePaymentScheduleItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01B72D2BC3440085A153 /* PledgeOverTimePaymentScheduleItemView.swift */; };
 		33AF01BA2D2CBD870085A153 /* PledgeOverTimePaymentScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01B92D2CBD6E0085A153 /* PledgeOverTimePaymentScheduleViewModel.swift */; };
-		33AF01BC2D2D74B30085A153 /* PledgePaymentIncrementState+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01BB2D2D748B0085A153 /* PledgePaymentIncrementState+Extension.swift */; };
 		33AF01BF2D2E72430085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01BD2D2E71E30085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift */; };
 		33AF01C22D2E973A0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01C02D2E95FD0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift */; };
 		33AF66CA2DDE505D00558D49 /* AddUserToSecretRewardGroupInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF66C92DDE504100558D49 /* AddUserToSecretRewardGroupInput.swift */; };
@@ -1729,6 +1725,9 @@
 		E1BBB6712E035BDD00291D48 /* FetchLocationsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB66D2E035BDD00291D48 /* FetchLocationsUseCase.swift */; };
 		E1BBB6722E035BE300291D48 /* FetchLocationsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB66E2E035BDD00291D48 /* FetchLocationsUseCaseTests.swift */; };
 		E1CFB5952D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */; };
+		E1D2C3B42F12345600000001 /* ScreenshotTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01483F1F2F0DDFF900A1D833 /* ScreenshotTestHelpers.swift */; };
+		E1D2C3B52F12345600000002 /* TraitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20221E83237F00BFFA01 /* TraitController.swift */; };
+		E1D2C3B62F12345600000003 /* Combos.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20211E83237F00BFFA01 /* Combos.swift */; };
 		E1D569BB2E09D5CB00C78297 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569B92E09D5CB00C78297 /* LocationView.swift */; };
 		E1D569C62E0C787A00C78297 /* AmountRaisedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569C52E0C787800C78297 /* AmountRaisedView.swift */; };
 		E1DBB2372DAEBCE10050733F /* SearchFiltersHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */; };
@@ -2092,7 +2091,6 @@
 		33AF01B52D2BBCC90085A153 /* PledgeOverTimePaymentScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewController.swift; sourceTree = "<group>"; };
 		33AF01B72D2BC3440085A153 /* PledgeOverTimePaymentScheduleItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleItemView.swift; sourceTree = "<group>"; };
 		33AF01B92D2CBD6E0085A153 /* PledgeOverTimePaymentScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewModel.swift; sourceTree = "<group>"; };
-		33AF01BB2D2D748B0085A153 /* PledgePaymentIncrementState+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PledgePaymentIncrementState+Extension.swift"; sourceTree = "<group>"; };
 		33AF01BD2D2E71E30085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewModelTest.swift; sourceTree = "<group>"; };
 		33AF01C02D2E95FD0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewControllerTest.swift; sourceTree = "<group>"; };
 		33AF66C92DDE504100558D49 /* AddUserToSecretRewardGroupInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUserToSecretRewardGroupInput.swift; sourceTree = "<group>"; };
@@ -7015,7 +7013,6 @@
 				339ED5642CE41AFC004B301D /* PledgePaymentPlansOptionViewModelTest.swift */,
 				33F55B3D2D4A6CF30007E50E /* PledgePaymentIncrementFormatted.swift */,
 				33F55B3F2D4A6D910007E50E /* PledgePaymentIncrementFormattedTest.swift */,
-				33AF01BB2D2D748B0085A153 /* PledgePaymentIncrementState+Extension.swift */,
 				E171A57B2D14912500AFE0EE /* PledgePaymentPlansAndSelectionData+GraphAPI.swift */,
 				E171A57D2D14985500AFE0EE /* PledgePaymentPlansAndSelectionData+GraphAPITests.swift */,
 				E1801FA82BAB6CD400EBB533 /* PaymentSourceSelected.swift */,
@@ -8746,7 +8743,6 @@
 				D710ADF7243CCE7E00DC7199 /* ISO8601DateFormatter.swift in Sources */,
 				D69C5529239ED10E00B0987A /* ErroredBackingViewViewModel.swift in Sources */,
 				33F55B3E2D4A6D030007E50E /* PledgePaymentIncrementFormatted.swift in Sources */,
-				33AF01BC2D2D74B30085A153 /* PledgePaymentIncrementState+Extension.swift in Sources */,
 				A707BADA1CFFAB9400653B2F /* Notifications.swift in Sources */,
 				77556F5420A099B3008CEA57 /* ExperimentName+Helpers.swift in Sources */,
 				E182B7E52DB2ABE6000C4067 /* DiscoveryParams+SearchFilters.swift in Sources */,

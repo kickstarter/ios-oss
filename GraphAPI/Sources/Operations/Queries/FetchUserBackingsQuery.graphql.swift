@@ -1667,9 +1667,6 @@ public class FetchUserBackingsQuery: GraphQLQuery {
             /// The payment increment amount represented in various formats
             public var amount: Amount { __data["amount"] }
             public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
-            /// The state of the payment increment
-            public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
-            public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
 
             public struct Fragments: FragmentContainer {
               public let __data: DataDict
@@ -1680,17 +1677,13 @@ public class FetchUserBackingsQuery: GraphQLQuery {
 
             public init(
               amount: Amount,
-              scheduledCollection: GraphAPI.ISO8601DateTime,
-              state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
-              stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil
+              scheduledCollection: GraphAPI.ISO8601DateTime
             ) {
               self.init(_dataDict: DataDict(
                 data: [
                   "__typename": GraphAPI.Objects.PaymentIncrement.typename,
                   "amount": amount._fieldData,
                   "scheduledCollection": scheduledCollection,
-                  "state": state,
-                  "stateReason": stateReason,
                 ],
                 fulfilledFragments: [
                   ObjectIdentifier(FetchUserBackingsQuery.Data.Me.Backings.Node.PaymentIncrement.self),

@@ -14,7 +14,9 @@ extension GraphAPITestMocks.PaymentIncrement {
     paymentIncrement.amount?.currency = "USD"
     paymentIncrement.scheduledCollection = "2025-07-30T03:31:43Z"
     paymentIncrement.state = .case(.unattempted)
-    paymentIncrement.stateReason = .none
+    paymentIncrement.badge = Mock<GraphAPITestMocks.PaymentIncrementBadge>()
+    paymentIncrement.badge?.variant = GraphQLEnum.case(.purple)
+    paymentIncrement.badge?.copy = "Scheduled"
 
     return paymentIncrement
   }
@@ -27,7 +29,9 @@ extension GraphAPITestMocks.PaymentIncrement {
     paymentIncrement.amount?.currency = "USD"
     paymentIncrement.scheduledCollection = "2025-07-30T03:31:43Z"
     paymentIncrement.state = .case(.collected)
-    paymentIncrement.stateReason = .none
+    paymentIncrement.badge = Mock<GraphAPITestMocks.PaymentIncrementBadge>()
+    paymentIncrement.badge?.variant = GraphQLEnum.case(.green)
+    paymentIncrement.badge?.copy = "Collected"
 
     return paymentIncrement
   }
@@ -39,8 +43,10 @@ extension GraphAPITestMocks.PaymentIncrement {
     paymentIncrement.amount?.amountFormattedInProjectNativeCurrency = "$43.00"
     paymentIncrement.amount?.currency = "USD"
     paymentIncrement.scheduledCollection = "2025-07-30T03:31:43Z"
-    paymentIncrement.state = .case(.collected)
-    paymentIncrement.stateReason = .none
+    paymentIncrement.state = .case(.collectedAdjusted)
+    paymentIncrement.badge = Mock<GraphAPITestMocks.PaymentIncrementBadge>()
+    paymentIncrement.badge?.variant = GraphQLEnum.case(.green)
+    paymentIncrement.badge?.copy = "Collected (adjusted)"
 
     paymentIncrement.refundedAmount = Mock<GraphAPITestMocks.PaymentIncrementAmount>()
     paymentIncrement.refundedAmount?.amountFormattedInProjectNativeCurrency = "$20.00"
@@ -59,7 +65,9 @@ extension GraphAPITestMocks.PaymentIncrement {
     paymentIncrement.amount?.currency = "USD"
     paymentIncrement.scheduledCollection = "2025-07-30T03:31:43Z"
     paymentIncrement.state = .case(.refunded)
-    paymentIncrement.stateReason = .none
+    paymentIncrement.badge = Mock<GraphAPITestMocks.PaymentIncrementBadge>()
+    paymentIncrement.badge?.variant = GraphQLEnum.case(.gray)
+    paymentIncrement.badge?.copy = "Refunded"
 
     paymentIncrement.refundedAmount = Mock<GraphAPITestMocks.PaymentIncrementAmount>()
     paymentIncrement.refundedAmount?.amountFormattedInProjectNativeCurrency = "$43.00"

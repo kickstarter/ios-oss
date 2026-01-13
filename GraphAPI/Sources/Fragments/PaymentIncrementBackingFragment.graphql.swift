@@ -5,7 +5,7 @@
 
 public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment PaymentIncrementBackingFragment on PaymentIncrement { __typename amount { __typename amountFormattedInProjectNativeCurrency currency } scheduledCollection state stateReason refundUpdatedAmountInProjectNativeCurrency refundedAmount { __typename currency } }"#
+    #"fragment PaymentIncrementBackingFragment on PaymentIncrement { __typename amount { __typename amountFormattedInProjectNativeCurrency currency } badge { __typename copy variant } scheduledCollection state refundUpdatedAmountInProjectNativeCurrency refundedAmount { __typename currency } }"#
   }
 
   public let __data: DataDict
@@ -15,19 +15,20 @@ public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
   public static var __selections: [ApolloAPI.Selection] { [
     .field("__typename", String.self),
     .field("amount", Amount.self),
+    .field("badge", Badge?.self),
     .field("scheduledCollection", GraphAPI.ISO8601DateTime.self),
     .field("state", GraphQLEnum<GraphAPI.PaymentIncrementState>.self),
-    .field("stateReason", GraphQLEnum<GraphAPI.PaymentIncrementStateReason>?.self),
     .field("refundUpdatedAmountInProjectNativeCurrency", String?.self),
     .field("refundedAmount", RefundedAmount?.self),
   ] }
 
   /// The payment increment amount represented in various formats
   public var amount: Amount { __data["amount"] }
+  /// If the payment increment has a backing, return human-readable information about the status of the payment increment
+  public var badge: Badge? { __data["badge"] }
   public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
   /// The state of the payment increment
   public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
-  public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
   /// The original amount minus the refunded amount formatted in the project native currency
   public var refundUpdatedAmountInProjectNativeCurrency: String? { __data["refundUpdatedAmountInProjectNativeCurrency"] }
   /// The total amount that has been refunded on the payment increment, across potentially multiple adjustments
@@ -35,9 +36,9 @@ public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
 
   public init(
     amount: Amount,
+    badge: Badge? = nil,
     scheduledCollection: GraphAPI.ISO8601DateTime,
     state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
-    stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil,
     refundUpdatedAmountInProjectNativeCurrency: String? = nil,
     refundedAmount: RefundedAmount? = nil
   ) {
@@ -45,9 +46,9 @@ public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
       data: [
         "__typename": GraphAPI.Objects.PaymentIncrement.typename,
         "amount": amount._fieldData,
+        "badge": badge._fieldData,
         "scheduledCollection": scheduledCollection,
         "state": state,
-        "stateReason": stateReason,
         "refundUpdatedAmountInProjectNativeCurrency": refundUpdatedAmountInProjectNativeCurrency,
         "refundedAmount": refundedAmount._fieldData,
       ],
@@ -88,6 +89,42 @@ public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
         ],
         fulfilledFragments: [
           ObjectIdentifier(PaymentIncrementBackingFragment.Amount.self)
+        ]
+      ))
+    }
+  }
+
+  /// Badge
+  ///
+  /// Parent Type: `PaymentIncrementBadge`
+  public struct Badge: GraphAPI.SelectionSet {
+    public let __data: DataDict
+    public init(_dataDict: DataDict) { __data = _dataDict }
+
+    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.PaymentIncrementBadge }
+    public static var __selections: [ApolloAPI.Selection] { [
+      .field("__typename", String.self),
+      .field("copy", String.self),
+      .field("variant", GraphQLEnum<GraphAPI.PaymentIncrementBadgeVariant>.self),
+    ] }
+
+    /// The title of the badge, representing the payment increment status
+    public var copy: String { __data["copy"] }
+    /// The variant of the badge, representing how the payment increment status is styled
+    public var variant: GraphQLEnum<GraphAPI.PaymentIncrementBadgeVariant> { __data["variant"] }
+
+    public init(
+      copy: String,
+      variant: GraphQLEnum<GraphAPI.PaymentIncrementBadgeVariant>
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.PaymentIncrementBadge.typename,
+          "copy": copy,
+          "variant": variant,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(PaymentIncrementBackingFragment.Badge.self)
         ]
       ))
     }

@@ -41,8 +41,15 @@ final class PledgeOverTimePaymentScheduleViewControllerTest: TestCase {
       [Device.pad, Device.phone4_7inch],
       [UIUserInterfaceStyle.light, UIUserInterfaceStyle.dark]
     ).forEach { language, device, style in
+      let locale = Locale(
+        components: Locale.Components(
+          languageCode: Locale.LanguageCode(language.rawValue)
+        )
+      )
+
       withEnvironment(
-        language: language
+        language: language,
+        locale: locale
       ) {
         let controller = PledgeOverTimePaymentScheduleViewController.instantiate()
         controller.overrideUserInterfaceStyle = style

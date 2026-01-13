@@ -7,31 +7,20 @@ extension PledgePaymentIncrement {
       return nil
     }
 
-    guard let stateValue = fragment.state.value else {
-      return nil
-    }
-
     self.amount = PledgePaymentIncrementAmount(
       currency: fragment.amount.currency,
       amountFormattedInProjectNativeCurrency: fragment.amount.amountFormattedInProjectNativeCurrency
     )
+
     self.scheduledCollection = intervalAsTime
-    self.state = PledgePaymentIncrementState(stateValue: stateValue)
-
-    if let stateReason = fragment.stateReason?.rawValue {
-      self.stateReason = PledgePaymentIncrementStateReason(rawValue: stateReason)
-    }
-
     // Set `refundStatus` to `.unknown` because the refunded field is not available in this fragment
     self.refundStatus = .unknown
   }
 
   public init?(withIncrementBackingFragment data: PaymentIncrementBackingFragment) {
-    guard let intervalAsTime = TimeInterval.from(ISO8601DateTimeString: data.scheduledCollection) else {
-      return nil
-    }
-
-    guard let stateValue = data.state.value else {
+    guard let intervalAsTime = TimeInterval.from(ISO8601DateTimeString: data.scheduledCollection),
+          let stateValue = data.state.value
+    else {
       return nil
     }
 
@@ -39,12 +28,12 @@ extension PledgePaymentIncrement {
       currency: data.amount.currency,
       amountFormattedInProjectNativeCurrency: data.amount.amountFormattedInProjectNativeCurrency
     )
-    self.scheduledCollection = intervalAsTime
-    self.state = PledgePaymentIncrementState(stateValue: stateValue)
 
-    if let stateReason = data.stateReason?.rawValue {
-      self.stateReason = PledgePaymentIncrementStateReason(rawValue: stateReason)
+    if let badge = data.badge {
+      self.badge = Badge(from: badge)
     }
+
+    self.scheduledCollection = intervalAsTime
 
     // If we get a `refundedAmount`, it means this increment was refunded.
     if let refundedAmountData = data.refundedAmount,
@@ -68,8 +57,17 @@ extension PledgePaymentIncrement {
   }
 }
 
-extension PledgePaymentIncrementState {
-  init(stateValue value: GraphAPI.PaymentIncrementState) {
-    self = PledgePaymentIncrementState(rawValue: value.rawValue) ?? .unattempted
+extension PledgePaymentIncrement.Badge.Variant {
+  init(from value: GraphQLEnum<GraphAPI.PaymentIncrementBadgeVariant>) {
+    self = PledgePaymentIncrement.Badge.Variant(rawValue: value.rawValue) ?? .gray
+  }
+}
+
+extension PledgePaymentIncrement.Badge {
+  init(from badge: GraphAPI.PaymentIncrementBackingFragment.Badge) {
+    self = PledgePaymentIncrement.Badge(
+      copy: badge.copy,
+      variant: PledgePaymentIncrement.Badge.Variant(from: badge.variant)
+    )
   }
 }

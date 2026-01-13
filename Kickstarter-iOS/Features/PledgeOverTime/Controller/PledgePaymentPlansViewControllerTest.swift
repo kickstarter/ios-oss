@@ -123,10 +123,8 @@ private func testPledgePaymentIncrement() -> [PledgePaymentIncrement] {
         currency: "USD",
         amountFormattedInProjectNativeCurrency: "$250.00"
       ),
-      scheduledCollection: timeStamp,
-      state: .unattempted,
-      stateReason: .requiresAction,
-      refundStatus: .unknown
+      refundStatus: .unknown,
+      scheduledCollection: timeStamp
     ))
   }
 

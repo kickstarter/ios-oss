@@ -56,6 +56,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "CreatorPrompt": return GraphAPI.Objects.CreatorPrompt
     case "InterviewQuestion": return GraphAPI.Objects.InterviewQuestion
     case "InterviewAnswer": return GraphAPI.Objects.InterviewAnswer
+    case "ShipStationConfiguration": return GraphAPI.Objects.ShipStationConfiguration
     case "Organization": return GraphAPI.Objects.Organization
     case "CuratedPage": return GraphAPI.Objects.CuratedPage
     case "SavedSearchSegment": return GraphAPI.Objects.SavedSearchSegment
@@ -121,6 +122,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "PaymentPlan": return GraphAPI.Objects.PaymentPlan
     case "Validation": return GraphAPI.Objects.Validation
     case "CommentEdge": return GraphAPI.Objects.CommentEdge
+    case "PaymentIncrementBadge": return GraphAPI.Objects.PaymentIncrementBadge
     case "LocationsConnection": return GraphAPI.Objects.LocationsConnection
     case "ProjectBackerFriendsConnection": return GraphAPI.Objects.ProjectBackerFriendsConnection
     case "SimpleShippingRule": return GraphAPI.Objects.SimpleShippingRule
