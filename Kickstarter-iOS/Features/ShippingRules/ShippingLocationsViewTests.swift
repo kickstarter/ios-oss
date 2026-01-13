@@ -19,8 +19,16 @@ final class ShippingLocationsViewTests: TestCase {
       onCancelled: {}
     )
 
-    vc.view.frame = CGRect(x: 0, y: 0, width: 350, height: 500)
+    let size = CGSize(width: 350, height: 500)
+    vc.view.frame = CGRect(origin: .zero, size: size)
 
-    assertSnapshot(of: vc.view, as: .image, named: "locationView")
+    forEachScreenshotType { type in
+      assertSnapshot(
+        forView: vc.view,
+        withType: type,
+        size: size,
+        testName: "locationView"
+      )
+    }
   }
 }

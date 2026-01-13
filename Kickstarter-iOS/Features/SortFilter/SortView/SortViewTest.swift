@@ -25,7 +25,15 @@ final class SortViewTest: TestCase {
           .padding()
         }.frame(height: self.size.height)
       try? await Task.sleep(nanoseconds: 10_000_000)
-      assertSnapshot(matching: view, as: .image)
+
+      forEachScreenshotType { type in
+        assertSnapshot(
+          forSwiftUIView: view,
+          withType: type,
+          size: self.size,
+          testName: "testSortView_DefaultOption"
+        )
+      }
     }
   }
 
@@ -44,7 +52,15 @@ final class SortViewTest: TestCase {
             .padding()
         }.frame(height: self.size.height)
       try? await Task.sleep(nanoseconds: 10_000_000)
-      assertSnapshot(matching: view, as: .image)
+
+      forEachScreenshotType { type in
+        assertSnapshot(
+          forSwiftUIView: view,
+          withType: type,
+          size: self.size,
+          testName: "testSortView_SelectedOption"
+        )
+      }
     }
   }
 }

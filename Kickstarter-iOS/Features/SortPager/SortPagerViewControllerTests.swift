@@ -19,49 +19,58 @@ internal final class SortPagerViewControllerTests: TestCase {
   }
 
   func testSortView() {
-    Language.allLanguages.forEach { language in
-      withEnvironment(language: language) {
+    forEachScreenshotType { type in
+      withEnvironment(language: type.language) {
         let controller = SortPagerViewController.instantiate()
         controller.configureWith(sorts: self.sorts)
 
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 50
-
         self.scheduler.advance(by: .milliseconds(100))
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
+        let size = type.device.deviceSize(in: type.orientation)
+        assertSnapshot(
+          forView: controller.view,
+          withType: type,
+          size: CGSize(width: size.width, height: 50),
+          testName: "testSortView"
+        )
       }
     }
   }
 
   func testSortView_iPad() {
-    Language.allLanguages.forEach { language in
-      withEnvironment(language: language) {
+    forEachScreenshotType(devices: [.pad]) { type in
+      withEnvironment(language: type.language) {
         let controller = SortPagerViewController.instantiate()
         controller.configureWith(sorts: self.sorts)
 
-        let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 50
-
         self.scheduler.advance(by: .milliseconds(100))
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
+        let size = type.device.deviceSize(in: type.orientation)
+        assertSnapshot(
+          forView: controller.view,
+          withType: type,
+          size: CGSize(width: size.width, height: 50),
+          testName: "testSortView_iPad"
+        )
       }
     }
   }
 
   func testSortView_iPad_Landscape() {
-    Language.allLanguages.forEach { language in
-      withEnvironment(language: language) {
+    forEachScreenshotType(devices: [.pad], orientation: .landscape) { type in
+      withEnvironment(language: type.language) {
         let controller = SortPagerViewController.instantiate()
         controller.configureWith(sorts: self.sorts)
 
-        let (parent, _) = traitControllers(device: .pad, orientation: .landscape, child: controller)
-        parent.view.frame.size.height = 50
-
         self.scheduler.advance(by: .milliseconds(100))
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
+        let size = type.device.deviceSize(in: type.orientation)
+        assertSnapshot(
+          forView: controller.view,
+          withType: type,
+          size: CGSize(width: size.width, height: 50),
+          testName: "testSortView_iPad_Landscape"
+        )
       }
     }
   }

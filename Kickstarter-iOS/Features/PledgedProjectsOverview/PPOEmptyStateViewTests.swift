@@ -14,21 +14,20 @@ final class PPOEmptyStateViewTests: TestCase {
   }
 
   func testEmptyStateView() {
-    orthogonalCombos(Language.allLanguages, Device.allCases, Orientation.allCases).forEach {
-      language, device, orientation in
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgedProjectsOverviewV2Enabled.rawValue: true
+    ]
 
-      let mockConfigClient = MockRemoteConfigClient()
-      mockConfigClient.features = [
-        RemoteConfigFeature.pledgedProjectsOverviewV2Enabled.rawValue: true
-      ]
-
-      withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
-        let size = device.deviceSize(in: orientation)
+    forEachScreenshotType { type in
+      withEnvironment(language: type.language, remoteConfigClient: mockConfigClient) {
+        let size = type.device.deviceSize(in: type.orientation)
         let view = PPOEmptyStateView().frame(width: size.width, height: size.height)
         assertSnapshot(
-          of: view,
-          as: .image,
-          named: "lang_\(language.rawValue)_\(device)_\(orientation)"
+          forSwiftUIView: view,
+          withType: type,
+          size: size,
+          testName: "testEmptyStateView"
         )
       }
     }
@@ -41,14 +40,17 @@ final class PPOEmptyStateViewTests: TestCase {
       RemoteConfigFeature.pledgedProjectsOverviewV2Enabled.rawValue: false
     ]
 
-    withEnvironment(language: Language.en, remoteConfigClient: mockConfigClient) {
-      let size = Device.phone5_8inch.deviceSize
-      let view = PPOEmptyStateView().frame(width: size.width, height: size.height)
-      assertSnapshot(
-        of: view,
-        as: .image,
-        named: "lang_en"
-      )
+    forEachScreenshotType { type in
+      withEnvironment(language: type.language, remoteConfigClient: mockConfigClient) {
+        let size = type.device.deviceSize(in: type.orientation)
+        let view = PPOEmptyStateView().frame(width: size.width, height: size.height)
+        assertSnapshot(
+          forSwiftUIView: view,
+          withType: type,
+          size: size,
+          testName: "testEmptyStateView_PPOV1"
+        )
+      }
     }
   }
 }

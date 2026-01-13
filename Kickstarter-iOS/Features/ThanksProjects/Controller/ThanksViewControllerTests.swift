@@ -27,20 +27,21 @@ class ThanksViewControllerTests: TestCase {
       fetchDiscoveryResponse: discoveryEnvelope
     )
 
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
-      language, device in
-      withEnvironment(apiService: mockService, language: language) {
+    forEachScreenshotType { type in
+      withEnvironment(apiService: mockService, language: type.language) {
         let project = Project.cosmicSurgery
           |> Project.lens.id .~ 3
 
         let controller = ThanksViewController.configured(with: (project, Reward.template, nil, 1))
-
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1_000
+        controller.view.frame.size.height = 1_000
 
         self.scheduler.run()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          forController: controller,
+          withType: type,
+          testName: "testThanksViewController"
+        )
       }
     }
   }
