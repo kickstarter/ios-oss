@@ -20,6 +20,9 @@ class ThanksViewControllerTests: TestCase {
 
   func testThanksViewController() {
     let discoveryEnvelope = DiscoveryEnvelope.template
+      |> DiscoveryEnvelope.lens.projects %~~ { projects, _ in
+        projects.map(self.stripImageURLs)
+      }
     let rootCategories = RootCategoriesEnvelope(rootCategories: [Category.tabletopGames])
     let mockService = MockService(
       fetchGraphCategoryResult: .success(categoryEnvelope),
@@ -29,7 +32,7 @@ class ThanksViewControllerTests: TestCase {
 
     forEachScreenshotType { type in
       withEnvironment(apiService: mockService, language: type.language) {
-        let project = Project.cosmicSurgery
+        let project = self.stripImageURLs(Project.cosmicSurgery)
           |> Project.lens.id .~ 3
 
         let controller = ThanksViewController.configured(with: (project, Reward.template, nil, 1))
@@ -44,5 +47,12 @@ class ThanksViewControllerTests: TestCase {
         )
       }
     }
+  }
+
+  private func stripImageURLs(_ project: Project) -> Project {
+    project
+      |> Project.lens.photo.full .~ ""
+      |> Project.lens.photo.med .~ ""
+      |> Project.lens.photo.small .~ ""
   }
 }
