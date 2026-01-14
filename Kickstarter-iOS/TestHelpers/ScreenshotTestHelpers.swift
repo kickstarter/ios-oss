@@ -6,32 +6,27 @@ import SwiftUI
 import UIKit
 import XCTest
 
-// Explicit aliases to SnapshotTesting types to avoid name resolution issues in
-// targets that do not import the UIKit-specific extensions by default.
-private typealias SnapshotDevice = SnapshotTesting.Device
-private typealias SnapshotOrientation = SnapshotTesting.Orientation
-
 // Represents a single screenshot configuration (device, locale, style, font, orientation).
 internal struct ScreenshotType {
-  internal let device: SnapshotDevice
+  internal let device: Device
   internal let language: Language
   internal let style: UIUserInterfaceStyle
   internal let contentSizeCategory: UIContentSizeCategory
-  internal let orientation: SnapshotOrientation
+  internal let orientation: Orientation
 }
 
 // Iterates through default screenshot configs using orthogonal sampling.
 /// Iterates over a representative set of screenshot configs using orthogonal sampling to avoid
 /// full Cartesian explosion while ensuring each dimension is covered at least once.
 internal func forEachScreenshotType(
-  devices: [SnapshotDevice] = SnapshotDevice.allCases,
+  devices: [Device] = Device.allCases,
   languages: [Language] = Language.allLanguages,
   styles: [UIUserInterfaceStyle] = [.light, .dark],
   contentSizes: [UIContentSizeCategory] = [
     .medium,
     .accessibilityExtraExtraExtraLarge
   ],
-  orientation: SnapshotOrientation = .portrait,
+  orientation: Orientation = .portrait,
   body: (ScreenshotType) -> Void
 ) {
   orthogonalCombos(devices, languages, styles, contentSizes).forEach {
@@ -51,14 +46,14 @@ internal func forEachScreenshotType(
 /// Iterates over screenshot configs plus an additional data set, using orthogonal sampling to keep counts low.
 internal func forEachScreenshotType<T>(
   withData data: [T],
-  devices: [SnapshotDevice] = SnapshotDevice.allCases,
+  devices: [Device] = Device.allCases,
   languages: [Language] = Language.allLanguages,
   styles: [UIUserInterfaceStyle] = [.light, .dark],
   contentSizes: [UIContentSizeCategory] = [
     .medium,
     .accessibilityExtraExtraExtraLarge
   ],
-  orientation: SnapshotOrientation = .portrait,
+  orientation: Orientation = .portrait,
   body: (ScreenshotType, T) -> Void
 ) {
   orthogonalCombos(devices, languages, styles, contentSizes, data).forEach {
@@ -362,7 +357,7 @@ private func sanitizeSnapshotComponent(_ value: String) -> String {
     .reduce("") { $0 + String($1) }
 }
 
-private extension SnapshotDevice {
+private extension Device {
   var snapshotDescription: String {
     switch self {
     case .phone4inch: return "4in"
@@ -374,7 +369,7 @@ private extension SnapshotDevice {
   }
 }
 
-private extension SnapshotOrientation {
+private extension Orientation {
   var snapshotDescription: String {
     switch self {
     case .portrait: return "pt"
