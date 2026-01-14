@@ -53,7 +53,7 @@ final class PPOProjectCardTests: TestCase {
   func testAddressLocks() async {
     let targetHeight: CGFloat = 500
 
-    forEachScreenshotType { type in
+    for type in defaultScreenshotTypes() {
       let targetSize = CGSize(
         width: type.device.deviceSize(in: type.orientation).width,
         height: targetHeight
@@ -82,7 +82,7 @@ final class PPOProjectCardTests: TestCase {
   func testSurveyAvailableAddressLocks() async {
     let targetHeight: CGFloat = 500
 
-    forEachScreenshotType { type in
+    for type in defaultScreenshotTypes() {
       let targetSize = CGSize(
         width: type.device.deviceSize(in: type.orientation).width,
         height: targetHeight
@@ -110,7 +110,7 @@ final class PPOProjectCardTests: TestCase {
   func testPaymentFailedPledgeDropped() async {
     let targetHeight: CGFloat = 500
 
-    forEachScreenshotType { type in
+    for type in defaultScreenshotTypes() {
       let targetSize = CGSize(
         width: type.device.deviceSize(in: type.orientation).width,
         height: targetHeight
@@ -138,7 +138,7 @@ final class PPOProjectCardTests: TestCase {
   func testCardAuthPledgeDropped() async {
     let targetHeight: CGFloat = 500
 
-    forEachScreenshotType { type in
+    for type in defaultScreenshotTypes() {
       let targetSize = CGSize(
         width: type.device.deviceSize(in: type.orientation).width,
         height: targetHeight
@@ -166,7 +166,7 @@ final class PPOProjectCardTests: TestCase {
   func testSurveyAvailable() async {
     let targetHeight: CGFloat = 500
 
-    forEachScreenshotType { type in
+    for type in defaultScreenshotTypes() {
       let targetSize = CGSize(
         width: type.device.deviceSize(in: type.orientation).width,
         height: targetHeight
@@ -194,7 +194,7 @@ final class PPOProjectCardTests: TestCase {
   func testFinalizeYourPledge() async {
     let targetHeight: CGFloat = 500
 
-    forEachScreenshotType { type in
+    for type in defaultScreenshotTypes() {
       let targetSize = CGSize(
         width: type.device.deviceSize(in: type.orientation).width,
         height: targetHeight
@@ -224,7 +224,7 @@ final class PPOProjectCardTests: TestCase {
   func testShortTemplateText() async {
     let targetHeight: CGFloat = 500
 
-    forEachScreenshotType { type in
+    for type in defaultScreenshotTypes() {
       let targetSize = CGSize(
         width: type.device.deviceSize(in: type.orientation).width,
         height: targetHeight
@@ -252,7 +252,7 @@ final class PPOProjectCardTests: TestCase {
   func testLotsOfFlags() async {
     let targetHeight: CGFloat = 500
 
-    forEachScreenshotType { type in
+    for type in defaultScreenshotTypes() {
       let targetSize = CGSize(
         width: type.device.deviceSize(in: type.orientation).width,
         height: targetHeight
@@ -275,4 +275,12 @@ final class PPOProjectCardTests: TestCase {
       )
     }
   }
+}
+
+private func defaultScreenshotTypes() -> [ScreenshotType] {
+  var types: [ScreenshotType] = []
+  forEachScreenshotType { type in
+    types.append(type)
+  }
+  return types
 }

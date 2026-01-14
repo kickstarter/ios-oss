@@ -49,7 +49,10 @@ final class SearchFiltersHeaderViewTests: TestCase {
       ]
 
       let view = SearchFiltersHeaderView(didTapPill: { _ in }, pills: pills)
-        .environment(\.sizeCategory, type.contentSizeCategory)
+        .environment(
+          \.sizeCategory,
+          ContentSizeCategory(type.contentSizeCategory) ?? .medium
+        )
         // Lots of pills, double the width so we can get more of them.
         .frame(width: size.width * 2, height: 100)
 
