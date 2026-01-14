@@ -31,6 +31,8 @@
 		0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0146E3211CC0296900082C5B /* FacebookConfirmationViewController.swift */; };
 		01483F222F0DDFF900A1D833 /* ScreenshotTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01483F1F2F0DDFF900A1D833 /* ScreenshotTestHelpers.swift */; };
 		E1D2C3B42F12345600000001 /* ScreenshotTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01483F1F2F0DDFF900A1D833 /* ScreenshotTestHelpers.swift */; };
+		E1D2C3B52F12345600000002 /* TraitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20221E83237F00BFFA01 /* TraitController.swift */; };
+		E1D2C3B62F12345600000003 /* Combos.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20211E83237F00BFFA01 /* Combos.swift */; };
 		0148EF911CDD2879000DEFF8 /* ThanksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148EF8F1CDD2879000DEFF8 /* ThanksViewController.swift */; };
 		014A8DEB1CE3C350003BF51C /* ThanksProjectsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014A8DE91CE3C350003BF51C /* ThanksProjectsDataSource.swift */; };
 		014A8E1C1CE3CE34003BF51C /* ThanksCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */; };
@@ -8812,6 +8814,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1D2C3B62F12345600000003 /* Combos.swift in Sources */,
+				E1D2C3B52F12345600000002 /* TraitController.swift in Sources */,
 				E1D2C3B42F12345600000001 /* ScreenshotTestHelpers.swift in Sources */,
 				E1BBB6722E035BE300291D48 /* FetchLocationsUseCaseTests.swift in Sources */,
 				1611EF6923B275700051CDCC /* MockUUID.swift in Sources */,
