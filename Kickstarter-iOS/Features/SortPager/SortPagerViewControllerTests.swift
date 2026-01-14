@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import ReactiveSwift
 import SnapshotTesting
 import XCTest
 
@@ -20,11 +21,13 @@ internal final class SortPagerViewControllerTests: TestCase {
 
   func testSortView() {
     forEachScreenshotType { type in
-      withEnvironment(language: type.language) {
+      let scheduler = TestScheduler()
+
+      withEnvironment(language: type.language, scheduler: scheduler) {
         let controller = SortPagerViewController.instantiate()
         controller.configureWith(sorts: self.sorts)
 
-        self.scheduler.advance(by: .milliseconds(100))
+        scheduler.advance(by: .milliseconds(100))
 
         let size = type.device.deviceSize(in: type.orientation)
         assertSnapshot(
@@ -39,11 +42,13 @@ internal final class SortPagerViewControllerTests: TestCase {
 
   func testSortView_iPad() {
     forEachScreenshotType(devices: [.pad]) { type in
-      withEnvironment(language: type.language) {
+      let scheduler = TestScheduler()
+
+      withEnvironment(language: type.language, scheduler: scheduler) {
         let controller = SortPagerViewController.instantiate()
         controller.configureWith(sorts: self.sorts)
 
-        self.scheduler.advance(by: .milliseconds(100))
+        scheduler.advance(by: .milliseconds(100))
 
         let size = type.device.deviceSize(in: type.orientation)
         assertSnapshot(
@@ -58,11 +63,13 @@ internal final class SortPagerViewControllerTests: TestCase {
 
   func testSortView_iPad_Landscape() {
     forEachScreenshotType(devices: [.pad], orientation: .landscape) { type in
-      withEnvironment(language: type.language) {
+      let scheduler = TestScheduler()
+
+      withEnvironment(language: type.language, scheduler: scheduler) {
         let controller = SortPagerViewController.instantiate()
         controller.configureWith(sorts: self.sorts)
 
-        self.scheduler.advance(by: .milliseconds(100))
+        scheduler.advance(by: .milliseconds(100))
 
         let size = type.device.deviceSize(in: type.orientation)
         assertSnapshot(
