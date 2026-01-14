@@ -251,7 +251,7 @@ internal final class SearchViewContollerTests: TestCase {
 
 internal extension GraphAPI.SearchQuery.Data {
   static var emptyResults: GraphAPI.SearchQuery.Data {
-    let url = Bundle(for: SearchViewContollerTests.self).url(
+    let url = Bundle.module.url(
       forResource: "SearchQuery_EmptyResults",
       withExtension: "json"
     )
@@ -259,7 +259,7 @@ internal extension GraphAPI.SearchQuery.Data {
   }
 
   static var activeResults: GraphAPI.SearchQuery.Data {
-    let url = Bundle(for: SearchViewContollerTests.self).url(
+    let url = Bundle.module.url(
       forResource: "SearchQuery_SearchViewControllerTests_Active",
       withExtension: "json"
     )
@@ -267,7 +267,7 @@ internal extension GraphAPI.SearchQuery.Data {
   }
 
   static var prelaunchResults: GraphAPI.SearchQuery.Data {
-    let url = Bundle(for: SearchViewContollerTests.self).url(
+    let url = Bundle.module.url(
       forResource: "SearchQuery_SearchViewControllerTests_Prelaunch",
       withExtension: "json"
     )

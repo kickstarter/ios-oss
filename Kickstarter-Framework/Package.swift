@@ -61,7 +61,10 @@ let package = Package(
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
         .product(name: "ReactiveExtensions-TestHelpers", package: "Kickstarter-ReactiveExtensions")
       ],
-      path: "Sources/Kickstarter-Framework-iOSTests"
+      path: "Sources/Kickstarter-Framework-iOSTests",
+      resources: [
+        .process("Resources")
+      ]
     )
   ],
   swiftLanguageModes: [.v5]
