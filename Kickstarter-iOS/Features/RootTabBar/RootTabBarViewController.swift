@@ -211,8 +211,6 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
   private func configureFloatingTabBarItems(with data: TabBarItemsData) {
     guard let items = self.tabBar.items, items.isEmpty == false else { return }
 
-    assert(items.count == 3, "FloatingTabBar expected 3 items, got \(items.count)")
-
     data.items.forEach { item in
       switch item {
       case let .home(index):
