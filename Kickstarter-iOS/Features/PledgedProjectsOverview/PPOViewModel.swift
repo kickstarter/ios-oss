@@ -19,7 +19,7 @@ protocol PPOViewModelInputs {
   func loadMore() async
 
   func openBackedProjects()
-  func handleCardEvent(_: PPOCardEvent, from: PPOProjectCardViewModel)
+  func handleCardEvent(_: PPOCardEvent, from: PPOProjectCardModel)
 }
 
 protocol PPOViewModelOutputs {
@@ -153,7 +153,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         .map { PPONavigationEvent.backedProjects },
       self.handleCardEventSubject
         .map { event, card in
-          self.preparedEvent(for: event, cardViewModel: card)
+          self.preparedEvent(for: event, cardModel: card)
         }
     )
     .eraseToAnyPublisher()
@@ -177,11 +177,11 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     // Analytics: Card event
     self.handleCardEventSubject
       .withFirst(from: latestLoadedResults)
-      .map { eventAndViewModel, overallProperties in
-        (eventAndViewModel.0, eventAndViewModel.1, overallProperties)
+      .map { eventAndCardModel, overallProperties in
+        (eventAndCardModel.0, eventAndCardModel.1, overallProperties)
       }
-      .sink { event, viewModel, overallProperties in
-        self.trackCardEvent(event, cardModel: viewModel.card, overallProperties: overallProperties)
+      .sink { event, card, overallProperties in
+        self.trackCardEvent(event, cardModel: card, overallProperties: overallProperties)
       }
       .store(in: &self.cancellables)
 
@@ -246,10 +246,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
   func preparedEvent(
     for event: PPOCardEvent,
-    cardViewModel: PPOProjectCardViewModel
+    cardModel: PPOProjectCardModel
   ) -> PPONavigationEvent {
-    let cardModel = cardViewModel.card
-
     switch event {
     case .editAddress:
       return PPONavigationEvent.editAddress(url: cardModel.backingDetailsUrl)
@@ -279,12 +277,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
           self?.confirmAddressProgressSubject.send((cardModel, state))
         }
       )
-    case let .authenticateCard(clientSecret):
+    case let .authenticateCard(clientSecret, onProgress):
       return PPONavigationEvent.fix3DSChallenge(
         clientSecret: clientSecret,
-        onProgress: { [weak cardViewModel] state in
-          cardViewModel?.handle3DSState(state)
-        }
+        onProgress: onProgress
       )
     }
   }
@@ -309,8 +305,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     self.openBackedProjectsSubject.send(())
   }
 
-  func handleCardEvent(_ cardAction: PPOCardEvent, from viewModel: PPOProjectCardViewModel) {
-    self.handleCardEventSubject.send((cardAction, viewModel))
+  func handleCardEvent(_ cardAction: PPOCardEvent, from cardModel: PPOProjectCardModel) {
+    self.handleCardEventSubject.send((cardAction, cardModel))
   }
 
   // MARK: - Outputs
@@ -335,7 +331,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   >()
 
   private let handleCardEventSubject = PassthroughSubject<
-    (PPOCardEvent, PPOProjectCardViewModel),
+    (PPOCardEvent, PPOProjectCardModel),
     Never
   >()
 
