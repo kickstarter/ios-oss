@@ -15,9 +15,8 @@ extension Backing {
       let id = decompose(id: backingFragment.id),
       let backerIdString = backingFragment.backer?.fragments.userFragment.uid,
       let backerId = Int(backerIdString),
-      let projectCountry = backingFragment.project?.fragments.projectFragment.country.fragments
-      .countryFragment.code,
-      let projectId = backingFragment.project?.fragments.projectFragment.pid,
+      let projectCountry = backingFragment.project?.country.fragments.countryFragment.code,
+      let projectId = backingFragment.project?.pid,
       let backingStatus = backingStatus(from: backingFragment),
       let user = backingFragment.backer?.fragments.userFragment
     else { return nil }
@@ -70,8 +69,8 @@ private func backingStatus(from backingFragment: GraphAPI.BackingFragment) -> Ba
 
 private func backingReward(from backingFragment: GraphAPI.BackingFragment) -> Reward? {
   guard let reward = backingFragment.reward?.fragments.rewardFragment else {
-    let projectMinimumPledgeAmount: Int = backingFragment.project?.fragments.projectFragment.minPledge ?? 1
-    let projectFXRate: Double = backingFragment.project?.fragments.projectFragment.fxRate ?? 1.0
+    let projectMinimumPledgeAmount: Int = backingFragment.project?.minPledge ?? 1
+    let projectFXRate: Double = backingFragment.project?.fxRate ?? 1.0
 
     let convertedMinimumAmount = projectFXRate * Double(projectMinimumPledgeAmount)
 

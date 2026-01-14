@@ -29,7 +29,7 @@ extension ProjectAndBackingEnvelope {
 
     guard
       let backingFragment = data.backing?.fragments.backingFragment,
-      let projectFragment = data.backing?.fragments.backingFragment.project?.fragments.projectFragment,
+      let projectFragment = data.backing?.project?.fragments.projectFragment,
       let backing = Backing.backing(
         from: backingFragment,
         addOns: addOns,
@@ -62,7 +62,7 @@ extension ProjectAndBackingEnvelope {
 
     guard
       let backingFragment = data.backing?.fragments.backingFragment,
-      let projectFragment = data.backing?.fragments.backingFragment.project?.fragments.projectFragment,
+      let projectFragment = data.backing?.project?.fragments.projectFragment,
       let backing = Backing.backing(
         from: backingFragment,
         addOns: addOns,
