@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
   name: "Library",
+  defaultLocalization: "en",
   platforms: [
     .iOS(.v18),
     .macOS(.v10_14),
@@ -62,7 +63,7 @@ let package = Package(
       ],
       path: "Sources/Library",
       resources: [
-        .process("Resources")
+        .process("Resources"),
       ],
     ),
     .target(

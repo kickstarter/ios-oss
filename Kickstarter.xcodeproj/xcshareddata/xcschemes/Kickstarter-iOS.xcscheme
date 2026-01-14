@@ -49,7 +49,7 @@
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
-            buildForTesting = "NO"
+            buildForTesting = "YES"
             buildForRunning = "NO"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
@@ -83,15 +83,6 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A7D1F9441C850B7C000D41D5"
-            BuildableName = "Kickstarter.app"
-            BlueprintName = "Kickstarter-iOS"
-            ReferencedContainer = "container:Kickstarter.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -131,6 +122,16 @@
                BuildableName = "Library-Tests"
                BlueprintName = "Library-Tests"
                ReferencedContainer = "container:Library">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A7D1F9591C850B7C000D41D5"
+               BuildableName = "Kickstarter-Framework-iOSTests.xctest"
+               BlueprintName = "Kickstarter-Framework-iOSTests"
+               ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

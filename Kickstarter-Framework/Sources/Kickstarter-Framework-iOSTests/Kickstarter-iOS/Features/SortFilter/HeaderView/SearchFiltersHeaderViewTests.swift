@@ -17,9 +17,9 @@ final class SearchFiltersHeaderViewTests: TestCase {
       device, contentSize in
       var size = device.deviceSize(in: .portrait)
 
-      let icon1 = Library.image(named: "shortcut-icon-k", inBundle: Bundle.module)!.withRenderingMode(.alwaysTemplate)
-      let icon2 = Library.image(named: "icon-sort", inBundle: Bundle.module)!.withRenderingMode(.alwaysTemplate)
-      let icon3 = Library.image(named: "icon-pwl", inBundle: Bundle.module)!
+      let icon1 = Library.image(named: "shortcut-icon-k")!.withRenderingMode(.alwaysTemplate)
+      let icon2 = Library.image(named: "icon-sort")!.withRenderingMode(.alwaysTemplate)
+      let icon3 = Library.image(named: "icon-pwl")!
 
       let pills = [
         SearchFilterPill(

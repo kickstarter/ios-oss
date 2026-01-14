@@ -1074,7 +1074,8 @@ internal extension GraphAPI.SearchQuery.Data {
   }
 
   static var emptyResults: GraphAPI.SearchQuery.Data {
-    let url = Bundle.module.url(
+    let bundle = Bundle.module
+    let url = bundle.url(
       forResource: "SearchQuery_EmptyResults",
       withExtension: "json"
     )
