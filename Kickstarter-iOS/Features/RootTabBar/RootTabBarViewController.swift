@@ -217,42 +217,27 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
 
   private func configureFloatingTabBarItems(with data: TabBarItemsData) {
     guard let items = self.tabBar.items, items.isEmpty == false else { return }
-    
+
     assert(items.count == 3, "FloatingTabBar expected 3 items, got \(items.count)")
-    
+
     data.items.forEach { item in
       switch item {
       case let .home(index):
         self.setFloatingTabBarIcon(imageName: "floating-tabbar-icon-home", at: index)
-        
+
       case let .search(index):
         self.setFloatingTabBarIcon(imageName: "floating-tabbar-icon-search", at: index)
-        
+
       case let .profile(_, index):
         /// Only override profile icon if logged out
         guard data.isLoggedIn == false else { break }
-        
+
         self.setFloatingTabBarIcon(imageName: "floating-tabbar-icon-profile", at: index)
-        
+
       case .activity:
         break
       }
     }
-    
-    /// Remove labels + center icons
-    items.forEach {
-      $0.title = nil
-      $0.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
-    }
-  }
-  
-  private func setFloatingTabBarIcon(imageName name: String, at index: Int) {
-    guard let item = self.tabBarItem(atIndex: index),
-          let image = UIImage(named: name)?.withRenderingMode(.alwaysTemplate) else { return }
-    
-    item.image = image
-    item.selectedImage = image
-  }
 
     /// Remove labels + center icons
     items.forEach {
@@ -381,6 +366,8 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
     if enabled {
       guard (self.tabBar is FloatingTabBar) == false else { return }
 
+      /// Replace the UITabBarController’s tab bar with our custom subclass.
+      /// UITabBarController has a read-only tabBar property and Apple doesn't provide a public setter or override for it so we need to do it via key-value coding.
       let customTabBar = FloatingTabBar()
       self.setValue(customTabBar, forKey: "tabBar")
       self.bindStyles()
