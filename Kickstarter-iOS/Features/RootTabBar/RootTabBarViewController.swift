@@ -87,6 +87,8 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     if featureFloatingTabBarEnabled() {
+      /// Replace the UITabBarController’s tab bar with our custom subclass.
+      /// UITabBarController has a read-only tabBar property and Apple doesn't provide a public setter or override for it so we need to do it via key-value coding.
       let customTabBar = FloatingTabBar()
       self.setValue(customTabBar, forKey: "tabBar")
     }
