@@ -133,9 +133,6 @@ public final class ManagePledgeViewModel:
           .materialize()
       }
 
-    let graphBackingProject = graphBackingEvent.values()
-      .map { $0.project }
-
     let graphBackingEnvelope = graphBackingEvent.values()
 
     let backing = graphBackingEnvelope
@@ -176,7 +173,7 @@ public final class ManagePledgeViewModel:
         return (project, reward)
       }
 
-    self.title = graphBackingProject.combineLatest(with: userIsCreatorOfProject)
+    self.title = project.combineLatest(with: userIsCreatorOfProject)
       .map(navigationBarTitle(with:userIsCreatorOfProject:))
 
     self.configurePaymentMethodView = backing.map(managePledgePaymentMethodViewData)
