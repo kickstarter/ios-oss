@@ -439,7 +439,7 @@ private enum SnapshotTestLock {
   private static let lock = NSLock()
 
   static func withLock<T>(_ body: () -> T) -> T {
-    lock.lock()
+    self.lock.lock()
     defer { lock.unlock() }
     return body()
   }
