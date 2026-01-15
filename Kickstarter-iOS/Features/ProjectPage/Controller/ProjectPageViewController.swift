@@ -70,6 +70,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     let vc = ProjectPageViewController.instantiate()
 
     vc.viewModel.inputs.configureWith(
+      // TODO: MBL-2927 We're cleaning up the Either path in the view model.
+      // Only the param is currently supported.
       projectOrParam: Either(right: param),
       refInfo: refInfo,
       secretRewardToken: secretRewardToken
