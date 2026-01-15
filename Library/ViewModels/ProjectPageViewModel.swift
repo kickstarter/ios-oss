@@ -763,6 +763,12 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   /// which helps prevent widespread changes across all existing test cases in `ProjectPageViewModelTests`.
   /// Use this when the `secretRewardToken` context is not required.
   public func configureWith(projectOrParam: Either<Project, any ProjectPageParam>, refInfo: RefInfo?) {
+    if case let _ = Either.left(projectOrParam) {
+      assert(
+        false,
+        "MBL-2927: This pathway is no longer supported, and it should not be possible to call it."
+      )
+    }
     self.configureWith(projectOrParam: projectOrParam, refInfo: refInfo, secretRewardToken: nil)
   }
 
