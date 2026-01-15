@@ -418,7 +418,7 @@ private extension UIContentSizeCategory {
     case .accessibilityExtraLarge: return "aXL"
     case .accessibilityExtraExtraLarge: return "aXXL"
     case .accessibilityExtraExtraExtraLarge: return "aXXXL"
-    default: return self.rawValue
+    default: return rawValue
     }
   }
 }
