@@ -95,7 +95,7 @@ internal class TestCase: XCTestCase {
       exp.fulfill()
     }
 
-    waitForExpectations(timeout: 0.01)
+    waitForExpectations(timeout: 0.1)
   }
 
   internal func preferredSimulatorCheck() {

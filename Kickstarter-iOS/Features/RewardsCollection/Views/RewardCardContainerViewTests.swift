@@ -10,7 +10,7 @@ import XCTest
 final class RewardCardContainerViewTests: TestCase {
   func testLive_BackedProject_BackedReward() {
     forEachScreenshotType(withData: allRewards) { type, rewardTuple in
-      withEnvironment(language: type.language) {
+      withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -44,7 +44,7 @@ final class RewardCardContainerViewTests: TestCase {
 
   func testLive_BackedProject_RewardImage() {
     forEachScreenshotType { type in
-      withEnvironment(language: type.language) {
+      withSnapshotEnvironment(language: type.language) {
         let reward = Reward.postcards
           |> Reward.lens.isAvailable .~ true
           |> Reward.lens.image .~ Reward.Image(altText: "The image", url: "https://ksr.com/image.jpg")
@@ -85,7 +85,7 @@ final class RewardCardContainerViewTests: TestCase {
     let user = User.template
 
     forEachScreenshotType(withData: allRewards) { type, rewardTuple in
-      withEnvironment(currentUser: user, language: type.language) {
+      withSnapshotEnvironment(currentUser: user, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -119,7 +119,7 @@ final class RewardCardContainerViewTests: TestCase {
 
   func testLive_BackedProject_NonBackedReward() {
     forEachScreenshotType(withData: allRewards) { type, rewardTuple in
-      withEnvironment(language: type.language) {
+      withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -156,7 +156,7 @@ final class RewardCardContainerViewTests: TestCase {
       |> User.lens.id .~ 5
 
     forEachScreenshotType(withData: allRewards) { type, rewardTuple in
-      withEnvironment(currentUser: nonCreator, language: type.language) {
+      withSnapshotEnvironment(currentUser: nonCreator, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -184,7 +184,7 @@ final class RewardCardContainerViewTests: TestCase {
 
   func testLive_NonBackedProject_LoggedOut() {
     forEachScreenshotType(withData: allRewards) { type, rewardTuple in
-      withEnvironment(currentUser: nil, language: type.language) {
+      withSnapshotEnvironment(currentUser: nil, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -212,7 +212,7 @@ final class RewardCardContainerViewTests: TestCase {
 
   func testNonLive_BackedProject_BackedReward() {
     forEachScreenshotType(withData: allRewards) { type, rewardTuple in
-      withEnvironment(language: type.language) {
+      withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -246,7 +246,7 @@ final class RewardCardContainerViewTests: TestCase {
 
   func testNonLive_BackedProject_NonBackedReward() {
     forEachScreenshotType(withData: allRewards) { type, rewardTuple in
-      withEnvironment(language: type.language) {
+      withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -280,7 +280,7 @@ final class RewardCardContainerViewTests: TestCase {
 
   func testNonLive_NonBackedProject() {
     forEachScreenshotType(withData: allRewards) { type, rewardTuple in
-      withEnvironment(language: type.language) {
+      withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -313,7 +313,7 @@ final class RewardCardContainerViewTests: TestCase {
       }
 
     forEachScreenshotType(withData: filteredRewards) { type, rewardTuple in
-      withEnvironment(language: type.language) {
+      withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -354,7 +354,7 @@ final class RewardCardContainerViewTests: TestCase {
       }
 
     forEachScreenshotType(withData: filteredRewards) { type, rewardTuple in
-      withEnvironment(language: type.language) {
+      withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -397,7 +397,7 @@ final class RewardCardContainerViewTests: TestCase {
       |> Project.lens.personalization.backing .~ nil
 
     forEachScreenshotType(withData: allRewards) { type, rewardTuple in
-      withEnvironment(currentUser: user, language: type.language) {
+      withSnapshotEnvironment(currentUser: user, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let vc = rewardCardInViewController(
@@ -428,7 +428,7 @@ final class RewardCardContainerViewTests: TestCase {
       |> Project.lens.personalization.backing .~ nil
 
     forEachScreenshotType(withData: allRewards) { type, rewardTuple in
-      withEnvironment(currentUser: user, language: type.language) {
+      withSnapshotEnvironment(currentUser: user, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let vc = rewardCardInViewController(
@@ -469,14 +469,43 @@ private func rewardCardInViewController(
     view.bottomAnchor.constraint(lessThanOrEqualTo: controller.view.layoutMarginsGuide.bottomAnchor)
   ])
 
+  let safeProject = stripImageURLs(project)
+
   view.configure(with: RewardCardViewData(
-    project: project,
+    project: safeProject,
     reward: reward,
     context: .pledge,
     currentShippingLocation: nil
   ))
 
   return controller
+}
+
+private func stripImageURLs(_ project: Project) -> Project {
+  project
+    |> Project.lens.photo.full .~ ""
+    |> Project.lens.photo.med .~ ""
+    |> Project.lens.photo.small .~ ""
+}
+
+private extension RewardCardContainerViewTests {
+  func withSnapshotEnvironment(
+    currentUser: User? = nil,
+    language: Language,
+    body: () -> Void
+  ) {
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = TimeZone(identifier: "GMT")!
+
+    self.withEnvironment(
+      calendar: calendar,
+      currentUser: currentUser,
+      language: language,
+      locale: Locale(identifier: language.rawValue),
+      mainBundle: Bundle(for: RewardCardContainerViewTests.self),
+      body: body
+    )
+  }
 }
 
 let allRewards: [(String, Reward)] = {

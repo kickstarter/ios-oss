@@ -29,9 +29,17 @@ class ThanksViewControllerTests: TestCase {
       fetchGraphCategoriesResult: .success(rootCategories),
       fetchDiscoveryResponse: discoveryEnvelope
     )
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = TimeZone(identifier: "GMT")!
 
     forEachScreenshotType { type in
-      withEnvironment(apiService: mockService, language: type.language) {
+      withEnvironment(
+        apiService: mockService,
+        calendar: calendar,
+        language: type.language,
+        locale: Locale(identifier: type.language.rawValue),
+        mainBundle: self.mainBundle
+      ) {
         let project = self.stripImageURLs(Project.cosmicSurgery)
           |> Project.lens.id .~ 3
 
