@@ -53,8 +53,8 @@ struct PPOView: View {
       PPOProjectCard(
         viewModel: card,
         parentSize: parentSize,
-        onHandleEvent: { _, event in
-          self.viewModel.handleCardEvent(event, from: card)
+        onHandleEvent: { cardModel, event in
+          self.viewModel.handleCardEvent(event, from: cardModel)
         }
       )
       .listRowBackground(EmptyView())
