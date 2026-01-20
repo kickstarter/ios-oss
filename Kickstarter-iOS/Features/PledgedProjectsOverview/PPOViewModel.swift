@@ -362,6 +362,8 @@ extension Sequence where Element == PPOProjectCardViewModel {
     var addressLocksSoonCount: Int = 0
     var pledgeManagementCount: Int = 0
 
+    var fundedProjectCount: Int = 0
+
     for viewModel in self {
       switch viewModel.card.tierType {
       case .fixPayment:
@@ -375,8 +377,7 @@ extension Sequence where Element == PPOProjectCardViewModel {
       case .pledgeManagement:
         pledgeManagementCount += 1
       case .surveySubmitted, .pledgeCollected, .addressConfirmed, .awaitingReward, .rewardReceived:
-        // TODO(MBL-2818): Add analytics for PPO v2.
-        break
+        fundedProjectCount += 1
       }
     }
 
@@ -386,6 +387,7 @@ extension Sequence where Element == PPOProjectCardViewModel {
       pledgeManagementCount: pledgeManagementCount,
       paymentFailedCount: paymentFailedCount,
       cardAuthRequiredCount: cardAuthRequiredCount,
+      fundedProjectCount: fundedProjectCount,
       total: total,
       page: page
     )

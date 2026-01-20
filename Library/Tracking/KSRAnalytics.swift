@@ -564,8 +564,17 @@ public final class KSRAnalytics {
     let pledgeManagementCount: Int
     let paymentFailedCount: Int
     let cardAuthRequiredCount: Int
+    let fundedProjectCount: Int
     let total: Int?
     let page: Int?
+
+    var alertCardCount: Int {
+      return self.addressLocksSoonCount +
+        self.surveyAvailableCount +
+        self.pledgeManagementCount +
+        self.paymentFailedCount +
+        self.cardAuthRequiredCount
+    }
 
     public init(
       addressLocksSoonCount: Int,
@@ -573,6 +582,7 @@ public final class KSRAnalytics {
       pledgeManagementCount: Int,
       paymentFailedCount: Int,
       cardAuthRequiredCount: Int,
+      fundedProjectCount: Int,
       total: Int?,
       page: Int?
     ) {
@@ -581,6 +591,7 @@ public final class KSRAnalytics {
       self.pledgeManagementCount = pledgeManagementCount
       self.paymentFailedCount = paymentFailedCount
       self.cardAuthRequiredCount = cardAuthRequiredCount
+      self.fundedProjectCount = fundedProjectCount
       self.total = total
       self.page = page
     }
@@ -1650,6 +1661,9 @@ private func pledgedProjectOverviewProperties(
   result["notification_count_pledge_management"] = properties.pledgeManagementCount
   result["notification_count_payment_failed"] = properties.paymentFailedCount
   result["notification_count_card_auth_required"] = properties.cardAuthRequiredCount
+
+  result["notification_count_alert_card"] = properties.alertCardCount
+  result["notification_count_funded_project"] = properties.fundedProjectCount
 
   if let total = properties.total {
     result["notification_count_total"] = total
