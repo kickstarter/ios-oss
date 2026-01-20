@@ -6,7 +6,7 @@ struct PPOView: View {
   @StateObject var viewModel = PPOViewModel()
   var shouldRefresh: AnyPublisher<Void, Never>
   var onCountChange: ((Int?) -> Void)?
-  var onNavigate: ((PPONavigationEvent) -> Void)?
+  var onHandleEvent: ((PPOPreparedEvent) -> Void)?
 
   @AccessibilityFocusState private var isBannerFocused: Bool
 
@@ -81,7 +81,7 @@ struct PPOView: View {
 
   @ViewBuilder var emptyView: some View {
     PPOEmptyStateView {
-      self.onNavigate?(.backedProjects)
+      self.onHandleEvent?(.backedProjects)
     }
     .frame(maxHeight: .infinity)
   }
@@ -123,8 +123,8 @@ struct PPOView: View {
           }
           self.onCountChange?(newAlerts.count)
         }
-        .onReceive(self.viewModel.navigationEvents, perform: { event in
-          self.onNavigate?(event)
+        .onReceive(self.viewModel.preparedEvents, perform: { event in
+          self.onHandleEvent?(event)
         })
         .onReceive(self.shouldRefresh.throttle(
           for: .milliseconds(300),

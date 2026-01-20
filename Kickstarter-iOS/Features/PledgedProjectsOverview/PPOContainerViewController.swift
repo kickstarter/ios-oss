@@ -22,8 +22,8 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       onCountChange: { [weak self] count in
         self?.viewModel.projectAlertsCountChanged(count)
       },
-      onNavigate: { [weak self] event in
-        self?.viewModel.handle(navigationEvent: event)
+      onHandleEvent: { [weak self] event in
+        self?.viewModel.handle(preparedEvent: event)
       }
     )
     let ppoViewController = UIHostingController(rootView: ppoView)
@@ -71,8 +71,8 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       }
       .store(in: &self.subscriptions)
 
-    self.viewModel.navigationEvents.sink { [weak self] nav in
-      switch nav {
+    self.viewModel.preparedEvents.sink { [weak self] event in
+      switch event {
       case .backedProjects:
         tabBarController?.switchToProfile()
       case let .projectDetails(projectId):
@@ -157,7 +157,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
 
   private var subscriptions = Set<AnyCancellable>()
 
-  // MARK: - Navigation Helpers
+  // MARK: - Event Helpers
 
   private func fixPayment(projectId: Int, backingId: Int) {
     let data = (projectParam: Param.id(projectId), backingParam: Param.id(backingId))

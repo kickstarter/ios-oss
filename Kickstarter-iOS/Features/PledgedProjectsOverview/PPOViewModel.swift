@@ -24,10 +24,10 @@ protocol PPOViewModelInputs {
 
 protocol PPOViewModelOutputs {
   var results: PPOViewModelPaginator.Results { get }
-  var navigationEvents: AnyPublisher<PPONavigationEvent, Never> { get }
+  var preparedEvents: AnyPublisher<PPOPreparedEvent, Never> { get }
 }
 
-enum PPONavigationEvent: Equatable {
+enum PPOPreparedEvent: Equatable {
   case backedProjects
   case fixPaymentMethod(projectId: Int, backingId: Int)
   case fix3DSChallenge(clientSecret: String, onProgress: (PPOActionState) -> Void)
@@ -43,7 +43,7 @@ enum PPONavigationEvent: Equatable {
   )
   case contactCreator(messageSubject: MessageSubject)
 
-  static func == (lhs: PPONavigationEvent, rhs: PPONavigationEvent) -> Bool {
+  static func == (lhs: PPOPreparedEvent, rhs: PPOPreparedEvent) -> Bool {
     switch (lhs, rhs) {
     case let (.survey(lhsUrl), .survey(rhsUrl)):
       return lhsUrl == rhsUrl
@@ -146,18 +146,18 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       }
       .store(in: &self.cancellables)
 
-    // Route navigation events
+    // Prepare and route events
 
     Publishers.Merge(
       self.openBackedProjectsSubject
-        .map { PPONavigationEvent.backedProjects },
+        .map { PPOPreparedEvent.backedProjects },
       self.handleCardEventSubject
         .map { event, card in
           self.preparedEvent(for: event, cardModel: card)
         }
     )
     .eraseToAnyPublisher()
-    .subscribe(self.navigationEventSubject)
+    .subscribe(self.preparedEventSubject)
     .store(in: &self.cancellables)
 
     let latestLoadedResults = self.paginator.$results
@@ -247,29 +247,29 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   func preparedEvent(
     for event: PPOCardEvent,
     cardModel: PPOProjectCardModel
-  ) -> PPONavigationEvent {
+  ) -> PPOPreparedEvent {
     switch event {
     case .editAddress:
-      return PPONavigationEvent.editAddress(url: cardModel.backingDetailsUrl)
+      return PPOPreparedEvent.editAddress(url: cardModel.backingDetailsUrl)
     case .viewProjectDetails:
-      return PPONavigationEvent.projectDetails(projectId: cardModel.projectId)
+      return PPOPreparedEvent.projectDetails(projectId: cardModel.projectId)
     case .sendMessage:
       let messageSubject = MessageSubject.project(
         id: cardModel.projectId,
         name: cardModel.projectName
       )
-      return PPONavigationEvent.contactCreator(messageSubject: messageSubject)
+      return PPOPreparedEvent.contactCreator(messageSubject: messageSubject)
     case .completeSurvey:
-      return PPONavigationEvent.survey(url: cardModel.backingDetailsUrl)
+      return PPOPreparedEvent.survey(url: cardModel.backingDetailsUrl)
     case .fixPayment:
-      return PPONavigationEvent.fixPaymentMethod(
+      return PPOPreparedEvent.fixPaymentMethod(
         projectId: cardModel.projectId,
         backingId: cardModel.backingId
       )
     case .managePledge:
-      return PPONavigationEvent.managePledge(url: cardModel.backingDetailsUrl)
+      return PPOPreparedEvent.managePledge(url: cardModel.backingDetailsUrl)
     case let .confirmAddress(address, addressId):
-      return PPONavigationEvent.confirmAddress(
+      return PPOPreparedEvent.confirmAddress(
         backingId: cardModel.backingGraphId,
         addressId: addressId,
         address: address,
@@ -278,7 +278,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         }
       )
     case let .authenticateCard(clientSecret, onProgress):
-      return PPONavigationEvent.fix3DSChallenge(
+      return PPOPreparedEvent.fix3DSChallenge(
         clientSecret: clientSecret,
         onProgress: onProgress
       )
@@ -313,8 +313,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
   @Published var results = PPOViewModelPaginator.Results.unloaded
 
-  var navigationEvents: AnyPublisher<PPONavigationEvent, Never> {
-    self.navigationEventSubject.eraseToAnyPublisher()
+  var preparedEvents: AnyPublisher<PPOPreparedEvent, Never> {
+    self.preparedEventSubject.eraseToAnyPublisher()
   }
 
   // MARK: - Private
@@ -335,7 +335,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     Never
   >()
 
-  private var navigationEventSubject = PassthroughSubject<PPONavigationEvent, Never>()
+  private var preparedEventSubject = PassthroughSubject<PPOPreparedEvent, Never>()
 
   private var cancellables: Set<AnyCancellable> = []
 
