@@ -49,7 +49,7 @@
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
-            buildForTesting = "YES"
+            buildForTesting = "NO"
             buildForRunning = "NO"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
@@ -118,19 +118,19 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Library-Tests"
-               BuildableName = "Library-Tests"
-               BlueprintName = "Library-Tests"
-               ReferencedContainer = "container:Library">
+               BlueprintIdentifier = "E113BD802B7D255000D3A809"
+               BuildableName = "Library-Keychain-iOSTests.xctest"
+               BlueprintName = "Library-Keychain-iOSTests"
+               ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A7D1F9591C850B7C000D41D5"
-               BuildableName = "Kickstarter-Framework-iOSTests.xctest"
-               BlueprintName = "Kickstarter-Framework-iOSTests"
+               BlueprintIdentifier = "AAF3BB562F1845A200DAE921"
+               BuildableName = "LibraryTests.xctest"
+               BlueprintName = "LibraryTests"
                ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </TestableReference>

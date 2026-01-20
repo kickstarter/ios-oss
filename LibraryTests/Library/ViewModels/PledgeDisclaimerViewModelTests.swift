@@ -1,0 +1,27 @@
+@testable import Library
+@testable import LibraryTestHelpers
+import Prelude
+import ReactiveSwift
+import ReactiveExtensions_TestHelpers
+import XCTest
+
+final class PledgeDisclaimerViewModelTests: TestCase {
+  private let vm: PledgeDisclaimerViewModelType = PledgeDisclaimerViewModel()
+
+  private let notifyDelegateLinkTappedWithURL = TestObserver<URL, Never>()
+
+  override func setUp() {
+    super.setUp()
+    self.vm.outputs.notifyDelegateLinkTappedWithURL
+      .observe(self.notifyDelegateLinkTappedWithURL.observer)
+  }
+
+  func testPresentTrustAndSafety() {
+    self.notifyDelegateLinkTappedWithURL.assertDidNotEmitValue()
+
+    let url = URL(string: "http://www.kickstarter.com")!
+    self.vm.inputs.linkTapped(url: url)
+
+    self.notifyDelegateLinkTappedWithURL.assertValues([url])
+  }
+}

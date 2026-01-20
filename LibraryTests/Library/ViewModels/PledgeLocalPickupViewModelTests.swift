@@ -1,0 +1,30 @@
+@testable import KsApi
+@testable import KsApiTestHelpers
+@testable import Library
+@testable import LibraryTestHelpers
+import Prelude
+import ReactiveSwift
+import ReactiveExtensions_TestHelpers
+import XCTest
+
+final class PledgeLocalPickupViewModelTests: TestCase {
+  private let vm: PledgeLocalPickupViewModelType = PledgeLocalPickupViewModel()
+
+  private let locationLabelText = TestObserver<String, Never>()
+
+  override func setUp() {
+    super.setUp()
+
+    self.vm.outputs.locationLabelText.observe(self.locationLabelText.observer)
+  }
+
+  func testLocationLabelText() {
+    self.locationLabelText.assertDidNotEmitValue()
+
+    let data = PledgeLocalPickupViewData(locationName: "new york city")
+
+    self.vm.inputs.configure(with: data)
+
+    self.locationLabelText.assertValues(["new york city"])
+  }
+}

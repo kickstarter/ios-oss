@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -23,558 +23,49 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		01483F222F0DDFF900A1D833 /* ScreenshotTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01483F1F2F0DDFF900A1D833 /* ScreenshotTestHelpers.swift */; };
-		015102AE1F1947CB0006C0FC /* MessageThreadsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015102741F1943D60006C0FC /* MessageThreadsDataSourceTests.swift */; };
 		01F219561DC12BF7005DD2E4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */; };
-		0602002A27D271B900909500 /* ExternalSourceViewElementCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0602002927D271B900909500 /* ExternalSourceViewElementCellViewModelTests.swift */; };
-		06032A8C26CEADED0013AAB9 /* FetchProjectCommentsQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06032A8926CEAD2F0013AAB9 /* FetchProjectCommentsQueryTemplate.swift */; };
-		06032A8E26CEB3E50013AAB9 /* CommentFragmentTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06032A8D26CEB3E50013AAB9 /* CommentFragmentTemplate.swift */; };
-		06032A9026CEC3290013AAB9 /* FetchUpdateCommentsQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06032A8F26CEC3290013AAB9 /* FetchUpdateCommentsQueryTemplate.swift */; };
-		06032A9426CEF4810013AAB9 /* FetchUserBackingsQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06032A9326CEF4810013AAB9 /* FetchUserBackingsQueryTemplate.swift */; };
-		06032A9626CEF6D20013AAB9 /* FetchAddOnsQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06032A9526CEF6D20013AAB9 /* FetchAddOnsQueryTemplate.swift */; };
-		061645A6266979C1007D8D96 /* CommentRepliesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645A1266979B7007D8D96 /* CommentRepliesDataSourceTests.swift */; };
-		061645AE26697D55007D8D96 /* CommentRepliesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645AD26697D55007D8D96 /* CommentRepliesViewModelTests.swift */; };
-		0620176E276956D600818A47 /* GraphCommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0620176A276956D200818A47 /* GraphCommentTests.swift */; };
-		0622C9242734778D0039AAC9 /* Category+CategoryFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622C9232734778D0039AAC9 /* Category+CategoryFragmentTests.swift */; };
-		0622C92627347EE10039AAC9 /* CategoryEnvelope+FetchCategoryQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622C92527347EE10039AAC9 /* CategoryEnvelope+FetchCategoryQueryDataTests.swift */; };
-		0622C92827347F980039AAC9 /* FetchCategoryQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622C92727347F980039AAC9 /* FetchCategoryQueryTemplate.swift */; };
-		0622C92C273499B60039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesEnvelopeDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622C92B273499B60039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesEnvelopeDataTests.swift */; };
-		06232D3C2795EC2400A81755 /* HTMLParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C047642788D1860048CD83 /* HTMLParserTests.swift */; };
-		06232D472795EC4F00A81755 /* HTMLParserTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C047662788D23A0048CD83 /* HTMLParserTemplates.swift */; };
-		062868EC26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868EB26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift */; };
-		062868EE26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868ED26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift */; };
-		062BE3BA27B3224A006B5251 /* ImageViewElementCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062BE3B927B3224A006B5251 /* ImageViewElementCellViewModelTests.swift */; };
-		063BBA812799C7BA00659198 /* TextViewElementCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 063BBA802799C7BA00659198 /* TextViewElementCellViewModelTests.swift */; };
-		064AEF11270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064AEF10270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift */; };
-		064AEF13270CFB53006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064AEF0E270CECF0006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift */; };
-		064E10BF27CF038300A9A75F /* AudioVideoViewElementCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064E10BE27CF038300A9A75F /* AudioVideoViewElementCellViewModelTests.swift */; };
-		0665C74926E9302100A0EDA1 /* Project+FetchProjectQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665C74826E9302100A0EDA1 /* Project+FetchProjectQueryDataTests.swift */; };
-		0665C74B26E930BC00A0EDA1 /* FetchProjectQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665C74A26E930BC00A0EDA1 /* FetchProjectQueryTemplate.swift */; };
-		066C0ADE26CAEAFD0048F4D8 /* CreatePaymentSourceMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0ADD26CAEAFD0048F4D8 /* CreatePaymentSourceMutationTemplate.swift */; };
-		066C0AE126CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AE026CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift */; };
-		066C0AE326CC0E410048F4D8 /* CreateBackingMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AE226CC0E410048F4D8 /* CreateBackingMutationTemplate.swift */; };
-		066C0AE526CC143B0048F4D8 /* DeletePaymentSourceMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AE426CC143B0048F4D8 /* DeletePaymentSourceMutationTemplate.swift */; };
-		06962F8B273B32D900FB0B3D /* PostCommentEnvelope+PostCommentMutationDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06962F8A273B32D900FB0B3D /* PostCommentEnvelope+PostCommentMutationDataTests.swift */; };
-		06962F8F273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06962F8E273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift */; };
-		069C07E62767BD79009B7534 /* FetchCommentRepliesQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069C07E52767BD79009B7534 /* FetchCommentRepliesQueryTemplate.swift */; };
-		069CD29726B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */; };
-		069FA8CC284987FD006ADC92 /* PledgeLocalPickupViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA8CB284987FD006ADC92 /* PledgeLocalPickupViewModelTests.swift */; };
-		06AF78762710C970009587F1 /* ProjectPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78752710C970009587F1 /* ProjectPageViewControllerTests.swift */; };
-		06AF787A2710E5E1009587F1 /* ProjectPageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78792710E5E1009587F1 /* ProjectPageViewModelTests.swift */; };
-		06B9AF4326AF465000735908 /* UserCreditCards+UserFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B9AF4226AF465000735908 /* UserCreditCards+UserFragmentTests.swift */; };
-		06B9AF4E26AF79DD00735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B9AF4426AF781000735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift */; };
-		06B9AF4F26AF79DF00735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B9AF4426AF781000735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift */; };
-		06BD75C526C42D6600A12D4E /* ActivityCommentAuthorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75BF26C42D5700A12D4E /* ActivityCommentAuthorTests.swift */; };
-		06BD75C626C42D6900A12D4E /* ActivityCommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75C026C42D5700A12D4E /* ActivityCommentTests.swift */; };
-		06BD75CB26C431B400A12D4E /* CommentDialogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75C826C431A000A12D4E /* CommentDialogViewModelTests.swift */; };
-		06C1256226A89408003BE6B9 /* Comment+CommentFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C1256126A89408003BE6B9 /* Comment+CommentFragmentTests.swift */; };
-		06D23BBF26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D23BBE26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift */; };
-		06D23BC126F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D23BC026F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift */; };
 		06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = 06EA2D4B280F76B700F4DE2E /* Prelude */; };
-		06F7BE1A26B334DB0094BF37 /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F7BE1926B334DB0094BF37 /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift */; };
-		06F7BE1C26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F7BE1B26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift */; };
-		06FFCE4B26A71D0500D315EF /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FFCE4926A71CC700D315EF /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift */; };
-		1611EF6923B275700051CDCC /* MockUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6823B275700051CDCC /* MockUUID.swift */; };
-		1611EF6A23B2773A0051CDCC /* MockUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6823B275700051CDCC /* MockUUID.swift */; };
-		19047FC12889B11F00BDD1A8 /* CreateSetupIntentMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FC02889B11F00BDD1A8 /* CreateSetupIntentMutationTests.swift */; };
-		19047FC32889B2F900BDD1A8 /* CreateSetupIntentMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FC22889B2F900BDD1A8 /* CreateSetupIntentMutationTemplate.swift */; };
-		19047FC52889B52100BDD1A8 /* CreateSetupIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FC42889B52100BDD1A8 /* CreateSetupIntentInputTests.swift */; };
-		19047FCF2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FCE2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift */; };
-		19047FD12889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */; };
-		191A4B4C28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 191A4B4B28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers */; };
-		191E60262A953E2B001413B2 /* ProjectTabCheckmarkListCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E60242A953DC7001413B2 /* ProjectTabCheckmarkListCellViewModelTests.swift */; };
-		194154D328D928C9004648C8 /* CreatePaymentSourceSetupIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194154D228D928C9004648C8 /* CreatePaymentSourceSetupIntentInputTests.swift */; };
-		194154D628D931AA004648C8 /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194154D428D92A26004648C8 /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift */; };
-		19450C2628C8225200C60F97 /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20381E8323E900BFFA01 /* SearchViewControllerTests.swift */; };
-		19450C2F28C823A400C60F97 /* SelectCurrencyViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9FA1422089C05003282A5 /* SelectCurrencyViewControllerTests.swift */; };
 		194A8E4E2A13FB010099583B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 194A8E4D2A13FB010099583B /* GoogleService-Info.plist */; };
-		194C002E2A68447200621DC3 /* TriggerThirdPartyEventInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609309922A605563004297AF /* TriggerThirdPartyEventInputTests.swift */; };
-		194C002F2A6844B300621DC3 /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6093098E2A6054D8004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInputTests.swift */; };
-		1965436D28C807FB00457EC6 /* PledgePaymentMethodsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */; };
-		1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
-		1965437E28C8165200457EC6 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
-		1996AA312A5F39CC00AE2ED0 /* PledgePaymentMethodsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6534D3D22E789B900E9D279 /* PledgePaymentMethodsViewModelTests.swift */; };
-		1996AA322A5F3A3200AE2ED0 /* Stripe+PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */; };
-		1996AA332A5F477B00AE2ED0 /* PaymentMethodSettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FB347218212B700A27BCC /* PaymentMethodSettingsViewModelTests.swift */; };
-		1998BCB028F60EC300D04077 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */; };
-		19A97D1928C7F0E30031B857 /* DiscoveryPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202E1E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift */; };
-		19A97D1A28C7F0EC0031B857 /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20301E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift */; };
-		19A97D2328C7FCF00031B857 /* ManagePledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61440FF23200FD3002A6507 /* ManagePledgeViewControllerTests.swift */; };
-		19E9F01729C0F9A20002AD69 /* MockAppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */; };
-		20338E1F26566F9E00F2C43A /* CommentComposerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */; };
-		209B0E3A265801D70006DB7D /* CommentComposerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209B0E39265801D70006DB7D /* CommentComposerViewTests.swift */; };
-		20A0938A2666578D00DEC258 /* CommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A093852666575F00DEC258 /* CommentTests.swift */; };
-		331746852E09AC5C00C5FC1C /* LastWave+LastWaveFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331746832E09AC2700C5FC1C /* LastWave+LastWaveFragmentTests.swift */; };
-		331746882E09BB9000C5FC1C /* PledgeManager+PledgeManagerFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331746862E09BB7C00C5FC1C /* PledgeManager+PledgeManagerFragmentTests.swift */; };
-		333F4E562DE91469005C4964 /* RewardsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333F4E542DE9140D005C4964 /* RewardsUseCaseTests.swift */; };
-		333F4E592DEA4D78005C4964 /* RewardsCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333F4E572DEA4D3F005C4964 /* RewardsCollectionViewModelTests.swift */; };
-		3344A77E2D9C93A200D7DE91 /* RewardTrackingDetailsViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3344A77C2D9C934E00D7DE91 /* RewardTrackingDetailsViewTest.swift */; };
-		3344A7812D9C973400D7DE91 /* RewardTrackingDetailsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3344A77F2D9C96E300D7DE91 /* RewardTrackingDetailsViewModelTest.swift */; };
-		336195002D8AB5E100BED4BD /* SortViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336194FE2D8AB5AC00BED4BD /* SortViewTest.swift */; };
-		336195032D8AB96000BED4BD /* SortViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336195012D8AB7F200BED4BD /* SortViewModelTest.swift */; };
-		3362A3CE2DA8858400E5E85D /* ProjectURLBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3362A3CC2DA8856600E5E85D /* ProjectURLBuilderTests.swift */; };
-		338654752CE3D22600AB16A9 /* PledgePaymentPlansViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338654732CE3D17200AB16A9 /* PledgePaymentPlansViewModelTest.swift */; };
-		3396D6C92DA3D36D002EDD93 /* RewardTrackingActivitiesCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3396D6C72DA3D33C002EDD93 /* RewardTrackingActivitiesCellViewModelTest.swift */; };
-		339ED5602CE41015004B301D /* PledgePaymentPlansViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ED55E2CE40FC5004B301D /* PledgePaymentPlansViewControllerTest.swift */; };
-		339ED5662CE43099004B301D /* PledgePaymentPlansOptionViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339ED5642CE41AFC004B301D /* PledgePaymentPlansOptionViewModelTest.swift */; };
-		33A6847B2DAE88E40025B0EE /* PledgeViewUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A684792DAE88A10025B0EE /* PledgeViewUseCaseTests.swift */; };
-		33AA26D12E3AC568002DBD60 /* ProjectAndBackingEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26CF2E3AC55A002DBD60 /* ProjectAndBackingEnvelopeTests.swift */; };
-		33AA26D32E3ACDBC002DBD60 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 33AA26D22E3ACDBC002DBD60 /* ReactiveExtensions-TestHelpers */; };
-		33AA26DE2E3B1467002DBD60 /* LocationMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26D82E3B1337002DBD60 /* LocationMocks.swift */; };
-		33AA26DF2E3B146C002DBD60 /* UserMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26DA2E3B135F002DBD60 /* UserMocks.swift */; };
-		33AA26E02E3B1471002DBD60 /* ProjectMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26DC2E3B13A6002DBD60 /* ProjectMocks.swift */; };
-		33AA26E12E3B1476002DBD60 /* BackingMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26D62E3B1154002DBD60 /* BackingMocks.swift */; };
-		33AA26E32E3B16D8002DBD60 /* PaymentIncrementsMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AA26E22E3B16D1002DBD60 /* PaymentIncrementsMocks.swift */; };
-		33AB202B2D268EE500B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB20292D268E7700B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift */; };
-		33AB202E2D269A8D00B8C047 /* MockPledgeOverTimePlanIncrements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIncrements.swift */; };
-		33AB202F2D269A8D00B8C047 /* MockPledgeOverTimePlanIncrements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AB202D2D269A6C00B8C047 /* MockPledgeOverTimePlanIncrements.swift */; };
-		33AF01BF2D2E72430085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01BD2D2E71E30085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift */; };
-		33AF01C22D2E973A0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF01C02D2E95FD0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift */; };
-		33AF66CF2DDE571300558D49 /* AddUserToSecretRewardGroupInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AF66CD2DDE567C00558D49 /* AddUserToSecretRewardGroupInputTests.swift */; };
-		33C2FB712E2E8FE00083B5FB /* KSRSearchBarViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C2FB6F2E2E8DA40083B5FB /* KSRSearchBarViewModelTests.swift */; };
-		33F55B412D4A6DDD0007E50E /* PledgePaymentIncrementFormattedTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F55B3F2D4A6D910007E50E /* PledgePaymentIncrementFormattedTest.swift */; };
-		3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */; };
-		3706408422A8A68600889CBD /* PledgeAmountViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706408322A8A68600889CBD /* PledgeAmountViewModelTests.swift */; };
-		3706408822A8A6F200889CBD /* PledgeShippingLocationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706408722A8A6F200889CBD /* PledgeShippingLocationViewModelTests.swift */; };
-		3706409022A9BE9400889CBD /* DateFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706408F22A9BE9400889CBD /* DateFormatterTests.swift */; };
-		3708DD45220A76FE00F8E569 /* CreatePasswordTableControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708DD44220A76FD00F8E569 /* CreatePasswordTableControllerTests.swift */; };
-		37096C3022BC238C003D1F40 /* MockFeedbackGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37096C2F22BC238C003D1F40 /* MockFeedbackGenerator.swift */; };
-		37096C3522BC282E003D1F40 /* MockAppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37096C3122BC23AD003D1F40 /* MockAppEnvironment.swift */; };
-		370C8B6823590CC200DE75DD /* LoadingButtonViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370C8B6723590CC200DE75DD /* LoadingButtonViewModelTests.swift */; };
-		3732C25F224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3732C25E224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift */; };
-		373AB25B222A063500769FC2 /* CreatePasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */; };
-		373AB25F222A0DAC00769FC2 /* PasswordValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25E222A0DAC00769FC2 /* PasswordValidationTests.swift */; };
-		374CB95122C17D6700B84219 /* CharacterSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374CB95022C17D6700B84219 /* CharacterSetTests.swift */; };
-		3751E4292335871600047E9A /* PledgeAmountViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3751E4282335871600047E9A /* PledgeAmountViewControllerTests.swift */; };
-		3751E42C2335E7D400047E9A /* TraitCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3751E42A2335E7CE00047E9A /* TraitCollection.swift */; };
-		3757D107228E521600241AE6 /* UIFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3757D106228E521600241AE6 /* UIFontTests.swift */; };
-		3767EDB322CFFF380088E8E4 /* ShippingRulesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3767EDB222CFFF380088E8E4 /* ShippingRulesViewModelTests.swift */; };
-		3777F2F92343C7AB0030BEF5 /* ManageViewPledgeRewardReceivedViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3777F2F82343C7AB0030BEF5 /* ManageViewPledgeRewardReceivedViewModelTests.swift */; };
-		37CA16AF2330038E006044F9 /* ManageViewPledgeRewardReceivedViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CA16AE2330038E006044F9 /* ManageViewPledgeRewardReceivedViewControllerTests.swift */; };
-		37CA16B323304DD9006044F9 /* ToggleViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CA16B223304DD9006044F9 /* ToggleViewControllerTests.swift */; };
-		37CBA64D221E10E100E6CAB6 /* HelpTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CBA64C221E10E100E6CAB6 /* HelpTypeTests.swift */; };
-		37D99C5B22247F58008EF839 /* NSBundleType+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D99C2222247F4A008EF839 /* NSBundleType+Tests.swift */; };
-		37EB3E4E228CF4FB00076E4C /* NumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EB3E4D228CF4FB00076E4C /* NumberFormatterTests.swift */; };
-		37FDAFAD2273BA4B00662CC8 /* UIStackView+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FDAFAA2273B86800662CC8 /* UIStackView+Tests.swift */; };
-		392BB12C2C3C095200A5591B /* PPOEmptyStateViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392BB12B2C3C095200A5591B /* PPOEmptyStateViewTests.swift */; };
-		392E1CC32C7678AD0065016B /* RewardAddOnSelectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392E1CC12C7678970065016B /* RewardAddOnSelectionViewControllerTests.swift */; };
-		3959A6282B69AE6D00FE8055 /* CombineTestObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1889D8D2B6065D6004FBE21 /* CombineTestObserverTests.swift */; };
-		3959A62C2B69B9CD00FE8055 /* CombineTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */; };
-		3959A62E2B69BBA600FE8055 /* CombineTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */; };
-		3959A62F2B69BC6D00FE8055 /* CombineTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */; };
-		395A3BC42B8E56800091A379 /* AttributionTrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BC32B8E56800091A379 /* AttributionTrackingTests.swift */; };
 		3976B36E2E57DC7F00D2DD50 /* SegmentBrazeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 3976B36D2E57DC7F00D2DD50 /* SegmentBrazeUI */; };
-		39B5E1102B86C56E00FFB720 /* RefInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B5E10F2B86C56E00FFB720 /* RefInfoTests.swift */; };
-		39B850762C3EA5630045CBA5 /* SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B850752C3EA5620045CBA5 /* SwiftUI.swift */; };
-		39B850782C3EA5BB0045CBA5 /* MessageBannerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B850772C3EA5BB0045CBA5 /* MessageBannerViewTests.swift */; };
-		39C6169E2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C6169D2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift */; };
-		39F48E252D5521BE00090D6C /* AlertBannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F48E242D5521BE00090D6C /* AlertBannerTests.swift */; };
-		39F48E272D55222900090D6C /* RestrictedCreatorViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F48E262D55222900090D6C /* RestrictedCreatorViewControllerTests.swift */; };
-		473387DE26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473387DD26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift */; };
-		473DE018273C74BA0033331D /* ProjectRisksCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473DE017273C74BA0033331D /* ProjectRisksCellViewModelTests.swift */; };
-		473DE01A273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473DE019273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift */; };
-		4746FFF3272C564C00EC3429 /* ProjectTabCategoryDescriptionCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF2272C564C00EC3429 /* ProjectTabCategoryDescriptionCellViewModelTests.swift */; };
-		4746FFF5272C588900EC3429 /* ProjectTabDisclaimerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF4272C588900EC3429 /* ProjectTabDisclaimerCellViewModelTests.swift */; };
-		474D732026B46412000F63DC /* ErroredBackingsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474D731F26B46412000F63DC /* ErroredBackingsEnvelopeTests.swift */; };
-		4753C78F264EE1B100BB10B6 /* PostCommentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */; };
-		47613FBE2652C66A006F09FF /* PostCommentMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */; };
-		477239792710FABB00D26CDA /* ProjectNavigationSelectorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477239782710FABB00D26CDA /* ProjectNavigationSelectorViewModelTests.swift */; };
-		47733001268252C800E84915 /* RemoteConfigFeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47733000268252C800E84915 /* RemoteConfigFeatureFlagToolsViewModelTests.swift */; };
-		478E31C526C1CB93004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478E31C426C1CB93004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInputTests.swift */; };
-		478E31C926C1CD57004BF898 /* WatchProjectResponseEnvelope+UnwatchProjectMutation.DataTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478E31C826C1CD57004BF898 /* WatchProjectResponseEnvelope+UnwatchProjectMutation.DataTest.swift */; };
-		47A662F726AF75B7001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A662F626AF75B7001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInputTests.swift */; };
-		47A662F926AF7745001CE7B1 /* WatchProjectInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A662F826AF7745001CE7B1 /* WatchProjectInputTests.swift */; };
-		47A662FB26AF792A001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A662FA26AF792A001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.DataTests.swift */; };
-		47AC2139264AD5430090AEDF /* CommentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */; };
-		47AC213E264AD7E00090AEDF /* CommentsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */; };
-		47B1338F26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B1338E26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift */; };
-		47CFFFFC27346034009B9510 /* ProjectPageViewControllerDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CFFFFA27346010009B9510 /* ProjectPageViewControllerDataSourceTests.swift */; };
-		47D7D09C26C2FA5F00D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D7D09B26C2FA5F00D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInputTests.swift */; };
-		47D7D09E26C2FC4000D2BAB5 /* SignInWithAppleEnvelope+SignInWithAppleMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D7D09D26C2FC4000D2BAB5 /* SignInWithAppleEnvelope+SignInWithAppleMutation.DataTests.swift */; };
-		47D8619D26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D8619C26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift */; };
-		47F85271272206840050DB39 /* ProjectFAQsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F85270272206840050DB39 /* ProjectFAQsCellViewModelTests.swift */; };
-		6008633729B9025F00B87B39 /* GraphUserEmailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633529B9023300B87B39 /* GraphUserEmailTests.swift */; };
-		6008633F29BF750700B87B39 /* MockAppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */; };
 		600944E42E5CB3A7004A089F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 600944E22E5CB3A7004A089F /* InfoPlist.strings */; };
-		601342EF2C81419C00B851FA /* PostCampaignCheckoutViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342ED2C81418700B851FA /* PostCampaignCheckoutViewControllerTests.swift */; };
-		601342F32C81420D00B851FA /* PostCampaignCheckoutViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601342F22C81420D00B851FA /* PostCampaignCheckoutViewModelTests.swift */; };
-		6030C6CF2D2D869800A3033C /* PledgePaymentIncrement+GraphAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6030C6CD2D2D869800A3033C /* PledgePaymentIncrement+GraphAPITests.swift */; };
-		6035AFAD2C518251007E28FC /* RewardAddOnSelectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFAC2C518251007E28FC /* RewardAddOnSelectionViewModelTests.swift */; };
-		6035AFB32C594817007E28FC /* PledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6035AFB22C594817007E28FC /* PledgeViewModelTests.swift */; };
-		60368E6C2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E6B2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift */; };
-		6051C6672B600F3200514202 /* CreateCheckoutInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C6662B600F3200514202 /* CreateCheckoutInputTests.swift */; };
-		6051C66B2B60190E00514202 /* CreateCheckoutEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C66A2B60190E00514202 /* CreateCheckoutEnvelopeTests.swift */; };
-		6051C67C2B67F44500514202 /* CreatePaymentIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C67A2B67F36C00514202 /* CreatePaymentIntentInputTests.swift */; };
-		605915212E15914C0030BB90 /* LocalizedLottieFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6059151F2E15914C0030BB90 /* LocalizedLottieFileTests.swift */; };
-		606100B72E7211B0008CA69B /* AsyncApolloClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606100B52E7211B0008CA69B /* AsyncApolloClientTests.swift */; };
-		6067BCF2293FC3520036ABB1 /* FacebookResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */; };
-		606C45F829FACD9F001BA067 /* RemoteConfigFeature+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F629FACD94001BA067 /* RemoteConfigFeature+HelpersTests.swift */; };
-		6090F0C52D2ED52D009C9AEE /* TimeInterval+ISO8601DateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F4A96126125EA0000C21F9 /* TimeInterval+ISO8601DateTests.swift */; };
-		609935EE2E1D718F009263C5 /* OnboardingUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609935EC2E1D718F009263C5 /* OnboardingUseCaseTests.swift */; };
 		60A80F532BD7F9A00052A829 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */; };
-		60A80F622BEA86A80052A829 /* MockStripeIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A80F612BEA86A80052A829 /* MockStripeIntentService.swift */; };
-		60C119332D7F254900318486 /* ProjectCardViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C119312D7F254900318486 /* ProjectCardViewTests.swift */; };
-		60C996F12AC2043A006BE4F4 /* CreateFlaggingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996EF2AC20314006BE4F4 /* CreateFlaggingInputTests.swift */; };
-		60C996F22AC20487006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E92AC1FDE3006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift */; };
-		60CC7CC62E280E2A0055BE8F /* OnboardingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CC7CC42E280E2A0055BE8F /* OnboardingViewModelTests.swift */; };
-		60E1BB552C7670F6007D723B /* PledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E1BB532C7670F1007D723B /* PledgeViewControllerTests.swift */; };
-		60F7FAB32E7323CB004B3177 /* MockApolloClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F7FAB12E7323CB004B3177 /* MockApolloClient.swift */; };
-		70495690299D53ED00B273DF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 7049568F299D53ED00B273DF /* SnapshotTesting */; };
-		70B1889429A521000004E293 /* FacebookResetPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B1889329A521000004E293 /* FacebookResetPasswordViewControllerTests.swift */; };
-		771669D0210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771669CF210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift */; };
-		771E630E23426B74005967E8 /* CancelPledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771E630D23426B74005967E8 /* CancelPledgeViewModelTests.swift */; };
-		771E631023426F04005967E8 /* CancelPledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771E630F23426F03005967E8 /* CancelPledgeViewControllerTests.swift */; };
-		771F388A2422C961009036A0 /* PersonalizationCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771F38892422C961009036A0 /* PersonalizationCellViewModelTests.swift */; };
-		7720BA7022E0DBD10071FDA1 /* InstantiableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7720BA6F22E0DBD00071FDA1 /* InstantiableTests.swift */; };
-		77272D382370AB8E003B7A9C /* BackingPaymentSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77272D362370AB5C003B7A9C /* BackingPaymentSourceTests.swift */; };
-		77277C3022B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77277C2F22B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift */; };
-		77319C7E2469B5C70051B755 /* DiscoveryProjectCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77319C7D2469B5C70051B755 /* DiscoveryProjectCardViewModelTests.swift */; };
-		774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */; };
-		77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */; };
-		776989AA242E747200AAC48D /* CuratedProjectsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776989A9242E747200AAC48D /* CuratedProjectsViewControllerTests.swift */; };
-		776B1A1124193C2500B03098 /* CategoryPillCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B1A1024193C2500B03098 /* CategoryPillCellViewModelTests.swift */; };
-		77776BCA234BA88F00A42388 /* CancelBackingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77776BC9234BA88F00A42388 /* CancelBackingInputTests.swift */; };
-		777B88E522BD911F0027640F /* CategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */; };
-		778215EB20F79FA300F3D09F /* HelpDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */; };
-		778215EE20F7AB8300F3D09F /* HelpViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */; };
-		77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */; };
-		778CCCDA2285BF8900FB8D35 /* UIView+AutoLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778CCCD92285BF8900FB8D35 /* UIView+AutoLayoutTests.swift */; };
-		778F891E22D5414F00D095C5 /* Feature+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778F891D22D5414F00D095C5 /* Feature+HelpersTests.swift */; };
-		77941D2E216FCB0100398B89 /* ChangePasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77941D2D216FCB0100398B89 /* ChangePasswordViewControllerTests.swift */; };
-		77A3C53D219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A3C53C219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift */; };
-		77AA2B3D233D10D3008BBCB8 /* CreateBackingConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AA2B3C233D10D3008BBCB8 /* CreateBackingConstructorTests.swift */; };
-		77BC00F02326F0CC00808E75 /* PKPaymentRequestHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BC00EF2326F0CC00808E75 /* PKPaymentRequestHelpersTests.swift */; };
-		77BC00F82330236600808E75 /* RewardCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BC00F72330236600808E75 /* RewardCellViewModelTests.swift */; };
-		77C0818E245CBA1B004ABE88 /* SignInWithAppleInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C0818D245CBA1B004ABE88 /* SignInWithAppleInputTests.swift */; };
-		77C9122B23C5079200F3D2C9 /* MockApplePayCapable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C9122A23C5079200F3D2C9 /* MockApplePayCapable.swift */; };
-		77C9122C23C5082800F3D2C9 /* MockApplePayCapable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C9122A23C5079200F3D2C9 /* MockApplePayCapable.swift */; };
-		77C9122F23C508CF00F3D2C9 /* ApplePayCapabilitiesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C9122E23C508CF00F3D2C9 /* ApplePayCapabilitiesTests.swift */; };
-		77C9123123C637FD00F3D2C9 /* DoubleCurrencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C9123023C637FD00F3D2C9 /* DoubleCurrencyTests.swift */; };
-		77CD8981217FA01B003066DA /* ProjectPageViewControllerConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD8980217FA01B003066DA /* ProjectPageViewControllerConversionTests.swift */; };
-		77D19FFA240824D60058FC8E /* PillCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D19FF9240824D50058FC8E /* PillCellViewModelTests.swift */; };
-		77D53B23240D81510066D1F4 /* CategoryCollectionViewSectionHeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D53B22240D81510066D1F4 /* CategoryCollectionViewSectionHeaderViewModelTests.swift */; };
-		77DB532A2215D0AA0078991C /* UserCreditCardsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DB53292215D0AA0078991C /* UserCreditCardsTests.swift */; };
-		77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E84E0B2166A8C600DA8891 /* MessageBannerViewControllerTests.swift */; };
-		77EFBAE92268E3D200DA5C3C /* RewardsCollectionViewDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EFBAE82268E3D200DA5C3C /* RewardsCollectionViewDataSourceTests.swift */; };
-		77FA1AF32445FB810035D659 /* GraphUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA1AF22445FB810035D659 /* GraphUserTests.swift */; };
-		77FA6CD220F53E5E00809E31 /* SettingsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA6CD120F53E5E00809E31 /* SettingsDataSourceTests.swift */; };
-		84F3C492251C87B400AEF24D /* UpdateActivityItemProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F3C491251C87A400AEF24D /* UpdateActivityItemProviderTests.swift */; };
-		8A00CCFF24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A00CCFE24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift */; };
-		8A07CF052660344E00426B1C /* CommentRepliesViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07CEFD2660344200426B1C /* CommentRepliesViewControllerTests.swift */; };
-		8A07D00426657F7800426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07D00326657F7700426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelopeTests.swift */; };
-		8A0B1E2124D4B271009E90C0 /* EmptyStateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0B1E2024D4B271009E90C0 /* EmptyStateViewModelTests.swift */; };
-		8A13D16C249848DA007E2C0B /* PledgeExpandableRewardsHeaderDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13D16A2498489D007E2C0B /* PledgeExpandableRewardsHeaderDataSourceTests.swift */; };
-		8A13D16E24985411007E2C0B /* PledgeExpandableHeaderRewardCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13D16D24985411007E2C0B /* PledgeExpandableHeaderRewardCellViewModelTests.swift */; };
-		8A13D17024985550007E2C0B /* PledgeExpandableRewardsHeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13D16F24985550007E2C0B /* PledgeExpandableRewardsHeaderViewModelTests.swift */; };
-		8A15574326951A4B00017845 /* Backing+BackingFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A15574226951A4B00017845 /* Backing+BackingFragmentTests.swift */; };
-		8A213CF3239EAEB700BBB4C7 /* KSRAnalyticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE7239EAEA400BBB4C7 /* KSRAnalyticsTests.swift */; };
-		8A213CF7239EB22900BBB4C7 /* MockTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */; };
-		8A23EF0822F11470001262E1 /* RewardCardContainerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A23EF0722F11470001262E1 /* RewardCardContainerViewTests.swift */; };
-		8A297912234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A297911234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift */; };
-		8A2C015F2589391D00EE11E7 /* ProjectActivityEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2C015E2589391D00EE11E7 /* ProjectActivityEnvelopeTests.swift */; };
-		8A4503F6234BEDD4008309EC /* PledgeViewContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4503F5234BEDD4008309EC /* PledgeViewContextTests.swift */; };
-		8A49395D24B5394700C3C3CE /* RewardAddOnSelectionDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A49395B24B538D400C3C3CE /* RewardAddOnSelectionDataSourceTests.swift */; };
-		8A4B8E98263A153D00D92E4E /* KSRAnalyticsIdentityDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4B8E97263A153D00D92E4E /* KSRAnalyticsIdentityDataTests.swift */; };
-		8A4DDAB72373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB62373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift */; };
-		8A4DDAB92374DF9F00ADE31D /* String+AttributedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB82374DF9F00ADE31D /* String+AttributedTests.swift */; };
-		8A5CB28424C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5CB28324C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift */; };
 		8A65E79E2501AE89006F81CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */; };
-		8A73EAD12339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EAD02339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift */; };
-		8A8099F522E2143000373E66 /* RewardCardContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099EE22E2142C00373E66 /* RewardCardContainerViewModelTests.swift */; };
-		8A8099F622E2143400373E66 /* RewardCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099EF22E2142C00373E66 /* RewardCardViewModelTests.swift */; };
 		8A86D7F324FED01D00037A7B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A86D7F224FED01C00037A7B /* GoogleService-Info.plist */; };
 		8A86D7F524FED02A00037A7B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A86D7F424FED02A00037A7B /* GoogleService-Info.plist */; };
-		8A8C6136243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8C6135243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift */; };
-		8AA3DB34250AE410009AC8EA /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC09218BB70800CF713E /* SettingsViewModelTests.swift */; };
-		8AA3DB36250AE470009AC8EA /* SettingsAccountViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798A70F216695090053D097 /* SettingsAccountViewModelTests.swift */; };
-		8AA3DB39250AF692009AC8EA /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
-		8AA5B060235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA5B05F235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift */; };
-		8AB64FED2576C8240075E2E7 /* EmailVerificationResponseEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB64FEC2576C8240075E2E7 /* EmailVerificationResponseEnvelopeTests.swift */; };
-		8AC3E00C26961E8A00168BF8 /* Reward+RewardFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E00B26961E8A00168BF8 /* Reward+RewardFragmentTests.swift */; };
-		8AC3E01F2696368B00168BF8 /* Location+LocationFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E01E2696368A00168BF8 /* Location+LocationFragmentTests.swift */; };
-		8AC3E05126979F8600168BF8 /* Project+ProjectFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E05026979F8600168BF8 /* Project+ProjectFragmentTests.swift */; };
-		8AC3E0592697ABD900168BF8 /* Project.Category+CategoryFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E0582697ABD900168BF8 /* Project.Category+CategoryFragmentTests.swift */; };
-		8AC3E05E2697ABEF00168BF8 /* Project.Country+CountryFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E05D2697ABEF00168BF8 /* Project.Country+CountryFragmentTests.swift */; };
-		8AC3E0662697AC0400168BF8 /* User+UserFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E0652697AC0400168BF8 /* User+UserFragmentTests.swift */; };
-		8AC3E0A42698EE9500168BF8 /* ShippingRule+ShippingRuleFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E0A32698EE9500168BF8 /* ShippingRule+ShippingRuleFragmentTests.swift */; };
-		8AC3E0B42698F03200168BF8 /* Project+FetchAddOnsQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E0B32698F03200168BF8 /* Project+FetchAddOnsQueryDataTests.swift */; };
-		8AC3E0E2269E53E900168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E0E1269E53E800168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInputTests.swift */; };
-		8AC3E112269F4DAF00168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E111269F4DAF00168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInputTests.swift */; };
-		8AC3E128269F5B9700168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E127269F5B9700168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.DataTests.swift */; };
-		8ACF95AE248957B10064FC4C /* ManagePledgeDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF95AD248957B10064FC4C /* ManagePledgeDataSourceTests.swift */; };
-		8AD7952F239EBDF600998C79 /* MockTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */; };
-		8AD9CF1424C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD9CF1324C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift */; };
-		8ADCCCC0264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCBF264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift */; };
-		8ADCCD912655D4030079D308 /* ApolloInterceptorsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCD902655D4030079D308 /* ApolloInterceptorsTests.swift */; };
-		8AE09C3E24463C4C00036043 /* PledgeDisclaimerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE09C3D24463C4C00036043 /* PledgeDisclaimerViewModelTests.swift */; };
-		8AE8D86823466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D86723466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift */; };
-		8AF34C762342D1D2000B211D /* UpdateBackingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C752342D1D2000B211D /* UpdateBackingInputTests.swift */; };
-		8AF34C7A2342D864000B211D /* Encodable+DictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C792342D864000B211D /* Encodable+DictionaryTests.swift */; };
-		8AF34C7F2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C7E2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift */; };
-		8AF34C8623440565000B211D /* ApplePayParamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C8523440565000B211D /* ApplePayParamsTests.swift */; };
-		8AFB8C99233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */; };
-		94114D7B26543AE30063E8F6 /* CommentsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D7626543AD80063E8F6 /* CommentsDataSourceTests.swift */; };
-		94114D8826547F620063E8F6 /* CommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D8726547F620063E8F6 /* CommentCellViewModelTests.swift */; };
-		94114D90265488720063E8F6 /* CommentCellHeaderStackViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D8F265488710063E8F6 /* CommentCellHeaderStackViewTests.swift */; };
-		94BA16E926698EF00034CC3F /* CommentTableViewFooterViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BA16E826698EF00034CC3F /* CommentTableViewFooterViewModelTests.swift */; };
-		94BE15CE25E970A3007CD9A4 /* TrackingHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BE15C925E96F06007CD9A4 /* TrackingHelpersTests.swift */; };
 		A73924041D272404004524C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */; };
 		A73924051D27247E004524C3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923B31D272242004524C3 /* Main.storyboard */; };
-		A78355B91E85BD2D0021DA5A /* ActivityFriendFollowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78355B81E85BD2D0021DA5A /* ActivityFriendFollowCellViewModelTests.swift */; };
-		A78356081E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78356071E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift */; };
-		A783560A1E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78356091E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift */; };
-		A7A6261A1E85B936004C931A /* BackerDashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A626171E85B936004C931A /* BackerDashboardViewModelTests.swift */; };
-		A7A6261B1E85B936004C931A /* BackerDashboardProjectsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A626181E85B936004C931A /* BackerDashboardProjectsViewModelTests.swift */; };
-		A7A627171E85BA5F004C931A /* BackerDashboardProjectCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A627161E85BA5F004C931A /* BackerDashboardProjectCellViewModelTests.swift */; };
-		A7ED1F271E830FDC00BFFA01 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */; };
-		A7ED1F281E830FDC00BFFA01 /* CircleAvatarImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F131E830FDC00BFFA01 /* CircleAvatarImageViewTests.swift */; };
-		A7ED1F291E830FDC00BFFA01 /* EnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F141E830FDC00BFFA01 /* EnvironmentTests.swift */; };
-		A7ED1F2A1E830FDC00BFFA01 /* FormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F151E830FDC00BFFA01 /* FormatTests.swift */; };
-		A7ED1F2B1E830FDC00BFFA01 /* IsValidEmailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F161E830FDC00BFFA01 /* IsValidEmailTests.swift */; };
-		A7ED1F2C1E830FDC00BFFA01 /* KSCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F171E830FDC00BFFA01 /* KSCacheTests.swift */; };
-		A7ED1F2D1E830FDC00BFFA01 /* LanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F181E830FDC00BFFA01 /* LanguageTests.swift */; };
-		A7ED1F2E1E830FDC00BFFA01 /* LaunchedCountriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F191E830FDC00BFFA01 /* LaunchedCountriesTests.swift */; };
-		A7ED1F2F1E830FDC00BFFA01 /* LocalizedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F1A1E830FDC00BFFA01 /* LocalizedStringTests.swift */; };
-		A7ED1F301E830FDC00BFFA01 /* NavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F1B1E830FDC00BFFA01 /* NavigationTests.swift */; };
-		A7ED1F311E830FDC00BFFA01 /* PaginateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F1C1E830FDC00BFFA01 /* PaginateTests.swift */; };
-		A7ED1F341E830FDC00BFFA01 /* SharedFunctionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F1F1E830FDC00BFFA01 /* SharedFunctionsTests.swift */; };
-		A7ED1F351E830FDC00BFFA01 /* String+SimpleHTMLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F201E830FDC00BFFA01 /* String+SimpleHTMLTests.swift */; };
-		A7ED1F361E830FDC00BFFA01 /* String+TruncateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F211E830FDC00BFFA01 /* String+TruncateTests.swift */; };
-		A7ED1F371E830FDC00BFFA01 /* String+WhitespaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F221E830FDC00BFFA01 /* String+WhitespaceTests.swift */; };
-		A7ED1F391E830FDC00BFFA01 /* UILabel+IBClearTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F241E830FDC00BFFA01 /* UILabel+IBClearTests.swift */; };
-		A7ED1F3A1E830FDC00BFFA01 /* UILabel+SimpleHTMLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F251E830FDC00BFFA01 /* UILabel+SimpleHTMLTests.swift */; };
-		A7ED1F3D1E831B4F00BFFA01 /* ValueCellDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F3C1E831B4F00BFFA01 /* ValueCellDataSourceTests.swift */; };
-		A7ED1F481E831BA200BFFA01 /* AlertError+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F431E831BA200BFFA01 /* AlertError+Equatable.swift */; };
-		A7ED1F491E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F441E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift */; };
-		A7ED1F4A1E831BA200BFFA01 /* MockBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F451E831BA200BFFA01 /* MockBundle.swift */; };
-		A7ED1F4B1E831BA200BFFA01 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F461E831BA200BFFA01 /* TestCase.swift */; };
-		A7ED1F4C1E831BA200BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F471E831BA200BFFA01 /* XCTestCase+AppEnvironment.swift */; };
-		A7ED1FA91E831C5C00BFFA01 /* ActivityProjectStatusViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F4D1E831C5C00BFFA01 /* ActivityProjectStatusViewModelTests.swift */; };
-		A7ED1FAA1E831C5C00BFFA01 /* DiscoveryPageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F4E1E831C5C00BFFA01 /* DiscoveryPageViewModelTests.swift */; };
-		A7ED1FAC1E831C5C00BFFA01 /* ActivitySampleFollowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F501E831C5C00BFFA01 /* ActivitySampleFollowCellViewModelTests.swift */; };
-		A7ED1FAE1E831C5C00BFFA01 /* FindFriendsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F521E831C5C00BFFA01 /* FindFriendsViewModelTests.swift */; };
-		A7ED1FB11E831C5C00BFFA01 /* ActivitySampleProjectCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F551E831C5C00BFFA01 /* ActivitySampleProjectCellViewModelTests.swift */; };
-		A7ED1FB31E831C5C00BFFA01 /* ActivitySampleBackingCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F571E831C5C00BFFA01 /* ActivitySampleBackingCellViewModelTests.swift */; };
-		A7ED1FB41E831C5C00BFFA01 /* MessagesSearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F581E831C5C00BFFA01 /* MessagesSearchViewModelTests.swift */; };
-		A7ED1FB61E831C5C00BFFA01 /* MessageCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F5A1E831C5C00BFFA01 /* MessageCellViewModelTests.swift */; };
-		A7ED1FB81E831C5C00BFFA01 /* BackingCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F5C1E831C5C00BFFA01 /* BackingCellViewModelTests.swift */; };
-		A7ED1FBC1E831C5C00BFFA01 /* FindFriendsFriendFollowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F601E831C5C00BFFA01 /* FindFriendsFriendFollowCellViewModelTests.swift */; };
-		A7ED1FBE1E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F621E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift */; };
-		A7ED1FBF1E831C5C00BFFA01 /* SortPagerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F631E831C5C00BFFA01 /* SortPagerViewModelTests.swift */; };
-		A7ED1FC61E831C5C00BFFA01 /* PledgeManagerWebViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F6A1E831C5C00BFFA01 /* PledgeManagerWebViewModelTests.swift */; };
-		A7ED1FC81E831C5C00BFFA01 /* MessageThreadsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F6C1E831C5C00BFFA01 /* MessageThreadsViewModelTests.swift */; };
-		A7ED1FC91E831C5C00BFFA01 /* ActivitiesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F6D1E831C5C00BFFA01 /* ActivitiesViewModelTests.swift */; };
-		A7ED1FCB1E831C5C00BFFA01 /* ActivityFriendBackingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F6F1E831C5C00BFFA01 /* ActivityFriendBackingViewModelTests.swift */; };
-		A7ED1FD21E831C5C00BFFA01 /* LoginToutViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F761E831C5C00BFFA01 /* LoginToutViewModelTests.swift */; };
-		A7ED1FD51E831C5C00BFFA01 /* FindFriendsStatsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F791E831C5C00BFFA01 /* FindFriendsStatsCellViewModelTests.swift */; };
-		A7ED1FD61E831C5C00BFFA01 /* ActivityUpdateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F7A1E831C5C00BFFA01 /* ActivityUpdateViewModelTests.swift */; };
-		A7ED1FDD1E831C5C00BFFA01 /* ShareViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F811E831C5C00BFFA01 /* ShareViewModelTests.swift */; };
-		A7ED1FDE1E831C5C00BFFA01 /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F821E831C5C00BFFA01 /* DiscoveryExpandableRowCellViewModelTests.swift */; };
-		A7ED1FDF1E831C5C00BFFA01 /* DiscoveryFiltersViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F831E831C5C00BFFA01 /* DiscoveryFiltersViewModelTests.swift */; };
-		A7ED1FE01E831C5C00BFFA01 /* DiscoveryNavigationHeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F841E831C5C00BFFA01 /* DiscoveryNavigationHeaderViewModelTests.swift */; };
-		A7ED1FE11E831C5C00BFFA01 /* DiscoveryPostcardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F851E831C5C00BFFA01 /* DiscoveryPostcardViewModelTests.swift */; };
-		A7ED1FE21E831C5C00BFFA01 /* DiscoveryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F861E831C5C00BFFA01 /* DiscoveryViewModelTests.swift */; };
-		A7ED1FE31E831C5C00BFFA01 /* FindFriendsFaceookConnectCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F871E831C5C00BFFA01 /* FindFriendsFaceookConnectCellViewModelTests.swift */; };
-		A7ED1FE41E831C5C00BFFA01 /* EmptyStatesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F881E831C5C00BFFA01 /* EmptyStatesViewModelTests.swift */; };
-		A7ED1FE51E831C5C00BFFA01 /* MessageDialogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F891E831C5C00BFFA01 /* MessageDialogViewModelTests.swift */; };
-		A7ED1FE71E831C5C00BFFA01 /* FacebookConfirmationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F8B1E831C5C00BFFA01 /* FacebookConfirmationViewModelTests.swift */; };
-		A7ED1FEA1E831C5C00BFFA01 /* HelpViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F8E1E831C5C00BFFA01 /* HelpViewModelTests.swift */; };
-		A7ED1FEF1E831C5C00BFFA01 /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F931E831C5C00BFFA01 /* LoginViewModelTests.swift */; };
-		A7ED1FF01E831C5C00BFFA01 /* MessagesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F941E831C5C00BFFA01 /* MessagesViewModelTests.swift */; };
-		A7ED1FF11E831C5C00BFFA01 /* MessageThreadCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F951E831C5C00BFFA01 /* MessageThreadCellViewModelTests.swift */; };
-		A7ED1FF31E831C5C00BFFA01 /* ProjectCreatorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F971E831C5C00BFFA01 /* ProjectCreatorViewModelTests.swift */; };
-		A7ED1FF71E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F9B1E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift */; };
-		A7ED1FF81E831C5C00BFFA01 /* VideoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F9C1E831C5C00BFFA01 /* VideoViewModelTests.swift */; };
-		A7ED1FF91E831C5C00BFFA01 /* ProjectNotificationsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F9D1E831C5C00BFFA01 /* ProjectNotificationsViewModelTest.swift */; };
-		A7ED1FFA1E831C5C00BFFA01 /* ProjectPamphletContentViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F9E1E831C5C00BFFA01 /* ProjectPamphletContentViewModelTests.swift */; };
-		A7ED1FFB1E831C5C00BFFA01 /* ProjectPamphletMainCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F9F1E831C5C00BFFA01 /* ProjectPamphletMainCellViewModelTests.swift */; };
-		A7ED1FFC1E831C5C00BFFA01 /* ProjectPamphletSubpageCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1FA01E831C5C00BFFA01 /* ProjectPamphletSubpageCellViewModelTests.swift */; };
-		A7ED1FFD1E831C5C00BFFA01 /* ProjectUpdatesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1FA11E831C5C00BFFA01 /* ProjectUpdatesViewModelTests.swift */; };
-		A7ED20001E831C5C00BFFA01 /* SearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1FA41E831C5C00BFFA01 /* SearchViewModelTests.swift */; };
-		A7ED20021E831C5C00BFFA01 /* ThanksViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1FA61E831C5C00BFFA01 /* ThanksViewModelTests.swift */; };
-		A7ED20031E831C5C00BFFA01 /* TwoFactorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1FA71E831C5C00BFFA01 /* TwoFactorViewModelTests.swift */; };
-		A7ED20041E831C5C00BFFA01 /* UpdateDraftViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1FA81E831C5C00BFFA01 /* UpdateDraftViewModelTests.swift */; };
-		A7ED20111E83229E00BFFA01 /* ActivitiesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20051E83229E00BFFA01 /* ActivitiesDataSourceTests.swift */; };
-		A7ED20151E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20091E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift */; };
-		A7ED20161E83229E00BFFA01 /* DiscoveryPagesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED200A1E83229E00BFFA01 /* DiscoveryPagesDataSourceTests.swift */; };
-		A7ED20171E83229E00BFFA01 /* DiscoveryProjectsDataSourceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED200B1E83229E00BFFA01 /* DiscoveryProjectsDataSourceTest.swift */; };
-		A7ED20181E83229E00BFFA01 /* FindFriendsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED200C1E83229E00BFFA01 /* FindFriendsDataSourceTests.swift */; };
-		A7ED201D1E8322EC00BFFA01 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F461E831BA200BFFA01 /* TestCase.swift */; };
-		A7ED201E1E83231C00BFFA01 /* MockBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F451E831BA200BFFA01 /* MockBundle.swift */; };
-		A7ED201F1E83232A00BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F471E831BA200BFFA01 /* XCTestCase+AppEnvironment.swift */; };
-		A7ED20231E83237F00BFFA01 /* Combos.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20211E83237F00BFFA01 /* Combos.swift */; };
-		A7ED20241E83237F00BFFA01 /* TraitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20221E83237F00BFFA01 /* TraitController.swift */; };
-		A7ED20401E8323E900BFFA01 /* DiscoveryFiltersViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20251E8323E900BFFA01 /* DiscoveryFiltersViewControllerTests.swift */; };
-		A7ED20421E8323E900BFFA01 /* SortPagerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20271E8323E900BFFA01 /* SortPagerViewControllerTests.swift */; };
-		A7ED20431E8323E900BFFA01 /* EmptyStatesViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20281E8323E900BFFA01 /* EmptyStatesViewControllerTests.swift */; };
-		A7ED20441E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20291E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift */; };
-		A7ED20481E8323E900BFFA01 /* LoginViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202D1E8323E900BFFA01 /* LoginViewControllerTests.swift */; };
-		A7ED204D1E8323E900BFFA01 /* FindFriendsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20321E8323E900BFFA01 /* FindFriendsViewControllerTests.swift */; };
-		A7ED20521E8323E900BFFA01 /* FacebookConfirmationViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20371E8323E900BFFA01 /* FacebookConfirmationViewControllerTests.swift */; };
-		A7ED20551E8323E900BFFA01 /* LoginToutViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED203A1E8323E900BFFA01 /* LoginToutViewControllerTests.swift */; };
-		A7ED20571E8323E900BFFA01 /* ActivitiesViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED203C1E8323E900BFFA01 /* ActivitiesViewControllerTests.swift */; };
-		A7ED20591E8323E900BFFA01 /* MessageThreadsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED203E1E8323E900BFFA01 /* MessageThreadsViewControllerTests.swift */; };
-		A7ED205A1E8323E900BFFA01 /* TwoFactorViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED203F1E8323E900BFFA01 /* TwoFactorViewControllerTests.swift */; };
-		A7ED20621E83256700BFFA01 /* AppDelegateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED205D1E83256700BFFA01 /* AppDelegateViewModelTests.swift */; };
-		A7ED20631E83256700BFFA01 /* HelpWebViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED205E1E83256700BFFA01 /* HelpWebViewModelTests.swift */; };
-		A7ED20641E83256700BFFA01 /* RootViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED205F1E83256700BFFA01 /* RootViewModelTests.swift */; };
-		A7ED20661E83256700BFFA01 /* UpdateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20611E83256700BFFA01 /* UpdateViewModelTests.swift */; };
-		AA4533682E7A2C0A00B569E8 /* MockFacebookSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4533672E7A2C0A00B569E8 /* MockFacebookSDK.swift */; };
-		AA4533692E7A2C0A00B569E8 /* FacebookSDKTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4533662E7A2C0A00B569E8 /* FacebookSDKTypeTests.swift */; };
-		AA645E9C2C7725FB0034705A /* PagedContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA645E9A2C7725FB0034705A /* PagedContainerViewModelTests.swift */; };
-		AA645E9E2C772C650034705A /* PagedTabBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA645E9D2C772C650034705A /* PagedTabBarTests.swift */; };
-		AA645EA02C772DC90034705A /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = AA645E9F2C772DC90034705A /* SnapshotTesting */; };
-		AA7452B22D91BB8100DCB655 /* FetchCategoriesUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7452A52D91BB8100DCB655 /* FetchCategoriesUseCaseTests.swift */; };
-		AA7452B32D91BB8100DCB655 /* SimilarProjectsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7452A22D91BB8100DCB655 /* SimilarProjectsUseCaseTests.swift */; };
-		AA7452B42D91BB8100DCB655 /* SearchFiltersUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7452A72D91BB8100DCB655 /* SearchFiltersUseCaseTests.swift */; };
-		AA89B2562D010DA100B4D52E /* PPOProjectCardModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA89B2552D010DA100B4D52E /* PPOProjectCardModelTests.swift */; };
-		AAE7C9AB2C75949600800E03 /* PPOProjectCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9A92C75949600800E03 /* PPOProjectCardViewModelTests.swift */; };
-		AAE7C9AC2C75949600800E03 /* PPOProjectCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C9AA2C75949600800E03 /* PPOProjectCardTests.swift */; };
+		AA7B64942F20420F00602E54 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = AA7B64932F20420F00602E54 /* Stripe */; };
 		AAF3BB382F14987300DAE921 /* KsApi in Frameworks */ = {isa = PBXBuildFile; productRef = AAF3BB372F14987300DAE921 /* KsApi */; };
 		AAF3BB3B2F14988F00DAE921 /* Kickstarter-Framework in Frameworks */ = {isa = PBXBuildFile; productRef = AAF3BB3A2F14988F00DAE921 /* Kickstarter-Framework */; };
 		AAF3BB3D2F14C6DF00DAE921 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAF3BB3C2F14C6DF00DAE921 /* Assets.xcassets */; };
-		D00A376E225BDAF800F46F47 /* UIAlertControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69BACEF21C856F2006EAA00 /* UIAlertControllerTests.swift */; };
-		D015899E1EEB2ED7006E7684 /* ServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01588281EEB2ED7006E7684 /* ServiceTests.swift */; };
-		D01589A21EEB2ED7006E7684 /* ServiceTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015882A1EEB2ED7006E7684 /* ServiceTypeTests.swift */; };
-		D01589A81EEB306D006E7684 /* EncodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587711EEB2ED6006E7684 /* EncodableTests.swift */; };
-		D033E2C222A05B4800464E43 /* MockApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = D033E2C122A05B4800464E43 /* MockApplication.swift */; };
-		D033E2C322A05B7400464E43 /* MockApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = D033E2C122A05B4800464E43 /* MockApplication.swift */; };
-		D03BBA5C21A8E880005604A7 /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
-		D04AABF7218BB2F700CF713E /* SettingsNotificationsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F8DF20EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift */; };
-		D04AACA5218BB72100CF713E /* BetaToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC1A218BB70B00CF713E /* BetaToolsViewModelTests.swift */; };
-		D04AACA6218BB72100CF713E /* ChangePasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC13218BB70A00CF713E /* ChangePasswordViewModelTests.swift */; };
-		D04AACA7218BB72100CF713E /* DiscoveryProjectCategoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC10218BB70900CF713E /* DiscoveryProjectCategoryViewModelTests.swift */; };
-		D04AACA8218BB72100CF713E /* FindFriendsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC15218BB70A00CF713E /* FindFriendsCellViewModelTests.swift */; };
-		D04AACA9218BB72100CF713E /* LoadingBarButtonItemViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC14218BB70A00CF713E /* LoadingBarButtonItemViewModelTests.swift */; };
-		D04AACAA218BB72100CF713E /* MessageBannerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC11218BB70A00CF713E /* MessageBannerViewModelTests.swift */; };
-		D04AACAC218BB72100CF713E /* SettingsNotificationCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC0F218BB70900CF713E /* SettingsNotificationCellViewModelTests.swift */; };
-		D04AACAD218BB72100CF713E /* SettingsNotificationPickerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC19218BB70B00CF713E /* SettingsNotificationPickerViewModelTests.swift */; };
-		D04AACAE218BB72100CF713E /* SettingsPrivacySwitchCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC0C218BB70900CF713E /* SettingsPrivacySwitchCellViewModelTests.swift */; };
-		D08CD201219216BA009F89F0 /* WatchProjectViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */; };
-		D09362B0225D803600E1411A /* UIViewController+URLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370BE74E22541C8F00B44DB2 /* UIViewController+URLTests.swift */; };
-		D0A7880F2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A7880E2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift */; };
-		D0D10C021EEB4550005EBAD0 /* ActivityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877B1EEB2ED6006E7684 /* ActivityTests.swift */; };
-		D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877D1EEB2ED6006E7684 /* BackingTests.swift */; };
-		D0D10C051EEB4550005EBAD0 /* ChangePaymentMethodEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587821EEB2ED6006E7684 /* ChangePaymentMethodEnvelopeTests.swift */; };
-		D0D10C081EEB4550005EBAD0 /* ConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587891EEB2ED6006E7684 /* ConfigTests.swift */; };
-		D0D10C0A1EEB4550005EBAD0 /* DiscoveryParamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015878E1EEB2ED6006E7684 /* DiscoveryParamsTests.swift */; };
-		D0D10C0B1EEB4550005EBAD0 /* ErrorEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587901EEB2ED6006E7684 /* ErrorEnvelopeTests.swift */; };
-		D0D10C0C1EEB4550005EBAD0 /* FindFriendsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587921EEB2ED6006E7684 /* FindFriendsEnvelopeTests.swift */; };
-		D0D10C0D1EEB4550005EBAD0 /* FriendStatsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587941EEB2ED6006E7684 /* FriendStatsEnvelopeTests.swift */; };
-		D0D10C0E1EEB4550005EBAD0 /* ItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587961EEB2ED6006E7684 /* ItemTests.swift */; };
-		D0D10C0F1EEB4550005EBAD0 /* LocationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587CC1EEB2ED7006E7684 /* LocationTests.swift */; };
-		D0D10C101EEB4550005EBAD0 /* MessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587CF1EEB2ED7006E7684 /* MessageTests.swift */; };
-		D0D10C111EEB4550005EBAD0 /* MessageThreadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587D31EEB2ED7006E7684 /* MessageThreadTests.swift */; };
-		D0D10C121EEB4550005EBAD0 /* Project.CountryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587D61EEB2ED7006E7684 /* Project.CountryTests.swift */; };
-		D0D10C131EEB4550005EBAD0 /* Project.PhotoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587D71EEB2ED7006E7684 /* Project.PhotoTests.swift */; };
-		D0D10C141EEB4550005EBAD0 /* Project.VideoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587DA1EEB2ED7006E7684 /* Project.VideoTests.swift */; };
-		D0D10C151EEB4550005EBAD0 /* ProjectStatsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587DF1EEB2ED7006E7684 /* ProjectStatsEnvelopeTests.swift */; };
-		D0D10C161EEB4550005EBAD0 /* ProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587E01EEB2ED7006E7684 /* ProjectTests.swift */; };
-		D0D10C171EEB4550005EBAD0 /* PushEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587E21EEB2ED7006E7684 /* PushEnvelopeTests.swift */; };
-		D0D10C181EEB4550005EBAD0 /* RewardsItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587E51EEB2ED7006E7684 /* RewardsItemTests.swift */; };
-		D0D10C191EEB4550005EBAD0 /* RewardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587E61EEB2ED7006E7684 /* RewardTests.swift */; };
-		D0D10C1B1EEB4550005EBAD0 /* SurveyResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587ED1EEB2ED7006E7684 /* SurveyResponseTests.swift */; };
-		D0D10C1C1EEB4550005EBAD0 /* UpdateDraftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015881C1EEB2ED7006E7684 /* UpdateDraftTests.swift */; };
-		D0D10C1D1EEB4550005EBAD0 /* UpdatePledgeEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015881E1EEB2ED7006E7684 /* UpdatePledgeEnvelopeTests.swift */; };
-		D0D10C1E1EEB4550005EBAD0 /* UpdateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015881F1EEB2ED7006E7684 /* UpdateTests.swift */; };
-		D0D10C1F1EEB4550005EBAD0 /* User.AvatarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01588201EEB2ED7006E7684 /* User.AvatarTests.swift */; };
-		D0D10C201EEB4550005EBAD0 /* User.NewsletterSubscriptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01588211EEB2ED7006E7684 /* User.NewsletterSubscriptionsTests.swift */; };
-		D0D10C211EEB4550005EBAD0 /* User.NotificationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01588221EEB2ED7006E7684 /* User.NotificationsTests.swift */; };
-		D0D10C221EEB4550005EBAD0 /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01588241EEB2ED7006E7684 /* UserTests.swift */; };
-		D0D19BCA22BD886F0043A4E5 /* PledgeSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D19BC922BD886F0043A4E5 /* PledgeSummaryViewModelTests.swift */; };
-		D0E78C3822A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E78C3722A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift */; };
-		D60C8BF321481BCC00D96152 /* SettingsAccountViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BF221481BCC00D96152 /* SettingsAccountViewControllerTests.swift */; };
-		D60C8CE12149A65000D96152 /* SettingsPrivacyDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8CE02149A65000D96152 /* SettingsPrivacyDataSourceTests.swift */; };
-		D612A21922F0ED5A007F7FD9 /* CreditCard+UtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D612A21822F0ED5A007F7FD9 /* CreditCard+UtilsTests.swift */; };
-		D61440FE23200F09002A6507 /* ManagePledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61440FD23200F09002A6507 /* ManagePledgeViewModelTests.swift */; };
-		D62B14B02212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62B14AF2212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift */; };
-		D64850551FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */; };
-		D64DDCDF235648C200DE0EA9 /* ManagePledgePaymentMethodViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DDCDE235648C200DE0EA9 /* ManagePledgePaymentMethodViewModelTests.swift */; };
-		D6560C2A2182361800CD24BC /* PaymentMethodsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65E8F8821821EF500AB9412 /* PaymentMethodsDataSourceTests.swift */; };
-		D65BF353233023E500B15B25 /* ManagePledgeSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65BF352233023E400B15B25 /* ManagePledgeSummaryViewModelTests.swift */; };
-		D660078A2410310400AC1EDB /* CategorySelectionHeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66007892410310400AC1EDB /* CategorySelectionHeaderViewModelTests.swift */; };
-		D6600790241A7C0000AC1EDB /* CuratedProjectsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D660078F241A7C0000AC1EDB /* CuratedProjectsViewModelTests.swift */; };
-		D667C2BC2305F03300EC094A /* ExperimentName+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D667C2BB2305F03300EC094A /* ExperimentName+HelpersTests.swift */; };
-		D66850A323707CCC00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66850A223707CCC00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModelTests.swift */; };
-		D68F0B1A243FB688009FC948 /* SignInWithAppleEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68F0B19243FB688009FC948 /* SignInWithAppleEnvelopeTests.swift */; };
-		D69C552D23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C552C23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift */; };
-		D69C552F23A0609600B0987A /* ErroredBackingViewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C552E23A0609600B0987A /* ErroredBackingViewViewModelTests.swift */; };
-		D6AE53161FD1E05E00BEC788 /* String+Base64Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */; };
-		D6B4D9BF209B88F3002C7B68 /* PushNotificationDialogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4D9BE209B88F3002C7B68 /* PushNotificationDialogTests.swift */; };
-		D6B4EFFE21079C870079159D /* SettingsNewslettersViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4EFFD21079C870079159D /* SettingsNewslettersViewModelTests.swift */; };
-		D6B4F00021079F750079159D /* SettingsNewslettersCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4EFFF21079F750079159D /* SettingsNewslettersCellViewModelTests.swift */; };
-		D6B4F0032107B4760079159D /* SettingsNewslettersViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4F0012107B3D00079159D /* SettingsNewslettersViewControllerTests.swift */; };
-		D6B6875221923BCF005F5DA7 /* ChangeEmailViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6871721923BA6005F5DA7 /* ChangeEmailViewControllerTests.swift */; };
-		D6B6876E21937182005F5DA7 /* CreditCardCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6876D21937182005F5DA7 /* CreditCardCellViewModelTests.swift */; };
-		D6B6F91820EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */; };
-		D6BD66BD23CCF7B6008694BB /* EquatableHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BD66BC23CCF7B6008694BB /* EquatableHelpersTests.swift */; };
-		D6C9A20E1F755FE200981E64 /* GraphSchemaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */; };
-		D6E7DAFC22089F9800689BD6 /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E7DAFB22089F9800689BD6 /* SettingsViewControllerTests.swift */; };
-		D6E925CE211107CD00E13010 /* SettingsNewslettersDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6765B4C211091AB00AE3DB4 /* SettingsNewslettersDataSourceTests.swift */; };
-		D6ED1B37216D0C64007F7547 /* ChangeEmailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED1B36216D0C64007F7547 /* ChangeEmailViewModelTests.swift */; };
-		D6F741A821836E5700C2DDA2 /* PaymentMethodSettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F7416F21836C3D00C2DDA2 /* PaymentMethodSettingsViewControllerTests.swift */; };
-		D710ADFD2441172100DC7199 /* PledgeViewCTAContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710ADFC2441172100DC7199 /* PledgeViewCTAContainerViewModelTests.swift */; };
-		D7180BA222EF9DE900EB0110 /* RewardCellProjectBackingStateTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7180BA022EF9DD900EB0110 /* RewardCellProjectBackingStateTypeTests.swift */; };
-		D72370542118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72370532118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift */; };
-		D723708C2118CAD8001EA4CA /* SettingsDeleteOrRequestCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D723708B2118CAD8001EA4CA /* SettingsDeleteOrRequestCellViewModelTests.swift */; };
-		D72370922118FEFA001EA4CA /* SettingsPrivacyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72370912118FEFA001EA4CA /* SettingsPrivacyViewModelTests.swift */; };
-		D72370942119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72370932119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift */; };
-		D7237096211A1593001EA4CA /* SettingsFollowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7237095211A1593001EA4CA /* SettingsFollowCellViewModelTests.swift */; };
-		D755ECAE23216C290096F189 /* CreateBackingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755ECAC23216C0D0096F189 /* CreateBackingInputTests.swift */; };
-		D755ECB123217D5B0096F189 /* CreateBackingEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755ECAF23217D550096F189 /* CreateBackingEnvelopeTests.swift */; };
-		D764377C224174B700DAFC9E /* SharedFunctionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D764377A2241707D00DAFC9E /* SharedFunctionsTests.swift */; };
-		D78E039022930DF80043E92F /* PledgeCTAContainerViewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78E038F22930DF80043E92F /* PledgeCTAContainerViewViewModelTests.swift */; };
-		D79970B723EC88CB00584911 /* ThanksCategoryCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79970B523EC88BB00584911 /* ThanksCategoryCellViewModelTests.swift */; };
-		D7A86A3B1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A86A3A1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift */; };
-		E108416C2DC27F24000E4F17 /* SearchDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108416A2DC27F14000E4F17 /* SearchDataSourceTests.swift */; };
+		AAF3BB502F183C1400DAE921 /* Library in Frameworks */ = {isa = PBXBuildFile; productRef = AAF3BB4F2F183C1400DAE921 /* Library */; };
+		AAF3BB522F183C1400DAE921 /* LibraryTestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = AAF3BB512F183C1400DAE921 /* LibraryTestHelpers */; };
+		AAFCECF32F20353A00EAC2FE /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = AAFCECF22F20353A00EAC2FE /* FirebaseCore */; };
+		AAFCECF52F20353A00EAC2FE /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = AAFCECF42F20353A00EAC2FE /* FirebaseCrashlytics */; };
+		AAFCECF72F20353A00EAC2FE /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = AAFCECF62F20353A00EAC2FE /* FirebaseRemoteConfig */; };
+		AAFCECFC2F2038EE00EAC2FE /* KsApi in Frameworks */ = {isa = PBXBuildFile; productRef = AAFCECFB2F2038EE00EAC2FE /* KsApi */; };
+		AAFCECFE2F2038EE00EAC2FE /* KsApiTestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = AAFCECFD2F2038EE00EAC2FE /* KsApiTestHelpers */; };
+		AAFCED002F2038F200EAC2FE /* Library in Frameworks */ = {isa = PBXBuildFile; productRef = AAFCECFF2F2038F200EAC2FE /* Library */; };
+		AAFCED022F2038F200EAC2FE /* LibraryTestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = AAFCED012F2038F200EAC2FE /* LibraryTestHelpers */; };
+		AAFCED042F2038FC00EAC2FE /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = AAFCED032F2038FC00EAC2FE /* ReactiveExtensions */; };
+		AAFCED062F2038FC00EAC2FE /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = AAFCED052F2038FC00EAC2FE /* ReactiveExtensions-TestHelpers */; };
+		AAFCED082F20399B00EAC2FE /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = AAFCED072F20399B00EAC2FE /* SnapshotTesting */; };
 		E10BE8D02B02975C00F73DC9 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */; };
 		E10BE8D42B02975C00F73DC9 /* RichPushNotifications.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		E10BE8E42B151A0B00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8E32B151A0B00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInputTests.swift */; };
-		E10BE8E72B151D2700F73DC9 /* BlockUserInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8E52B151CC800F73DC9 /* BlockUserInputTests.swift */; };
-		E10D06632ACF385E00470B5C /* FetchMySavedProjectsQuery.json in Resources */ = {isa = PBXBuildFile; fileRef = E10D06622ACF385E00470B5C /* FetchMySavedProjectsQuery.json */; };
-		E10D06652AD48C9C00470B5C /* FetchMySavedProjectsQueryRequestForTests.graphql_test in Resources */ = {isa = PBXBuildFile; fileRef = E10D06642AD48C9C00470B5C /* FetchMySavedProjectsQueryRequestForTests.graphql_test */; };
-		E10F75E82B6937FA00024AD1 /* PKCETest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED2A2B686829009976D9 /* PKCETest.swift */; };
 		E113BD842B7D255000D3A809 /* Library_Keychain_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E113BD832B7D255000D3A809 /* Library_Keychain_iOSTests.swift */; };
 		E113BD8D2B7D255A00D3A809 /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E113BD772B7D1B7700D3A809 /* KeychainTests.swift */; };
-		E11E06A62D837F10002E81B9 /* SearchQuery_EmptyResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E15803052D83632F0000BAB3 /* SearchQuery_EmptyResults.json */; };
-		E11E06A92D83817C002E81B9 /* SearchQuery_SearchViewControllerTests_Active.json in Resources */ = {isa = PBXBuildFile; fileRef = E11E06A72D838022002E81B9 /* SearchQuery_SearchViewControllerTests_Active.json */; };
-		E11E06AB2D885E4C002E81B9 /* SearchQuery_SearchViewControllerTests_Prelaunch.json in Resources */ = {isa = PBXBuildFile; fileRef = E11E06AA2D885E4C002E81B9 /* SearchQuery_SearchViewControllerTests_Prelaunch.json */; };
-		E12C883B2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12C883A2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift */; };
-		E13D76742D404F1600FB58CE /* PaymentMethodsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D76722D40438100FB58CE /* PaymentMethodsUseCaseTests.swift */; };
-		E13D76792D419A5900FB58CE /* ApplePayTokenUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D76772D4195E700FB58CE /* ApplePayTokenUseCaseTests.swift */; };
-		E13D76802D42C55C00FB58CE /* PledgeOverTimeUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310272D2845CB0062646C /* PledgeOverTimeUseCaseTests.swift */; };
-		E13D76812D42CBA400FB58CE /* LoginSignupUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13D767E2D42C52900FB58CE /* LoginSignupUseCaseTests.swift */; };
-		E15803092D836C2C0000BAB3 /* SearchQuery_FiveResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E15803012D8363020000BAB3 /* SearchQuery_FiveResults.json */; };
-		E158030A2D836C320000BAB3 /* SearchQuery_AnotherFiveResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E15803032D8363210000BAB3 /* SearchQuery_AnotherFiveResults.json */; };
-		E158030B2D836C370000BAB3 /* SearchQuery_EmptyResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E15803052D83632F0000BAB3 /* SearchQuery_EmptyResults.json */; };
-		E167942A2B85136900064063 /* OAuthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16794292B85136900064063 /* OAuthTests.swift */; };
-		E170B9112B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E170B9102B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift */; };
-		E171A57F2D14991100AFE0EE /* PledgePaymentPlansAndSelectionData+GraphAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E171A57D2D14985500AFE0EE /* PledgePaymentPlansAndSelectionData+GraphAPITests.swift */; };
-		E17611E62B75242A00DF2F50 /* PaginatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17611E52B75242A00DF2F50 /* PaginatorTests.swift */; };
-		E182B7E02DB2A8A3000C4067 /* SelectedSearchFilters+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182B7DC2DB2A845000C4067 /* SelectedSearchFilters+TestHelpers.swift */; };
 		E182E5BA2B8CDFDE0008DD69 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */; };
 		E182E5BC2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */; };
-		E1855EC02EE0BF7400B4E408 /* ShippingLocationsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1855EBE2EE0BF6600B4E408 /* ShippingLocationsViewModelTests.swift */; };
-		E1855EC32EE0C82200B4E408 /* ShippingLocationsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1855EC12EE0C7E000B4E408 /* ShippingLocationsViewTests.swift */; };
-		E18A674E2E28236D00BA0376 /* ApolloTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = E18A674D2E28236D00BA0376 /* ApolloTestSupport */; };
-		E19D49C72DB7F07A004A74D5 /* FilterCategoryViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19D49C62DB7F07A004A74D5 /* FilterCategoryViewTest.swift */; };
-		E1A149242ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149232ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift */; };
-		E1A149272ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149262ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift */; };
-		E1A310232D270CB00062646C /* BuildPaymentPlanQueryTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */; };
-		E1A310242D270CB00062646C /* BuildPaymentPlanQueryTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310212D270C610062646C /* BuildPaymentPlanQueryTestData.swift */; };
-		E1A310292D2845E00062646C /* PledgeOverTimeUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A310272D2845CB0062646C /* PledgeOverTimeUseCaseTests.swift */; };
-		E1B33F562E53817D008903BA /* GraphAPITestMocks in Frameworks */ = {isa = PBXBuildFile; productRef = E1B33F552E53817D008903BA /* GraphAPITestMocks */; };
-		E1B813C72BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C62BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test */; };
-		E1B813C92BC851E100DF33CF /* FetchMyBackedProjectsQuery.json in Resources */ = {isa = PBXBuildFile; fileRef = E1B813C82BC851E100DF33CF /* FetchMyBackedProjectsQuery.json */; };
-		E1BAA03E2C1A1CE4004F8B06 /* PPOViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BAA03D2C1A1CE4004F8B06 /* PPOViewModelTests.swift */; };
-		E1BBB65D2E00724100291D48 /* GraphAPI+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB65B2E00718C00291D48 /* GraphAPI+TestHelpers.swift */; };
-		E1BBB65E2E00724100291D48 /* GraphAPI+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB65B2E00718C00291D48 /* GraphAPI+TestHelpers.swift */; };
-		E1BBB65F2E00724100291D48 /* GraphAPI+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB65B2E00718C00291D48 /* GraphAPI+TestHelpers.swift */; };
-		E1BBB6722E035BE300291D48 /* FetchLocationsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB66E2E035BDD00291D48 /* FetchLocationsUseCaseTests.swift */; };
-		E1DBB2372DAEBCE10050733F /* SearchFiltersHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		AAF3BD5B2F19876800DAE921 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7D1F9441C850B7C000D41D5;
+			remoteInfo = "Kickstarter-iOS";
+		};
 		E10BE8D22B02975C00F73DC9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
@@ -611,26 +102,6 @@
 				E10BE8D42B02975C00F73DC9 /* RichPushNotifications.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E123A0792E2EC5A500D61B63 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E123A0A32E2ECE5900D61B63 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -1517,7 +988,6 @@
 		A74FFE671CE3FFE200C7BCB9 /* SearchMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchMessagesViewController.swift; sourceTree = "<group>"; };
 		A74FFEC81CE4FB9900C7BCB9 /* SearchMessagesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchMessagesDataSource.swift; sourceTree = "<group>"; };
 		A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryViewController.swift; sourceTree = "<group>"; };
-		A75511451C8642B3005355CF /* Library-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Library-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A75798901D6A201F0063CEEC /* DebugPushNotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugPushNotificationsViewController.swift; sourceTree = "<group>"; };
 		A75798C21D6A24CD0063CEEC /* DebugPushNotifications.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DebugPushNotifications.storyboard; sourceTree = "<group>"; };
 		A757E9BD1D19C34600A5C978 /* ActivitySurveyResponseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySurveyResponseCell.swift; sourceTree = "<group>"; };
@@ -1602,9 +1072,8 @@
 		A7D1F9451C850B7C000D41D5 /* KickDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KickDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7D1F9551C850B7C000D41D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A7D1F95A1C850B7C000D41D5 /* Kickstarter-Framework-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kickstarter-Framework-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7E315C41C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectsDataSource.swift; sourceTree = "<group>"; };
-		A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppEnvironmentTests.swift; sourceTree = "<group>"; };
+		A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppEnvironmentTests.swift; path = "../Library-Keychain-iOSTests/AppEnvironmentTests.swift"; sourceTree = "<group>"; };
 		A7ED1F131E830FDC00BFFA01 /* CircleAvatarImageViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleAvatarImageViewTests.swift; sourceTree = "<group>"; };
 		A7ED1F141E830FDC00BFFA01 /* EnvironmentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentTests.swift; sourceTree = "<group>"; };
 		A7ED1F151E830FDC00BFFA01 /* FormatTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormatTests.swift; sourceTree = "<group>"; };
@@ -1763,11 +1232,11 @@
 		AAF3BB4C2F16FD7D00DAE921 /* Kickstarter-Framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "Kickstarter-Framework"; path = "/Users/steve/Projects/Kickstarter/iOS/Kickstarter-Framework"; sourceTree = "<absolute>"; };
 		AAF3BB4D2F16FD7D00DAE921 /* KsApi */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = KsApi; path = /Users/steve/Projects/Kickstarter/iOS/KsApi; sourceTree = "<absolute>"; };
 		AAF3BB4E2F16FD7D00DAE921 /* Library */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Library; path = /Users/steve/Projects/Kickstarter/iOS/Library; sourceTree = "<absolute>"; };
+		AAF3BB572F1845A200DAE921 /* LibraryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibraryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectMutation.swift; sourceTree = "<group>"; };
 		D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectInput.swift; sourceTree = "<group>"; };
 		D002CAE4218CF951009783F2 /* WatchProjectResponseEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectResponseEnvelope.swift; sourceTree = "<group>"; };
 		D01587531EEB2DE4006E7684 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D01587581EEB2DE4006E7684 /* KsApiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KsApiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D015876A1EEB2ED6006E7684 /* NSURLSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSURLSession.swift; sourceTree = "<group>"; };
 		D015876D1EEB2ED6006E7684 /* BasicHTTPAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicHTTPAuth.swift; sourceTree = "<group>"; };
 		D015876E1EEB2ED6006E7684 /* ClientAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientAuth.swift; sourceTree = "<group>"; };
@@ -2164,7 +1633,7 @@
 		E10D06622ACF385E00470B5C /* FetchMySavedProjectsQuery.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FetchMySavedProjectsQuery.json; sourceTree = "<group>"; };
 		E10D06642AD48C9C00470B5C /* FetchMySavedProjectsQueryRequestForTests.graphql_test */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMySavedProjectsQueryRequestForTests.graphql_test; sourceTree = "<group>"; };
 		E113BD762B7D1B7700D3A809 /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
-		E113BD772B7D1B7700D3A809 /* KeychainTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
+		E113BD772B7D1B7700D3A809 /* KeychainTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeychainTests.swift; path = "../Library-Keychain-iOSTests/KeychainTests.swift"; sourceTree = "<group>"; };
 		E113BD812B7D255000D3A809 /* Library-Keychain-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Library-Keychain-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E113BD832B7D255000D3A809 /* Library_Keychain_iOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library_Keychain_iOSTests.swift; sourceTree = "<group>"; };
 		E118351E2B75639F007B42E6 /* PaginationExampleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationExampleViewModel.swift; sourceTree = "<group>"; };
@@ -2207,7 +1676,7 @@
 		E182B7DA2DB2A80D000C4067 /* SearchFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilters.swift; sourceTree = "<group>"; };
 		E182B7DC2DB2A845000C4067 /* SelectedSearchFilters+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SelectedSearchFilters+TestHelpers.swift"; sourceTree = "<group>"; };
 		E182B7E42DB2ABE1000C4067 /* DiscoveryParams+SearchFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiscoveryParams+SearchFilters.swift"; sourceTree = "<group>"; };
-		E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppEnvironmentTests+OAuthInKeychain.swift"; sourceTree = "<group>"; };
+		E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "AppEnvironmentTests+OAuthInKeychain.swift"; path = "../Library-Keychain-iOSTests/AppEnvironmentTests+OAuthInKeychain.swift"; sourceTree = "<group>"; };
 		E1855EBA2EE0BF3300B4E408 /* ShippingLocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingLocationsView.swift; sourceTree = "<group>"; };
 		E1855EBB2EE0BF3300B4E408 /* ShippingLocationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingLocationsViewModel.swift; sourceTree = "<group>"; };
 		E1855EBE2EE0BF6600B4E408 /* ShippingLocationsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingLocationsViewModelTests.swift; sourceTree = "<group>"; };
@@ -2332,16 +1801,11 @@
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		AAF3BB582F1845A200DAE921 /* LibraryTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = LibraryTests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
-		A75511421C8642B3005355CF /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AA645EA02C772DC90034705A /* SnapshotTesting in Frameworks */,
-				191A4B4C28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A7D1F9421C850B7C000D41D5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2353,12 +1817,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A7D1F9571C850B7C000D41D5 /* Frameworks */ = {
+		AAF3BB542F1845A200DAE921 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				70495690299D53ED00B273DF /* SnapshotTesting in Frameworks */,
-				1998BCB028F60EC300D04077 /* ReactiveExtensions-TestHelpers in Frameworks */,
+				AAFCED082F20399B00EAC2FE /* SnapshotTesting in Frameworks */,
+				AAFCECF72F20353A00EAC2FE /* FirebaseRemoteConfig in Frameworks */,
+				AAFCED002F2038F200EAC2FE /* Library in Frameworks */,
+				AAFCED022F2038F200EAC2FE /* LibraryTestHelpers in Frameworks */,
+				AAFCED042F2038FC00EAC2FE /* ReactiveExtensions in Frameworks */,
+				AAFCECFC2F2038EE00EAC2FE /* KsApi in Frameworks */,
+				AAFCECF32F20353A00EAC2FE /* FirebaseCore in Frameworks */,
+				AA7B64942F20420F00602E54 /* Stripe in Frameworks */,
+				AAFCECF52F20353A00EAC2FE /* FirebaseCrashlytics in Frameworks */,
+				AAFCECFE2F2038EE00EAC2FE /* KsApiTestHelpers in Frameworks */,
+				AAFCED062F2038FC00EAC2FE /* ReactiveExtensions-TestHelpers in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2373,16 +1846,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E1D63AC52E257A3200CE64A9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E18A674E2E28236D00BA0376 /* ApolloTestSupport in Frameworks */,
-				E1B33F562E53817D008903BA /* GraphAPITestMocks in Frameworks */,
-				33AA26D32E3ACDBC002DBD60 /* ReactiveExtensions-TestHelpers in Frameworks */,
+				AAF3BB522F183C1400DAE921 /* LibraryTestHelpers in Frameworks */,
+				AAF3BB502F183C1400DAE921 /* Library in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5436,6 +4901,7 @@
 				802800561C88F62500141235 /* Configs */,
 				E10BE8CE2B02975C00F73DC9 /* RichPushNotifications */,
 				E113BD822B7D255000D3A809 /* Library-Keychain-iOSTests */,
+				AAF3BB582F1845A200DAE921 /* LibraryTests */,
 				A7E06DBC1C5C027800EBDCC2 /* Frameworks */,
 				A7D1F9461C850B7C000D41D5 /* Kickstarter-iOS */,
 				D01587511EEB2DE4006E7684 /* KsApi */,
@@ -5457,11 +4923,9 @@
 			isa = PBXGroup;
 			children = (
 				A7D1F9451C850B7C000D41D5 /* KickDebug.app */,
-				A7D1F95A1C850B7C000D41D5 /* Kickstarter-Framework-iOSTests.xctest */,
-				A75511451C8642B3005355CF /* Library-iOSTests.xctest */,
-				D01587581EEB2DE4006E7684 /* KsApiTests.xctest */,
 				E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */,
 				E113BD812B7D255000D3A809 /* Library-Keychain-iOSTests.xctest */,
+				AAF3BB572F1845A200DAE921 /* LibraryTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -6545,28 +6009,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A75511441C8642B3005355CF /* Library-iOSTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A755115A1C8642B3005355CF /* Build configuration list for PBXNativeTarget "Library-iOSTests" */;
-			buildPhases = (
-				A75511411C8642B3005355CF /* Sources */,
-				A75511421C8642B3005355CF /* Frameworks */,
-				A75511431C8642B3005355CF /* Resources */,
-				E123A0792E2EC5A500D61B63 /* Embed Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Library-iOSTests";
-			packageProductDependencies = (
-				191A4B4B28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers */,
-				AA645E9F2C772DC90034705A /* SnapshotTesting */,
-			);
-			productName = "Library-iOSTests";
-			productReference = A75511451C8642B3005355CF /* Library-iOSTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		A7D1F9441C850B7C000D41D5 /* Kickstarter-iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A7D1F9611C850B7C000D41D5 /* Build configuration list for PBXNativeTarget "Kickstarter-iOS" */;
@@ -6594,48 +6036,38 @@
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A7D1F9591C850B7C000D41D5 /* Kickstarter-Framework-iOSTests */ = {
+		AAF3BB562F1845A200DAE921 /* LibraryTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A7D1F9641C850B7C000D41D5 /* Build configuration list for PBXNativeTarget "Kickstarter-Framework-iOSTests" */;
+			buildConfigurationList = AAF3BB5B2F1845A200DAE921 /* Build configuration list for PBXNativeTarget "LibraryTests" */;
 			buildPhases = (
-				A7D1F9561C850B7C000D41D5 /* Sources */,
-				A7D1F9571C850B7C000D41D5 /* Frameworks */,
-				A7D1F9581C850B7C000D41D5 /* Resources */,
-				E123A0A32E2ECE5900D61B63 /* Embed Frameworks */,
+				AAF3BB532F1845A200DAE921 /* Sources */,
+				AAF3BB542F1845A200DAE921 /* Frameworks */,
+				AAF3BB552F1845A200DAE921 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				AAF3BD5C2F19876800DAE921 /* PBXTargetDependency */,
 			);
-			name = "Kickstarter-Framework-iOSTests";
+			fileSystemSynchronizedGroups = (
+				AAF3BB582F1845A200DAE921 /* LibraryTests */,
+			);
+			name = LibraryTests;
 			packageProductDependencies = (
-				1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */,
-				7049568F299D53ED00B273DF /* SnapshotTesting */,
+				AAFCECF22F20353A00EAC2FE /* FirebaseCore */,
+				AAFCECF42F20353A00EAC2FE /* FirebaseCrashlytics */,
+				AAFCECF62F20353A00EAC2FE /* FirebaseRemoteConfig */,
+				AAFCECFB2F2038EE00EAC2FE /* KsApi */,
+				AAFCECFD2F2038EE00EAC2FE /* KsApiTestHelpers */,
+				AAFCECFF2F2038F200EAC2FE /* Library */,
+				AAFCED012F2038F200EAC2FE /* LibraryTestHelpers */,
+				AAFCED032F2038FC00EAC2FE /* ReactiveExtensions */,
+				AAFCED052F2038FC00EAC2FE /* ReactiveExtensions-TestHelpers */,
+				AAFCED072F20399B00EAC2FE /* SnapshotTesting */,
+				AA7B64932F20420F00602E54 /* Stripe */,
 			);
-			productName = KickstarterTests;
-			productReference = A7D1F95A1C850B7C000D41D5 /* Kickstarter-Framework-iOSTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		D01587571EEB2DE4006E7684 /* KsApiTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D01587651EEB2DE4006E7684 /* Build configuration list for PBXNativeTarget "KsApiTests" */;
-			buildPhases = (
-				D01587541EEB2DE4006E7684 /* Sources */,
-				D01587561EEB2DE4006E7684 /* Resources */,
-				E1D63AC52E257A3200CE64A9 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = KsApiTests;
-			packageProductDependencies = (
-				E18A674D2E28236D00BA0376 /* ApolloTestSupport */,
-				33AA26D22E3ACDBC002DBD60 /* ReactiveExtensions-TestHelpers */,
-				E1B33F552E53817D008903BA /* GraphAPITestMocks */,
-			);
-			productName = KsApiTests;
-			productReference = D01587581EEB2DE4006E7684 /* KsApiTests.xctest */;
+			productName = LibraryTests;
+			productReference = AAF3BB572F1845A200DAE921 /* LibraryTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		E10BE8CC2B02975C00F73DC9 /* RichPushNotifications */ = {
@@ -6680,14 +6112,10 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastSwiftUpdateCheck = 1520;
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = Kickstarter;
 				TargetAttributes = {
-					A75511441C8642B3005355CF = {
-						CreatedOnToolsVersion = 7.2.1;
-						LastSwiftMigration = 1020;
-					};
 					A7D1F9441C850B7C000D41D5 = {
 						CreatedOnToolsVersion = 7.2.1;
 						LastSwiftMigration = 1000;
@@ -6706,14 +6134,9 @@
 							};
 						};
 					};
-					A7D1F9591C850B7C000D41D5 = {
-						CreatedOnToolsVersion = 7.2.1;
-						LastSwiftMigration = 1020;
-					};
-					D01587571EEB2DE4006E7684 = {
-						CreatedOnToolsVersion = 8.3.3;
-						LastSwiftMigration = 1020;
-						ProvisioningStyle = Manual;
+					AAF3BB562F1845A200DAE921 = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = A7D1F9441C850B7C000D41D5;
 					};
 					E10BE8CC2B02975C00F73DC9 = {
 						CreatedOnToolsVersion = 15.0.1;
@@ -6743,7 +6166,6 @@
 			packageReferences = (
 				06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */,
 				06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */,
-				194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */,
 				60DA50F628BFA331002E2DF1 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
 				60DA510928C7DC0E002E2DF1 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				60DA511028C96865002E2DF1 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
@@ -6756,33 +6178,22 @@
 				3976B3682E57AEC200D2DD50 /* XCRemoteSwiftPackageReference "braze-segment-swift" */,
 				AAF3BB362F14987300DAE921 /* XCLocalSwiftPackageReference "KsApi" */,
 				AAF3BB392F14988F00DAE921 /* XCLocalSwiftPackageReference "Kickstarter-Framework" */,
+				AA7B64922F20420F00602E54 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				A7D1F9441C850B7C000D41D5 /* Kickstarter-iOS */,
-				A75511441C8642B3005355CF /* Library-iOSTests */,
 				E113BD802B7D255000D3A809 /* Library-Keychain-iOSTests */,
-				A7D1F9591C850B7C000D41D5 /* Kickstarter-Framework-iOSTests */,
-				D01587571EEB2DE4006E7684 /* KsApiTests */,
 				E10BE8CC2B02975C00F73DC9 /* RichPushNotifications */,
 				E194DD202E254C6300235AEB /* Generate GraphQL Library */,
+				AAF3BB562F1845A200DAE921 /* LibraryTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A75511431C8642B3005355CF /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E158030B2D836C370000BAB3 /* SearchQuery_EmptyResults.json in Resources */,
-				E15803092D836C2C0000BAB3 /* SearchQuery_FiveResults.json in Resources */,
-				E158030A2D836C320000BAB3 /* SearchQuery_AnotherFiveResults.json in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A7D1F9431C850B7C000D41D5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6799,24 +6210,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A7D1F9581C850B7C000D41D5 /* Resources */ = {
+		AAF3BB552F1845A200DAE921 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E11E06A62D837F10002E81B9 /* SearchQuery_EmptyResults.json in Resources */,
-				E11E06AB2D885E4C002E81B9 /* SearchQuery_SearchViewControllerTests_Prelaunch.json in Resources */,
-				E11E06A92D83817C002E81B9 /* SearchQuery_SearchViewControllerTests_Active.json in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D01587561EEB2DE4006E7684 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E10D06632ACF385E00470B5C /* FetchMySavedProjectsQuery.json in Resources */,
-				E1B813C92BC851E100DF33CF /* FetchMyBackedProjectsQuery.json in Resources */,
-				E10D06652AD48C9C00470B5C /* FetchMySavedProjectsQueryRequestForTests.graphql_test in Resources */,
-				E1B813C72BC851CB00DF33CF /* FetchMyBackedProjectsQueryRequestForTests.graphql_test in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6875,257 +6272,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		A75511411C8642B3005355CF /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E1BBB6722E035BE300291D48 /* FetchLocationsUseCaseTests.swift in Sources */,
-				1611EF6923B275700051CDCC /* MockUUID.swift in Sources */,
-				D723708C2118CAD8001EA4CA /* SettingsDeleteOrRequestCellViewModelTests.swift in Sources */,
-				A7ED1FAC1E831C5C00BFFA01 /* ActivitySampleFollowCellViewModelTests.swift in Sources */,
-				D69C552D23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift in Sources */,
-				33C2FB712E2E8FE00083B5FB /* KSRSearchBarViewModelTests.swift in Sources */,
-				A7ED20021E831C5C00BFFA01 /* ThanksViewModelTests.swift in Sources */,
-				1996AA312A5F39CC00AE2ED0 /* PledgePaymentMethodsViewModelTests.swift in Sources */,
-				3757D107228E521600241AE6 /* UIFontTests.swift in Sources */,
-				A7ED1F351E830FDC00BFFA01 /* String+SimpleHTMLTests.swift in Sources */,
-				A7ED1FB31E831C5C00BFFA01 /* ActivitySampleBackingCellViewModelTests.swift in Sources */,
-				39B5E1102B86C56E00FFB720 /* RefInfoTests.swift in Sources */,
-				A7ED1F491E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift in Sources */,
-				77AA2B3D233D10D3008BBCB8 /* CreateBackingConstructorTests.swift in Sources */,
-				8AD9CF1424C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift in Sources */,
-				6035AFB32C594817007E28FC /* PledgeViewModelTests.swift in Sources */,
-				3706408822A8A6F200889CBD /* PledgeShippingLocationViewModelTests.swift in Sources */,
-				E17611E62B75242A00DF2F50 /* PaginatorTests.swift in Sources */,
-				8AFB8C99233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift in Sources */,
-				A7ED1F2B1E830FDC00BFFA01 /* IsValidEmailTests.swift in Sources */,
-				601342F32C81420D00B851FA /* PostCampaignCheckoutViewModelTests.swift in Sources */,
-				6008633F29BF750700B87B39 /* MockAppTrackingTransparency.swift in Sources */,
-				37FDAFAD2273BA4B00662CC8 /* UIStackView+Tests.swift in Sources */,
-				8A13D16E24985411007E2C0B /* PledgeExpandableHeaderRewardCellViewModelTests.swift in Sources */,
-				338654752CE3D22600AB16A9 /* PledgePaymentPlansViewModelTest.swift in Sources */,
-				D04AACA7218BB72100CF713E /* DiscoveryProjectCategoryViewModelTests.swift in Sources */,
-				D68F0B1A243FB688009FC948 /* SignInWithAppleEnvelopeTests.swift in Sources */,
-				A7ED1FDE1E831C5C00BFFA01 /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */,
-				20338E1F26566F9E00F2C43A /* CommentComposerViewModelTests.swift in Sources */,
-				77D19FFA240824D60058FC8E /* PillCellViewModelTests.swift in Sources */,
-				3777F2F92343C7AB0030BEF5 /* ManageViewPledgeRewardReceivedViewModelTests.swift in Sources */,
-				47AC2139264AD5430090AEDF /* CommentsViewModelTests.swift in Sources */,
-				A7ED1FE31E831C5C00BFFA01 /* FindFriendsFaceookConnectCellViewModelTests.swift in Sources */,
-				E13D76742D404F1600FB58CE /* PaymentMethodsUseCaseTests.swift in Sources */,
-				A7ED1FFB1E831C5C00BFFA01 /* ProjectPamphletMainCellViewModelTests.swift in Sources */,
-				A7ED1FE41E831C5C00BFFA01 /* EmptyStatesViewModelTests.swift in Sources */,
-				D04AACA8218BB72100CF713E /* FindFriendsCellViewModelTests.swift in Sources */,
-				D6BD66BD23CCF7B6008694BB /* EquatableHelpersTests.swift in Sources */,
-				D04AACA6218BB72100CF713E /* ChangePasswordViewModelTests.swift in Sources */,
-				60A80F622BEA86A80052A829 /* MockStripeIntentService.swift in Sources */,
-				E182B7E02DB2A8A3000C4067 /* SelectedSearchFilters+TestHelpers.swift in Sources */,
-				A7ED20041E831C5C00BFFA01 /* UpdateDraftViewModelTests.swift in Sources */,
-				A7ED1F4B1E831BA200BFFA01 /* TestCase.swift in Sources */,
-				A7ED1FBE1E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift in Sources */,
-				A7ED1F2D1E830FDC00BFFA01 /* LanguageTests.swift in Sources */,
-				8A13D17024985550007E2C0B /* PledgeExpandableRewardsHeaderViewModelTests.swift in Sources */,
-				8A00CCFF24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift in Sources */,
-				771E630E23426B74005967E8 /* CancelPledgeViewModelTests.swift in Sources */,
-				E171A57F2D14991100AFE0EE /* PledgePaymentPlansAndSelectionData+GraphAPITests.swift in Sources */,
-				8A73EAD12339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift in Sources */,
-				D04AABF7218BB2F700CF713E /* SettingsNotificationsViewModelTests.swift in Sources */,
-				D0A7880F2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift in Sources */,
-				8A0B1E2124D4B271009E90C0 /* EmptyStateViewModelTests.swift in Sources */,
-				D0D19BCA22BD886F0043A4E5 /* PledgeSummaryViewModelTests.swift in Sources */,
-				A7ED1FEA1E831C5C00BFFA01 /* HelpViewModelTests.swift in Sources */,
-				A7ED1F301E830FDC00BFFA01 /* NavigationTests.swift in Sources */,
-				37CBA64D221E10E100E6CAB6 /* HelpTypeTests.swift in Sources */,
-				A7ED1FA91E831C5C00BFFA01 /* ActivityProjectStatusViewModelTests.swift in Sources */,
-				D04AACAE218BB72100CF713E /* SettingsPrivacySwitchCellViewModelTests.swift in Sources */,
-				A7ED1FC61E831C5C00BFFA01 /* PledgeManagerWebViewModelTests.swift in Sources */,
-				061645AE26697D55007D8D96 /* CommentRepliesViewModelTests.swift in Sources */,
-				A7ED1F281E830FDC00BFFA01 /* CircleAvatarImageViewTests.swift in Sources */,
-				606C45F829FACD9F001BA067 /* RemoteConfigFeature+HelpersTests.swift in Sources */,
-				A7ED1FB81E831C5C00BFFA01 /* BackingCellViewModelTests.swift in Sources */,
-				A7ED1FFD1E831C5C00BFFA01 /* ProjectUpdatesViewModelTests.swift in Sources */,
-				191E60262A953E2B001413B2 /* ProjectTabCheckmarkListCellViewModelTests.swift in Sources */,
-				A7ED1F341E830FDC00BFFA01 /* SharedFunctionsTests.swift in Sources */,
-				D6B4EFFE21079C870079159D /* SettingsNewslettersViewModelTests.swift in Sources */,
-				A7ED1FC81E831C5C00BFFA01 /* MessageThreadsViewModelTests.swift in Sources */,
-				D61440FE23200F09002A6507 /* ManagePledgeViewModelTests.swift in Sources */,
-				062BE3BA27B3224A006B5251 /* ImageViewElementCellViewModelTests.swift in Sources */,
-				47F85271272206840050DB39 /* ProjectFAQsCellViewModelTests.swift in Sources */,
-				069FA8CC284987FD006ADC92 /* PledgeLocalPickupViewModelTests.swift in Sources */,
-				A7ED1F311E830FDC00BFFA01 /* PaginateTests.swift in Sources */,
-				77BC00F02326F0CC00808E75 /* PKPaymentRequestHelpersTests.swift in Sources */,
-				77277C3022B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift in Sources */,
-				77D53B23240D81510066D1F4 /* CategoryCollectionViewSectionHeaderViewModelTests.swift in Sources */,
-				D612A21922F0ED5A007F7FD9 /* CreditCard+UtilsTests.swift in Sources */,
-				A7ED1F3D1E831B4F00BFFA01 /* ValueCellDataSourceTests.swift in Sources */,
-				77C9123123C637FD00F3D2C9 /* DoubleCurrencyTests.swift in Sources */,
-				A7ED1F4C1E831BA200BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */,
-				4746FFF5272C588900EC3429 /* ProjectTabDisclaimerCellViewModelTests.swift in Sources */,
-				D6B6876E21937182005F5DA7 /* CreditCardCellViewModelTests.swift in Sources */,
-				8AA3DB39250AF692009AC8EA /* MockPushRegistration.swift in Sources */,
-				E1A310232D270CB00062646C /* BuildPaymentPlanQueryTestData.swift in Sources */,
-				A7ED1FFC1E831C5C00BFFA01 /* ProjectPamphletSubpageCellViewModelTests.swift in Sources */,
-				A7ED20031E831C5C00BFFA01 /* TwoFactorViewModelTests.swift in Sources */,
-				D09362B0225D803600E1411A /* UIViewController+URLTests.swift in Sources */,
-				77319C7E2469B5C70051B755 /* DiscoveryProjectCardViewModelTests.swift in Sources */,
-				A7ED1FDF1E831C5C00BFFA01 /* DiscoveryFiltersViewModelTests.swift in Sources */,
-				8A5CB28424C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */,
-				E1BBB65D2E00724100291D48 /* GraphAPI+TestHelpers.swift in Sources */,
-				3706409022A9BE9400889CBD /* DateFormatterTests.swift in Sources */,
-				778F891E22D5414F00D095C5 /* Feature+HelpersTests.swift in Sources */,
-				A7ED1F2C1E830FDC00BFFA01 /* KSCacheTests.swift in Sources */,
-				3362A3CE2DA8858400E5E85D /* ProjectURLBuilderTests.swift in Sources */,
-				D7237096211A1593001EA4CA /* SettingsFollowCellViewModelTests.swift in Sources */,
-				D79970B723EC88CB00584911 /* ThanksCategoryCellViewModelTests.swift in Sources */,
-				8A8099F522E2143000373E66 /* RewardCardContainerViewModelTests.swift in Sources */,
-				D667C2BC2305F03300EC094A /* ExperimentName+HelpersTests.swift in Sources */,
-				60CC7CC62E280E2A0055BE8F /* OnboardingViewModelTests.swift in Sources */,
-				8A8099F622E2143400373E66 /* RewardCardViewModelTests.swift in Sources */,
-				06B9AF4F26AF79DF00735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift in Sources */,
-				D66850A323707CCC00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModelTests.swift in Sources */,
-				37D99C5B22247F58008EF839 /* NSBundleType+Tests.swift in Sources */,
-				374CB95122C17D6700B84219 /* CharacterSetTests.swift in Sources */,
-				A7ED1F391E830FDC00BFFA01 /* UILabel+IBClearTests.swift in Sources */,
-				8A297912234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift in Sources */,
-				3706408422A8A68600889CBD /* PledgeAmountViewModelTests.swift in Sources */,
-				D7A86A3B1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift in Sources */,
-				A7ED1FD61E831C5C00BFFA01 /* ActivityUpdateViewModelTests.swift in Sources */,
-				1996AA322A5F3A3200AE2ED0 /* Stripe+PaymentMethod.swift in Sources */,
-				D69C552F23A0609600B0987A /* ErroredBackingViewViewModelTests.swift in Sources */,
-				373AB25B222A063500769FC2 /* CreatePasswordViewModelTests.swift in Sources */,
-				A7ED1FF11E831C5C00BFFA01 /* MessageThreadCellViewModelTests.swift in Sources */,
-				D72370922118FEFA001EA4CA /* SettingsPrivacyViewModelTests.swift in Sources */,
-				A7ED1FAE1E831C5C00BFFA01 /* FindFriendsViewModelTests.swift in Sources */,
-				A7ED1FE11E831C5C00BFFA01 /* DiscoveryPostcardViewModelTests.swift in Sources */,
-				77C9122F23C508CF00F3D2C9 /* ApplePayCapabilitiesTests.swift in Sources */,
-				A7ED1FAA1E831C5C00BFFA01 /* DiscoveryPageViewModelTests.swift in Sources */,
-				D7180BA222EF9DE900EB0110 /* RewardCellProjectBackingStateTypeTests.swift in Sources */,
-				33AF01BF2D2E72430085A153 /* PledgeOverTimePaymentScheduleViewModelTest.swift in Sources */,
-				D72370542118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift in Sources */,
-				0602002A27D271B900909500 /* ExternalSourceViewElementCellViewModelTests.swift in Sources */,
-				A7ED1FE01E831C5C00BFFA01 /* DiscoveryNavigationHeaderViewModelTests.swift in Sources */,
-				A7ED1F481E831BA200BFFA01 /* AlertError+Equatable.swift in Sources */,
-				339ED5662CE43099004B301D /* PledgePaymentPlansOptionViewModelTest.swift in Sources */,
-				7720BA7022E0DBD10071FDA1 /* InstantiableTests.swift in Sources */,
-				605915212E15914C0030BB90 /* LocalizedLottieFileTests.swift in Sources */,
-				A7ED1FF91E831C5C00BFFA01 /* ProjectNotificationsViewModelTest.swift in Sources */,
-				A7ED1F361E830FDC00BFFA01 /* String+TruncateTests.swift in Sources */,
-				A7ED1FFA1E831C5C00BFFA01 /* ProjectPamphletContentViewModelTests.swift in Sources */,
-				D62B14B02212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift in Sources */,
-				6067BCF2293FC3520036ABB1 /* FacebookResetPasswordViewModelTests.swift in Sources */,
-				3959A62E2B69BBA600FE8055 /* CombineTestObserver.swift in Sources */,
-				771F388A2422C961009036A0 /* PersonalizationCellViewModelTests.swift in Sources */,
-				94BA16E926698EF00034CC3F /* CommentTableViewFooterViewModelTests.swift in Sources */,
-				D660078A2410310400AC1EDB /* CategorySelectionHeaderViewModelTests.swift in Sources */,
-				A7ED1FE21E831C5C00BFFA01 /* DiscoveryViewModelTests.swift in Sources */,
-				A7ED1FF81E831C5C00BFFA01 /* VideoViewModelTests.swift in Sources */,
-				06AF787A2710E5E1009587F1 /* ProjectPageViewModelTests.swift in Sources */,
-				6051C66B2B60190E00514202 /* CreateCheckoutEnvelopeTests.swift in Sources */,
-				477239792710FABB00D26CDA /* ProjectNavigationSelectorViewModelTests.swift in Sources */,
-				AA645E9C2C7725FB0034705A /* PagedContainerViewModelTests.swift in Sources */,
-				33A6847B2DAE88E40025B0EE /* PledgeViewUseCaseTests.swift in Sources */,
-				A7A6261B1E85B936004C931A /* BackerDashboardProjectsViewModelTests.swift in Sources */,
-				8A213CF7239EB22900BBB4C7 /* MockTrackingClient.swift in Sources */,
-				D033E2C222A05B4800464E43 /* MockApplication.swift in Sources */,
-				6035AFAD2C518251007E28FC /* RewardAddOnSelectionViewModelTests.swift in Sources */,
-				8A4DDAB72373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift in Sources */,
-				A7ED1FB41E831C5C00BFFA01 /* MessagesSearchViewModelTests.swift in Sources */,
-				A7A6261A1E85B936004C931A /* BackerDashboardViewModelTests.swift in Sources */,
-				37EB3E4E228CF4FB00076E4C /* NumberFormatterTests.swift in Sources */,
-				8AE09C3E24463C4C00036043 /* PledgeDisclaimerViewModelTests.swift in Sources */,
-				06BD75CB26C431B400A12D4E /* CommentDialogViewModelTests.swift in Sources */,
-				6051C6672B600F3200514202 /* CreateCheckoutInputTests.swift in Sources */,
-				A7ED1F3A1E830FDC00BFFA01 /* UILabel+SimpleHTMLTests.swift in Sources */,
-				D6ED1B37216D0C64007F7547 /* ChangeEmailViewModelTests.swift in Sources */,
-				A7ED1F271E830FDC00BFFA01 /* AppEnvironmentTests.swift in Sources */,
-				D78E039022930DF80043E92F /* PledgeCTAContainerViewViewModelTests.swift in Sources */,
-				D6B4F00021079F750079159D /* SettingsNewslettersCellViewModelTests.swift in Sources */,
-				A7ED1FE71E831C5C00BFFA01 /* FacebookConfirmationViewModelTests.swift in Sources */,
-				D04AACA9218BB72100CF713E /* LoadingBarButtonItemViewModelTests.swift in Sources */,
-				8A4503F6234BEDD4008309EC /* PledgeViewContextTests.swift in Sources */,
-				A78355B91E85BD2D0021DA5A /* ActivityFriendFollowCellViewModelTests.swift in Sources */,
-				A7ED1FF01E831C5C00BFFA01 /* MessagesViewModelTests.swift in Sources */,
-				77BC00F82330236600808E75 /* RewardCellViewModelTests.swift in Sources */,
-				AA4533682E7A2C0A00B569E8 /* MockFacebookSDK.swift in Sources */,
-				AA4533692E7A2C0A00B569E8 /* FacebookSDKTypeTests.swift in Sources */,
-				3344A7812D9C973400D7DE91 /* RewardTrackingDetailsViewModelTest.swift in Sources */,
-				A7ED1FC91E831C5C00BFFA01 /* ActivitiesViewModelTests.swift in Sources */,
-				A7ED1FD21E831C5C00BFFA01 /* LoginToutViewModelTests.swift in Sources */,
-				A7A627171E85BA5F004C931A /* BackerDashboardProjectCellViewModelTests.swift in Sources */,
-				AA7452B22D91BB8100DCB655 /* FetchCategoriesUseCaseTests.swift in Sources */,
-				333F4E562DE91469005C4964 /* RewardsUseCaseTests.swift in Sources */,
-				AA7452B32D91BB8100DCB655 /* SimilarProjectsUseCaseTests.swift in Sources */,
-				AA7452B42D91BB8100DCB655 /* SearchFiltersUseCaseTests.swift in Sources */,
-				A7ED1F2A1E830FDC00BFFA01 /* FormatTests.swift in Sources */,
-				94BE15CE25E970A3007CD9A4 /* TrackingHelpersTests.swift in Sources */,
-				3767EDB322CFFF380088E8E4 /* ShippingRulesViewModelTests.swift in Sources */,
-				A7ED1FEF1E831C5C00BFFA01 /* LoginViewModelTests.swift in Sources */,
-				A7ED1FF31E831C5C00BFFA01 /* ProjectCreatorViewModelTests.swift in Sources */,
-				473DE01A273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift in Sources */,
-				33AB202E2D269A8D00B8C047 /* MockPledgeOverTimePlanIncrements.swift in Sources */,
-				A7ED1FB61E831C5C00BFFA01 /* MessageCellViewModelTests.swift in Sources */,
-				A7ED1F2F1E830FDC00BFFA01 /* LocalizedStringTests.swift in Sources */,
-				D04AACAC218BB72100CF713E /* SettingsNotificationCellViewModelTests.swift in Sources */,
-				4746FFF3272C564C00EC3429 /* ProjectTabCategoryDescriptionCellViewModelTests.swift in Sources */,
-				D04AACAA218BB72100CF713E /* MessageBannerViewModelTests.swift in Sources */,
-				A7ED1FBC1E831C5C00BFFA01 /* FindFriendsFriendFollowCellViewModelTests.swift in Sources */,
-				3396D6C92DA3D36D002EDD93 /* RewardTrackingActivitiesCellViewModelTest.swift in Sources */,
-				063BBA812799C7BA00659198 /* TextViewElementCellViewModelTests.swift in Sources */,
-				47733001268252C800E84915 /* RemoteConfigFeatureFlagToolsViewModelTests.swift in Sources */,
-				8A4B8E98263A153D00D92E4E /* KSRAnalyticsIdentityDataTests.swift in Sources */,
-				A7ED1FDD1E831C5C00BFFA01 /* ShareViewModelTests.swift in Sources */,
-				A7ED20001E831C5C00BFFA01 /* SearchViewModelTests.swift in Sources */,
-				8A213CF3239EAEB700BBB4C7 /* KSRAnalyticsTests.swift in Sources */,
-				E167942A2B85136900064063 /* OAuthTests.swift in Sources */,
-				77C9122B23C5079200F3D2C9 /* MockApplePayCapable.swift in Sources */,
-				D08CD201219216BA009F89F0 /* WatchProjectViewModelTests.swift in Sources */,
-				A7ED1F291E830FDC00BFFA01 /* EnvironmentTests.swift in Sources */,
-				39C6169E2BC83DB000732410 /* PostCampaignPledgeRewardsSummaryViewModelTests.swift in Sources */,
-				A7ED1F2E1E830FDC00BFFA01 /* LaunchedCountriesTests.swift in Sources */,
-				3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */,
-				194154D628D931AA004648C8 /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift in Sources */,
-				D710ADFD2441172100DC7199 /* PledgeViewCTAContainerViewModelTests.swift in Sources */,
-				94114D8826547F620063E8F6 /* CommentCellViewModelTests.swift in Sources */,
-				609935EE2E1D718F009263C5 /* OnboardingUseCaseTests.swift in Sources */,
-				D6B4D9BF209B88F3002C7B68 /* PushNotificationDialogTests.swift in Sources */,
-				8AE8D86823466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift in Sources */,
-				D04AACAD218BB72100CF713E /* SettingsNotificationPickerViewModelTests.swift in Sources */,
-				E13D76812D42CBA400FB58CE /* LoginSignupUseCaseTests.swift in Sources */,
-				E13D76792D419A5900FB58CE /* ApplePayTokenUseCaseTests.swift in Sources */,
-				A7ED1FBF1E831C5C00BFFA01 /* SortPagerViewModelTests.swift in Sources */,
-				D6AE53161FD1E05E00BEC788 /* String+Base64Tests.swift in Sources */,
-				A7ED1FCB1E831C5C00BFFA01 /* ActivityFriendBackingViewModelTests.swift in Sources */,
-				33F55B412D4A6DDD0007E50E /* PledgePaymentIncrementFormattedTest.swift in Sources */,
-				A7ED1FE51E831C5C00BFFA01 /* MessageDialogViewModelTests.swift in Sources */,
-				776B1A1124193C2500B03098 /* CategoryPillCellViewModelTests.swift in Sources */,
-				A7ED1FB11E831C5C00BFFA01 /* ActivitySampleProjectCellViewModelTests.swift in Sources */,
-				60368E6C2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift in Sources */,
-				A7ED1F371E830FDC00BFFA01 /* String+WhitespaceTests.swift in Sources */,
-				D64DDCDF235648C200DE0EA9 /* ManagePledgePaymentMethodViewModelTests.swift in Sources */,
-				370C8B6823590CC200DE75DD /* LoadingButtonViewModelTests.swift in Sources */,
-				A7ED1FF71E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift in Sources */,
-				778CCCDA2285BF8900FB8D35 /* UIView+AutoLayoutTests.swift in Sources */,
-				AA645E9E2C772C650034705A /* PagedTabBarTests.swift in Sources */,
-				373AB25F222A0DAC00769FC2 /* PasswordValidationTests.swift in Sources */,
-				D6C9A20E1F755FE200981E64 /* GraphSchemaTests.swift in Sources */,
-				395A3BC42B8E56800091A379 /* AttributionTrackingTests.swift in Sources */,
-				D6600790241A7C0000AC1EDB /* CuratedProjectsViewModelTests.swift in Sources */,
-				A7ED1F4A1E831BA200BFFA01 /* MockBundle.swift in Sources */,
-				D04AACA5218BB72100CF713E /* BetaToolsViewModelTests.swift in Sources */,
-				E1A310292D2845E00062646C /* PledgeOverTimeUseCaseTests.swift in Sources */,
-				E13D76802D42C55C00FB58CE /* PledgeOverTimeUseCaseTests.swift in Sources */,
-				333F4E592DEA4D78005C4964 /* RewardsCollectionViewModelTests.swift in Sources */,
-				1996AA332A5F477B00AE2ED0 /* PaymentMethodSettingsViewModelTests.swift in Sources */,
-				473DE018273C74BA0033331D /* ProjectRisksCellViewModelTests.swift in Sources */,
-				84F3C492251C87B400AEF24D /* UpdateActivityItemProviderTests.swift in Sources */,
-				D64850551FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift in Sources */,
-				8A4DDAB92374DF9F00ADE31D /* String+AttributedTests.swift in Sources */,
-				D65BF353233023E500B15B25 /* ManagePledgeSummaryViewModelTests.swift in Sources */,
-				064E10BF27CF038300A9A75F /* AudioVideoViewElementCellViewModelTests.swift in Sources */,
-				A7ED1FD51E831C5C00BFFA01 /* FindFriendsStatsCellViewModelTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A7D1F9411C850B7C000D41D5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -7134,285 +6280,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A7D1F9561C850B7C000D41D5 /* Sources */ = {
+		AAF3BB532F1845A200DAE921 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19E9F01729C0F9A20002AD69 /* MockAppTrackingTransparency.swift in Sources */,
-				E1855EC02EE0BF7400B4E408 /* ShippingLocationsViewModelTests.swift in Sources */,
-				A7ED20631E83256700BFFA01 /* HelpWebViewModelTests.swift in Sources */,
-				39F48E252D5521BE00090D6C /* AlertBannerTests.swift in Sources */,
-				8AD7952F239EBDF600998C79 /* MockTrackingClient.swift in Sources */,
-				60E1BB552C7670F6007D723B /* PledgeViewControllerTests.swift in Sources */,
-				A783560A1E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift in Sources */,
-				77941D2E216FCB0100398B89 /* ChangePasswordViewControllerTests.swift in Sources */,
-				A7ED20661E83256700BFFA01 /* UpdateViewModelTests.swift in Sources */,
-				A7ED20161E83229E00BFFA01 /* DiscoveryPagesDataSourceTests.swift in Sources */,
-				8A13D16C249848DA007E2C0B /* PledgeExpandableRewardsHeaderDataSourceTests.swift in Sources */,
-				77EFBAE92268E3D200DA5C3C /* RewardsCollectionViewDataSourceTests.swift in Sources */,
-				A7ED201D1E8322EC00BFFA01 /* TestCase.swift in Sources */,
-				A7ED20111E83229E00BFFA01 /* ActivitiesDataSourceTests.swift in Sources */,
-				E1BBB65E2E00724100291D48 /* GraphAPI+TestHelpers.swift in Sources */,
-				A7ED20441E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift in Sources */,
-				1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */,
-				336195032D8AB96000BED4BD /* SortViewModelTest.swift in Sources */,
-				A7ED20151E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift in Sources */,
-				39B850782C3EA5BB0045CBA5 /* MessageBannerViewTests.swift in Sources */,
-				77A3C53D219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift in Sources */,
-				E108416C2DC27F24000E4F17 /* SearchDataSourceTests.swift in Sources */,
-				77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */,
-				8A07CF052660344E00426B1C /* CommentRepliesViewControllerTests.swift in Sources */,
-				06AF78762710C970009587F1 /* ProjectPageViewControllerTests.swift in Sources */,
-				D6B6875221923BCF005F5DA7 /* ChangeEmailViewControllerTests.swift in Sources */,
-				D00A376E225BDAF800F46F47 /* UIAlertControllerTests.swift in Sources */,
-				19A97D1928C7F0E30031B857 /* DiscoveryPageViewControllerTests.swift in Sources */,
-				3751E42C2335E7D400047E9A /* TraitCollection.swift in Sources */,
-				3708DD45220A76FE00F8E569 /* CreatePasswordTableControllerTests.swift in Sources */,
-				D72370942119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift in Sources */,
-				77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */,
-				19450C2628C8225200C60F97 /* SearchViewControllerTests.swift in Sources */,
-				E1855EC32EE0C82200B4E408 /* ShippingLocationsViewTests.swift in Sources */,
-				209B0E3A265801D70006DB7D /* CommentComposerViewTests.swift in Sources */,
-				8A8C6136243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift in Sources */,
-				19A97D2328C7FCF00031B857 /* ManagePledgeViewControllerTests.swift in Sources */,
-				601342EF2C81419C00B851FA /* PostCampaignCheckoutViewControllerTests.swift in Sources */,
-				A7ED20571E8323E900BFFA01 /* ActivitiesViewControllerTests.swift in Sources */,
-				37096C3522BC282E003D1F40 /* MockAppEnvironment.swift in Sources */,
-				AA89B2562D010DA100B4D52E /* PPOProjectCardModelTests.swift in Sources */,
-				A7ED20401E8323E900BFFA01 /* DiscoveryFiltersViewControllerTests.swift in Sources */,
-				778215EE20F7AB8300F3D09F /* HelpViewControllerTests.swift in Sources */,
-				3959A62F2B69BC6D00FE8055 /* CombineTestObserver.swift in Sources */,
-				D6E7DAFC22089F9800689BD6 /* SettingsViewControllerTests.swift in Sources */,
-				37096C3022BC238C003D1F40 /* MockFeedbackGenerator.swift in Sources */,
-				E1DBB2372DAEBCE10050733F /* SearchFiltersHeaderViewTests.swift in Sources */,
-				D6E925CE211107CD00E13010 /* SettingsNewslettersDataSourceTests.swift in Sources */,
-				77FA6CD220F53E5E00809E31 /* SettingsDataSourceTests.swift in Sources */,
-				E1A310242D270CB00062646C /* BuildPaymentPlanQueryTestData.swift in Sources */,
-				E19D49C72DB7F07A004A74D5 /* FilterCategoryViewTest.swift in Sources */,
-				339ED5602CE41015004B301D /* PledgePaymentPlansViewControllerTest.swift in Sources */,
-				A7ED204D1E8323E900BFFA01 /* FindFriendsViewControllerTests.swift in Sources */,
-				015102AE1F1947CB0006C0FC /* MessageThreadsDataSourceTests.swift in Sources */,
-				392BB12C2C3C095200A5591B /* PPOEmptyStateViewTests.swift in Sources */,
-				774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */,
-				D033E2C322A05B7400464E43 /* MockApplication.swift in Sources */,
-				33AB202F2D269A8D00B8C047 /* MockPledgeOverTimePlanIncrements.swift in Sources */,
-				1611EF6A23B2773A0051CDCC /* MockUUID.swift in Sources */,
-				3751E4292335871600047E9A /* PledgeAmountViewControllerTests.swift in Sources */,
-				D6560C2A2182361800CD24BC /* PaymentMethodsDataSourceTests.swift in Sources */,
-				A7ED201E1E83231C00BFFA01 /* MockBundle.swift in Sources */,
-				1965437E28C8165200457EC6 /* ProjectPageNavigationBarViewTests.swift in Sources */,
-				A7ED20551E8323E900BFFA01 /* LoginToutViewControllerTests.swift in Sources */,
-				D03BBA5C21A8E880005604A7 /* MockPushRegistration.swift in Sources */,
-				771669D0210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift in Sources */,
-				061645A6266979C1007D8D96 /* CommentRepliesDataSourceTests.swift in Sources */,
-				771E631023426F04005967E8 /* CancelPledgeViewControllerTests.swift in Sources */,
-				39F48E272D55222900090D6C /* RestrictedCreatorViewControllerTests.swift in Sources */,
-				3732C25F224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift in Sources */,
-				A7ED205A1E8323E900BFFA01 /* TwoFactorViewControllerTests.swift in Sources */,
-				19450C2F28C823A400C60F97 /* SelectCurrencyViewControllerTests.swift in Sources */,
-				8ACF95AE248957B10064FC4C /* ManagePledgeDataSourceTests.swift in Sources */,
-				A7ED20591E8323E900BFFA01 /* MessageThreadsViewControllerTests.swift in Sources */,
-				A7ED20241E83237F00BFFA01 /* TraitController.swift in Sources */,
-				A7ED201F1E83232A00BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */,
-				A7ED20171E83229E00BFFA01 /* DiscoveryProjectsDataSourceTest.swift in Sources */,
-				776989AA242E747200AAC48D /* CuratedProjectsViewControllerTests.swift in Sources */,
-				19A97D1A28C7F0EC0031B857 /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */,
-				E1BAA03E2C1A1CE4004F8B06 /* PPOViewModelTests.swift in Sources */,
-				8A23EF0822F11470001262E1 /* RewardCardContainerViewTests.swift in Sources */,
-				1965436D28C807FB00457EC6 /* PledgePaymentMethodsViewControllerTests.swift in Sources */,
-				D764377C224174B700DAFC9E /* SharedFunctionsTests.swift in Sources */,
-				39B850762C3EA5630045CBA5 /* SwiftUI.swift in Sources */,
-				A7ED20431E8323E900BFFA01 /* EmptyStatesViewControllerTests.swift in Sources */,
-				70B1889429A521000004E293 /* FacebookResetPasswordViewControllerTests.swift in Sources */,
-				A7ED20421E8323E900BFFA01 /* SortPagerViewControllerTests.swift in Sources */,
-				392E1CC32C7678AD0065016B /* RewardAddOnSelectionViewControllerTests.swift in Sources */,
-				D6B6F91820EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift in Sources */,
-				94114D90265488720063E8F6 /* CommentCellHeaderStackViewTests.swift in Sources */,
-				A7ED20181E83229E00BFFA01 /* FindFriendsDataSourceTests.swift in Sources */,
-				47AC213E264AD7E00090AEDF /* CommentsViewControllerTests.swift in Sources */,
-				778215EB20F79FA300F3D09F /* HelpDataSourceTests.swift in Sources */,
-				37CA16AF2330038E006044F9 /* ManageViewPledgeRewardReceivedViewControllerTests.swift in Sources */,
-				8AA3DB34250AE410009AC8EA /* SettingsViewModelTests.swift in Sources */,
-				8AA5B060235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift in Sources */,
-				A7ED20641E83256700BFFA01 /* RootViewModelTests.swift in Sources */,
-				A78356081E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift in Sources */,
-				336195002D8AB5E100BED4BD /* SortViewTest.swift in Sources */,
-				D60C8BF321481BCC00D96152 /* SettingsAccountViewControllerTests.swift in Sources */,
-				8AA3DB36250AE470009AC8EA /* SettingsAccountViewModelTests.swift in Sources */,
-				94114D7B26543AE30063E8F6 /* CommentsDataSourceTests.swift in Sources */,
-				AAE7C9AB2C75949600800E03 /* PPOProjectCardViewModelTests.swift in Sources */,
-				D6B4F0032107B4760079159D /* SettingsNewslettersViewControllerTests.swift in Sources */,
-				77C9122C23C5082800F3D2C9 /* MockApplePayCapable.swift in Sources */,
-				60C119332D7F254900318486 /* ProjectCardViewTests.swift in Sources */,
-				D60C8CE12149A65000D96152 /* SettingsPrivacyDataSourceTests.swift in Sources */,
-				A7ED20481E8323E900BFFA01 /* LoginViewControllerTests.swift in Sources */,
-				77CD8981217FA01B003066DA /* ProjectPageViewControllerConversionTests.swift in Sources */,
-				47CFFFFC27346034009B9510 /* ProjectPageViewControllerDataSourceTests.swift in Sources */,
-				77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */,
-				A7ED20521E8323E900BFFA01 /* FacebookConfirmationViewControllerTests.swift in Sources */,
-				AAE7C9AC2C75949600800E03 /* PPOProjectCardTests.swift in Sources */,
-				33AF01C22D2E973A0085A153 /* PledgeOverTimePaymentScheduleViewControllerTest.swift in Sources */,
-				37CA16B323304DD9006044F9 /* ToggleViewControllerTests.swift in Sources */,
-				A7ED20231E83237F00BFFA01 /* Combos.swift in Sources */,
-				D6F741A821836E5700C2DDA2 /* PaymentMethodSettingsViewControllerTests.swift in Sources */,
-				01483F222F0DDFF900A1D833 /* ScreenshotTestHelpers.swift in Sources */,
-				33AB202B2D268EE500B8C047 /* PledgeRewardsSummaryTotalViewControllerTests.swift in Sources */,
-				A7ED20621E83256700BFFA01 /* AppDelegateViewModelTests.swift in Sources */,
-				8A49395D24B5394700C3C3CE /* RewardAddOnSelectionDataSourceTests.swift in Sources */,
-				3344A77E2D9C93A200D7DE91 /* RewardTrackingDetailsViewTest.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D01587541EEB2DE4006E7684 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6008633729B9025F00B87B39 /* GraphUserEmailTests.swift in Sources */,
-				8AC3E00C26961E8A00168BF8 /* Reward+RewardFragmentTests.swift in Sources */,
-				47D8619D26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift in Sources */,
-				D0D10C0A1EEB4550005EBAD0 /* DiscoveryParamsTests.swift in Sources */,
-				06032A9626CEF6D20013AAB9 /* FetchAddOnsQueryTemplate.swift in Sources */,
-				8AB64FED2576C8240075E2E7 /* EmailVerificationResponseEnvelopeTests.swift in Sources */,
-				19047FC32889B2F900BDD1A8 /* CreateSetupIntentMutationTemplate.swift in Sources */,
-				47D7D09C26C2FA5F00D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInputTests.swift in Sources */,
-				06F7BE1C26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift in Sources */,
-				77776BCA234BA88F00A42388 /* CancelBackingInputTests.swift in Sources */,
-				33AF66CF2DDE571300558D49 /* AddUserToSecretRewardGroupInputTests.swift in Sources */,
-				0622C92827347F980039AAC9 /* FetchCategoryQueryTemplate.swift in Sources */,
-				33AA26DE2E3B1467002DBD60 /* LocationMocks.swift in Sources */,
-				19047FC52889B52100BDD1A8 /* CreateSetupIntentInputTests.swift in Sources */,
-				47A662FB26AF792A001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.DataTests.swift in Sources */,
-				D0D10C201EEB4550005EBAD0 /* User.NewsletterSubscriptionsTests.swift in Sources */,
-				60C996F12AC2043A006BE4F4 /* CreateFlaggingInputTests.swift in Sources */,
-				D0D10C051EEB4550005EBAD0 /* ChangePaymentMethodEnvelopeTests.swift in Sources */,
-				3959A62C2B69B9CD00FE8055 /* CombineTestObserver.swift in Sources */,
-				06C1256226A89408003BE6B9 /* Comment+CommentFragmentTests.swift in Sources */,
-				06BD75C626C42D6900A12D4E /* ActivityCommentTests.swift in Sources */,
-				6090F0C52D2ED52D009C9AEE /* TimeInterval+ISO8601DateTests.swift in Sources */,
-				4753C78F264EE1B100BB10B6 /* PostCommentInputTests.swift in Sources */,
-				06032A8C26CEADED0013AAB9 /* FetchProjectCommentsQueryTemplate.swift in Sources */,
-				06BD75C526C42D6600A12D4E /* ActivityCommentAuthorTests.swift in Sources */,
-				33AA26E02E3B1471002DBD60 /* ProjectMocks.swift in Sources */,
-				33AA26E32E3B16D8002DBD60 /* PaymentIncrementsMocks.swift in Sources */,
-				20A0938A2666578D00DEC258 /* CommentTests.swift in Sources */,
-				E10BE8E72B151D2700F73DC9 /* BlockUserInputTests.swift in Sources */,
-				77272D382370AB8E003B7A9C /* BackingPaymentSourceTests.swift in Sources */,
-				60F7FAB32E7323CB004B3177 /* MockApolloClient.swift in Sources */,
-				8A15574326951A4B00017845 /* Backing+BackingFragmentTests.swift in Sources */,
-				0665C74B26E930BC00A0EDA1 /* FetchProjectQueryTemplate.swift in Sources */,
-				06D23BBF26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift in Sources */,
-				8AC3E0592697ABD900168BF8 /* Project.Category+CategoryFragmentTests.swift in Sources */,
-				E170B9112B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift in Sources */,
-				D0E78C3822A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift in Sources */,
-				8AC3E128269F5B9700168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.DataTests.swift in Sources */,
-				E1BBB65F2E00724100291D48 /* GraphAPI+TestHelpers.swift in Sources */,
-				19047FC12889B11F00BDD1A8 /* CreateSetupIntentMutationTests.swift in Sources */,
-				06232D472795EC4F00A81755 /* HTMLParserTemplates.swift in Sources */,
-				D0D10C1E1EEB4550005EBAD0 /* UpdateTests.swift in Sources */,
-				0622C9242734778D0039AAC9 /* Category+CategoryFragmentTests.swift in Sources */,
-				D0D10C211EEB4550005EBAD0 /* User.NotificationsTests.swift in Sources */,
-				D0D10C1C1EEB4550005EBAD0 /* UpdateDraftTests.swift in Sources */,
-				19047FCF2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift in Sources */,
-				D0D10C0D1EEB4550005EBAD0 /* FriendStatsEnvelopeTests.swift in Sources */,
-				06B9AF4E26AF79DD00735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift in Sources */,
-				8AF34C8623440565000B211D /* ApplePayParamsTests.swift in Sources */,
-				06FFCE4B26A71D0500D315EF /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift in Sources */,
-				77DB532A2215D0AA0078991C /* UserCreditCardsTests.swift in Sources */,
-				331746882E09BB9000C5FC1C /* PledgeManager+PledgeManagerFragmentTests.swift in Sources */,
-				D01589A21EEB2ED7006E7684 /* ServiceTypeTests.swift in Sources */,
-				D0D10C0F1EEB4550005EBAD0 /* LocationTests.swift in Sources */,
-				194C002E2A68447200621DC3 /* TriggerThirdPartyEventInputTests.swift in Sources */,
-				06032A8E26CEB3E50013AAB9 /* CommentFragmentTemplate.swift in Sources */,
-				D0D10C121EEB4550005EBAD0 /* Project.CountryTests.swift in Sources */,
-				474D732026B46412000F63DC /* ErroredBackingsEnvelopeTests.swift in Sources */,
-				8ADCCCC0264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift in Sources */,
-				D0D10C0B1EEB4550005EBAD0 /* ErrorEnvelopeTests.swift in Sources */,
-				D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */,
-				D0D10C081EEB4550005EBAD0 /* ConfigTests.swift in Sources */,
-				6030C6CF2D2D869800A3033C /* PledgePaymentIncrement+GraphAPITests.swift in Sources */,
-				33AA26E12E3B1476002DBD60 /* BackingMocks.swift in Sources */,
-				E10BE8E42B151A0B00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInputTests.swift in Sources */,
-				33AA26D12E3AC568002DBD60 /* ProjectAndBackingEnvelopeTests.swift in Sources */,
-				064AEF13270CFB53006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift in Sources */,
-				06962F8F273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift in Sources */,
-				06232D3C2795EC2400A81755 /* HTMLParserTests.swift in Sources */,
-				D015899E1EEB2ED7006E7684 /* ServiceTests.swift in Sources */,
-				06962F8B273B32D900FB0B3D /* PostCommentEnvelope+PostCommentMutationDataTests.swift in Sources */,
-				8AF34C7A2342D864000B211D /* Encodable+DictionaryTests.swift in Sources */,
-				D0D10C0C1EEB4550005EBAD0 /* FindFriendsEnvelopeTests.swift in Sources */,
-				E1A149242ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift in Sources */,
-				47B1338F26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift in Sources */,
-				D0D10C141EEB4550005EBAD0 /* Project.VideoTests.swift in Sources */,
-				D0D10C181EEB4550005EBAD0 /* RewardsItemTests.swift in Sources */,
-				8AC3E112269F4DAF00168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInputTests.swift in Sources */,
-				8AC3E05126979F8600168BF8 /* Project+ProjectFragmentTests.swift in Sources */,
-				60C996F22AC20487006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift in Sources */,
-				8AF34C7F2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift in Sources */,
-				8AC3E05E2697ABEF00168BF8 /* Project.Country+CountryFragmentTests.swift in Sources */,
-				066C0AE126CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift in Sources */,
-				D0D10C131EEB4550005EBAD0 /* Project.PhotoTests.swift in Sources */,
-				E1A149272ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift in Sources */,
-				194154D328D928C9004648C8 /* CreatePaymentSourceSetupIntentInputTests.swift in Sources */,
-				8AF34C762342D1D2000B211D /* UpdateBackingInputTests.swift in Sources */,
-				606100B72E7211B0008CA69B /* AsyncApolloClientTests.swift in Sources */,
-				33AA26DF2E3B146C002DBD60 /* UserMocks.swift in Sources */,
-				D0D10C191EEB4550005EBAD0 /* RewardTests.swift in Sources */,
-				D0D10C101EEB4550005EBAD0 /* MessageTests.swift in Sources */,
-				19047FD12889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift in Sources */,
-				E12C883B2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift in Sources */,
-				77C0818E245CBA1B004ABE88 /* SignInWithAppleInputTests.swift in Sources */,
-				478E31C526C1CB93004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInputTests.swift in Sources */,
-				D0D10C151EEB4550005EBAD0 /* ProjectStatsEnvelopeTests.swift in Sources */,
-				8A07D00426657F7800426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelopeTests.swift in Sources */,
-				8A2C015F2589391D00EE11E7 /* ProjectActivityEnvelopeTests.swift in Sources */,
-				194C002F2A6844B300621DC3 /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInputTests.swift in Sources */,
-				062868EC26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift in Sources */,
-				D0D10C221EEB4550005EBAD0 /* UserTests.swift in Sources */,
-				066C0AE526CC143B0048F4D8 /* DeletePaymentSourceMutationTemplate.swift in Sources */,
-				473387DE26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift in Sources */,
-				47D7D09E26C2FC4000D2BAB5 /* SignInWithAppleEnvelope+SignInWithAppleMutation.DataTests.swift in Sources */,
-				47A662F926AF7745001CE7B1 /* WatchProjectInputTests.swift in Sources */,
-				D0D10C171EEB4550005EBAD0 /* PushEnvelopeTests.swift in Sources */,
-				47A662F726AF75B7001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInputTests.swift in Sources */,
-				D0D10C1D1EEB4550005EBAD0 /* UpdatePledgeEnvelopeTests.swift in Sources */,
-				069CD29726B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift in Sources */,
-				064AEF11270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift in Sources */,
-				D0D10C0E1EEB4550005EBAD0 /* ItemTests.swift in Sources */,
-				0620176E276956D600818A47 /* GraphCommentTests.swift in Sources */,
-				D755ECAE23216C290096F189 /* CreateBackingInputTests.swift in Sources */,
-				062868EE26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift in Sources */,
-				8AC3E0662697AC0400168BF8 /* User+UserFragmentTests.swift in Sources */,
-				0622C92C273499B60039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesEnvelopeDataTests.swift in Sources */,
-				0622C92627347EE10039AAC9 /* CategoryEnvelope+FetchCategoryQueryDataTests.swift in Sources */,
-				D755ECB123217D5B0096F189 /* CreateBackingEnvelopeTests.swift in Sources */,
-				06D23BC126F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift in Sources */,
-				8ADCCD912655D4030079D308 /* ApolloInterceptorsTests.swift in Sources */,
-				0665C74926E9302100A0EDA1 /* Project+FetchProjectQueryDataTests.swift in Sources */,
-				3959A6282B69AE6D00FE8055 /* CombineTestObserverTests.swift in Sources */,
-				06F7BE1A26B334DB0094BF37 /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift in Sources */,
-				478E31C926C1CD57004BF898 /* WatchProjectResponseEnvelope+UnwatchProjectMutation.DataTest.swift in Sources */,
-				8AC3E01F2696368B00168BF8 /* Location+LocationFragmentTests.swift in Sources */,
-				8AC3E0B42698F03200168BF8 /* Project+FetchAddOnsQueryDataTests.swift in Sources */,
-				47613FBE2652C66A006F09FF /* PostCommentMutationTests.swift in Sources */,
-				D0D10C1B1EEB4550005EBAD0 /* SurveyResponseTests.swift in Sources */,
-				D0D10C1F1EEB4550005EBAD0 /* User.AvatarTests.swift in Sources */,
-				8AC3E0E2269E53E900168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInputTests.swift in Sources */,
-				6051C67C2B67F44500514202 /* CreatePaymentIntentInputTests.swift in Sources */,
-				77FA1AF32445FB810035D659 /* GraphUserTests.swift in Sources */,
-				331746852E09AC5C00C5FC1C /* LastWave+LastWaveFragmentTests.swift in Sources */,
-				D0D10C021EEB4550005EBAD0 /* ActivityTests.swift in Sources */,
-				06032A9026CEC3290013AAB9 /* FetchUpdateCommentsQueryTemplate.swift in Sources */,
-				D01589A81EEB306D006E7684 /* EncodableTests.swift in Sources */,
-				D0D10C111EEB4550005EBAD0 /* MessageThreadTests.swift in Sources */,
-				066C0ADE26CAEAFD0048F4D8 /* CreatePaymentSourceMutationTemplate.swift in Sources */,
-				E10F75E82B6937FA00024AD1 /* PKCETest.swift in Sources */,
-				06032A9426CEF4810013AAB9 /* FetchUserBackingsQueryTemplate.swift in Sources */,
-				06B9AF4326AF465000735908 /* UserCreditCards+UserFragmentTests.swift in Sources */,
-				066C0AE326CC0E410048F4D8 /* CreateBackingMutationTemplate.swift in Sources */,
-				069C07E62767BD79009B7534 /* FetchCommentRepliesQueryTemplate.swift in Sources */,
-				8AC3E0A42698EE9500168BF8 /* ShippingRule+ShippingRuleFragmentTests.swift in Sources */,
-				D0D10C161EEB4550005EBAD0 /* ProjectTests.swift in Sources */,
-				777B88E522BD911F0027640F /* CategoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7438,6 +6309,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		AAF3BD5C2F19876800DAE921 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7D1F9441C850B7C000D41D5 /* Kickstarter-iOS */;
+			targetProxy = AAF3BD5B2F19876800DAE921 /* PBXContainerItemProxy */;
+		};
 		E10BE8D32B02975C00F73DC9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E10BE8CC2B02975C00F73DC9 /* RichPushNotifications */;
@@ -7580,95 +6456,6 @@
 			};
 			name = "Internal Beta";
 		};
-		A745D1D61CAAD0A400C12802 /* Internal Beta */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 5DAN4UM3NC;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.KickstarterTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = iphoneos;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-			};
-			name = "Internal Beta";
-		};
-		A745D1D81CAAD0A400C12802 /* Internal Beta */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 5DAN4UM3NC;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = iphoneos;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-			};
-			name = "Internal Beta";
-		};
-		A755114F1C8642B3005355CF /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KickDebug";
-			};
-			name = Debug;
-		};
-		A75511501C8642B3005355CF /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 48YBP49Y5N;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = iphoneos;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 		A7D1F9621C850B7C000D41D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7729,49 +6516,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.kickstarter.kickstarter";
 				SDKROOT = iphoneos;
 				VALIDATE_WORKSPACE = NO;
-			};
-			name = Release;
-		};
-		A7D1F9651C850B7C000D41D5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.KickstarterTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		A7D1F9661C850B7C000D41D5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 48YBP49Y5N;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.KickstarterTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = iphoneos;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -7919,81 +6663,145 @@
 			};
 			name = Release;
 		};
-		D01587661EEB2DE4006E7684 /* Debug */ = {
+		AAF3BB5C2F1845A200DAE921 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = KsApi/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.KsApiTests;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LibraryTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KickDebug";
 			};
 			name = Debug;
 		};
-		D01587671EEB2DE4006E7684 /* Release */ = {
+		AAF3BB5D2F1845A200DAE921 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = KsApi/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.KsApiTests;
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LibraryTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KickDebug";
 			};
 			name = Release;
 		};
-		D01587681EEB2DE4006E7684 /* Internal Beta */ = {
+		AAF3BB5E2F1845A200DAE921 /* Internal Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = KsApi/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.KsApiTests;
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LibraryTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KickDebug";
 			};
 			name = "Internal Beta";
+		};
+		AAF3BB5F2F1845A200DAE921 /* Internal Alpha */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.LibraryTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KickDebug";
+			};
+			name = "Internal Alpha";
 		};
 		D083B1031F27EF0400BEC742 /* Internal Alpha */ = {
 			isa = XCBuildConfiguration;
@@ -8091,78 +6899,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.kickstarter.kickstarter.kickalpha";
 				SDKROOT = iphoneos;
 				VALIDATE_WORKSPACE = NO;
-			};
-			name = "Internal Alpha";
-		};
-		D083B1061F27EF0400BEC742 /* Internal Alpha */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 5DAN4UM3NC;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = iphoneos;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-			};
-			name = "Internal Alpha";
-		};
-		D083B1081F27EF0400BEC742 /* Internal Alpha */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 5DAN4UM3NC;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.KickstarterTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = iphoneos;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-			};
-			name = "Internal Alpha";
-		};
-		D083B10A1F27EF0400BEC742 /* Internal Alpha */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = KsApi/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.KsApiTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
 			};
 			name = "Internal Alpha";
 		};
@@ -8487,17 +7223,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A755115A1C8642B3005355CF /* Build configuration list for PBXNativeTarget "Library-iOSTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A755114F1C8642B3005355CF /* Debug */,
-				A75511501C8642B3005355CF /* Release */,
-				A745D1D81CAAD0A400C12802 /* Internal Beta */,
-				D083B1061F27EF0400BEC742 /* Internal Alpha */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		A7D1F9611C850B7C000D41D5 /* Build configuration list for PBXNativeTarget "Kickstarter-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -8505,17 +7230,6 @@
 				A7D1F9631C850B7C000D41D5 /* Release */,
 				A745D1D51CAAD0A400C12802 /* Internal Beta */,
 				D083B1041F27EF0400BEC742 /* Internal Alpha */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A7D1F9641C850B7C000D41D5 /* Build configuration list for PBXNativeTarget "Kickstarter-Framework-iOSTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A7D1F9651C850B7C000D41D5 /* Debug */,
-				A7D1F9661C850B7C000D41D5 /* Release */,
-				A745D1D61CAAD0A400C12802 /* Internal Beta */,
-				D083B1081F27EF0400BEC742 /* Internal Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -8531,13 +7245,13 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D01587651EEB2DE4006E7684 /* Build configuration list for PBXNativeTarget "KsApiTests" */ = {
+		AAF3BB5B2F1845A200DAE921 /* Build configuration list for PBXNativeTarget "LibraryTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D01587661EEB2DE4006E7684 /* Debug */,
-				D01587671EEB2DE4006E7684 /* Release */,
-				D01587681EEB2DE4006E7684 /* Internal Beta */,
-				D083B10A1F27EF0400BEC742 /* Internal Alpha */,
+				AAF3BB5C2F1845A200DAE921 /* Debug */,
+				AAF3BB5D2F1845A200DAE921 /* Release */,
+				AAF3BB5E2F1845A200DAE921 /* Internal Beta */,
+				AAF3BB5F2F1845A200DAE921 /* Internal Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -8603,14 +7317,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
-			};
-		};
-		194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/stripe/stripe-ios-spm";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 23.32.0;
 			};
 		};
 		194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */ = {
@@ -8685,6 +7391,14 @@
 				minimumVersion = 1.18.6;
 			};
 		};
+		AA7B64922F20420F00602E54 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stripe/stripe-ios-spm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 23.32.0;
+			};
+		};
 		E1B2146F2BFD184500109961 /* XCRemoteSwiftPackageReference "KingfisherWebP" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/yeatse/KingfisherWebP.git";
@@ -8701,35 +7415,15 @@
 			package = 06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
 			productName = Prelude;
 		};
-		191A4B4B28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
-			productName = "ReactiveExtensions-TestHelpers";
-		};
-		1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
-			productName = "ReactiveExtensions-TestHelpers";
-		};
-		33AA26D22E3ACDBC002DBD60 /* ReactiveExtensions-TestHelpers */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
-			productName = "ReactiveExtensions-TestHelpers";
-		};
 		3976B36D2E57DC7F00D2DD50 /* SegmentBrazeUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3976B3682E57AEC200D2DD50 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
 			productName = SegmentBrazeUI;
 		};
-		7049568F299D53ED00B273DF /* SnapshotTesting */ = {
+		AA7B64932F20420F00602E54 /* Stripe */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
-			productName = SnapshotTesting;
-		};
-		AA645E9F2C772DC90034705A /* SnapshotTesting */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
-			productName = SnapshotTesting;
+			package = AA7B64922F20420F00602E54 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			productName = Stripe;
 		};
 		AAF3BB372F14987300DAE921 /* KsApi */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -8739,14 +7433,59 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = "Kickstarter-Framework";
 		};
-		E18A674D2E28236D00BA0376 /* ApolloTestSupport */ = {
+		AAF3BB4F2F183C1400DAE921 /* Library */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
-			productName = ApolloTestSupport;
+			productName = Library;
 		};
-		E1B33F552E53817D008903BA /* GraphAPITestMocks */ = {
+		AAF3BB512F183C1400DAE921 /* LibraryTestHelpers */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = GraphAPITestMocks;
+			productName = LibraryTestHelpers;
+		};
+		AAFCECF22F20353A00EAC2FE /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		AAFCECF42F20353A00EAC2FE /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		AAFCECF62F20353A00EAC2FE /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
+		AAFCECFB2F2038EE00EAC2FE /* KsApi */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = KsApi;
+		};
+		AAFCECFD2F2038EE00EAC2FE /* KsApiTestHelpers */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = KsApiTestHelpers;
+		};
+		AAFCECFF2F2038F200EAC2FE /* Library */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Library;
+		};
+		AAFCED012F2038F200EAC2FE /* LibraryTestHelpers */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LibraryTestHelpers;
+		};
+		AAFCED032F2038FC00EAC2FE /* ReactiveExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
+			productName = ReactiveExtensions;
+		};
+		AAFCED052F2038FC00EAC2FE /* ReactiveExtensions-TestHelpers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
+			productName = "ReactiveExtensions-TestHelpers";
+		};
+		AAFCED072F20399B00EAC2FE /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
