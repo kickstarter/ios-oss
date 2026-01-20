@@ -54,30 +54,7 @@ struct PPOView: View {
         viewModel: card,
         parentSize: parentSize,
         onHandleEvent: { cardModel, event in
-          switch event {
-          case .viewProjectDetails:
-            self.viewModel.viewProjectDetails(from: cardModel)
-          case .sendMessage:
-            self.viewModel.contactCreator(from: cardModel)
-          case .editAddress:
-            self.viewModel.editAddress(from: cardModel)
-          case let .authenticateCard(clientSecret):
-            self.viewModel.fix3DSChallenge(
-              from: cardModel,
-              clientSecret: clientSecret,
-              onProgress: { [weak card] state in
-                card?.handle3DSState(state)
-              }
-            )
-          case .completeSurvey:
-            self.viewModel.openSurvey(from: cardModel)
-          case .managePledge:
-            self.viewModel.managePledge(from: cardModel)
-          case let .confirmAddress(address, addressId):
-            self.viewModel.confirmAddress(from: cardModel, address: address, addressId: addressId)
-          case .fixPayment:
-            self.viewModel.fixPaymentMethod(from: cardModel)
-          }
+          self.viewModel.handleCardEvent(event, from: cardModel)
         }
       )
       .listRowBackground(EmptyView())

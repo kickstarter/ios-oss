@@ -267,8 +267,9 @@ class PPOViewModelTests: XCTestCase {
     let template = PPOProjectCardModel.confirmAddressTemplate
     let address = "fake address"
     let addressId = "fake id"
+    let cardEvent = PPOCardEvent.confirmAddress(address: address, addressId: addressId)
     self.verifyNavigationEvent(
-      { self.viewModel.confirmAddress(from: template, address: address, addressId: addressId) },
+      { self.viewModel.handleCardEvent(cardEvent, from: template) },
       event: .confirmAddress(
         backingId: template.backingGraphId,
         addressId: addressId,
@@ -280,7 +281,7 @@ class PPOViewModelTests: XCTestCase {
 
   func testNavigationContactCreator() {
     self.verifyNavigationEvent(
-      { self.viewModel.contactCreator(from: PPOProjectCardModel.addressLockTemplate) },
+      { self.viewModel.handleCardEvent(.sendMessage, from: .addressLockTemplate) },
       event: .contactCreator(messageSubject: MessageSubject.project(
         id: PPOProjectCardModel.addressLockTemplate.projectId,
         name: PPOProjectCardModel.addressLockTemplate.projectName
@@ -291,45 +292,49 @@ class PPOViewModelTests: XCTestCase {
   func testNavigationFix3DSChallenge() {
     let clientSecret = "xyz"
     let onProgress: (PPOActionState) -> Void = { _ in }
+    let cardEvent = PPOCardEvent.authenticateCard(
+      clientSecret: clientSecret,
+      onProgress: onProgress
+    )
     self.verifyNavigationEvent(
-      { self.viewModel.fix3DSChallenge(
-        from: PPOProjectCardModel.authenticateCardTemplate,
-        clientSecret: clientSecret,
-        onProgress: onProgress
-      ) },
+      { self.viewModel.handleCardEvent(cardEvent, from: .authenticateCardTemplate) },
       event: .fix3DSChallenge(clientSecret: clientSecret, onProgress: onProgress)
     )
   }
 
   func testNavigationFixPaymentMethod() {
+    let template = PPOProjectCardModel.fixPaymentTemplate
     self.verifyNavigationEvent(
-      { self.viewModel.fixPaymentMethod(from: PPOProjectCardModel.fixPaymentTemplate) },
+      { self.viewModel.handleCardEvent(.fixPayment, from: template) },
       event: .fixPaymentMethod(
-        projectId: PPOProjectCardModel.fixPaymentTemplate.projectId,
-        backingId: PPOProjectCardModel.fixPaymentTemplate.backingId
+        projectId: template.projectId,
+        backingId: template.backingId
       )
     )
   }
 
   func testNavigationOpenSurvey() {
+    let template = PPOProjectCardModel.completeSurveyTemplate
     self.verifyNavigationEvent(
-      { self.viewModel.openSurvey(from: PPOProjectCardModel.completeSurveyTemplate) },
-      event: .survey(url: PPOProjectCardModel.completeSurveyTemplate.backingDetailsUrl)
+      { self.viewModel.handleCardEvent(.completeSurvey, from: template) },
+      event: .survey(url: template.backingDetailsUrl)
     )
   }
 
   func testNavigationManagePledge() {
+    let template = PPOProjectCardModel.managePledgeTemplate
     self.verifyNavigationEvent(
-      { self.viewModel.managePledge(from: PPOProjectCardModel.managePledgeTemplate) },
-      event: .managePledge(url: PPOProjectCardModel.managePledgeTemplate.backingDetailsUrl)
+      { self.viewModel.handleCardEvent(.managePledge, from: template) },
+      event: .managePledge(url: template.backingDetailsUrl)
     )
   }
 
   func testNavigationViewProjectDetails() {
+    let template = PPOProjectCardModel.fixPaymentTemplate
     self.verifyNavigationEvent(
       // This could be tested with any template. All cards allow the user to view project details.
-      { self.viewModel.viewProjectDetails(from: PPOProjectCardModel.fixPaymentTemplate) },
-      event: .projectDetails(projectId: PPOProjectCardModel.fixPaymentTemplate.projectId)
+      { self.viewModel.handleCardEvent(.viewProjectDetails, from: template) },
+      event: .projectDetails(projectId: template.projectId)
     )
   }
 
@@ -375,9 +380,9 @@ class PPOViewModelTests: XCTestCase {
       self.viewModel.viewDidAppear()
 
       // Trigger some actions that generate analytics
-      self.viewModel.openSurvey(from: PPOProjectCardModel.completeSurveyTemplate)
-      self.viewModel.fixPaymentMethod(from: PPOProjectCardModel.fixPaymentTemplate)
-      self.viewModel.contactCreator(from: PPOProjectCardModel.addressLockTemplate)
+      self.viewModel.handleCardEvent(.completeSurvey, from: .completeSurveyTemplate)
+      self.viewModel.handleCardEvent(.fixPayment, from: .fixPaymentTemplate)
+      self.viewModel.handleCardEvent(.sendMessage, from: .addressLockTemplate)
 
       await fulfillment(of: [initialLoadExpectation], timeout: 0.1)
 
