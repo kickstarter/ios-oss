@@ -334,6 +334,7 @@ private let tableViewStyle: TableViewStyle = { tableView in
     |> \.rowHeight .~ UITableView.automaticDimension
     |> \.separatorColor .~ LegacyColors.ksr_support_200.uiColor()
     |> \.separatorInset .~ .zero
+    |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
 }
 
 internal func commentsViewController(

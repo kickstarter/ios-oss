@@ -24,7 +24,10 @@ final class PPOProjectCardViewModelTests: XCTestCase {
     viewModel.performAction(.authenticateCard(clientSecret: clientSecret))
     waitForExpectations(timeout: 0.1)
 
-    let authenticateCardEvent = PPOCardEvent.authenticateCard(clientSecret: clientSecret)
+    let authenticateCardEvent = PPOCardEvent.authenticateCard(
+      clientSecret: clientSecret,
+      onProgress: { _ in }
+    )
     XCTAssertEqual(events, [authenticateCardEvent])
   }
 

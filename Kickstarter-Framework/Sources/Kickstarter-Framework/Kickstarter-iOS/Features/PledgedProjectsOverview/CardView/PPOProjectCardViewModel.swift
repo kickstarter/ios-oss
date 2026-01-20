@@ -3,7 +3,7 @@ import Foundation
 import KsApi
 import Library
 
-public enum PPOCardEvent: Equatable, Hashable {
+public enum PPOCardEvent: Equatable {
   case editAddress
   case sendMessage
   case viewProjectDetails
@@ -11,7 +11,30 @@ public enum PPOCardEvent: Equatable, Hashable {
   case completeSurvey
   case managePledge
   case fixPayment
-  case authenticateCard(clientSecret: String)
+  case authenticateCard(clientSecret: String, onProgress: (PPOActionState) -> Void)
+
+  public static func == (lhs: PPOCardEvent, rhs: PPOCardEvent) -> Bool {
+    switch (lhs, rhs) {
+    case (.editAddress, .editAddress): return true
+    case (.sendMessage, .sendMessage): return true
+    case (.viewProjectDetails, .viewProjectDetails): return true
+    case (.completeSurvey, .completeSurvey): return true
+    case (.managePledge, .managePledge): return true
+    case (.fixPayment, .fixPayment): return true
+    case let (
+      .confirmAddress(address: lhsAddress, addressId: lhsId),
+      .confirmAddress(address: rhsAddress, addressId: rhsId)
+    ):
+      return lhsAddress == rhsAddress && lhsId == rhsId
+    case let (
+      .authenticateCard(lhsClientSecret, _),
+      .authenticateCard(rhsClientSecret, _)
+    ):
+      return lhsClientSecret == rhsClientSecret
+    default:
+      return false
+    }
+  }
 }
 
 protocol PPOProjectCardViewModelInputs {
@@ -69,7 +92,9 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
     let event: PPOCardEvent
     switch action {
     case let .authenticateCard(clientSecret: clientSecret):
-      event = .authenticateCard(clientSecret: clientSecret)
+      event = .authenticateCard(clientSecret: clientSecret, onProgress: { [weak self] state in
+        self?.handle3DSState(state)
+      })
     case .completeSurvey:
       event = .completeSurvey
     case let .confirmAddress(address: address, addressId: addressId):

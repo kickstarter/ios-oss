@@ -1,4 +1,5 @@
 import AlamofireImage
+import KDS
 import KsApi
 import Library
 import Prelude
@@ -84,6 +85,13 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       )
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+
+    if featureFloatingTabBarEnabled() {
+      /// Replace the UITabBarController’s tab bar with our custom subclass.
+      /// UITabBarController has a read-only tabBar property and Apple doesn't provide a public setter or override for it so we need to do it via key-value coding.
+      let customTabBar = FloatingTabBar()
+      self.setValue(customTabBar, forKey: "tabBar")
+    }
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -200,6 +208,45 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
     profileNav.setViewControllers([profileVC, threadsVC, messageThreadVC], animated: true)
   }
 
+  private func configureFloatingTabBarItems(with data: TabBarItemsData) {
+    guard let items = self.tabBar.items, items.isEmpty == false else { return }
+
+    assert(items.count == 3, "FloatingTabBar expected 3 items, got \(items.count)")
+
+    data.items.forEach { item in
+      switch item {
+      case let .home(index):
+        self.setFloatingTabBarIcon(imageName: "floating-tabbar-icon-home", at: index)
+
+      case let .search(index):
+        self.setFloatingTabBarIcon(imageName: "floating-tabbar-icon-search", at: index)
+
+      case let .profile(_, index):
+        /// Only override profile icon if logged out
+        guard data.isLoggedIn == false else { break }
+
+        self.setFloatingTabBarIcon(imageName: "floating-tabbar-icon-profile", at: index)
+
+      case .activity:
+        break
+      }
+    }
+
+    /// Remove labels + center icons
+    items.forEach {
+      $0.title = nil
+      $0.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
+    }
+  }
+
+  private func setFloatingTabBarIcon(imageName name: String, at index: Int) {
+    guard let item = self.tabBarItem(atIndex: index),
+          let image = UIImage(named: name)?.withRenderingMode(.alwaysTemplate) else { return }
+
+    item.image = image
+    item.selectedImage = image
+  }
+
   fileprivate func setTabBarItemStyles(withData data: TabBarItemsData) {
     data.items.forEach { item in
       switch item {
@@ -215,6 +262,11 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
 
         self.setProfileImage(with: data, avatarUrl: avatarUrl, index: index)
       }
+    }
+
+    if featureFloatingTabBarEnabled() {
+      /// Run last so it overwrites the default tab-bar icons/titles
+      self.configureFloatingTabBarItems(with: data)
     }
   }
 
@@ -334,12 +386,13 @@ private func tabbarAvatarImageFromData(_ data: Data) -> (defaultImage: UIImage?,
   let deselectedImage = strokedRoundImage(
     fromImage: avatar,
     size: tabBarAvatarSize,
-    color: tabBarDeselectedColor
+    color: featureFloatingTabBarEnabled() ? .clear : tabBarDeselectedColor
   )
   let selectedImage = strokedRoundImage(
     fromImage: avatar,
     size: tabBarAvatarSize,
-    color: tabBarSelectedColor,
+    color: featureFloatingTabBarEnabled() ? Colors.FloatingTabBar.profileIconBorderColor
+      .uiColor() : tabBarSelectedColor,
     lineWidth: 2.0
   )
 

@@ -261,16 +261,17 @@ class PPOViewModelTests: XCTestCase {
     XCTAssertEqual(secondData.count, 7)
   }
 
-  func testNavigationBackedProjects() {
-    self.verifyNavigationEvent({ self.viewModel.openBackedProjects() }, event: .backedProjects)
+  func testEventBackedProjects() {
+    self.verifyPreparedEvent({ self.viewModel.openBackedProjects() }, event: .backedProjects)
   }
 
-  func testNavigationConfirmAddress() {
+  func testEventConfirmAddress() {
     let template = PPOProjectCardModel.confirmAddressTemplate
     let address = "fake address"
     let addressId = "fake id"
-    self.verifyNavigationEvent(
-      { self.viewModel.confirmAddress(from: template, address: address, addressId: addressId) },
+    let cardEvent = PPOCardEvent.confirmAddress(address: address, addressId: addressId)
+    self.verifyPreparedEvent(
+      { self.viewModel.handleCardEvent(cardEvent, from: template) },
       event: .confirmAddress(
         backingId: template.backingGraphId,
         addressId: addressId,
@@ -280,9 +281,9 @@ class PPOViewModelTests: XCTestCase {
     )
   }
 
-  func testNavigationContactCreator() {
-    self.verifyNavigationEvent(
-      { self.viewModel.contactCreator(from: PPOProjectCardModel.addressLockTemplate) },
+  func testEventContactCreator() {
+    self.verifyPreparedEvent(
+      { self.viewModel.handleCardEvent(.sendMessage, from: .addressLockTemplate) },
       event: .contactCreator(messageSubject: MessageSubject.project(
         id: PPOProjectCardModel.addressLockTemplate.projectId,
         name: PPOProjectCardModel.addressLockTemplate.projectName
@@ -290,48 +291,52 @@ class PPOViewModelTests: XCTestCase {
     )
   }
 
-  func testNavigationFix3DSChallenge() {
+  func testEventFix3DSChallenge() {
     let clientSecret = "xyz"
     let onProgress: (PPOActionState) -> Void = { _ in }
-    self.verifyNavigationEvent(
-      { self.viewModel.fix3DSChallenge(
-        from: PPOProjectCardModel.authenticateCardTemplate,
-        clientSecret: clientSecret,
-        onProgress: onProgress
-      ) },
+    let cardEvent = PPOCardEvent.authenticateCard(
+      clientSecret: clientSecret,
+      onProgress: onProgress
+    )
+    self.verifyPreparedEvent(
+      { self.viewModel.handleCardEvent(cardEvent, from: .authenticateCardTemplate) },
       event: .fix3DSChallenge(clientSecret: clientSecret, onProgress: onProgress)
     )
   }
 
-  func testNavigationFixPaymentMethod() {
-    self.verifyNavigationEvent(
-      { self.viewModel.fixPaymentMethod(from: PPOProjectCardModel.fixPaymentTemplate) },
+  func testEventFixPaymentMethod() {
+    let template = PPOProjectCardModel.fixPaymentTemplate
+    self.verifyPreparedEvent(
+      { self.viewModel.handleCardEvent(.fixPayment, from: template) },
       event: .fixPaymentMethod(
-        projectId: PPOProjectCardModel.fixPaymentTemplate.projectId,
-        backingId: PPOProjectCardModel.fixPaymentTemplate.backingId
+        projectId: template.projectId,
+        backingId: template.backingId
       )
     )
   }
 
-  func testNavigationOpenSurvey() {
-    self.verifyNavigationEvent(
-      { self.viewModel.openSurvey(from: PPOProjectCardModel.completeSurveyTemplate) },
-      event: .survey(url: PPOProjectCardModel.completeSurveyTemplate.backingDetailsUrl)
+  func testEventOpenSurvey() {
+    let template = PPOProjectCardModel.completeSurveyTemplate
+    self.verifyPreparedEvent(
+      { self.viewModel.handleCardEvent(.completeSurvey, from: template) },
+      event: .survey(url: template.backingDetailsUrl)
     )
   }
 
-  func testNavigationManagePledge() {
-    self.verifyNavigationEvent(
-      { self.viewModel.managePledge(from: PPOProjectCardModel.managePledgeTemplate) },
-      event: .managePledge(url: PPOProjectCardModel.managePledgeTemplate.backingDetailsUrl)
+  func testEventManagePledge() {
+    let template = PPOProjectCardModel.managePledgeTemplate
+    self.verifyPreparedEvent(
+      { self.viewModel.handleCardEvent(.managePledge, from: template) },
+      event: .managePledge(url: template.backingDetailsUrl)
     )
   }
 
-  func testNavigationViewProjectDetails() {
-    self.verifyNavigationEvent(
+  func testEventViewProjectDetails() {
+    let template = PPOProjectCardModel.fixPaymentTemplate
+    self.verifyPreparedEvent(
       // This could be tested with any template. All cards allow the user to view project details.
-      { self.viewModel.viewProjectDetails(from: PPOProjectCardModel.fixPaymentTemplate) },
-      event: .projectDetails(projectId: PPOProjectCardModel.fixPaymentTemplate.projectId)
+      { self.viewModel.handleCardEvent(.viewProjectDetails, from: template) },
+      event: .projectDetails(projectId: template.projectId)
     )
   }
 
@@ -377,9 +382,9 @@ class PPOViewModelTests: XCTestCase {
       self.viewModel.viewDidAppear()
 
       // Trigger some actions that generate analytics
-      self.viewModel.openSurvey(from: PPOProjectCardModel.completeSurveyTemplate)
-      self.viewModel.fixPaymentMethod(from: PPOProjectCardModel.fixPaymentTemplate)
-      self.viewModel.contactCreator(from: PPOProjectCardModel.addressLockTemplate)
+      self.viewModel.handleCardEvent(.completeSurvey, from: .completeSurveyTemplate)
+      self.viewModel.handleCardEvent(.fixPayment, from: .fixPaymentTemplate)
+      self.viewModel.handleCardEvent(.sendMessage, from: .addressLockTemplate)
 
       await fulfillment(of: [initialLoadExpectation], timeout: 0.1)
 
@@ -436,14 +441,14 @@ class PPOViewModelTests: XCTestCase {
     }
   }
 
-  // Setup the view model to monitor navigation events, then run the closure, then check to make sure only that one event fired
-  private func verifyNavigationEvent(_ closure: () -> Void, event: PPONavigationEvent) {
+  // Setup the view model to monitor prepared events, then run the closure, then check to make sure only that one event fired
+  private func verifyPreparedEvent(_ closure: () -> Void, event: PPOPreparedEvent) {
     let beforeResults: PPOViewModelPaginator.Results = self.viewModel.results
 
-    let expectation = self.expectation(description: "VerifyNavigationEvent \(event)")
+    let expectation = self.expectation(description: "VerifyPreparedEvent \(event)")
 
-    var values: [PPONavigationEvent] = []
-    self.viewModel.navigationEvents
+    var values: [PPOPreparedEvent] = []
+    self.viewModel.preparedEvents
       .collect(.byTime(DispatchQueue.main, 0.1))
       .sink(receiveValue: { v in
         values = v

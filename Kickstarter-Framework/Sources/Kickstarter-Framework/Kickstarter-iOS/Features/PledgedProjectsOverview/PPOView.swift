@@ -6,7 +6,7 @@ struct PPOView: View {
   @StateObject var viewModel = PPOViewModel()
   var shouldRefresh: AnyPublisher<Void, Never>
   var onCountChange: ((Int?) -> Void)?
-  var onNavigate: ((PPONavigationEvent) -> Void)?
+  var onHandleEvent: ((PPOPreparedEvent) -> Void)?
 
   @AccessibilityFocusState private var isBannerFocused: Bool
 
@@ -54,30 +54,7 @@ struct PPOView: View {
         viewModel: card,
         parentSize: parentSize,
         onHandleEvent: { cardModel, event in
-          switch event {
-          case .viewProjectDetails:
-            self.viewModel.viewProjectDetails(from: cardModel)
-          case .sendMessage:
-            self.viewModel.contactCreator(from: cardModel)
-          case .editAddress:
-            self.viewModel.editAddress(from: cardModel)
-          case let .authenticateCard(clientSecret):
-            self.viewModel.fix3DSChallenge(
-              from: cardModel,
-              clientSecret: clientSecret,
-              onProgress: { [weak card] state in
-                card?.handle3DSState(state)
-              }
-            )
-          case .completeSurvey:
-            self.viewModel.openSurvey(from: cardModel)
-          case .managePledge:
-            self.viewModel.managePledge(from: cardModel)
-          case let .confirmAddress(address, addressId):
-            self.viewModel.confirmAddress(from: cardModel, address: address, addressId: addressId)
-          case .fixPayment:
-            self.viewModel.fixPaymentMethod(from: cardModel)
-          }
+          self.viewModel.handleCardEvent(event, from: cardModel)
         }
       )
       .listRowBackground(EmptyView())
@@ -104,7 +81,7 @@ struct PPOView: View {
 
   @ViewBuilder var emptyView: some View {
     PPOEmptyStateView {
-      self.onNavigate?(.backedProjects)
+      self.onHandleEvent?(.backedProjects)
     }
     .frame(maxHeight: .infinity)
   }
@@ -146,8 +123,8 @@ struct PPOView: View {
           }
           self.onCountChange?(newAlerts.count)
         }
-        .onReceive(self.viewModel.navigationEvents, perform: { event in
-          self.onNavigate?(event)
+        .onReceive(self.viewModel.preparedEvents, perform: { event in
+          self.onHandleEvent?(event)
         })
         .onReceive(self.shouldRefresh.throttle(
           for: .milliseconds(300),
