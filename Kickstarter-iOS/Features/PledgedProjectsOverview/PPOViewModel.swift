@@ -246,7 +246,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
 
   func preparedEvent(
     for event: PPOCardEvent,
-    cardViewModel: PPOProjectCardViewModel
+    cardModel: PPOProjectCardModel
   ) -> PPOPreparedEvent {
     switch event {
     case .editAddress:
