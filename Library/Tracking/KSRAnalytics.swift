@@ -137,6 +137,7 @@ public final class KSRAnalytics {
    */
   public enum CTAContext {
     case addOnsContinue
+    case authenticateCardInitiate
     case blockUser
     case confirmInitiate
     case confirmSubmit
@@ -164,6 +165,7 @@ public final class KSRAnalytics {
     case signUpInitiate
     case signUpSubmit
     case surveyResponseInitiate
+    case updateRewardReceived
     case watchProject
     /// Onboarding CTA Context
     case onboardingClose
@@ -176,6 +178,7 @@ public final class KSRAnalytics {
 
     var trackingString: String {
       switch self {
+      case .authenticateCardInitiate: return "authenticate_card_initiate"
       case .addOnsContinue: return "add_ons_continue"
       case .blockUser: return "block_user"
       case .confirmInitiate: return "confirm_initiate"
@@ -211,6 +214,7 @@ public final class KSRAnalytics {
       case .signUpInitiate: return "sign_up_initiate"
       case .signUpSubmit: return "sign_up_submit"
       case .surveyResponseInitiate: return "survey_response_initiate"
+      case .updateRewardReceived: return "update_reward_received"
       case .watchProject: return "watch_project"
       }
     }
@@ -767,6 +771,57 @@ public final class KSRAnalytics {
       ctaContext: .edit,
       page: .projectAlerts,
       typeContext: .address
+    )
+    .withAllValuesFrom(projectProperties(from: project))
+    .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  public func trackPPOAuthenticateCard(
+    project: any ProjectAnalyticsProperties,
+    properties: PledgedProjectOverviewProperties
+  ) {
+    let props = contextProperties(
+      ctaContext: .authenticateCardInitiate,
+      page: .projectAlerts
+    )
+    .withAllValuesFrom(projectProperties(from: project))
+    .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  public func trackPPOViewProjectDetails(
+    project: any ProjectAnalyticsProperties,
+    properties: PledgedProjectOverviewProperties
+  ) {
+    let props = contextProperties(
+      ctaContext: .project,
+      page: .projectAlerts
+    )
+    .withAllValuesFrom(projectProperties(from: project))
+    .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  public func trackPPOUpdateRewardReceived(
+    project: any ProjectAnalyticsProperties,
+    properties: PledgedProjectOverviewProperties
+  ) {
+    let props = contextProperties(
+      ctaContext: .updateRewardReceived,
+      page: .projectAlerts
     )
     .withAllValuesFrom(projectProperties(from: project))
     .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))

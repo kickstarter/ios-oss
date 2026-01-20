@@ -243,9 +243,21 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         project: cardModel.projectAnalytics,
         properties: overallProperties
       )
-    case .authenticateCard, .viewProjectDetails, .updateRewardReceived:
-      // TODO(MBL-2818): Add analytics.
-      break
+    case .authenticateCard:
+      AppEnvironment.current.ksrAnalytics.trackPPOAuthenticateCard(
+        project: cardModel.projectAnalytics,
+        properties: overallProperties
+      )
+    case .viewProjectDetails:
+      AppEnvironment.current.ksrAnalytics.trackPPOViewProjectDetails(
+        project: cardModel.projectAnalytics,
+        properties: overallProperties
+      )
+    case .updateRewardReceived:
+      AppEnvironment.current.ksrAnalytics.trackPPOUpdateRewardReceived(
+        project: cardModel.projectAnalytics,
+        properties: overallProperties
+      )
     }
   }
 
