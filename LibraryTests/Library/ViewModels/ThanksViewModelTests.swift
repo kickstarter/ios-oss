@@ -2,6 +2,7 @@
 
 @testable import KsApi
 @testable import Library
+@testable import LibraryTestHelpers
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
