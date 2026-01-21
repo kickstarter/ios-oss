@@ -161,11 +161,14 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
 
     /// This flag allows us to control the refresh of the tab bar when toggling on the Remote Config floating tab bar FF.
     /// On first launch we intentionally default to the standard tab bar.
-    /// The flag is refreshes when the app returns to the foreground.
-    let floatingTabBarEnabled = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
-      self.applicationWillEnterForegroundSignal.signal.map { _ in featureFloatingTabBarEnabled() }
+    /// The flag is refreshed when the app returns to the foreground.
+    let featuredFlagChanged = Signal.merge(
+      self.viewDidLoadProperty.signal,
+      self.applicationWillEnterForegroundSignal.signal
     )
+
+    let floatingTabBarEnabled = featuredFlagChanged
+      .map { _ in featureFloatingTabBarEnabled() }
 
     self.floatingTabBarEnabled = floatingTabBarEnabled
 
@@ -177,13 +180,6 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
           isFloatingTabBarEnabled: isFloatingTabBarEnabled
         )
       }
-
-    let featuredFlagChanged =
-      Signal.merge(
-        self.viewDidLoadProperty.signal,
-        self.applicationWillEnterForegroundSignal.signal
-      )
-      .skip(first: 1)
 
     self.setViewControllers = Signal.merge(
       standardViewControllers,
