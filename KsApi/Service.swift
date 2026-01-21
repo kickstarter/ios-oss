@@ -552,7 +552,7 @@ public struct Service: ServiceType {
             includeLocalPickup: true
           )
       )
-      .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
+      .flatMap(Backing.producer(from:))
   }
 
   public func fetchMessageThread(messageThreadId: Int)

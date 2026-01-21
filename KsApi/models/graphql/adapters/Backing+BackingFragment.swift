@@ -61,6 +61,37 @@ extension Backing {
       status: backingStatus
     )
   }
+
+  static func producer(
+    from data: FetchBackingWithIncrementsRefundedQuery.Data
+  ) -> SignalProducer<Backing, ErrorEnvelope> {
+    let addOns = data.backing?.addOns?.nodes?
+      .compactMap { $0 }
+      .compactMap { $0.fragments.rewardFragment }
+      .compactMap { Reward.reward(from: $0) }
+
+    var paymentIncrements: [PledgePaymentIncrement] = []
+
+    if let backingIncrements = data.backing?.paymentIncrements {
+      paymentIncrements = backingIncrements
+        .compactMap {
+          PledgePaymentIncrement(withIncrementBackingFragment: $0.fragments.paymentIncrementBackingFragment)
+        }
+    }
+
+    guard
+      let backingFragment = data.backing?.fragments.backingFragment,
+      let backing = Backing.backing(
+        from: backingFragment,
+        addOns: addOns,
+        paymentIncrements: paymentIncrements
+      )
+    else {
+      return SignalProducer(error: .couldNotParseJSON)
+    }
+
+    return SignalProducer(value: backing)
+  }
 }
 
 private func backingStatus(from backingFragment: GraphAPI.BackingFragment) -> Backing.Status? {
