@@ -6,9 +6,6 @@ query FetchBackingWithIncrementsRefunded($id: ID!, $withStoredCards: Boolean!, $
       }
     }
     ...BackingFragment
-    project {
-      ...ProjectFragment
-    }
     paymentIncrements {
       ...PaymentIncrementBackingFragment
     }

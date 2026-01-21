@@ -148,4 +148,9 @@ public enum Feature: String, EnumType {
   case sauceLoginSignup = "sauce_login_signup"
   case shipstationTwoWaySync = "shipstation_two_way_sync"
   case freeItems2026 = "free_items_2026"
+  case multipleTrackingNumbers = "multiple_tracking_numbers"
+  case sauceGlobalFooter = "sauce_global_footer"
+  case editIntroPmConfigPostLaunch2026 = "edit_intro_pm_config_post_launch_2026"
+  case editRewardPmConfigPostLaunch2026 = "edit_reward_pm_config_post_launch_2026"
+  case editShippingPmConfigPostLaunch2026 = "edit_shipping_pm_config_post_launch_2026"
 }

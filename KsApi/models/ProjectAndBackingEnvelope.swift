@@ -45,7 +45,7 @@ extension ProjectAndBackingEnvelope {
 
   static func envelopeProducer(
     from data: FetchBackingWithIncrementsRefundedQuery.Data
-  ) -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
+  ) -> SignalProducer<Backing, ErrorEnvelope> {
     let addOns = data.backing?.addOns?.nodes?
       .compactMap { $0 }
       .compactMap { $0.fragments.rewardFragment }
@@ -62,17 +62,15 @@ extension ProjectAndBackingEnvelope {
 
     guard
       let backingFragment = data.backing?.fragments.backingFragment,
-      let projectFragment = data.backing?.project?.fragments.projectFragment,
       let backing = Backing.backing(
         from: backingFragment,
         addOns: addOns,
         paymentIncrements: paymentIncrements
-      ),
-      let project = Project.project(from: projectFragment, backing: backing, currentUserChosenCurrency: nil)
+      )
     else {
       return SignalProducer(error: .couldNotParseJSON)
     }
 
-    return SignalProducer(value: ProjectAndBackingEnvelope(project: project, backing: backing))
+    return SignalProducer(value: backing)
   }
 }
