@@ -134,7 +134,7 @@ jobs:
     <<: *test_job
     environment:
       - *default_environment
-      - SCHEME=Kickstarter-Framework-iOS
+      - SCHEME=Kickstarter-iOS
 
   # Library tests
   library-tests:
