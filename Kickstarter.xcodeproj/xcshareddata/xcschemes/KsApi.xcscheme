@@ -41,10 +41,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D01587571EEB2DE4006E7684"
-               BuildableName = "KsApiTests.xctest"
+               BlueprintIdentifier = "KsApiTests"
+               BuildableName = "KsApiTests"
                BlueprintName = "KsApiTests"
-               ReferencedContainer = "container:Kickstarter.xcodeproj">
+               ReferencedContainer = "container:KsApi">
             </BuildableReference>
          </TestableReference>
       </Testables>
