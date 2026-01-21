@@ -116,7 +116,7 @@
     fileprivate let fetchProjectAndBackingResult:
       Result<ProjectAndBackingEnvelope, ErrorEnvelope>?
 
-    fileprivate let fetchManagePledgeViewBackingResult: Result<ProjectAndBackingEnvelope, ErrorEnvelope>?
+    fileprivate let fetchManagePledgeViewBackingResult: Result<Backing, ErrorEnvelope>?
 
     fileprivate let fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>?
     fileprivate let fetchMessageThreadsResponse: [MessageThread]
@@ -308,7 +308,7 @@
       removeAttachmentResponse: UpdateDraft.Image? = nil,
       removeAttachmentError: ErrorEnvelope? = nil,
       publishUpdateError: ErrorEnvelope? = nil,
-      fetchManagePledgeViewBackingResult: Result<ProjectAndBackingEnvelope, ErrorEnvelope>? = nil,
+      fetchManagePledgeViewBackingResult: Result<Backing, ErrorEnvelope>? = nil,
       fetchProjectAndBackingResult: Result<ProjectAndBackingEnvelope, ErrorEnvelope>? = nil,
       fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>? = nil,
       fetchMessageThreadsResponse: [MessageThread]? = nil,
@@ -1168,7 +1168,7 @@
     }
 
     func fetchBackingForManagePledge(id _: Int, withStoredCards _: Bool)
-      -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
+      -> SignalProducer<Backing, ErrorEnvelope> {
       return producer(for: self.fetchManagePledgeViewBackingResult)
     }
 

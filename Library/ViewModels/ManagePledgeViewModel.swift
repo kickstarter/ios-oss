@@ -133,10 +133,7 @@ public final class ManagePledgeViewModel:
           .materialize()
       }
 
-    let graphBackingEnvelope = graphBackingEvent.values()
-
-    let backing = graphBackingEnvelope
-      .map { $0.backing }
+    let backing = graphBackingEvent.values()
 
     let endRefreshingWhenProjectFailed = fetchProjectEvent.errors()
       .ignoreValues()

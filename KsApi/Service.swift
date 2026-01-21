@@ -541,7 +541,7 @@ public struct Service: ServiceType {
   ///   - id: The backing ID.
   ///   - withStoredCards: Whether to include stored cards in the result.
   public func fetchBackingForManagePledge(id: Int, withStoredCards: Bool)
-    -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
+    -> SignalProducer<Backing, ErrorEnvelope> {
     return GraphQL.shared.client
       .fetch(
         query: GraphAPI
@@ -553,6 +553,8 @@ public struct Service: ServiceType {
           )
       )
       .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
+      // TODO: MBL-2970 This will be cleaned up to no longer fetch both Project and Backing.
+      .map { $0.backing }
   }
 
   public func fetchMessageThread(messageThreadId: Int)
