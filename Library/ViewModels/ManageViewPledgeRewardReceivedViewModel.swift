@@ -99,9 +99,10 @@ public class ManageViewPledgeRewardReceivedViewModel:
 
     // MARK: Analytics
 
-    project.takeWhen(self.rewardReceivedToggleTappedProperty.signal)
-      .observeValues { project in
+    self.rewardReceivedToggleTappedProperty.signal.withLatestFrom(project)
+      .observeValues { rewardReceived, project in
         AppEnvironment.current.ksrAnalytics.trackRewardReceivedToggled(
+          toggleOn: rewardReceived,
           project: project,
           context: .managePledgeScreen
         )

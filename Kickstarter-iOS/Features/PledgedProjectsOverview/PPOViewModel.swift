@@ -253,8 +253,9 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         project: cardModel.projectAnalytics,
         properties: overallProperties
       )
-    case .updateRewardReceived:
+    case let .updateRewardReceived(rewardReceived):
       AppEnvironment.current.ksrAnalytics.trackPPOUpdateRewardReceived(
+        toggleOn: rewardReceived,
         project: cardModel.projectAnalytics,
         properties: overallProperties
       )

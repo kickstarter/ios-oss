@@ -165,7 +165,7 @@ public final class KSRAnalytics {
     case signUpInitiate
     case signUpSubmit
     case surveyResponseInitiate
-    case updateRewardReceived
+    case toggleRewardReceived
     case watchProject
     /// Onboarding CTA Context
     case onboardingClose
@@ -214,7 +214,7 @@ public final class KSRAnalytics {
       case .signUpInitiate: return "sign_up_initiate"
       case .signUpSubmit: return "sign_up_submit"
       case .surveyResponseInitiate: return "survey_response_initiate"
-      case .updateRewardReceived: return "update_reward_received"
+      case .toggleRewardReceived: return "toggle_reward_received"
       case .watchProject: return "watch_project"
       }
     }
@@ -377,6 +377,8 @@ public final class KSRAnalytics {
     case facebook
     case initiate
     case location
+    case off
+    case on
     case percentRaised
     case pledge(PledgeContext)
     case projectState
@@ -456,6 +458,8 @@ public final class KSRAnalytics {
       case .facebook: return "facebook"
       case .initiate: return "initiate"
       case .location: return "location"
+      case .off: return "off"
+      case .on: return "on"
       case .percentRaised: return "percent_raised"
       case let .pledge(pledgeContext): return pledgeContext.trackingString
       case .projectState: return "project_state"
@@ -816,12 +820,14 @@ public final class KSRAnalytics {
   }
 
   public func trackPPOUpdateRewardReceived(
+    toggleOn: Bool,
     project: any ProjectAnalyticsProperties,
     properties: PledgedProjectOverviewProperties
   ) {
     let props = contextProperties(
-      ctaContext: .updateRewardReceived,
-      page: .projectAlerts
+      ctaContext: .toggleRewardReceived,
+      page: .projectAlerts,
+      typeContext: toggleOn ? .on : .off
     )
     .withAllValuesFrom(projectProperties(from: project))
     .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
@@ -1529,6 +1535,7 @@ public final class KSRAnalytics {
    Call when the reward received toggle is tapped.
    */
   public func trackRewardReceivedToggled(
+    toggleOn: Bool,
     project: any HasProjectAnalyticsProperties,
     context: PageContext
   ) {
@@ -1536,7 +1543,11 @@ public final class KSRAnalytics {
       from: project.projectAnalyticsProperties,
       loggedInUser: self.loggedInUser
     )
-    .withAllValuesFrom(contextProperties(ctaContext: .updateRewardReceived, page: context))
+    .withAllValuesFrom(contextProperties(
+      ctaContext: .toggleRewardReceived,
+      page: context,
+      typeContext: toggleOn ? .on : .off
+    ))
 
     self.track(
       event: SegmentEvent.ctaClicked.rawValue,
