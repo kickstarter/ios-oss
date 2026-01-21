@@ -146,4 +146,6 @@ public enum Feature: String, EnumType {
   case taxEducation2025 = "tax_education_2025"
   case sauceProjectFaqs = "sauce_project_faqs"
   case sauceLoginSignup = "sauce_login_signup"
+  case shipstationTwoWaySync = "shipstation_two_way_sync"
+  case freeItems2026 = "free_items_2026"
 }
