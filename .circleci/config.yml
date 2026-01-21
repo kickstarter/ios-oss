@@ -38,11 +38,13 @@ base_job: &base_job
   working_directory: ~/kickstarter
   resource_class: m4pro.medium
 
-test_job: &test_job
+base_test_job: &test_job
   steps:
     - macos/install-rosetta
     - attach_workspace:
         at: .
+
+test_job: &base_test_job
     - macos/preboot-simulator:
         # Keep simulator in sync with `Library/TestHelpers/TestCase.swift` and `Makefile`
         # iOS 18.6 is minimum supported runtime by circle-ci -> 26.1.1 (17B100)
@@ -53,6 +55,14 @@ test_job: &test_job
     - run:
         name: Run tests
         command: make test
+        no_output_timeout: "20m" # 20 minutes
+    - store_artifacts:
+        path: ./Failed_Snapshot_Tests
+
+test_spm_job: &base_test_job
+    - run:
+        name: Run Swift package tests
+        command: make test-spm
         no_output_timeout: "20m" # 20 minutes
     - store_artifacts:
         path: ./Failed_Snapshot_Tests
@@ -87,8 +97,11 @@ distribute_job: &distribute_job
 
 all_jobs: &all_jobs
   - kickstarter-tests
+  - kickstarter-framework-tests
   - library-tests
   - ksapi-tests
+  - kds-tests
+  - graphapi-tests
 
 # Jobs
 
@@ -136,14 +149,21 @@ jobs:
       - *default_environment
       - SCHEME=Kickstarter iOS
 
+  # Kickstarter Framework tests
+  kickstarter-framework-tests:
+    <<: *base_job
+    <<: *test_spm_job
+    environment:
+      - *default_environment
+      - PACKAGE=Kickstarter-Framework
+
   # Library tests
   library-tests:
     <<: *base_job
-    <<: *test_job
+    <<: *test_spm_job
     environment:
       - *default_environment
-      - TARGET=Library
-      - SCHEME=Library-iOS
+      - PACKAGE=Library
 
   # KsApi tests
   ksapi-tests:
@@ -151,8 +171,23 @@ jobs:
     <<: *test_job
     environment:
       - *default_environment
-      - TARGET=KsApi
-      - SCHEME=KsApi
+      - PACKAGE=KsApi
+
+  # KDS tests
+  kds-tests:
+    <<: *base_job
+    <<: *test_job
+    environment:
+      - *default_environment
+      - PACKAGE=KDS
+
+  # GraphAPI tests
+  graphapi-tests:
+    <<: *base_job
+    <<: *test_job
+    environment:
+      - *default_environment
+      - PACKAGE=GraphAPI
 
   deploy_alpha:
     <<: *base_job

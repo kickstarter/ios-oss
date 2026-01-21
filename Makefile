@@ -35,6 +35,9 @@ test-all:
 test: bootstrap
 	$(XCODEBUILD) test $(BUILD_FLAGS) $(XCPRETTY)
 
+test-spm: bootstrap
+	(cd $(PACKAGE) && $(XCODEBUILD) test -scheme "$(PACKAGE)-Package" -destination $(DESTINATION))
+
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
 
