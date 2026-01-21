@@ -38,13 +38,14 @@ base_job: &base_job
   working_directory: ~/kickstarter
   resource_class: m4pro.medium
 
-base_test_job: &test_job
+base_test_job: &base_test_job
   steps:
     - macos/install-rosetta
     - attach_workspace:
         at: .
 
-test_job: &base_test_job
+test_job: &test_job
+  <<: *base_test_job
   steps:
     - macos/preboot-simulator:
         # Keep simulator in sync with `Library/TestHelpers/TestCase.swift` and `Makefile`
@@ -60,7 +61,8 @@ test_job: &base_test_job
     - store_artifacts:
         path: ./Failed_Snapshot_Tests
 
-test_spm_job: &base_test_job
+test_spm_job: &test_spm_job
+  <<: *base_test_job
   steps:
     - run:
         name: Run Swift package tests
@@ -280,6 +282,15 @@ workflows:
           requires:
            - build-and-cache
       - ksapi-tests:
+          requires:
+           - build-and-cache
+      - kickstarter-framework-tests:
+          requires:
+           - build-and-cache
+      - kds-tests:
+          requires:
+           - build-and-cache
+      - graphapi-tests:
           requires:
            - build-and-cache
 
