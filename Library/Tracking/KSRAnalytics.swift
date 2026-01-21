@@ -1525,6 +1525,25 @@ public final class KSRAnalytics {
     )
   }
 
+  /**
+   Call when the reward received toggle is tapped.
+   */
+  public func trackRewardReceivedToggled(
+    project: any HasProjectAnalyticsProperties,
+    context: PageContext
+  ) {
+    let props = projectProperties(
+      from: project.projectAnalyticsProperties,
+      loggedInUser: self.loggedInUser
+    )
+    .withAllValuesFrom(contextProperties(ctaContext: .updateRewardReceived, page: context))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
   // MARK: - Empty State Events
 
   // Private tracking method that merges in default properties.
