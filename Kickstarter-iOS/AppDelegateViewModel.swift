@@ -474,9 +474,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           .demoteErrors()
           .observeForUI()
           .map { project -> (Project, Navigation.Project, [UIViewController], RefInfo?) in
-            let projectParam = Either<Project, any ProjectPageParam>(left: project)
             let vc = ProjectPageViewController.configuredWith(
-              projectOrParam: projectParam,
+              param: project.projectPageParam,
               refInfo: refInfo,
               secretRewardToken: secretRewardToken
             )

@@ -119,7 +119,7 @@ internal final class PledgeManagerWebViewController: WebViewController {
 
   fileprivate func goToProject(param: Param, refTag: RefTag?) {
     let vc = ProjectPageViewController.configuredWith(
-      projectOrParam: .right(param),
+      param: param,
       refInfo: RefInfo(refTag)
     )
     self.presentViewController(vc)

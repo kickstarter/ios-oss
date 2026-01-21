@@ -38,7 +38,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
     withEnvironment(apiService: mockService, countryCode: "US") {
       let vc = ProjectPageViewController.configuredWith(
-        projectOrParam: .left(self.cosmicSurgery),
+        param: self.cosmicSurgery.projectPageParam,
         refInfo: nil
       )
 
@@ -62,7 +62,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
     withEnvironment(apiService: mockService, countryCode: "AU") {
       let vc = ProjectPageViewController.configuredWith(
-        projectOrParam: .left(self.cosmicSurgery),
+        param: self.cosmicSurgery.projectPageParam,
         refInfo: nil
       )
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
@@ -90,7 +90,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
     withEnvironment(apiService: mockService, countryCode: "US") {
       let vc = ProjectPageViewController.configuredWith(
-        projectOrParam: .left(self.cosmicSurgery),
+        param: self.cosmicSurgery.projectPageParam,
         refInfo: nil
       )
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
@@ -118,7 +118,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
     withEnvironment(apiService: mockService, countryCode: "CA") {
       let vc = ProjectPageViewController.configuredWith(
-        projectOrParam: .left(self.cosmicSurgery),
+        param: self.cosmicSurgery.projectPageParam,
         refInfo: nil
       )
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
@@ -157,7 +157,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
     withEnvironment(apiService: mockService, countryCode: "CA") {
       let vc = ProjectPageViewController.configuredWith(
-        projectOrParam: .left(self.cosmicSurgery),
+        param: self.cosmicSurgery.projectPageParam,
         refInfo: nil
       )
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
@@ -191,7 +191,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
     withEnvironment(apiService: mockService, countryCode: "SE") {
       let vc = ProjectPageViewController.configuredWith(
-        projectOrParam: .left(self.cosmicSurgery),
+        param: self.cosmicSurgery.projectPageParam,
         refInfo: nil
       )
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
@@ -220,7 +220,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
     withEnvironment(apiService: mockService, countryCode: "US") {
       let vc = ProjectPageViewController.configuredWith(
-        projectOrParam: .left(self.cosmicSurgery),
+        param: self.cosmicSurgery.projectPageParam,
         refInfo: nil
       )
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
@@ -249,7 +249,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
     withEnvironment(apiService: mockService, countryCode: "CA") {
       let vc = ProjectPageViewController.configuredWith(
-        projectOrParam: .left(self.cosmicSurgery),
+        param: self.cosmicSurgery.projectPageParam,
         refInfo: nil
       )
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
@@ -278,7 +278,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
     withEnvironment(apiService: mockService, countryCode: "XX") {
       let vc = ProjectPageViewController.configuredWith(
-        projectOrParam: .left(self.cosmicSurgery),
+        param: self.cosmicSurgery.projectPageParam,
         refInfo: nil
       )
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
