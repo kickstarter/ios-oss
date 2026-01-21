@@ -18,9 +18,14 @@ internal final class AlertBannerTests: TestCase {
     let sizeThatFits = banner.intrinsicContentSize
     banner.frame.size = sizeThatFits
 
-    assertSnapshot(
-      matching: banner,
-      as: .image(perceptualPrecision: 0.98)
-    )
+    forEachScreenshotType { type in
+      assertSnapshot(
+        forView: banner,
+        withType: type,
+        size: sizeThatFits,
+        perceptualPrecision: 0.98,
+        testName: "testView"
+      )
+    }
   }
 }

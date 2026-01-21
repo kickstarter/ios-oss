@@ -43,11 +43,7 @@ internal func traitControllers(
 )
   -> (parent: UIViewController, child: UIViewController) {
   let parent = UIViewController()
-  parent.view.addSubview(child.view)
   parent.addChild(child)
-  parent.didMove(toParent: parent)
-
-  child.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
   parent.view.frame = .init(origin: .zero, size: device.deviceSize(in: orientation))
 
@@ -122,6 +118,10 @@ internal func traitControllers(
 
   let allTraits = UITraitCollection.init(traitsFrom: [traits, additionalTraits])
   parent.setOverrideTraitCollection(allTraits, forChild: child)
+
+  parent.view.addSubview(child.view)
+  child.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+  child.didMove(toParent: parent)
 
   if handleAppearanceTransition {
     parent.beginAppearanceTransition(true, animated: false)
