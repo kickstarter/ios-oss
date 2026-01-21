@@ -151,6 +151,7 @@ jobs:
     <<: *test_job
     environment:
       - *default_environment
+      - TARGET=KsApi
       - SCHEME=KsApi
 
   deploy_alpha:
