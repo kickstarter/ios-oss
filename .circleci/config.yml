@@ -158,6 +158,7 @@ jobs:
     environment:
       - *default_environment
       - PACKAGE=Kickstarter-Framework
+      - SCHEME=Kickstarter-Framework
 
   # Library tests
   library-tests:
@@ -166,6 +167,7 @@ jobs:
     environment:
       - *default_environment
       - PACKAGE=Library
+      - SCHEME=Library-Tests
 
   # KsApi tests
   ksapi-tests:
@@ -174,6 +176,7 @@ jobs:
     environment:
       - *default_environment
       - PACKAGE=KsApi
+      - SCHEME=KsApi-Package
 
   # KDS tests
   kds-tests:
@@ -182,6 +185,7 @@ jobs:
     environment:
       - *default_environment
       - PACKAGE=KDS
+      - SCHEME=KDS
 
   # GraphAPI tests
   graphapi-tests:
@@ -190,6 +194,7 @@ jobs:
     environment:
       - *default_environment
       - PACKAGE=GraphAPI
+      - SCHEME=GraphAPI-Package
 
   deploy_alpha:
     <<: *base_job

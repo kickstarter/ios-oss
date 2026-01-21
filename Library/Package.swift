@@ -74,20 +74,17 @@ let package = Package(
       ],
       path: "Sources/LibraryTestHelpers"
     ),
-//    .testTarget(
-//      name: "Library-Tests",
-//      dependencies: [
-//        .byName(name: "Library"),
-//        .byName(name: "LibraryTestHelpers"),
-//        .product(name: "KsApiTestHelpers", package: "KsApi"),
-//        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
-//        .product(name: "ReactiveExtensions-TestHelpers", package: "Kickstarter-ReactiveExtensions")
-//      ],
-//      path: "Sources/LibraryTests",
-//      resources: [
-//        .process("Resources")
-//      ]
-//    )
+    .testTarget(
+      name: "Library-Tests",
+      dependencies: [
+        .byName(name: "Library"),
+        .byName(name: "LibraryTestHelpers"),
+        .product(name: "KsApiTestHelpers", package: "KsApi"),
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+        .product(name: "ReactiveExtensions-TestHelpers", package: "Kickstarter-ReactiveExtensions")
+      ],
+      path: "Sources/LibraryTests"
+    )
   ],
   swiftLanguageModes: [.v5]
 )
