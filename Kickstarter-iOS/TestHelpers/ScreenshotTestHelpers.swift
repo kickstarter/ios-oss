@@ -112,78 +112,68 @@ internal func assertAllSnapshots(
 internal func assertSnapshot(
   forController controller: UIViewController,
   withType type: ScreenshotType,
-  size: CGSize? = nil,
   perceptualPrecision: Float? = nil,
   record: Bool = false,
   file: StaticString = #file,
   testName: String = #function,
   line: UInt = #line
 ) {
-  SnapshotTestLock.withLock {
-    let contentSizeTraits = UITraitCollection(
-      preferredContentSizeCategory: type.contentSizeCategory
+  let contentSizeTraits = UITraitCollection(
+    preferredContentSizeCategory: type.contentSizeCategory
+  )
+
+  withLanguage(type.language) {
+    let (parent, _) = traitControllers(
+      device: type.device,
+      orientation: type.orientation,
+      child: controller,
+      additionalTraits: contentSizeTraits
     )
 
-    withLanguage(type.language) {
-      let (parent, _) = traitControllers(
-        device: type.device,
-        orientation: type.orientation,
-        child: controller,
-        additionalTraits: contentSizeTraits
-      )
+    controller.overrideUserInterfaceStyle = type.style
 
-      controller.overrideUserInterfaceStyle = type.style
+    if let testScheduler = AppEnvironment.current.scheduler as? TestScheduler {
+      testScheduler.run()
+    }
 
-      let targetSize = size ?? type.device.deviceSize(in: type.orientation)
-      parent.view.frame.size = targetSize
-      controller.view.frame.size = targetSize
+    let name = snapshotName(
+      file: file,
+      function: testName,
+      type: type
+    )
 
-      if let testScheduler = AppEnvironment.current.scheduler as? TestScheduler {
-        testScheduler.run()
+    let strategy: Snapshotting<UIView, UIImage> = {
+      if let precision = perceptualPrecision {
+        return .image(perceptualPrecision: precision)
       }
-      parent.view.setNeedsLayout()
-      parent.view.layoutIfNeeded()
-      parent.view.setNeedsDisplay()
+      return .image
+    }()
 
-      let name = snapshotName(
+    let directory = snapshotDirectory(for: file)
+
+    if let failure = verifySnapshot(
+      of: parent.view,
+      as: strategy,
+      named: name,
+      record: record,
+      snapshotDirectory: directory,
+      file: file,
+      testName: testName,
+      line: line
+    ) {
+      XCTFail(
+        """
+        Snapshot failed for \(name)
+        device=\(type.device.snapshotDescription),
+        lang=\(type.language.rawValue),
+        style=\(type.style.snapshotDescription),
+        font=\(type.contentSizeCategory.snapshotDescription),
+        orientation=\(type.orientation.snapshotDescription)
+        \(failure)
+        """,
         file: file,
-        function: testName,
-        type: type
-      )
-
-      let strategy: Snapshotting<UIView, UIImage> = {
-        if let precision = perceptualPrecision {
-          return .image(perceptualPrecision: precision)
-        }
-        return .image
-      }()
-
-      let directory = snapshotDirectory(for: file)
-
-      if let failure = verifySnapshot(
-        of: parent.view,
-        as: strategy,
-        named: name,
-        record: record,
-        snapshotDirectory: directory,
-        file: file,
-        testName: testName,
         line: line
-      ) {
-        XCTFail(
-          """
-          Snapshot failed for \(name)
-          device=\(type.device.snapshotDescription),
-          lang=\(type.language.rawValue),
-          style=\(type.style.snapshotDescription),
-          font=\(type.contentSizeCategory.snapshotDescription),
-          orientation=\(type.orientation.snapshotDescription)
-          \(failure)
-          """,
-          file: file,
-          line: line
-        )
-      }
+      )
     }
   }
 }
@@ -194,6 +184,105 @@ internal func assertSnapshot(
   withType type: ScreenshotType,
   size: CGSize? = nil,
   useIntrinsicSize: Bool = false,
+  perceptualPrecision: Float? = nil,
+  record: Bool = false,
+  file: StaticString = #file,
+  testName: String = #function,
+  line: UInt = #line
+) {
+  let contentSizeTraits = UITraitCollection(
+    preferredContentSizeCategory: type.contentSizeCategory
+  )
+
+  let containerController = UIViewController()
+  containerController.view.addSubview(view)
+  view.translatesAutoresizingMaskIntoConstraints = false
+
+  NSLayoutConstraint.activate([
+    view.leadingAnchor.constraint(equalTo: containerController.view.leadingAnchor),
+    view.trailingAnchor.constraint(equalTo: containerController.view.trailingAnchor),
+    view.topAnchor.constraint(equalTo: containerController.view.topAnchor),
+    view.bottomAnchor.constraint(equalTo: containerController.view.bottomAnchor)
+  ])
+
+  withLanguage(type.language) {
+    let (parent, _) = traitControllers(
+      device: type.device,
+      orientation: type.orientation,
+      child: containerController,
+      additionalTraits: contentSizeTraits
+    )
+
+    containerController.overrideUserInterfaceStyle = type.style
+
+    let targetSize: CGSize = {
+      if let size = size {
+        return size
+      } else if useIntrinsicSize {
+        containerController.view.setNeedsLayout()
+        containerController.view.layoutIfNeeded()
+        let fitting = containerController.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        if fitting.width > 0, fitting.height > 0 {
+          return fitting
+        }
+      }
+      return type.device.deviceSize(in: type.orientation)
+    }()
+
+    parent.view.frame.size = targetSize
+    containerController.view.frame.size = targetSize
+
+    if let testScheduler = AppEnvironment.current.scheduler as? TestScheduler {
+      testScheduler.run()
+    }
+
+    let name = snapshotName(
+      file: file,
+      function: testName,
+      type: type
+    )
+
+    let strategy: Snapshotting<UIView, UIImage> = {
+      if let precision = perceptualPrecision {
+        return .image(perceptualPrecision: precision)
+      }
+      return .image
+    }()
+
+    let directory = snapshotDirectory(for: file)
+
+    if let failure = verifySnapshot(
+      of: parent.view,
+      as: strategy,
+      named: name,
+      record: record,
+      snapshotDirectory: directory,
+      file: file,
+      testName: testName,
+      line: line
+    ) {
+      XCTFail(
+        """
+        Snapshot failed for \(name)
+        device=\(type.device.snapshotDescription),
+        lang=\(type.language.rawValue),
+        style=\(type.style.snapshotDescription),
+        font=\(type.contentSizeCategory.snapshotDescription),
+        orientation=\(type.orientation.snapshotDescription)
+        \(failure)
+        """,
+        file: file,
+        line: line
+      )
+    }
+  }
+}
+
+/// Snapshot helper that locks and forces layout before capture.
+internal func assertSnapshotWithLayout(
+  forView view: UIView,
+  withType type: ScreenshotType,
+  size: CGSize,
   perceptualPrecision: Float? = nil,
   record: Bool = false,
   file: StaticString = #file,
@@ -226,26 +315,13 @@ internal func assertSnapshot(
 
       containerController.overrideUserInterfaceStyle = type.style
 
-      let targetSize: CGSize = {
-        if let size = size {
-          return size
-        } else if useIntrinsicSize {
-          containerController.view.setNeedsLayout()
-          containerController.view.layoutIfNeeded()
-          let fitting = containerController.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-          if fitting.width > 0, fitting.height > 0 {
-            return fitting
-          }
-        }
-        return type.device.deviceSize(in: type.orientation)
-      }()
-
-      parent.view.frame.size = targetSize
-      containerController.view.frame.size = targetSize
+      parent.view.frame.size = size
+      containerController.view.frame.size = size
 
       if let testScheduler = AppEnvironment.current.scheduler as? TestScheduler {
         testScheduler.run()
       }
+
       parent.view.setNeedsLayout()
       parent.view.layoutIfNeeded()
       parent.view.setNeedsDisplay()

@@ -19,7 +19,7 @@ internal final class AlertBannerTests: TestCase {
     banner.frame.size = sizeThatFits
 
     forEachScreenshotType { type in
-      assertSnapshot(
+      assertSnapshotWithLayout(
         forView: banner,
         withType: type,
         size: sizeThatFits,
