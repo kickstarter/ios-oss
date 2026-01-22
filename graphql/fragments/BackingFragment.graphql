@@ -23,7 +23,12 @@ fragment BackingFragment on Backing {
   }
   pledgedOn
   project {
-    ...ProjectFragment
+    pid
+    fxRate
+    minPledge
+    country {
+      ...CountryFragment
+    }
   }
   reward {
     ...RewardFragment
