@@ -63,14 +63,14 @@ let package = Package(
       ],
       path: "Sources/Library",
       resources: [
-        .process("Resources"),
+        .process("Resources")
       ],
     ),
     .target(
       name: "LibraryTestHelpers",
       dependencies: [
         .byName(name: "Library"),
-        .product(name: "KsApiTestHelpers", package: "KsApi"),
+        .product(name: "KsApiTestHelpers", package: "KsApi")
       ],
       path: "Sources/LibraryTestHelpers"
     ),
