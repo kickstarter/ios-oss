@@ -103,7 +103,6 @@ all_jobs: &all_jobs
   - library-tests
   - ksapi-tests
   - kds-tests
-  - graphapi-tests
 
 # Jobs
 
@@ -167,7 +166,7 @@ jobs:
     environment:
       - *default_environment
       - PACKAGE=Library
-      - SCHEME=Library-Tests
+      - SCHEME=Library-Package
 
   # KsApi tests
   ksapi-tests:
@@ -188,14 +187,6 @@ jobs:
       - SCHEME=KDS
 
   # GraphAPI tests
-  graphapi-tests:
-    <<: *base_job
-    <<: *test_spm_job
-    environment:
-      - *default_environment
-      - PACKAGE=GraphAPI
-      - SCHEME=GraphAPI-Package
-
   deploy_alpha:
     <<: *base_job
     environment:
@@ -291,9 +282,6 @@ workflows:
           requires:
            - build-and-cache
       - kds-tests:
-          requires:
-           - build-and-cache
-      - graphapi-tests:
           requires:
            - build-and-cache
 
