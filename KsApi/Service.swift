@@ -539,7 +539,6 @@ public struct Service: ServiceType {
   ///
   /// - Parameters:
   ///   - id: The backing ID.
-  ///   - withStoredCards: Whether to include stored cards in the result.
   public func fetchBackingForManagePledge(id: Int)
     -> SignalProducer<Backing, ErrorEnvelope> {
     return GraphQL.shared.client
