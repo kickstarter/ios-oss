@@ -116,7 +116,6 @@ final class PPOContainerViewModel: PPOContainerViewModelInputs, PPOContainerView
 
     // If reward toggle change fails, trigger error banner and refresh.
     let updateRewardReceivedError = self.updateRewardReceivedSubject
-      .handleEvents()
       .flatMap { backingId, rewardReceived in
         AppEnvironment.current.apiService.updateRewardReceived(
           backingId: backingId, rewardReceived: rewardReceived
