@@ -4,8 +4,8 @@ import Foundation
 @testable import Library
 @testable import LibraryTestHelpers
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
 
 final class ProjectPamphletCreatorHeaderCellViewModelTests: TestCase {
   private let vm: ProjectPamphletCreatorHeaderCellViewModelType = ProjectPamphletCreatorHeaderCellViewModel()

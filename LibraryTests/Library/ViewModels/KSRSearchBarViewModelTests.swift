@@ -1,6 +1,6 @@
 @testable import Library
-import ReactiveSwift
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
 import XCTest
 
 final class KSRSearchBarViewModelTests: XCTestCase {

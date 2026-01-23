@@ -1,7 +1,7 @@
 import Foundation
+import Library
 @testable import LibraryTestHelpers
 import XCTest
-import Library
 
 private class TestViewController: UIViewController {
   var initWithNibNamedCalled = false

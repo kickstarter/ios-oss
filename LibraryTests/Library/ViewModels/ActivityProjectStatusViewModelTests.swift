@@ -3,8 +3,8 @@
 @testable import Library
 @testable import LibraryTestHelpers
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
 import XCTest
 
 internal final class ActivityProjectStatusViewModelTests: TestCase {

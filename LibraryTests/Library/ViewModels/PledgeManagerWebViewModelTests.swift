@@ -4,11 +4,10 @@
 @testable import LibraryTestHelpers
 import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
 import WebKit
 import XCTest
 
-// FIXME: SPM WebKit seems to crash when running in a test without a test host.
-/*
 final class PledgeManagerWebViewModelTests: TestCase {
   fileprivate let vm: PledgeManagerWebViewModelType = PledgeManagerWebViewModel()
 
@@ -36,7 +35,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
   }
 
-  func testDismissViewControllerOnCloseButtonTapped() {
+  func DISABLED_SPM_testDismissViewControllerOnCloseButtonTapped() {
     self.vm.inputs.configureWith(url: SurveyResponse.template.urls.web.survey)
     self.vm.inputs.viewDidLoad()
     self.dismissViewController.assertDidNotEmitValue()
@@ -45,7 +44,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     self.dismissViewController.assertValueCount(1)
   }
 
-  func testRespondToSurvey() {
+  func DISABLED_SPM_testRespondToSurvey() {
     let project = Project.template
     let surveyResponse = .template
       |> SurveyResponse.lens.id .~ 123
@@ -124,7 +123,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     self.dismissViewController.assertValueCount(1)
   }
 
-  func testTitle() {
+  func DISABLED_SPM_testTitle() {
     let project = Project.template
     let basicBackingUrl = "\(project.urls.web.project)/backing/"
 
@@ -147,7 +146,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
 
   // MARK: - Test links
 
-  func testGoToPledge() {
+  func DISABLED_SPM_testGoToPledge() {
     let project = Project.template
     let surveyResponse = .template
       |> SurveyResponse.lens.project .~ project
@@ -172,7 +171,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     self.goToNativeScreen.assertLastValue(.goToPledge(param: .slug(project.slug)))
   }
 
-  func testGoToProject() {
+  func DISABLED_SPM_testGoToProject() {
     let project = Project.template
     let surveyResponse = .template
       |> SurveyResponse.lens.project .~ project
@@ -198,7 +197,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     self.goToNativeScreen.assertLastValue(.goToProject(param: .slug(project.slug), refTag: nil))
   }
 
-  func testGoToUpdate() {
+  func DISABLED_SPM_testGoToUpdate() {
     let project = Project.template
     let surveyResponse = .template
       |> SurveyResponse.lens.project .~ project
@@ -271,7 +270,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
 
   // MARK: - Decision policy tests
 
-  func testDecisionPolicyBypass() {
+  func DISABLED_SPM_testDecisionPolicyBypass() {
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
       RemoteConfigFeature.bypassPledgeManagerDecisionPolicy.rawValue: true
@@ -286,7 +285,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     }
   }
 
-  func testBadRequest() {
+  func DISABLED_SPM_testBadRequest() {
     let navigationData = navigationData("https://www.fake.com/bad-url")
     XCTAssertEqual(
       self.vm.decidePolicyFor(navigationAction: navigationData),
@@ -294,7 +293,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     )
   }
 
-  func testBadStripeRequest() {
+  func DISABLED_SPM_testBadStripeRequest() {
     let navigationData = navigationData("https://www.stripecdn.network")
     XCTAssertEqual(
       self.vm.decidePolicyFor(navigationAction: navigationData),
@@ -302,7 +301,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     )
   }
 
-  func testStripeNetworkRequest() {
+  func DISABLED_SPM_testStripeNetworkRequest() {
     let navigationData = navigationData("https://m.stripe.network/inner.html#url=fake")
     XCTAssertEqual(
       self.vm.decidePolicyFor(navigationAction: navigationData),
@@ -310,7 +309,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     )
   }
 
-  func testStripeElementRequest() {
+  func DISABLED_SPM_testStripeElementRequest() {
     let navigationData = navigationData("https://js.stripe.com/v3/controller-fake.html")
     XCTAssertEqual(
       self.vm.decidePolicyFor(navigationAction: navigationData),
@@ -318,7 +317,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     )
   }
 
-  func testStripeCdnRequest() {
+  func DISABLED_SPM_testStripeCdnRequest() {
     let navigationData = navigationData("https://b.stripecdn.com/assets/v21.19/Captcha.html")
     XCTAssertEqual(
       self.vm.decidePolicyFor(navigationAction: navigationData),
@@ -349,4 +348,3 @@ private func surveyRequest(project: Project, prepared: Bool, method: KsApi.Metho
     return request
   }
 }
-*/

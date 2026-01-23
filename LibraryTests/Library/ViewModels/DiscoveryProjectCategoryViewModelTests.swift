@@ -2,8 +2,8 @@
 @testable import KsApiTestHelpers
 import Library
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
 import XCTest
 
 class DiscoveryProjectCategoryViewModelTests: XCTestCase {

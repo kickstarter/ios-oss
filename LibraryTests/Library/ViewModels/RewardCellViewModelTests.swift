@@ -4,9 +4,9 @@ import Foundation
 import Library
 @testable import LibraryTestHelpers
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
 
 final class RewardCellViewModelTests: TestCase {
   private let vm = RewardCellViewModel()

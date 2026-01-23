@@ -3,9 +3,9 @@ import Foundation
 @testable import KsApiTestHelpers
 @testable import Library
 @testable import LibraryTestHelpers
-import ReactiveSwift
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
 import XCTest
 
 final class PledgePaymentPlansOptionViewModelTest: TestCase {

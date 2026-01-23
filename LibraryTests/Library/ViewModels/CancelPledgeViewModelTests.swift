@@ -5,8 +5,8 @@ import KDS
 @testable import Library
 @testable import LibraryTestHelpers
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
 import XCTest
 
 final class CancelPledgeViewModelTests: TestCase {

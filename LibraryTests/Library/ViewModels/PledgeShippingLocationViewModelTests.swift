@@ -5,9 +5,9 @@ import GraphAPI
 @testable import Library
 @testable import LibraryTestHelpers
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
 import XCTest
 
 final class PledgeShippingLocationViewModelTests: TestCase {
