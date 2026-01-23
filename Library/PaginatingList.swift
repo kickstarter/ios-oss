@@ -11,6 +11,8 @@ public struct PaginatingList<Data, Cell, Header>: View where
   var canLoadMore: Bool
   var selectedItem: Binding<Data?>?
 
+  @State private var isLoadingMore: Bool = false
+
   let header: () -> Header
   let content: (Data) -> Cell
   let onRefresh: () async -> Void
@@ -65,9 +67,13 @@ public struct PaginatingList<Data, Cell, Header>: View where
         .listRowBackground(Color.clear)
         .listRowSeparator(.hidden, edges: .bottom)
         .onAppear {
-          if !self.data.isEmpty {
+          // Trigger next page load if the first page exists and
+          // there's no request already in progress.
+          if !self.isLoadingMore, !self.data.isEmpty {
+            self.isLoadingMore = true
             Task { () async in
               await self.onLoadMore()
+              self.isLoadingMore = false
             }
           }
         }
