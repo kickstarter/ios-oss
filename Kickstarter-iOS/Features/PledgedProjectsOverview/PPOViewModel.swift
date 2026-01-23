@@ -243,9 +243,22 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         project: cardModel.projectAnalytics,
         properties: overallProperties
       )
-    case .authenticateCard, .viewProjectDetails, .updateRewardReceived:
-      // TODO(MBL-2818): Add analytics.
-      break
+    case .authenticateCard:
+      AppEnvironment.current.ksrAnalytics.trackPPOAuthenticateCard(
+        project: cardModel.projectAnalytics,
+        properties: overallProperties
+      )
+    case .viewProjectDetails:
+      AppEnvironment.current.ksrAnalytics.trackPPOViewProjectDetails(
+        project: cardModel.projectAnalytics,
+        properties: overallProperties
+      )
+    case let .updateRewardReceived(rewardReceived):
+      AppEnvironment.current.ksrAnalytics.trackPPOUpdateRewardReceived(
+        toggleOn: rewardReceived,
+        project: cardModel.projectAnalytics,
+        properties: overallProperties
+      )
     }
   }
 
@@ -362,6 +375,8 @@ extension Sequence where Element == PPOProjectCardViewModel {
     var addressLocksSoonCount: Int = 0
     var pledgeManagementCount: Int = 0
 
+    var fundedProjectCount: Int = 0
+
     for viewModel in self {
       switch viewModel.card.tierType {
       case .fixPayment:
@@ -375,8 +390,7 @@ extension Sequence where Element == PPOProjectCardViewModel {
       case .pledgeManagement:
         pledgeManagementCount += 1
       case .surveySubmitted, .pledgeCollected, .addressConfirmed, .awaitingReward, .rewardReceived:
-        // TODO(MBL-2818): Add analytics for PPO v2.
-        break
+        fundedProjectCount += 1
       }
     }
 
@@ -386,6 +400,7 @@ extension Sequence where Element == PPOProjectCardViewModel {
       pledgeManagementCount: pledgeManagementCount,
       paymentFailedCount: paymentFailedCount,
       cardAuthRequiredCount: cardAuthRequiredCount,
+      fundedProjectCount: fundedProjectCount,
       total: total,
       page: page
     )

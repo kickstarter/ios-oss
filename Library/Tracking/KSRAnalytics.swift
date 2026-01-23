@@ -137,6 +137,7 @@ public final class KSRAnalytics {
    */
   public enum CTAContext {
     case addOnsContinue
+    case authenticateCardInitiate
     case blockUser
     case confirmInitiate
     case confirmSubmit
@@ -164,6 +165,7 @@ public final class KSRAnalytics {
     case signUpInitiate
     case signUpSubmit
     case surveyResponseInitiate
+    case toggleRewardReceived
     case watchProject
     /// Onboarding CTA Context
     case onboardingClose
@@ -176,6 +178,7 @@ public final class KSRAnalytics {
 
     var trackingString: String {
       switch self {
+      case .authenticateCardInitiate: return "authenticate_card_initiate"
       case .addOnsContinue: return "add_ons_continue"
       case .blockUser: return "block_user"
       case .confirmInitiate: return "confirm_initiate"
@@ -211,6 +214,7 @@ public final class KSRAnalytics {
       case .signUpInitiate: return "sign_up_initiate"
       case .signUpSubmit: return "sign_up_submit"
       case .surveyResponseInitiate: return "survey_response_initiate"
+      case .toggleRewardReceived: return "toggle_reward_received"
       case .watchProject: return "watch_project"
       }
     }
@@ -373,6 +377,8 @@ public final class KSRAnalytics {
     case facebook
     case initiate
     case location
+    case off
+    case on
     case percentRaised
     case pledge(PledgeContext)
     case projectState
@@ -452,6 +458,8 @@ public final class KSRAnalytics {
       case .facebook: return "facebook"
       case .initiate: return "initiate"
       case .location: return "location"
+      case .off: return "off"
+      case .on: return "on"
       case .percentRaised: return "percent_raised"
       case let .pledge(pledgeContext): return pledgeContext.trackingString
       case .projectState: return "project_state"
@@ -564,8 +572,17 @@ public final class KSRAnalytics {
     let pledgeManagementCount: Int
     let paymentFailedCount: Int
     let cardAuthRequiredCount: Int
+    let fundedProjectCount: Int
     let total: Int?
     let page: Int?
+
+    var alertCardCount: Int {
+      return self.addressLocksSoonCount +
+        self.surveyAvailableCount +
+        self.pledgeManagementCount +
+        self.paymentFailedCount +
+        self.cardAuthRequiredCount
+    }
 
     public init(
       addressLocksSoonCount: Int,
@@ -573,6 +590,7 @@ public final class KSRAnalytics {
       pledgeManagementCount: Int,
       paymentFailedCount: Int,
       cardAuthRequiredCount: Int,
+      fundedProjectCount: Int,
       total: Int?,
       page: Int?
     ) {
@@ -581,6 +599,7 @@ public final class KSRAnalytics {
       self.pledgeManagementCount = pledgeManagementCount
       self.paymentFailedCount = paymentFailedCount
       self.cardAuthRequiredCount = cardAuthRequiredCount
+      self.fundedProjectCount = fundedProjectCount
       self.total = total
       self.page = page
     }
@@ -756,6 +775,59 @@ public final class KSRAnalytics {
       ctaContext: .edit,
       page: .projectAlerts,
       typeContext: .address
+    )
+    .withAllValuesFrom(projectProperties(from: project))
+    .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  public func trackPPOAuthenticateCard(
+    project: any ProjectAnalyticsProperties,
+    properties: PledgedProjectOverviewProperties
+  ) {
+    let props = contextProperties(
+      ctaContext: .authenticateCardInitiate,
+      page: .projectAlerts
+    )
+    .withAllValuesFrom(projectProperties(from: project))
+    .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  public func trackPPOViewProjectDetails(
+    project: any ProjectAnalyticsProperties,
+    properties: PledgedProjectOverviewProperties
+  ) {
+    let props = contextProperties(
+      ctaContext: .project,
+      page: .projectAlerts
+    )
+    .withAllValuesFrom(projectProperties(from: project))
+    .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  public func trackPPOUpdateRewardReceived(
+    toggleOn: Bool,
+    project: any ProjectAnalyticsProperties,
+    properties: PledgedProjectOverviewProperties
+  ) {
+    let props = contextProperties(
+      ctaContext: .toggleRewardReceived,
+      page: .projectAlerts,
+      typeContext: toggleOn ? .on : .off
     )
     .withAllValuesFrom(projectProperties(from: project))
     .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
@@ -1459,6 +1531,30 @@ public final class KSRAnalytics {
     )
   }
 
+  /**
+   Call when the reward received toggle is tapped.
+   */
+  public func trackRewardReceivedToggled(
+    toggleOn: Bool,
+    project: any HasProjectAnalyticsProperties,
+    context: PageContext
+  ) {
+    let props = projectProperties(
+      from: project.projectAnalyticsProperties,
+      loggedInUser: self.loggedInUser
+    )
+    .withAllValuesFrom(contextProperties(
+      ctaContext: .toggleRewardReceived,
+      page: context,
+      typeContext: toggleOn ? .on : .off
+    ))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
   // MARK: - Empty State Events
 
   // Private tracking method that merges in default properties.
@@ -1650,6 +1746,9 @@ private func pledgedProjectOverviewProperties(
   result["notification_count_pledge_management"] = properties.pledgeManagementCount
   result["notification_count_payment_failed"] = properties.paymentFailedCount
   result["notification_count_card_auth_required"] = properties.cardAuthRequiredCount
+
+  result["notification_count_alert_card"] = properties.alertCardCount
+  result["notification_count_funded_project"] = properties.fundedProjectCount
 
   if let total = properties.total {
     result["notification_count_total"] = total
