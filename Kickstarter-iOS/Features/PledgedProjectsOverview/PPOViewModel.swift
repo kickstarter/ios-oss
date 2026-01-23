@@ -42,6 +42,7 @@ enum PPOPreparedEvent: Equatable {
     onProgress: (PPOActionState) -> Void
   )
   case contactCreator(messageSubject: MessageSubject)
+  case updateRewardReceived(backingId: String, rewardReceived: Bool)
 
   static func == (lhs: PPOPreparedEvent, rhs: PPOPreparedEvent) -> Bool {
     switch (lhs, rhs) {
@@ -72,6 +73,11 @@ enum PPOPreparedEvent: Equatable {
       return lhsProjectId == rhsProjectId && lhsBackingId == rhsBackingId
     case (.backedProjects, .backedProjects):
       return true
+    case let (
+      .updateRewardReceived(lhsBackingId, lhsRewardReceived),
+      .updateRewardReceived(rhsBackingId, rhsRewardReceived)
+    ):
+      return lhsBackingId == rhsBackingId && lhsRewardReceived == rhsRewardReceived
     default:
       return false
     }
@@ -237,9 +243,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         project: cardModel.projectAnalytics,
         properties: overallProperties
       )
-    case .authenticateCard, .viewProjectDetails:
-      // These cases are (hopefully) intentionally untracked.
-      // TODO(MBL-2818): Confirm that we don't need to add analytics for these events.
+    case .authenticateCard, .viewProjectDetails, .updateRewardReceived:
+      // TODO(MBL-2818): Add analytics.
       break
     }
   }
@@ -259,6 +264,11 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         name: cardModel.projectName
       )
       return PPOPreparedEvent.contactCreator(messageSubject: messageSubject)
+    case let .updateRewardReceived(rewardReceived: rewardReceived):
+      return PPOPreparedEvent.updateRewardReceived(
+        backingId: cardModel.backingGraphId,
+        rewardReceived: rewardReceived
+      )
     case .completeSurvey:
       return PPOPreparedEvent.survey(url: cardModel.backingDetailsUrl)
     case .fixPayment:

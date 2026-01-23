@@ -203,6 +203,9 @@ struct PPOProjectCard: View {
       .foregroundStyle(Color(PPOStyles.title.color))
       .tint(Colors.Background.Accent.Green.bold.swiftUIColor())
       .padding([.horizontal])
+      .onChange(of: self.viewModel.rewardToggleEnabled) { _, newValue in
+        self.viewModel.rewardToggleTapped(toggleOn: newValue)
+      }
   }
 
   @ViewBuilder
