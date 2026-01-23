@@ -5,7 +5,6 @@ import Foundation
 import KDS
 #if DEBUG
   @testable import KsApi
-  @testable import KsApiTestHelpers
 #else
   import KsApi
 #endif
