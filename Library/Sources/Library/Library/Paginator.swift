@@ -97,9 +97,9 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
 
     public var canLoadMore: Bool {
       switch self {
-      case .someLoaded, .unloaded:
+      case .someLoaded, .loading(previous: .someLoaded):
         true
-      case .empty, .error, .allLoaded, .loading:
+      default:
         false
       }
     }

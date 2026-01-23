@@ -46,7 +46,7 @@ struct PPOView: View {
   @ViewBuilder func listView(values: [PPOProjectCardViewModel], parentSize: CGSize) -> some View {
     PaginatingList(
       data: values,
-      canLoadMore: false,
+      canLoadMore: self.viewModel.results.canLoadMore,
       selectedItem: nil,
       header: { self.listViewHeader(numberOfValues: values.count) }
     ) { card in

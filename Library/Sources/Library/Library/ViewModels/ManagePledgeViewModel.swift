@@ -128,15 +128,12 @@ public final class ManagePledgeViewModel:
       .skipNil()
       .switchMap { backingId in
         AppEnvironment.current.apiService
-          .fetchBackingWithIncrementsRefundedAmount(id: backingId, withStoredCards: false)
+          .fetchBackingForManagePledge(id: backingId, withStoredCards: false)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
 
-    let graphBackingEnvelope = graphBackingEvent.values()
-
-    let backing = graphBackingEnvelope
-      .map { $0.backing }
+    let backing = graphBackingEvent.values()
 
     let endRefreshingWhenProjectFailed = fetchProjectEvent.errors()
       .ignoreValues()
