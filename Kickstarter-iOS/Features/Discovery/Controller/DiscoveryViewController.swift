@@ -70,11 +70,11 @@ internal final class DiscoveryViewController: UIViewController {
         self?.viewModel.inputs.remoteConfigClientConfigurationFailed()
       }
 
-    /// If Floating Tab Bar is enbaled
-    /// Toggle bottom constraint so this view controller can extend under the floating tab bar.
-    /// When enabled, the pages container view is constrained  to the superview instead of the safe area.
-    self.pagesBottomToSafeArea.isActive = !featureFloatingTabBarEnabled()
-    self.pagesBottomToSuperview.isActive = featureFloatingTabBarEnabled()
+    /// Always use superview constraint to allow content to extend to full height.
+    /// This removes the dependency on the floating tab bar feature flag and allows
+    /// the content to extend under the tab bar container.
+    self.pagesBottomToSafeArea.isActive = false
+    self.pagesBottomToSuperview.isActive = true
 
     self.viewModel.inputs.viewDidLoad()
   }
