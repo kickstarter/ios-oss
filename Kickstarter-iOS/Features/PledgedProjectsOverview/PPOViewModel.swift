@@ -340,7 +340,7 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private var cancellables: Set<AnyCancellable> = []
 
   private enum Constants {
-    static let pageSize = 20
+    static let pageSize = 10
   }
 }
 

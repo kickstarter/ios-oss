@@ -11,6 +11,8 @@ public struct PaginatingList<Data, Cell, Header>: View where
   var canLoadMore: Bool
   var selectedItem: Binding<Data?>?
 
+  @State private var isLoadingMore: Bool = false
+
   let header: () -> Header
   let content: (Data) -> Cell
   let onRefresh: () async -> Void
@@ -56,14 +58,22 @@ public struct PaginatingList<Data, Cell, Header>: View where
           Spacer()
           ProgressView()
             .controlSize(.large)
-            .id(self.loaderID)
+            // For some reason, a ProgressView in a List won't re-render without
+            // this hacky ID reloading to make it think it's a different instance.
+            // https://stackoverflow.com/questions/75570322/swiftui-progressview-in-list-can-only-be-displayed-once/75570351
+            .id(UUID())
           Spacer()
         }
+        .listRowBackground(Color.clear)
         .listRowSeparator(.hidden, edges: .bottom)
         .onAppear {
-          if !self.data.isEmpty {
+          // Trigger next page load if the first page exists and
+          // there's no request already in progress.
+          if !self.isLoadingMore, !self.data.isEmpty {
+            self.isLoadingMore = true
             Task { () async in
               await self.onLoadMore()
+              self.isLoadingMore = false
             }
           }
         }
@@ -73,21 +83,7 @@ public struct PaginatingList<Data, Cell, Header>: View where
     .refreshable {
       await self.onRefresh()
     }
-    .onChange(of: self.data) { _ in
-      self.reloadLoaderID()
-    }
   }
-
-  // For some reason, a ProgressView in a List won't re-render without
-  // this hacky ID reloading to make it think it's a different instance.
-  // https://stackoverflow.com/questions/75570322/swiftui-progressview-in-list-can-only-be-displayed-once/75570351
-  private func reloadLoaderID() {
-    DispatchQueue.main.async {
-      self.loaderID = UUID()
-    }
-  }
-
-  @State private var loaderID = UUID()
 }
 
 extension PaginatingList where Header == EmptyView {
