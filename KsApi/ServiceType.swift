@@ -215,11 +215,18 @@ public protocol ServiceType {
   func fetchErroredUserBackings(status: BackingState)
     -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope>
 
-  /// Fetch `Backing` data with a `Backing` ID and the backers' stored cards.
+  /// Fetch `Backing` data, and the backing's `Project`, using a `Backing` ID.
+  /// - Parameters:
+  ///    - id: backing ID
+  ///    - withStoredCards: Whether or not to include the user's payment cards.
   func fetchBacking(id: Int, withStoredCards: Bool)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
 
-  /// Explicitly fetches backing details including `refundedAmount` in the `paymentIncrements`.
+  /// Explicitly fetches a `Backing`, with suitable information for loading the Manage Pledge page.
+  /// `refundedAmount`is included in the `paymentIncrements`.
+  /// - Parameters:
+  ///    - id: backing ID
+  ///    - withStoredCards: Whether or not to include the user's payment cards.
   func fetchBackingForManagePledge(id: Int, withStoredCards: Bool)
     -> SignalProducer<Backing, ErrorEnvelope>
 
