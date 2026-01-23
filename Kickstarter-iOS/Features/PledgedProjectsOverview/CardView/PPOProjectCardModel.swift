@@ -22,7 +22,6 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public let rewardReceivedToggleState: PPORewardToggleState
   public let action: ButtonAction?
   public let tierType: PPOTierType
-  public let backingDetailsUrl: String
   public let backingId: Int
   public let backingGraphId: String
   public let projectAnalytics: GraphAPI.ProjectAnalyticsFragment
@@ -51,21 +50,21 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public enum DisplayAddress: Equatable, Hashable {
     case hidden
     case locked(address: String)
-    case editable(address: String)
+    case editable(address: String, editUrl: String)
 
     public var rawAddress: String? {
       switch self {
       case .hidden: return nil
       case let .locked(address): return address
-      case let .editable(address): return address
+      case let .editable(address, _): return address
       }
     }
   }
 
   public enum ButtonAction: Identifiable, Equatable, Hashable {
     case confirmAddress(address: String, addressId: String)
-    case completeSurvey
-    case managePledge
+    case completeSurvey(url: String)
+    case managePledge(url: String)
     case fixPayment
     case authenticateCard(clientSecret: String)
 

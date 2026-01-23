@@ -267,8 +267,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     cardModel: PPOProjectCardModel
   ) -> PPOPreparedEvent {
     switch event {
-    case .editAddress:
-      return PPOPreparedEvent.editAddress(url: cardModel.backingDetailsUrl)
+    case let .editAddress(url):
+      return PPOPreparedEvent.editAddress(url: url)
     case .viewProjectDetails:
       return PPOPreparedEvent.projectDetails(projectId: cardModel.projectId)
     case .sendMessage:
@@ -282,15 +282,15 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         backingId: cardModel.backingGraphId,
         rewardReceived: rewardReceived
       )
-    case .completeSurvey:
-      return PPOPreparedEvent.survey(url: cardModel.backingDetailsUrl)
+    case let .completeSurvey(url):
+      return PPOPreparedEvent.survey(url: url)
     case .fixPayment:
       return PPOPreparedEvent.fixPaymentMethod(
         projectId: cardModel.projectId,
         backingId: cardModel.backingId
       )
-    case .managePledge:
-      return PPOPreparedEvent.managePledge(url: cardModel.backingDetailsUrl)
+    case let .managePledge(url):
+      return PPOPreparedEvent.managePledge(url: url)
     case let .confirmAddress(address, addressId):
       return PPOPreparedEvent.confirmAddress(
         backingId: cardModel.backingGraphId,
