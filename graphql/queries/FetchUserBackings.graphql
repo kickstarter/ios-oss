@@ -8,6 +8,9 @@ query FetchUserBackings($status: BackingState!, $withStoredCards: Boolean!, $inc
           }
         }
         ...BackingFragment
+        project {
+          ...ProjectFragment
+        }
         errorReason
         paymentIncrements {
           ...PaymentIncrementFragment

@@ -18,11 +18,11 @@ extension ErroredBackingsEnvelope {
     from data: GraphAPI.FetchUserBackingsQuery
       .Data
   ) -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
-    guard let envelopes = data.me?.backings?.nodes?.compactMap({ backing -> ProjectAndBackingEnvelope? in
+    guard let envelopes = data.me?.backings?.nodes?.compactMap({ node -> ProjectAndBackingEnvelope? in
 
       var paymentIncrements: [PledgePaymentIncrement] = []
 
-      if let backingIncrements = backing?.paymentIncrements {
+      if let backingIncrements = node?.paymentIncrements {
         paymentIncrements = backingIncrements
           .compactMap {
             PledgePaymentIncrement(
@@ -32,9 +32,9 @@ extension ErroredBackingsEnvelope {
           }
       }
 
-      guard let backingFragment = backing?.fragments.backingFragment,
+      guard let backingFragment = node?.fragments.backingFragment,
+            let projectFragment = node?.project?.fragments.projectFragment,
             let backing = Backing.backing(from: backingFragment, paymentIncrements: paymentIncrements),
-            let projectFragment = backingFragment.project?.fragments.projectFragment,
             let project = Project.project(from: projectFragment, currentUserChosenCurrency: nil)
       else { return nil }
 

@@ -38,12 +38,9 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
 
     let project = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
-
-    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(env),
+      fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
       fetchProjectRewardsResult: .success([reward])
     )
@@ -94,13 +91,10 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
 
     let project = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
       |> Project.lens.creator.id .~ 1
 
-    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
-
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(env),
+      fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
       fetchProjectRewardsResult: .success([reward])
     )
@@ -155,12 +149,9 @@ final class ManagePledgeViewControllerTests: TestCase {
       )
 
     let project = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
-
-    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(env),
+      fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
       fetchProjectRewardsResult: .success([reward])
     )
@@ -218,12 +209,9 @@ final class ManagePledgeViewControllerTests: TestCase {
       )
 
     let project = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
-
-    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(env),
+      fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
       fetchProjectRewardsResult: .success([reward])
     )
@@ -271,12 +259,9 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Backing.lens.paymentSource .~ paymentSource
 
     let project = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
-
-    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(env),
+      fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
       fetchProjectRewardsResult: .success([reward])
     )
@@ -330,12 +315,9 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Backing.lens.status .~ .errored
 
     let project = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
-
-    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(env),
+      fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
       fetchProjectRewardsResult: .success([reward])
     )
@@ -395,12 +377,9 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Backing.lens.status .~ .errored
 
     let project = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
-
-    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(env),
+      fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
       fetchProjectRewardsResult: .success([reward])
     )
@@ -464,12 +443,9 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
 
     let project = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
-
-    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(env),
+      fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
       fetchProjectRewardsResult: .success([reward])
     )
@@ -519,12 +495,9 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Backing.lens.paymentIncrements .~ mockPaymentIncrementsForManagingBacking()
 
     let project = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
-
-    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(env),
+      fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
       fetchProjectRewardsResult: .success([reward])
     )
@@ -584,14 +557,12 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Backing.lens.paymentIncrements .~ mockPaymentIncrementsForManagingBacking()
 
     let project = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
+
       |> Project.lens.country .~ .us
       |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
 
-    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
-
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(env),
+      fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
       fetchProjectRewardsResult: .success([reward])
     )
@@ -653,12 +624,9 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
 
     let project = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
-
-    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(env),
+      fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
       fetchProjectRewardsResult: .success([reward])
     )

@@ -6,6 +6,9 @@ query FetchBacking($id: ID!, $withStoredCards: Boolean!, $includeShippingRules: 
       }
     }
     ...BackingFragment
+    project {
+      ...ProjectFragment
+    }
     paymentIncrements {
       ...PaymentIncrementFragment
     }

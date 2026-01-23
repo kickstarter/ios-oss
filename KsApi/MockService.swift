@@ -113,8 +113,10 @@
     fileprivate let fetchBackerSavedProjectsResponse: FetchProjectsEnvelope?
     fileprivate let fetchBackerBackedProjectsResponse: FetchProjectsEnvelope?
 
-    fileprivate let fetchManagePledgeViewBackingResult:
+    fileprivate let fetchProjectAndBackingResult:
       Result<ProjectAndBackingEnvelope, ErrorEnvelope>?
+
+    fileprivate let fetchManagePledgeViewBackingResult: Result<Backing, ErrorEnvelope>?
 
     fileprivate let fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>?
     fileprivate let fetchMessageThreadsResponse: [MessageThread]
@@ -306,7 +308,8 @@
       removeAttachmentResponse: UpdateDraft.Image? = nil,
       removeAttachmentError: ErrorEnvelope? = nil,
       publishUpdateError: ErrorEnvelope? = nil,
-      fetchManagePledgeViewBackingResult: Result<ProjectAndBackingEnvelope, ErrorEnvelope>? = nil,
+      fetchManagePledgeViewBackingResult: Result<Backing, ErrorEnvelope>? = nil,
+      fetchProjectAndBackingResult: Result<ProjectAndBackingEnvelope, ErrorEnvelope>? = nil,
       fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>? = nil,
       fetchMessageThreadsResponse: [MessageThread]? = nil,
       fetchPledgedProjectsResult: Result<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope>? = nil,
@@ -479,6 +482,7 @@
       self.publishUpdateError = publishUpdateError
 
       self.fetchManagePledgeViewBackingResult = fetchManagePledgeViewBackingResult
+      self.fetchProjectAndBackingResult = fetchProjectAndBackingResult
 
       self.fetchRewardAddOnsSelectionViewRewardsResult = fetchRewardAddOnsSelectionViewRewardsResult
 
@@ -1160,11 +1164,11 @@
     // TODO: Refactor this test to use `self.apolloClient`, `ProjectAndBackingEnvelope` needs to be `Decodable` and tested in-app.
     func fetchBacking(id _: Int, withStoredCards _: Bool)
       -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
-      return producer(for: self.fetchManagePledgeViewBackingResult)
+      return producer(for: self.fetchProjectAndBackingResult)
     }
 
-    func fetchBackingWithIncrementsRefundedAmount(id _: Int, withStoredCards _: Bool)
-      -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
+    func fetchBackingForManagePledge(id _: Int, withStoredCards _: Bool)
+      -> SignalProducer<Backing, ErrorEnvelope> {
       return producer(for: self.fetchManagePledgeViewBackingResult)
     }
 
@@ -2015,6 +2019,7 @@
             removeAttachmentError: $1.removeAttachmentError,
             publishUpdateError: $1.publishUpdateError,
             fetchManagePledgeViewBackingResult: $1.fetchManagePledgeViewBackingResult,
+            fetchProjectAndBackingResult: $1.fetchProjectAndBackingResult,
             fetchMessageThreadResult: $1.fetchMessageThreadResult,
             fetchMessageThreadsResponse: $1.fetchMessageThreadsResponse,
             fetchProjectResult: $1.fetchProjectEnvelopeResult,

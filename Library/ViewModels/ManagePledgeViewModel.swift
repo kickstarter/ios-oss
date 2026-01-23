@@ -128,18 +128,12 @@ public final class ManagePledgeViewModel:
       .skipNil()
       .switchMap { backingId in
         AppEnvironment.current.apiService
-          .fetchBackingWithIncrementsRefundedAmount(id: backingId, withStoredCards: false)
+          .fetchBackingForManagePledge(id: backingId, withStoredCards: false)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
 
-    let graphBackingProject = graphBackingEvent.values()
-      .map { $0.project }
-
-    let graphBackingEnvelope = graphBackingEvent.values()
-
-    let backing = graphBackingEnvelope
-      .map { $0.backing }
+    let backing = graphBackingEvent.values()
 
     let endRefreshingWhenProjectFailed = fetchProjectEvent.errors()
       .ignoreValues()
@@ -176,7 +170,7 @@ public final class ManagePledgeViewModel:
         return (project, reward)
       }
 
-    self.title = graphBackingProject.combineLatest(with: userIsCreatorOfProject)
+    self.title = project.combineLatest(with: userIsCreatorOfProject)
       .map(navigationBarTitle(with:userIsCreatorOfProject:))
 
     self.configurePaymentMethodView = backing.map(managePledgePaymentMethodViewData)
