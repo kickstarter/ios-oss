@@ -150,7 +150,7 @@ final class ProjectPageViewModelTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
     withEnvironment(apiService: MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectAndBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectFriendsResult: .success(friends),
       fetchProjectRewardsResult: .success([.template])
@@ -189,7 +189,7 @@ final class ProjectPageViewModelTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
     withEnvironment(apiService: MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectAndBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectFriendsResult: .failure(.couldNotParseJSON),
       fetchProjectRewardsResult: .success([.template])
@@ -228,7 +228,7 @@ final class ProjectPageViewModelTests: TestCase {
     let friends = [User.template]
 
     withEnvironment(apiService: MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectAndBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectFriendsResult: .success(friends),
       fetchProjectRewardsResult: .success([.template])
@@ -297,7 +297,7 @@ final class ProjectPageViewModelTests: TestCase {
     let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: USCurrencyProject, backing: backing)
 
     withEnvironment(apiService: MockService(
-      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectFullAndEnvelope),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success([.template])
     )) {
@@ -387,7 +387,7 @@ final class ProjectPageViewModelTests: TestCase {
     let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: USCurrencyProject, backing: backing)
 
     withEnvironment(apiService: MockService(
-      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectFullAndEnvelope),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success([.template])
     )) {
@@ -462,7 +462,7 @@ final class ProjectPageViewModelTests: TestCase {
     let refTag = RefTag.category
 
     withEnvironment(apiService: MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectAndBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectFriendsResult: .success(friends),
       fetchProjectRewardsResult: .success([.template])
@@ -489,7 +489,7 @@ final class ProjectPageViewModelTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
     withEnvironment(apiService: MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectAndBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectFriendsResult: .failure(.couldNotParseJSON),
       fetchProjectRewardsResult: .success([.template])
@@ -515,7 +515,7 @@ final class ProjectPageViewModelTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: 1)
 
     withEnvironment(apiService: MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectAndBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectFriendsResult: .success(friends),
       fetchProjectRewardsResult: .success([.template])
@@ -1260,7 +1260,7 @@ final class ProjectPageViewModelTests: TestCase {
     let projectAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: Backing.template)
     let projectPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: 1)
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectAndEnvelope),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectFriendsResult: .success(friends),
       fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
@@ -1288,7 +1288,7 @@ final class ProjectPageViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(
-        fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+        fetchProjectAndBackingResult: .success(projectAndEnvelope),
         fetchProjectPamphletResult: .success(projectPamphletData),
         fetchProjectFriendsResult: .success(friends),
         fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
@@ -1349,7 +1349,7 @@ final class ProjectPageViewModelTests: TestCase {
     let projectUpdatedPamphletData = Project.ProjectPamphletData(project: updatedProject, backingId: 1)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectFullAndEnvelope),
       fetchProjectPamphletResult: .success(projectFullPamphletData),
       fetchProjectFriendsResult: .success(friends),
       fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
@@ -1376,7 +1376,7 @@ final class ProjectPageViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(
-        fetchManagePledgeViewBackingResult: .success(projectUpdatedAndEnvelope),
+        fetchProjectAndBackingResult: .success(projectUpdatedAndEnvelope),
         fetchProjectPamphletResult: .success(projectUpdatedPamphletData),
         fetchProjectFriendsResult: .success(friends),
         fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
@@ -1428,7 +1428,7 @@ final class ProjectPageViewModelTests: TestCase {
     let projectFull2PamphletData = Project.ProjectPamphletData(project: projectFull2, backingId: nil)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectFullAndEnvelope),
       fetchProjectPamphletResult: .success(projectFullPamphletData),
       fetchProjectFriendsResult: .success(friends),
       fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
@@ -1455,7 +1455,7 @@ final class ProjectPageViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(
-        fetchManagePledgeViewBackingResult: .success(projectFull2AndEnvelope),
+        fetchProjectAndBackingResult: .success(projectFull2AndEnvelope),
         fetchProjectPamphletResult: .success(projectFull2PamphletData),
         fetchProjectFriendsResult: .success(friends),
         fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
@@ -1827,7 +1827,7 @@ final class ProjectPageViewModelTests: TestCase {
     let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectFullAndEnvelope),
       fetchProjectPamphletResult: .success(projectFullPamphletData),
       fetchProjectFriendsResult: .success(friends),
       fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
@@ -1878,7 +1878,7 @@ final class ProjectPageViewModelTests: TestCase {
     let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectFullAndEnvelope),
       fetchProjectPamphletResult: .success(projectFullPamphletData),
       fetchProjectFriendsResult: .success(friends),
       fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
@@ -1941,7 +1941,7 @@ final class ProjectPageViewModelTests: TestCase {
     let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectFullAndEnvelope),
       fetchProjectPamphletResult: .success(projectFullPamphletData),
       fetchProjectFriendsResult: .success(friends),
       fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
@@ -1995,7 +1995,7 @@ final class ProjectPageViewModelTests: TestCase {
     let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectFullAndEnvelope),
       fetchProjectPamphletResult: .success(projectFullPamphletData),
       fetchProjectFriendsResult: .success(friends),
       fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])

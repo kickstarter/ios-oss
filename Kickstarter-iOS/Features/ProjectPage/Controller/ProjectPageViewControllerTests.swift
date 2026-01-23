@@ -99,7 +99,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectAndEnvelope),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success([reward])
     )
@@ -148,7 +148,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectAndEnvelope),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success([reward])
     )
@@ -199,7 +199,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectAndEnvelope),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success([reward])
     )
@@ -245,7 +245,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectAndEnvelope),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewardData.rewards)
     )
@@ -336,7 +336,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: .template)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectAndEnvelope),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewardData.rewards)
     )
@@ -382,7 +382,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectAndEnvelope),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewardData.rewards)
     )
@@ -423,7 +423,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectAndBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewards)
     )
@@ -465,7 +465,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectAndBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewards)
     )
@@ -518,7 +518,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectAndEnvelope),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success([reward])
     )
@@ -571,7 +571,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectAndEnvelope),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success([reward])
     )
@@ -624,7 +624,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectAndEnvelope),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success([reward])
     )
@@ -677,7 +677,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectAndBackingResult: .success(projectAndEnvelope),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success([reward])
     )
@@ -806,7 +806,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: liveProject, backingId: nil)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectAndBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success(self.project.rewards)
     )
@@ -845,7 +845,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: liveProject, backingId: nil)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectAndBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success(self.project.rewards)
     )
@@ -885,7 +885,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectAndBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewards)
     )
@@ -936,7 +936,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: liveProject, backingId: nil)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectAndBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success(self.project.rewards)
     )
@@ -969,7 +969,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectAndBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData)
     )
 
@@ -1002,7 +1002,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let config = Config.template
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectAndBackingResult: .success(.template),
       fetchProjectPamphletResult: .failure(.couldNotParseJSON)
     )
 
