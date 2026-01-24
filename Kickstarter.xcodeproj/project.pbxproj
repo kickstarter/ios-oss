@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -40,6 +40,238 @@
 		AAF3BB3D2F14C6DF00DAE921 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAF3BB3C2F14C6DF00DAE921 /* Assets.xcassets */; };
 		AAF3BB502F183C1400DAE921 /* Library in Frameworks */ = {isa = PBXBuildFile; productRef = AAF3BB4F2F183C1400DAE921 /* Library */; };
 		AAF3BB522F183C1400DAE921 /* LibraryTestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = AAF3BB512F183C1400DAE921 /* LibraryTestHelpers */; };
+		AAF548D72F2445C0001DB5AC /* ValueCellDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF547DE2F2445C0001DB5AC /* ValueCellDataSourceTests.swift */; };
+		AAF548D82F2445C0001DB5AC /* DoubleCurrencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF547E02F2445C0001DB5AC /* DoubleCurrencyTests.swift */; };
+		AAF548D92F2445C0001DB5AC /* Feature+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF547E12F2445C0001DB5AC /* Feature+HelpersTests.swift */; };
+		AAF548DA2F2445C0001DB5AC /* PagedContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF547EF2F2445C0001DB5AC /* PagedContainerViewModelTests.swift */; };
+		AAF548DB2F2445C0001DB5AC /* PagedTabBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF547F02F2445C0001DB5AC /* PagedTabBarTests.swift */; };
+		AAF548DC2F2445C0001DB5AC /* RemoteConfigFeature+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF547F22F2445C0001DB5AC /* RemoteConfigFeature+HelpersTests.swift */; };
+		AAF548DD2F2445C0001DB5AC /* AttributionTrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF547F42F2445C0001DB5AC /* AttributionTrackingTests.swift */; };
+		AAF548DE2F2445C0001DB5AC /* KSRAnalyticsIdentityDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF547F52F2445C0001DB5AC /* KSRAnalyticsIdentityDataTests.swift */; };
+		AAF548DF2F2445C0001DB5AC /* KSRAnalyticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF547F62F2445C0001DB5AC /* KSRAnalyticsTests.swift */; };
+		AAF548E02F2445C0001DB5AC /* TrackingHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF547F72F2445C0001DB5AC /* TrackingHelpersTests.swift */; };
+		AAF548E12F2445C0001DB5AC /* FetchCategoriesUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF547F92F2445C0001DB5AC /* FetchCategoriesUseCaseTests.swift */; };
+		AAF548E22F2445C0001DB5AC /* FetchLocationsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF547FB2F2445C0001DB5AC /* FetchLocationsUseCaseTests.swift */; };
+		AAF548E32F2445C0001DB5AC /* SearchFiltersUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF547FD2F2445C0001DB5AC /* SearchFiltersUseCaseTests.swift */; };
+		AAF548E42F2445C0001DB5AC /* SelectedSearchFilters+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF547FE2F2445C0001DB5AC /* SelectedSearchFilters+TestHelpers.swift */; };
+		AAF548E52F2445C0001DB5AC /* SimilarProjectsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548002F2445C0001DB5AC /* SimilarProjectsUseCaseTests.swift */; };
+		AAF548E62F2445C0001DB5AC /* AudioVideoViewElementCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548032F2445C0001DB5AC /* AudioVideoViewElementCellViewModelTests.swift */; };
+		AAF548E72F2445C0001DB5AC /* ExternalSourceViewElementCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548042F2445C0001DB5AC /* ExternalSourceViewElementCellViewModelTests.swift */; };
+		AAF548E82F2445C0001DB5AC /* ImageViewElementCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548052F2445C0001DB5AC /* ImageViewElementCellViewModelTests.swift */; };
+		AAF548E92F2445C0001DB5AC /* TextViewElementCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548062F2445C0001DB5AC /* TextViewElementCellViewModelTests.swift */; };
+		AAF548EA2F2445C0001DB5AC /* ActivitiesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548082F2445C0001DB5AC /* ActivitiesViewModelTests.swift */; };
+		AAF548EB2F2445C0001DB5AC /* ActivityErroredBackingsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548092F2445C0001DB5AC /* ActivityErroredBackingsCellViewModelTests.swift */; };
+		AAF548EC2F2445C0001DB5AC /* ActivityFriendBackingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5480A2F2445C0001DB5AC /* ActivityFriendBackingViewModelTests.swift */; };
+		AAF548ED2F2445C0001DB5AC /* ActivityFriendFollowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5480B2F2445C0001DB5AC /* ActivityFriendFollowCellViewModelTests.swift */; };
+		AAF548EE2F2445C0001DB5AC /* ActivityProjectStatusViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5480C2F2445C0001DB5AC /* ActivityProjectStatusViewModelTests.swift */; };
+		AAF548EF2F2445C0001DB5AC /* ActivitySampleBackingCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5480D2F2445C0001DB5AC /* ActivitySampleBackingCellViewModelTests.swift */; };
+		AAF548F02F2445C0001DB5AC /* ActivitySampleFollowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5480E2F2445C0001DB5AC /* ActivitySampleFollowCellViewModelTests.swift */; };
+		AAF548F12F2445C0001DB5AC /* ActivitySampleProjectCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5480F2F2445C0001DB5AC /* ActivitySampleProjectCellViewModelTests.swift */; };
+		AAF548F22F2445C0001DB5AC /* ActivityUpdateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548102F2445C0001DB5AC /* ActivityUpdateViewModelTests.swift */; };
+		AAF548F32F2445C0001DB5AC /* ApplePayTokenUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548112F2445C0001DB5AC /* ApplePayTokenUseCaseTests.swift */; };
+		AAF548F42F2445C0001DB5AC /* BackerDashboardProjectCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548122F2445C0001DB5AC /* BackerDashboardProjectCellViewModelTests.swift */; };
+		AAF548F52F2445C0001DB5AC /* BackerDashboardProjectsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548132F2445C0001DB5AC /* BackerDashboardProjectsViewModelTests.swift */; };
+		AAF548F62F2445C0001DB5AC /* BackerDashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548142F2445C0001DB5AC /* BackerDashboardViewModelTests.swift */; };
+		AAF548F72F2445C0001DB5AC /* BackingCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548152F2445C0001DB5AC /* BackingCellViewModelTests.swift */; };
+		AAF548F82F2445C0001DB5AC /* BetaToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548162F2445C0001DB5AC /* BetaToolsViewModelTests.swift */; };
+		AAF548F92F2445C0001DB5AC /* CancelPledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548172F2445C0001DB5AC /* CancelPledgeViewModelTests.swift */; };
+		AAF548FA2F2445C0001DB5AC /* CategoryCollectionViewSectionHeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548182F2445C0001DB5AC /* CategoryCollectionViewSectionHeaderViewModelTests.swift */; };
+		AAF548FB2F2445C0001DB5AC /* CategoryPillCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548192F2445C0001DB5AC /* CategoryPillCellViewModelTests.swift */; };
+		AAF548FC2F2445C0001DB5AC /* CategorySelectionHeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481A2F2445C0001DB5AC /* CategorySelectionHeaderViewModelTests.swift */; };
+		AAF548FD2F2445C0001DB5AC /* ChangeEmailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481B2F2445C0001DB5AC /* ChangeEmailViewModelTests.swift */; };
+		AAF548FE2F2445C0001DB5AC /* ChangePasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481C2F2445C0001DB5AC /* ChangePasswordViewModelTests.swift */; };
+		AAF548FF2F2445C0001DB5AC /* CommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481D2F2445C0001DB5AC /* CommentCellViewModelTests.swift */; };
+		AAF549002F2445C0001DB5AC /* CommentComposerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481E2F2445C0001DB5AC /* CommentComposerViewModelTests.swift */; };
+		AAF549012F2445C0001DB5AC /* CommentDialogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481F2F2445C0001DB5AC /* CommentDialogViewModelTests.swift */; };
+		AAF549022F2445C0001DB5AC /* CommentRepliesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548202F2445C0001DB5AC /* CommentRepliesViewModelTests.swift */; };
+		AAF549032F2445C0001DB5AC /* CommentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548212F2445C0001DB5AC /* CommentsViewModelTests.swift */; };
+		AAF549042F2445C0001DB5AC /* CommentTableViewFooterViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548222F2445C0001DB5AC /* CommentTableViewFooterViewModelTests.swift */; };
+		AAF549052F2445C0001DB5AC /* CreatePasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548232F2445C0001DB5AC /* CreatePasswordViewModelTests.swift */; };
+		AAF549062F2445C0001DB5AC /* CreditCardCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548242F2445C0001DB5AC /* CreditCardCellViewModelTests.swift */; };
+		AAF549072F2445C0001DB5AC /* CuratedProjectsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548252F2445C0001DB5AC /* CuratedProjectsViewModelTests.swift */; };
+		AAF549082F2445C0001DB5AC /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548262F2445C0001DB5AC /* DiscoveryExpandableRowCellViewModelTests.swift */; };
+		AAF549092F2445C0001DB5AC /* DiscoveryFiltersViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548272F2445C0001DB5AC /* DiscoveryFiltersViewModelTests.swift */; };
+		AAF5490A2F2445C0001DB5AC /* DiscoveryNavigationHeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548282F2445C0001DB5AC /* DiscoveryNavigationHeaderViewModelTests.swift */; };
+		AAF5490B2F2445C0001DB5AC /* DiscoveryPageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548292F2445C0001DB5AC /* DiscoveryPageViewModelTests.swift */; };
+		AAF5490C2F2445C0001DB5AC /* DiscoveryPostcardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5482A2F2445C0001DB5AC /* DiscoveryPostcardViewModelTests.swift */; };
+		AAF5490D2F2445C0001DB5AC /* DiscoveryProjectCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5482B2F2445C0001DB5AC /* DiscoveryProjectCardViewModelTests.swift */; };
+		AAF5490E2F2445C0001DB5AC /* DiscoveryProjectCategoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5482C2F2445C0001DB5AC /* DiscoveryProjectCategoryViewModelTests.swift */; };
+		AAF5490F2F2445C0001DB5AC /* DiscoveryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5482D2F2445C0001DB5AC /* DiscoveryViewModelTests.swift */; };
+		AAF549102F2445C0001DB5AC /* EmptyStatesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5482E2F2445C0001DB5AC /* EmptyStatesViewModelTests.swift */; };
+		AAF549112F2445C0001DB5AC /* EmptyStateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5482F2F2445C0001DB5AC /* EmptyStateViewModelTests.swift */; };
+		AAF549122F2445C0001DB5AC /* ErroredBackingViewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548302F2445C0001DB5AC /* ErroredBackingViewViewModelTests.swift */; };
+		AAF549132F2445C0001DB5AC /* FacebookConfirmationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548312F2445C0001DB5AC /* FacebookConfirmationViewModelTests.swift */; };
+		AAF549142F2445C0001DB5AC /* FacebookResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548322F2445C0001DB5AC /* FacebookResetPasswordViewModelTests.swift */; };
+		AAF549152F2445C0001DB5AC /* FeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548332F2445C0001DB5AC /* FeatureFlagToolsViewModelTests.swift */; };
+		AAF549162F2445C0001DB5AC /* FindFriendsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548342F2445C0001DB5AC /* FindFriendsCellViewModelTests.swift */; };
+		AAF549172F2445C0001DB5AC /* FindFriendsFaceookConnectCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548352F2445C0001DB5AC /* FindFriendsFaceookConnectCellViewModelTests.swift */; };
+		AAF549182F2445C0001DB5AC /* FindFriendsFriendFollowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548362F2445C0001DB5AC /* FindFriendsFriendFollowCellViewModelTests.swift */; };
+		AAF549192F2445C0001DB5AC /* FindFriendsStatsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548372F2445C0001DB5AC /* FindFriendsStatsCellViewModelTests.swift */; };
+		AAF5491A2F2445C0001DB5AC /* FindFriendsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548382F2445C0001DB5AC /* FindFriendsViewModelTests.swift */; };
+		AAF5491B2F2445C0001DB5AC /* HelpViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548392F2445C0001DB5AC /* HelpViewModelTests.swift */; };
+		AAF5491C2F2445C0001DB5AC /* KSRSearchBarViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483A2F2445C0001DB5AC /* KSRSearchBarViewModelTests.swift */; };
+		AAF5491D2F2445C0001DB5AC /* LoadingBarButtonItemViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483B2F2445C0001DB5AC /* LoadingBarButtonItemViewModelTests.swift */; };
+		AAF5491E2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483C2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift */; };
+		AAF5491F2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483D2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift */; };
+		AAF549202F2445C0001DB5AC /* LoginToutViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483E2F2445C0001DB5AC /* LoginToutViewModelTests.swift */; };
+		AAF549212F2445C0001DB5AC /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483F2F2445C0001DB5AC /* LoginViewModelTests.swift */; };
+		AAF549222F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548402F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift */; };
+		AAF549232F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548412F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift */; };
+		AAF549242F2445C0001DB5AC /* ManagePledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548422F2445C0001DB5AC /* ManagePledgeViewModelTests.swift */; };
+		AAF549252F2445C0001DB5AC /* ManageViewPledgeRewardReceivedViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548432F2445C0001DB5AC /* ManageViewPledgeRewardReceivedViewModelTests.swift */; };
+		AAF549262F2445C0001DB5AC /* MessageBannerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548442F2445C0001DB5AC /* MessageBannerViewModelTests.swift */; };
+		AAF549272F2445C0001DB5AC /* MessageCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548452F2445C0001DB5AC /* MessageCellViewModelTests.swift */; };
+		AAF549282F2445C0001DB5AC /* MessageDialogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548462F2445C0001DB5AC /* MessageDialogViewModelTests.swift */; };
+		AAF549292F2445C0001DB5AC /* MessagesSearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548472F2445C0001DB5AC /* MessagesSearchViewModelTests.swift */; };
+		AAF5492A2F2445C0001DB5AC /* MessagesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548482F2445C0001DB5AC /* MessagesViewModelTests.swift */; };
+		AAF5492B2F2445C0001DB5AC /* MessageThreadCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548492F2445C0001DB5AC /* MessageThreadCellViewModelTests.swift */; };
+		AAF5492C2F2445C0001DB5AC /* MessageThreadsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5484A2F2445C0001DB5AC /* MessageThreadsViewModelTests.swift */; };
+		AAF5492D2F2445C0001DB5AC /* MostPopularSearchProjectCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5484B2F2445C0001DB5AC /* MostPopularSearchProjectCellViewModelTests.swift */; };
+		AAF5492E2F2445C0001DB5AC /* PaymentMethodSettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5484C2F2445C0001DB5AC /* PaymentMethodSettingsViewModelTests.swift */; };
+		AAF5492F2F2445C0001DB5AC /* PaymentMethodsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5484D2F2445C0001DB5AC /* PaymentMethodsUseCaseTests.swift */; };
+		AAF549302F2445C0001DB5AC /* PersonalizationCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5484E2F2445C0001DB5AC /* PersonalizationCellViewModelTests.swift */; };
+		AAF549312F2445C0001DB5AC /* PillCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5484F2F2445C0001DB5AC /* PillCellViewModelTests.swift */; };
+		AAF549322F2445C0001DB5AC /* PledgeAmountSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548502F2445C0001DB5AC /* PledgeAmountSummaryViewModelTests.swift */; };
+		AAF549332F2445C0001DB5AC /* PledgeAmountViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548512F2445C0001DB5AC /* PledgeAmountViewModelTests.swift */; };
+		AAF549342F2445C0001DB5AC /* PledgeCTAContainerViewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548522F2445C0001DB5AC /* PledgeCTAContainerViewViewModelTests.swift */; };
+		AAF549352F2445C0001DB5AC /* PledgeDisclaimerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548532F2445C0001DB5AC /* PledgeDisclaimerViewModelTests.swift */; };
+		AAF549362F2445C0001DB5AC /* PledgeExpandableHeaderRewardCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548542F2445C0001DB5AC /* PledgeExpandableHeaderRewardCellViewModelTests.swift */; };
+		AAF549372F2445C0001DB5AC /* PledgeExpandableRewardsHeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548552F2445C0001DB5AC /* PledgeExpandableRewardsHeaderViewModelTests.swift */; };
+		AAF549382F2445C0001DB5AC /* PledgeLocalPickupViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548562F2445C0001DB5AC /* PledgeLocalPickupViewModelTests.swift */; };
+		AAF549392F2445C0001DB5AC /* PledgeManagerWebViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548572F2445C0001DB5AC /* PledgeManagerWebViewModelTests.swift */; };
+		AAF5493A2F2445C0001DB5AC /* PledgeOverTimePaymentScheduleViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548582F2445C0001DB5AC /* PledgeOverTimePaymentScheduleViewModelTest.swift */; };
+		AAF5493B2F2445C0001DB5AC /* PledgeOverTimeUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548592F2445C0001DB5AC /* PledgeOverTimeUseCaseTests.swift */; };
+		AAF5493C2F2445C0001DB5AC /* PledgePaymentIncrementFormattedTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5485A2F2445C0001DB5AC /* PledgePaymentIncrementFormattedTest.swift */; };
+		AAF5493D2F2445C0001DB5AC /* PledgePaymentMethodCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5485B2F2445C0001DB5AC /* PledgePaymentMethodCellViewModelTests.swift */; };
+		AAF5493E2F2445C0001DB5AC /* PledgePaymentMethodsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5485C2F2445C0001DB5AC /* PledgePaymentMethodsViewModelTests.swift */; };
+		AAF5493F2F2445C0001DB5AC /* PledgePaymentPlansAndSelectionData+GraphAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5485D2F2445C0001DB5AC /* PledgePaymentPlansAndSelectionData+GraphAPITests.swift */; };
+		AAF549402F2445C0001DB5AC /* PledgePaymentPlansOptionViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5485E2F2445C0001DB5AC /* PledgePaymentPlansOptionViewModelTest.swift */; };
+		AAF549412F2445C0001DB5AC /* PledgePaymentPlansViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5485F2F2445C0001DB5AC /* PledgePaymentPlansViewModelTest.swift */; };
+		AAF549422F2445C0001DB5AC /* PledgeShippingLocationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548602F2445C0001DB5AC /* PledgeShippingLocationViewModelTests.swift */; };
+		AAF549432F2445C0001DB5AC /* PledgeShippingSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548612F2445C0001DB5AC /* PledgeShippingSummaryViewModelTests.swift */; };
+		AAF549442F2445C0001DB5AC /* PledgeStatusLabelViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548622F2445C0001DB5AC /* PledgeStatusLabelViewModelTests.swift */; };
+		AAF549452F2445C0001DB5AC /* PledgeSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548632F2445C0001DB5AC /* PledgeSummaryViewModelTests.swift */; };
+		AAF549462F2445C0001DB5AC /* PledgeViewCTAContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548642F2445C0001DB5AC /* PledgeViewCTAContainerViewModelTests.swift */; };
+		AAF549472F2445C0001DB5AC /* PledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548652F2445C0001DB5AC /* PledgeViewModelTests.swift */; };
+		AAF549482F2445C0001DB5AC /* PledgeViewUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548662F2445C0001DB5AC /* PledgeViewUseCaseTests.swift */; };
+		AAF549492F2445C0001DB5AC /* PostCampaignCheckoutViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548672F2445C0001DB5AC /* PostCampaignCheckoutViewModelTests.swift */; };
+		AAF5494A2F2445C0001DB5AC /* PostCampaignPledgeRewardsSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548682F2445C0001DB5AC /* PostCampaignPledgeRewardsSummaryViewModelTests.swift */; };
+		AAF5494B2F2445C0001DB5AC /* ProjectCreatorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548692F2445C0001DB5AC /* ProjectCreatorViewModelTests.swift */; };
+		AAF5494C2F2445C0001DB5AC /* ProjectFAQsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5486A2F2445C0001DB5AC /* ProjectFAQsCellViewModelTests.swift */; };
+		AAF5494D2F2445C0001DB5AC /* ProjectNavigationSelectorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5486B2F2445C0001DB5AC /* ProjectNavigationSelectorViewModelTests.swift */; };
+		AAF5494E2F2445C0001DB5AC /* ProjectNotificationCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5486C2F2445C0001DB5AC /* ProjectNotificationCellViewModelTests.swift */; };
+		AAF5494F2F2445C0001DB5AC /* ProjectNotificationsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5486D2F2445C0001DB5AC /* ProjectNotificationsViewModelTest.swift */; };
+		AAF549502F2445C0001DB5AC /* ProjectPageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5486E2F2445C0001DB5AC /* ProjectPageViewModelTests.swift */; };
+		AAF549512F2445C0001DB5AC /* ProjectPamphletContentViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5486F2F2445C0001DB5AC /* ProjectPamphletContentViewModelTests.swift */; };
+		AAF549522F2445C0001DB5AC /* ProjectPamphletCreatorHeaderCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548702F2445C0001DB5AC /* ProjectPamphletCreatorHeaderCellViewModelTests.swift */; };
+		AAF549532F2445C0001DB5AC /* ProjectPamphletMainCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548712F2445C0001DB5AC /* ProjectPamphletMainCellViewModelTests.swift */; };
+		AAF549542F2445C0001DB5AC /* ProjectPamphletSubpageCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548722F2445C0001DB5AC /* ProjectPamphletSubpageCellViewModelTests.swift */; };
+		AAF549552F2445C0001DB5AC /* ProjectRisksCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548732F2445C0001DB5AC /* ProjectRisksCellViewModelTests.swift */; };
+		AAF549562F2445C0001DB5AC /* ProjectRisksDisclaimerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548742F2445C0001DB5AC /* ProjectRisksDisclaimerCellViewModelTests.swift */; };
+		AAF549572F2445C0001DB5AC /* ProjectTabCategoryDescriptionCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548752F2445C0001DB5AC /* ProjectTabCategoryDescriptionCellViewModelTests.swift */; };
+		AAF549582F2445C0001DB5AC /* ProjectTabCheckmarkListCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548762F2445C0001DB5AC /* ProjectTabCheckmarkListCellViewModelTests.swift */; };
+		AAF549592F2445C0001DB5AC /* ProjectTabDisclaimerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548772F2445C0001DB5AC /* ProjectTabDisclaimerCellViewModelTests.swift */; };
+		AAF5495A2F2445C0001DB5AC /* ProjectUpdatesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548782F2445C0001DB5AC /* ProjectUpdatesViewModelTests.swift */; };
+		AAF5495B2F2445C0001DB5AC /* RemoteConfigFeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548792F2445C0001DB5AC /* RemoteConfigFeatureFlagToolsViewModelTests.swift */; };
+		AAF5495C2F2445C0001DB5AC /* ReportProjectFormViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5487A2F2445C0001DB5AC /* ReportProjectFormViewModelTests.swift */; };
+		AAF5495D2F2445C0001DB5AC /* ResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5487B2F2445C0001DB5AC /* ResetPasswordViewModelTests.swift */; };
+		AAF5495E2F2445C0001DB5AC /* RewardAddOnCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5487C2F2445C0001DB5AC /* RewardAddOnCardViewModelTests.swift */; };
+		AAF5495F2F2445C0001DB5AC /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5487D2F2445C0001DB5AC /* RewardAddOnSelectionContinueCTAViewModelTests.swift */; };
+		AAF549602F2445C0001DB5AC /* RewardAddOnSelectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5487E2F2445C0001DB5AC /* RewardAddOnSelectionViewModelTests.swift */; };
+		AAF549612F2445C0001DB5AC /* RewardCardContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5487F2F2445C0001DB5AC /* RewardCardContainerViewModelTests.swift */; };
+		AAF549622F2445C0001DB5AC /* RewardCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548802F2445C0001DB5AC /* RewardCardViewModelTests.swift */; };
+		AAF549632F2445C0001DB5AC /* RewardCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548812F2445C0001DB5AC /* RewardCellViewModelTests.swift */; };
+		AAF549642F2445C0001DB5AC /* RewardsCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548822F2445C0001DB5AC /* RewardsCollectionViewModelTests.swift */; };
+		AAF549652F2445C0001DB5AC /* RewardsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548832F2445C0001DB5AC /* RewardsUseCaseTests.swift */; };
+		AAF549662F2445C0001DB5AC /* RewardTrackingActivitiesCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548842F2445C0001DB5AC /* RewardTrackingActivitiesCellViewModelTest.swift */; };
+		AAF549672F2445C0001DB5AC /* RewardTrackingDetailsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548852F2445C0001DB5AC /* RewardTrackingDetailsViewModelTest.swift */; };
+		AAF549682F2445C0001DB5AC /* SearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548862F2445C0001DB5AC /* SearchViewModelTests.swift */; };
+		AAF549692F2445C0001DB5AC /* SelectCurrencyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548872F2445C0001DB5AC /* SelectCurrencyViewModelTests.swift */; };
+		AAF5496A2F2445C0001DB5AC /* SettingsDeleteOrRequestCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548882F2445C0001DB5AC /* SettingsDeleteOrRequestCellViewModelTests.swift */; };
+		AAF5496B2F2445C0001DB5AC /* SettingsFollowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548892F2445C0001DB5AC /* SettingsFollowCellViewModelTests.swift */; };
+		AAF5496C2F2445C0001DB5AC /* SettingsNewslettersCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5488A2F2445C0001DB5AC /* SettingsNewslettersCellViewModelTests.swift */; };
+		AAF5496D2F2445C0001DB5AC /* SettingsNewslettersViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5488B2F2445C0001DB5AC /* SettingsNewslettersViewModelTests.swift */; };
+		AAF5496E2F2445C0001DB5AC /* SettingsNotificationCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5488C2F2445C0001DB5AC /* SettingsNotificationCellViewModelTests.swift */; };
+		AAF5496F2F2445C0001DB5AC /* SettingsNotificationPickerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5488D2F2445C0001DB5AC /* SettingsNotificationPickerViewModelTests.swift */; };
+		AAF549702F2445C0001DB5AC /* SettingsNotificationsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5488E2F2445C0001DB5AC /* SettingsNotificationsViewModelTests.swift */; };
+		AAF549712F2445C0001DB5AC /* SettingsPrivacySwitchCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5488F2F2445C0001DB5AC /* SettingsPrivacySwitchCellViewModelTests.swift */; };
+		AAF549722F2445C0001DB5AC /* SettingsPrivacyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548902F2445C0001DB5AC /* SettingsPrivacyViewModelTests.swift */; };
+		AAF549732F2445C0001DB5AC /* SettingsRecommendationsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548912F2445C0001DB5AC /* SettingsRecommendationsCellViewModelTests.swift */; };
+		AAF549742F2445C0001DB5AC /* ShareViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548922F2445C0001DB5AC /* ShareViewModelTests.swift */; };
+		AAF549752F2445C0001DB5AC /* ShippingRulesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548932F2445C0001DB5AC /* ShippingRulesViewModelTests.swift */; };
+		AAF549762F2445C0001DB5AC /* SortPagerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548942F2445C0001DB5AC /* SortPagerViewModelTests.swift */; };
+		AAF549772F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548952F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift */; };
+		AAF549782F2445C0001DB5AC /* ThanksViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548962F2445C0001DB5AC /* ThanksViewModelTests.swift */; };
+		AAF549792F2445C0001DB5AC /* TwoFactorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548972F2445C0001DB5AC /* TwoFactorViewModelTests.swift */; };
+		AAF5497A2F2445C0001DB5AC /* UpdateDraftViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548982F2445C0001DB5AC /* UpdateDraftViewModelTests.swift */; };
+		AAF5497B2F2445C0001DB5AC /* VideoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548992F2445C0001DB5AC /* VideoViewModelTests.swift */; };
+		AAF5497C2F2445C0001DB5AC /* WatchProjectViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5489A2F2445C0001DB5AC /* WatchProjectViewModelTests.swift */; };
+		AAF5497D2F2445C0001DB5AC /* ApplePayCapabilitiesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5489C2F2445C0001DB5AC /* ApplePayCapabilitiesTests.swift */; };
+		AAF5497E2F2445C0001DB5AC /* CharacterSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5489D2F2445C0001DB5AC /* CharacterSetTests.swift */; };
+		AAF5497F2F2445C0001DB5AC /* CircleAvatarImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5489E2F2445C0001DB5AC /* CircleAvatarImageViewTests.swift */; };
+		AAF549802F2445C0001DB5AC /* CreateBackingConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5489F2F2445C0001DB5AC /* CreateBackingConstructorTests.swift */; };
+		AAF549812F2445C0001DB5AC /* CreatePaymentSourceInput+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548A02F2445C0001DB5AC /* CreatePaymentSourceInput+ConstructorTests.swift */; };
+		AAF549822F2445C0001DB5AC /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548A12F2445C0001DB5AC /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift */; };
+		AAF549832F2445C0001DB5AC /* CreditCard+UtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548A22F2445C0001DB5AC /* CreditCard+UtilsTests.swift */; };
+		AAF549842F2445C0001DB5AC /* DateFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548A32F2445C0001DB5AC /* DateFormatterTests.swift */; };
+		AAF549852F2445C0001DB5AC /* EnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548A42F2445C0001DB5AC /* EnvironmentTests.swift */; };
+		AAF549862F2445C0001DB5AC /* EnvironmentVariablesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548A52F2445C0001DB5AC /* EnvironmentVariablesTests.swift */; };
+		AAF549872F2445C0001DB5AC /* EquatableHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548A62F2445C0001DB5AC /* EquatableHelpersTests.swift */; };
+		AAF549882F2445C0001DB5AC /* ExperimentName+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548A72F2445C0001DB5AC /* ExperimentName+HelpersTests.swift */; };
+		AAF549892F2445C0001DB5AC /* FacebookSDKTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548A82F2445C0001DB5AC /* FacebookSDKTypeTests.swift */; };
+		AAF5498A2F2445C0001DB5AC /* FormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548A92F2445C0001DB5AC /* FormatTests.swift */; };
+		AAF5498B2F2445C0001DB5AC /* HelpTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548AA2F2445C0001DB5AC /* HelpTypeTests.swift */; };
+		AAF5498C2F2445C0001DB5AC /* InstantiableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548AB2F2445C0001DB5AC /* InstantiableTests.swift */; };
+		AAF5498D2F2445C0001DB5AC /* IsValidEmailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548AC2F2445C0001DB5AC /* IsValidEmailTests.swift */; };
+		AAF5498E2F2445C0001DB5AC /* KSCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548AD2F2445C0001DB5AC /* KSCacheTests.swift */; };
+		AAF5498F2F2445C0001DB5AC /* LanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548AE2F2445C0001DB5AC /* LanguageTests.swift */; };
+		AAF549902F2445C0001DB5AC /* LaunchedCountriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548AF2F2445C0001DB5AC /* LaunchedCountriesTests.swift */; };
+		AAF549912F2445C0001DB5AC /* LocalizedLottieFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548B02F2445C0001DB5AC /* LocalizedLottieFileTests.swift */; };
+		AAF549922F2445C0001DB5AC /* LocalizedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548B12F2445C0001DB5AC /* LocalizedStringTests.swift */; };
+		AAF549932F2445C0001DB5AC /* MockFacebookSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548B22F2445C0001DB5AC /* MockFacebookSDK.swift */; };
+		AAF549942F2445C0001DB5AC /* NavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548B32F2445C0001DB5AC /* NavigationTests.swift */; };
+		AAF549952F2445C0001DB5AC /* NSBundleType+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548B42F2445C0001DB5AC /* NSBundleType+Tests.swift */; };
+		AAF549962F2445C0001DB5AC /* NumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548B52F2445C0001DB5AC /* NumberFormatterTests.swift */; };
+		AAF549972F2445C0001DB5AC /* OAuthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548B62F2445C0001DB5AC /* OAuthTests.swift */; };
+		AAF549982F2445C0001DB5AC /* OnboardingUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548B72F2445C0001DB5AC /* OnboardingUseCaseTests.swift */; };
+		AAF549992F2445C0001DB5AC /* OnboardingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548B82F2445C0001DB5AC /* OnboardingViewModelTests.swift */; };
+		AAF5499A2F2445C0001DB5AC /* PaginateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548B92F2445C0001DB5AC /* PaginateTests.swift */; };
+		AAF5499B2F2445C0001DB5AC /* PaginatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548BA2F2445C0001DB5AC /* PaginatorTests.swift */; };
+		AAF5499C2F2445C0001DB5AC /* PasswordValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548BB2F2445C0001DB5AC /* PasswordValidationTests.swift */; };
+		AAF5499D2F2445C0001DB5AC /* PKPaymentRequestHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548BC2F2445C0001DB5AC /* PKPaymentRequestHelpersTests.swift */; };
+		AAF5499E2F2445C0001DB5AC /* PledgeViewContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548BD2F2445C0001DB5AC /* PledgeViewContextTests.swift */; };
+		AAF5499F2F2445C0001DB5AC /* ProjectActivityItemProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548BE2F2445C0001DB5AC /* ProjectActivityItemProviderTests.swift */; };
+		AAF549A02F2445C0001DB5AC /* ProjectURLBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548BF2F2445C0001DB5AC /* ProjectURLBuilderTests.swift */; };
+		AAF549A12F2445C0001DB5AC /* PushNotificationDialogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548C02F2445C0001DB5AC /* PushNotificationDialogTests.swift */; };
+		AAF549A22F2445C0001DB5AC /* RefInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548C12F2445C0001DB5AC /* RefInfoTests.swift */; };
+		AAF549A32F2445C0001DB5AC /* RewardCellProjectBackingStateTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548C22F2445C0001DB5AC /* RewardCellProjectBackingStateTypeTests.swift */; };
+		AAF549A42F2445C0001DB5AC /* SharedFunctionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548C32F2445C0001DB5AC /* SharedFunctionsTests.swift */; };
+		AAF549A52F2445C0001DB5AC /* String+AttributedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548C42F2445C0001DB5AC /* String+AttributedTests.swift */; };
+		AAF549A62F2445C0001DB5AC /* String+Base64Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548C52F2445C0001DB5AC /* String+Base64Tests.swift */; };
+		AAF549A72F2445C0001DB5AC /* String+SimpleHTMLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548C62F2445C0001DB5AC /* String+SimpleHTMLTests.swift */; };
+		AAF549A82F2445C0001DB5AC /* String+TruncateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548C72F2445C0001DB5AC /* String+TruncateTests.swift */; };
+		AAF549A92F2445C0001DB5AC /* String+WhitespaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548C82F2445C0001DB5AC /* String+WhitespaceTests.swift */; };
+		AAF549AA2F2445C0001DB5AC /* UIFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548C92F2445C0001DB5AC /* UIFontTests.swift */; };
+		AAF549AB2F2445C0001DB5AC /* UILabel+IBClearTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548CA2F2445C0001DB5AC /* UILabel+IBClearTests.swift */; };
+		AAF549AC2F2445C0001DB5AC /* UILabel+SimpleHTMLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548CB2F2445C0001DB5AC /* UILabel+SimpleHTMLTests.swift */; };
+		AAF549AD2F2445C0001DB5AC /* UIStackView+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548CC2F2445C0001DB5AC /* UIStackView+Tests.swift */; };
+		AAF549AE2F2445C0001DB5AC /* UIView+AutoLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548CD2F2445C0001DB5AC /* UIView+AutoLayoutTests.swift */; };
+		AAF549AF2F2445C0001DB5AC /* UIViewController+URLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548CE2F2445C0001DB5AC /* UIViewController+URLTests.swift */; };
+		AAF549B02F2445C0001DB5AC /* UpdateActivityItemProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548CF2F2445C0001DB5AC /* UpdateActivityItemProviderTests.swift */; };
+		AAF549B12F2445C0001DB5AC /* UpdateBackingInput+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548D02F2445C0001DB5AC /* UpdateBackingInput+ConstructorTests.swift */; };
+		AAF549B22F2445C0001DB5AC /* testBadgeAndDot.badge-and-dot.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547E32F2445C0001DB5AC /* testBadgeAndDot.badge-and-dot.png */; };
+		AAF549B32F2445C0001DB5AC /* testLongBadge.long-badge.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547E42F2445C0001DB5AC /* testLongBadge.long-badge.png */; };
+		AAF549B42F2445C0001DB5AC /* testLongGermanNames.German.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547E52F2445C0001DB5AC /* testLongGermanNames.German.png */; };
+		AAF549B52F2445C0001DB5AC /* testLongName.long-name.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547E62F2445C0001DB5AC /* testLongName.long-name.png */; };
+		AAF549B62F2445C0001DB5AC /* testNoBadges.no-badges.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547E72F2445C0001DB5AC /* testNoBadges.no-badges.png */; };
+		AAF549B72F2445C0001DB5AC /* testNoBadgesLongNames.no-badges.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547E82F2445C0001DB5AC /* testNoBadgesLongNames.no-badges.png */; };
+		AAF549B82F2445C0001DB5AC /* testSecondTabBadge.long-name.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547E92F2445C0001DB5AC /* testSecondTabBadge.long-name.png */; };
+		AAF549B92F2445C0001DB5AC /* testTabSelection.firstTab.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547EA2F2445C0001DB5AC /* testTabSelection.firstTab.png */; };
+		AAF549BA2F2445C0001DB5AC /* testTabSelection.secondTab.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547EB2F2445C0001DB5AC /* testTabSelection.secondTab.png */; };
+		AAF549BB2F2445C0001DB5AC /* testThreeTabs.long-name.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547EC2F2445C0001DB5AC /* testThreeTabs.long-name.png */; };
+		AAF549BC2F2445C0001DB5AC /* SearchQuery_AnotherFiveResults.json in Resources */ = {isa = PBXBuildFile; fileRef = AAF548D22F2445C0001DB5AC /* SearchQuery_AnotherFiveResults.json */; };
+		AAF549BD2F2445C0001DB5AC /* SearchQuery_EmptyResults.json in Resources */ = {isa = PBXBuildFile; fileRef = AAF548D32F2445C0001DB5AC /* SearchQuery_EmptyResults.json */; };
+		AAF549BE2F2445C0001DB5AC /* SearchQuery_FiveResults.json in Resources */ = {isa = PBXBuildFile; fileRef = AAF548D42F2445C0001DB5AC /* SearchQuery_FiveResults.json */; };
 		AAFCECF32F20353A00EAC2FE /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = AAFCECF22F20353A00EAC2FE /* FirebaseCore */; };
 		AAFCECF52F20353A00EAC2FE /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = AAFCECF42F20353A00EAC2FE /* FirebaseCrashlytics */; };
 		AAFCECF72F20353A00EAC2FE /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = AAFCECF62F20353A00EAC2FE /* FirebaseRemoteConfig */; };
@@ -832,6 +1064,238 @@
 		AAF3BB4D2F16FD7D00DAE921 /* KsApi */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = KsApi; sourceTree = "<group>"; };
 		AAF3BB4E2F16FD7D00DAE921 /* Library */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Library; sourceTree = "<group>"; };
 		AAF3BB572F1845A200DAE921 /* LibraryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibraryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAF547DE2F2445C0001DB5AC /* ValueCellDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueCellDataSourceTests.swift; sourceTree = "<group>"; };
+		AAF547E02F2445C0001DB5AC /* DoubleCurrencyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleCurrencyTests.swift; sourceTree = "<group>"; };
+		AAF547E12F2445C0001DB5AC /* Feature+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feature+HelpersTests.swift"; sourceTree = "<group>"; };
+		AAF547E32F2445C0001DB5AC /* testBadgeAndDot.badge-and-dot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testBadgeAndDot.badge-and-dot.png"; sourceTree = "<group>"; };
+		AAF547E42F2445C0001DB5AC /* testLongBadge.long-badge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testLongBadge.long-badge.png"; sourceTree = "<group>"; };
+		AAF547E52F2445C0001DB5AC /* testLongGermanNames.German.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testLongGermanNames.German.png; sourceTree = "<group>"; };
+		AAF547E62F2445C0001DB5AC /* testLongName.long-name.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testLongName.long-name.png"; sourceTree = "<group>"; };
+		AAF547E72F2445C0001DB5AC /* testNoBadges.no-badges.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testNoBadges.no-badges.png"; sourceTree = "<group>"; };
+		AAF547E82F2445C0001DB5AC /* testNoBadgesLongNames.no-badges.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testNoBadgesLongNames.no-badges.png"; sourceTree = "<group>"; };
+		AAF547E92F2445C0001DB5AC /* testSecondTabBadge.long-name.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testSecondTabBadge.long-name.png"; sourceTree = "<group>"; };
+		AAF547EA2F2445C0001DB5AC /* testTabSelection.firstTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testTabSelection.firstTab.png; sourceTree = "<group>"; };
+		AAF547EB2F2445C0001DB5AC /* testTabSelection.secondTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testTabSelection.secondTab.png; sourceTree = "<group>"; };
+		AAF547EC2F2445C0001DB5AC /* testThreeTabs.long-name.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testThreeTabs.long-name.png"; sourceTree = "<group>"; };
+		AAF547EF2F2445C0001DB5AC /* PagedContainerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedContainerViewModelTests.swift; sourceTree = "<group>"; };
+		AAF547F02F2445C0001DB5AC /* PagedTabBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedTabBarTests.swift; sourceTree = "<group>"; };
+		AAF547F22F2445C0001DB5AC /* RemoteConfigFeature+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfigFeature+HelpersTests.swift"; sourceTree = "<group>"; };
+		AAF547F42F2445C0001DB5AC /* AttributionTrackingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributionTrackingTests.swift; sourceTree = "<group>"; };
+		AAF547F52F2445C0001DB5AC /* KSRAnalyticsIdentityDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRAnalyticsIdentityDataTests.swift; sourceTree = "<group>"; };
+		AAF547F62F2445C0001DB5AC /* KSRAnalyticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRAnalyticsTests.swift; sourceTree = "<group>"; };
+		AAF547F72F2445C0001DB5AC /* TrackingHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingHelpersTests.swift; sourceTree = "<group>"; };
+		AAF547F92F2445C0001DB5AC /* FetchCategoriesUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCategoriesUseCaseTests.swift; sourceTree = "<group>"; };
+		AAF547FB2F2445C0001DB5AC /* FetchLocationsUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLocationsUseCaseTests.swift; sourceTree = "<group>"; };
+		AAF547FD2F2445C0001DB5AC /* SearchFiltersUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersUseCaseTests.swift; sourceTree = "<group>"; };
+		AAF547FE2F2445C0001DB5AC /* SelectedSearchFilters+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SelectedSearchFilters+TestHelpers.swift"; sourceTree = "<group>"; };
+		AAF548002F2445C0001DB5AC /* SimilarProjectsUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarProjectsUseCaseTests.swift; sourceTree = "<group>"; };
+		AAF548032F2445C0001DB5AC /* AudioVideoViewElementCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioVideoViewElementCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548042F2445C0001DB5AC /* ExternalSourceViewElementCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalSourceViewElementCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548052F2445C0001DB5AC /* ImageViewElementCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewElementCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548062F2445C0001DB5AC /* TextViewElementCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewElementCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548082F2445C0001DB5AC /* ActivitiesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitiesViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548092F2445C0001DB5AC /* ActivityErroredBackingsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5480A2F2445C0001DB5AC /* ActivityFriendBackingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityFriendBackingViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5480B2F2445C0001DB5AC /* ActivityFriendFollowCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityFriendFollowCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5480C2F2445C0001DB5AC /* ActivityProjectStatusViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityProjectStatusViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5480D2F2445C0001DB5AC /* ActivitySampleBackingCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySampleBackingCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5480E2F2445C0001DB5AC /* ActivitySampleFollowCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySampleFollowCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5480F2F2445C0001DB5AC /* ActivitySampleProjectCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySampleProjectCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548102F2445C0001DB5AC /* ActivityUpdateViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityUpdateViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548112F2445C0001DB5AC /* ApplePayTokenUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayTokenUseCaseTests.swift; sourceTree = "<group>"; };
+		AAF548122F2445C0001DB5AC /* BackerDashboardProjectCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackerDashboardProjectCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548132F2445C0001DB5AC /* BackerDashboardProjectsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackerDashboardProjectsViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548142F2445C0001DB5AC /* BackerDashboardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackerDashboardViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548152F2445C0001DB5AC /* BackingCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackingCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548162F2445C0001DB5AC /* BetaToolsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaToolsViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548172F2445C0001DB5AC /* CancelPledgeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelPledgeViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548182F2445C0001DB5AC /* CategoryCollectionViewSectionHeaderViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewSectionHeaderViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548192F2445C0001DB5AC /* CategoryPillCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPillCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5481A2F2445C0001DB5AC /* CategorySelectionHeaderViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionHeaderViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5481B2F2445C0001DB5AC /* ChangeEmailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5481C2F2445C0001DB5AC /* ChangePasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5481D2F2445C0001DB5AC /* CommentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5481E2F2445C0001DB5AC /* CommentComposerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5481F2F2445C0001DB5AC /* CommentDialogViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDialogViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548202F2445C0001DB5AC /* CommentRepliesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548212F2445C0001DB5AC /* CommentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548222F2445C0001DB5AC /* CommentTableViewFooterViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewFooterViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548232F2445C0001DB5AC /* CreatePasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548242F2445C0001DB5AC /* CreditCardCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548252F2445C0001DB5AC /* CuratedProjectsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedProjectsViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548262F2445C0001DB5AC /* DiscoveryExpandableRowCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548272F2445C0001DB5AC /* DiscoveryFiltersViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryFiltersViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548282F2445C0001DB5AC /* DiscoveryNavigationHeaderViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryNavigationHeaderViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548292F2445C0001DB5AC /* DiscoveryPageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryPageViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5482A2F2445C0001DB5AC /* DiscoveryPostcardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryPostcardViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5482B2F2445C0001DB5AC /* DiscoveryProjectCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCardViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5482C2F2445C0001DB5AC /* DiscoveryProjectCategoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCategoryViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5482D2F2445C0001DB5AC /* DiscoveryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5482E2F2445C0001DB5AC /* EmptyStatesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStatesViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5482F2F2445C0001DB5AC /* EmptyStateViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548302F2445C0001DB5AC /* ErroredBackingViewViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroredBackingViewViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548312F2445C0001DB5AC /* FacebookConfirmationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookConfirmationViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548322F2445C0001DB5AC /* FacebookResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548332F2445C0001DB5AC /* FeatureFlagToolsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagToolsViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548342F2445C0001DB5AC /* FindFriendsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFriendsCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548352F2445C0001DB5AC /* FindFriendsFaceookConnectCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFriendsFaceookConnectCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548362F2445C0001DB5AC /* FindFriendsFriendFollowCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFriendsFriendFollowCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548372F2445C0001DB5AC /* FindFriendsStatsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFriendsStatsCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548382F2445C0001DB5AC /* FindFriendsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFriendsViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548392F2445C0001DB5AC /* HelpViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5483A2F2445C0001DB5AC /* KSRSearchBarViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRSearchBarViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5483B2F2445C0001DB5AC /* LoadingBarButtonItemViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItemViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5483C2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButtonViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5483D2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupUseCaseTests.swift; sourceTree = "<group>"; };
+		AAF5483E2F2445C0001DB5AC /* LoginToutViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginToutViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5483F2F2445C0001DB5AC /* LoginViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548402F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgePaymentMethodViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548412F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeSummaryViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548422F2445C0001DB5AC /* ManagePledgeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548432F2445C0001DB5AC /* ManageViewPledgeRewardReceivedViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageViewPledgeRewardReceivedViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548442F2445C0001DB5AC /* MessageBannerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548452F2445C0001DB5AC /* MessageCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548462F2445C0001DB5AC /* MessageDialogViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDialogViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548472F2445C0001DB5AC /* MessagesSearchViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesSearchViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548482F2445C0001DB5AC /* MessagesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548492F2445C0001DB5AC /* MessageThreadCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageThreadCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5484A2F2445C0001DB5AC /* MessageThreadsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageThreadsViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5484B2F2445C0001DB5AC /* MostPopularSearchProjectCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostPopularSearchProjectCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5484C2F2445C0001DB5AC /* PaymentMethodSettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodSettingsViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5484D2F2445C0001DB5AC /* PaymentMethodsUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsUseCaseTests.swift; sourceTree = "<group>"; };
+		AAF5484E2F2445C0001DB5AC /* PersonalizationCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalizationCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5484F2F2445C0001DB5AC /* PillCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548502F2445C0001DB5AC /* PledgeAmountSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAmountSummaryViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548512F2445C0001DB5AC /* PledgeAmountViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAmountViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548522F2445C0001DB5AC /* PledgeCTAContainerViewViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCTAContainerViewViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548532F2445C0001DB5AC /* PledgeDisclaimerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDisclaimerViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548542F2445C0001DB5AC /* PledgeExpandableHeaderRewardCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeExpandableHeaderRewardCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548552F2445C0001DB5AC /* PledgeExpandableRewardsHeaderViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeExpandableRewardsHeaderViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548562F2445C0001DB5AC /* PledgeLocalPickupViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeLocalPickupViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548572F2445C0001DB5AC /* PledgeManagerWebViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeManagerWebViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548582F2445C0001DB5AC /* PledgeOverTimePaymentScheduleViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimePaymentScheduleViewModelTest.swift; sourceTree = "<group>"; };
+		AAF548592F2445C0001DB5AC /* PledgeOverTimeUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeOverTimeUseCaseTests.swift; sourceTree = "<group>"; };
+		AAF5485A2F2445C0001DB5AC /* PledgePaymentIncrementFormattedTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentIncrementFormattedTest.swift; sourceTree = "<group>"; };
+		AAF5485B2F2445C0001DB5AC /* PledgePaymentMethodCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5485C2F2445C0001DB5AC /* PledgePaymentMethodsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5485D2F2445C0001DB5AC /* PledgePaymentPlansAndSelectionData+GraphAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PledgePaymentPlansAndSelectionData+GraphAPITests.swift"; sourceTree = "<group>"; };
+		AAF5485E2F2445C0001DB5AC /* PledgePaymentPlansOptionViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansOptionViewModelTest.swift; sourceTree = "<group>"; };
+		AAF5485F2F2445C0001DB5AC /* PledgePaymentPlansViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentPlansViewModelTest.swift; sourceTree = "<group>"; };
+		AAF548602F2445C0001DB5AC /* PledgeShippingLocationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548612F2445C0001DB5AC /* PledgeShippingSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingSummaryViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548622F2445C0001DB5AC /* PledgeStatusLabelViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548632F2445C0001DB5AC /* PledgeSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeSummaryViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548642F2445C0001DB5AC /* PledgeViewCTAContainerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewCTAContainerViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548652F2445C0001DB5AC /* PledgeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548662F2445C0001DB5AC /* PledgeViewUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewUseCaseTests.swift; sourceTree = "<group>"; };
+		AAF548672F2445C0001DB5AC /* PostCampaignCheckoutViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignCheckoutViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548682F2445C0001DB5AC /* PostCampaignPledgeRewardsSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeRewardsSummaryViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548692F2445C0001DB5AC /* ProjectCreatorViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCreatorViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5486A2F2445C0001DB5AC /* ProjectFAQsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5486B2F2445C0001DB5AC /* ProjectNavigationSelectorViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigationSelectorViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5486C2F2445C0001DB5AC /* ProjectNotificationCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNotificationCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5486D2F2445C0001DB5AC /* ProjectNotificationsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNotificationsViewModelTest.swift; sourceTree = "<group>"; };
+		AAF5486E2F2445C0001DB5AC /* ProjectPageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5486F2F2445C0001DB5AC /* ProjectPamphletContentViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletContentViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548702F2445C0001DB5AC /* ProjectPamphletCreatorHeaderCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletCreatorHeaderCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548712F2445C0001DB5AC /* ProjectPamphletMainCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletMainCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548722F2445C0001DB5AC /* ProjectPamphletSubpageCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletSubpageCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548732F2445C0001DB5AC /* ProjectRisksCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRisksCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548742F2445C0001DB5AC /* ProjectRisksDisclaimerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRisksDisclaimerCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548752F2445C0001DB5AC /* ProjectTabCategoryDescriptionCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabCategoryDescriptionCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548762F2445C0001DB5AC /* ProjectTabCheckmarkListCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabCheckmarkListCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548772F2445C0001DB5AC /* ProjectTabDisclaimerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabDisclaimerCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548782F2445C0001DB5AC /* ProjectUpdatesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectUpdatesViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548792F2445C0001DB5AC /* RemoteConfigFeatureFlagToolsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigFeatureFlagToolsViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5487A2F2445C0001DB5AC /* ReportProjectFormViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5487B2F2445C0001DB5AC /* ResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5487C2F2445C0001DB5AC /* RewardAddOnCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnCardViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5487D2F2445C0001DB5AC /* RewardAddOnSelectionContinueCTAViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionContinueCTAViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5487E2F2445C0001DB5AC /* RewardAddOnSelectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5487F2F2445C0001DB5AC /* RewardCardContainerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCardContainerViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548802F2445C0001DB5AC /* RewardCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCardViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548812F2445C0001DB5AC /* RewardCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548822F2445C0001DB5AC /* RewardsCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548832F2445C0001DB5AC /* RewardsUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsUseCaseTests.swift; sourceTree = "<group>"; };
+		AAF548842F2445C0001DB5AC /* RewardTrackingActivitiesCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTrackingActivitiesCellViewModelTest.swift; sourceTree = "<group>"; };
+		AAF548852F2445C0001DB5AC /* RewardTrackingDetailsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTrackingDetailsViewModelTest.swift; sourceTree = "<group>"; };
+		AAF548862F2445C0001DB5AC /* SearchViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548872F2445C0001DB5AC /* SelectCurrencyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCurrencyViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548882F2445C0001DB5AC /* SettingsDeleteOrRequestCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDeleteOrRequestCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548892F2445C0001DB5AC /* SettingsFollowCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFollowCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5488A2F2445C0001DB5AC /* SettingsNewslettersCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5488B2F2445C0001DB5AC /* SettingsNewslettersViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5488C2F2445C0001DB5AC /* SettingsNotificationCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5488D2F2445C0001DB5AC /* SettingsNotificationPickerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationPickerViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5488E2F2445C0001DB5AC /* SettingsNotificationsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5488F2F2445C0001DB5AC /* SettingsPrivacySwitchCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacySwitchCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548902F2445C0001DB5AC /* SettingsPrivacyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548912F2445C0001DB5AC /* SettingsRecommendationsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRecommendationsCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548922F2445C0001DB5AC /* ShareViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548932F2445C0001DB5AC /* ShippingRulesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingRulesViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548942F2445C0001DB5AC /* SortPagerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortPagerViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548952F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksCategoryCellViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548962F2445C0001DB5AC /* ThanksViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548972F2445C0001DB5AC /* TwoFactorViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoFactorViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548982F2445C0001DB5AC /* UpdateDraftViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDraftViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548992F2445C0001DB5AC /* VideoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5489A2F2445C0001DB5AC /* WatchProjectViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProjectViewModelTests.swift; sourceTree = "<group>"; };
+		AAF5489C2F2445C0001DB5AC /* ApplePayCapabilitiesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayCapabilitiesTests.swift; sourceTree = "<group>"; };
+		AAF5489D2F2445C0001DB5AC /* CharacterSetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSetTests.swift; sourceTree = "<group>"; };
+		AAF5489E2F2445C0001DB5AC /* CircleAvatarImageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleAvatarImageViewTests.swift; sourceTree = "<group>"; };
+		AAF5489F2F2445C0001DB5AC /* CreateBackingConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingConstructorTests.swift; sourceTree = "<group>"; };
+		AAF548A02F2445C0001DB5AC /* CreatePaymentSourceInput+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceInput+ConstructorTests.swift"; sourceTree = "<group>"; };
+		AAF548A12F2445C0001DB5AC /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift"; sourceTree = "<group>"; };
+		AAF548A22F2445C0001DB5AC /* CreditCard+UtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreditCard+UtilsTests.swift"; sourceTree = "<group>"; };
+		AAF548A32F2445C0001DB5AC /* DateFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterTests.swift; sourceTree = "<group>"; };
+		AAF548A42F2445C0001DB5AC /* EnvironmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentTests.swift; sourceTree = "<group>"; };
+		AAF548A52F2445C0001DB5AC /* EnvironmentVariablesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariablesTests.swift; sourceTree = "<group>"; };
+		AAF548A62F2445C0001DB5AC /* EquatableHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquatableHelpersTests.swift; sourceTree = "<group>"; };
+		AAF548A72F2445C0001DB5AC /* ExperimentName+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExperimentName+HelpersTests.swift"; sourceTree = "<group>"; };
+		AAF548A82F2445C0001DB5AC /* FacebookSDKTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookSDKTypeTests.swift; sourceTree = "<group>"; };
+		AAF548A92F2445C0001DB5AC /* FormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatTests.swift; sourceTree = "<group>"; };
+		AAF548AA2F2445C0001DB5AC /* HelpTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTypeTests.swift; sourceTree = "<group>"; };
+		AAF548AB2F2445C0001DB5AC /* InstantiableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantiableTests.swift; sourceTree = "<group>"; };
+		AAF548AC2F2445C0001DB5AC /* IsValidEmailTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsValidEmailTests.swift; sourceTree = "<group>"; };
+		AAF548AD2F2445C0001DB5AC /* KSCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSCacheTests.swift; sourceTree = "<group>"; };
+		AAF548AE2F2445C0001DB5AC /* LanguageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageTests.swift; sourceTree = "<group>"; };
+		AAF548AF2F2445C0001DB5AC /* LaunchedCountriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchedCountriesTests.swift; sourceTree = "<group>"; };
+		AAF548B02F2445C0001DB5AC /* LocalizedLottieFileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedLottieFileTests.swift; sourceTree = "<group>"; };
+		AAF548B12F2445C0001DB5AC /* LocalizedStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedStringTests.swift; sourceTree = "<group>"; };
+		AAF548B22F2445C0001DB5AC /* MockFacebookSDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFacebookSDK.swift; sourceTree = "<group>"; };
+		AAF548B32F2445C0001DB5AC /* NavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationTests.swift; sourceTree = "<group>"; };
+		AAF548B42F2445C0001DB5AC /* NSBundleType+Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSBundleType+Tests.swift"; sourceTree = "<group>"; };
+		AAF548B52F2445C0001DB5AC /* NumberFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatterTests.swift; sourceTree = "<group>"; };
+		AAF548B62F2445C0001DB5AC /* OAuthTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTests.swift; sourceTree = "<group>"; };
+		AAF548B72F2445C0001DB5AC /* OnboardingUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUseCaseTests.swift; sourceTree = "<group>"; };
+		AAF548B82F2445C0001DB5AC /* OnboardingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModelTests.swift; sourceTree = "<group>"; };
+		AAF548B92F2445C0001DB5AC /* PaginateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginateTests.swift; sourceTree = "<group>"; };
+		AAF548BA2F2445C0001DB5AC /* PaginatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatorTests.swift; sourceTree = "<group>"; };
+		AAF548BB2F2445C0001DB5AC /* PasswordValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidationTests.swift; sourceTree = "<group>"; };
+		AAF548BC2F2445C0001DB5AC /* PKPaymentRequestHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKPaymentRequestHelpersTests.swift; sourceTree = "<group>"; };
+		AAF548BD2F2445C0001DB5AC /* PledgeViewContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewContextTests.swift; sourceTree = "<group>"; };
+		AAF548BE2F2445C0001DB5AC /* ProjectActivityItemProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectActivityItemProviderTests.swift; sourceTree = "<group>"; };
+		AAF548BF2F2445C0001DB5AC /* ProjectURLBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectURLBuilderTests.swift; sourceTree = "<group>"; };
+		AAF548C02F2445C0001DB5AC /* PushNotificationDialogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationDialogTests.swift; sourceTree = "<group>"; };
+		AAF548C12F2445C0001DB5AC /* RefInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefInfoTests.swift; sourceTree = "<group>"; };
+		AAF548C22F2445C0001DB5AC /* RewardCellProjectBackingStateTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellProjectBackingStateTypeTests.swift; sourceTree = "<group>"; };
+		AAF548C32F2445C0001DB5AC /* SharedFunctionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedFunctionsTests.swift; sourceTree = "<group>"; };
+		AAF548C42F2445C0001DB5AC /* String+AttributedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+AttributedTests.swift"; sourceTree = "<group>"; };
+		AAF548C52F2445C0001DB5AC /* String+Base64Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Base64Tests.swift"; sourceTree = "<group>"; };
+		AAF548C62F2445C0001DB5AC /* String+SimpleHTMLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SimpleHTMLTests.swift"; sourceTree = "<group>"; };
+		AAF548C72F2445C0001DB5AC /* String+TruncateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+TruncateTests.swift"; sourceTree = "<group>"; };
+		AAF548C82F2445C0001DB5AC /* String+WhitespaceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+WhitespaceTests.swift"; sourceTree = "<group>"; };
+		AAF548C92F2445C0001DB5AC /* UIFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontTests.swift; sourceTree = "<group>"; };
+		AAF548CA2F2445C0001DB5AC /* UILabel+IBClearTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+IBClearTests.swift"; sourceTree = "<group>"; };
+		AAF548CB2F2445C0001DB5AC /* UILabel+SimpleHTMLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+SimpleHTMLTests.swift"; sourceTree = "<group>"; };
+		AAF548CC2F2445C0001DB5AC /* UIStackView+Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Tests.swift"; sourceTree = "<group>"; };
+		AAF548CD2F2445C0001DB5AC /* UIView+AutoLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayoutTests.swift"; sourceTree = "<group>"; };
+		AAF548CE2F2445C0001DB5AC /* UIViewController+URLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+URLTests.swift"; sourceTree = "<group>"; };
+		AAF548CF2F2445C0001DB5AC /* UpdateActivityItemProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateActivityItemProviderTests.swift; sourceTree = "<group>"; };
+		AAF548D02F2445C0001DB5AC /* UpdateBackingInput+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateBackingInput+ConstructorTests.swift"; sourceTree = "<group>"; };
+		AAF548D22F2445C0001DB5AC /* SearchQuery_AnotherFiveResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_AnotherFiveResults.json; sourceTree = "<group>"; };
+		AAF548D32F2445C0001DB5AC /* SearchQuery_EmptyResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_EmptyResults.json; sourceTree = "<group>"; };
+		AAF548D42F2445C0001DB5AC /* SearchQuery_FiveResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_FiveResults.json; sourceTree = "<group>"; };
 		D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectMutation.swift; sourceTree = "<group>"; };
 		D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectInput.swift; sourceTree = "<group>"; };
 		D002CAE4218CF951009783F2 /* WatchProjectResponseEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectResponseEnvelope.swift; sourceTree = "<group>"; };
@@ -1310,10 +1774,6 @@
 		E1EEED2A2B686829009976D9 /* PKCETest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKCETest.swift; sourceTree = "<group>"; };
 		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		AAF3BB582F1845A200DAE921 /* LibraryTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = LibraryTests; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		A7D1F9421C850B7C000D41D5 /* Frameworks */ = {
@@ -1994,7 +2454,7 @@
 				802800561C88F62500141235 /* Configs */,
 				E10BE8CE2B02975C00F73DC9 /* RichPushNotifications */,
 				E113BD822B7D255000D3A809 /* Library-Keychain-iOSTests */,
-				AAF3BB582F1845A200DAE921 /* LibraryTests */,
+				AAF548D62F2445C0001DB5AC /* LibraryTests */,
 				A7E06DBC1C5C027800EBDCC2 /* Frameworks */,
 				A7D1F9461C850B7C000D41D5 /* Kickstarter-iOS */,
 				D01587511EEB2DE4006E7684 /* KsApi */,
@@ -2399,6 +2859,373 @@
 				AAEABEA32DA8BDCA00B09688 /* ProjectWebURL.swift */,
 			);
 			path = types;
+			sourceTree = "<group>";
+		};
+		AAF547DF2F2445C0001DB5AC /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				AAF547DE2F2445C0001DB5AC /* ValueCellDataSourceTests.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		AAF547E22F2445C0001DB5AC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				AAF547E02F2445C0001DB5AC /* DoubleCurrencyTests.swift */,
+				AAF547E12F2445C0001DB5AC /* Feature+HelpersTests.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		AAF547ED2F2445C0001DB5AC /* PagedTabBarTests */ = {
+			isa = PBXGroup;
+			children = (
+				AAF547E32F2445C0001DB5AC /* testBadgeAndDot.badge-and-dot.png */,
+				AAF547E42F2445C0001DB5AC /* testLongBadge.long-badge.png */,
+				AAF547E52F2445C0001DB5AC /* testLongGermanNames.German.png */,
+				AAF547E62F2445C0001DB5AC /* testLongName.long-name.png */,
+				AAF547E72F2445C0001DB5AC /* testNoBadges.no-badges.png */,
+				AAF547E82F2445C0001DB5AC /* testNoBadgesLongNames.no-badges.png */,
+				AAF547E92F2445C0001DB5AC /* testSecondTabBadge.long-name.png */,
+				AAF547EA2F2445C0001DB5AC /* testTabSelection.firstTab.png */,
+				AAF547EB2F2445C0001DB5AC /* testTabSelection.secondTab.png */,
+				AAF547EC2F2445C0001DB5AC /* testThreeTabs.long-name.png */,
+			);
+			path = PagedTabBarTests;
+			sourceTree = "<group>";
+		};
+		AAF547EE2F2445C0001DB5AC /* __Snapshots__ */ = {
+			isa = PBXGroup;
+			children = (
+				AAF547ED2F2445C0001DB5AC /* PagedTabBarTests */,
+			);
+			path = __Snapshots__;
+			sourceTree = "<group>";
+		};
+		AAF547F12F2445C0001DB5AC /* PagedContainer */ = {
+			isa = PBXGroup;
+			children = (
+				AAF547EE2F2445C0001DB5AC /* __Snapshots__ */,
+				AAF547EF2F2445C0001DB5AC /* PagedContainerViewModelTests.swift */,
+				AAF547F02F2445C0001DB5AC /* PagedTabBarTests.swift */,
+			);
+			path = PagedContainer;
+			sourceTree = "<group>";
+		};
+		AAF547F32F2445C0001DB5AC /* RemoteConfig */ = {
+			isa = PBXGroup;
+			children = (
+				AAF547F22F2445C0001DB5AC /* RemoteConfigFeature+HelpersTests.swift */,
+			);
+			path = RemoteConfig;
+			sourceTree = "<group>";
+		};
+		AAF547F82F2445C0001DB5AC /* Tracking */ = {
+			isa = PBXGroup;
+			children = (
+				AAF547F42F2445C0001DB5AC /* AttributionTrackingTests.swift */,
+				AAF547F52F2445C0001DB5AC /* KSRAnalyticsIdentityDataTests.swift */,
+				AAF547F62F2445C0001DB5AC /* KSRAnalyticsTests.swift */,
+				AAF547F72F2445C0001DB5AC /* TrackingHelpersTests.swift */,
+			);
+			path = Tracking;
+			sourceTree = "<group>";
+		};
+		AAF547FA2F2445C0001DB5AC /* FetchCategories */ = {
+			isa = PBXGroup;
+			children = (
+				AAF547F92F2445C0001DB5AC /* FetchCategoriesUseCaseTests.swift */,
+			);
+			path = FetchCategories;
+			sourceTree = "<group>";
+		};
+		AAF547FC2F2445C0001DB5AC /* FetchLocations */ = {
+			isa = PBXGroup;
+			children = (
+				AAF547FB2F2445C0001DB5AC /* FetchLocationsUseCaseTests.swift */,
+			);
+			path = FetchLocations;
+			sourceTree = "<group>";
+		};
+		AAF547FF2F2445C0001DB5AC /* SearchFilters */ = {
+			isa = PBXGroup;
+			children = (
+				AAF547FD2F2445C0001DB5AC /* SearchFiltersUseCaseTests.swift */,
+				AAF547FE2F2445C0001DB5AC /* SelectedSearchFilters+TestHelpers.swift */,
+			);
+			path = SearchFilters;
+			sourceTree = "<group>";
+		};
+		AAF548012F2445C0001DB5AC /* SimilarProjects */ = {
+			isa = PBXGroup;
+			children = (
+				AAF548002F2445C0001DB5AC /* SimilarProjectsUseCaseTests.swift */,
+			);
+			path = SimilarProjects;
+			sourceTree = "<group>";
+		};
+		AAF548022F2445C0001DB5AC /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				AAF547FA2F2445C0001DB5AC /* FetchCategories */,
+				AAF547FC2F2445C0001DB5AC /* FetchLocations */,
+				AAF547FF2F2445C0001DB5AC /* SearchFilters */,
+				AAF548012F2445C0001DB5AC /* SimilarProjects */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		AAF548072F2445C0001DB5AC /* HTML Parser */ = {
+			isa = PBXGroup;
+			children = (
+				AAF548032F2445C0001DB5AC /* AudioVideoViewElementCellViewModelTests.swift */,
+				AAF548042F2445C0001DB5AC /* ExternalSourceViewElementCellViewModelTests.swift */,
+				AAF548052F2445C0001DB5AC /* ImageViewElementCellViewModelTests.swift */,
+				AAF548062F2445C0001DB5AC /* TextViewElementCellViewModelTests.swift */,
+			);
+			path = "HTML Parser";
+			sourceTree = "<group>";
+		};
+		AAF5489B2F2445C0001DB5AC /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				AAF548072F2445C0001DB5AC /* HTML Parser */,
+				AAF548082F2445C0001DB5AC /* ActivitiesViewModelTests.swift */,
+				AAF548092F2445C0001DB5AC /* ActivityErroredBackingsCellViewModelTests.swift */,
+				AAF5480A2F2445C0001DB5AC /* ActivityFriendBackingViewModelTests.swift */,
+				AAF5480B2F2445C0001DB5AC /* ActivityFriendFollowCellViewModelTests.swift */,
+				AAF5480C2F2445C0001DB5AC /* ActivityProjectStatusViewModelTests.swift */,
+				AAF5480D2F2445C0001DB5AC /* ActivitySampleBackingCellViewModelTests.swift */,
+				AAF5480E2F2445C0001DB5AC /* ActivitySampleFollowCellViewModelTests.swift */,
+				AAF5480F2F2445C0001DB5AC /* ActivitySampleProjectCellViewModelTests.swift */,
+				AAF548102F2445C0001DB5AC /* ActivityUpdateViewModelTests.swift */,
+				AAF548112F2445C0001DB5AC /* ApplePayTokenUseCaseTests.swift */,
+				AAF548122F2445C0001DB5AC /* BackerDashboardProjectCellViewModelTests.swift */,
+				AAF548132F2445C0001DB5AC /* BackerDashboardProjectsViewModelTests.swift */,
+				AAF548142F2445C0001DB5AC /* BackerDashboardViewModelTests.swift */,
+				AAF548152F2445C0001DB5AC /* BackingCellViewModelTests.swift */,
+				AAF548162F2445C0001DB5AC /* BetaToolsViewModelTests.swift */,
+				AAF548172F2445C0001DB5AC /* CancelPledgeViewModelTests.swift */,
+				AAF548182F2445C0001DB5AC /* CategoryCollectionViewSectionHeaderViewModelTests.swift */,
+				AAF548192F2445C0001DB5AC /* CategoryPillCellViewModelTests.swift */,
+				AAF5481A2F2445C0001DB5AC /* CategorySelectionHeaderViewModelTests.swift */,
+				AAF5481B2F2445C0001DB5AC /* ChangeEmailViewModelTests.swift */,
+				AAF5481C2F2445C0001DB5AC /* ChangePasswordViewModelTests.swift */,
+				AAF5481D2F2445C0001DB5AC /* CommentCellViewModelTests.swift */,
+				AAF5481E2F2445C0001DB5AC /* CommentComposerViewModelTests.swift */,
+				AAF5481F2F2445C0001DB5AC /* CommentDialogViewModelTests.swift */,
+				AAF548202F2445C0001DB5AC /* CommentRepliesViewModelTests.swift */,
+				AAF548212F2445C0001DB5AC /* CommentsViewModelTests.swift */,
+				AAF548222F2445C0001DB5AC /* CommentTableViewFooterViewModelTests.swift */,
+				AAF548232F2445C0001DB5AC /* CreatePasswordViewModelTests.swift */,
+				AAF548242F2445C0001DB5AC /* CreditCardCellViewModelTests.swift */,
+				AAF548252F2445C0001DB5AC /* CuratedProjectsViewModelTests.swift */,
+				AAF548262F2445C0001DB5AC /* DiscoveryExpandableRowCellViewModelTests.swift */,
+				AAF548272F2445C0001DB5AC /* DiscoveryFiltersViewModelTests.swift */,
+				AAF548282F2445C0001DB5AC /* DiscoveryNavigationHeaderViewModelTests.swift */,
+				AAF548292F2445C0001DB5AC /* DiscoveryPageViewModelTests.swift */,
+				AAF5482A2F2445C0001DB5AC /* DiscoveryPostcardViewModelTests.swift */,
+				AAF5482B2F2445C0001DB5AC /* DiscoveryProjectCardViewModelTests.swift */,
+				AAF5482C2F2445C0001DB5AC /* DiscoveryProjectCategoryViewModelTests.swift */,
+				AAF5482D2F2445C0001DB5AC /* DiscoveryViewModelTests.swift */,
+				AAF5482E2F2445C0001DB5AC /* EmptyStatesViewModelTests.swift */,
+				AAF5482F2F2445C0001DB5AC /* EmptyStateViewModelTests.swift */,
+				AAF548302F2445C0001DB5AC /* ErroredBackingViewViewModelTests.swift */,
+				AAF548312F2445C0001DB5AC /* FacebookConfirmationViewModelTests.swift */,
+				AAF548322F2445C0001DB5AC /* FacebookResetPasswordViewModelTests.swift */,
+				AAF548332F2445C0001DB5AC /* FeatureFlagToolsViewModelTests.swift */,
+				AAF548342F2445C0001DB5AC /* FindFriendsCellViewModelTests.swift */,
+				AAF548352F2445C0001DB5AC /* FindFriendsFaceookConnectCellViewModelTests.swift */,
+				AAF548362F2445C0001DB5AC /* FindFriendsFriendFollowCellViewModelTests.swift */,
+				AAF548372F2445C0001DB5AC /* FindFriendsStatsCellViewModelTests.swift */,
+				AAF548382F2445C0001DB5AC /* FindFriendsViewModelTests.swift */,
+				AAF548392F2445C0001DB5AC /* HelpViewModelTests.swift */,
+				AAF5483A2F2445C0001DB5AC /* KSRSearchBarViewModelTests.swift */,
+				AAF5483B2F2445C0001DB5AC /* LoadingBarButtonItemViewModelTests.swift */,
+				AAF5483C2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift */,
+				AAF5483D2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift */,
+				AAF5483E2F2445C0001DB5AC /* LoginToutViewModelTests.swift */,
+				AAF5483F2F2445C0001DB5AC /* LoginViewModelTests.swift */,
+				AAF548402F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift */,
+				AAF548412F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift */,
+				AAF548422F2445C0001DB5AC /* ManagePledgeViewModelTests.swift */,
+				AAF548432F2445C0001DB5AC /* ManageViewPledgeRewardReceivedViewModelTests.swift */,
+				AAF548442F2445C0001DB5AC /* MessageBannerViewModelTests.swift */,
+				AAF548452F2445C0001DB5AC /* MessageCellViewModelTests.swift */,
+				AAF548462F2445C0001DB5AC /* MessageDialogViewModelTests.swift */,
+				AAF548472F2445C0001DB5AC /* MessagesSearchViewModelTests.swift */,
+				AAF548482F2445C0001DB5AC /* MessagesViewModelTests.swift */,
+				AAF548492F2445C0001DB5AC /* MessageThreadCellViewModelTests.swift */,
+				AAF5484A2F2445C0001DB5AC /* MessageThreadsViewModelTests.swift */,
+				AAF5484B2F2445C0001DB5AC /* MostPopularSearchProjectCellViewModelTests.swift */,
+				AAF5484C2F2445C0001DB5AC /* PaymentMethodSettingsViewModelTests.swift */,
+				AAF5484D2F2445C0001DB5AC /* PaymentMethodsUseCaseTests.swift */,
+				AAF5484E2F2445C0001DB5AC /* PersonalizationCellViewModelTests.swift */,
+				AAF5484F2F2445C0001DB5AC /* PillCellViewModelTests.swift */,
+				AAF548502F2445C0001DB5AC /* PledgeAmountSummaryViewModelTests.swift */,
+				AAF548512F2445C0001DB5AC /* PledgeAmountViewModelTests.swift */,
+				AAF548522F2445C0001DB5AC /* PledgeCTAContainerViewViewModelTests.swift */,
+				AAF548532F2445C0001DB5AC /* PledgeDisclaimerViewModelTests.swift */,
+				AAF548542F2445C0001DB5AC /* PledgeExpandableHeaderRewardCellViewModelTests.swift */,
+				AAF548552F2445C0001DB5AC /* PledgeExpandableRewardsHeaderViewModelTests.swift */,
+				AAF548562F2445C0001DB5AC /* PledgeLocalPickupViewModelTests.swift */,
+				AAF548572F2445C0001DB5AC /* PledgeManagerWebViewModelTests.swift */,
+				AAF548582F2445C0001DB5AC /* PledgeOverTimePaymentScheduleViewModelTest.swift */,
+				AAF548592F2445C0001DB5AC /* PledgeOverTimeUseCaseTests.swift */,
+				AAF5485A2F2445C0001DB5AC /* PledgePaymentIncrementFormattedTest.swift */,
+				AAF5485B2F2445C0001DB5AC /* PledgePaymentMethodCellViewModelTests.swift */,
+				AAF5485C2F2445C0001DB5AC /* PledgePaymentMethodsViewModelTests.swift */,
+				AAF5485D2F2445C0001DB5AC /* PledgePaymentPlansAndSelectionData+GraphAPITests.swift */,
+				AAF5485E2F2445C0001DB5AC /* PledgePaymentPlansOptionViewModelTest.swift */,
+				AAF5485F2F2445C0001DB5AC /* PledgePaymentPlansViewModelTest.swift */,
+				AAF548602F2445C0001DB5AC /* PledgeShippingLocationViewModelTests.swift */,
+				AAF548612F2445C0001DB5AC /* PledgeShippingSummaryViewModelTests.swift */,
+				AAF548622F2445C0001DB5AC /* PledgeStatusLabelViewModelTests.swift */,
+				AAF548632F2445C0001DB5AC /* PledgeSummaryViewModelTests.swift */,
+				AAF548642F2445C0001DB5AC /* PledgeViewCTAContainerViewModelTests.swift */,
+				AAF548652F2445C0001DB5AC /* PledgeViewModelTests.swift */,
+				AAF548662F2445C0001DB5AC /* PledgeViewUseCaseTests.swift */,
+				AAF548672F2445C0001DB5AC /* PostCampaignCheckoutViewModelTests.swift */,
+				AAF548682F2445C0001DB5AC /* PostCampaignPledgeRewardsSummaryViewModelTests.swift */,
+				AAF548692F2445C0001DB5AC /* ProjectCreatorViewModelTests.swift */,
+				AAF5486A2F2445C0001DB5AC /* ProjectFAQsCellViewModelTests.swift */,
+				AAF5486B2F2445C0001DB5AC /* ProjectNavigationSelectorViewModelTests.swift */,
+				AAF5486C2F2445C0001DB5AC /* ProjectNotificationCellViewModelTests.swift */,
+				AAF5486D2F2445C0001DB5AC /* ProjectNotificationsViewModelTest.swift */,
+				AAF5486E2F2445C0001DB5AC /* ProjectPageViewModelTests.swift */,
+				AAF5486F2F2445C0001DB5AC /* ProjectPamphletContentViewModelTests.swift */,
+				AAF548702F2445C0001DB5AC /* ProjectPamphletCreatorHeaderCellViewModelTests.swift */,
+				AAF548712F2445C0001DB5AC /* ProjectPamphletMainCellViewModelTests.swift */,
+				AAF548722F2445C0001DB5AC /* ProjectPamphletSubpageCellViewModelTests.swift */,
+				AAF548732F2445C0001DB5AC /* ProjectRisksCellViewModelTests.swift */,
+				AAF548742F2445C0001DB5AC /* ProjectRisksDisclaimerCellViewModelTests.swift */,
+				AAF548752F2445C0001DB5AC /* ProjectTabCategoryDescriptionCellViewModelTests.swift */,
+				AAF548762F2445C0001DB5AC /* ProjectTabCheckmarkListCellViewModelTests.swift */,
+				AAF548772F2445C0001DB5AC /* ProjectTabDisclaimerCellViewModelTests.swift */,
+				AAF548782F2445C0001DB5AC /* ProjectUpdatesViewModelTests.swift */,
+				AAF548792F2445C0001DB5AC /* RemoteConfigFeatureFlagToolsViewModelTests.swift */,
+				AAF5487A2F2445C0001DB5AC /* ReportProjectFormViewModelTests.swift */,
+				AAF5487B2F2445C0001DB5AC /* ResetPasswordViewModelTests.swift */,
+				AAF5487C2F2445C0001DB5AC /* RewardAddOnCardViewModelTests.swift */,
+				AAF5487D2F2445C0001DB5AC /* RewardAddOnSelectionContinueCTAViewModelTests.swift */,
+				AAF5487E2F2445C0001DB5AC /* RewardAddOnSelectionViewModelTests.swift */,
+				AAF5487F2F2445C0001DB5AC /* RewardCardContainerViewModelTests.swift */,
+				AAF548802F2445C0001DB5AC /* RewardCardViewModelTests.swift */,
+				AAF548812F2445C0001DB5AC /* RewardCellViewModelTests.swift */,
+				AAF548822F2445C0001DB5AC /* RewardsCollectionViewModelTests.swift */,
+				AAF548832F2445C0001DB5AC /* RewardsUseCaseTests.swift */,
+				AAF548842F2445C0001DB5AC /* RewardTrackingActivitiesCellViewModelTest.swift */,
+				AAF548852F2445C0001DB5AC /* RewardTrackingDetailsViewModelTest.swift */,
+				AAF548862F2445C0001DB5AC /* SearchViewModelTests.swift */,
+				AAF548872F2445C0001DB5AC /* SelectCurrencyViewModelTests.swift */,
+				AAF548882F2445C0001DB5AC /* SettingsDeleteOrRequestCellViewModelTests.swift */,
+				AAF548892F2445C0001DB5AC /* SettingsFollowCellViewModelTests.swift */,
+				AAF5488A2F2445C0001DB5AC /* SettingsNewslettersCellViewModelTests.swift */,
+				AAF5488B2F2445C0001DB5AC /* SettingsNewslettersViewModelTests.swift */,
+				AAF5488C2F2445C0001DB5AC /* SettingsNotificationCellViewModelTests.swift */,
+				AAF5488D2F2445C0001DB5AC /* SettingsNotificationPickerViewModelTests.swift */,
+				AAF5488E2F2445C0001DB5AC /* SettingsNotificationsViewModelTests.swift */,
+				AAF5488F2F2445C0001DB5AC /* SettingsPrivacySwitchCellViewModelTests.swift */,
+				AAF548902F2445C0001DB5AC /* SettingsPrivacyViewModelTests.swift */,
+				AAF548912F2445C0001DB5AC /* SettingsRecommendationsCellViewModelTests.swift */,
+				AAF548922F2445C0001DB5AC /* ShareViewModelTests.swift */,
+				AAF548932F2445C0001DB5AC /* ShippingRulesViewModelTests.swift */,
+				AAF548942F2445C0001DB5AC /* SortPagerViewModelTests.swift */,
+				AAF548952F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift */,
+				AAF548962F2445C0001DB5AC /* ThanksViewModelTests.swift */,
+				AAF548972F2445C0001DB5AC /* TwoFactorViewModelTests.swift */,
+				AAF548982F2445C0001DB5AC /* UpdateDraftViewModelTests.swift */,
+				AAF548992F2445C0001DB5AC /* VideoViewModelTests.swift */,
+				AAF5489A2F2445C0001DB5AC /* WatchProjectViewModelTests.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		AAF548D12F2445C0001DB5AC /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				AAF547DF2F2445C0001DB5AC /* DataSource */,
+				AAF547E22F2445C0001DB5AC /* Extensions */,
+				AAF547F12F2445C0001DB5AC /* PagedContainer */,
+				AAF547F32F2445C0001DB5AC /* RemoteConfig */,
+				AAF547F82F2445C0001DB5AC /* Tracking */,
+				AAF548022F2445C0001DB5AC /* UseCases */,
+				AAF5489B2F2445C0001DB5AC /* ViewModels */,
+				AAF5489C2F2445C0001DB5AC /* ApplePayCapabilitiesTests.swift */,
+				AAF5489D2F2445C0001DB5AC /* CharacterSetTests.swift */,
+				AAF5489E2F2445C0001DB5AC /* CircleAvatarImageViewTests.swift */,
+				AAF5489F2F2445C0001DB5AC /* CreateBackingConstructorTests.swift */,
+				AAF548A02F2445C0001DB5AC /* CreatePaymentSourceInput+ConstructorTests.swift */,
+				AAF548A12F2445C0001DB5AC /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift */,
+				AAF548A22F2445C0001DB5AC /* CreditCard+UtilsTests.swift */,
+				AAF548A32F2445C0001DB5AC /* DateFormatterTests.swift */,
+				AAF548A42F2445C0001DB5AC /* EnvironmentTests.swift */,
+				AAF548A52F2445C0001DB5AC /* EnvironmentVariablesTests.swift */,
+				AAF548A62F2445C0001DB5AC /* EquatableHelpersTests.swift */,
+				AAF548A72F2445C0001DB5AC /* ExperimentName+HelpersTests.swift */,
+				AAF548A82F2445C0001DB5AC /* FacebookSDKTypeTests.swift */,
+				AAF548A92F2445C0001DB5AC /* FormatTests.swift */,
+				AAF548AA2F2445C0001DB5AC /* HelpTypeTests.swift */,
+				AAF548AB2F2445C0001DB5AC /* InstantiableTests.swift */,
+				AAF548AC2F2445C0001DB5AC /* IsValidEmailTests.swift */,
+				AAF548AD2F2445C0001DB5AC /* KSCacheTests.swift */,
+				AAF548AE2F2445C0001DB5AC /* LanguageTests.swift */,
+				AAF548AF2F2445C0001DB5AC /* LaunchedCountriesTests.swift */,
+				AAF548B02F2445C0001DB5AC /* LocalizedLottieFileTests.swift */,
+				AAF548B12F2445C0001DB5AC /* LocalizedStringTests.swift */,
+				AAF548B22F2445C0001DB5AC /* MockFacebookSDK.swift */,
+				AAF548B32F2445C0001DB5AC /* NavigationTests.swift */,
+				AAF548B42F2445C0001DB5AC /* NSBundleType+Tests.swift */,
+				AAF548B52F2445C0001DB5AC /* NumberFormatterTests.swift */,
+				AAF548B62F2445C0001DB5AC /* OAuthTests.swift */,
+				AAF548B72F2445C0001DB5AC /* OnboardingUseCaseTests.swift */,
+				AAF548B82F2445C0001DB5AC /* OnboardingViewModelTests.swift */,
+				AAF548B92F2445C0001DB5AC /* PaginateTests.swift */,
+				AAF548BA2F2445C0001DB5AC /* PaginatorTests.swift */,
+				AAF548BB2F2445C0001DB5AC /* PasswordValidationTests.swift */,
+				AAF548BC2F2445C0001DB5AC /* PKPaymentRequestHelpersTests.swift */,
+				AAF548BD2F2445C0001DB5AC /* PledgeViewContextTests.swift */,
+				AAF548BE2F2445C0001DB5AC /* ProjectActivityItemProviderTests.swift */,
+				AAF548BF2F2445C0001DB5AC /* ProjectURLBuilderTests.swift */,
+				AAF548C02F2445C0001DB5AC /* PushNotificationDialogTests.swift */,
+				AAF548C12F2445C0001DB5AC /* RefInfoTests.swift */,
+				AAF548C22F2445C0001DB5AC /* RewardCellProjectBackingStateTypeTests.swift */,
+				AAF548C32F2445C0001DB5AC /* SharedFunctionsTests.swift */,
+				AAF548C42F2445C0001DB5AC /* String+AttributedTests.swift */,
+				AAF548C52F2445C0001DB5AC /* String+Base64Tests.swift */,
+				AAF548C62F2445C0001DB5AC /* String+SimpleHTMLTests.swift */,
+				AAF548C72F2445C0001DB5AC /* String+TruncateTests.swift */,
+				AAF548C82F2445C0001DB5AC /* String+WhitespaceTests.swift */,
+				AAF548C92F2445C0001DB5AC /* UIFontTests.swift */,
+				AAF548CA2F2445C0001DB5AC /* UILabel+IBClearTests.swift */,
+				AAF548CB2F2445C0001DB5AC /* UILabel+SimpleHTMLTests.swift */,
+				AAF548CC2F2445C0001DB5AC /* UIStackView+Tests.swift */,
+				AAF548CD2F2445C0001DB5AC /* UIView+AutoLayoutTests.swift */,
+				AAF548CE2F2445C0001DB5AC /* UIViewController+URLTests.swift */,
+				AAF548CF2F2445C0001DB5AC /* UpdateActivityItemProviderTests.swift */,
+				AAF548D02F2445C0001DB5AC /* UpdateBackingInput+ConstructorTests.swift */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		AAF548D52F2445C0001DB5AC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AAF548D22F2445C0001DB5AC /* SearchQuery_AnotherFiveResults.json */,
+				AAF548D32F2445C0001DB5AC /* SearchQuery_EmptyResults.json */,
+				AAF548D42F2445C0001DB5AC /* SearchQuery_FiveResults.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		AAF548D62F2445C0001DB5AC /* LibraryTests */ = {
+			isa = PBXGroup;
+			children = (
+				AAF548D12F2445C0001DB5AC /* Library */,
+				AAF548D52F2445C0001DB5AC /* Resources */,
+			);
+			path = LibraryTests;
 			sourceTree = "<group>";
 		};
 		D01587511EEB2DE4006E7684 /* KsApi */ = {
@@ -3023,9 +3850,6 @@
 			dependencies = (
 				AAF3BD5C2F19876800DAE921 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				AAF3BB582F1845A200DAE921 /* LibraryTests */,
-			);
 			name = LibraryTests;
 			packageProductDependencies = (
 				AAFCECF22F20353A00EAC2FE /* FirebaseCore */,
@@ -3188,6 +4012,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAF549B22F2445C0001DB5AC /* testBadgeAndDot.badge-and-dot.png in Resources */,
+				AAF549B32F2445C0001DB5AC /* testLongBadge.long-badge.png in Resources */,
+				AAF549B42F2445C0001DB5AC /* testLongGermanNames.German.png in Resources */,
+				AAF549B52F2445C0001DB5AC /* testLongName.long-name.png in Resources */,
+				AAF549B62F2445C0001DB5AC /* testNoBadges.no-badges.png in Resources */,
+				AAF549B72F2445C0001DB5AC /* testNoBadgesLongNames.no-badges.png in Resources */,
+				AAF549B82F2445C0001DB5AC /* testSecondTabBadge.long-name.png in Resources */,
+				AAF549B92F2445C0001DB5AC /* testTabSelection.firstTab.png in Resources */,
+				AAF549BA2F2445C0001DB5AC /* testTabSelection.secondTab.png in Resources */,
+				AAF549BB2F2445C0001DB5AC /* testThreeTabs.long-name.png in Resources */,
+				AAF549BC2F2445C0001DB5AC /* SearchQuery_AnotherFiveResults.json in Resources */,
+				AAF549BD2F2445C0001DB5AC /* SearchQuery_EmptyResults.json in Resources */,
+				AAF549BE2F2445C0001DB5AC /* SearchQuery_FiveResults.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3258,6 +4095,225 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAF548D72F2445C0001DB5AC /* ValueCellDataSourceTests.swift in Sources */,
+				AAF548D82F2445C0001DB5AC /* DoubleCurrencyTests.swift in Sources */,
+				AAF548D92F2445C0001DB5AC /* Feature+HelpersTests.swift in Sources */,
+				AAF548DA2F2445C0001DB5AC /* PagedContainerViewModelTests.swift in Sources */,
+				AAF548DB2F2445C0001DB5AC /* PagedTabBarTests.swift in Sources */,
+				AAF548DC2F2445C0001DB5AC /* RemoteConfigFeature+HelpersTests.swift in Sources */,
+				AAF548DD2F2445C0001DB5AC /* AttributionTrackingTests.swift in Sources */,
+				AAF548DE2F2445C0001DB5AC /* KSRAnalyticsIdentityDataTests.swift in Sources */,
+				AAF548DF2F2445C0001DB5AC /* KSRAnalyticsTests.swift in Sources */,
+				AAF548E02F2445C0001DB5AC /* TrackingHelpersTests.swift in Sources */,
+				AAF548E12F2445C0001DB5AC /* FetchCategoriesUseCaseTests.swift in Sources */,
+				AAF548E22F2445C0001DB5AC /* FetchLocationsUseCaseTests.swift in Sources */,
+				AAF548E32F2445C0001DB5AC /* SearchFiltersUseCaseTests.swift in Sources */,
+				AAF548E42F2445C0001DB5AC /* SelectedSearchFilters+TestHelpers.swift in Sources */,
+				AAF548E52F2445C0001DB5AC /* SimilarProjectsUseCaseTests.swift in Sources */,
+				AAF548E62F2445C0001DB5AC /* AudioVideoViewElementCellViewModelTests.swift in Sources */,
+				AAF548E72F2445C0001DB5AC /* ExternalSourceViewElementCellViewModelTests.swift in Sources */,
+				AAF548E82F2445C0001DB5AC /* ImageViewElementCellViewModelTests.swift in Sources */,
+				AAF548E92F2445C0001DB5AC /* TextViewElementCellViewModelTests.swift in Sources */,
+				AAF548EA2F2445C0001DB5AC /* ActivitiesViewModelTests.swift in Sources */,
+				AAF548EB2F2445C0001DB5AC /* ActivityErroredBackingsCellViewModelTests.swift in Sources */,
+				AAF548EC2F2445C0001DB5AC /* ActivityFriendBackingViewModelTests.swift in Sources */,
+				AAF548ED2F2445C0001DB5AC /* ActivityFriendFollowCellViewModelTests.swift in Sources */,
+				AAF548EE2F2445C0001DB5AC /* ActivityProjectStatusViewModelTests.swift in Sources */,
+				AAF548EF2F2445C0001DB5AC /* ActivitySampleBackingCellViewModelTests.swift in Sources */,
+				AAF548F02F2445C0001DB5AC /* ActivitySampleFollowCellViewModelTests.swift in Sources */,
+				AAF548F12F2445C0001DB5AC /* ActivitySampleProjectCellViewModelTests.swift in Sources */,
+				AAF548F22F2445C0001DB5AC /* ActivityUpdateViewModelTests.swift in Sources */,
+				AAF548F32F2445C0001DB5AC /* ApplePayTokenUseCaseTests.swift in Sources */,
+				AAF548F42F2445C0001DB5AC /* BackerDashboardProjectCellViewModelTests.swift in Sources */,
+				AAF548F52F2445C0001DB5AC /* BackerDashboardProjectsViewModelTests.swift in Sources */,
+				AAF548F62F2445C0001DB5AC /* BackerDashboardViewModelTests.swift in Sources */,
+				AAF548F72F2445C0001DB5AC /* BackingCellViewModelTests.swift in Sources */,
+				AAF548F82F2445C0001DB5AC /* BetaToolsViewModelTests.swift in Sources */,
+				AAF548F92F2445C0001DB5AC /* CancelPledgeViewModelTests.swift in Sources */,
+				AAF548FA2F2445C0001DB5AC /* CategoryCollectionViewSectionHeaderViewModelTests.swift in Sources */,
+				AAF548FB2F2445C0001DB5AC /* CategoryPillCellViewModelTests.swift in Sources */,
+				AAF548FC2F2445C0001DB5AC /* CategorySelectionHeaderViewModelTests.swift in Sources */,
+				AAF548FD2F2445C0001DB5AC /* ChangeEmailViewModelTests.swift in Sources */,
+				AAF548FE2F2445C0001DB5AC /* ChangePasswordViewModelTests.swift in Sources */,
+				AAF548FF2F2445C0001DB5AC /* CommentCellViewModelTests.swift in Sources */,
+				AAF549002F2445C0001DB5AC /* CommentComposerViewModelTests.swift in Sources */,
+				AAF549012F2445C0001DB5AC /* CommentDialogViewModelTests.swift in Sources */,
+				AAF549022F2445C0001DB5AC /* CommentRepliesViewModelTests.swift in Sources */,
+				AAF549032F2445C0001DB5AC /* CommentsViewModelTests.swift in Sources */,
+				AAF549042F2445C0001DB5AC /* CommentTableViewFooterViewModelTests.swift in Sources */,
+				AAF549052F2445C0001DB5AC /* CreatePasswordViewModelTests.swift in Sources */,
+				AAF549062F2445C0001DB5AC /* CreditCardCellViewModelTests.swift in Sources */,
+				AAF549072F2445C0001DB5AC /* CuratedProjectsViewModelTests.swift in Sources */,
+				AAF549082F2445C0001DB5AC /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */,
+				AAF549092F2445C0001DB5AC /* DiscoveryFiltersViewModelTests.swift in Sources */,
+				AAF5490A2F2445C0001DB5AC /* DiscoveryNavigationHeaderViewModelTests.swift in Sources */,
+				AAF5490B2F2445C0001DB5AC /* DiscoveryPageViewModelTests.swift in Sources */,
+				AAF5490C2F2445C0001DB5AC /* DiscoveryPostcardViewModelTests.swift in Sources */,
+				AAF5490D2F2445C0001DB5AC /* DiscoveryProjectCardViewModelTests.swift in Sources */,
+				AAF5490E2F2445C0001DB5AC /* DiscoveryProjectCategoryViewModelTests.swift in Sources */,
+				AAF5490F2F2445C0001DB5AC /* DiscoveryViewModelTests.swift in Sources */,
+				AAF549102F2445C0001DB5AC /* EmptyStatesViewModelTests.swift in Sources */,
+				AAF549112F2445C0001DB5AC /* EmptyStateViewModelTests.swift in Sources */,
+				AAF549122F2445C0001DB5AC /* ErroredBackingViewViewModelTests.swift in Sources */,
+				AAF549132F2445C0001DB5AC /* FacebookConfirmationViewModelTests.swift in Sources */,
+				AAF549142F2445C0001DB5AC /* FacebookResetPasswordViewModelTests.swift in Sources */,
+				AAF549152F2445C0001DB5AC /* FeatureFlagToolsViewModelTests.swift in Sources */,
+				AAF549162F2445C0001DB5AC /* FindFriendsCellViewModelTests.swift in Sources */,
+				AAF549172F2445C0001DB5AC /* FindFriendsFaceookConnectCellViewModelTests.swift in Sources */,
+				AAF549182F2445C0001DB5AC /* FindFriendsFriendFollowCellViewModelTests.swift in Sources */,
+				AAF549192F2445C0001DB5AC /* FindFriendsStatsCellViewModelTests.swift in Sources */,
+				AAF5491A2F2445C0001DB5AC /* FindFriendsViewModelTests.swift in Sources */,
+				AAF5491B2F2445C0001DB5AC /* HelpViewModelTests.swift in Sources */,
+				AAF5491C2F2445C0001DB5AC /* KSRSearchBarViewModelTests.swift in Sources */,
+				AAF5491D2F2445C0001DB5AC /* LoadingBarButtonItemViewModelTests.swift in Sources */,
+				AAF5491E2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift in Sources */,
+				AAF5491F2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift in Sources */,
+				AAF549202F2445C0001DB5AC /* LoginToutViewModelTests.swift in Sources */,
+				AAF549212F2445C0001DB5AC /* LoginViewModelTests.swift in Sources */,
+				AAF549222F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift in Sources */,
+				AAF549232F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift in Sources */,
+				AAF549242F2445C0001DB5AC /* ManagePledgeViewModelTests.swift in Sources */,
+				AAF549252F2445C0001DB5AC /* ManageViewPledgeRewardReceivedViewModelTests.swift in Sources */,
+				AAF549262F2445C0001DB5AC /* MessageBannerViewModelTests.swift in Sources */,
+				AAF549272F2445C0001DB5AC /* MessageCellViewModelTests.swift in Sources */,
+				AAF549282F2445C0001DB5AC /* MessageDialogViewModelTests.swift in Sources */,
+				AAF549292F2445C0001DB5AC /* MessagesSearchViewModelTests.swift in Sources */,
+				AAF5492A2F2445C0001DB5AC /* MessagesViewModelTests.swift in Sources */,
+				AAF5492B2F2445C0001DB5AC /* MessageThreadCellViewModelTests.swift in Sources */,
+				AAF5492C2F2445C0001DB5AC /* MessageThreadsViewModelTests.swift in Sources */,
+				AAF5492D2F2445C0001DB5AC /* MostPopularSearchProjectCellViewModelTests.swift in Sources */,
+				AAF5492E2F2445C0001DB5AC /* PaymentMethodSettingsViewModelTests.swift in Sources */,
+				AAF5492F2F2445C0001DB5AC /* PaymentMethodsUseCaseTests.swift in Sources */,
+				AAF549302F2445C0001DB5AC /* PersonalizationCellViewModelTests.swift in Sources */,
+				AAF549312F2445C0001DB5AC /* PillCellViewModelTests.swift in Sources */,
+				AAF549322F2445C0001DB5AC /* PledgeAmountSummaryViewModelTests.swift in Sources */,
+				AAF549332F2445C0001DB5AC /* PledgeAmountViewModelTests.swift in Sources */,
+				AAF549342F2445C0001DB5AC /* PledgeCTAContainerViewViewModelTests.swift in Sources */,
+				AAF549352F2445C0001DB5AC /* PledgeDisclaimerViewModelTests.swift in Sources */,
+				AAF549362F2445C0001DB5AC /* PledgeExpandableHeaderRewardCellViewModelTests.swift in Sources */,
+				AAF549372F2445C0001DB5AC /* PledgeExpandableRewardsHeaderViewModelTests.swift in Sources */,
+				AAF549382F2445C0001DB5AC /* PledgeLocalPickupViewModelTests.swift in Sources */,
+				AAF549392F2445C0001DB5AC /* PledgeManagerWebViewModelTests.swift in Sources */,
+				AAF5493A2F2445C0001DB5AC /* PledgeOverTimePaymentScheduleViewModelTest.swift in Sources */,
+				AAF5493B2F2445C0001DB5AC /* PledgeOverTimeUseCaseTests.swift in Sources */,
+				AAF5493C2F2445C0001DB5AC /* PledgePaymentIncrementFormattedTest.swift in Sources */,
+				AAF5493D2F2445C0001DB5AC /* PledgePaymentMethodCellViewModelTests.swift in Sources */,
+				AAF5493E2F2445C0001DB5AC /* PledgePaymentMethodsViewModelTests.swift in Sources */,
+				AAF5493F2F2445C0001DB5AC /* PledgePaymentPlansAndSelectionData+GraphAPITests.swift in Sources */,
+				AAF549402F2445C0001DB5AC /* PledgePaymentPlansOptionViewModelTest.swift in Sources */,
+				AAF549412F2445C0001DB5AC /* PledgePaymentPlansViewModelTest.swift in Sources */,
+				AAF549422F2445C0001DB5AC /* PledgeShippingLocationViewModelTests.swift in Sources */,
+				AAF549432F2445C0001DB5AC /* PledgeShippingSummaryViewModelTests.swift in Sources */,
+				AAF549442F2445C0001DB5AC /* PledgeStatusLabelViewModelTests.swift in Sources */,
+				AAF549452F2445C0001DB5AC /* PledgeSummaryViewModelTests.swift in Sources */,
+				AAF549462F2445C0001DB5AC /* PledgeViewCTAContainerViewModelTests.swift in Sources */,
+				AAF549472F2445C0001DB5AC /* PledgeViewModelTests.swift in Sources */,
+				AAF549482F2445C0001DB5AC /* PledgeViewUseCaseTests.swift in Sources */,
+				AAF549492F2445C0001DB5AC /* PostCampaignCheckoutViewModelTests.swift in Sources */,
+				AAF5494A2F2445C0001DB5AC /* PostCampaignPledgeRewardsSummaryViewModelTests.swift in Sources */,
+				AAF5494B2F2445C0001DB5AC /* ProjectCreatorViewModelTests.swift in Sources */,
+				AAF5494C2F2445C0001DB5AC /* ProjectFAQsCellViewModelTests.swift in Sources */,
+				AAF5494D2F2445C0001DB5AC /* ProjectNavigationSelectorViewModelTests.swift in Sources */,
+				AAF5494E2F2445C0001DB5AC /* ProjectNotificationCellViewModelTests.swift in Sources */,
+				AAF5494F2F2445C0001DB5AC /* ProjectNotificationsViewModelTest.swift in Sources */,
+				AAF549502F2445C0001DB5AC /* ProjectPageViewModelTests.swift in Sources */,
+				AAF549512F2445C0001DB5AC /* ProjectPamphletContentViewModelTests.swift in Sources */,
+				AAF549522F2445C0001DB5AC /* ProjectPamphletCreatorHeaderCellViewModelTests.swift in Sources */,
+				AAF549532F2445C0001DB5AC /* ProjectPamphletMainCellViewModelTests.swift in Sources */,
+				AAF549542F2445C0001DB5AC /* ProjectPamphletSubpageCellViewModelTests.swift in Sources */,
+				AAF549552F2445C0001DB5AC /* ProjectRisksCellViewModelTests.swift in Sources */,
+				AAF549562F2445C0001DB5AC /* ProjectRisksDisclaimerCellViewModelTests.swift in Sources */,
+				AAF549572F2445C0001DB5AC /* ProjectTabCategoryDescriptionCellViewModelTests.swift in Sources */,
+				AAF549582F2445C0001DB5AC /* ProjectTabCheckmarkListCellViewModelTests.swift in Sources */,
+				AAF549592F2445C0001DB5AC /* ProjectTabDisclaimerCellViewModelTests.swift in Sources */,
+				AAF5495A2F2445C0001DB5AC /* ProjectUpdatesViewModelTests.swift in Sources */,
+				AAF5495B2F2445C0001DB5AC /* RemoteConfigFeatureFlagToolsViewModelTests.swift in Sources */,
+				AAF5495C2F2445C0001DB5AC /* ReportProjectFormViewModelTests.swift in Sources */,
+				AAF5495D2F2445C0001DB5AC /* ResetPasswordViewModelTests.swift in Sources */,
+				AAF5495E2F2445C0001DB5AC /* RewardAddOnCardViewModelTests.swift in Sources */,
+				AAF5495F2F2445C0001DB5AC /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */,
+				AAF549602F2445C0001DB5AC /* RewardAddOnSelectionViewModelTests.swift in Sources */,
+				AAF549612F2445C0001DB5AC /* RewardCardContainerViewModelTests.swift in Sources */,
+				AAF549622F2445C0001DB5AC /* RewardCardViewModelTests.swift in Sources */,
+				AAF549632F2445C0001DB5AC /* RewardCellViewModelTests.swift in Sources */,
+				AAF549642F2445C0001DB5AC /* RewardsCollectionViewModelTests.swift in Sources */,
+				AAF549652F2445C0001DB5AC /* RewardsUseCaseTests.swift in Sources */,
+				AAF549662F2445C0001DB5AC /* RewardTrackingActivitiesCellViewModelTest.swift in Sources */,
+				AAF549672F2445C0001DB5AC /* RewardTrackingDetailsViewModelTest.swift in Sources */,
+				AAF549682F2445C0001DB5AC /* SearchViewModelTests.swift in Sources */,
+				AAF549692F2445C0001DB5AC /* SelectCurrencyViewModelTests.swift in Sources */,
+				AAF5496A2F2445C0001DB5AC /* SettingsDeleteOrRequestCellViewModelTests.swift in Sources */,
+				AAF5496B2F2445C0001DB5AC /* SettingsFollowCellViewModelTests.swift in Sources */,
+				AAF5496C2F2445C0001DB5AC /* SettingsNewslettersCellViewModelTests.swift in Sources */,
+				AAF5496D2F2445C0001DB5AC /* SettingsNewslettersViewModelTests.swift in Sources */,
+				AAF5496E2F2445C0001DB5AC /* SettingsNotificationCellViewModelTests.swift in Sources */,
+				AAF5496F2F2445C0001DB5AC /* SettingsNotificationPickerViewModelTests.swift in Sources */,
+				AAF549702F2445C0001DB5AC /* SettingsNotificationsViewModelTests.swift in Sources */,
+				AAF549712F2445C0001DB5AC /* SettingsPrivacySwitchCellViewModelTests.swift in Sources */,
+				AAF549722F2445C0001DB5AC /* SettingsPrivacyViewModelTests.swift in Sources */,
+				AAF549732F2445C0001DB5AC /* SettingsRecommendationsCellViewModelTests.swift in Sources */,
+				AAF549742F2445C0001DB5AC /* ShareViewModelTests.swift in Sources */,
+				AAF549752F2445C0001DB5AC /* ShippingRulesViewModelTests.swift in Sources */,
+				AAF549762F2445C0001DB5AC /* SortPagerViewModelTests.swift in Sources */,
+				AAF549772F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift in Sources */,
+				AAF549782F2445C0001DB5AC /* ThanksViewModelTests.swift in Sources */,
+				AAF549792F2445C0001DB5AC /* TwoFactorViewModelTests.swift in Sources */,
+				AAF5497A2F2445C0001DB5AC /* UpdateDraftViewModelTests.swift in Sources */,
+				AAF5497B2F2445C0001DB5AC /* VideoViewModelTests.swift in Sources */,
+				AAF5497C2F2445C0001DB5AC /* WatchProjectViewModelTests.swift in Sources */,
+				AAF5497D2F2445C0001DB5AC /* ApplePayCapabilitiesTests.swift in Sources */,
+				AAF5497E2F2445C0001DB5AC /* CharacterSetTests.swift in Sources */,
+				AAF5497F2F2445C0001DB5AC /* CircleAvatarImageViewTests.swift in Sources */,
+				AAF549802F2445C0001DB5AC /* CreateBackingConstructorTests.swift in Sources */,
+				AAF549812F2445C0001DB5AC /* CreatePaymentSourceInput+ConstructorTests.swift in Sources */,
+				AAF549822F2445C0001DB5AC /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift in Sources */,
+				AAF549832F2445C0001DB5AC /* CreditCard+UtilsTests.swift in Sources */,
+				AAF549842F2445C0001DB5AC /* DateFormatterTests.swift in Sources */,
+				AAF549852F2445C0001DB5AC /* EnvironmentTests.swift in Sources */,
+				AAF549862F2445C0001DB5AC /* EnvironmentVariablesTests.swift in Sources */,
+				AAF549872F2445C0001DB5AC /* EquatableHelpersTests.swift in Sources */,
+				AAF549882F2445C0001DB5AC /* ExperimentName+HelpersTests.swift in Sources */,
+				AAF549892F2445C0001DB5AC /* FacebookSDKTypeTests.swift in Sources */,
+				AAF5498A2F2445C0001DB5AC /* FormatTests.swift in Sources */,
+				AAF5498B2F2445C0001DB5AC /* HelpTypeTests.swift in Sources */,
+				AAF5498C2F2445C0001DB5AC /* InstantiableTests.swift in Sources */,
+				AAF5498D2F2445C0001DB5AC /* IsValidEmailTests.swift in Sources */,
+				AAF5498E2F2445C0001DB5AC /* KSCacheTests.swift in Sources */,
+				AAF5498F2F2445C0001DB5AC /* LanguageTests.swift in Sources */,
+				AAF549902F2445C0001DB5AC /* LaunchedCountriesTests.swift in Sources */,
+				AAF549912F2445C0001DB5AC /* LocalizedLottieFileTests.swift in Sources */,
+				AAF549922F2445C0001DB5AC /* LocalizedStringTests.swift in Sources */,
+				AAF549932F2445C0001DB5AC /* MockFacebookSDK.swift in Sources */,
+				AAF549942F2445C0001DB5AC /* NavigationTests.swift in Sources */,
+				AAF549952F2445C0001DB5AC /* NSBundleType+Tests.swift in Sources */,
+				AAF549962F2445C0001DB5AC /* NumberFormatterTests.swift in Sources */,
+				AAF549972F2445C0001DB5AC /* OAuthTests.swift in Sources */,
+				AAF549982F2445C0001DB5AC /* OnboardingUseCaseTests.swift in Sources */,
+				AAF549992F2445C0001DB5AC /* OnboardingViewModelTests.swift in Sources */,
+				AAF5499A2F2445C0001DB5AC /* PaginateTests.swift in Sources */,
+				AAF5499B2F2445C0001DB5AC /* PaginatorTests.swift in Sources */,
+				AAF5499C2F2445C0001DB5AC /* PasswordValidationTests.swift in Sources */,
+				AAF5499D2F2445C0001DB5AC /* PKPaymentRequestHelpersTests.swift in Sources */,
+				AAF5499E2F2445C0001DB5AC /* PledgeViewContextTests.swift in Sources */,
+				AAF5499F2F2445C0001DB5AC /* ProjectActivityItemProviderTests.swift in Sources */,
+				AAF549A02F2445C0001DB5AC /* ProjectURLBuilderTests.swift in Sources */,
+				AAF549A12F2445C0001DB5AC /* PushNotificationDialogTests.swift in Sources */,
+				AAF549A22F2445C0001DB5AC /* RefInfoTests.swift in Sources */,
+				AAF549A32F2445C0001DB5AC /* RewardCellProjectBackingStateTypeTests.swift in Sources */,
+				AAF549A42F2445C0001DB5AC /* SharedFunctionsTests.swift in Sources */,
+				AAF549A52F2445C0001DB5AC /* String+AttributedTests.swift in Sources */,
+				AAF549A62F2445C0001DB5AC /* String+Base64Tests.swift in Sources */,
+				AAF549A72F2445C0001DB5AC /* String+SimpleHTMLTests.swift in Sources */,
+				AAF549A82F2445C0001DB5AC /* String+TruncateTests.swift in Sources */,
+				AAF549A92F2445C0001DB5AC /* String+WhitespaceTests.swift in Sources */,
+				AAF549AA2F2445C0001DB5AC /* UIFontTests.swift in Sources */,
+				AAF549AB2F2445C0001DB5AC /* UILabel+IBClearTests.swift in Sources */,
+				AAF549AC2F2445C0001DB5AC /* UILabel+SimpleHTMLTests.swift in Sources */,
+				AAF549AD2F2445C0001DB5AC /* UIStackView+Tests.swift in Sources */,
+				AAF549AE2F2445C0001DB5AC /* UIView+AutoLayoutTests.swift in Sources */,
+				AAF549AF2F2445C0001DB5AC /* UIViewController+URLTests.swift in Sources */,
+				AAF549B02F2445C0001DB5AC /* UpdateActivityItemProviderTests.swift in Sources */,
+				AAF549B12F2445C0001DB5AC /* UpdateBackingInput+ConstructorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
