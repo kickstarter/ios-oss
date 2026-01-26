@@ -119,9 +119,9 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private func addressDetails(leadingColumnWidth: CGFloat) -> some View {
     switch self.viewModel.card.address {
-    case let .editable(address):
+    case let .editable(address, editUrl):
       Button { [weak viewModel] () in
-        viewModel?.eventTriggered(.editAddress)
+        viewModel?.eventTriggered(.editAddress(url: editUrl))
       } label: {
         self.addressContents(leadingColumnWidth: leadingColumnWidth, address: address, editable: true)
       }

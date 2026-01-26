@@ -4,24 +4,24 @@ import KsApi
 import Library
 
 public enum PPOCardEvent: Equatable {
-  case editAddress
+  case editAddress(url: String)
   case sendMessage
   case updateRewardReceived(rewardReceived: Bool)
   case viewProjectDetails
   case confirmAddress(address: String, addressId: String)
-  case completeSurvey
-  case managePledge
+  case completeSurvey(url: String)
+  case managePledge(url: String)
   case fixPayment
   case authenticateCard(clientSecret: String, onProgress: (PPOActionState) -> Void)
 
   public static func == (lhs: PPOCardEvent, rhs: PPOCardEvent) -> Bool {
     switch (lhs, rhs) {
-    case (.editAddress, .editAddress): return true
     case (.sendMessage, .sendMessage): return true
     case (.viewProjectDetails, .viewProjectDetails): return true
-    case (.completeSurvey, .completeSurvey): return true
-    case (.managePledge, .managePledge): return true
     case (.fixPayment, .fixPayment): return true
+    case let (.editAddress(lhsUrl), .editAddress(rhsUrl)): return lhsUrl == rhsUrl
+    case let (.completeSurvey(lhsUrl), .completeSurvey(rhsUrl)): return lhsUrl == rhsUrl
+    case let (.managePledge(lhsUrl), .managePledge(rhsUrl)): return lhsUrl == rhsUrl
     case let (
       .confirmAddress(address: lhsAddress, addressId: lhsId),
       .confirmAddress(address: rhsAddress, addressId: rhsId)
@@ -109,14 +109,14 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
       event = .authenticateCard(clientSecret: clientSecret, onProgress: { [weak self] state in
         self?.handle3DSState(state)
       })
-    case .completeSurvey:
-      event = .completeSurvey
+    case let .completeSurvey(url: url):
+      event = .completeSurvey(url: url)
     case let .confirmAddress(address: address, addressId: addressId):
       event = .confirmAddress(address: address, addressId: addressId)
     case .fixPayment:
       event = .fixPayment
-    case .managePledge:
-      event = .managePledge
+    case let .managePledge(url: url):
+      event = .managePledge(url: url)
     }
     self.handleEventSubject.send(event)
   }
