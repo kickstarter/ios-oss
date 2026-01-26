@@ -70,9 +70,6 @@ internal final class DiscoveryViewController: UIViewController {
         self?.viewModel.inputs.remoteConfigClientConfigurationFailed()
       }
 
-    /// Always use superview constraint to allow content to extend to full height.
-    /// This removes the dependency on the floating tab bar feature flag and allows
-    /// the content to extend under the tab bar container.
     self.pagesBottomToSafeArea.isActive = false
     self.pagesBottomToSuperview.isActive = true
 

@@ -24,8 +24,6 @@ internal final class BackerDashboardViewController: UIViewController {
   @IBOutlet private var sortBar: ProfileSortBarView!
   @IBOutlet private var topBackgroundView: UIView!
 
-  /// Bottom constraint when using the system tab bar (respects safe area)
-  private var containerBottomToSafeArea: NSLayoutConstraint?
   /// Bottom constraint when using the floating tab bar (full-height)
   private var containerBottomToSuperview: NSLayoutConstraint?
 
@@ -106,7 +104,6 @@ internal final class BackerDashboardViewController: UIViewController {
     (constraintsToDeactivate + containerConstraints).forEach { constraint in
       if constraint.isActive {
         constraint.isActive = false
-        self.containerBottomToSafeArea = constraint
       }
     }
 
