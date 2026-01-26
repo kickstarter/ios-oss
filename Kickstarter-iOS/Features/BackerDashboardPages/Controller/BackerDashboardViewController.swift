@@ -94,7 +94,7 @@ internal final class BackerDashboardViewController: UIViewController {
 
     let constraintsToDeactivate = self.view.constraints.filter { constraint in
       (constraint.firstItem === containerView && constraint.firstAttribute == .bottom) ||
-      (constraint.secondItem === containerView && constraint.secondAttribute == .bottom)
+        (constraint.secondItem === containerView && constraint.secondAttribute == .bottom)
     }
 
     let containerConstraints = containerView.constraints.filter { constraint in
