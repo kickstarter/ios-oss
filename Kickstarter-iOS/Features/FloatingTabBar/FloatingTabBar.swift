@@ -103,6 +103,8 @@ final class FloatingTabBar: UITabBar {
     self.updateSelection(animated: false)
   }
 
+  // MARK: - Helpers
+
   /// Centers and lays out the tabs.
   private func layoutTabs() {
     guard let itemViews = sortedTabViews(), itemViews.isEmpty == false else {
@@ -148,21 +150,34 @@ final class FloatingTabBar: UITabBar {
     }
   }
 
-  /// Animates the green  background behind the selected tab.
+  /// Animates the green background behind the selected tab.
   private func updateSelection(animated: Bool) {
     guard
-      let selectedItem,
       let tabs = sortedTabViews(),
-      let selectedIndex = items?.firstIndex(of: selectedItem),
-      selectedIndex < tabs.count
+      let items = self.items,
+      tabs.isEmpty == false,
+      items.isEmpty == false
     else { return }
+
+    let selectedIndex: Int
+
+    if let selectedItem = self.selectedItem,
+       let index = items.firstIndex(of: selectedItem) {
+      selectedIndex = index
+    } else {
+      /// On first load `selectedItem` can be nil even though `selectedIndex` is effectively 0.
+      /// Default to the first tab so the green background indicator is visible immediately.
+      selectedIndex = 0
+    }
+
+    guard selectedIndex < tabs.count else { return }
 
     let targetTabView = tabs[selectedIndex]
     let indicatorSize = Constants.selectedTabBackgroundSize
 
     let frame = CGRect(
-      x: targetTabView.center.x - (indicatorSize.width / 2.0),
-      y: self.tabBarBackgroundView.frame.midY - (indicatorSize.height / 2.0),
+      x: targetTabView.center.x - indicatorSize.width / 2,
+      y: self.tabBarBackgroundView.frame.midY - indicatorSize.height / 2,
       width: indicatorSize.width,
       height: indicatorSize.height
     )
@@ -174,8 +189,7 @@ final class FloatingTabBar: UITabBar {
         options: [.curveEaseInOut],
         animations: {
           self.selectedTabBackgroundView.frame = frame
-        },
-        completion: nil
+        }
       )
     } else {
       self.selectedTabBackgroundView.frame = frame

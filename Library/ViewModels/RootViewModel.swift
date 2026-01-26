@@ -128,6 +128,9 @@ public protocol RootViewModelOutputs {
 
   /// Emits a User that can be used to replace the current user in the environment.
   var updateUserInEnvironment: Signal<User, Never> { get }
+
+  /// Emits when the floating tab bar feature is enabled or disabled.
+  var floatingTabBarEnabled: Signal<Bool, Never> { get }
 }
 
 public protocol RootViewModelType {
@@ -156,39 +159,46 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       self.applicationWillEnterForegroundSignal
     )
 
-    let standardViewControllers = loginState.map { isLoggedIn -> [RootViewControllerData] in
-      generateViewControllers(isLoggedIn: isLoggedIn)
-    }
+    /// This flag allows us to control the refresh of the tab bar when toggling on the Remote Config floating tab bar FF.
+    /// On first launch we intentionally default to the standard tab bar.
+    /// The flag is refreshed when the app returns to the foreground.
+    let featuredFlagChanged = Signal.merge(
+      self.viewDidLoadProperty.signal,
+      self.applicationWillEnterForegroundSignal.signal
+    )
 
-    // We could detect when this feature changes in more places - like listening for notifications
-    // that the remote config loaded - but that might change the tab bar at a strange time.
-    // Updating this just on app foreground keeps the change invisible to the user.
-    // Conveniently, the activity badge is also updated on app foreground.
-    let featuredFlagChanged =
-      Signal.merge(
-        self.viewDidLoadProperty.signal,
-        self.applicationWillEnterForegroundSignal.signal
-      )
-      // Currently we have no tabs that reload based on feature flags -
-      // but if we need that feature again, this is where you put it.
-      //  .map { _ in myFeatureFlagEnabled()}
-      .map { _ in false }
-      .skipRepeats()
-      .skip(first: 1) // Only fire if applicationWillEnterForeground changes the original values in viewDidLoadProperty.
+    let floatingTabBarEnabled = featuredFlagChanged
+      .map { _ in featureFloatingTabBarEnabled() }
+
+    self.floatingTabBarEnabled = floatingTabBarEnabled
+
+    let standardViewControllers: Signal<[RootViewControllerData], Never> = Signal
+      .combineLatest(loginState, floatingTabBarEnabled)
+      .map { isLoggedIn, isFloatingTabBarEnabled -> [RootViewControllerData] in
+        generateViewControllers(
+          isLoggedIn: isLoggedIn,
+          isFloatingTabBarEnabled: isFloatingTabBarEnabled
+        )
+      }
 
     self.setViewControllers = Signal.merge(
       standardViewControllers,
       // FIXME: Look at moving the userLocalePreferencesChangedProperty signal into the currentUser signal
       // https://kickstarter.atlassian.net/browse/MBL-2053
-      loginState.takeWhen(
-        Signal.merge(
-          self.userLocalePreferencesChangedProperty.signal,
-          featuredFlagChanged.ignoreValues()
+      Signal
+        .combineLatest(loginState, floatingTabBarEnabled)
+        .takeWhen(
+          Signal.merge(
+            self.userLocalePreferencesChangedProperty.signal,
+            featuredFlagChanged.ignoreValues()
+          )
         )
-      )
-      .map { isLoggedIn in
-        generateViewControllers(isLoggedIn: isLoggedIn)
-      }
+        .map { isLoggedIn, isFloatingTabBarEnabled -> [RootViewControllerData] in
+          generateViewControllers(
+            isLoggedIn: isLoggedIn,
+            isFloatingTabBarEnabled: isFloatingTabBarEnabled
+          )
+        }
     )
 
     let vcCount = self.setViewControllers.map { $0.count }
@@ -308,14 +318,16 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
     // Should they be combined into one signal with a tuple? Explicitly made dependent on one another?
     // See https://kickstarter.atlassian.net/browse/MBL-2053
     self.tabBarItemsData = Signal.combineLatest(
-      currentUser, .merge(
+      currentUser, floatingTabBarEnabled, .merge(
         self.viewDidLoadProperty.signal,
         self.userLocalePreferencesChangedProperty.signal,
         featuredFlagChanged.ignoreValues()
       )
     )
-    .map(first)
-    .map(tabData(forUser:))
+    .map { user, isFloatingTabBarEnabled, _ in (user, isFloatingTabBarEnabled) }
+    .map { user, isFloatingTabBarEnabled in
+      tabData(forUser: user, isFloatingTabBarEnabled: isFloatingTabBarEnabled)
+    }
 
     // Tracks
 
@@ -357,11 +369,11 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
 
         return (tabBarItemLabel(for: data.items[index]), prevSelectedTabBarItem)
       }
-      .observeValues { tabBarItemLabel, prevTabBarItemLabel in
+      .observeValues { tabBarItemLabel, prevSelectedTabBarItemLabel in
         AppEnvironment.current.ksrAnalytics
           .trackTabBarClicked(
             tabBarItemLabel: tabBarItemLabel,
-            previousTabBarItemLabel: prevTabBarItemLabel
+            previousTabBarItemLabel: prevSelectedTabBarItemLabel
           )
       }
   }
@@ -449,6 +461,7 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
   public let setViewControllers: Signal<[RootViewControllerData], Never>
   public let tabBarItemsData: Signal<TabBarItemsData, Never>
   public let updateUserInEnvironment: Signal<User, Never>
+  public let floatingTabBarEnabled: Signal<Bool, Never>
 
   public var inputs: RootViewModelInputs { return self }
   public var outputs: RootViewModelOutputs { return self }
@@ -458,11 +471,14 @@ private func currentUserActivitiesAndErroredPledgeCount() -> Int {
   return (AppEnvironment.current.currentUser?.unseenActivityCount ?? 0)
 }
 
-private func generateViewControllers(isLoggedIn: Bool) -> [RootViewControllerData] {
+private func generateViewControllers(
+  isLoggedIn: Bool,
+  isFloatingTabBarEnabled: Bool
+) -> [RootViewControllerData] {
   var controllers: [RootViewControllerData] = []
   controllers.append(.discovery)
 
-  guard featureFloatingTabBarEnabled() == false else {
+  guard isFloatingTabBarEnabled == false else {
     controllers.append(.search)
     controllers.append(.profile(isLoggedIn: isLoggedIn))
 
@@ -481,10 +497,10 @@ private func generateViewControllers(isLoggedIn: Bool) -> [RootViewControllerDat
   return controllers
 }
 
-private func tabData(forUser user: User?) -> TabBarItemsData {
+private func tabData(forUser user: User?, isFloatingTabBarEnabled: Bool) -> TabBarItemsData {
   var items: [TabBarItem] = []
 
-  if featureFloatingTabBarEnabled() {
+  if isFloatingTabBarEnabled {
     items = [
       .home(index: 0),
       .search(index: 1),
