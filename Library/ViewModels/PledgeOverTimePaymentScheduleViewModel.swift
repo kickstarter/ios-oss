@@ -114,8 +114,8 @@ private func getBadgeStyle(from increment: PledgePaymentIncrement) -> BadgeStyle
   let requiresAction = increment.state == .errored && increment.stateReason == .requiresAction
 
   let requiresActionBadgeStyle = BadgeStyle.custom(
-    foregroundColor: Colors.PLOT.Badge.Text.authentication.uiColor(),
-    backgroundColor: Colors.PLOT.Badge.Background.authentication.uiColor()
+    foregroundColor: Colors.PLOT.Badge.Text.yellow.uiColor(),
+    backgroundColor: Colors.PLOT.Badge.Background.yellow.uiColor()
   )
 
   return requiresAction ? requiresActionBadgeStyle : increment.state.badgeStyle
