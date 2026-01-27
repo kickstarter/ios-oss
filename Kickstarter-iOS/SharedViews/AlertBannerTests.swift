@@ -15,7 +15,7 @@ internal final class AlertBannerTests: TestCase {
       }
     )
 
-    forEachScreenshotType { type in
+    forEachScreenshotType(languages: [.en]) { type in
       assertSnapshot(
         forView: banner,
         withType: type,

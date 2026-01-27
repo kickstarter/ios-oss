@@ -429,16 +429,6 @@ private func snapshotDirectory(for file: StaticString) -> String {
   return fileURL.deletingLastPathComponent().appendingPathComponent("__Snapshots__").path
 }
 
-private enum SnapshotTestLock {
-  private static let lock = NSLock()
-
-  static func withLock<T>(_ body: () -> T) -> T {
-    self.lock.lock()
-    defer { lock.unlock() }
-    return body()
-  }
-}
-
 private func withLanguage(_ language: Language, body: () -> Void) {
   AppEnvironment.pushEnvironment(language: language)
   body()
