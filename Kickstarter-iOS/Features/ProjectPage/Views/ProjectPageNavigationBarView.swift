@@ -3,7 +3,6 @@ import KsApi
 import Library
 import PassKit
 import Prelude
-import SwiftUI
 import UIKit
 
 protocol ProjectPageNavigationBarViewDelegate: AnyObject {
@@ -27,23 +26,13 @@ final class ProjectPageNavigationBarView: UIView {
 
   private lazy var navigationShareButton: UIButton = { UIButton(type: .custom) }()
 
-  private lazy var closeButtonHostingController: UIHostingController<CloseButtonView> = {
-    let closeButtonView = CloseButtonView { [weak self] in
+  private lazy var navigationCloseButton: CloseButtonView = {
+    let closeButton = CloseButtonView { [weak self] in
       self?.closeButtonTapped()
     }
-    let hostingController = UIHostingController(rootView: closeButtonView)
-    hostingController.view.backgroundColor = UIColor.clear
-    hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-    return hostingController
+    closeButton.translatesAutoresizingMaskIntoConstraints = false
+    return closeButton
   }()
-
-  private var navigationCloseButton: UIView {
-    guard let view = self.closeButtonHostingController.view else {
-      assertionFailure("UIHostingController view should always exist")
-      return UIView()
-    }
-    return view
-  }
 
   private lazy var navigationSaveButton: UIButton = { UIButton(type: .custom) }()
 
