@@ -226,8 +226,7 @@ public protocol ServiceType {
   /// `refundedAmount`is included in the `paymentIncrements`.
   /// - Parameters:
   ///    - id: backing ID
-  ///    - withStoredCards: Whether or not to include the user's payment cards.
-  func fetchBackingForManagePledge(id: Int, withStoredCards: Bool)
+  func fetchBackingForManagePledge(id: Int)
     -> SignalProducer<Backing, ErrorEnvelope>
 
   /// Fetches all of the messages in a particular message thread.

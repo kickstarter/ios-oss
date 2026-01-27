@@ -59,18 +59,18 @@ final class ProjectAndBackingEnvelopeTests: XCTestCase {
     mock.backing = GraphAPITestMocks.Backing.mock
 
     let data = GraphAPI.FetchBackingWithIncrementsRefundedQuery.Data.from(mock)
-    let producer = ProjectAndBackingEnvelope.envelopeProducer(from: data)
+    let producer = Backing.producer(from: data)
 
-    guard let envelope = MockGraphQLClient.shared.client.data(from: producer) else {
+    guard let backing = MockGraphQLClient.shared.client.data(from: producer) else {
       XCTFail()
 
       return
     }
 
-    XCTAssertEqual(envelope.backing.id, 1)
-    XCTAssertEqual(envelope.backing.projectId, 987)
-    XCTAssertEqual(envelope.backing.status, .pledged)
-    XCTAssertEqual(envelope.backing.paymentIncrements.count, 0)
+    XCTAssertEqual(backing.id, 1)
+    XCTAssertEqual(backing.projectId, 987)
+    XCTAssertEqual(backing.status, .pledged)
+    XCTAssertEqual(backing.paymentIncrements.count, 0)
   }
 
   func test_envelopeObject_fromFetchBackingWithIncrementsRefundedQuery_withMixedIncrementStates() {
@@ -84,28 +84,28 @@ final class ProjectAndBackingEnvelopeTests: XCTestCase {
     ]
 
     let data = GraphAPI.FetchBackingWithIncrementsRefundedQuery.Data.from(mock)
-    let producer = ProjectAndBackingEnvelope.envelopeProducer(from: data)
+    let producer = Backing.producer(from: data)
 
-    guard let envelope = MockGraphQLClient.shared.client.data(from: producer) else {
+    guard let backing = MockGraphQLClient.shared.client.data(from: producer) else {
       XCTFail()
 
       return
     }
 
-    XCTAssertEqual(envelope.backing.id, 1)
-    XCTAssertEqual(envelope.backing.projectId, 987)
-    XCTAssertEqual(envelope.backing.status, .pledged)
-    XCTAssertEqual(envelope.backing.paymentIncrements.count, 3)
+    XCTAssertEqual(backing.id, 1)
+    XCTAssertEqual(backing.projectId, 987)
+    XCTAssertEqual(backing.status, .pledged)
+    XCTAssertEqual(backing.paymentIncrements.count, 3)
 
-    XCTAssertEqual(envelope.backing.paymentIncrements[0].state, .collected)
-    XCTAssertEqual(envelope.backing.paymentIncrements[0].refundStatus, .notRefunded)
+    XCTAssertEqual(backing.paymentIncrements[0].state, .collected)
+    XCTAssertEqual(backing.paymentIncrements[0].refundStatus, .notRefunded)
 
-    XCTAssertEqual(envelope.backing.paymentIncrements[1].state, .collected)
-    if case let .partialRefund(amount) = envelope.backing.paymentIncrements[1].refundStatus {
+    XCTAssertEqual(backing.paymentIncrements[1].state, .collected)
+    if case let .partialRefund(amount) = backing.paymentIncrements[1].refundStatus {
       XCTAssertEqual(amount.amountFormattedInProjectNativeCurrency, "$23.00")
     }
 
-    XCTAssertEqual(envelope.backing.paymentIncrements[2].state, .refunded)
-    XCTAssertEqual(envelope.backing.paymentIncrements[2].refundStatus, .fullRefund)
+    XCTAssertEqual(backing.paymentIncrements[2].state, .refunded)
+    XCTAssertEqual(backing.paymentIncrements[2].refundStatus, .fullRefund)
   }
 }

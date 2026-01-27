@@ -1167,7 +1167,7 @@
       return producer(for: self.fetchProjectAndBackingResult)
     }
 
-    func fetchBackingForManagePledge(id _: Int, withStoredCards _: Bool)
+    func fetchBackingForManagePledge(id _: Int)
       -> SignalProducer<Backing, ErrorEnvelope> {
       return producer(for: self.fetchManagePledgeViewBackingResult)
     }
