@@ -21,7 +21,6 @@ internal final class AlertBannerTests: TestCase {
         withType: type,
         useIntrinsicSize: true,
         perceptualPrecision: 0.98,
-        record: false,
         testName: "testView"
       )
     }
