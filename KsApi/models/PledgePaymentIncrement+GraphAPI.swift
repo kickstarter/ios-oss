@@ -46,16 +46,22 @@ extension PledgePaymentIncrement {
       self.stateReason = PledgePaymentIncrementStateReason(rawValue: stateReason)
     }
 
-    // If we get a `refundedAmount`, it means this increment was refunded
-    // so we store the amount. If not, we treat it as not refunded.
+    // If we get a `refundedAmount`, it means this increment was refunded.
     if let refundedAmountData = data.refundedAmount,
        let formattedRefund = data.refundUpdatedAmountInProjectNativeCurrency {
-      let refundedAmount = PledgePaymentIncrementAmount(
-        currency: refundedAmountData.currency,
-        amountFormattedInProjectNativeCurrency: formattedRefund
-      )
+      // If the increment state is REFUNDED, it was a full refund
+      if stateValue == .refunded {
+        self.refundStatus = .fullRefund
+        // Otherwise, it was an adjustment of some kind.
+      } else {
+        let refundedAmount = PledgePaymentIncrementAmount(
+          currency: refundedAmountData.currency,
+          amountFormattedInProjectNativeCurrency: formattedRefund
+        )
 
-      self.refundStatus = .refunded(refundedAmount)
+        self.refundStatus = .partialRefund(refundedAmount)
+      }
+
     } else {
       self.refundStatus = .notRefunded
     }
