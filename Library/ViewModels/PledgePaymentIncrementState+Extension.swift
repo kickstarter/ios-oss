@@ -20,28 +20,28 @@ extension PledgePaymentIncrementState {
     case .collected:
       // TODO: Add support to apply alpha to background color for light mode only. See: MBL-2650
       return .custom(
-        foregroundColor: Colors.PLOT.Badge.Text.collected.uiColor(),
-        backgroundColor: Colors.PLOT.Badge.Background.collected.uiColor()
+        foregroundColor: Colors.PLOT.Badge.Text.green.uiColor(),
+        backgroundColor: Colors.PLOT.Badge.Background.green.uiColor()
       )
     case .unattempted:
       return .custom(
-        foregroundColor: Colors.PLOT.Badge.Text.scheduled.uiColor(),
-        backgroundColor: Colors.PLOT.Badge.Background.scheduled.uiColor()
+        foregroundColor: Colors.PLOT.Badge.Text.blue.uiColor(),
+        backgroundColor: Colors.PLOT.Badge.Background.blue.uiColor()
       )
     case .cancelled:
       return .custom(
-        foregroundColor: Colors.PLOT.Badge.Text.canceled.uiColor(),
-        backgroundColor: Colors.PLOT.Badge.Background.canceled.uiColor()
+        foregroundColor: Colors.PLOT.Badge.Text.gray.uiColor(),
+        backgroundColor: Colors.PLOT.Badge.Background.gray.uiColor()
       )
     case .errored:
       return .custom(
-        foregroundColor: Colors.PLOT.Badge.Text.errored.uiColor(),
-        backgroundColor: Colors.PLOT.Badge.Background.errored.uiColor()
+        foregroundColor: Colors.PLOT.Badge.Text.danger.uiColor(),
+        backgroundColor: Colors.PLOT.Badge.Background.danger.uiColor()
       )
     case .refunded:
       return .custom(
-        foregroundColor: Colors.PLOT.Badge.Text.refunded.uiColor(),
-        backgroundColor: Colors.PLOT.Badge.Background.refunded.uiColor()
+        foregroundColor: Colors.PLOT.Badge.Text.purple.uiColor(),
+        backgroundColor: Colors.PLOT.Badge.Background.purple.uiColor()
       )
     }
   }
