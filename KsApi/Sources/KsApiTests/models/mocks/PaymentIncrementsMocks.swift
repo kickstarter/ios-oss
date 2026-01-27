@@ -47,6 +47,8 @@ extension GraphAPITestMocks.PaymentIncrement {
     paymentIncrement.refundedAmount?.amountFormattedInProjectNativeCurrency = "$20.00"
     paymentIncrement.refundedAmount?.currency = "USD"
 
+    paymentIncrement.refundUpdatedAmountInProjectNativeCurrency = "$23.00"
+
     return paymentIncrement
   }
 
@@ -63,6 +65,8 @@ extension GraphAPITestMocks.PaymentIncrement {
     paymentIncrement.refundedAmount = Mock<GraphAPITestMocks.PaymentIncrementAmount>()
     paymentIncrement.refundedAmount?.amountFormattedInProjectNativeCurrency = "$43.00"
     paymentIncrement.refundedAmount?.currency = "USD"
+
+    paymentIncrement.refundUpdatedAmountInProjectNativeCurrency = "$0.00"
 
     return paymentIncrement
   }

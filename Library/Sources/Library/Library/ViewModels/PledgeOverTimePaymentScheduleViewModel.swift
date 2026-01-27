@@ -90,10 +90,9 @@ public struct PLOTPaymentScheduleItem: Equatable {
 }
 
 private func getAmountString(from increment: PledgePaymentIncrement) -> String {
-  // Only display the adjusted amount if the status is `.collected`.
+  // Only display the adjusted amount if a partial refund was issued.
   // If the payment increment was fully refunded, display the full payment increment amount.
-  if increment.isCollectedAdjusted,
-     case let .refunded(refundedAmount) = increment.refundStatus {
+  if case let .partialRefund(refundedAmount) = increment.refundStatus {
     return refundedAmount.amountFormattedInProjectNativeCurrency
   }
 
@@ -101,7 +100,7 @@ private func getAmountString(from increment: PledgePaymentIncrement) -> String {
 }
 
 private func getStateLabelText(from increment: PledgePaymentIncrement) -> String {
-  if increment.isCollectedAdjusted {
+  if increment.state == .collected, case .partialRefund = increment.refundStatus {
     return Strings.Collected_adjusted()
   }
 
@@ -114,8 +113,8 @@ private func getBadgeStyle(from increment: PledgePaymentIncrement) -> BadgeStyle
   let requiresAction = increment.state == .errored && increment.stateReason == .requiresAction
 
   let requiresActionBadgeStyle = BadgeStyle.custom(
-    foregroundColor: Colors.PLOT.Badge.Text.authentication.uiColor(),
-    backgroundColor: Colors.PLOT.Badge.Background.authentication.uiColor()
+    foregroundColor: Colors.PLOT.Badge.Text.yellow.uiColor(),
+    backgroundColor: Colors.PLOT.Badge.Background.yellow.uiColor()
   )
 
   return requiresAction ? requiresActionBadgeStyle : increment.state.badgeStyle
