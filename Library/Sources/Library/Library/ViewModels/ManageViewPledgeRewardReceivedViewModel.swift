@@ -96,6 +96,17 @@ public class ManageViewPledgeRewardReceivedViewModel:
     self.marginWidth = self.rewardReceivedHidden.map { $0 ? 0 : 1 }
 
     self.pledgeDisclaimerViewHidden = data.map(\.pledgeDisclaimerViewHidden)
+
+    // MARK: Analytics
+
+    self.rewardReceivedToggleTappedProperty.signal.withLatestFrom(project)
+      .observeValues { rewardReceived, project in
+        AppEnvironment.current.ksrAnalytics.trackRewardReceivedToggled(
+          toggleOn: rewardReceived,
+          project: project,
+          context: .managePledgeScreen
+        )
+      }
   }
 
   private let configureWithDataProperty = MutableProperty<ManageViewPledgeRewardReceivedViewData?>(nil)

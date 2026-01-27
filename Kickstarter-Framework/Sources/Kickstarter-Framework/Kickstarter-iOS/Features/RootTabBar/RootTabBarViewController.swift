@@ -28,9 +28,17 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
 
   fileprivate let viewModel: RootViewModelType = RootViewModel()
 
+  /// Keep the applied tab bar mode in sync with the ViewModel (single source of truth)
+  /// Accounts for remote config feature flag load issues.
+  private var isFloatingTabBarEnabled: Bool = false
+  private var standardTabBar: UITabBar?
+
   public override func viewDidLoad() {
     super.viewDidLoad()
     self.delegate = self
+
+    /// Capture the standard (non-floating) tab bar so we can revert safely if we toggle the floating tab bar off later.
+    self.standardTabBar = self.tabBar
 
     self.applicationWillEnterForegroundObserver = NotificationCenter
       .default
@@ -86,13 +94,6 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
-    if featureFloatingTabBarEnabled() {
-      /// Replace the UITabBarController’s tab bar with our custom subclass.
-      /// UITabBarController has a read-only tabBar property and Apple doesn't provide a public setter or override for it so we need to do it via key-value coding.
-      let customTabBar = FloatingTabBar()
-      self.setValue(customTabBar, forKey: "tabBar")
-    }
-
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -119,6 +120,12 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
 
   public override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.floatingTabBarEnabled
+      .observeForUI()
+      .observeValues { [weak self] enabled in
+        self?.applyFloatingTabBar(enabled: enabled)
+      }
 
     self.viewModel.outputs.setViewControllers
       .observeForUI()
@@ -211,8 +218,6 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
   private func configureFloatingTabBarItems(with data: TabBarItemsData) {
     guard let items = self.tabBar.items, items.isEmpty == false else { return }
 
-    assert(items.count == 3, "FloatingTabBar expected 3 items, got \(items.count)")
-
     data.items.forEach { item in
       switch item {
       case let .home(index):
@@ -264,7 +269,7 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       }
     }
 
-    if featureFloatingTabBarEnabled() {
+    if self.isFloatingTabBarEnabled {
       /// Run last so it overwrites the default tab-bar icons/titles
       self.configureFloatingTabBarItems(with: data)
     }
@@ -282,7 +287,11 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
     let imageUrl = URL(fileURLWithPath: imagePath)
 
     if let imageData = try? Data(contentsOf: imageUrl) {
-      let (defaultImage, selectedImage) = tabbarAvatarImageFromData(imageData)
+      let (defaultImage, selectedImage) = tabbarAvatarImageFromData(
+        imageData,
+        isFloatingTabBarEnabled: self.isFloatingTabBarEnabled
+      )
+
       _ = self.tabBarItem(atIndex: index)
         ?|> profileTabBarItemStyle(isLoggedIn: true)
         ?|> UITabBarItem.lens.image .~ defaultImage
@@ -291,11 +300,14 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       let sessionConfig = URLSessionConfiguration.default
       let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: .main)
       let dataTask = session.dataTask(with: avatarUrl) { [weak self] avatarData, _, _ in
-        guard let avatarData = avatarData else { return }
+        guard let self = self, let avatarData = avatarData else { return }
         try? avatarData.write(to: imageUrl, options: [.atomic])
 
-        let (defaultImage, selectedImage) = tabbarAvatarImageFromData(avatarData)
-        _ = self?.tabBarItem(atIndex: index)
+        let (defaultImage, selectedImage) = tabbarAvatarImageFromData(
+          avatarData,
+          isFloatingTabBarEnabled: self.isFloatingTabBarEnabled
+        )
+        _ = self.tabBarItem(atIndex: index)
           ?|> profileTabBarItemStyle(isLoggedIn: true)
           ?|> UITabBarItem.lens.image .~ defaultImage
           ?|> UITabBarItem.lens.selectedImage .~ selectedImage
@@ -343,6 +355,27 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
   public func didReceiveBadgeValue(_ value: Int?) {
     self.viewModel.inputs.didReceiveBadgeValue(value)
   }
+
+  private func applyFloatingTabBar(enabled: Bool) {
+    guard self.isFloatingTabBarEnabled != enabled else { return }
+
+    self.isFloatingTabBarEnabled = enabled
+
+    if enabled {
+      guard (self.tabBar is FloatingTabBar) == false else { return }
+
+      /// Replace the UITabBarController’s tab bar with our custom subclass.
+      /// UITabBarController has a read-only tabBar property and Apple doesn't provide a public setter or override for it so we need to do it via key-value coding.
+      let customTabBar = FloatingTabBar()
+      self.setValue(customTabBar, forKey: "tabBar")
+      self.bindStyles()
+    } else {
+      guard let standardTabBar = self.standardTabBar, self.tabBar is FloatingTabBar else { return }
+
+      self.setValue(standardTabBar, forKey: "tabBar")
+      self.bindStyles()
+    }
+  }
 }
 
 extension RootTabBarViewController: UITabBarControllerDelegate {
@@ -377,7 +410,10 @@ private func scrollToTop(_ viewController: UIViewController) {
   }
 }
 
-private func tabbarAvatarImageFromData(_ data: Data) -> (defaultImage: UIImage?, selectedImage: UIImage?) {
+private func tabbarAvatarImageFromData(
+  _ data: Data,
+  isFloatingTabBarEnabled: Bool
+) -> (defaultImage: UIImage?, selectedImage: UIImage?) {
   let avatar = UIImage(data: data, scale: UIScreen.main.scale)?
     .af.imageRoundedIntoCircle()
     .af.imageAspectScaled(toFit: tabBarAvatarSize)
@@ -386,12 +422,12 @@ private func tabbarAvatarImageFromData(_ data: Data) -> (defaultImage: UIImage?,
   let deselectedImage = strokedRoundImage(
     fromImage: avatar,
     size: tabBarAvatarSize,
-    color: featureFloatingTabBarEnabled() ? .clear : tabBarDeselectedColor
+    color: isFloatingTabBarEnabled ? .clear : tabBarDeselectedColor
   )
   let selectedImage = strokedRoundImage(
     fromImage: avatar,
     size: tabBarAvatarSize,
-    color: featureFloatingTabBarEnabled() ? Colors.FloatingTabBar.profileIconBorderColor
+    color: isFloatingTabBarEnabled ? Colors.FloatingTabBar.profileIconBorderColor
       .uiColor() : tabBarSelectedColor,
     lineWidth: 2.0
   )

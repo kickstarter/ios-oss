@@ -25,12 +25,17 @@ extension PPOProjectCardModel {
     let formattedPledge = pledgeFragment.flatMap { Format.currency($0) }
     let creatorName = ppoProject?.creator?.name
 
+    // Card-specific webview url is based on the card tier type.
+    // Fall back to backingDetailsPageRoute if needed.
+    let webviewUrl = card.webviewUrl ?? backing?.backingDetailsPageRoute
+
     let addressId: String? = backing?.deliveryAddress?.id
     let addressWithoutName = Self.addressWithoutName(deliveryAddress: backing?.deliveryAddress)
     let displayAddress = Self.displayAddress(
       card: card,
       name: backing?.deliveryAddress?.recipientName,
-      addressWithoutName: addressWithoutName
+      addressWithoutName: addressWithoutName,
+      webviewUrl: webviewUrl
     )
 
     let alerts: [PPOProjectCardModel.Alert] = card.flags?
@@ -45,17 +50,18 @@ extension PPOProjectCardModel {
     case .fixPayment:
       action = Self.actionForPaymentFailed()
     case .confirmAddress:
+      // Confirm address action will fall back to complete survey action if no address.
       action = Self.actionForConfirmAddress(
         showAddress: card.showShippingAddress,
         address: addressWithoutName,
         addressId: addressId
-      )
+      ) ?? Self.actionForSurvey(url: webviewUrl)
     case .openSurvey:
-      action = Self.actionForSurvey()
+      action = Self.actionForSurvey(url: webviewUrl)
     case .authenticateCard:
       action = Self.actionForAuthentication(clientSecret: backing?.clientSecret)
     case .pledgeManagement:
-      action = Self.actionForPledgeManagement()
+      action = Self.actionForPledgeManagement(url: webviewUrl)
     case .surveySubmitted, .pledgeCollected, .addressConfirmed, .awaitingReward, .rewardReceived:
       action = PPOParsedAction(action: nil, tierType: tierType)
     }
@@ -73,17 +79,11 @@ extension PPOProjectCardModel {
       toggleState = .notReceived
     }
 
-    // Let backingDetailsUrl default to the card-specific webviewUrl.
-    // TODO(MBL-2540): Only set this field for cards that need it, once the open backing details
-    // action is replaced by a open project page action instead.
-    let webviewUrl = card.webviewUrl
-    let backingDetailsUrl = webviewUrl ?? backing?.backingDetailsPageRoute
-
     let backingId = backing.flatMap { decompose(id: $0.id) }
     let backingGraphId = backing?.id
 
     if let image, let projectName, let projectId, let formattedPledge, let creatorName, let action,
-       let projectAnalyticsFragment, let backingDetailsUrl, let backingId, let backingGraphId {
+       let projectAnalyticsFragment, let backingId, let backingGraphId {
       self.init(
         isUnread: true,
         alerts: alerts,
@@ -96,7 +96,6 @@ extension PPOProjectCardModel {
         rewardReceivedToggleState: toggleState,
         action: action.action,
         tierType: action.tierType,
-        backingDetailsUrl: backingDetailsUrl,
         backingId: backingId,
         backingGraphId: backingGraphId,
         projectAnalytics: projectAnalyticsFragment
@@ -127,15 +126,16 @@ extension PPOProjectCardModel {
   private static func displayAddress(
     card: PPOCardFragment,
     name: String?,
-    addressWithoutName: String?
+    addressWithoutName: String?,
+    webviewUrl: String?
   ) -> PPOProjectCardModel.DisplayAddress {
     guard let addressWithoutName else { return .hidden }
     if !card.showShippingAddress { return .hidden }
 
     let address = (name ?? "") + "\n" + addressWithoutName
 
-    if card.showEditAddressAction {
-      return .editable(address: address)
+    if card.showEditAddressAction, let webviewUrl {
+      return .editable(address: address, editUrl: webviewUrl)
     }
     return .locked(address: address)
   }
@@ -152,10 +152,7 @@ extension PPOProjectCardModel {
     guard showAddress == true,
           let address = address,
           let addressId = addressId else {
-      return PPOParsedAction(
-        action: .completeSurvey,
-        tierType: .confirmAddress
-      )
+      return nil
     }
 
     return PPOParsedAction(
@@ -164,16 +161,18 @@ extension PPOProjectCardModel {
     )
   }
 
-  private static func actionForSurvey() -> PPOParsedAction {
-    PPOParsedAction(
-      action: .completeSurvey,
+  private static func actionForSurvey(url: String?) -> PPOParsedAction? {
+    guard let url else { return nil }
+    return PPOParsedAction(
+      action: .completeSurvey(url: url),
       tierType: .openSurvey
     )
   }
 
-  private static func actionForPledgeManagement() -> PPOParsedAction {
-    PPOParsedAction(
-      action: .managePledge,
+  private static func actionForPledgeManagement(url: String?) -> PPOParsedAction? {
+    guard let url else { return nil }
+    return PPOParsedAction(
+      action: .managePledge(url: url),
       tierType: .pledgeManagement
     )
   }

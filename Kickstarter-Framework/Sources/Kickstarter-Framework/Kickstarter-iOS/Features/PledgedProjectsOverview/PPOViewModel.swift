@@ -42,6 +42,7 @@ enum PPOPreparedEvent: Equatable {
     onProgress: (PPOActionState) -> Void
   )
   case contactCreator(messageSubject: MessageSubject)
+  case updateRewardReceived(backingId: String, rewardReceived: Bool)
 
   static func == (lhs: PPOPreparedEvent, rhs: PPOPreparedEvent) -> Bool {
     switch (lhs, rhs) {
@@ -72,6 +73,11 @@ enum PPOPreparedEvent: Equatable {
       return lhsProjectId == rhsProjectId && lhsBackingId == rhsBackingId
     case (.backedProjects, .backedProjects):
       return true
+    case let (
+      .updateRewardReceived(lhsBackingId, lhsRewardReceived),
+      .updateRewardReceived(rhsBackingId, rhsRewardReceived)
+    ):
+      return lhsBackingId == rhsBackingId && lhsRewardReceived == rhsRewardReceived
     default:
       return false
     }
@@ -237,10 +243,22 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         project: cardModel.projectAnalytics,
         properties: overallProperties
       )
-    case .authenticateCard, .viewProjectDetails:
-      // These cases are (hopefully) intentionally untracked.
-      // TODO(MBL-2818): Confirm that we don't need to add analytics for these events.
-      break
+    case .authenticateCard:
+      AppEnvironment.current.ksrAnalytics.trackPPOAuthenticateCard(
+        project: cardModel.projectAnalytics,
+        properties: overallProperties
+      )
+    case .viewProjectDetails:
+      AppEnvironment.current.ksrAnalytics.trackPPOViewProjectDetails(
+        project: cardModel.projectAnalytics,
+        properties: overallProperties
+      )
+    case let .updateRewardReceived(rewardReceived):
+      AppEnvironment.current.ksrAnalytics.trackPPOUpdateRewardReceived(
+        toggleOn: rewardReceived,
+        project: cardModel.projectAnalytics,
+        properties: overallProperties
+      )
     }
   }
 
@@ -249,8 +267,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     cardModel: PPOProjectCardModel
   ) -> PPOPreparedEvent {
     switch event {
-    case .editAddress:
-      return PPOPreparedEvent.editAddress(url: cardModel.backingDetailsUrl)
+    case let .editAddress(url):
+      return PPOPreparedEvent.editAddress(url: url)
     case .viewProjectDetails:
       return PPOPreparedEvent.projectDetails(projectId: cardModel.projectId)
     case .sendMessage:
@@ -259,15 +277,20 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         name: cardModel.projectName
       )
       return PPOPreparedEvent.contactCreator(messageSubject: messageSubject)
-    case .completeSurvey:
-      return PPOPreparedEvent.survey(url: cardModel.backingDetailsUrl)
+    case let .updateRewardReceived(rewardReceived: rewardReceived):
+      return PPOPreparedEvent.updateRewardReceived(
+        backingId: cardModel.backingGraphId,
+        rewardReceived: rewardReceived
+      )
+    case let .completeSurvey(url):
+      return PPOPreparedEvent.survey(url: url)
     case .fixPayment:
       return PPOPreparedEvent.fixPaymentMethod(
         projectId: cardModel.projectId,
         backingId: cardModel.backingId
       )
-    case .managePledge:
-      return PPOPreparedEvent.managePledge(url: cardModel.backingDetailsUrl)
+    case let .managePledge(url):
+      return PPOPreparedEvent.managePledge(url: url)
     case let .confirmAddress(address, addressId):
       return PPOPreparedEvent.confirmAddress(
         backingId: cardModel.backingGraphId,
@@ -352,6 +375,8 @@ extension Sequence where Element == PPOProjectCardViewModel {
     var addressLocksSoonCount: Int = 0
     var pledgeManagementCount: Int = 0
 
+    var fundedProjectCount: Int = 0
+
     for viewModel in self {
       switch viewModel.card.tierType {
       case .fixPayment:
@@ -365,8 +390,7 @@ extension Sequence where Element == PPOProjectCardViewModel {
       case .pledgeManagement:
         pledgeManagementCount += 1
       case .surveySubmitted, .pledgeCollected, .addressConfirmed, .awaitingReward, .rewardReceived:
-        // TODO(MBL-2818): Add analytics for PPO v2.
-        break
+        fundedProjectCount += 1
       }
     }
 
@@ -376,6 +400,7 @@ extension Sequence where Element == PPOProjectCardViewModel {
       pledgeManagementCount: pledgeManagementCount,
       paymentFailedCount: paymentFailedCount,
       cardAuthRequiredCount: cardAuthRequiredCount,
+      fundedProjectCount: fundedProjectCount,
       total: total,
       page: page
     )

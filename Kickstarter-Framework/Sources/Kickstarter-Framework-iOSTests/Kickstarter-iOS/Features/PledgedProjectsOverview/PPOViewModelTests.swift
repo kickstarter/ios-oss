@@ -317,17 +317,19 @@ class PPOViewModelTests: XCTestCase {
 
   func testEventOpenSurvey() {
     let template = PPOProjectCardModel.completeSurveyTemplate
+    let url = "fakeSurveyUrl"
     self.verifyPreparedEvent(
-      { self.viewModel.handleCardEvent(.completeSurvey, from: template) },
-      event: .survey(url: template.backingDetailsUrl)
+      { self.viewModel.handleCardEvent(.completeSurvey(url: url), from: template) },
+      event: .survey(url: url)
     )
   }
 
   func testEventManagePledge() {
     let template = PPOProjectCardModel.managePledgeTemplate
+    let url = "fakePledgeManagerUrl"
     self.verifyPreparedEvent(
-      { self.viewModel.handleCardEvent(.managePledge, from: template) },
-      event: .managePledge(url: template.backingDetailsUrl)
+      { self.viewModel.handleCardEvent(.managePledge(url: url), from: template) },
+      event: .managePledge(url: url)
     )
   }
 
@@ -382,7 +384,7 @@ class PPOViewModelTests: XCTestCase {
       self.viewModel.viewDidAppear()
 
       // Trigger some actions that generate analytics
-      self.viewModel.handleCardEvent(.completeSurvey, from: .completeSurveyTemplate)
+      self.viewModel.handleCardEvent(.completeSurvey(url: "fakeUrl"), from: .completeSurveyTemplate)
       self.viewModel.handleCardEvent(.fixPayment, from: .fixPaymentTemplate)
       self.viewModel.handleCardEvent(.sendMessage, from: .addressLockTemplate)
 

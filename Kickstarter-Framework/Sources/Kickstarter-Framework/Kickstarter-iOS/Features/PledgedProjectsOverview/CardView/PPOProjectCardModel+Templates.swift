@@ -44,7 +44,6 @@ import KsApi
       rewardReceivedToggleState: .hidden,
       action: nil,
       tierType: .pledgeCollected,
-      backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
       backingGraphId: "backing-fake-id",
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
@@ -60,16 +59,18 @@ import KsApi
       projectId: 12_345,
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
-      address: .editable(address: """
+      address: .editable(
+        address: """
         Firsty Lasty
         123 First Street, Apt #5678
         Los Angeles, CA 90025-1234
         United States
-      """),
+        """,
+        editUrl: "fakeEditUrl"
+      ),
       rewardReceivedToggleState: .hidden,
       action: nil,
       tierType: .surveySubmitted,
-      backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
       backingGraphId: "backing-fake-id",
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
@@ -85,16 +86,18 @@ import KsApi
       projectId: 12_345,
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
-      address: .editable(address: """
+      address: .editable(
+        address: """
         Firsty Lasty
         123 First Street, Apt #5678
         Los Angeles, CA 90025-1234
         United States
-      """),
+        """,
+        editUrl: "fakeEditUrl"
+      ),
       rewardReceivedToggleState: .hidden,
       action: nil,
       tierType: .addressConfirmed,
-      backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
       backingGraphId: "backing-fake-id",
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
@@ -114,7 +117,6 @@ import KsApi
       rewardReceivedToggleState: .rewardReceived,
       action: nil,
       tierType: .rewardReceived,
-      backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
       backingGraphId: "backing-fake-id",
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
@@ -139,7 +141,6 @@ import KsApi
       rewardReceivedToggleState: .notReceived,
       action: nil,
       tierType: .awaitingReward,
-      backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
       backingGraphId: "backing-fake-id",
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
@@ -157,12 +158,15 @@ import KsApi
       projectId: 12_345,
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
-      address: .editable(address: """
+      address: .editable(
+        address: """
         Firsty Lasty
         123 First Street, Apt #5678
         Los Angeles, CA 90025-1234
         United States
-      """),
+        """,
+        editUrl: "fakeEditUrl"
+      ),
       rewardReceivedToggleState: .hidden,
       action: .confirmAddress(
         address: """
@@ -173,7 +177,6 @@ import KsApi
         addressId: "fake-address-id"
       ),
       tierType: .confirmAddress,
-      backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
       backingGraphId: "backing-fake-id",
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
@@ -192,9 +195,8 @@ import KsApi
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: .hidden,
       rewardReceivedToggleState: .hidden,
-      action: .completeSurvey,
+      action: .completeSurvey(url: "fakeSurveyUrl"),
       tierType: .openSurvey,
-      backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
       backingGraphId: "backing-fake-id",
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
@@ -219,7 +221,6 @@ import KsApi
       rewardReceivedToggleState: .hidden,
       action: .fixPayment,
       tierType: .fixPayment,
-      backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
       backingGraphId: "backing-fake-id",
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
@@ -244,7 +245,6 @@ import KsApi
       rewardReceivedToggleState: .hidden,
       action: .authenticateCard(clientSecret: "seti_asdqwe_secret_x"),
       tierType: .authenticateCard,
-      backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
       backingGraphId: "backing-fake-id",
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
@@ -262,9 +262,8 @@ import KsApi
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: .hidden,
       rewardReceivedToggleState: .hidden,
-      action: .completeSurvey,
+      action: .completeSurvey(url: "fakeSurveyUrl"),
       tierType: .openSurvey,
-      backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
       backingGraphId: "backing-fake-id",
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
@@ -282,9 +281,8 @@ import KsApi
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: .hidden,
       rewardReceivedToggleState: .hidden,
-      action: .managePledge,
+      action: .managePledge(url: "fakePledgeManagerUrl"),
       tierType: .pledgeManagement,
-      backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
       backingGraphId: "backing-fake-id",
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
@@ -338,9 +336,8 @@ import KsApi
       creatorName: "Bob",
       address: .hidden,
       rewardReceivedToggleState: .hidden,
-      action: .completeSurvey,
+      action: .completeSurvey(url: "fakeSurveyUrl"),
       tierType: .openSurvey,
-      backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
       backingGraphId: "backing-fake-id",
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
@@ -372,9 +369,8 @@ import KsApi
       creatorName: "Bob",
       address: .hidden,
       rewardReceivedToggleState: .hidden,
-      action: .completeSurvey,
+      action: .completeSurvey(url: "fakeSurveyUrl"),
       tierType: .openSurvey,
-      backingDetailsUrl: "fakeBackingDetailsUrl",
       backingId: 47,
       backingGraphId: "backing-fake-id",
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
