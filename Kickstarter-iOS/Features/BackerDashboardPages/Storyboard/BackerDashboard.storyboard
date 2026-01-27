@@ -194,6 +194,7 @@
                         <outlet property="settingsButtonItem" destination="kQJ-TG-77F" id="0Wt-F5-Vsr"/>
                         <outlet property="sortBar" destination="tNq-3P-mw8" id="gs8-qd-UBQ"/>
                         <outlet property="topBackgroundView" destination="lQK-DQ-oPJ" id="OoT-HS-777"/>
+                        <outlet property="containerBottomToSafeArea" destination="FAt-YS-6iA" id="CbS-Ae-6iA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n5w-hE-a0o" userLabel="First Responder" sceneMemberID="firstResponder"/>
