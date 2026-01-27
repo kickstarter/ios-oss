@@ -23,6 +23,7 @@ internal final class BackerDashboardViewController: UIViewController {
   @IBOutlet private var settingsButtonItem: UIBarButtonItem!
   @IBOutlet private var sortBar: ProfileSortBarView!
   @IBOutlet private var topBackgroundView: UIView!
+  @IBOutlet private var containerBottomToSafeArea: NSLayoutConstraint!
 
   /// Bottom constraint when using the floating tab bar (full-height)
   private var containerBottomToSuperview: NSLayoutConstraint?
@@ -92,21 +93,10 @@ internal final class BackerDashboardViewController: UIViewController {
   private func setupBottomConstraints() {
     guard let containerView = self.pageViewController?.view.superview else { return }
 
-    let constraintsToDeactivate = self.view.constraints.filter { constraint in
-      (constraint.firstItem === containerView && constraint.firstAttribute == .bottom) ||
-        (constraint.secondItem === containerView && constraint.secondAttribute == .bottom)
-    }
+    // Deactivate the safe area constraint defined in storyboard (explicit reference via IBOutlet)
+    self.containerBottomToSafeArea.isActive = false
 
-    let containerConstraints = containerView.constraints.filter { constraint in
-      constraint.firstItem === containerView && constraint.firstAttribute == .bottom
-    }
-
-    (constraintsToDeactivate + containerConstraints).forEach { constraint in
-      if constraint.isActive {
-        constraint.isActive = false
-      }
-    }
-
+    // Create and activate the superview constraint to extend past safe area
     let superviewConstraint = containerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
     self.containerBottomToSuperview = superviewConstraint
     superviewConstraint.isActive = true
