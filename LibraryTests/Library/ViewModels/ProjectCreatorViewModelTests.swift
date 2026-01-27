@@ -29,7 +29,7 @@ final class ProjectCreatorViewModelTests: TestCase {
     self.vm.outputs.loadWebViewRequest.observe(self.loadWebViewRequest.observer)
   }
 
-  func DISABLED_SPM_testGoToLoginTout_LoggedOut() {
+  func testGoToLoginTout_LoggedOut() {
     let project = Project.template
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
@@ -56,7 +56,7 @@ final class ProjectCreatorViewModelTests: TestCase {
     self.goToLoginTout.assertValues([.messageCreator])
   }
 
-  func DISABLED_SPM_testGoToLoginTout_LoggedIn() {
+  func testGoToLoginTout_LoggedIn() {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
 
     let project = Project.template
@@ -81,7 +81,7 @@ final class ProjectCreatorViewModelTests: TestCase {
     self.goToLoginTout.assertValueCount(0)
   }
 
-  func DISABLED_SPM_testGoToMessageDialog() {
+  func testGoToMessageDialog() {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
 
     let project = Project.template
@@ -124,7 +124,7 @@ final class ProjectCreatorViewModelTests: TestCase {
     self.goToMessageDialogSubject.assertValues([.project(id: project.id, name: project.name)])
   }
 
-  func DISABLED_SPM_testGoBackToProjectDoesNotEmit_whenRequestURL_IsEqualToProjectURL() {
+  func testGoBackToProjectDoesNotEmit_whenRequestURL_IsEqualToProjectURL() {
     let project = Project.template
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
@@ -145,7 +145,7 @@ final class ProjectCreatorViewModelTests: TestCase {
     self.goBackToProject.assertDidEmitValue()
   }
 
-  func DISABLED_SPM_testGoBackToProjectDoesNotEmit_whenRequestURL_IsNotEqualToProjectURL() {
+  func testGoBackToProjectDoesNotEmit_whenRequestURL_IsNotEqualToProjectURL() {
     let project = Project.template
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
@@ -166,7 +166,7 @@ final class ProjectCreatorViewModelTests: TestCase {
     self.goBackToProject.assertDidNotEmitValue()
   }
 
-  func DISABLED_SPM_testGoToSafariBrowser() {
+  func testGoToSafariBrowser() {
     let project = Project.template
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
@@ -204,7 +204,7 @@ final class ProjectCreatorViewModelTests: TestCase {
     self.goToSafariBrowser.assertValues([URL(string: "http://www.google.com")!])
   }
 
-  func DISABLED_SPM_testLoadWebViewRequest() {
+  func testLoadWebViewRequest() {
     let project = Project.template
     let creatorBioRequest = AppEnvironment.current.apiService.preparedRequest(
       forURL: URL(string: "\(project.urls.web.project)/creator_bio")!

@@ -515,7 +515,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
     ])
   }
 
-  func DISABLED_SPM_testBackingStatus_Errored_Backer_PledgeOverTime() {
+  func testBackingStatus_Errored_Backer_PledgeOverTime() {
     let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
@@ -535,7 +535,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
     ])
   }
 
-  func DISABLED_SPM_testBackingStatus_AuthenticationRequired_Backer_PledgeOverTime() {
+  func testBackingStatus_AuthenticationRequired_Backer_PledgeOverTime() {
     let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: false,
       needsConversion: false,

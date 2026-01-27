@@ -20,7 +20,7 @@ internal final class ActivityFriendBackingViewModelTests: TestCase {
     self.vm.outputs.cellAccessibilityLabel.observe(self.cellAccessibilityLabel.observer)
   }
 
-  func DISABLED_SPM_testFrientTitle_ParentCategory() {
+  func testFrientTitle_ParentCategory() {
     let games = Project.Category.template
       |> \.id .~ 12
       |> \.name .~ "Games"
@@ -35,7 +35,7 @@ internal final class ActivityFriendBackingViewModelTests: TestCase {
     self.friendTitleLabel.assertValues(["Blob backed a Games project."])
   }
 
-  func DISABLED_SPM_testFrientTitle_SubCategory() {
+  func testFrientTitle_SubCategory() {
     let illustration = Project.Category.template
       |> \.id .~ 25
       |> \.name .~ "Illustration"
@@ -52,7 +52,7 @@ internal final class ActivityFriendBackingViewModelTests: TestCase {
     self.friendTitleLabel.assertValues(["Blob backed an Art project."])
   }
 
-  func DISABLED_SPM_testAccessibility() {
+  func testAccessibility() {
     let games = Project.Category.template
       |> \.id .~ 12
       |> \.name .~ "Games"

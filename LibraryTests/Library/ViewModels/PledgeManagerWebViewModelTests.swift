@@ -35,7 +35,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
   }
 
-  func DISABLED_SPM_testDismissViewControllerOnCloseButtonTapped() {
+  func testDismissViewControllerOnCloseButtonTapped() {
     self.vm.inputs.configureWith(url: SurveyResponse.template.urls.web.survey)
     self.vm.inputs.viewDidLoad()
     self.dismissViewController.assertDidNotEmitValue()
@@ -44,7 +44,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     self.dismissViewController.assertValueCount(1)
   }
 
-  func DISABLED_SPM_testRespondToSurvey() {
+  func testRespondToSurvey() {
     let project = Project.template
     let surveyResponse = .template
       |> SurveyResponse.lens.id .~ 123
@@ -123,7 +123,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     self.dismissViewController.assertValueCount(1)
   }
 
-  func DISABLED_SPM_testTitle() {
+  func testTitle() {
     let project = Project.template
     let basicBackingUrl = "\(project.urls.web.project)/backing/"
 
@@ -146,7 +146,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
 
   // MARK: - Test links
 
-  func DISABLED_SPM_testGoToPledge() {
+  func testGoToPledge() {
     let project = Project.template
     let surveyResponse = .template
       |> SurveyResponse.lens.project .~ project
@@ -171,7 +171,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     self.goToNativeScreen.assertLastValue(.goToPledge(param: .slug(project.slug)))
   }
 
-  func DISABLED_SPM_testGoToProject() {
+  func testGoToProject() {
     let project = Project.template
     let surveyResponse = .template
       |> SurveyResponse.lens.project .~ project
@@ -197,7 +197,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     self.goToNativeScreen.assertLastValue(.goToProject(param: .slug(project.slug), refTag: nil))
   }
 
-  func DISABLED_SPM_testGoToUpdate() {
+  func testGoToUpdate() {
     let project = Project.template
     let surveyResponse = .template
       |> SurveyResponse.lens.project .~ project
@@ -270,7 +270,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
 
   // MARK: - Decision policy tests
 
-  func DISABLED_SPM_testDecisionPolicyBypass() {
+  func testDecisionPolicyBypass() {
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
       RemoteConfigFeature.bypassPledgeManagerDecisionPolicy.rawValue: true
@@ -285,7 +285,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     }
   }
 
-  func DISABLED_SPM_testBadRequest() {
+  func testBadRequest() {
     let navigationData = navigationData("https://www.fake.com/bad-url")
     XCTAssertEqual(
       self.vm.decidePolicyFor(navigationAction: navigationData),
@@ -293,7 +293,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     )
   }
 
-  func DISABLED_SPM_testBadStripeRequest() {
+  func testBadStripeRequest() {
     let navigationData = navigationData("https://www.stripecdn.network")
     XCTAssertEqual(
       self.vm.decidePolicyFor(navigationAction: navigationData),
@@ -301,7 +301,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     )
   }
 
-  func DISABLED_SPM_testStripeNetworkRequest() {
+  func testStripeNetworkRequest() {
     let navigationData = navigationData("https://m.stripe.network/inner.html#url=fake")
     XCTAssertEqual(
       self.vm.decidePolicyFor(navigationAction: navigationData),
@@ -309,7 +309,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     )
   }
 
-  func DISABLED_SPM_testStripeElementRequest() {
+  func testStripeElementRequest() {
     let navigationData = navigationData("https://js.stripe.com/v3/controller-fake.html")
     XCTAssertEqual(
       self.vm.decidePolicyFor(navigationAction: navigationData),
@@ -317,7 +317,7 @@ final class PledgeManagerWebViewModelTests: TestCase {
     )
   }
 
-  func DISABLED_SPM_testStripeCdnRequest() {
+  func testStripeCdnRequest() {
     let navigationData = navigationData("https://b.stripecdn.com/assets/v21.19/Captcha.html")
     XCTAssertEqual(
       self.vm.decidePolicyFor(navigationAction: navigationData),

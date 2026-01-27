@@ -30,7 +30,7 @@ internal final class ActivityUpdateViewModelTests: TestCase {
     self.vm.outputs.title.observe(self.title.observer)
   }
 
-  func DISABLED_SPM_testActivityUpdateDataEmits() {
+  func testActivityUpdateDataEmits() {
     let project = Project.template
     let update = Update.template
     let activity = .template
@@ -53,7 +53,7 @@ internal final class ActivityUpdateViewModelTests: TestCase {
     self.title.assertValues([update.title])
   }
 
-  func DISABLED_SPM_testCellAccessibilityDataEmits() {
+  func testCellAccessibilityDataEmits() {
     let project = Project.template
     let update = Update.template
     let activity = .template
@@ -72,7 +72,7 @@ internal final class ActivityUpdateViewModelTests: TestCase {
     ], "Cell a11y label emits sequence title.")
   }
 
-  func DISABLED_SPM_testTappedProjectImageButton() {
+  func testTappedProjectImageButton() {
     let project = Project.template
     let update = Update.template
     let activity = .template

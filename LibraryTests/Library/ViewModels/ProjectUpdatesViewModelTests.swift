@@ -32,7 +32,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.vm.outputs.webViewLoadRequest.observe(self.webViewLoadRequest.observer)
   }
 
-  func DISABLED_SPM_testGoToSafariBrowser() {
+  func testGoToSafariBrowser() {
     let project = Project.template
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
@@ -51,7 +51,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.goToSafariBrowser.assertValues([googleURL])
   }
 
-  func DISABLED_SPM_testGoToUpdate() {
+  func testGoToUpdate() {
     let project = Project.template
       |> (Project.lens.urls.web .. Project.UrlsEnvelope.WebEnvelope.lens.updates)
       .~ "https://www.kickstarter.com/projects/milk/duds/posts"
@@ -80,7 +80,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.isActivityIndicatorHidden.assertValues([false, true])
   }
 
-  func DISABLED_SPM_testGoToUpdateComments() {
+  func testGoToUpdateComments() {
     let project = Project.template
       |> (Project.lens.urls.web .. Project.UrlsEnvelope.WebEnvelope.lens.updates)
       .~ "https://www.kickstarter.com/projects/smh/lol/posts"
@@ -103,7 +103,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.goToUpdateCommentId.assertValues([updateId])
   }
 
-  func DISABLED_SPM_testShowMailComposeEmits_WhenEmailLinkIsTapped() {
+  func testShowMailComposeEmits_WhenEmailLinkIsTapped() {
     let navigationAction = self.navigationAction(with: URL(string: "mailto:dead@beef.com")!)
 
     self.vm.inputs.canSendEmail(true)
@@ -112,7 +112,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.showMailCompose.assertValues(["dead@beef.com"])
   }
 
-  func DISABLED_SPM_testShowEmailErrorEmits_WhenEmailLinkIsTapped_AndCantSendEmail() {
+  func testShowEmailErrorEmits_WhenEmailLinkIsTapped_AndCantSendEmail() {
     let navigationAction = self.navigationAction(with: URL(string: "mailto:dead@beef.com")!)
 
     self.vm.inputs.canSendEmail(false)
@@ -121,7 +121,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.showNoEmailError.assertDidEmitValue()
   }
 
-  func DISABLED_SPM_testMakePhoneCallEmits_WhenPhoneLinkIsTapped() {
+  func testMakePhoneCallEmits_WhenPhoneLinkIsTapped() {
     let phoneUrl = URL(string: "tel://5551234567")!
     let navigationAction = self.navigationAction(with: phoneUrl)
 
@@ -145,7 +145,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.webViewLoadRequest.assertValues([updatesIndexRequest])
   }
 
-  func DISABLED_SPM_testIFrameRequest() {
+  func testIFrameRequest() {
     let project = Project.template
       |> (Project.lens.urls.web .. Project.UrlsEnvelope.WebEnvelope.lens.updates)
       .~ "https://www.kickstarter.com/projects/shrimp/ijc/posts"

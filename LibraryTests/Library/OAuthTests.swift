@@ -23,7 +23,7 @@ final class OAuthTests: XCTestCase {
     wait(for: [expectation], timeout: 0.01)
   }
 
-  func DISABLED_SPM_testHandleRedirect_missingRedirectURL_fails() {
+  func testHandleRedirect_missingRedirectURL_fails() {
     self.verifyRedirectAsync(redirectURL: nil, error: nil, verifier: "") { result in
       if case .failure = result {
         // Success
@@ -33,7 +33,7 @@ final class OAuthTests: XCTestCase {
     }
   }
 
-  func DISABLED_SPM_testHandleRedirect_missingRedirectCodeWithNoCancelParam_fails() {
+  func testHandleRedirect_missingRedirectCodeWithNoCancelParam_fails() {
     self.verifyRedirectAsync(
       redirectURL: URL(string: "ksrauth2://authenticate?foo=bar"),
       error: nil,
@@ -47,7 +47,7 @@ final class OAuthTests: XCTestCase {
     }
   }
 
-  func DISABLED_SPM_testHandleRedirect_missingRedirectCodeAndIncludesCancelParam_cancels() {
+  func testHandleRedirect_missingRedirectCodeAndIncludesCancelParam_cancels() {
     self.verifyRedirectAsync(
       redirectURL: URL(string: "ksrauth2://authenticate?canceled=true"),
       error: nil,
@@ -61,7 +61,7 @@ final class OAuthTests: XCTestCase {
     }
   }
 
-  func DISABLED_SPM_testHandleRedirect_cancellationError_cancels() {
+  func testHandleRedirect_cancellationError_cancels() {
     let cancelledError = ASWebAuthenticationSessionError(.canceledLogin)
     self.verifyRedirectAsync(redirectURL: nil, error: cancelledError, verifier: "") { result in
       if case .canceled = result {
@@ -72,7 +72,7 @@ final class OAuthTests: XCTestCase {
     }
   }
 
-  func DISABLED_SPM_testHandleRedirect_anotherError_fails() {
+  func testHandleRedirect_anotherError_fails() {
     let anotherError = ASWebAuthenticationSessionError(.presentationContextNotProvided)
     self.verifyRedirectAsync(redirectURL: nil, error: anotherError, verifier: "") { result in
       if case .failure = result {

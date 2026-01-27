@@ -21,7 +21,7 @@ internal final class ActivitySampleBackingCellViewModelTests: TestCase {
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
   }
 
-  func DISABLED_SPM_testBackingDataEmits() {
+  func testBackingDataEmits() {
     let backer = User.template
       |> \.name .~ "Best Friend"
       |> \.avatar.medium .~ "http://coolpic.com/cool.png"
@@ -47,7 +47,7 @@ internal final class ActivitySampleBackingCellViewModelTests: TestCase {
     self.backerImage.assertValues([backer.avatar.medium])
   }
 
-  func DISABLED_SPM_testGoToActivity() {
+  func testGoToActivity() {
     let activity = Activity.template
 
     self.vm.inputs.configureWith(activity: activity)

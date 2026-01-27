@@ -23,7 +23,7 @@ final class ActivityFriendFollowCellViewModelTests: TestCase {
     self.vm.outputs.title.map { $0.string }.observe(self.title.observer)
   }
 
-  func DISABLED_SPM_testFriendDetails_Complete() {
+  func testFriendDetails_Complete() {
     let user = User.template
       |> \.avatar.small .~ "http://coolpic.com/cool.jpg"
       |> \.name .~ "Squiggles McTwiddle"
@@ -40,7 +40,7 @@ final class ActivityFriendFollowCellViewModelTests: TestCase {
     self.title.assertValues(["Squiggles McTwiddle is now following you!"])
   }
 
-  func DISABLED_SPM_testFriendDetails_Incomplete() {
+  func testFriendDetails_Incomplete() {
     let user = User.template
       |> \.name .~ "Squiggles McTwiddle"
 
@@ -56,7 +56,7 @@ final class ActivityFriendFollowCellViewModelTests: TestCase {
     self.title.assertValues(["Squiggles McTwiddle is now following you!"])
   }
 
-  func DISABLED_SPM_testFriendFollowing_Friend() {
+  func testFriendFollowing_Friend() {
     let user = User.template
       |> \.avatar.small .~ "http://coolpic.com/cool.jpg"
       |> \.isFriend .~ true
@@ -74,7 +74,7 @@ final class ActivityFriendFollowCellViewModelTests: TestCase {
     XCTAssertEqual([], self.segmentTrackingClient.events)
   }
 
-  func DISABLED_SPM_testFriendFollowing_NonFriend() {
+  func testFriendFollowing_NonFriend() {
     let user = User.template
       |> \.avatar.medium .~ "http://coolpic.com/cool.jpg"
       |> \.isFriend .~ false
@@ -95,7 +95,7 @@ final class ActivityFriendFollowCellViewModelTests: TestCase {
     self.hideFollowButton.assertValues([false], "Follow Button does not change")
   }
 
-  func DISABLED_SPM_testRetainFriendStatusOnReuse_After_Following() {
+  func testRetainFriendStatusOnReuse_After_Following() {
     let user = User.template
       |> \.avatar.small .~ "http://coolpic.com/cool.jpg"
       |> \.isFriend .~ false
