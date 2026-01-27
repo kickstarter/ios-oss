@@ -44,7 +44,7 @@ final class CloseButtonView: UIView {
       button.layer.shadowColor = UIColor.black.cgColor
       button.layer.shadowOffset = CGSize(width: 0, height: 1)
       button.layer.shadowRadius = 3.0
-      button.layer.shadowOpacity = 0.15
+      button.layer.shadowOpacity = 0.08
       button.clipsToBounds = false
     }
 

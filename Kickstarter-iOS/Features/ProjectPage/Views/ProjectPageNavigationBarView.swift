@@ -76,6 +76,11 @@ final class ProjectPageNavigationBarView: UIView {
       |> \.insetsLayoutMarginsFromSafeArea .~ true
       |> \.spacing .~ Styles.grid(0)
 
+    if #available(iOS 26.0, *) {
+      _ = self.rootStackView
+        |> \.layoutMargins .~ UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
+    }
+
     _ = self.navigationShareButton
       |> shareButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
@@ -149,7 +154,7 @@ final class ProjectPageNavigationBarView: UIView {
 
     NSLayoutConstraint.activate([
       self.rootStackView.topAnchor.constraint(equalTo: self.topAnchor),
-      self.rootStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+      self.rootStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
       self.rootStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
       self.rootStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
     ])
