@@ -72,12 +72,7 @@ public func mockPaymentIncrementsForManagingBacking() -> [PledgePaymentIncrement
     scheduledCollection: scheduledCollection,
     state: .collected,
     stateReason: nil,
-    refundStatus: .refunded(amountAfterAdjustment)
-  )
-
-  let amountAfterFullRefund = PledgePaymentIncrementAmount(
-    currency: "USD",
-    amountFormattedInProjectNativeCurrency: "$0.00"
+    refundStatus: .partialRefund(amountAfterAdjustment)
   )
 
   let refundedIncrement = PledgePaymentIncrement(
@@ -85,7 +80,7 @@ public func mockPaymentIncrementsForManagingBacking() -> [PledgePaymentIncrement
     scheduledCollection: scheduledCollection,
     state: .refunded,
     stateReason: nil,
-    refundStatus: .refunded(amountAfterFullRefund)
+    refundStatus: .fullRefund
   )
 
   return mockPaymentIncrements(includeRefundStatus: true) + [collectedAdjustedIncrement, refundedIncrement]

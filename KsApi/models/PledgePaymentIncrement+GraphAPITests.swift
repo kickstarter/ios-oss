@@ -39,7 +39,7 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
     XCTAssertNil(increment)
   }
 
-  func testPaymentIncrementViewModel_fromIncrementBackingFragment_withRefundedAmount() {
+  func testPaymentIncrementViewModel_fromIncrementBackingFragment_withPartialRefundedAmount() {
     let mock = Mock<GraphAPITestMocks.PaymentIncrement>()
     mock.amount = Mock<GraphAPITestMocks.PaymentIncrementAmount>()
     mock.amount?.currency = "USD"
@@ -62,12 +62,37 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
     XCTAssertEqual(increment?.state, .collected)
     XCTAssertNil(increment?.stateReason)
 
-    if case let .refunded(amount) = increment?.refundStatus {
+    if case let .partialRefund(amount) = increment?.refundStatus {
       XCTAssertEqual(amount.currency, "USD")
       XCTAssertEqual(amount.amountFormattedInProjectNativeCurrency, "$55.50")
     } else {
       XCTFail("Expected refundStatus to be .refunded")
     }
+  }
+
+  func testPaymentIncrementViewModel_fromIncrementBackingFragment_withFullRefunded() {
+    let mock = Mock<GraphAPITestMocks.PaymentIncrement>()
+    mock.amount = Mock<GraphAPITestMocks.PaymentIncrementAmount>()
+    mock.amount?.currency = "USD"
+    mock.amount?.amountFormattedInProjectNativeCurrency = "$99.75"
+
+    mock.scheduledCollection = "2025-03-31T10:29:19-04:00"
+    mock.state = GraphQLEnum<PaymentIncrementState>(PaymentIncrementState.refunded)
+
+    mock.refundedAmount = Mock<GraphAPITestMocks.PaymentIncrementAmount>()
+    mock.refundedAmount?.currency = "USD"
+    mock.refundUpdatedAmountInProjectNativeCurrency = "$0.00"
+
+    let incrementFragment = GraphAPI.PaymentIncrementBackingFragment.from(mock)
+    let increment = PledgePaymentIncrement(withIncrementBackingFragment: incrementFragment)
+
+    XCTAssertNotNil(increment)
+    XCTAssertEqual(increment?.amount.currency, "USD")
+    XCTAssertEqual(increment?.amount.amountFormattedInProjectNativeCurrency, "$99.75")
+    XCTAssertEqual(increment?.scheduledCollection, 1_743_431_359.0)
+    XCTAssertEqual(increment?.state, .refunded)
+    XCTAssertNil(increment?.stateReason)
+    XCTAssertEqual(increment?.refundStatus, .fullRefund)
   }
 
   func testPaymentIncrementViewModel_fromIncrementBackingFragment_notRefundedAmount() {

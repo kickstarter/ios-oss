@@ -101,13 +101,11 @@ final class ProjectAndBackingEnvelopeTests: XCTestCase {
     XCTAssertEqual(envelope.backing.paymentIncrements[0].refundStatus, .notRefunded)
 
     XCTAssertEqual(envelope.backing.paymentIncrements[1].state, .collected)
-    if case let .refunded(amount) = envelope.backing.paymentIncrements[1].refundStatus {
-      XCTAssertEqual(amount.amountFormattedInProjectNativeCurrency, "$20.00")
+    if case let .partialRefund(amount) = envelope.backing.paymentIncrements[1].refundStatus {
+      XCTAssertEqual(amount.amountFormattedInProjectNativeCurrency, "$23.00")
     }
 
     XCTAssertEqual(envelope.backing.paymentIncrements[2].state, .refunded)
-    if case let .refunded(amount) = envelope.backing.paymentIncrements[2].refundStatus {
-      XCTAssertEqual(amount.amountFormattedInProjectNativeCurrency, "$43.00")
-    }
+    XCTAssertEqual(envelope.backing.paymentIncrements[2].refundStatus, .fullRefund)
   }
 }
