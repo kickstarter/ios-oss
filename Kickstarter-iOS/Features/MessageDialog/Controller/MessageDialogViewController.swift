@@ -68,6 +68,7 @@ internal final class MessageDialogViewController: UIViewController {
     super.bindStyles()
 
     self.view.backgroundColor = Colors.Background.Surface.primary.uiColor()
+    self.loadingView.backgroundColor = Colors.Background.Surface.primary.uiColor(opacity: 0.8)
 
     _ = self.cancelButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_cancel() }
