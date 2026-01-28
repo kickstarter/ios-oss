@@ -220,9 +220,15 @@ internal func assertSnapshot(
       if let size = size {
         return size
       } else if useIntrinsicSize {
+        let proposed = type.device.deviceSize(in: type.orientation)
+        containerController.view.frame = CGRect(origin: .zero, size: proposed)
         containerController.view.setNeedsLayout()
         containerController.view.layoutIfNeeded()
-        let fitting = containerController.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        let fitting = containerController.view.systemLayoutSizeFitting(
+          CGSize(width: proposed.width, height: UIView.layoutFittingCompressedSize.height),
+          withHorizontalFittingPriority: .required,
+          verticalFittingPriority: .fittingSizeLevel
+        )
         if fitting.width > 0, fitting.height > 0 {
           return fitting
         }
@@ -236,6 +242,9 @@ internal func assertSnapshot(
     if let testScheduler = AppEnvironment.current.scheduler as? TestScheduler {
       testScheduler.run()
     }
+    parent.view.setNeedsLayout()
+    parent.view.layoutIfNeeded()
+    parent.view.setNeedsDisplay()
 
     let name = snapshotName(
       file: file,
@@ -404,7 +413,7 @@ private extension UIContentSizeCategory {
     case .accessibilityExtraLarge: return "aXL"
     case .accessibilityExtraExtraLarge: return "aXXL"
     case .accessibilityExtraExtraExtraLarge: return "aXXXL"
-    default: return self.rawValue
+    default: return rawValue
     }
   }
 }

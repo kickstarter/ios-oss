@@ -539,22 +539,19 @@ public struct Service: ServiceType {
   ///
   /// - Parameters:
   ///   - id: The backing ID.
-  ///   - withStoredCards: Whether to include stored cards in the result.
-  public func fetchBackingForManagePledge(id: Int, withStoredCards: Bool)
+  public func fetchBackingForManagePledge(id: Int)
     -> SignalProducer<Backing, ErrorEnvelope> {
     return GraphQL.shared.client
       .fetch(
         query: GraphAPI
           .FetchBackingWithIncrementsRefundedQuery(
             id: "\(id)",
-            withStoredCards: withStoredCards,
+            withStoredCards: false,
             includeShippingRules: true,
             includeLocalPickup: true
           )
       )
-      .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
-      // TODO: MBL-2970 This will be cleaned up to no longer fetch both Project and Backing.
-      .map { $0.backing }
+      .flatMap(Backing.producer(from:))
   }
 
   public func fetchMessageThread(messageThreadId: Int)
