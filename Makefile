@@ -28,9 +28,16 @@ endif
 build: dependencies
 	$(XCODEBUILD) $(BUILD_FLAGS) $(XCPRETTY)
 
-test-all:
+test-all: test-app test-modules
+
+test-app:
 	PLATFORM=iOS "$(MAKE)" test
-	PLATFORM=iOS TARGET=Library "$(MAKE)" test
+
+test-modules:
+	PLATFORM=iOS PACKAGE=KDS SCHEME=KDS "$(MAKE)" test-spm
+	PLATFORM=iOS PACKAGE=KsApi SCHEME=KsApi-Package "$(MAKE)" test-spm
+	PLATFORM=iOS PACKAGE=Library SCHEME=Library-Package "$(MAKE)" test-spm
+	PLATFORM=iOS PACKAGE=Kickstarter-Framework SCHEME=Kickstarter-Framework "$(MAKE)" test-spm
 
 test: bootstrap
 	$(XCODEBUILD) test $(BUILD_FLAGS) $(XCPRETTY)
