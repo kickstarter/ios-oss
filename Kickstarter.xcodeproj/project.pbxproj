@@ -601,7 +601,6 @@
 		AAF548D22F2445C0001DB5AC /* SearchQuery_AnotherFiveResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_AnotherFiveResults.json; sourceTree = "<group>"; };
 		AAF548D32F2445C0001DB5AC /* SearchQuery_EmptyResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_EmptyResults.json; sourceTree = "<group>"; };
 		AAF548D42F2445C0001DB5AC /* SearchQuery_FiveResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_FiveResults.json; sourceTree = "<group>"; };
-		D0158A511EEB3730006E7684 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = "Frameworks/native-secrets/ios/Secrets.swift"; sourceTree = "<group>"; };
 		D0C9BAD521B1AB920098CABA /* Alpha.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Alpha.entitlements; sourceTree = "<group>"; };
 		E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RichPushNotifications.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -752,7 +751,6 @@
 				8A86D7F424FED02A00037A7B /* GoogleService-Info.plist */,
 				8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */,
 				194A8E4D2A13FB010099583B /* GoogleService-Info.plist */,
-				D0158A511EEB3730006E7684 /* Secrets.swift */,
 				802800571C88F64D00141235 /* Base.xcconfig */,
 				AAC4135C2F218F3200DAD7C6 /* KsApi.xctestplan */,
 				AAC413552F215CE000DAD7C6 /* Kickstarter.xctestplan */,
