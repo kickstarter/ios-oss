@@ -3,6 +3,7 @@
 import SnapshotTesting
 import UIKit
 
+
 final class ToggleViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
@@ -16,41 +17,42 @@ final class ToggleViewControllerTests: TestCase {
   }
 
   func testView() {
-    let devices = [Device.phone4_7inch, Device.pad]
-    combos([Language.en], devices).forEach { language, device in
-      withEnvironment(language: language) {
+    forEachScreenshotType(languages: [.en]) { type in
+      withEnvironment(language: type.language) {
         let controller = ToggleViewController.instantiate()
         controller.titleLabel.text = "Title for testing purposes only"
         controller.toggle.setOn(true, animated: false)
 
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-
-        parent.view.frame.size.height = 60
+        let width = type.device.deviceSize(in: type.orientation).width
 
         assertSnapshot(
-          matching: parent.view,
-          as: .image(perceptualPrecision: 0.98),
-          named: "lang_\(language)_device_\(device)"
+          forView: controller.view,
+          withType: type,
+          size: CGSize(width: width, height: 60),
+          perceptualPrecision: 0.98,
+          testName: "testView"
         )
       }
     }
   }
 
   func testView_LargerText() {
-    UITraitCollection.allCases.forEach { additionalTraits in
-      let controller = ToggleViewController.instantiate()
-      controller.titleLabel.text = "Title for testing purposes only"
-      controller.toggle.setOn(true, animated: false)
+    forEachScreenshotType(languages: [.en]) { type in
+      withEnvironment(language: type.language) {
+        let controller = ToggleViewController.instantiate()
+        controller.titleLabel.text = "Title for testing purposes only"
+        controller.toggle.setOn(true, animated: false)
 
-      let (parent, _) = traitControllers(child: controller, additionalTraits: additionalTraits)
+        let width = type.device.deviceSize(in: type.orientation).width
 
-      parent.view.frame.size.height = 300
-
-      assertSnapshot(
-        matching: parent.view,
-        as: .image(perceptualPrecision: 0.98),
-        named: "trait_\(additionalTraits.preferredContentSizeCategory.rawValue)"
-      )
+        assertSnapshot(
+          forView: controller.view,
+          withType: type,
+          size: CGSize(width: width, height: 300),
+          perceptualPrecision: 0.98,
+          testName: "testView_LargerText"
+        )
+      }
     }
   }
 }
