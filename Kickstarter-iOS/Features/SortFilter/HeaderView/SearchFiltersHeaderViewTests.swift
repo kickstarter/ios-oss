@@ -4,17 +4,11 @@ import SnapshotTesting
 import SwiftUI
 import XCTest
 
+
 final class SearchFiltersHeaderViewTests: TestCase {
   func testHeaderView() {
-    orthogonalCombos(
-      [Device.phone5_5inch, Device.pad],
-      [
-        ContentSizeCategory.medium,
-        ContentSizeCategory.accessibilityExtraExtraExtraLarge
-      ]
-    ).forEach {
-      device, contentSize in
-      var size = device.deviceSize(in: .portrait)
+    forEachScreenshotType(devices: [Device.phone5_5inch, Device.pad], languages: [.en]) { type in
+      var size = type.device.deviceSize(in: type.orientation)
 
       let icon1 = Library.image(named: "shortcut-icon-k")!.withRenderingMode(.alwaysTemplate)
       let icon2 = Library.image(named: "icon-sort")!.withRenderingMode(.alwaysTemplate)
@@ -56,14 +50,18 @@ final class SearchFiltersHeaderViewTests: TestCase {
       ]
 
       let view = SearchFiltersHeaderView(didTapPill: { _ in }, pills: pills)
-        .environment(\.sizeCategory, contentSize)
+        .environment(
+          \.sizeCategory,
+          ContentSizeCategory(type.contentSizeCategory) ?? .medium
+        )
         // Lots of pills, double the width so we can get more of them.
         .frame(width: size.width * 2, height: 100)
 
       assertSnapshot(
-        matching: view,
-        as: .image,
-        named: "lang_en_\(device)_\(contentSize)"
+        forSwiftUIView: view,
+        withType: type,
+        size: CGSize(width: size.width * 2, height: 100),
+        testName: "testHeaderView"
       )
     }
   }

@@ -4,6 +4,7 @@ import SnapshotTesting
 import SwiftUI
 import XCTest
 
+
 final class FilterCategoryViewTest: TestCase {
   private let size = CGSize(width: 375, height: 667)
 
@@ -17,7 +18,15 @@ final class FilterCategoryViewTest: TestCase {
           .padding()
       }.frame(height: self.size.height)
     try? await Task.sleep(nanoseconds: 10_000_000)
-    assertSnapshot(matching: view, as: .image)
+
+    forEachScreenshotType { type in
+      assertSnapshot(
+        forSwiftUIView: view,
+        withType: type,
+        size: self.size,
+        testName: "testFilterCategoryView_LoadingState"
+      )
+    }
   }
 
   @MainActor
@@ -47,6 +56,14 @@ final class FilterCategoryViewTest: TestCase {
       }.frame(height: self.size.height)
 
     try? await Task.sleep(nanoseconds: 10_000_000)
-    assertSnapshot(matching: view, as: .image)
+
+    forEachScreenshotType { type in
+      assertSnapshot(
+        forSwiftUIView: view,
+        withType: type,
+        size: self.size,
+        testName: "testFilterCategoryView_CategoriesList"
+      )
+    }
   }
 }

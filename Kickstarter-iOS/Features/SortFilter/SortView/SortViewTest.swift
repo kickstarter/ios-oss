@@ -3,6 +3,7 @@ import SnapshotTesting
 import SwiftUI
 import XCTest
 
+
 final class SortViewTest: TestCase {
   private let size = CGSize(width: 375, height: 667)
 
@@ -25,7 +26,15 @@ final class SortViewTest: TestCase {
           .padding()
         }.frame(height: self.size.height)
       try? await Task.sleep(nanoseconds: 10_000_000)
-      assertSnapshot(matching: view, as: .image)
+
+      forEachScreenshotType(languages: [.en]) { type in
+        assertSnapshot(
+          forSwiftUIView: view,
+          withType: type,
+          size: self.size,
+          testName: "testSortView_DefaultOption"
+        )
+      }
     }
   }
 
@@ -44,7 +53,15 @@ final class SortViewTest: TestCase {
             .padding()
         }.frame(height: self.size.height)
       try? await Task.sleep(nanoseconds: 10_000_000)
-      assertSnapshot(matching: view, as: .image)
+
+      forEachScreenshotType(languages: [.en]) { type in
+        assertSnapshot(
+          forSwiftUIView: view,
+          withType: type,
+          size: self.size,
+          testName: "testSortView_SelectedOption"
+        )
+      }
     }
   }
 }
