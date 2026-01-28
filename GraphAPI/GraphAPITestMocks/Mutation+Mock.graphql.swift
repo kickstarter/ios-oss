@@ -27,6 +27,7 @@ public class Mutation: MockObject {
     @Field<PaymentSourceDeletePayload>("paymentSourceDelete") public var paymentSourceDelete
     @Field<SignInWithApplePayload>("signInWithApple") public var signInWithApple
     @Field<TriggerThirdPartyEventPayload>("triggerThirdPartyEvent") public var triggerThirdPartyEvent
+    @Field<UpdateBackerCompletedPayload>("updateBackerCompleted") public var updateBackerCompleted
     @Field<UpdateBackingPayload>("updateBacking") public var updateBacking
     @Field<UpdateUserAccountPayload>("updateUserAccount") public var updateUserAccount
     @Field<UpdateUserProfilePayload>("updateUserProfile") public var updateUserProfile
@@ -54,6 +55,7 @@ public extension Mock where O == Mutation {
     paymentSourceDelete: Mock<PaymentSourceDeletePayload>? = nil,
     signInWithApple: Mock<SignInWithApplePayload>? = nil,
     triggerThirdPartyEvent: Mock<TriggerThirdPartyEventPayload>? = nil,
+    updateBackerCompleted: Mock<UpdateBackerCompletedPayload>? = nil,
     updateBacking: Mock<UpdateBackingPayload>? = nil,
     updateUserAccount: Mock<UpdateUserAccountPayload>? = nil,
     updateUserProfile: Mock<UpdateUserProfilePayload>? = nil,
@@ -78,6 +80,7 @@ public extension Mock where O == Mutation {
     _setEntity(paymentSourceDelete, for: \.paymentSourceDelete)
     _setEntity(signInWithApple, for: \.signInWithApple)
     _setEntity(triggerThirdPartyEvent, for: \.triggerThirdPartyEvent)
+    _setEntity(updateBackerCompleted, for: \.updateBackerCompleted)
     _setEntity(updateBacking, for: \.updateBacking)
     _setEntity(updateUserAccount, for: \.updateUserAccount)
     _setEntity(updateUserProfile, for: \.updateUserProfile)

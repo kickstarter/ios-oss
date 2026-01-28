@@ -1,0 +1,271 @@
+import Foundation
+import KDS
+import KsApi
+import Library
+import SwiftUI
+
+struct PPOProjectCard: View {
+  @StateObject var viewModel: PPOProjectCardViewModel
+  var parentSize: CGSize
+  var onHandleEvent: ((PPOProjectCardModel, PPOCardEvent) -> Void)?
+
+  var body: some View {
+    VStack(spacing: Constants.spacing) {
+      self.flagList
+      self.projectDetails(leadingColumnWidth: self.parentSize.width * Constants.firstColumnWidth)
+      self.divider
+      self.projectCreator
+
+      if self.showAddressSection() {
+        self.divider
+        self.addressDetails(leadingColumnWidth: self.parentSize.width * Constants.firstColumnWidth)
+      }
+
+      if self.showDividerBeforeAction() {
+        self.divider
+      }
+      self.actionButton
+      self.actionDetails
+      if self.showRewardToggle() {
+        self.divider
+        self.rewardReceivedToggle
+      }
+    }
+    .padding(.vertical)
+    .frame(maxWidth: .infinity)
+    .background(Color(PPOStyles.background))
+
+    // round rectangle around the card
+    .clipShape(self.cardRectangle)
+    .overlay(self.cardRectangle.strokeBorder(
+      Color(uiColor: Constants.borderColor),
+      lineWidth: Constants.borderWidth
+    ))
+
+    // upper right corner badge
+    .overlay(
+      alignment: Constants.badgeAlignment,
+      content: { self.badge.opacity(self.showCardAlert() ? 1 : 0) }
+    )
+
+    // Handle events
+    .onReceive(self.viewModel.handleEvent) { event in
+      self.onHandleEvent?(self.viewModel.card, event)
+    }
+  }
+
+  @ViewBuilder
+  private var cardRectangle: RoundedRectangle {
+    RoundedRectangle(cornerRadius: Constants.cornerRadius)
+  }
+
+  @ViewBuilder
+  private var badge: some View {
+    Circle()
+      .fill(Color(uiColor: PPOStyles.badgeColor))
+      .frame(width: Constants.badgeSize, height: Constants.badgeSize)
+      .offset(x: Constants.badgeSize / 2, y: -(Constants.badgeSize / 2))
+  }
+
+  @ViewBuilder
+  private var flagList: some View {
+    if self.viewModel.card.alerts.isEmpty == false {
+      HStack {
+        FlowLayout(
+          spacing: PPOStyles.flagSpacing,
+          alignment: .leading
+        ) {
+          ForEach(self.viewModel.card.alerts) { alert in
+            PPOAlertFlag(alert: alert)
+          }
+        }
+        Spacer()
+      }
+      .padding([.horizontal])
+    }
+  }
+
+  @ViewBuilder
+  private func projectDetails(leadingColumnWidth: CGFloat) -> some View {
+    Button { [weak viewModel] () in
+      viewModel?.eventTriggered(.viewProjectDetails)
+    } label: {
+      PPOProjectDetails(
+        image: self.viewModel.card.image,
+        title: self.viewModel.card.projectName,
+        pledge: self.viewModel.card.pledge,
+        leadingColumnWidth: leadingColumnWidth
+      )
+      .padding([.horizontal])
+    }
+    // MBL-2020: Keeps the button action from being triggered by other taps in the card.
+    .buttonStyle(BorderlessButtonStyle())
+  }
+
+  @ViewBuilder
+  private var projectCreator: some View {
+    Button { [weak viewModel] () in
+      viewModel?.eventTriggered(.sendMessage)
+    } label: {
+      PPOProjectCreator(
+        creatorName: self.viewModel.card.creatorName
+      )
+      .padding([.horizontal])
+    }
+    // MBL-2020: Keeps the button action from being triggered by other taps in the card.
+    .buttonStyle(BorderlessButtonStyle())
+  }
+
+  @ViewBuilder
+  private func addressDetails(leadingColumnWidth: CGFloat) -> some View {
+    switch self.viewModel.card.address {
+    case let .editable(address, editUrl):
+      Button { [weak viewModel] () in
+        viewModel?.eventTriggered(.editAddress(url: editUrl))
+      } label: {
+        self.addressContents(leadingColumnWidth: leadingColumnWidth, address: address, editable: true)
+      }
+      .buttonStyle(BorderlessButtonStyle())
+    case let .locked(address):
+      self.addressContents(leadingColumnWidth: leadingColumnWidth, address: address, editable: false)
+    case .hidden:
+      // Explicitly create an empty view, since the ViewBuilder requires consistency.
+      EmptyView()
+    }
+  }
+
+  @ViewBuilder
+  private func addressContents(leadingColumnWidth: CGFloat, address: String, editable: Bool) -> some View {
+    PPOAddressSummary(
+      address: address,
+      leadingColumnWidth: leadingColumnWidth,
+      editable: editable
+    )
+    .padding([.horizontal])
+  }
+
+  @ViewBuilder
+  private func baseButton(for action: PPOProjectCardViewModel.ButtonAction) -> some View {
+    Button(action.label) { [weak viewModel] () in
+      viewModel?.performAction(action)
+    }
+    .padding([.horizontal])
+  }
+
+  @ViewBuilder
+  private func button(for action: PPOProjectCardViewModel.ButtonAction) -> some View {
+    ZStack {
+      switch action.style {
+      case .green:
+        self.baseButton(for: action)
+          .buttonStyle(KSRButtonStyleModifier(style: .green))
+      case .red:
+        self.baseButton(for: action)
+          .buttonStyle(KSRButtonStyleModifier(style: .filledDestructive))
+      case .black:
+        self.baseButton(for: action)
+          .buttonStyle(KSRButtonStyleModifier(style: .filled))
+      }
+
+      if self.viewModel.buttonState == .loading {
+        ProgressView()
+          .progressViewStyle(CircularProgressViewStyle(tint: .white))
+      }
+    }
+    .disabled(self.viewModel.buttonState == .loading || self.viewModel.buttonState == .disabled)
+  }
+
+  @ViewBuilder
+  private var actionButton: some View {
+    if let action = self.viewModel.card.action {
+      self.button(for: action)
+    }
+  }
+
+  @ViewBuilder
+  private var actionDetails: some View {
+    if let actionDetails = self.viewModel.actionDetails {
+      Text(actionDetails)
+        .font(Font(PPOStyles.subtitle.font))
+        .frame(
+          maxWidth: .infinity,
+          alignment: .leading
+        )
+        .foregroundStyle(Color(PPOStyles.subtitle.color))
+        .padding([.horizontal])
+    }
+  }
+
+  @ViewBuilder
+  private var rewardReceivedToggle: some View {
+    Toggle(Strings.Reward_received(), isOn: self.$viewModel.rewardToggleEnabled)
+      .font(Font(PPOStyles.title.font))
+      .foregroundStyle(Color(PPOStyles.title.color))
+      .tint(Colors.Background.Accent.Green.bold.swiftUIColor())
+      .padding([.horizontal])
+      .onChange(of: self.viewModel.rewardToggleEnabled) { _, newValue in
+        self.viewModel.rewardToggleTapped(toggleOn: newValue)
+      }
+  }
+
+  @ViewBuilder
+  private var divider: some View {
+    Divider()
+  }
+
+  private func showAddressSection() -> Bool {
+    return self.viewModel.card.address != .hidden
+  }
+
+  // Generally, show a divider before the action section, if there is an action.
+  // If it's a confirmAddress card, hide the divider.
+  private func showDividerBeforeAction() -> Bool {
+    switch self.viewModel.card.action {
+    case .confirmAddress: return false
+    case .some: return true
+    case nil: return false
+    }
+  }
+
+  // Show reward toggle if the toggle is not hidden.
+  private func showRewardToggle() -> Bool {
+    switch self.viewModel.card.rewardReceivedToggleState {
+    case .hidden: return false
+    case .rewardReceived, .notReceived: return true
+    }
+  }
+
+  // Show a red dot if a card is an alert type and is unread.
+  private func showCardAlert() -> Bool {
+    return PPOTierType.projectAlertTypes().contains(self.viewModel.card.tierType)
+      && self.viewModel.card.isUnread
+  }
+
+  private enum Constants {
+    static let cornerRadius: CGFloat = Dimension.CornerRadius.medium
+    static let borderColor = LegacyColors.ksr_support_300.uiColor()
+    static let borderWidth: CGFloat = 1
+    static let badgeAlignment = Alignment(horizontal: .trailing, vertical: .top)
+    static let badgeSize: CGFloat = Styles.grid(2)
+    static let spacing: CGFloat = Styles.grid(3)
+    static let outerPadding: CGFloat = Styles.grid(4)
+    static let firstColumnWidth: CGFloat = 0.25
+  }
+}
+
+#if targetEnvironment(simulator)
+  #Preview("Card variants") {
+    GeometryReader(content: { geometry in
+      ScrollView(.vertical) {
+        VStack(spacing: 16) {
+          ForEach(PPOProjectCardModel.previewTemplates) { template in
+            PPOProjectCard(
+              viewModel: PPOProjectCardViewModel(card: template),
+              parentSize: geometry.size
+            )
+          }
+        }
+      }
+    })
+  }
+#endif

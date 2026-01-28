@@ -185,6 +185,12 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
             public var flags: [Flag]? { __data["flags"] }
             /// webview url for survey responses or pledge management
             public var webviewUrl: String? { __data["webviewUrl"] }
+            /// Whether to display the shipping address block on the card
+            public var showShippingAddress: Bool { __data["showShippingAddress"] }
+            /// Whether to display the edit address action (if address is still editable)
+            public var showEditAddressAction: Bool { __data["showEditAddressAction"] }
+            /// Whether to display the reward received toggle (digital/no-reward survey submitted)
+            public var showRewardReceivedToggle: Bool { __data["showRewardReceivedToggle"] }
 
             public struct Fragments: FragmentContainer {
               public let __data: DataDict
@@ -197,7 +203,10 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
               backing: Backing? = nil,
               tierType: String? = nil,
               flags: [Flag]? = nil,
-              webviewUrl: String? = nil
+              webviewUrl: String? = nil,
+              showShippingAddress: Bool,
+              showEditAddressAction: Bool,
+              showRewardReceivedToggle: Bool
             ) {
               self.init(_dataDict: DataDict(
                 data: [
@@ -206,6 +215,9 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                   "tierType": tierType,
                   "flags": flags._fieldData,
                   "webviewUrl": webviewUrl,
+                  "showShippingAddress": showShippingAddress,
+                  "showEditAddressAction": showEditAddressAction,
+                  "showRewardReceivedToggle": showRewardReceivedToggle,
                 ],
                 fulfilledFragments: [
                   ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node.self),
@@ -228,6 +240,8 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
               public var id: GraphAPI.ID { __data["id"] }
               /// The project
               public var project: Project? { __data["project"] }
+              /// If the backer_completed_at is set or not
+              public var backerCompleted: Bool { __data["backerCompleted"] }
               /// URL/path for the backing details page
               public var backingDetailsPageRoute: String { __data["backingDetailsPageRoute"] }
               /// The delivery address associated with the backing
@@ -246,6 +260,7 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                 amount: Amount,
                 id: GraphAPI.ID,
                 project: Project? = nil,
+                backerCompleted: Bool,
                 backingDetailsPageRoute: String,
                 deliveryAddress: DeliveryAddress? = nil,
                 clientSecret: String? = nil
@@ -256,6 +271,7 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                     "amount": amount._fieldData,
                     "id": id,
                     "project": project._fieldData,
+                    "backerCompleted": backerCompleted,
                     "backingDetailsPageRoute": backingDetailsPageRoute,
                     "deliveryAddress": deliveryAddress._fieldData,
                     "clientSecret": clientSecret,

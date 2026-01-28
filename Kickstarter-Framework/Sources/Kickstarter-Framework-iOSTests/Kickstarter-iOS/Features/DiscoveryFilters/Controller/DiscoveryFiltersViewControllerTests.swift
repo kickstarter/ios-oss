@@ -1,0 +1,136 @@
+@testable import Kickstarter_Framework
+@testable import KsApi
+@testable import KsApiTestHelpers
+@testable import Library
+@testable import LibraryTestHelpers
+import Prelude
+import SnapshotTesting
+import XCTest
+
+internal final class DiscoveryFiltersViewControllerTests: TestCase {
+  fileprivate let selectableRowTemplate = SelectableRow(isSelected: false, params: .defaults)
+
+  fileprivate static let comics = .template
+    |> Category.lens.id .~ "Q2F0ZWdvcnktMw=="
+    <> Category.lens.name .~ "Comics"
+
+  fileprivate static let crafts = .template
+    |> Category.lens.id .~ "Q2F0ZWdvcnktMjY="
+    <> Category.lens.name .~ "Crafts"
+
+  fileprivate static let dance = .template
+    |> Category.lens.id .~ "Q2F0ZWdvcnktNg=="
+    <> Category.lens.name .~ "Dance"
+
+  fileprivate static let design = .template
+    |> Category.lens.id .~ "Q2F0ZWdvcnktNg=="
+    <> Category.lens.name .~ "Design"
+
+  fileprivate static let fashion = .template
+    |> Category.lens.id .~ "Q2F0ZWdvcnktOQ=="
+    <> Category.lens.name .~ "Fashion"
+
+  fileprivate static let ceramics = .template
+    |> Category.lens.id .~ "Q2F0ZWdvcnktMTk="
+    <> Category.lens.name .~ "Ceramics"
+    <> Category.lens.parentId .~ Category.art.id
+    <> Category.lens
+    .parent .~
+    ParentCategory(analyticsName: Category.art.name, id: Category.art.id, name: Category.art.name)
+
+  fileprivate static let action = .template
+    |> Category.lens.id .~ "Q2F0ZWdvcnktMjc="
+    <> Category.lens.name .~ "Action"
+    <> Category.lens.parentId .~ Category.filmAndVideo.id
+    <> Category.lens
+    .parent .~
+    ParentCategory(
+      analyticsName: Category.filmAndVideo.name,
+      id: Category.filmAndVideo.id,
+      name: Category.filmAndVideo.name
+    )
+
+  fileprivate static let mobileGames = .template
+    |> Category.lens.id .~ "Q2F0ZWdvcnktMzE="
+    <> Category.lens.name .~ "Mobile Games"
+    <> Category.lens.parentId .~ Category.games.id
+    <> Category.lens
+    .parent .~
+    ParentCategory(analyticsName: Category.games.name, id: Category.games.id, name: Category.games.name)
+
+  fileprivate let categories = [
+    Category.art, ceramics, .illustration, comics, crafts, dance, design, fashion,
+    .filmAndVideo, action, .documentary, .games, mobileGames, .tabletopGames
+  ]
+
+  override func setUp() {
+    super.setUp()
+    self.cache[KSCache.ksr_discoveryFiltersCategories] = self.categories
+    UIView.setAnimationsEnabled(false)
+  }
+
+  override func tearDown() {
+    UIView.setAnimationsEnabled(true)
+    super.tearDown()
+  }
+
+  func testDefaultRow_Selected_View() {
+    let staffPicksRow = self.selectableRowTemplate
+      |> SelectableRow.lens.params.staffPicks .~ true
+
+    Language.allLanguages.forEach { language in
+      withEnvironment(language: language) {
+        let controller = DiscoveryFiltersViewController.configuredWith(selectedRow: staffPicksRow)
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_000
+
+        assertSnapshot(matching: parent.view, as: .image, named: "Filters - lang_\(language)")
+      }
+    }
+  }
+
+  func testDefaultRow_Selected_iPad_View() {
+    let staffPicksRow = self.selectableRowTemplate
+      |> SelectableRow.lens.params.staffPicks .~ true
+
+    Language.allLanguages.forEach { language in
+      withEnvironment(language: language) {
+        let controller = DiscoveryFiltersViewController.configuredWith(selectedRow: staffPicksRow)
+        let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_500
+
+        assertSnapshot(matching: parent.view, as: .image, named: "Filters - lang_\(language)")
+      }
+    }
+  }
+
+  func testCategoryRow_Selected_Art_iPad_View() {
+    let artSelectableRow = self.selectableRowTemplate
+      |> SelectableRow.lens.params.category .~ .illustration
+
+    Language.allLanguages.forEach { language in
+      withEnvironment(language: language) {
+        let controller = DiscoveryFiltersViewController.configuredWith(selectedRow: artSelectableRow)
+        let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_000
+
+        assertSnapshot(matching: parent.view, as: .image, named: "Filters - lang_\(language)")
+      }
+    }
+  }
+
+  func testCategoryRow_Selected_Art_View() {
+    let artSelectableRow = self.selectableRowTemplate
+      |> SelectableRow.lens.params.category .~ .illustration
+
+    Language.allLanguages.forEach { language in
+      withEnvironment(language: language) {
+        let controller = DiscoveryFiltersViewController.configuredWith(selectedRow: artSelectableRow)
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_000
+
+        assertSnapshot(matching: parent.view, as: .image, named: "Filters - lang_\(language)")
+      }
+    }
+  }
+}

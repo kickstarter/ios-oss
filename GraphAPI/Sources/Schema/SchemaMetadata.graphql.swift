@@ -60,6 +60,8 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "CuratedPage": return GraphAPI.Objects.CuratedPage
     case "SavedSearchSegment": return GraphAPI.Objects.SavedSearchSegment
     case "ProjectInvestigation": return GraphAPI.Objects.ProjectInvestigation
+    case "Task": return GraphAPI.Objects.Task
+    case "ZendeskTicket": return GraphAPI.Objects.ZendeskTicket
     case "Survey": return GraphAPI.Objects.Survey
     case "PostCommentPayload": return GraphAPI.Objects.PostCommentPayload
     case "CommentConnection": return GraphAPI.Objects.CommentConnection
@@ -88,6 +90,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "PaymentSourceDeletePayload": return GraphAPI.Objects.PaymentSourceDeletePayload
     case "UserCreditCardTypeConnection": return GraphAPI.Objects.UserCreditCardTypeConnection
     case "TriggerThirdPartyEventPayload": return GraphAPI.Objects.TriggerThirdPartyEventPayload
+    case "UpdateBackerCompletedPayload": return GraphAPI.Objects.UpdateBackerCompletedPayload
     case "Query": return GraphAPI.Objects.Query
     case "Country": return GraphAPI.Objects.Country
     case "UserBackingsConnection": return GraphAPI.Objects.UserBackingsConnection

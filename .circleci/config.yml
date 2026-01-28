@@ -10,7 +10,7 @@ aws_cli_setup: &aws_cli_setup
 
 # Keep xcode version in sync with `.fastlane/Fastfile`
 # circle-ci xcode versions supported: https://circleci.com/docs/testing-ios/
-xcode_version: &xcode_version 16.4.0
+xcode_version: &xcode_version 26.1.1
 iphone_name: &iphone_name iPad mini (A17 Pro)
 
 # Works around an issue in xcodebuild where it requires GitHub to have been added to the known_hosts in order for it to clone dependencies.
@@ -24,6 +24,10 @@ default_environment: &default_environment
   FL_OUTPUT_DIR: output
   LC_ALL: en_US.UTF-8
   LANG: en_US.UTF-8
+  # Fix Ruby/OpenSSL SSL verification failures on CircleCI macOS images by using the system trust store.
+  # Without this, Ruby can fail HTTPS requests (S3, GitHub, etc.) with "certificate verify failed".
+  SSL_CERT_FILE: /etc/ssl/cert.pem
+  SSL_CERT_DIR: /etc/ssl/certs
   IPHONE_NAME: *iphone_name
   XCODE_VERSION: *xcode_version
   PLATFORM: iOS
@@ -41,14 +45,26 @@ test_job: &test_job
         at: .
     - macos/preboot-simulator:
         # Keep simulator in sync with `Library/TestHelpers/TestCase.swift` and `Makefile`
-        # iOS 18.5 is minimum supported runtime by circle-ci -> 18.5.0 (16A242d)
+        # iOS 18.6 is minimum supported runtime by circle-ci -> 26.1.1 (17B100)
         # more info: https://circle-macos-docs.s3.amazonaws.com/image-manifest/v15338/manifest.txt
-        version: "18.5"
+        version: "18.6"
         platform: "iOS"
         device: "iPad mini (A17 Pro)"
     - run:
         name: Run tests
         command: make test
+        no_output_timeout: "20m" # 20 minutes
+    - store_artifacts:
+        path: ./Failed_Snapshot_Tests
+
+test_spm_job: &test_spm_job
+  steps:
+    - macos/install-rosetta
+    - attach_workspace:
+        at: .
+    - run:
+        name: Run Swift package tests
+        command: make test-spm
         no_output_timeout: "20m" # 20 minutes
     - store_artifacts:
         path: ./Failed_Snapshot_Tests
@@ -83,8 +99,10 @@ distribute_job: &distribute_job
 
 all_jobs: &all_jobs
   - kickstarter-tests
+  - kickstarter-framework-tests
   - library-tests
   - ksapi-tests
+  - kds-tests
 
 # Jobs
 
@@ -130,25 +148,45 @@ jobs:
     <<: *test_job
     environment:
       - *default_environment
-      - SCHEME=Kickstarter-Framework-iOS
+      - SCHEME=Kickstarter iOS
+
+  # Kickstarter Framework tests
+  kickstarter-framework-tests:
+    <<: *base_job
+    <<: *test_spm_job
+    environment:
+      - *default_environment
+      - PACKAGE=Kickstarter-Framework
+      - SCHEME=Kickstarter-Framework
 
   # Library tests
   library-tests:
     <<: *base_job
-    <<: *test_job
+    <<: *test_spm_job
     environment:
       - *default_environment
-      - TARGET=Library
-      - SCHEME=Library-iOS
+      - PACKAGE=Library
+      - SCHEME=Library-Package
 
   # KsApi tests
   ksapi-tests:
     <<: *base_job
-    <<: *test_job
+    <<: *test_spm_job
     environment:
       - *default_environment
-      - SCHEME=KsApi
+      - PACKAGE=KsApi
+      - SCHEME=KsApi-Package
 
+  # KDS tests
+  kds-tests:
+    <<: *base_job
+    <<: *test_spm_job
+    environment:
+      - *default_environment
+      - PACKAGE=KDS
+      - SCHEME=KDS
+
+  # GraphAPI tests
   deploy_alpha:
     <<: *base_job
     environment:
@@ -240,6 +278,12 @@ workflows:
       - ksapi-tests:
           requires:
            - build-and-cache
+      - kickstarter-framework-tests:
+          requires:
+           - build-and-cache
+      - kds-tests:
+          requires:
+           - build-and-cache
 
       # ** Refreshing dSYMs disabled until a suitable workaround is found for App Store Connect 2FA authentication
       # or Fastlane implements API key support in this Fastlane action. Uncomment below to re-enable.
@@ -261,7 +305,8 @@ workflows:
           context: aws
           filters:
             branches:
-              only: main
+              # matches branches that are 'main' or start with 'release-'
+              only: /^(main|release-.+)$/
           requires: *all_jobs
       - beta:
           context: aws
@@ -281,8 +326,8 @@ workflows:
           context: aws
           filters:
             branches:
-              # matches branch named exactly `itunes-dist`
-              only: itunes-dist
+              # matches branch that begin with `itunes-dist`
+              only: /itunes-dist.*/
           requires: *all_jobs
 
 experimental:
@@ -295,5 +340,5 @@ experimental:
         - /alpha-dist.*/
         # matches all branches that begin with 'beta-dist'
         - /beta-dist-.*/
-        # matches branch named exactly `itunes-dist`
-        - itunes-dist
+        # matches branch that begin with `itunes-dist`
+        - /itunes-dist.*/
