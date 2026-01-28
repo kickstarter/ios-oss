@@ -11,16 +11,33 @@ final class ShippingLocationsViewTests: TestCase {
       Location.canada,
       Location.usa
     ]
+    let size = CGSize(width: 350, height: 500)
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = TimeZone(identifier: "GMT")!
 
-    let vc = ShippingLocations.viewController(
-      withLocations: allCountries,
-      selectedLocation: Location.australia,
-      onSelectedLocation: { _ in },
-      onCancelled: {}
-    )
+    forEachScreenshotType { type in
+      withEnvironment(
+        calendar: calendar,
+        language: type.language,
+        locale: Locale(identifier: type.language.rawValue),
+        mainBundle: self.mainBundle
+      ) {
+        let vc = ShippingLocations.viewController(
+          withLocations: allCountries,
+          selectedLocation: Location.australia,
+          onSelectedLocation: { _ in },
+          onCancelled: {}
+        )
+        _ = vc.view
+        vc.view.frame = CGRect(origin: .zero, size: size)
 
-    vc.view.frame = CGRect(x: 0, y: 0, width: 350, height: 500)
-
-    assertSnapshot(of: vc.view, as: .image, named: "locationView")
+        assertSnapshot(
+          forView: vc.view,
+          withType: type,
+          size: size,
+          testName: "locationView"
+        )
+      }
+    }
   }
 }
