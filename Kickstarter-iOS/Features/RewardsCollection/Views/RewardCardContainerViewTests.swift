@@ -7,8 +7,6 @@ import SnapshotTesting
 import UIKit
 import XCTest
 
-private let recordSnapshots = true
-
 final class RewardCardContainerViewTests: TestCase {
   func testLive_BackedProject_BackedReward() {
     forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
@@ -38,7 +36,6 @@ final class RewardCardContainerViewTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: recordSnapshots,
           testName: "testLive_BackedProject_BackedReward_\(rewardDescription)"
         )
       }
@@ -78,7 +75,6 @@ final class RewardCardContainerViewTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: recordSnapshots,
           testName: "testLive_BackedProject_RewardImage"
         )
       }
@@ -115,7 +111,6 @@ final class RewardCardContainerViewTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: recordSnapshots,
           testName: "testLive_BackedProject_BackedReward_LoggedIn_\(rewardDescription)"
         )
       }
@@ -150,7 +145,6 @@ final class RewardCardContainerViewTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: recordSnapshots,
           testName: "testLive_BackedProject_NonBackedReward_\(rewardDescription)"
         )
       }
@@ -182,7 +176,6 @@ final class RewardCardContainerViewTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: recordSnapshots,
           testName: "testLive_NonBackedProject_LoggedIn_\(rewardDescription)"
         )
       }
@@ -211,7 +204,6 @@ final class RewardCardContainerViewTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: recordSnapshots,
           testName: "testLive_NonBackedProject_LoggedOut_\(rewardDescription)"
         )
       }
@@ -246,7 +238,6 @@ final class RewardCardContainerViewTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: recordSnapshots,
           testName: "testNonLive_BackedProject_BackedReward_\(rewardDescription)"
         )
       }
@@ -281,7 +272,6 @@ final class RewardCardContainerViewTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: recordSnapshots,
           testName: "testNonLive_BackedProject_NonBackedReward_\(rewardDescription)"
         )
       }
@@ -309,7 +299,6 @@ final class RewardCardContainerViewTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: recordSnapshots,
           testName: "testNonLive_NonBackedProject_\(rewardDescription)"
         )
       }
@@ -351,7 +340,6 @@ final class RewardCardContainerViewTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: recordSnapshots,
           testName: "testLive_BackedProject_BackedReward_Errored_\(rewardDescription)"
         )
       }
@@ -393,7 +381,6 @@ final class RewardCardContainerViewTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: recordSnapshots,
           testName: "testNonLive_BackedProject_BackedReward_Errored_\(rewardDescription)"
         )
       }
@@ -425,7 +412,6 @@ final class RewardCardContainerViewTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: recordSnapshots,
           testName: "testLive_IsCreator_\(rewardDescription)"
         )
       }
@@ -457,7 +443,6 @@ final class RewardCardContainerViewTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: recordSnapshots,
           testName: "testNonLive_IsCreator_\(rewardDescription)"
         )
       }
