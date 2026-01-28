@@ -1,5 +1,6 @@
 import AuthenticationServices
 import FacebookLogin
+import FirebaseCrashlytics
 import Foundation
 import KDS
 import KsApi
@@ -219,6 +220,8 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
           animated: true,
           completion: nil
         )
+
+        Crashlytics.crashlytics().record(error: error.nsError)
       }
 
     self.viewModel.outputs.dismissViewController
@@ -274,6 +277,17 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       .observeForControllerAction()
       .observeValues { [weak self] message in
         self?.present(UIAlertController.genericError(message), animated: true)
+
+        // Crashlytics prefers NSErrors
+        let appleLoginError = NSError(
+          domain: "LoginTOutViewController",
+          code: 0,
+          userInfo: [
+            NSLocalizedDescriptionKey: "Apple login failure"
+          ]
+        )
+
+        Crashlytics.crashlytics().record(error: appleLoginError)
       }
 
     self.viewModel.outputs.isLoading
