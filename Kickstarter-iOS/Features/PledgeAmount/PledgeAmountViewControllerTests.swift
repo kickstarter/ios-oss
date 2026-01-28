@@ -45,7 +45,6 @@ final class PledgeAmountViewControllerTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: true,
           testName: "testView"
         )
       }
@@ -78,7 +77,6 @@ final class PledgeAmountViewControllerTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: true,
           testName: "testView_LargerText"
         )
       }
@@ -114,7 +112,6 @@ final class PledgeAmountViewControllerTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: true,
           testName: "testView_ShowsCurrencySymbol_NonUS_ProjectCurrency_US_ProjectCountry"
         )
       }
@@ -150,7 +147,6 @@ final class PledgeAmountViewControllerTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: true,
           testName: "testView_ShowsCurrencySymbol_US_ProjectCurrency_US_ProjectCountry"
         )
       }
@@ -187,7 +183,6 @@ final class PledgeAmountViewControllerTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: true,
           testName: "testView_StepperDecrementButtonDisabled_WhenStepperValueSetToMinimum"
         )
       }
@@ -231,7 +226,6 @@ final class PledgeAmountViewControllerTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: true,
           testName: "testView_StepperIncrementButtonDisabled_WhenStepperValueSetToMaximumStepperValue"
         )
       }
@@ -271,7 +265,6 @@ final class PledgeAmountViewControllerTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: true,
           testName: "testView_TextColorIsGreenWhenEqualToMinimumPledgeAmount"
         )
       }
@@ -312,7 +305,6 @@ final class PledgeAmountViewControllerTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: true,
           testName: "testView_TextColorIsGreenWhenEqualToMaximumPledgeAmount"
         )
       }
@@ -353,7 +345,6 @@ final class PledgeAmountViewControllerTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          record: true,
           testName: "testView_ErrorMessageAppears_And_TextColorIsRedWhenAboveMaximumPledgeAmount"
         )
       }
