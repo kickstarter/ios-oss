@@ -194,6 +194,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
 
   private func messageCreator(_ messageSubject: MessageSubject) {
     let vc = MessageDialogViewController.configuredWith(messageSubject: messageSubject, context: .backerModal)
+    vc.delegate = self
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .formSheet
     nav.presentationController?.delegate = self
