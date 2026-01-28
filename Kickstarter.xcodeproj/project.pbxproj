@@ -30,9 +30,6 @@
 		013F2FDC1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013F2FDB1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift */; };
 		0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0146E3211CC0296900082C5B /* FacebookConfirmationViewController.swift */; };
 		01483F222F0DDFF900A1D833 /* ScreenshotTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01483F1F2F0DDFF900A1D833 /* ScreenshotTestHelpers.swift */; };
-		E1D2C3B42F12345600000001 /* ScreenshotTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01483F1F2F0DDFF900A1D833 /* ScreenshotTestHelpers.swift */; };
-		E1D2C3B52F12345600000002 /* TraitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20221E83237F00BFFA01 /* TraitController.swift */; };
-		E1D2C3B62F12345600000003 /* Combos.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20211E83237F00BFFA01 /* Combos.swift */; };
 		0148EF911CDD2879000DEFF8 /* ThanksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148EF8F1CDD2879000DEFF8 /* ThanksViewController.swift */; };
 		014A8DEB1CE3C350003BF51C /* ThanksProjectsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014A8DE91CE3C350003BF51C /* ThanksProjectsDataSource.swift */; };
 		014A8E1C1CE3CE34003BF51C /* ThanksCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */; };
@@ -1692,6 +1689,7 @@
 		E1855EBD2EE0BF3300B4E408 /* ShippingLocationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1855EBB2EE0BF3300B4E408 /* ShippingLocationsViewModel.swift */; };
 		E1855EC02EE0BF7400B4E408 /* ShippingLocationsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1855EBE2EE0BF6600B4E408 /* ShippingLocationsViewModelTests.swift */; };
 		E1855EC32EE0C82200B4E408 /* ShippingLocationsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1855EC12EE0C7E000B4E408 /* ShippingLocationsViewTests.swift */; };
+		E189C80A2F2AAC8D007A8776 /* OAuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E189C8092F2AAC8D007A8776 /* OAuthError.swift */; };
 		E18A674E2E28236D00BA0376 /* ApolloTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = E18A674D2E28236D00BA0376 /* ApolloTestSupport */; };
 		E18A67532E28241F00BA0376 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		E19900A32DDE26C40082F05E /* PercentRaisedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19900A22DDE26C10082F05E /* PercentRaisedView.swift */; };
@@ -1729,6 +1727,9 @@
 		E1BBB6712E035BDD00291D48 /* FetchLocationsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB66D2E035BDD00291D48 /* FetchLocationsUseCase.swift */; };
 		E1BBB6722E035BE300291D48 /* FetchLocationsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB66E2E035BDD00291D48 /* FetchLocationsUseCaseTests.swift */; };
 		E1CFB5952D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFB5942D8E00C5004AB0D6 /* DiscoveryParams_Sort+SortOption.swift */; };
+		E1D2C3B42F12345600000001 /* ScreenshotTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01483F1F2F0DDFF900A1D833 /* ScreenshotTestHelpers.swift */; };
+		E1D2C3B52F12345600000002 /* TraitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20221E83237F00BFFA01 /* TraitController.swift */; };
+		E1D2C3B62F12345600000003 /* Combos.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20211E83237F00BFFA01 /* Combos.swift */; };
 		E1D569BB2E09D5CB00C78297 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569B92E09D5CB00C78297 /* LocationView.swift */; };
 		E1D569C62E0C787A00C78297 /* AmountRaisedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D569C52E0C787800C78297 /* AmountRaisedView.swift */; };
 		E1DBB2372DAEBCE10050733F /* SearchFiltersHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DBB2352DAEBCB60050733F /* SearchFiltersHeaderViewTests.swift */; };
@@ -3458,6 +3459,7 @@
 		E1855EBE2EE0BF6600B4E408 /* ShippingLocationsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingLocationsViewModelTests.swift; sourceTree = "<group>"; };
 		E1855EC12EE0C7E000B4E408 /* ShippingLocationsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingLocationsViewTests.swift; sourceTree = "<group>"; };
 		E1889D8D2B6065D6004FBE21 /* CombineTestObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserverTests.swift; sourceTree = "<group>"; };
+		E189C8092F2AAC8D007A8776 /* OAuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthError.swift; sourceTree = "<group>"; };
 		E190EB1B2E29944E006A6DB6 /* BackerDashboardProjectCellFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BackerDashboardProjectCellFragment.graphql; sourceTree = "<group>"; };
 		E190EB1C2E29944E006A6DB6 /* BackingFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BackingFragment.graphql; sourceTree = "<group>"; };
 		E190EB1D2E29944E006A6DB6 /* CategoryFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CategoryFragment.graphql; sourceTree = "<group>"; };
@@ -6584,6 +6586,7 @@
 				37EB3E4B228CF4A400076E4C /* NumberFormatter.swift */,
 				37EB3E4D228CF4FB00076E4C /* NumberFormatterTests.swift */,
 				E11CFE492B6C41B400497375 /* OAuth.swift */,
+				E189C8092F2AAC8D007A8776 /* OAuthError.swift */,
 				E16794292B85136900064063 /* OAuthTests.swift */,
 				609935EA2E1D7177009263C5 /* OnboardingUseCase.swift */,
 				609935EC2E1D718F009263C5 /* OnboardingUseCaseTests.swift */,
@@ -8516,6 +8519,7 @@
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
 				598D96CB1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift in Sources */,
 				77216CE220EFE7F70061BE82 /* FacebookConnectionType.swift in Sources */,
+				E189C80A2F2AAC8D007A8776 /* OAuthError.swift in Sources */,
 				D7ADDFE722E0DAFA00157D83 /* RewardCellProjectBackingStateType.swift in Sources */,
 				D79D61151FD0979D000F958B /* String+Base64.swift in Sources */,
 				E1801FAA2BAB6D0900EBB533 /* PaymentSourceSelected.swift in Sources */,
