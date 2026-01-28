@@ -5,6 +5,7 @@ import Prelude
 import SnapshotTesting
 import UIKit
 
+
 class ThanksViewControllerTests: TestCase {
   private let categoryEnvelope = CategoryEnvelope(node: .template)
 
@@ -20,28 +21,49 @@ class ThanksViewControllerTests: TestCase {
 
   func testThanksViewController() {
     let discoveryEnvelope = DiscoveryEnvelope.template
+      // Strip image URLs to avoid network-dependent snapshot flakiness.
+      |> DiscoveryEnvelope.lens.projects %~~ { projects, _ in
+        projects.map(self.stripImageURLs)
+      }
     let rootCategories = RootCategoriesEnvelope(rootCategories: [Category.tabletopGames])
     let mockService = MockService(
       fetchGraphCategoryResult: .success(categoryEnvelope),
       fetchGraphCategoriesResult: .success(rootCategories),
       fetchDiscoveryResponse: discoveryEnvelope
     )
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = TimeZone(identifier: "GMT")!
 
-    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
-      language, device in
-      withEnvironment(apiService: mockService, language: language) {
-        let project = Project.cosmicSurgery
+    forEachScreenshotType { type in
+      withEnvironment(
+        apiService: mockService,
+        calendar: calendar,
+        language: type.language,
+        locale: Locale(identifier: type.language.rawValue),
+        mainBundle: self.mainBundle
+      ) {
+        let project = self.stripImageURLs(Project.cosmicSurgery)
           |> Project.lens.id .~ 3
 
         let controller = ThanksViewController.configured(with: (project, Reward.template, nil, 1))
-
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1_000
+        controller.view.frame.size.height = 1_000
 
         self.scheduler.run()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          forController: controller,
+          withType: type,
+          testName: "testThanksViewController"
+        )
       }
     }
+  }
+
+  // Blank out image URLs so snapshots are deterministic without remote images.
+  private func stripImageURLs(_ project: Project) -> Project {
+    project
+      |> Project.lens.photo.full .~ ""
+      |> Project.lens.photo.med .~ ""
+      |> Project.lens.photo.small .~ ""
   }
 }
