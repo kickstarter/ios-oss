@@ -288,10 +288,9 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "Search", "LoginTout"],
         ["Discovery", "Activities", "Search", "LoginTout"]
       ],
-      "Show the logged out tabs. Emits twice due to tab bar mode initialization."
+      "Show the logged out tabs."
     )
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
@@ -299,7 +298,6 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "Search", "LoginTout"],
         ["Discovery", "Activities", "Search", "LoginTout"],
         ["Discovery", "PPOContainer", "Search", "BackerDashboard"]
       ],
@@ -312,7 +310,6 @@ final class RootViewModelTests: TestCase {
     viewControllerNames.assertValues(
       [
         ["Discovery", "Activities", "Search", "LoginTout"],
-        ["Discovery", "Activities", "Search", "LoginTout"],
         ["Discovery", "PPOContainer", "Search", "BackerDashboard"]
       ],
       "Updating the member projects does not trigger any view controller changes"
@@ -323,7 +320,6 @@ final class RootViewModelTests: TestCase {
 
     viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "Search", "LoginTout"],
         ["Discovery", "Activities", "Search", "LoginTout"],
         ["Discovery", "PPOContainer", "Search", "BackerDashboard"],
         ["Discovery", "Activities", "Search", "LoginTout"]
@@ -339,11 +335,13 @@ final class RootViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
 
-    viewControllerNames.assertValueCount(2)
+    viewControllerNames.assertValueCount(1)
 
-    self.vm.inputs.currentUserUpdated()
+    withEnvironment(currentUser: User.template) {
+      self.vm.inputs.currentUserUpdated()
 
-    viewControllerNames.assertValueCount(2)
+      viewControllerNames.assertValueCount(2)
+    }
   }
 
   func testUpdateUserLocalePreferences() {
@@ -354,18 +352,18 @@ final class RootViewModelTests: TestCase {
     withEnvironment(language: .en, locale: Locale(identifier: "en")) {
       self.vm.inputs.viewDidLoad()
 
-      viewControllerNames.assertValueCount(2)
-      self.tabBarItemsData.assertValueCount(2)
+      viewControllerNames.assertValueCount(1)
+      self.tabBarItemsData.assertValueCount(1)
     }
 
     withEnvironment(language: .de, locale: Locale(identifier: "de")) {
       self.vm.inputs.userLocalePreferencesChanged()
 
       viewControllerNames.assertValueCount(
-        3,
+        2,
         "The view controllers should be regenerated when the user language or currency changes."
       )
-      self.tabBarItemsData.assertValueCount(3)
+      self.tabBarItemsData.assertValueCount(2)
     }
   }
 
@@ -504,23 +502,22 @@ final class RootViewModelTests: TestCase {
     self.tabBarItemsData.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
-    self.tabBarItemsData.assertValues([tabData, tabData])
+    self.tabBarItemsData.assertValues([tabData])
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
     self.vm.inputs.userSessionStarted()
-    self.tabBarItemsData.assertValues([tabData, tabData, tabDataLoggedIn])
+    self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn])
 
     self.vm.inputs.currentUserUpdated()
-    self.tabBarItemsData.assertValues([tabData, tabData, tabDataLoggedIn, tabDataLoggedIn])
+    self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn])
 
     AppEnvironment.logout()
     self.vm.inputs.userSessionEnded()
-    self.tabBarItemsData.assertValues([tabData, tabData, tabDataLoggedIn, tabDataLoggedIn, tabData])
+    self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn, tabData])
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: creator))
     self.vm.inputs.userSessionStarted()
     self.tabBarItemsData.assertValues([
-      tabData,
       tabData,
       tabDataLoggedIn,
       tabDataLoggedIn,
@@ -548,7 +545,7 @@ final class RootViewModelTests: TestCase {
     AppEnvironment.logout()
     self.vm.inputs.userSessionEnded()
 
-    viewControllerNames.assertValueCount(4)
+    viewControllerNames.assertValueCount(3)
     self.filterDiscovery.assertValues([params])
   }
 
@@ -598,7 +595,6 @@ final class RootViewModelTests: TestCase {
 
       self.viewControllerNames.assertValues(
         [
-          ["Discovery", "Activities", "Search", "LoginTout"],
           ["Discovery", "Activities", "Search", "LoginTout"]
         ],
         "Shows regular Activities tab initially"
@@ -610,7 +606,6 @@ final class RootViewModelTests: TestCase {
       self.viewControllerNames.assertValues(
         [
           ["Discovery", "Activities", "Search", "LoginTout"],
-          ["Discovery", "Activities", "Search", "LoginTout"],
           ["Discovery", "PPOContainer", "Search", "BackerDashboard"]
         ],
         "Shows PPO tab when logged in with feature flag enabled"
@@ -621,7 +616,6 @@ final class RootViewModelTests: TestCase {
 
       self.viewControllerNames.assertValues(
         [
-          ["Discovery", "Activities", "Search", "LoginTout"],
           ["Discovery", "Activities", "Search", "LoginTout"],
           ["Discovery", "PPOContainer", "Search", "BackerDashboard"],
           ["Discovery", "Activities", "Search", "LoginTout"]
@@ -644,7 +638,6 @@ final class RootViewModelTests: TestCase {
 
     self.viewControllerNames.assertValues(
       [
-        ["Discovery", "Activities", "Search", "LoginTout"],
         ["Discovery", "Activities", "Search", "LoginTout"]
       ],
       "First load should use standard tab bar items order"
@@ -658,26 +651,27 @@ final class RootViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
 
-    self.viewControllerNames.assertValueCount(2)
-    self.tabBarItemsData.assertValueCount(2)
+    self.viewControllerNames.assertValueCount(1)
+    self.tabBarItemsData.assertValueCount(1)
     self.floatingTabBarEnabled.assertValueCount(1)
 
     self.vm.inputs.applicationWillEnterForeground()
 
-    self.viewControllerNames.assertValueCount(
-      4,
-      "setViewControllers should emit again on foreground so the controller can rebuild tab bar UI."
-    )
+    self.viewControllerNames.assertValueCount(1, "State didn't change so do not recreate data.")
+    self.tabBarItemsData.assertValueCount(1, "State didn't change so do not recreate data.")
+    self.floatingTabBarEnabled.assertValueCount(1, "State didn't change so do not recreate data.")
 
-    self.tabBarItemsData.assertValueCount(
-      4,
-      "tabBarItemsData should emit again on foreground so UI stays in sync with refreshed tabs."
-    )
+    let remoteConfig = MockRemoteConfigClient()
+    remoteConfig.features = [
+      RemoteConfigFeature.floatingTabBar.rawValue: true
+    ]
+    withEnvironment(remoteConfigClient: remoteConfig) {
+      self.vm.inputs.applicationWillEnterForeground()
 
-    self.floatingTabBarEnabled.assertValueCount(
-      2,
-      "floatingTabBarEnabled should refresh on foreground."
-    )
+      self.viewControllerNames.assertValueCount(2, "State changed so recreate data.")
+      self.tabBarItemsData.assertValueCount(2, "State changed so recreate data.")
+      self.floatingTabBarEnabled.assertValueCount(2, "State changed so recreate data.")
+    }
   }
 }
 
