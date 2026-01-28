@@ -41,7 +41,7 @@ final class PledgeAmountViewControllerTests: TestCase {
         self.stabilizeForSnapshot(controller)
 
         assertSnapshot(
-          forController: controller,
+          forView: controller.view,
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
@@ -74,7 +74,7 @@ final class PledgeAmountViewControllerTests: TestCase {
         self.stabilizeForSnapshot(controller)
 
         assertSnapshot(
-          forController: controller,
+          forView: controller.view,
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
@@ -110,7 +110,7 @@ final class PledgeAmountViewControllerTests: TestCase {
         self.stabilizeForSnapshot(controller)
 
         assertSnapshot(
-          forController: controller,
+          forView: controller.view,
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
@@ -146,7 +146,7 @@ final class PledgeAmountViewControllerTests: TestCase {
         self.stabilizeForSnapshot(controller)
 
         assertSnapshot(
-          forController: controller,
+          forView: controller.view,
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
@@ -183,7 +183,7 @@ final class PledgeAmountViewControllerTests: TestCase {
         self.stabilizeForSnapshot(controller)
 
         assertSnapshot(
-          forController: controller,
+          forView: controller.view,
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
@@ -227,7 +227,7 @@ final class PledgeAmountViewControllerTests: TestCase {
         self.stabilizeForSnapshot(controller)
 
         assertSnapshot(
-          forController: controller,
+          forView: controller.view,
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
@@ -267,7 +267,7 @@ final class PledgeAmountViewControllerTests: TestCase {
         self.stabilizeForSnapshot(controller)
 
         assertSnapshot(
-          forController: controller,
+          forView: controller.view,
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
@@ -308,7 +308,7 @@ final class PledgeAmountViewControllerTests: TestCase {
         self.stabilizeForSnapshot(controller)
 
         assertSnapshot(
-          forController: controller,
+          forView: controller.view,
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
@@ -349,7 +349,7 @@ final class PledgeAmountViewControllerTests: TestCase {
         self.stabilizeForSnapshot(controller)
 
         assertSnapshot(
-          forController: controller,
+          forView: controller.view,
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
