@@ -61,7 +61,9 @@ public struct OAuth {
       return session
 
     } catch {
-      Crashlytics.crashlytics().record(error: error)
+      // If these get triggered, we could add additional logging in the PKCE code to pass
+      // through the security failure codes. For now, log them all as one type.
+      Crashlytics.crashlytics().record(error: OAuthError.pkceError.nsError)
       return nil
     }
   }
@@ -80,6 +82,7 @@ public struct OAuth {
         }
       } else {
         DispatchQueue.main.async {
+          Crashlytics.crashlytics().record(error: OAuthError.redirectError(error).nsError)
           onComplete(.failure(errorMessage: Strings.Something_went_wrong_please_try_again()))
         }
       }
@@ -96,6 +99,7 @@ public struct OAuth {
 
     guard let code = codeFromRedirectURL(url) else {
       DispatchQueue.main.async {
+        Crashlytics.crashlytics().record(error: OAuthError.missingCodeError.nsError)
         onComplete(.failure(errorMessage: Strings.Something_went_wrong_please_try_again()))
       }
       return
@@ -115,6 +119,8 @@ public struct OAuth {
       .receive(on: RunLoop.main)
       .sink { result in
         if case let .failure(error) = result {
+          Crashlytics.crashlytics().record(error: OAuthError.exchangeFailedError(error).nsError)
+
           let message = error.errorMessages.first ?? Strings.login_errors_unable_to_log_in()
           onComplete(.failure(errorMessage: message))
         }

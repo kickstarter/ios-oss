@@ -521,6 +521,7 @@
 		E1855EBD2EE0BF3300B4E408 /* ShippingLocationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1855EBB2EE0BF3300B4E408 /* ShippingLocationsViewModel.swift */; };
 		E1855EC02EE0BF7400B4E408 /* ShippingLocationsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1855EBE2EE0BF6600B4E408 /* ShippingLocationsViewModelTests.swift */; };
 		E1855EC32EE0C82200B4E408 /* ShippingLocationsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1855EC12EE0C7E000B4E408 /* ShippingLocationsViewTests.swift */; };
+		E189C80A2F2AAC8D007A8776 /* OAuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E189C8092F2AAC8D007A8776 /* OAuthError.swift */; };
 		E18A674E2E28236D00BA0376 /* ApolloTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = E18A674D2E28236D00BA0376 /* ApolloTestSupport */; };
 		E18A67532E28241F00BA0376 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		E19900A32DDE26C40082F05E /* PercentRaisedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19900A22DDE26C10082F05E /* PercentRaisedView.swift */; };
@@ -990,6 +991,12 @@
 		E113BD832B7D255000D3A809 /* Library_Keychain_iOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library_Keychain_iOSTests.swift; sourceTree = "<group>"; };
 		E15E22CD2E54B91B00EE6BB0 /* KDS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = KDS; sourceTree = "<group>"; };
 		E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppEnvironmentTests+OAuthInKeychain.swift"; sourceTree = "<group>"; };
+		E1855EBA2EE0BF3300B4E408 /* ShippingLocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingLocationsView.swift; sourceTree = "<group>"; };
+		E1855EBB2EE0BF3300B4E408 /* ShippingLocationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingLocationsViewModel.swift; sourceTree = "<group>"; };
+		E1855EBE2EE0BF6600B4E408 /* ShippingLocationsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingLocationsViewModelTests.swift; sourceTree = "<group>"; };
+		E1855EC12EE0C7E000B4E408 /* ShippingLocationsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingLocationsViewTests.swift; sourceTree = "<group>"; };
+		E1889D8D2B6065D6004FBE21 /* CombineTestObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserverTests.swift; sourceTree = "<group>"; };
+		E189C8092F2AAC8D007A8776 /* OAuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthError.swift; sourceTree = "<group>"; };
 		E190EB1B2E29944E006A6DB6 /* BackerDashboardProjectCellFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BackerDashboardProjectCellFragment.graphql; sourceTree = "<group>"; };
 		E190EB1C2E29944E006A6DB6 /* BackingFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BackingFragment.graphql; sourceTree = "<group>"; };
 		E190EB1D2E29944E006A6DB6 /* CategoryFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CategoryFragment.graphql; sourceTree = "<group>"; };
@@ -1136,6 +1143,460 @@
 				AAC413552F215CE000DAD7C6 /* Kickstarter.xctestplan */,
 			);
 			name = Configs;
+			sourceTree = "<group>";
+		};
+		8A0B1E2824DA1048009E90C0 /* graphql */ = {
+			isa = PBXGroup;
+			children = (
+				D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */,
+				8AA407CD24DB5316008C5FB0 /* GraphCategoryTemplates.swift */,
+				D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */,
+				D08CD20221922025009F89F0 /* WatchProjectResponseEnvelopeTemplates.swift */,
+				D770DDE7217D729300B5319A /* GraphUserTemplates.swift */,
+			);
+			path = graphql;
+			sourceTree = "<group>";
+		};
+		8A213CE3239EAEA400BBB4C7 /* Tracking */ = {
+			isa = PBXGroup;
+			children = (
+				8A788F25263C80C500A89DAE /* Vendor */,
+				6018626529A9194600EA2842 /* AppTrackingTransparency.swift */,
+				395A3BC12B8E54C90091A379 /* AttributionTracking.swift */,
+				395A3BC32B8E56800091A379 /* AttributionTrackingTests.swift */,
+				6018626729A91B8C00EA2842 /* ThirdPartyEventInputName.swift */,
+				8A23203025B0ECF700B940C3 /* IdentifyingTrackingClient.swift */,
+				8A213CE8239EAEA400BBB4C7 /* KSRAnalytics.swift */,
+				8A4B8E812639F8C700D92E4E /* KSRAnalyticsIdentityData.swift */,
+				8A4B8E97263A153D00D92E4E /* KSRAnalyticsIdentityDataTests.swift */,
+				8A213CE7239EAEA400BBB4C7 /* KSRAnalyticsTests.swift */,
+				8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */,
+				AADDA7132CB6043D00E7112E /* ProjectAnalyticsProperties.swift */,
+				8A417DEF25AE37D200A2C406 /* Segment.swift */,
+				8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */,
+				94BE15C125E857C4007CD9A4 /* TrackingHelpers.swift */,
+				94BE15C925E96F06007CD9A4 /* TrackingHelpersTests.swift */,
+			);
+			path = Tracking;
+			sourceTree = "<group>";
+		};
+		8A788F25263C80C500A89DAE /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				8A788F26263C80D600A89DAE /* BrazeDebounceMiddleware.swift */,
+			);
+			path = Vendor;
+			sourceTree = "<group>";
+		};
+		8ABD5B3B24CFB026002E585C /* graphql */ = {
+			isa = PBXGroup;
+			children = (
+				8AA407BF24DA43D8008C5FB0 /* GraphCategory.swift */,
+				0620176B276956D200818A47 /* GraphComment.swift */,
+				0620176A276956D200818A47 /* GraphCommentTests.swift */,
+				D002CAE4218CF951009783F2 /* WatchProjectResponseEnvelope.swift */,
+				7798B56421750041008BC50D /* GraphUser.swift */,
+				6008633329B8FBD700B87B39 /* GraphUserEmail.swift */,
+				AA7BB45E2CF67DC200E2B2D4 /* GraphUserSetup.swift */,
+				D63BBD30217F7212007E01F0 /* UserCreditCards.swift */,
+				77DB53292215D0AA0078991C /* UserCreditCardsTests.swift */,
+				77FA1AF22445FB810035D659 /* GraphUserTests.swift */,
+				6008633529B9023300B87B39 /* GraphUserEmailTests.swift */,
+				8AE3F72F24DA29DE002B03C3 /* adapters */,
+			);
+			path = graphql;
+			sourceTree = "<group>";
+		};
+		8AE3F72F24DA29DE002B03C3 /* adapters */ = {
+			isa = PBXGroup;
+			children = (
+				8A1557062693A07500017845 /* Backing+BackingFragment.swift */,
+				8A15574226951A4B00017845 /* Backing+BackingFragmentTests.swift */,
+				0655C72B273321B20087281F /* Category+CategoryFragment.swift */,
+				0622C9232734778D0039AAC9 /* Category+CategoryFragmentTests.swift */,
+				0655C72F27335CA40087281F /* CategoryEnvelope+FetchCategoryQueryData.swift */,
+				0622C92527347EE10039AAC9 /* CategoryEnvelope+FetchCategoryQueryDataTests.swift */,
+				8AC3E0FF269F498900168BF8 /* Checkout+CheckoutFragment.swift */,
+				47D8619A26B9E98E00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.Data.swift */,
+				47D8619C26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift */,
+				19047FC82889BD8100BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.Data.swift */,
+				19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */,
+				8A15571C2693B29600017845 /* Comment+CommentFragment.swift */,
+				06C1256126A89408003BE6B9 /* Comment+CommentFragmentTests.swift */,
+				8A07CFF826657E8E00426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelope.swift */,
+				8A07D00326657F7700426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelopeTests.swift */,
+				8ADCCCB5264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift */,
+				8ADCCCBF264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift */,
+				8AC3E0D1269E338700168BF8 /* CreateBackingEnvelope+CreateBackingMutation.Data.swift */,
+				065E6BAB26B1F5A0007F67CA /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.Data.swift */,
+				06F7BE1926B334DB0094BF37 /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift */,
+				062868E926B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift */,
+				062868EB26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift */,
+				E1A1491F2ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift */,
+				E1A149232ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift */,
+				33AF66CB2DDE543E00558D49 /* GraphAPI.AddUserToSecretRewardGroupInput+AddUserToSecretRewardGroupInput.swift */,
+				8AC3E104269F4D1C00168BF8 /* GraphAPI.ApplePay+ApplePayParams.swift */,
+				4758484F26B32110005AAC1C /* GraphAPI.BackingState+BackingState.swift */,
+				47B1338E26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift */,
+				8AC3E0C9269E2E9C00168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInput.swift */,
+				8AC3E0E1269E53E800168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInputTests.swift */,
+				60C996E72AC1FDD8006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInput.swift */,
+				60C996E92AC1FDE3006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift */,
+				065E6BA926B1E5C7007F67CA /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInput.swift */,
+				06F7BE1B26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift */,
+				19047FCA2889CDAC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInput.swift */,
+				19047FCE2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift */,
+				062868E726B99E9F00EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInput.swift */,
+				062868ED26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift */,
+				06261604273B10BC00389981 /* GraphAPI.PostCommentInput+PostCommentInput.swift */,
+				06962F8E273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift */,
+				47D7D09726C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift */,
+				47D7D09B26C2FA5F00D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInputTests.swift */,
+				6093098C2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift */,
+				6093098E2A6054D8004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInputTests.swift */,
+				8AC3E10C269F4D4000168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInput.swift */,
+				8AC3E111269F4DAF00168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInputTests.swift */,
+				06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */,
+				06FFCE4926A71CC700D315EF /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift */,
+				06C38CBA26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift */,
+				069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */,
+				478E31C626C1CC2E004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInput.swift */,
+				478E31C426C1CB93004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInputTests.swift */,
+				47A662F226AF43DE001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInput.swift */,
+				E10BE8DF2B1517FB00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInput.swift */,
+				E10BE8E32B151A0B00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInputTests.swift */,
+				47A662F626AF75B7001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInputTests.swift */,
+				47A662F426AF65DA001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.Data.swift */,
+				47A662FA26AF792A001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.DataTests.swift */,
+				47A0432126A609C30011728E /* UserCreditCards+UserFragment.swift */,
+				06B9AF4226AF465000735908 /* UserCreditCards+UserFragmentTests.swift */,
+				8AC3E016269626A400168BF8 /* Location+LocationFragment.swift */,
+				8AC3E01E2696368A00168BF8 /* Location+LocationFragmentTests.swift */,
+				331746812E099BAF00C5FC1C /* LastWave+LastWaveFragment.swift */,
+				331746832E09AC2700C5FC1C /* LastWave+LastWaveFragmentTests.swift */,
+				06962F8A273B32D900FB0B3D /* PostCommentEnvelope+PostCommentMutationDataTests.swift */,
+				8AC3E045269791D400168BF8 /* Project.Category+CategoryFragment.swift */,
+				8AC3E0582697ABD900168BF8 /* Project.Category+CategoryFragmentTests.swift */,
+				8AC3E040269791C300168BF8 /* Project.Country+CountryFragment.swift */,
+				8AC3E05D2697ABEF00168BF8 /* Project.Country+CountryFragmentTests.swift */,
+				8AC3E0AB2698EFAA00168BF8 /* Project+FetchAddOnsQueryData.swift */,
+				8AC3E0B32698F03200168BF8 /* Project+FetchAddOnsQueryDataTests.swift */,
+				06B3605D26E12EB7006CB9E4 /* Project+FetchProjectQueryData.swift */,
+				0665C74826E9302100A0EDA1 /* Project+FetchProjectQueryDataTests.swift */,
+				06D23BBC26F2454700F76122 /* Project+FetchProjectFriendsQueryData.swift */,
+				06D23BBE26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift */,
+				06566374270BAA7C00CE7EDF /* Project+FetchProjectRewardsByIdQueryData.swift */,
+				064AEF0E270CECF0006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift */,
+				8AC3E03826977C0200168BF8 /* Project+ProjectFragment.swift */,
+				3317467F2E05D96C00C5FC1C /* PledgeManager+PledgeManagerFragment.swift */,
+				331746862E09BB7C00C5FC1C /* PledgeManager+PledgeManagerFragmentTests.swift */,
+				8AC3E05026979F8600168BF8 /* Project+ProjectFragmentTests.swift */,
+				8AC3E00626961E6400168BF8 /* Reward+RewardFragment.swift */,
+				8AC3E00B26961E8A00168BF8 /* Reward+RewardFragmentTests.swift */,
+				0622C929273486D10039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesQueryData.swift */,
+				0622C92B273499B60039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesEnvelopeDataTests.swift */,
+				8AC3E0952698CF0500168BF8 /* ShippingRule+ShippingRuleFragment.swift */,
+				8AC3E0A32698EE9500168BF8 /* ShippingRule+ShippingRuleFragmentTests.swift */,
+				47D7D09926C2EE5800D2BAB5 /* SignInWithAppleEnvelope+SignInWithAppleMutation.Data.swift */,
+				47D7D09D26C2FC4000D2BAB5 /* SignInWithAppleEnvelope+SignInWithAppleMutation.DataTests.swift */,
+				065E6BA526B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift */,
+				8AC3E127269F5B9700168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.DataTests.swift */,
+				8A1557142693B28300017845 /* User+UserFragment.swift */,
+				8AC3E0652697AC0400168BF8 /* User+UserFragmentTests.swift */,
+				4778EE2026A200BE0059EA69 /* UserEnvelope+GraphUserEnvelope.swift */,
+				473387DD26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift */,
+				06B9AF4426AF781000735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift */,
+				478E31C226C1C8A8004BF898 /* WatchProjectResponseEnvelope+UnwatchProjectMutation.Data.swift */,
+				478E31C826C1CD57004BF898 /* WatchProjectResponseEnvelope+UnwatchProjectMutation.DataTest.swift */,
+			);
+			path = adapters;
+			sourceTree = "<group>";
+		};
+		A73378F91D0AE33B00C91445 /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				E19E60B12E57823700443C5F /* PLOTBadgeColors.swift */,
+				33F55B422D4AA9E50007E50E /* BadgeViewStyles.swift */,
+				598D96C11D429756003F3F66 /* ActivitySampleStyles.swift */,
+				01FD71EB1D3808E500070BAC /* BarButtonItemStyles.swift */,
+				A73378FA1D0AE33B00C91445 /* BaseStyles.swift */,
+				A73379101D0E33A600C91445 /* ButtonStyles.swift */,
+				37280250226F878300E0ACBB /* CheckoutStyles.swift */,
+				941710B426557A6A00F5954E /* CommentCellStyles.swift */,
+				60EDE24B2EF1B49500C34E1C /* FloatingTabBarSemanticColors.swift */,
+				064B007927A469C8007B21FE /* HTMLViewElementStyles.swift */,
+				A757EB2A1D1AD89E00A5C978 /* DiscoveryStyles.swift */,
+				A73378FD1D0AE36400C91445 /* LoginStyles.swift */,
+				9DC572E41D36CA9800AE209C /* ProjectActivityStyles.swift */,
+				A796FF261D425A4500CD58AA /* ProjectStyles.swift */,
+				597582E21D5D12AE008765DE /* SettingsStyles.swift */,
+				01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */,
+				7705563A22BC03A600DCB062 /* TableViewStyles.swift */,
+			);
+			path = Styles;
+			sourceTree = "<group>";
+		};
+		A751A51B1C85EAD8009C5DEA /* SharedViews */ = {
+			isa = PBXGroup;
+			children = (
+				33C2FB6B2E203B5A0083B5FB /* KSRSearchBar.swift */,
+				33F85BD72D8BAB7900CD1834 /* Presenters */,
+				19C8E56729A923F4007C3504 /* SwiftUIHelpers */,
+				39F48E222D543A2700090D6C /* AlertBanner.swift */,
+				39F48E242D5521BE00090D6C /* AlertBannerTests.swift */,
+				77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */,
+				701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */,
+				370C8B63234FCC6F00DE75DD /* LoadingButton.swift */,
+				8ADF4D7524BCCFD60018AD4B /* PillsView.swift */,
+				D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */,
+				8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */,
+				77636FC0243CFE25007F67B9 /* ProcessingView.swift */,
+				3708DD42220A5A5700F8E569 /* SettingsGroupedFooterView.swift */,
+				8A2A2E2D238B3CBE002C62E0 /* UIView+ShimmerLoading.swift */,
+				8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */,
+				77D19FFB240859F20058FC8E /* HeaderFooterViews */,
+				3742036B22DD41A0007AA86E /* Layouts */,
+				1937A71A28C9407200DD732D /* Storyboards_DEPRECATED_09_07_2022 */,
+				1937A71B28C9412800DD732D /* SharedStoryboards */,
+				A7D8B67F1DCCD4B9009BF854 /* Transitions */,
+			);
+			path = SharedViews;
+			sourceTree = "<group>";
+		};
+		A751A51C1C85EAD8009C5DEA /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		A7A5F8221D11ECF60036139A /* Locales */ = {
+			isa = PBXGroup;
+			children = (
+				A7A5F8231D11ECF60036139A /* Localizable.strings */,
+			);
+			path = Locales;
+			sourceTree = "<group>";
+		};
+		A7C725771C85D36D005A016B /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */,
+				A709697D1D143D1300DB39D3 /* AlertError.swift */,
+				A7C725781C85D36D005A016B /* AppEnvironment.swift */,
+				A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */,
+				E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */,
+				D764373F22414FA900DAFC9E /* AppEnvironmentType.swift */,
+				77C9122823C4FC0B00F3D2C9 /* ApplePayCapabilities.swift */,
+				77C9122E23C508CF00F3D2C9 /* ApplePayCapabilitiesTests.swift */,
+				A7C725791C85D36D005A016B /* AssetImageGeneratorType.swift */,
+				374CB94E22C17D4E00B84219 /* CharacterSet.swift */,
+				374CB95022C17D6700B84219 /* CharacterSetTests.swift */,
+				A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */,
+				A7ED1F131E830FDC00BFFA01 /* CircleAvatarImageViewTests.swift */,
+				8A3BF51823F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift */,
+				77AA2B3C233D10D3008BBCB8 /* CreateBackingConstructorTests.swift */,
+				77AA2B39233C09F5008BBCB8 /* CreateBackingInput+Constructor.swift */,
+				8AFB8C96233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift */,
+				8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */,
+				194154CF28D8F2DE004648C8 /* CreatePaymentSourceSetupIntentClientSecret+Constructor.swift */,
+				194154D428D92A26004648C8 /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift */,
+				D6534D3922E7878D00E9D279 /* CreditCard+Utils.swift */,
+				D612A21822F0ED5A007F7FD9 /* CreditCard+UtilsTests.swift */,
+				8A4E954424525AC900A578CF /* CreditCardType+ImageName.swift */,
+				D798A6AD21656D970053D097 /* Currency.swift */,
+				3706408C22A9BE8100889CBD /* DateFormatter.swift */,
+				3706408F22A9BE9400889CBD /* DateFormatterTests.swift */,
+				A7F6F0C01DC7EBF7002C118C /* DateProtocol.swift */,
+				775D922822BD7CFD00442301 /* DebugData.swift */,
+				77F6E73421222E7C005A5C55 /* EmailFrequency.swift */,
+				A7C7257F1C85D36D005A016B /* Environment.swift */,
+				A7ED1F141E830FDC00BFFA01 /* EnvironmentTests.swift */,
+				3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */,
+				3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */,
+				D6BD66BA23CCF79D008694BB /* Equatable+Helpers.swift */,
+				D6BD66BC23CCF7B6008694BB /* EquatableHelpersTests.swift */,
+				8AC3E135269F781200168BF8 /* ErrorEnvelope+LocalizedDescription.swift */,
+				A72C3A8A1D00F6A80075227E /* ExpandableRow.swift */,
+				77556F1C20A09993008CEA57 /* ExperimentName+Helpers.swift */,
+				D667C2BB2305F03300EC094A /* ExperimentName+HelpersTests.swift */,
+				77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */,
+				AA4533622E7A2B6500B569E8 /* FacebookSDK.swift */,
+				AA4533632E7A2B6500B569E8 /* FacebookSDKType.swift */,
+				8AF91CDC22EF5AF7005F9C90 /* Feature.swift */,
+				A7C725801C85D36D005A016B /* Format.swift */,
+				A7ED1F151E830FDC00BFFA01 /* FormatTests.swift */,
+				A7CC14641D00E81B00035C52 /* FriendsSource.swift */,
+				A7C725811C85D36D005A016B /* GradientView.swift */,
+				D0200A5221935EDF00F5CC27 /* GraphError+LocalizedDescription.swift */,
+				A707BAD31CFFAB9400653B2F /* HelpType.swift */,
+				37CBA64C221E10E100E6CAB6 /* HelpTypeTests.swift */,
+				80E8EAC71D3EC65A007BDA4B /* Image.swift */,
+				7748437F22D8DA3800508C9B /* Instantiable.swift */,
+				7720BA6F22E0DBD00071FDA1 /* InstantiableTests.swift */,
+				D710ADF5243BE9F600DC7199 /* ISO8601DateFormatter.swift */,
+				A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */,
+				A7ED1F161E830FDC00BFFA01 /* IsValidEmailTests.swift */,
+				A72AFFD91CD7ED6B008F052B /* Keyboard.swift */,
+				E113BD762B7D1B7700D3A809 /* Keychain.swift */,
+				E113BD772B7D1B7700D3A809 /* KeychainTests.swift */,
+				A71404381CAF215900A2795B /* KeyValueStoreType.swift */,
+				A71F59E71D2424CA00909BE3 /* KSCache.swift */,
+				A7ED1F171E830FDC00BFFA01 /* KSCacheTests.swift */,
+				A7C725821C85D36D005A016B /* Language.swift */,
+				A7ED1F181E830FDC00BFFA01 /* LanguageTests.swift */,
+				A7C725831C85D36D005A016B /* LaunchedCountries.swift */,
+				A7ED1F191E830FDC00BFFA01 /* LaunchedCountriesTests.swift */,
+				6059151D2E15913A0030BB90 /* LocalizedLottieFile.swift */,
+				6059151F2E15914C0030BB90 /* LocalizedLottieFileTests.swift */,
+				A7C725841C85D36D005A016B /* LocalizedString.swift */,
+				A7ED1F1A1E830FDC00BFFA01 /* LocalizedStringTests.swift */,
+				A707BAD41CFFAB9400653B2F /* LoginIntent.swift */,
+				D0200A5321935EDF00F5CC27 /* MessageBannerType.swift */,
+				8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */,
+				D093B4B721A8B0E000910962 /* MockPushRegistration.swift */,
+				AA4533662E7A2C0A00B569E8 /* FacebookSDKTypeTests.swift */,
+				AA4533672E7A2C0A00B569E8 /* MockFacebookSDK.swift */,
+				606C45F929FACE17001BA067 /* MockRemoteConfigClient.swift */,
+				80E26A121D500C6A007B3022 /* Navigation.swift */,
+				77D19FF4240813240058FC8E /* NavigationController.swift */,
+				A7ED1F1B1E830FDC00BFFA01 /* NavigationTests.swift */,
+				59E877371DC9419700BCD1F7 /* Newsletter.swift */,
+				A707BAD51CFFAB9400653B2F /* Notifications.swift */,
+				A7C725911C85D36D005A016B /* NSBundleType.swift */,
+				37D99C2222247F4A008EF839 /* NSBundleType+Tests.swift */,
+				A78537F71CB5803B00385B73 /* NSHTTPCookieStorageType.swift */,
+				37EB3E4B228CF4A400076E4C /* NumberFormatter.swift */,
+				37EB3E4D228CF4FB00076E4C /* NumberFormatterTests.swift */,
+				E11CFE492B6C41B400497375 /* OAuth.swift */,
+				E189C8092F2AAC8D007A8776 /* OAuthError.swift */,
+				E16794292B85136900064063 /* OAuthTests.swift */,
+				609935EA2E1D7177009263C5 /* OnboardingUseCase.swift */,
+				609935EC2E1D718F009263C5 /* OnboardingUseCaseTests.swift */,
+				60CC7CA22E26A82D0055BE8F /* OnboardingViewModel.swift */,
+				60CC7CC42E280E2A0055BE8F /* OnboardingViewModelTests.swift */,
+				94C92E7B2659EDBF00A96818 /* PaddingLabel.swift */,
+				E16ECA6E2C245A12002A1D25 /* PagedContainer */,
+				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
+				A7ED1F1C1E830FDC00BFFA01 /* PaginateTests.swift */,
+				E17611E32B751E8100DF2F50 /* Paginator.swift */,
+				E17611E52B75242A00DF2F50 /* PaginatorTests.swift */,
+				E1801FA62BA8EDB500EBB533 /* PaginatingList.swift */,
+				373AB25C222A0D8900769FC2 /* PasswordValidation.swift */,
+				373AB25E222A0DAC00769FC2 /* PasswordValidationTests.swift */,
+				7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */,
+				77BC00EF2326F0CC00808E75 /* PKPaymentRequestHelpersTests.swift */,
+				D78E0355229305E20043E92F /* PledgeStateCTAType.swift */,
+				8A4503F3234BEDBD008309EC /* PledgeViewContext.swift */,
+				8A4503F5234BEDD4008309EC /* PledgeViewContextTests.swift */,
+				AAB4CBDC2D41BB030057BADB /* PPOUserSettings.swift */,
+				37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */,
+				A75C811A1D210C4700B5AD03 /* ProjectActivityItemProvider.swift */,
+				D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */,
+				3362A3CA2DA883E200E5E85D /* ProjectURLBuilder.swift */,
+				3362A3CC2DA8856600E5E85D /* ProjectURLBuilderTests.swift */,
+				D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */,
+				D6B4D9BE209B88F3002C7B68 /* PushNotificationDialogTests.swift */,
+				D76437782241500600DAFC9E /* PushNotificationDialogType.swift */,
+				D093B49B21A86FD800910962 /* PushRegistration.swift */,
+				D093B46221A86F7E00910962 /* PushRegistrationType.swift */,
+				8053D3101D3848A3007B85DB /* Reachability.swift */,
+				39B5E10D2B86C56600FFB720 /* RefInfo.swift */,
+				39B5E10F2B86C56E00FFB720 /* RefInfoTests.swift */,
+				19A666622A0472C700708F8B /* RemoteConfig */,
+				60AE9F022ABB822300FB3A96 /* ReportProjectInfoListItem.swift */,
+				D7ADDFE522E0DAEB00157D83 /* RewardCellProjectBackingStateType.swift */,
+				D7180BA022EF9DD900EB0110 /* RewardCellProjectBackingStateTypeTests.swift */,
+				0169F8C01D6CA27500C8D5C5 /* RootCategory.swift */,
+				A75C81191D210C4700B5AD03 /* SafariActivity.swift */,
+				A72C3A8B1D00F6A80075227E /* SelectableRow.swift */,
+				D60C8BE72142D60800D96152 /* SettingsAccountCellType.swift */,
+				77F6E73621222E97005A5C55 /* SettingsCellType.swift */,
+				77F6E73821222F4B005A5C55 /* SettingsNotificationCellType.swift */,
+				77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */,
+				A75C81251D210F1F00B5AD03 /* ShareContext.swift */,
+				A710573A1DC2B2DF00A69552 /* SharedFunctions.swift */,
+				A7ED1F1F1E830FDC00BFFA01 /* SharedFunctionsTests.swift */,
+				A718885C1DE0DDCE0094856D /* ShortcutItem.swift */,
+				3772A4C5229C9E2000EDDC6F /* String+Attributed.swift */,
+				8A4DDAB82374DF9F00ADE31D /* String+AttributedTests.swift */,
+				D79D61141FD0979D000F958B /* String+Base64.swift */,
+				D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */,
+				A7C725921C85D36D005A016B /* String+SimpleHTML.swift */,
+				A7ED1F201E830FDC00BFFA01 /* String+SimpleHTMLTests.swift */,
+				9D10B91A1D35407C008B8045 /* String+Truncate.swift */,
+				A7ED1F211E830FDC00BFFA01 /* String+TruncateTests.swift */,
+				8016BFE71D0F582D00067956 /* String+Whitespace.swift */,
+				A7ED1F221E830FDC00BFFA01 /* String+WhitespaceTests.swift */,
+				A79BF81E1D11F6AF004C0445 /* Strings.swift */,
+				60A80F542BE003A60052A829 /* StripeIntentService.swift */,
+				8AD48632235939AF00A1463E /* StripeTypes.swift */,
+				6080DA3E2AB366550088EF3D /* SwiftUI+Extensions */,
+				0156B4181D10B419000C4252 /* UIAlertController.swift */,
+				D69BACEF21C856F2006EAA00 /* UIAlertControllerTests.swift */,
+				370F52B2225426C700F159B9 /* UIApplication.swift */,
+				370F52792254267900F159B9 /* UIApplicationType.swift */,
+				0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */,
+				A7C725941C85D36D005A016B /* UIButton+LocalizedKey.swift */,
+				A78537BB1CB5416700385B73 /* UIDeviceType.swift */,
+				3757D0CD228E51F800241AE6 /* UIFont.swift */,
+				3757D106228E521600241AE6 /* UIFontTests.swift */,
+				A7C725951C85D36D005A016B /* UIGestureRecognizer-Extensions.swift */,
+				8A072D39230223B200BA1538 /* UIImage+Color.swift */,
+				A7C725961C85D36D005A016B /* UILabel+IBClear.swift */,
+				A7ED1F241E830FDC00BFFA01 /* UILabel+IBClearTests.swift */,
+				A7C725971C85D36D005A016B /* UILabel+LocalizedKey.swift */,
+				A7C725981C85D36D005A016B /* UILabel+SimpleHTML.swift */,
+				3378BABB2E323F4F00182E6A /* UIUserInterfaceStyle+Description.swift */,
+				A7ED1F251E830FDC00BFFA01 /* UILabel+SimpleHTMLTests.swift */,
+				D0D77C1D22D3FC3400356FEA /* UIPageViewController+ThreadSafety.swift */,
+				A7C725991C85D36D005A016B /* UIPress-Extensions.swift */,
+				8A6C58922475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift */,
+				A78537E11CB5422100385B73 /* UIScreenType.swift */,
+				A7169BF51DDD064200480C0D /* UIScrollView+Extensions.swift */,
+				37FDAF702273B7FF00662CC8 /* UIStackView.swift */,
+				D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */,
+				37FDAFAA2273B86800662CC8 /* UIStackView+Tests.swift */,
+				D0A787BE2204D975006AE4F4 /* UITableView+AutoLayoutHeaderView.swift */,
+				01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */,
+				37BB45C82243031100E7392A /* UIView+AutoLayout.swift */,
+				778CCCD92285BF8900FB8D35 /* UIView+AutoLayoutTests.swift */,
+				E11DE1192D70C02200DD2ECA /* UIViewController+Children.swift */,
+				A733795F1D0EDFEE00C91445 /* UIViewController-Preparation.swift */,
+				370BE71522541C8100B44DB2 /* UIViewController+URL.swift */,
+				370BE74E22541C8F00B44DB2 /* UIViewController+URLTests.swift */,
+				A75C811B1D210C4700B5AD03 /* UpdateActivityItemProvider.swift */,
+				84F3C491251C87A400AEF24D /* UpdateActivityItemProviderTests.swift */,
+				8AE8D86523466EB9005860C6 /* UpdateBackingInput+Constructor.swift */,
+				8AE8D86723466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift */,
+				D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */,
+				1611EF6623B2752A0051CDCC /* UUIDType.swift */,
+				A734A2661D21A1790080BBD5 /* WKNavigationActionData.swift */,
+				AA7452A82D91BB8100DCB655 /* UseCases */,
+				A7C725851C85D36D005A016B /* DataSource */,
+				778F891A22D3E35600D095C5 /* Extensions */,
+				A73378F91D0AE33B00C91445 /* Styles */,
+				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
+				8A213CE3239EAEA400BBB4C7 /* Tracking */,
+				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		A7C725851C85D36D005A016B /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				60ABF0272CC6B53A002E8FA9 /* PledgeRewardsSummarySection.swift */,
+				A75CFB071CCE7FCF004CD5FA /* StaticTableViewCell.swift */,
+				A76126A41C90C94000EDCCB9 /* UICollectionView-Extensions.swift */,
+				A76126A61C90C94000EDCCB9 /* UITableView-Extensions.swift */,
+				A76126A51C90C94000EDCCB9 /* UIView-Extensions.swift */,
+				A72E75961CC313A400983066 /* ValueCell.swift */,
+				A761269F1C90C94000EDCCB9 /* ValueCellDataSource.swift */,
+				A7ED1F3C1E831B4F00BFFA01 /* ValueCellDataSourceTests.swift */,
+			);
+			path = DataSource;
 			sourceTree = "<group>";
 		};
 		A7D1F9461C850B7C000D41D5 /* Kickstarter-iOS */ = {
@@ -2350,6 +2811,7 @@
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
 				598D96CB1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift in Sources */,
 				77216CE220EFE7F70061BE82 /* FacebookConnectionType.swift in Sources */,
+				E189C80A2F2AAC8D007A8776 /* OAuthError.swift in Sources */,
 				D7ADDFE722E0DAFA00157D83 /* RewardCellProjectBackingStateType.swift in Sources */,
 				D79D61151FD0979D000F958B /* String+Base64.swift in Sources */,
 				E1801FAA2BAB6D0900EBB533 /* PaymentSourceSelected.swift in Sources */,
