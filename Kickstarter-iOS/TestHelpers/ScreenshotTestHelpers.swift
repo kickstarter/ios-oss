@@ -15,6 +15,13 @@ internal struct ScreenshotType {
   internal let orientation: Orientation
 }
 
+internal extension ScreenshotType {
+  // Keep locale derivation consistent with screenshot language.
+  var locale: Locale {
+    return Locale(identifier: self.language.rawValue)
+  }
+}
+
 // Iterates through default screenshot configs using orthogonal sampling.
 /// Iterates over a representative set of screenshot configs using orthogonal sampling to avoid
 /// full Cartesian explosion while ensuring each dimension is covered at least once.

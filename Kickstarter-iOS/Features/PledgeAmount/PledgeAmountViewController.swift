@@ -68,7 +68,6 @@ final class PledgeAmountViewController: UIViewController {
       self.amountInputStackView
     ], self.adaptableStackView)
       |> ksr_addArrangedSubviewsToStackView()
-
     self.amountInputView.textField.delegate = self
 
     self.amountInputView.doneButton.addTarget(
@@ -108,10 +107,13 @@ final class PledgeAmountViewController: UIViewController {
       |> \.axis .~ .vertical
       |> \.spacing .~ Styles.grid(1)
 
-    _ = self.amountInputStackView
-      |> \.alignment .~ .center
-      |> \.spacing .~ Styles.grid(1)
+    let amountInputAxis: NSLayoutConstraint.Axis = isAccessibilityCategory ? .vertical : .horizontal
+    let amountInputAlignment: UIStackView.Alignment = isAccessibilityCategory ? .leading : .center
 
+    _ = self.amountInputStackView
+      |> \.axis .~ amountInputAxis
+      |> \.alignment .~ amountInputAlignment
+      |> \.spacing .~ Styles.grid(1)
     _ = self.horizontalSpacer
       |> \.isHidden .~ isAccessibilityCategory
 
@@ -134,6 +136,10 @@ final class PledgeAmountViewController: UIViewController {
 
     _ = self.maxPledgeAmountErrorLabel
       |> maxPledgeAmountErrorLabelStyle
+
+    self.plusSignLabel.setContentHuggingPriority(.required, for: .horizontal)
+    self.amountInputView.setContentCompressionResistancePriority(.required, for: .horizontal)
+    self.amountInputView.setContentHuggingPriority(.required, for: .horizontal)
   }
 
   // MARK: - View model
