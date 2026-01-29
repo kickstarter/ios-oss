@@ -26,11 +26,23 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    assertSnapshot(matching: tabs, as: .image, named: "firstTab")
+    forEachScreenshotType(languages: [.en]) { type in
+      assertSnapshot(
+        forSwiftUIView: tabs,
+        withType: type,
+        size: self.size,
+        testName: "testTabSelection_firstTab"
+      )
 
-    viewModel.didSelect(page: secondPage)
+      viewModel.didSelect(page: secondPage)
 
-    assertSnapshot(matching: tabs, as: .image, named: "secondTab")
+      assertSnapshot(
+        forSwiftUIView: tabs,
+        withType: type,
+        size: self.size,
+        testName: "testTabSelection_secondTab"
+      )
+    }
   }
 
   func testSecondTabBadge() {
@@ -46,7 +58,14 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    assertSnapshot(matching: tabs, as: .image, named: "long name")
+    forEachScreenshotType(languages: [.en]) { type in
+      assertSnapshot(
+        forSwiftUIView: tabs,
+        withType: type,
+        size: self.size,
+        testName: "testSecondTabBadge"
+      )
+    }
   }
 
   func testThreeTabs() {
@@ -64,7 +83,14 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    assertSnapshot(matching: tabs, as: .image, named: "long name")
+    forEachScreenshotType(languages: [.en]) { type in
+      assertSnapshot(
+        forSwiftUIView: tabs,
+        withType: type,
+        size: self.size,
+        testName: "testThreeTabs"
+      )
+    }
   }
 
   func testLongName() {
@@ -80,7 +106,14 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    assertSnapshot(matching: tabs, as: .image, named: "long name")
+    forEachScreenshotType(languages: [.en]) { type in
+      assertSnapshot(
+        forSwiftUIView: tabs,
+        withType: type,
+        size: self.size,
+        testName: "testLongName"
+      )
+    }
   }
 
   func testLongGermanNames() {
@@ -96,7 +129,14 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    assertSnapshot(matching: tabs, as: .image, named: "German")
+    forEachScreenshotType(languages: [.en]) { type in
+      assertSnapshot(
+        forSwiftUIView: tabs,
+        withType: type,
+        size: self.size,
+        testName: "testLongGermanNames"
+      )
+    }
   }
 
   func testLongBadge() {
@@ -112,7 +152,14 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    assertSnapshot(matching: tabs, as: .image, named: "long badge")
+    forEachScreenshotType(languages: [.en]) { type in
+      assertSnapshot(
+        forSwiftUIView: tabs,
+        withType: type,
+        size: self.size,
+        testName: "testLongBadge"
+      )
+    }
   }
 
   func testNoBadges() {
@@ -128,7 +175,14 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    assertSnapshot(matching: tabs, as: .image, named: "no badges")
+    forEachScreenshotType(languages: [.en]) { type in
+      assertSnapshot(
+        forSwiftUIView: tabs,
+        withType: type,
+        size: self.size,
+        testName: "testNoBadges"
+      )
+    }
   }
 
   func testNoBadgesLongNames() {
@@ -144,7 +198,14 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    assertSnapshot(matching: tabs, as: .image, named: "no badges")
+    forEachScreenshotType(languages: [.en]) { type in
+      assertSnapshot(
+        forSwiftUIView: tabs,
+        withType: type,
+        size: self.size,
+        testName: "testNoBadgesLongNames"
+      )
+    }
   }
 
   func testBadgeAndDot() {
@@ -160,6 +221,13 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    assertSnapshot(matching: tabs, as: .image, named: "badge and dot")
+    forEachScreenshotType(languages: [.en]) { type in
+      assertSnapshot(
+        forSwiftUIView: tabs,
+        withType: type,
+        size: self.size,
+        testName: "testBadgeAndDot"
+      )
+    }
   }
 }
