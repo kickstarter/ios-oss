@@ -754,10 +754,11 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
 
         /// The payment increment amount represented in various formats
         public var amount: Amount { __data["amount"] }
+        /// If the payment increment has a backing, return human-readable information about the status of the payment increment
+        public var badge: Badge? { __data["badge"] }
         public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
         /// The state of the payment increment
         public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
-        public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
         /// The original amount minus the refunded amount formatted in the project native currency
         public var refundUpdatedAmountInProjectNativeCurrency: String? { __data["refundUpdatedAmountInProjectNativeCurrency"] }
         /// The total amount that has been refunded on the payment increment, across potentially multiple adjustments
@@ -772,9 +773,9 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
 
         public init(
           amount: Amount,
+          badge: Badge? = nil,
           scheduledCollection: GraphAPI.ISO8601DateTime,
           state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
-          stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil,
           refundUpdatedAmountInProjectNativeCurrency: String? = nil,
           refundedAmount: RefundedAmount? = nil
         ) {
@@ -782,9 +783,9 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
             data: [
               "__typename": GraphAPI.Objects.PaymentIncrement.typename,
               "amount": amount._fieldData,
+              "badge": badge._fieldData,
               "scheduledCollection": scheduledCollection,
               "state": state,
-              "stateReason": stateReason,
               "refundUpdatedAmountInProjectNativeCurrency": refundUpdatedAmountInProjectNativeCurrency,
               "refundedAmount": refundedAmount._fieldData,
             ],
@@ -796,6 +797,8 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
         }
 
         public typealias Amount = PaymentIncrementBackingFragment.Amount
+
+        public typealias Badge = PaymentIncrementBackingFragment.Badge
 
         public typealias RefundedAmount = PaymentIncrementBackingFragment.RefundedAmount
       }

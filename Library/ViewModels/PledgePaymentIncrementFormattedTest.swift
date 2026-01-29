@@ -12,10 +12,11 @@ final class PledgePaymentIncrementFormattedTest: TestCase {
 
     let increment = PledgePaymentIncrement(
       amount: amount,
-      scheduledCollection: TimeInterval(1_240_902_000),
-      state: .collected,
-      stateReason: nil,
-      refundStatus: .unknown
+      badge: PledgePaymentIncrement.Badge(
+        copy: "Collected",
+        variant: .green
+      ),
+      refundStatus: .unknown, scheduledCollection: TimeInterval(1_240_902_000)
     )
 
     let incrementFormatted = PledgePaymentIncrementFormatted(from: increment, index: 0)

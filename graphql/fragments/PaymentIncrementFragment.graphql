@@ -4,6 +4,4 @@ fragment PaymentIncrementFragment on PaymentIncrement {
     currency
   }
   scheduledCollection
-  state
-  stateReason
 }

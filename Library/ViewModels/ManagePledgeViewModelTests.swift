@@ -220,7 +220,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.configurePaymentMethodView.assertDidNotEmitValue()
 
     let project = Project.template
-    let backing = Backing.templatePlot
+    let backing = Backing.templateManagePledgeWithPlot
       |> Backing.lens.status .~ .errored
 
     let mockService = MockService(
@@ -255,7 +255,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.configurePaymentMethodView.assertDidNotEmitValue()
 
     let project = Project.template
-    let backing = Backing.templatePlot
+    let backing = Backing.templateManagePledgeWithPlot
       |> Backing.lens.status .~ .authenticationRequired
 
     let mockService = MockService(
@@ -552,7 +552,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.isPledgeOverTimeAllowed .~ true
 
-    let backing = Backing.templatePlot
+    let backing = Backing.templateManagePledgeWithPlot
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
@@ -595,7 +595,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.isPledgeOverTimeAllowed .~ true
 
-    let backing = Backing.templatePlot
+    let backing = Backing.templateManagePledgeWithPlot
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
@@ -635,7 +635,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.isPledgeOverTimeAllowed .~ true
 
-    let backing = Backing.templatePlot
+    let backing = Backing.templateManagePledgeWithPlot
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
@@ -1818,7 +1818,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.creator .~ user
 
-    let backing = Backing.templatePlot
+    let backing = Backing.templateManagePledgeWithPlot
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),

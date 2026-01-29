@@ -36,10 +36,22 @@ extension Backing {
         currency: "USD",
         amountFormattedInProjectNativeCurrency: "$10.00"
       ),
+      refundStatus: .unknown,
       scheduledCollection: ApiMockDate().timeIntervalSince1970,
-      state: .collected,
-      stateReason: nil,
-      refundStatus: .unknown
+    )]
+
+  internal static let templateManagePledgeWithPlot = Backing.template
+    |> Backing.lens.paymentIncrements .~ [.init(
+      amount: .init(
+        currency: "USD",
+        amountFormattedInProjectNativeCurrency: "$10.00"
+      ),
+      badge: PledgePaymentIncrement.Badge(
+        copy: "Collected",
+        variant: .green
+      ),
+      refundStatus: .notRefunded,
+      scheduledCollection: ApiMockDate().timeIntervalSince1970,
     )]
 
   internal static let templateMadeWithPledgeManagment = Backing.template
