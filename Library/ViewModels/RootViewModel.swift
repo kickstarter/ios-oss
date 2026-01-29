@@ -166,10 +166,16 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       self.viewDidLoadProperty.signal,
       self.applicationWillEnterForegroundSignal.signal
     )
+    .map { _ in featureFloatingTabBarEnabled() }
+    .skipRepeats()
+    .skip(first: 1)
 
-    let floatingTabBarEnabled = featuredFlagChanged
-      .map { _ in featureFloatingTabBarEnabled() }
-      .skipRepeats()
+    let floatingTabBarEnabled = Signal.merge(
+      self.viewDidLoadProperty.signal,
+      featuredFlagChanged.ignoreValues()
+    )
+    .map { _ in featureFloatingTabBarEnabled() }
+    .skipRepeats()
 
     self.floatingTabBarEnabled = floatingTabBarEnabled
 
@@ -188,7 +194,12 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       // https://kickstarter.atlassian.net/browse/MBL-2053
       Signal
         .combineLatest(loginState, floatingTabBarEnabled)
-        .takeWhen(self.userLocalePreferencesChangedProperty.signal)
+        .takeWhen(
+          Signal.merge(
+            self.userLocalePreferencesChangedProperty.signal,
+            featuredFlagChanged.ignoreValues()
+          )
+        )
         .map { isLoggedIn, isFloatingTabBarEnabled -> [RootViewControllerData] in
           generateViewControllers(
             isLoggedIn: isLoggedIn,
@@ -316,6 +327,7 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
     self.tabBarItemsData = Signal.combineLatest(
       currentUser, floatingTabBarEnabled, .merge(
         self.viewDidLoadProperty.signal,
+        featuredFlagChanged.ignoreValues(),
         self.userLocalePreferencesChangedProperty.signal
       )
     )

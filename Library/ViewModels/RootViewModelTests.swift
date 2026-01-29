@@ -668,8 +668,10 @@ final class RootViewModelTests: TestCase {
     withEnvironment(remoteConfigClient: remoteConfig) {
       self.vm.inputs.applicationWillEnterForeground()
 
-      self.viewControllerNames.assertValueCount(2, "State changed so recreate data.")
-      self.tabBarItemsData.assertValueCount(2, "State changed so recreate data.")
+      // The view controller names and tab bar items data get recreated twice. Once because
+      // any watched feature flag changed and once because the floating tab bar value changed.
+      self.viewControllerNames.assertValueCount(3, "State changed so recreate data.")
+      self.tabBarItemsData.assertValueCount(3, "State changed so recreate data.")
       self.floatingTabBarEnabled.assertValueCount(2, "State changed so recreate data.")
     }
   }
