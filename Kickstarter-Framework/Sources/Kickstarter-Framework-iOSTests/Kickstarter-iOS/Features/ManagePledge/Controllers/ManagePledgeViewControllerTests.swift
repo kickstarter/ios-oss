@@ -575,10 +575,18 @@ final class ManagePledgeViewControllerTests: TestCase {
     ]
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+
+      let locale = Locale(
+        components: Locale.Components(
+          languageCode: Locale.LanguageCode(language.rawValue)
+        )
+      )
+
       withEnvironment(
         apiService: mockService,
         currentUser: user,
         language: language,
+        locale: locale,
         remoteConfigClient: mockConfigClient
       ) {
         let controller = ManagePledgeViewController.instantiate()

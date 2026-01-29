@@ -3,9 +3,12 @@ fragment PaymentIncrementBackingFragment on PaymentIncrement {
     amountFormattedInProjectNativeCurrency
     currency
   }
+  badge {
+    copy
+    variant
+  }
   scheduledCollection
   state
-  stateReason
   refundUpdatedAmountInProjectNativeCurrency
   refundedAmount {
     currency

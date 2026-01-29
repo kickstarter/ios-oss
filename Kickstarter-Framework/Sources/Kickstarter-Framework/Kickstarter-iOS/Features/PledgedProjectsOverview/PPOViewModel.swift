@@ -86,10 +86,6 @@ enum PPOPreparedEvent: Equatable {
 
 final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutputs {
   init() {
-    let tierTypes = featurePledgedProjectsOverviewV2Enabled()
-      ? PPOTierType.fundedProjectGraphQLTypes()
-      : PPOTierType.projectAlertGraphQLTypes()
-
     let paginator: PPOViewModelPaginator = Paginator(
       valuesFromEnvelope: { data -> [PPOProjectCardViewModel] in
         data.pledgeProjectsOverview?.pledges?.edges?
@@ -101,14 +97,14 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       totalFromEnvelope: { data in data.pledgeProjectsOverview?.pledges?.totalCount },
       requestFromParams: { () in
         AppEnvironment.current.apiService.fetchPledgedProjects(
-          tierTypes: tierTypes,
+          tierTypes: Self.tierTypes(),
           cursor: nil,
           limit: Constants.pageSize
         )
       },
       requestFromCursor: { cursor in
         AppEnvironment.current.apiService.fetchPledgedProjects(
-          tierTypes: tierTypes,
+          tierTypes: Self.tierTypes(),
           cursor: cursor,
           limit: Constants.pageSize
         )
@@ -306,6 +302,12 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         onProgress: onProgress
       )
     }
+  }
+
+  static func tierTypes() -> [PledgeProjectsOverviewSort] {
+    return featurePledgedProjectsOverviewV2Enabled()
+      ? PPOTierType.fundedProjectGraphQLTypes()
+      : PPOTierType.projectAlertGraphQLTypes()
   }
 
   // MARK: - Inputs

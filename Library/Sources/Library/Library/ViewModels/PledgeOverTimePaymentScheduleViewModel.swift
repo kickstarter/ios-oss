@@ -100,22 +100,43 @@ private func getAmountString(from increment: PledgePaymentIncrement) -> String {
 }
 
 private func getStateLabelText(from increment: PledgePaymentIncrement) -> String {
-  if increment.state == .collected, case .partialRefund = increment.refundStatus {
-    return Strings.Collected_adjusted()
+  guard let badge = increment.badge else {
+    assert(false, "Missing badge when it should have been fetched.")
+    return ""
   }
 
-  let requiresAction = increment.state == .errored && increment.stateReason == .requiresAction
-
-  return requiresAction ? Strings.Authentication_required() : increment.state.description
+  return badge.copy
 }
 
 private func getBadgeStyle(from increment: PledgePaymentIncrement) -> BadgeStyle {
-  let requiresAction = increment.state == .errored && increment.stateReason == .requiresAction
+  guard let badge = increment.badge else {
+    assert(false, "Missing badge when it should have been fetched.")
+    return .neutral
+  }
 
-  let requiresActionBadgeStyle = BadgeStyle.custom(
-    foregroundColor: Colors.PLOT.Badge.Text.yellow.uiColor(),
-    backgroundColor: Colors.PLOT.Badge.Background.yellow.uiColor()
-  )
-
-  return requiresAction ? requiresActionBadgeStyle : increment.state.badgeStyle
+  switch badge.variant {
+  case .purple:
+    return .custom(
+      foregroundColor: Colors.PLOT.Badge.Text.purple.uiColor(),
+      backgroundColor: Colors.PLOT.Badge.Background.purple.uiColor()
+    )
+  case .green:
+    return .custom(
+      foregroundColor: Colors.PLOT.Badge.Text.green.uiColor(),
+      backgroundColor: Colors.PLOT.Badge.Background.green.uiColor()
+    )
+  case .red:
+    // TODO: This variant isn't implemented on the backend; I believe it's a bug and should actually be danger.
+    fallthrough
+  case .danger:
+    return BadgeStyle.custom(
+      foregroundColor: Colors.PLOT.Badge.Text.danger.uiColor(),
+      backgroundColor: Colors.PLOT.Badge.Background.danger.uiColor()
+    )
+  case .gray:
+    return .custom(
+      foregroundColor: Colors.PLOT.Badge.Text.gray.uiColor(),
+      backgroundColor: Colors.PLOT.Badge.Background.gray.uiColor()
+    )
+  }
 }

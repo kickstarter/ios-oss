@@ -98,15 +98,15 @@ final class ProjectAndBackingEnvelopeTests: XCTestCase {
     XCTAssertEqual(backing.status, .pledged)
     XCTAssertEqual(backing.paymentIncrements.count, 3)
 
-    XCTAssertEqual(backing.paymentIncrements[0].state, .collected)
+    XCTAssertEqual(backing.paymentIncrements[0].badge?.copy, "Collected")
     XCTAssertEqual(backing.paymentIncrements[0].refundStatus, .notRefunded)
 
-    XCTAssertEqual(backing.paymentIncrements[1].state, .collected)
+    XCTAssertEqual(backing.paymentIncrements[1].badge?.copy, "Collected (adjusted)")
     if case let .partialRefund(amount) = backing.paymentIncrements[1].refundStatus {
       XCTAssertEqual(amount.amountFormattedInProjectNativeCurrency, "$23.00")
     }
 
-    XCTAssertEqual(backing.paymentIncrements[2].state, .refunded)
+    XCTAssertEqual(backing.paymentIncrements[2].badge?.copy, "Refunded")
     XCTAssertEqual(backing.paymentIncrements[2].refundStatus, .fullRefund)
   }
 }

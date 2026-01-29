@@ -14,9 +14,6 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
 
     mock.scheduledCollection = "2025-03-31T10:29:19-04:00"
 
-    mock.state = GraphQLEnum<PaymentIncrementState>(PaymentIncrementState.collected)
-    mock.stateReason = GraphQLEnum<PaymentIncrementStateReason>(PaymentIncrementStateReason.requiresAction)
-
     let incrementFragment = GraphAPI.PaymentIncrementFragment.from(mock)
     let increment = PledgePaymentIncrement(withGraphQLFragment: incrementFragment)
 
@@ -24,9 +21,12 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
     XCTAssertEqual(increment!.amount.currency, "USD")
     XCTAssertEqual(increment!.amount.amountFormattedInProjectNativeCurrency, "$99.75")
     XCTAssertEqual(increment!.scheduledCollection, 1_743_431_359.0)
-    XCTAssertEqual(increment!.state, .collected)
-    XCTAssertEqual(increment!.stateReason, .requiresAction)
-    XCTAssertEqual(increment!.refundStatus, .unknown)
+    XCTAssertNil(increment?.badge, "Badge should not be set for PaymentIncrementFragment")
+    XCTAssertEqual(
+      increment?.refundStatus,
+      .unknown,
+      "Refund status should not be set for PaymentIncrementFragment"
+    )
   }
 
   func testPaymentIncrementViewModel_fromInvalidFragment_isNil() {
@@ -53,6 +53,10 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
     mock.refundedAmount?.currency = "USD"
     mock.refundUpdatedAmountInProjectNativeCurrency = "$55.50"
 
+    mock.badge = Mock<GraphAPITestMocks.PaymentIncrementBadge>()
+    mock.badge?.variant = GraphQLEnum<GraphAPI.PaymentIncrementBadgeVariant>(.green)
+    mock.badge?.copy = "Collected (Adjusted)"
+
     let incrementFragment = GraphAPI.PaymentIncrementBackingFragment.from(mock)
     let increment = PledgePaymentIncrement(withIncrementBackingFragment: incrementFragment)
 
@@ -60,8 +64,6 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
     XCTAssertEqual(increment?.amount.currency, "USD")
     XCTAssertEqual(increment?.amount.amountFormattedInProjectNativeCurrency, "$99.75")
     XCTAssertEqual(increment?.scheduledCollection, 1_743_431_359.0)
-    XCTAssertEqual(increment?.state, .collected)
-    XCTAssertNil(increment?.stateReason)
 
     if case let .partialRefund(amount) = increment?.refundStatus {
       XCTAssertEqual(amount.currency, "USD")
@@ -69,6 +71,10 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
     } else {
       XCTFail("Expected refundStatus to be .refunded")
     }
+
+    XCTAssertNotNil(increment!.badge)
+    XCTAssertEqual(increment?.badge?.variant, .green)
+    XCTAssertEqual(increment?.badge?.copy, "Collected (Adjusted)")
   }
 
   func testPaymentIncrementViewModel_fromIncrementBackingFragment_withFullRefunded() {
@@ -79,6 +85,10 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
 
     mock.scheduledCollection = "2025-03-31T10:29:19-04:00"
     mock.state = GraphQLEnum<PaymentIncrementState>(PaymentIncrementState.refunded)
+
+    mock.badge = Mock<GraphAPITestMocks.PaymentIncrementBadge>()
+    mock.badge?.variant = GraphQLEnum<GraphAPI.PaymentIncrementBadgeVariant>(.gray)
+    mock.badge?.copy = "Refunded"
 
     mock.refundedAmount = Mock<GraphAPITestMocks.PaymentIncrementAmount>()
     mock.refundedAmount?.currency = "USD"
@@ -91,8 +101,7 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
     XCTAssertEqual(increment?.amount.currency, "USD")
     XCTAssertEqual(increment?.amount.amountFormattedInProjectNativeCurrency, "$99.75")
     XCTAssertEqual(increment?.scheduledCollection, 1_743_431_359.0)
-    XCTAssertEqual(increment?.state, .refunded)
-    XCTAssertNil(increment?.stateReason)
+    XCTAssertEqual(increment?.badge?.copy, "Refunded")
     XCTAssertEqual(increment?.refundStatus, .fullRefund)
   }
 
@@ -105,6 +114,10 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
     mock.scheduledCollection = "2025-03-31T10:29:19-04:00"
     mock.state = GraphQLEnum<PaymentIncrementState>(PaymentIncrementState.collected)
 
+    mock.badge = Mock<GraphAPITestMocks.PaymentIncrementBadge>()
+    mock.badge?.variant = GraphQLEnum<GraphAPI.PaymentIncrementBadgeVariant>(.green)
+    mock.badge?.copy = "Collected"
+
     let incrementFragment = GraphAPI.PaymentIncrementBackingFragment.from(mock)
     let increment = PledgePaymentIncrement(withIncrementBackingFragment: incrementFragment)
 
@@ -112,8 +125,10 @@ final class PledgePaymentIncrementGraphAPITests: XCTestCase {
     XCTAssertEqual(increment?.amount.currency, "USD")
     XCTAssertEqual(increment?.amount.amountFormattedInProjectNativeCurrency, "$99.75")
     XCTAssertEqual(increment?.scheduledCollection, 1_743_431_359.0)
-    XCTAssertEqual(increment?.state, .collected)
-    XCTAssertNil(increment?.stateReason)
     XCTAssertEqual(increment?.refundStatus, .notRefunded)
+
+    XCTAssertNotNil(increment!.badge)
+    XCTAssertEqual(increment?.badge?.variant, .green)
+    XCTAssertEqual(increment?.badge?.copy, "Collected")
   }
 }

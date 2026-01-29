@@ -1,30 +1,42 @@
 import Foundation
 
 public struct PledgePaymentIncrement: Equatable, Decodable {
-  public let amount: PledgePaymentIncrementAmount
-  public let scheduledCollection: TimeInterval
-  public var state: PledgePaymentIncrementState
-  public var stateReason: PledgePaymentIncrementStateReason?
-  public let refundStatus: RefundStatus
+  public struct Badge: Equatable, Decodable {
+    public enum Variant: String, Decodable {
+      case purple = "PURPLE"
+      case green = "GREEN"
+      case red = "RED"
+      case danger = "DANGER"
+      case gray = "GRAY"
+    }
+
+    public internal(set) var copy: String
+    public internal(set) var variant: PledgePaymentIncrement.Badge.Variant
+  }
+
+  public internal(set) var amount: PledgePaymentIncrementAmount
+  /// Badge will only be set for pledge increments with a backing.
+  public internal(set) var badge: PledgePaymentIncrement.Badge?
+  /// Refund status will only be set for pledge increments with a backing. Otherwise, it will be `.unknown`
+  public internal(set) var refundStatus: RefundStatus
+  public internal(set) var scheduledCollection: TimeInterval
 
   public init(
     amount: PledgePaymentIncrementAmount,
-    scheduledCollection: TimeInterval,
-    state: PledgePaymentIncrementState,
-    stateReason: PledgePaymentIncrementStateReason?,
-    refundStatus: RefundStatus
+    badge: PledgePaymentIncrement.Badge? = nil,
+    refundStatus: RefundStatus,
+    scheduledCollection: TimeInterval
   ) {
     self.amount = amount
-    self.scheduledCollection = scheduledCollection
-    self.state = state
-    self.stateReason = stateReason
+    self.badge = badge
     self.refundStatus = refundStatus
+    self.scheduledCollection = scheduledCollection
   }
 }
 
 public struct PledgePaymentIncrementAmount: Equatable, Decodable {
-  public let currency: String
-  public let amountFormattedInProjectNativeCurrency: String
+  public internal(set) var currency: String
+  public internal(set) var amountFormattedInProjectNativeCurrency: String
 
   public init(
     currency: String,
@@ -33,18 +45,6 @@ public struct PledgePaymentIncrementAmount: Equatable, Decodable {
     self.currency = currency
     self.amountFormattedInProjectNativeCurrency = amountFormattedInProjectNativeCurrency
   }
-}
-
-public enum PledgePaymentIncrementState: String, Decodable {
-  case collected = "COLLECTED"
-  case errored = "ERRORED"
-  case unattempted = "UNATTEMPTED"
-  case cancelled = "CANCELLED"
-  case refunded = "REFUNDED"
-}
-
-public enum PledgePaymentIncrementStateReason: String, Decodable {
-  case requiresAction = "REQUIRES_ACTION"
 }
 
 extension PledgePaymentIncrement {

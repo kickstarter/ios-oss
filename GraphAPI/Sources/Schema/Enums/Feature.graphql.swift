@@ -47,7 +47,6 @@ public enum Feature: String, EnumType {
   case projectBuildIntercom = "project_build_intercom"
   case projectBuildZendesk = "project_build_zendesk"
   case projectBuildMilestones = "project_build_milestones"
-  case userMenuDraftProject = "user_menu_draft_project"
   case make1002020 = "make_100_2020"
   case fundingSheet = "funding_sheet"
   case qualtrics = "qualtrics"
@@ -141,8 +140,6 @@ public enum Feature: String, EnumType {
   case pledgeManagerEligibilityQuestionnaire2025 = "pledge_manager_eligibility_questionnaire_2025"
   case pmOrderEditing2025 = "pm_order_editing_2025"
   case followersOnlyUpdates = "followers_only_updates"
-  case sauceUserMenu = "sauce_user_menu"
-  case accessPmConfigPostLaunch2025 = "access_pm_config_post_launch_2025"
   case taxEducation2025 = "tax_education_2025"
   case sauceProjectFaqs = "sauce_project_faqs"
   case sauceLoginSignup = "sauce_login_signup"
@@ -153,4 +150,5 @@ public enum Feature: String, EnumType {
   case editIntroPmConfigPostLaunch2026 = "edit_intro_pm_config_post_launch_2026"
   case editRewardPmConfigPostLaunch2026 = "edit_reward_pm_config_post_launch_2026"
   case editShippingPmConfigPostLaunch2026 = "edit_shipping_pm_config_post_launch_2026"
+  case partnerProgramRefresh = "partner_program_refresh"
 }
