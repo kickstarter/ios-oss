@@ -166,9 +166,16 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       self.viewDidLoadProperty.signal,
       self.applicationWillEnterForegroundSignal.signal
     )
+    .map { _ in featureFloatingTabBarEnabled() }
+    .skipRepeats()
+    .skip(first: 1)
 
-    let floatingTabBarEnabled = featuredFlagChanged
-      .map { _ in featureFloatingTabBarEnabled() }
+    let floatingTabBarEnabled = Signal.merge(
+      self.viewDidLoadProperty.signal,
+      featuredFlagChanged.ignoreValues()
+    )
+    .map { _ in featureFloatingTabBarEnabled() }
+    .skipRepeats()
 
     self.floatingTabBarEnabled = floatingTabBarEnabled
 
@@ -320,8 +327,8 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
     self.tabBarItemsData = Signal.combineLatest(
       currentUser, floatingTabBarEnabled, .merge(
         self.viewDidLoadProperty.signal,
-        self.userLocalePreferencesChangedProperty.signal,
-        featuredFlagChanged.ignoreValues()
+        featuredFlagChanged.ignoreValues(),
+        self.userLocalePreferencesChangedProperty.signal
       )
     )
     .map { user, isFloatingTabBarEnabled, _ in (user, isFloatingTabBarEnabled) }
