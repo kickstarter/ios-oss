@@ -1,0 +1,14 @@
+{
+  "data": {
+    "projects": {
+      "__typename": "ProjectsConnectionWithTotalCount",
+      "nodes": [],
+      "totalCount": 0,
+      "pageInfo": {
+        "__typename": "PageInfo",
+        "endCursor": null,
+        "hasNextPage": false
+      }
+    }
+  }
+}

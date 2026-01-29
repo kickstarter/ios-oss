@@ -144,7 +144,7 @@ platform :ios do
       slack_url: ENV["SLACK_WEBHOOK"],
       message: slack_message(
         "app store",
-        get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS"),
+        get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter iOS"),
         get_build_number(xcodeproj: "Kickstarter.xcodeproj"),
         "App Store Connect 🚀"
       )
@@ -205,7 +205,7 @@ platform :ios do
     gym(
       output_name: options[:output_name],
       export_method: options[:export_method],
-      scheme: "Kickstarter-iOS",
+      scheme: "Kickstarter iOS",
       configuration: options[:configuration],
       export_options: export_options
     )

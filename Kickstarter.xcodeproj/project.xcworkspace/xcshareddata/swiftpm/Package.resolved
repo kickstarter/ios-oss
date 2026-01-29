@@ -1,4 +1,5 @@
 {
+  "originHash" : "5ed7cfe88af700230c06b19ad9a78008138c413b2687a4a4288b88989762e167",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -338,10 +339,10 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
       "state" : {
-        "revision" : "b2ed9eabefe56202ee4939dd9fc46b6241c88317",
-        "version" : "1.6.1"
+        "revision" : "34e463e98ab8541c604af706c99bed7160f5ec70",
+        "version" : "1.8.1"
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

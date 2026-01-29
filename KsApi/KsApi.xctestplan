@@ -1,0 +1,30 @@
+{
+  "configurations" : [
+    {
+      "id" : "3E3D41ED-2ED2-4050-94A2-429C0897CDD0",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Kickstarter.xcodeproj",
+      "identifier" : "D015874F1EEB2DE4006E7684",
+      "name" : "KsApi"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:KsApi",
+        "identifier" : "KsApiTests",
+        "name" : "KsApiTests"
+      }
+    }
+  ],
+  "version" : 1
+}

@@ -57,6 +57,18 @@ test_job: &test_job
     - store_artifacts:
         path: ./Failed_Snapshot_Tests
 
+test_spm_job: &test_spm_job
+  steps:
+    - macos/install-rosetta
+    - attach_workspace:
+        at: .
+    - run:
+        name: Run Swift package tests
+        command: make test-spm
+        no_output_timeout: "20m" # 20 minutes
+    - store_artifacts:
+        path: ./Failed_Snapshot_Tests
+
 distribute_job: &distribute_job
   steps:
     - macos/install-rosetta
@@ -87,8 +99,10 @@ distribute_job: &distribute_job
 
 all_jobs: &all_jobs
   - kickstarter-tests
+  - kickstarter-framework-tests
   - library-tests
   - ksapi-tests
+  - kds-tests
 
 # Jobs
 
@@ -134,25 +148,45 @@ jobs:
     <<: *test_job
     environment:
       - *default_environment
-      - SCHEME=Kickstarter-Framework-iOS
+      - SCHEME=Kickstarter iOS
+
+  # Kickstarter Framework tests
+  kickstarter-framework-tests:
+    <<: *base_job
+    <<: *test_spm_job
+    environment:
+      - *default_environment
+      - PACKAGE=Kickstarter-Framework
+      - SCHEME=Kickstarter-Framework
 
   # Library tests
   library-tests:
     <<: *base_job
-    <<: *test_job
+    <<: *test_spm_job
     environment:
       - *default_environment
-      - TARGET=Library
-      - SCHEME=Library-iOS
+      - PACKAGE=Library
+      - SCHEME=Library-Package
 
   # KsApi tests
   ksapi-tests:
     <<: *base_job
-    <<: *test_job
+    <<: *test_spm_job
     environment:
       - *default_environment
-      - SCHEME=KsApi
+      - PACKAGE=KsApi
+      - SCHEME=KsApi-Package
 
+  # KDS tests
+  kds-tests:
+    <<: *base_job
+    <<: *test_spm_job
+    environment:
+      - *default_environment
+      - PACKAGE=KDS
+      - SCHEME=KDS
+
+  # GraphAPI tests
   deploy_alpha:
     <<: *base_job
     environment:
@@ -242,6 +276,12 @@ workflows:
           requires:
            - build-and-cache
       - ksapi-tests:
+          requires:
+           - build-and-cache
+      - kickstarter-framework-tests:
+          requires:
+           - build-and-cache
+      - kds-tests:
           requires:
            - build-and-cache
 

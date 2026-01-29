@@ -1,0 +1,87 @@
+{
+  "originHash" : "d5dc67a824d65b52ae4522970c8ffd97a6e20103f2c4c7feca783f0f74a2838f",
+  "pins" : [
+    {
+      "identity" : "apollo-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apollographql/apollo-ios.git",
+      "state" : {
+        "revision" : "eedde2151859011a44bb7cb05388deb2bf532644",
+        "version" : "1.9.3"
+      }
+    },
+    {
+      "identity" : "kickstarter-prelude",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kickstarter/Kickstarter-Prelude.git",
+      "state" : {
+        "revision" : "f3a2dc432e8d5fea7acddb90d57adb2e9d421f7e",
+        "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "kickstarter-reactiveextensions",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kickstarter/Kickstarter-ReactiveExtensions",
+      "state" : {
+        "revision" : "36984ccbdbf1874728f801f29bc0e41706efdd0a",
+        "version" : "2.0.0"
+      }
+    },
+    {
+      "identity" : "lrucache",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nicklockwood/LRUCache.git",
+      "state" : {
+        "revision" : "0d91406ecd4d6c1c56275866f00508d9aeacc92a",
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "reactiveswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveCocoa/ReactiveSwift",
+      "state" : {
+        "revision" : "a44317ce38b5bcce173b03f5d36cfdc939e1768b",
+        "version" : "7.2.1"
+      }
+    },
+    {
+      "identity" : "sqlite.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/stephencelis/SQLite.swift.git",
+      "state" : {
+        "revision" : "392dd6058624d9f6c5b4c769d165ddd8c7293394",
+        "version" : "0.15.4"
+      }
+    },
+    {
+      "identity" : "swift-atomics",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-atomics.git",
+      "state" : {
+        "revision" : "b601256eab081c0f92f059e12818ac1d4f178ff7",
+        "version" : "1.3.0"
+      }
+    },
+    {
+      "identity" : "swift-toolchain-sqlite",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-toolchain-sqlite",
+      "state" : {
+        "revision" : "b626d3002773b1a1304166643e7f118f724b2132",
+        "version" : "1.0.4"
+      }
+    },
+    {
+      "identity" : "swiftsoup",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/scinfu/SwiftSoup",
+      "state" : {
+        "revision" : "d86f244ed497d48012782e2f59c985a55e77b3f5",
+        "version" : "2.11.3"
+      }
+    }
+  ],
+  "version" : 3
+}

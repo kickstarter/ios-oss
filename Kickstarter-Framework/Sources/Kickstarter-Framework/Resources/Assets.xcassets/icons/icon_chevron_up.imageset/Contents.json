@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "icon_chevron_up.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
