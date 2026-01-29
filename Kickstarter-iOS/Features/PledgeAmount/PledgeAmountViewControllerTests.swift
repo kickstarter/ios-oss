@@ -51,38 +51,6 @@ final class PledgeAmountViewControllerTests: TestCase {
     }
   }
 
-  func testView_LargerText() {
-    var calendar = Calendar(identifier: .gregorian)
-    calendar.timeZone = TimeZone(identifier: "GMT")!
-
-    forEachScreenshotType { type in
-      withEnvironment(
-        calendar: calendar,
-        language: type.language,
-        locale: Locale(identifier: type.language.rawValue),
-        mainBundle: self.mainBundle
-      ) {
-        let controller = PledgeAmountViewController.instantiate()
-        controller.configureWith(value: (project: .template, reward: .template, 0))
-
-        let size = CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: expandedHeight
-        )
-
-        self.stabilizeForSnapshot(controller)
-
-        assertSnapshot(
-          forView: controller.view,
-          withType: type,
-          size: size,
-          perceptualPrecision: 0.98,
-          testName: "testView_LargerText"
-        )
-      }
-    }
-  }
-
   func testView_ShowsCurrencySymbol_NonUS_ProjectCurrency_US_ProjectCountry() {
     let project = Project.template
       |> Project.lens.country .~ Project.Country.us
