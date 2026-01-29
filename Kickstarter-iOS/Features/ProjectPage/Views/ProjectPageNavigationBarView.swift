@@ -26,15 +26,12 @@ final class ProjectPageNavigationBarView: UIView {
 
   private lazy var navigationShareButton: UIButton = { UIButton(type: .custom) }()
 
-  private lazy var navigationCloseButton: UIButton = {
-    let buttonView = UIButton(type: .custom)
-      |> UIButton.lens.title(for: .normal) .~ nil
-      |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
-      |> UIButton.lens.tintColor .~ LegacyColors.ksr_support_700.uiColor()
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
-      |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
-
-    return buttonView
+  private lazy var navigationCloseButton: CloseButtonView = {
+    let closeButton = CloseButtonView { [weak self] in
+      self?.closeButtonTapped()
+    }
+    closeButton.translatesAutoresizingMaskIntoConstraints = false
+    return closeButton
   }()
 
   private lazy var navigationSaveButton: UIButton = { UIButton(type: .custom) }()
@@ -78,6 +75,11 @@ final class ProjectPageNavigationBarView: UIView {
       |> \.isLayoutMarginsRelativeArrangement .~ true
       |> \.insetsLayoutMarginsFromSafeArea .~ true
       |> \.spacing .~ Styles.grid(0)
+
+    if #available(iOS 26.0, *) {
+      _ = self.rootStackView
+        |> \.layoutMargins .~ UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
+    }
 
     _ = self.navigationShareButton
       |> shareButtonStyle
@@ -149,7 +151,13 @@ final class ProjectPageNavigationBarView: UIView {
   private func setupConstraints() {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
+
+    NSLayoutConstraint.activate([
+      self.rootStackView.topAnchor.constraint(equalTo: self.topAnchor),
+      self.rootStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+      self.rootStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+      self.rootStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+    ])
 
     _ = (
       [
@@ -169,7 +177,9 @@ final class ProjectPageNavigationBarView: UIView {
         self.navigationSaveButton.widthAnchor
           .constraint(equalTo: self.navigationSaveButton.heightAnchor),
         self.navigationCloseButton.widthAnchor
-          .constraint(equalTo: self.navigationCloseButton.heightAnchor)
+          .constraint(equalToConstant: 44),
+        self.navigationCloseButton.heightAnchor
+          .constraint(equalToConstant: 44)
       ])
   }
 
@@ -192,11 +202,6 @@ final class ProjectPageNavigationBarView: UIView {
   }
 
   private func configureSubviews() {
-    self.addTargetAction(
-      buttonItem: self.navigationCloseButton,
-      targetAction: #selector(ProjectPageNavigationBarView.closeButtonTapped),
-      event: .touchUpInside
-    )
     self.addTargetAction(
       buttonItem: self.navigationShareButton,
       targetAction: #selector(ProjectPageNavigationBarView.shareButtonTapped),
