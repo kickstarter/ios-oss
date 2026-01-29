@@ -68,8 +68,6 @@ final class PledgeAmountViewController: UIViewController {
       self.amountInputStackView
     ], self.adaptableStackView)
       |> ksr_addArrangedSubviewsToStackView()
-
-
     self.amountInputView.textField.delegate = self
 
     self.amountInputView.doneButton.addTarget(
@@ -116,8 +114,6 @@ final class PledgeAmountViewController: UIViewController {
       |> \.axis .~ amountInputAxis
       |> \.alignment .~ amountInputAlignment
       |> \.spacing .~ Styles.grid(1)
-
-
     _ = self.horizontalSpacer
       |> \.isHidden .~ isAccessibilityCategory
 
