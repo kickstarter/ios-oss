@@ -27,16 +27,13 @@ final class PledgeAmountViewControllerTests: TestCase {
       withEnvironment(
         calendar: calendar,
         language: type.language,
-        locale: Locale(identifier: type.language.rawValue),
+        locale: type.locale,
         mainBundle: self.mainBundle
       ) {
         let controller = PledgeAmountViewController.instantiate()
         controller.configureWith(value: (project: .template, reward: .template, 0))
 
-        let size = CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: regularHeight
-        )
+        let size = self.snapshotSize(for: type)
 
         self.stabilizeForSnapshot(controller)
 
@@ -62,16 +59,13 @@ final class PledgeAmountViewControllerTests: TestCase {
       withEnvironment(
         calendar: calendar,
         language: type.language,
-        locale: Locale(identifier: type.language.rawValue),
+        locale: type.locale,
         mainBundle: self.mainBundle
       ) {
         let controller = PledgeAmountViewController.instantiate()
         controller.configureWith(value: (project: project, reward: .template, 0))
 
-        let size = CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: regularHeight
-        )
+        let size = self.snapshotSize(for: type)
 
         self.stabilizeForSnapshot(controller)
 
@@ -97,16 +91,13 @@ final class PledgeAmountViewControllerTests: TestCase {
       withEnvironment(
         calendar: calendar,
         language: type.language,
-        locale: Locale(identifier: type.language.rawValue),
+        locale: type.locale,
         mainBundle: self.mainBundle
       ) {
         let controller = PledgeAmountViewController.instantiate()
         controller.configureWith(value: (project: project, reward: .template, 0))
 
-        let size = CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: regularHeight
-        )
+        let size = self.snapshotSize(for: type)
 
         self.stabilizeForSnapshot(controller)
 
@@ -131,7 +122,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       withEnvironment(
         calendar: calendar,
         language: type.language,
-        locale: Locale(identifier: type.language.rawValue),
+        locale: type.locale,
         mainBundle: self.mainBundle
       ) {
         let controller = PledgeAmountViewController.instantiate()
@@ -139,10 +130,7 @@ final class PledgeAmountViewControllerTests: TestCase {
         controller.stepperValueChanged(UIStepper(frame: .zero) |> \.value .~ 0)
         controller.textFieldDidChange(UITextField(frame: .zero) |> \.text .~ "0")
 
-        let size = CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: regularHeight
-        )
+        let size = self.snapshotSize(for: type)
 
         self.stabilizeForSnapshot(controller)
 
@@ -174,7 +162,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       withEnvironment(
         calendar: calendar,
         language: type.language,
-        locale: Locale(identifier: type.language.rawValue),
+        locale: type.locale,
         mainBundle: self.mainBundle
       ) {
         let controller = PledgeAmountViewController.instantiate()
@@ -182,10 +170,7 @@ final class PledgeAmountViewControllerTests: TestCase {
         controller.stepperValueChanged(stepper)
         controller.textFieldDidChange(textField)
 
-        let size = CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: regularHeight
-        )
+        let size = self.snapshotSize(for: type)
 
         self.stabilizeForSnapshot(controller)
 
@@ -214,17 +199,14 @@ final class PledgeAmountViewControllerTests: TestCase {
       withEnvironment(
         calendar: calendar,
         language: type.language,
-        locale: Locale(identifier: type.language.rawValue),
+        locale: type.locale,
         mainBundle: self.mainBundle
       ) {
         let controller = PledgeAmountViewController.instantiate()
         controller.configureWith(value: (project: .template, reward: reward, 0))
         controller.stepperValueChanged(stepper)
 
-        let size = CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: regularHeight
-        )
+        let size = self.snapshotSize(for: type)
 
         self.stabilizeForSnapshot(controller)
 
@@ -254,17 +236,14 @@ final class PledgeAmountViewControllerTests: TestCase {
       withEnvironment(
         calendar: calendar,
         language: type.language,
-        locale: Locale(identifier: type.language.rawValue),
+        locale: type.locale,
         mainBundle: self.mainBundle
       ) {
         let controller = PledgeAmountViewController.instantiate()
         controller.configureWith(value: (project: project, reward: .template, 0))
         controller.stepperValueChanged(stepper)
 
-        let size = CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: regularHeight
-        )
+        let size = self.snapshotSize(for: type)
 
         self.stabilizeForSnapshot(controller)
 
@@ -294,17 +273,14 @@ final class PledgeAmountViewControllerTests: TestCase {
       withEnvironment(
         calendar: calendar,
         language: type.language,
-        locale: Locale(identifier: type.language.rawValue),
+        locale: type.locale,
         mainBundle: self.mainBundle
       ) {
         let controller = PledgeAmountViewController.instantiate()
         controller.configureWith(value: (project: project, reward: .template, 0))
         controller.stepperValueChanged(stepper)
 
-        let size = CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: regularHeight
-        )
+        let size = self.snapshotSize(for: type)
 
         self.stabilizeForSnapshot(controller)
 
@@ -332,6 +308,14 @@ final class PledgeAmountViewControllerTests: TestCase {
 
     self.allowLayoutPass()
     controller.view.layoutIfNeeded()
+  }
+
+  private func snapshotSize(for type: ScreenshotType) -> CGSize {
+    let height = type.contentSizeCategory.isAccessibilityCategory ? expandedHeight : regularHeight
+    return CGSize(
+      width: type.device.deviceSize(in: type.orientation).width,
+      height: height
+    )
   }
 }
 
