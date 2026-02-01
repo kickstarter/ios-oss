@@ -90,8 +90,8 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
 
     self.rewardToggleTappedSubject
       .debounce(for: 0.3 /* seconds */, scheduler: DispatchQueue.main)
-      .sink { toggleOn in
-        self.handleEventSubject.send(.updateRewardReceived(rewardReceived: toggleOn))
+      .sink { [weak self] toggleOn in
+        self?.handleEventSubject.send(.updateRewardReceived(rewardReceived: toggleOn))
       }
       .store(in: &self.cancellables)
   }
