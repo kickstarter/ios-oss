@@ -258,6 +258,13 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     self.logIntoEnvironmentWithApple = logIntoEnvironmentWithApple.signal
     self.logIntoEnvironmentWithFacebook = logIntoEnvironmentWithFacebook.signal
+
+    self.viewWillAppearProperty.signal
+      .take(first: 1)
+      .observeValues { AppEnvironment.current.ksrAnalytics.trackLoginTOutPageViewed() }
+
+    self.signupOrLoginWithOAuthButtonPressedProperty.signal
+      .observeValues { AppEnvironment.current.ksrAnalytics.trackLoginInitiateButtonClicked() }
   }
 
   public var inputs: LoginToutViewModelInputs { return self }
