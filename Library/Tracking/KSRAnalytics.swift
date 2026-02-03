@@ -1327,8 +1327,21 @@ public final class KSRAnalytics {
     self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
   }
 
+  public func trackLoginTOutPageViewed() {
+    let props = contextProperties(page: .loginTout)
+    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
+  }
+
   public func trackLoginSubmitButtonClicked() {
     let props = contextProperties(ctaContext: .logInSubmit, page: .login)
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  public func trackLoginInitiateButtonClicked() {
+    let props = contextProperties(ctaContext: .logInInitiate, page: .loginTout)
     self.track(
       event: SegmentEvent.ctaClicked.rawValue,
       properties: props
