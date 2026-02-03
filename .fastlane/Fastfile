@@ -1,6 +1,11 @@
 fastlane_version "2.158.0"
 default_platform :ios
 
+# xcode 26 bug workaround
+before_all do
+  ENV["DELIVER_ALTOOL_ADDITIONAL_UPLOAD_PARAMETERS"] = "--use-old-altool"  
+end 
+
 platform :ios do
   ### MATCH
   desc "Fastlane Match AppStore"

@@ -17,6 +17,8 @@ internal final class ActivitiesViewController: UITableViewController {
     return Storyboard.Activity.instantiate(ActivitiesViewController.self)
   }
 
+  private var didSetupBottomInsets = false
+
   internal required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
 
@@ -49,6 +51,22 @@ internal final class ActivitiesViewController: UITableViewController {
   internal override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
+    if !self.didSetupBottomInsets {
+      self.didSetupBottomInsets = true
+
+      /// Extend under the tab bar / bottom safe area
+      self.tableView.contentInsetAdjustmentBehavior = .never
+
+      let tabBarHeight = self.tabBarController?.tabBar.frame.height ?? 0
+      let safeAreaBottom = self.view.safeAreaInsets.bottom
+      let bottomInset = tabBarHeight + safeAreaBottom
+
+      self.tableView.contentInset.bottom = bottomInset
+      self.tableView.verticalScrollIndicatorInsets.bottom = bottomInset
+
+      self.emptyStatesController?.additionalSafeAreaInsets = .zero
+    }
+
     self.emptyStatesController?.view.frame = self.view.bounds
   }
 
@@ -63,9 +81,7 @@ internal final class ActivitiesViewController: UITableViewController {
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: .activity)
     self.emptyStatesController = emptyVC
     emptyVC.delegate = self
-    // Because the ActivitiesViewController is a UITableViewController, it wasn't automatically accounting
-    // for the root tab bar height in this child VC. Adding the additional height makes this layout correctly.
-    emptyVC.additionalSafeAreaInsets = UIEdgeInsets(bottom: 50)
+    emptyVC.additionalSafeAreaInsets = .zero
 
     self.addChild(emptyVC)
     self.view.addSubview(emptyVC.view)
