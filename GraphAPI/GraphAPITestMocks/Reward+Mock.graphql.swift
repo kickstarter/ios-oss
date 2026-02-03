@@ -20,6 +20,7 @@ public class Reward: MockObject {
     @Field<String>("displayName") public var displayName
     @Field<GraphAPI.DateTime>("endsAt") public var endsAt
     @Field<GraphAPI.Date>("estimatedDeliveryOn") public var estimatedDeliveryOn
+    @Field<Bool>("featured") public var featured
     @Field<GraphAPI.ID>("id") public var id
     @Field<Photo>("image") public var image
     @Field<Bool>("isMaxPledge") public var isMaxPledge
@@ -54,6 +55,7 @@ public extension Mock where O == Reward {
     displayName: String? = nil,
     endsAt: GraphAPI.DateTime? = nil,
     estimatedDeliveryOn: GraphAPI.Date? = nil,
+    featured: Bool? = nil,
     id: GraphAPI.ID? = nil,
     image: Mock<Photo>? = nil,
     isMaxPledge: Bool? = nil,
@@ -85,6 +87,7 @@ public extension Mock where O == Reward {
     _setScalar(displayName, for: \.displayName)
     _setScalar(endsAt, for: \.endsAt)
     _setScalar(estimatedDeliveryOn, for: \.estimatedDeliveryOn)
+    _setScalar(featured, for: \.featured)
     _setScalar(id, for: \.id)
     _setEntity(image, for: \.image)
     _setScalar(isMaxPledge, for: \.isMaxPledge)

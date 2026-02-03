@@ -5,7 +5,7 @@
 
 public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment RewardFragment on Reward { __typename amount { __typename ...MoneyFragment } backersCount convertedAmount { __typename ...MoneyFragment } allowedAddons { __typename pageInfo { __typename startCursor } } description displayName endsAt estimatedDeliveryOn id isMaxPledge available items { __typename edges { __typename quantity node { __typename id name } } } limit limitPerBacker localReceiptLocation @include(if: $includeLocalPickup) { __typename ...LocationFragment } name pledgeAmount { __typename ...MoneyFragment } latePledgeAmount { __typename ...MoneyFragment } postCampaignPledgingEnabled project { __typename id } remainingQuantity shippingPreference shippingSummary shippingRules @include(if: $includeShippingRules) { __typename ...ShippingRuleFragment } startsAt image { __typename altText url(width: 1024) } audienceData { __typename secret } }"#
+    #"fragment RewardFragment on Reward { __typename amount { __typename ...MoneyFragment } backersCount convertedAmount { __typename ...MoneyFragment } allowedAddons { __typename pageInfo { __typename startCursor } } description displayName endsAt estimatedDeliveryOn id isMaxPledge available featured items { __typename edges { __typename quantity node { __typename id name } } } limit limitPerBacker localReceiptLocation @include(if: $includeLocalPickup) { __typename ...LocationFragment } name pledgeAmount { __typename ...MoneyFragment } latePledgeAmount { __typename ...MoneyFragment } postCampaignPledgingEnabled project { __typename id } remainingQuantity shippingPreference shippingSummary shippingRules @include(if: $includeShippingRules) { __typename ...ShippingRuleFragment } startsAt image { __typename altText url(width: 1024) } audienceData { __typename secret } }"#
   }
 
   public let __data: DataDict
@@ -25,6 +25,7 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     .field("id", GraphAPI.ID.self),
     .field("isMaxPledge", Bool.self),
     .field("available", Bool.self),
+    .field("featured", Bool.self),
     .field("items", Items?.self),
     .field("limit", Int?.self),
     .field("limitPerBacker", Int?.self),
@@ -67,6 +68,8 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
   public var isMaxPledge: Bool { __data["isMaxPledge"] }
   /// Whether or not the reward is available for new pledges
   public var available: Bool { __data["available"] }
+  /// Whether or not the reward is featured
+  public var featured: Bool { __data["featured"] }
   /// Items in the reward.
   public var items: Items? { __data["items"] }
   /// A reward limit.
@@ -112,6 +115,7 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     id: GraphAPI.ID,
     isMaxPledge: Bool,
     available: Bool,
+    featured: Bool,
     items: Items? = nil,
     limit: Int? = nil,
     limitPerBacker: Int? = nil,
@@ -143,6 +147,7 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
         "id": id,
         "isMaxPledge": isMaxPledge,
         "available": available,
+        "featured": featured,
         "items": items._fieldData,
         "limit": limit,
         "limitPerBacker": limitPerBacker,
