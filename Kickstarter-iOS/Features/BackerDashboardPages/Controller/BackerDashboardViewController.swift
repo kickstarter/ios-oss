@@ -204,13 +204,13 @@ internal final class BackerDashboardViewController: UIViewController {
     _ = self.navigationItem
       |> UINavigationItem.lens.title %~ { _ in Strings.tabbar_profile() }
 
-    _ = self.messagesButtonItem
-      |> UIBarButtonItem.lens.image .~ image(named: "inbox-icon")
-      |> UIBarButtonItem.lens.accessibilityLabel %~ { _ in Strings.profile_buttons_messages() }
+    self.messagesButtonItem.image = image(named: "inbox-icon")
+    self.messagesButtonItem.accessibilityLabel = Strings.profile_buttons_messages()
+    self.messagesButtonItem.tintColor = Colors.Icon.subtle.uiColor()
 
-    _ = self.settingsButtonItem
-      |> UIBarButtonItem.lens.image .~ image(named: "settings-icon")
-      |> UIBarButtonItem.lens.accessibilityLabel %~ { _ in Strings.profile_settings_navbar_title() }
+    self.settingsButtonItem.image = image(named: "settings-icon")
+    self.settingsButtonItem.accessibilityLabel = Strings.profile_settings_navbar_title()
+    self.settingsButtonItem.tintColor = Colors.Icon.subtle.uiColor()
 
     _ = self.dividerView
       |> UIView.lens.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
