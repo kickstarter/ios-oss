@@ -10,6 +10,7 @@ extension Reward {
     estimatedDeliveryOn: Date(
       timeIntervalSince1970: 1_475_361_315
     ).timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 365.0,
+    featured: false,
     hasAddOns: false,
     id: 1,
     latePledgeAmount: 10.00,
@@ -43,6 +44,7 @@ extension Reward {
     description: "",
     endsAt: nil,
     estimatedDeliveryOn: nil,
+    featured: false,
     hasAddOns: false,
     id: 0,
     latePledgeAmount: 0,
@@ -76,6 +78,7 @@ extension Reward {
     description: "",
     endsAt: nil,
     estimatedDeliveryOn: nil,
+    featured: false,
     hasAddOns: false,
     id: 9_999,
     latePledgeAmount: 0,

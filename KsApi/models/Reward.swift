@@ -7,6 +7,7 @@ public struct Reward {
   public let description: String
   public let endsAt: TimeInterval?
   public let estimatedDeliveryOn: TimeInterval?
+   public let featured: Bool
   public let hasAddOns: Bool
   public let id: Int
   public let latePledgeAmount: Double
@@ -23,7 +24,6 @@ public struct Reward {
   public let startsAt: TimeInterval?
   public let title: String?
   public let localPickup: Location?
-  public let featured: Bool
   /// isAvailable is provided by GraphQL but not by API V1.
   public let isAvailable: Bool?
   /// The URL of the reward image retrieved from GraphQL.
@@ -177,7 +177,7 @@ extension Reward: Decodable {
     }
     self.endsAt = try values.decodeIfPresent(TimeInterval.self, forKey: .endsAt)
     self.estimatedDeliveryOn = try values.decodeIfPresent(TimeInterval.self, forKey: .estimatedDeliveryOn)
-    self.featured = try values.decodeIfPresent(Bool.self, forKey: .featured) ?? false
+     self.featured = try values.decodeIfPresent(Bool.self, forKey: .featured) ?? false
     self.hasAddOns = try values.decodeIfPresent(Bool.self, forKey: .hasAddOns) ?? false
     self.id = try values.decode(Int.self, forKey: .id)
     self.latePledgeAmount = try values.decodeIfPresent(Double.self, forKey: .latePledgeAmount) ?? 0
