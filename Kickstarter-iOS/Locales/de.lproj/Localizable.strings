@@ -480,6 +480,7 @@
 "News_events" = "Ein paar Mal pro Jahr: Neuigkeiten und Events in deiner Nähe.";
 "Newsletters" = "Newsletter";
 "No_Results" = "Keine Ergebnisse";
+"No_backings" = "Keine Finanzierungsbeiträge";
 "No_comments_yet" = "Bisher noch keine Kommentare.";
 "No_funded_backings" = "Keine Beiträge für finanzierte Projekte";
 "No_go_back" = "Nein, zurückgehen";
@@ -648,6 +649,7 @@
 "Retry" = "Erneut versuchen";
 "Retry_or_select_another_method" = "Versuche es erneut oder wähle eine andere Karte.";
 "Reusability_and_recyclability" = "Wiederverwertung und Recyclingfähigkeit";
+"Review_edits_made_to_your_order" = "Änderungen an deiner Bestellung prüfen";
 "Reward_Surveys.few" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.many" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.one" = "Befragung";
@@ -925,6 +927,7 @@
 "When_projects_youve_backed_have_successfully_funded_youll_see_them_here" = "Wenn Projekte, die du unterstützt hast, erfolgreich finanziert wurden, erscheinen sie hier.";
 "When_projects_youve_backed_need_your_attention_youll_see_them_here" = "Wenn Projekte, die du unterstützt, deine Aufmerksamkeit brauchen, siehst du sie hier.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";
+"When_youve_backed_a_project_itll_show_up_here" = "Hier werden Projekte angezeigt, die du unterstützt hast.";
 "Which_categories_interest_you" = "Welche Kategorien interessieren dich?";
 "Working_on_it" = "Working on it";
 "Write_a_bio" = "Schreibe eine kurze Biografie, ein oder zwei Sätze genügen.";

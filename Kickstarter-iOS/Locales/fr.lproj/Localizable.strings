@@ -480,6 +480,7 @@
 "News_events" = "Les grandes nouvelles et événements près de chez vous, quelques fois par an.";
 "Newsletters" = "Lettres d'information";
 "No_Results" = "Pas de résultats";
+"No_backings" = "Aucun engagement";
 "No_comments_yet" = "Pas de commentaires.";
 "No_funded_backings" = "Pas de contributions prélevées";
 "No_go_back" = "Non, revenir en arrière";
@@ -648,6 +649,7 @@
 "Retry" = "Réessayer";
 "Retry_or_select_another_method" = "Veuillez réessayer ou choisir un autre moyen de paiement.";
 "Reusability_and_recyclability" = "Recyclage et valorisation des déchets";
+"Review_edits_made_to_your_order" = "Vérifions les modifications apportées à votre commande";
 "Reward_Surveys.few" = "%{reward_survey_count} questionnaires";
 "Reward_Surveys.many" = "%{reward_survey_count} questionnaires";
 "Reward_Surveys.one" = "Questionnaire";
@@ -925,6 +927,7 @@
 "When_projects_youve_backed_have_successfully_funded_youll_see_them_here" = "Lorsqu'un projet que vous avez soutenu atteint son objectif de financement, il apparaît ici.";
 "When_projects_youve_backed_need_your_attention_youll_see_them_here" = "Quand les projets que vous avez soutenus ont besoin de votre attention, ils apparaissent ici.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Pour chaque projet que vous enregistrez, nous vous enverrons un rappel 48 heures avant la fin de sa campagne.";
+"When_youve_backed_a_project_itll_show_up_here" = "Vos engagements à venir apparaîtront ici.";
 "Which_categories_interest_you" = "Quelles sont les catégories qui vous intéressent ?";
 "Working_on_it" = "Working on it";
 "Write_a_bio" = "Une petite biographie d'une phrase ou deux.";
