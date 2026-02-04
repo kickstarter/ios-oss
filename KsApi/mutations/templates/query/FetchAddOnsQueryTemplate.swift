@@ -93,6 +93,7 @@ public enum FetchAddsOnsQueryTemplate {
                   "id": "UmV3YXJkLTgxOTAzMjA=",
                   "isMaxPledge": false,
                   "available": false,
+                  "featured": false,
                   "items": {
                     "__typename": "RewardItemsConnection",
                     "edges": [

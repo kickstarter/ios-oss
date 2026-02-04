@@ -126,6 +126,7 @@ private func backingDictionary() -> [String: Any] {
           "estimatedDeliveryOn": "2021-12-01",
           "id": "UmV3YXJkLTgxNzM5Mjg=",
           "isMaxPledge": false,
+          "featured": false,
           "items": {
             "__typename": "RewardItemsConnection",
             "edges": [
@@ -262,6 +263,7 @@ private func backingDictionary() -> [String: Any] {
           "estimatedDeliveryOn": "2021-12-01",
           "id": "UmV3YXJkLTgyNDgxOTM=",
           "isMaxPledge": false,
+          "featured": false,
           "items": {
             "__typename": "RewardItemsConnection",
             "edges": []
@@ -387,6 +389,7 @@ private func backingDictionary() -> [String: Any] {
           "estimatedDeliveryOn": "2021-12-01",
           "id": "UmV3YXJkLTgyNDgxOTM=",
           "isMaxPledge": false,
+          "featured": false,
           "items": {
             "__typename": "RewardItemsConnection",
             "edges": []
@@ -512,6 +515,7 @@ private func backingDictionary() -> [String: Any] {
           "estimatedDeliveryOn": "2021-12-01",
           "id": "UmV3YXJkLTgyNDgxOTM=",
           "isMaxPledge": false,
+          "featured": false,
           "items": {
             "__typename": "RewardItemsConnection",
             "edges": []
@@ -1011,6 +1015,7 @@ private func backingDictionary() -> [String: Any] {
       "id": "UmV3YXJkLTgxNzM5MDE=",
       "isMaxPledge": false,
             "available": false,
+            "featured": false,
       "items": {
         "__typename": "RewardItemsConnection",
         "edges": [
