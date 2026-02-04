@@ -322,12 +322,12 @@ class PPOViewModelTests: XCTestCase {
     )
   }
 
-  func testEventManagePledge() {
-    let template = PPOProjectCardModel.managePledgeTemplate
+  func testEventOpenPledgeManager() {
+    let template = PPOProjectCardModel.openPledgeManagerTemplate
     let url = "fakePledgeManagerUrl"
     self.verifyPreparedEvent(
-      { self.viewModel.handleCardEvent(.managePledge(url: url), from: template) },
-      event: .managePledge(url: url)
+      { self.viewModel.handleCardEvent(.openPledgeManager(url: url), from: template) },
+      event: .openPledgeManager(url: url)
     )
   }
 

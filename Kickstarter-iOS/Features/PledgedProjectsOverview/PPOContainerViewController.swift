@@ -77,7 +77,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
         tabBarController?.switchToProfile()
       case let .projectDetails(projectId):
         self?.openProjectPage(projectId)
-      case let .editAddress(url), let .survey(url), let .managePledge(url):
+      case let .editAddress(url), let .survey(url), let .openPledgeManager(url):
         self?.openSurvey(url)
       case let .contactCreator(messageSubject):
         self?.messageCreator(messageSubject)

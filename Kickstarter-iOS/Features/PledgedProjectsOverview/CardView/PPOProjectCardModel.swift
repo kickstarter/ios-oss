@@ -64,7 +64,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public enum ButtonAction: Identifiable, Equatable, Hashable {
     case confirmAddress(address: String, addressId: String)
     case completeSurvey(url: String)
-    case managePledge(url: String)
+    case openPledgeManager(url: String)
     case fixPayment
     case authenticateCard(clientSecret: String)
 
@@ -74,7 +74,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
         Strings.Confirm()
       case .completeSurvey:
         Strings.Take_survey()
-      case .managePledge:
+      case .openPledgeManager:
         Strings.Finalize_pledge()
       case .fixPayment:
         Strings.Fix_payment()
@@ -89,7 +89,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
         .green
       case .completeSurvey:
         .green
-      case .managePledge:
+      case .openPledgeManager:
         .green
       case .fixPayment:
         .red
