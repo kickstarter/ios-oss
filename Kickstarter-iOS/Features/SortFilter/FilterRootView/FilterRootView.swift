@@ -191,7 +191,7 @@ struct FilterRootView: View {
           action(self.modalType)
         }
       }
-      .buttonStyle(KSRButtonStyleModifier(style: .outlined))
+      .buttonStyle(KSRButtonStyleModifier(style: KSRButtonStyle.outlined))
       .frame(maxWidth: Constants.resetButtonMaxWidth)
       .disabled(!self.searchFilters.canReset(filter: self.modalType))
 
@@ -200,7 +200,7 @@ struct FilterRootView: View {
           action()
         }
       }
-      .buttonStyle(KSRButtonStyleModifier(style: .filled))
+      .buttonStyle(KSRButtonStyleModifier(style: KSRButtonStyle.filled))
       .frame(maxWidth: .infinity)
     }
     .padding(Constants.sectionPadding)
