@@ -13,16 +13,20 @@ extension Backing {
   ) -> Backing? {
     guard
       let id = decompose(id: backingFragment.id),
-      let backerIdString = backingFragment.backer?.fragments.userFragment.uid,
+      let backerIdString = backingFragment.backer?.fragments.publicUserFragment.uid,
       let backerId = Int(backerIdString),
       let projectCountry = backingFragment.project?.country.fragments.countryFragment.code,
       let projectId = backingFragment.project?.pid,
       let backingStatus = backingStatus(from: backingFragment),
-      let user = backingFragment.backer?.fragments.userFragment
+      let user = backingFragment.backer?.fragments.publicUserFragment
     else { return nil }
 
     let reward = backingReward(from: backingFragment)
-    let backer = User.user(from: user)
+    /// Usually we only fetch your _own_ backings, but if you're a creator, it's possible to fetch the backings
+    /// for one of your projects' backers.
+    /// If you're fetching your own backing, and you need private fields, you should be getting them from `me` or
+    /// `AppEnvironment.currentUser`, not from the backing object.
+    let backer = User.publicUser(from: user)
     var locationId: Int?
     if let locationGraphId = backingFragment.location?.fragments.locationFragment.id {
       locationId = decompose(id: locationGraphId)

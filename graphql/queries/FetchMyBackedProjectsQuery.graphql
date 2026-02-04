@@ -1,4 +1,4 @@
-query FetchMyBackedProjects($first: Int = null, $after: String = null, $withStoredCards: Boolean = false) {
+query FetchMyBackedProjects($first: Int = null, $after: String = null) {
   projects(first: $first, after: $after, backed: true, sort: END_DATE) {
     nodes {
       ...ProjectFragment
