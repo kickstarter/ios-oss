@@ -154,7 +154,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
           .demoteErrors()
       }
 
-      let request = AppEnvironment.current.apiService.fetchBacking(id: backingID, withStoredCards: false)
+      let request = AppEnvironment.current.apiService.fetchBacking(id: backingID)
       return request.map { projectAndBacking in
         (projectAndBacking.backing, project, false)
       }
@@ -183,7 +183,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
       )
       .map { _, backing, project in
         let isCreatorOrCollaborator = !project.memberData.permissions.isEmpty
-          && backing.backer != AppEnvironment.current.currentUser
+          && backing.backer?.id != AppEnvironment.current.currentUser?.id
         let message = isCreatorOrCollaborator
           ? Strings.messages_empty_state_message_creator()
           : Strings.messages_empty_state_message_backer()
