@@ -42,7 +42,7 @@ extension Reward {
       description: rewardFragment.description,
       endsAt: rewardFragment.endsAt.flatMap(TimeInterval.init),
       estimatedDeliveryOn: estimatedDeliveryOn,
-      featured: rewardFragment.featured ?? false,
+      featured: rewardFragment.featured,
       hasAddOns: rewardHasAddons,
       id: rewardId,
       latePledgeAmount: rewardFragment.latePledgeAmount.fragments.moneyFragment.amount
