@@ -13,6 +13,35 @@ final class PPOEmptyStateViewTests: TestCase {
     super.tearDown()
   }
 
+  func testEmptyStateView() {
+    orthogonalCombos(
+      Language.allLanguages,
+      Device.allCases,
+      Orientation.allCases,
+      [UIUserInterfaceStyle.dark, UIUserInterfaceStyle.light]
+    ).forEach {
+      language, device, orientation, interfaceStyle in
+
+      let mockConfigClient = MockRemoteConfigClient()
+      mockConfigClient.features = [
+        RemoteConfigFeature.pledgedProjectsOverviewV4Enabled.rawValue: true,
+        RemoteConfigFeature.pledgedProjectsOverviewV2Enabled.rawValue: true
+      ]
+
+      withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
+        let size = device.deviceSize(in: orientation)
+        let view = PPOEmptyStateView().frame(width: size.width, height: size.height)
+        let traits = UITraitCollection.init(userInterfaceStyle: interfaceStyle)
+
+        assertSnapshot(
+          of: view,
+          as: .image(traits: traits),
+          named: "lang_\(language.rawValue)_\(device)_\(orientation)"
+        )
+      }
+    }
+  }
+
   func testEmptyStateView_PPOV2() {
     let language = Language.en
     let device = Device.phone4_7inch
@@ -20,7 +49,8 @@ final class PPOEmptyStateViewTests: TestCase {
 
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
-      RemoteConfigFeature.pledgedProjectsOverviewV2Enabled.rawValue: true
+      RemoteConfigFeature.pledgedProjectsOverviewV2Enabled.rawValue: true,
+      RemoteConfigFeature.pledgedProjectsOverviewV4Enabled.rawValue: false
     ]
 
     withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
@@ -38,7 +68,8 @@ final class PPOEmptyStateViewTests: TestCase {
   func testEmptyStateView_PPOV1() {
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
-      RemoteConfigFeature.pledgedProjectsOverviewV2Enabled.rawValue: false
+      RemoteConfigFeature.pledgedProjectsOverviewV2Enabled.rawValue: false,
+      RemoteConfigFeature.pledgedProjectsOverviewV4Enabled.rawValue: false
     ]
 
     withEnvironment(language: Language.en, remoteConfigClient: mockConfigClient) {
