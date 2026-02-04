@@ -43,6 +43,7 @@ enum PPOPreparedEvent: Equatable {
   )
   case contactCreator(messageSubject: MessageSubject)
   case updateRewardReceived(backingId: String, rewardReceived: Bool)
+  case manageLivePledge(projectId: Int, backingId: Int)
 
   static func == (lhs: PPOPreparedEvent, rhs: PPOPreparedEvent) -> Bool {
     switch (lhs, rhs) {
@@ -255,6 +256,9 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         project: cardModel.projectAnalytics,
         properties: overallProperties
       )
+    case .manageLivePledge:
+      // TODO(MBL-2962): Add analytics event.
+      break
     }
   }
 
@@ -300,6 +304,11 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       return PPOPreparedEvent.fix3DSChallenge(
         clientSecret: clientSecret,
         onProgress: onProgress
+      )
+    case .manageLivePledge:
+      return PPOPreparedEvent.manageLivePledge(
+        projectId: cardModel.projectId,
+        backingId: cardModel.backingId
       )
     }
   }

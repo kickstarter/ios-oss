@@ -13,12 +13,14 @@ public enum PPOCardEvent: Equatable {
   case openPledgeManager(url: String)
   case fixPayment
   case authenticateCard(clientSecret: String, onProgress: (PPOActionState) -> Void)
+  case manageLivePledge
 
   public static func == (lhs: PPOCardEvent, rhs: PPOCardEvent) -> Bool {
     switch (lhs, rhs) {
     case (.sendMessage, .sendMessage): return true
     case (.viewProjectDetails, .viewProjectDetails): return true
     case (.fixPayment, .fixPayment): return true
+    case (.manageLivePledge, .manageLivePledge): return true
     case let (.editAddress(lhsUrl), .editAddress(rhsUrl)): return lhsUrl == rhsUrl
     case let (.completeSurvey(lhsUrl), .completeSurvey(rhsUrl)): return lhsUrl == rhsUrl
     case let (.openPledgeManager(lhsUrl), .openPledgeManager(rhsUrl)): return lhsUrl == rhsUrl
@@ -117,6 +119,8 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
       event = .fixPayment
     case let .openPledgeManager(url: url):
       event = .openPledgeManager(url: url)
+    case .manageLivePledge:
+      event = .manageLivePledge
     }
     self.handleEventSubject.send(event)
   }
