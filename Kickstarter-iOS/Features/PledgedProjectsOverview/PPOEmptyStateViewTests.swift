@@ -14,29 +14,18 @@ final class PPOEmptyStateViewTests: TestCase {
   }
 
   func testEmptyStateView() {
-    orthogonalCombos(
-      Language.allLanguages,
-      Device.allCases,
-      Orientation.allCases,
-      [UIUserInterfaceStyle.dark, UIUserInterfaceStyle.light]
-    ).forEach {
-      language, device, orientation, interfaceStyle in
-
+    forEachScreenshotType { type in
       let mockConfigClient = MockRemoteConfigClient()
       mockConfigClient.features = [
         RemoteConfigFeature.pledgedProjectsOverviewV4Enabled.rawValue: true,
         RemoteConfigFeature.pledgedProjectsOverviewV2Enabled.rawValue: true
       ]
 
-      withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
-        let size = device.deviceSize(in: orientation)
-        let view = PPOEmptyStateView().frame(width: size.width, height: size.height)
-        let traits = UITraitCollection.init(userInterfaceStyle: interfaceStyle)
-
+      withEnvironment(language: type.language, remoteConfigClient: mockConfigClient) {
+        let view = PPOEmptyStateView()
         assertSnapshot(
-          of: view,
-          as: .image(traits: traits),
-          named: "lang_\(language.rawValue)_\(device)_\(orientation)"
+          forSwiftUIView: view,
+          withType: type
         )
       }
     }
