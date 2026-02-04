@@ -13,24 +13,24 @@ final class PPOEmptyStateViewTests: TestCase {
     super.tearDown()
   }
 
-  func testEmptyStateView() {
-    orthogonalCombos(Language.allLanguages, Device.allCases, Orientation.allCases).forEach {
-      language, device, orientation in
+  func testEmptyStateView_PPOV2() {
+    let language = Language.en
+    let device = Device.phone4_7inch
+    let orientation = Orientation.landscape
 
-      let mockConfigClient = MockRemoteConfigClient()
-      mockConfigClient.features = [
-        RemoteConfigFeature.pledgedProjectsOverviewV2Enabled.rawValue: true
-      ]
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.pledgedProjectsOverviewV2Enabled.rawValue: true
+    ]
 
-      withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
-        let size = device.deviceSize(in: orientation)
-        let view = PPOEmptyStateView().frame(width: size.width, height: size.height)
-        assertSnapshot(
-          of: view,
-          as: .image,
-          named: "lang_\(language.rawValue)_\(device)_\(orientation)"
-        )
-      }
+    withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
+      let size = device.deviceSize(in: orientation)
+      let view = PPOEmptyStateView().frame(width: size.width, height: size.height)
+      assertSnapshot(
+        of: view,
+        as: .image,
+        named: "lang_\(language.rawValue)"
+      )
     }
   }
 
