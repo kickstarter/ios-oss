@@ -18,7 +18,6 @@ protocol PPOViewModelInputs {
   func refresh() async
   func loadMore() async
 
-  func openBackedProjects()
   func handleCardEvent(_: PPOCardEvent, from: PPOProjectCardModel)
 }
 
@@ -152,18 +151,13 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       .store(in: &self.cancellables)
 
     // Prepare and route events
-
-    Publishers.Merge(
-      self.openBackedProjectsSubject
-        .map { PPOPreparedEvent.backedProjects },
-      self.handleCardEventSubject
-        .map { event, card in
-          self.preparedEvent(for: event, cardModel: card)
-        }
-    )
-    .eraseToAnyPublisher()
-    .subscribe(self.preparedEventSubject)
-    .store(in: &self.cancellables)
+    self.handleCardEventSubject
+      .map { event, card in
+        self.preparedEvent(for: event, cardModel: card)
+      }
+      .eraseToAnyPublisher()
+      .subscribe(self.preparedEventSubject)
+      .store(in: &self.cancellables)
 
     let latestLoadedResults = self.paginator.$results
       .compactMap { results in
@@ -329,10 +323,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     _ = await self.paginator.nextResult()
   }
 
-  func openBackedProjects() {
-    self.openBackedProjectsSubject.send(())
-  }
-
   func handleCardEvent(_ cardAction: PPOCardEvent, from cardModel: PPOProjectCardModel) {
     self.handleCardEventSubject.send((cardAction, cardModel))
   }
@@ -352,7 +342,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let viewDidAppearSubject = PassthroughSubject<Void, Never>()
   private let loadMoreSubject = PassthroughSubject<Void, Never>()
   private let pullToRefreshSubject = PassthroughSubject<Void, Never>()
-  private let openBackedProjectsSubject = PassthroughSubject<Void, Never>()
   private let confirmAddressProgressSubject = PassthroughSubject<
     (PPOProjectCardModel, PPOActionState),
     Never
