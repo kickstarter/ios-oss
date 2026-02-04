@@ -11,10 +11,9 @@ import KsApi
       digitalRewardReceivedTemplate,
       managePledgeTemplate,
       confirmAddressTemplate,
-      addressLockTemplate,
       fixPaymentTemplate,
-      authenticateCardTemplate,
-      completeSurveyTemplate
+      campaignFundedTemplate,
+      pledgeDroppedTemplate
     ]
 
     // Minimal set of funded project templates that makes sure each tier type
@@ -141,6 +140,138 @@ import KsApi
       rewardReceivedToggleState: .notReceived,
       action: nil,
       tierType: .awaitingReward,
+      backingId: 47,
+      backingGraphId: "backing-fake-id",
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+    )
+
+    // MARK: Live projects
+
+    public static let liveProjectTemplates: [PPOProjectCardModel] = [
+      campaignLiveTemplate,
+      campaignFundedTemplate,
+      campaignEndedTemplate
+    ]
+
+    internal static let campaignLiveTemplate = PPOProjectCardModel(
+      isUnread: true,
+      alerts: [
+        .init(type: .info, icon: .time, message: "13 days to go"),
+        .init(type: .warning, icon: nil, message: "43.12% funded")
+      ],
+      image: .network(URL(string: "https:///")!),
+      projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
+      projectId: 12_345,
+      pledge: "$50.00",
+      creatorName: "rokaplay",
+      address: .hidden,
+      rewardReceivedToggleState: .hidden,
+      action: nil, // TODO(MBL-2959): Add manage live pledge action once it's ready.
+      tierType: .campaignLive,
+      backingId: 47,
+      backingGraphId: "backing-fake-id",
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+    )
+
+    internal static let campaignFundedTemplate = PPOProjectCardModel(
+      isUnread: true,
+      alerts: [
+        .init(type: .info, icon: .time, message: "2 days to go"),
+        .init(type: .info, icon: nil, message: "2278.37% funded")
+      ],
+      image: .network(URL(string: "https:///")!),
+      projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
+      projectId: 12_345,
+      pledge: "$50.00",
+      creatorName: "rokaplay",
+      address: .hidden,
+      rewardReceivedToggleState: .hidden,
+      action: nil, // TODO(MBL-2959): Add manage live pledge action once it's ready.
+      tierType: .campaignFunded,
+      backingId: 47,
+      backingGraphId: "backing-fake-id",
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+    )
+
+    internal static let campaignEndedTemplate = PPOProjectCardModel(
+      isUnread: true,
+      alerts: [
+        .init(type: .info, icon: nil, message: "2278.37% funded")
+      ],
+      image: .network(URL(string: "https:///")!),
+      projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
+      projectId: 12_345,
+      pledge: "$50.00",
+      creatorName: "rokaplay",
+      address: .hidden,
+      rewardReceivedToggleState: .hidden,
+      action: nil,
+      tierType: .campaignEnded,
+      backingId: 47,
+      backingGraphId: "backing-fake-id",
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+    )
+
+    // MARK: Failed/canceled pledges
+
+    public static let failedPledgeTemplates: [PPOProjectCardModel] = [
+      campaignFailedTemplate,
+      pledgeDroppedTemplate,
+      pledgeCanceledTemplate
+    ]
+
+    internal static let campaignFailedTemplate = PPOProjectCardModel(
+      isUnread: true,
+      alerts: [
+        .init(type: .warning, icon: nil, message: "Campaign unsuccessful")
+      ],
+      image: .network(URL(string: "https:///")!),
+      projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
+      projectId: 12_345,
+      pledge: "$50.00",
+      creatorName: "rokaplay",
+      address: .hidden,
+      rewardReceivedToggleState: .hidden,
+      action: nil,
+      tierType: .campaignFailed,
+      backingId: 47,
+      backingGraphId: "backing-fake-id",
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+    )
+
+    internal static let pledgeDroppedTemplate = PPOProjectCardModel(
+      isUnread: true,
+      alerts: [
+        .init(type: .alert, icon: .alert, message: "Pledge dropped")
+      ],
+      image: .network(URL(string: "https:///")!),
+      projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
+      projectId: 12_345,
+      pledge: "$50.00",
+      creatorName: "rokaplay",
+      address: .hidden,
+      rewardReceivedToggleState: .hidden,
+      action: nil,
+      tierType: .pledgeDropped,
+      backingId: 47,
+      backingGraphId: "backing-fake-id",
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+    )
+
+    internal static let pledgeCanceledTemplate = PPOProjectCardModel(
+      isUnread: true,
+      alerts: [
+        .init(type: .warning, icon: nil, message: "Pledge canceled")
+      ],
+      image: .network(URL(string: "https:///")!),
+      projectName: "Sugardew Island - Your cozy farm shop let’s pretend this is a way way way longer title",
+      projectId: 12_345,
+      pledge: "$50.00",
+      creatorName: "rokaplay",
+      address: .hidden,
+      rewardReceivedToggleState: .hidden,
+      action: nil,
+      tierType: .pledgeCanceled,
       backingId: 47,
       backingGraphId: "backing-fake-id",
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
