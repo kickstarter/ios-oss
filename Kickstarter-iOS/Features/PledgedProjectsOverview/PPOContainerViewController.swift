@@ -75,6 +75,8 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       switch event {
       case .backedProjects:
         tabBarController?.switchToProfile()
+      case .exploreProjects:
+        tabBarController?.switchToDiscovery(params: nil)
       case let .projectDetails(projectId):
         self?.openProjectPage(projectId)
       case let .editAddress(url), let .survey(url), let .managePledge(url):

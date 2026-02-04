@@ -29,6 +29,7 @@ protocol PPOViewModelOutputs {
 
 enum PPOPreparedEvent: Equatable {
   case backedProjects
+  case exploreProjects
   case fixPaymentMethod(projectId: Int, backingId: Int)
   case fix3DSChallenge(clientSecret: String, onProgress: (PPOActionState) -> Void)
   case survey(url: String)
@@ -72,6 +73,8 @@ enum PPOPreparedEvent: Equatable {
     ):
       return lhsProjectId == rhsProjectId && lhsBackingId == rhsBackingId
     case (.backedProjects, .backedProjects):
+      return true
+    case (.exploreProjects, .exploreProjects):
       return true
     case let (
       .updateRewardReceived(lhsBackingId, lhsRewardReceived),
