@@ -44,6 +44,7 @@ enum PPOPreparedEvent: Equatable {
   case contactCreator(messageSubject: MessageSubject)
   case updateRewardReceived(backingId: String, rewardReceived: Bool)
 
+  // swiftlint:disable:next cyclomatic_complexity
   static func == (lhs: PPOPreparedEvent, rhs: PPOPreparedEvent) -> Bool {
     switch (lhs, rhs) {
     case let (.survey(lhsUrl), .survey(rhsUrl)):
