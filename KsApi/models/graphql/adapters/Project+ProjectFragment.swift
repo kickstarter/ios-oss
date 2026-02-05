@@ -29,8 +29,8 @@ extension Project {
       let memberData = projectMemberData(from: projectFragment),
       let photo = projectPhoto(from: projectFragment),
       let state = projectState(from: projectFragment.state.value),
-      let userFragment = projectFragment.creator?.fragments.userFragment,
-      let creator = User.user(from: userFragment)
+      let userFragment = projectFragment.creator?.fragments.publicUserFragment,
+      let creator = User.publicUser(from: userFragment)
     else { return nil }
 
     var category: Category?

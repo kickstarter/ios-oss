@@ -40,7 +40,7 @@ internal final class ActivityProjectStatusViewModelTests: TestCase {
   }
 
   func testProject_You_Launched() {
-    let you = User.template
+    let you = User.projectCreator
       |> \.id .~ 4
       |> \.name .~ "Gina B"
 
@@ -65,7 +65,7 @@ internal final class ActivityProjectStatusViewModelTests: TestCase {
   }
 
   func testProject_Success() {
-    let you = User.template
+    let you = User.projectCreator
       |> \.id .~ 4
       |> \.name .~ "Gina B"
 

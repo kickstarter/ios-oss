@@ -128,7 +128,7 @@ final class SharedFunctionsTests: TestCase {
   }
 
   func testRewardsCarouselCanNavigateToReward_RegularReward_Available_NotBacked_IsCreator() {
-    let creator = User.template
+    let creator = User.projectCreator
       |> User.lens.id .~ 5
 
     withEnvironment(currentUser: creator) {
@@ -885,7 +885,7 @@ final class SharedFunctionsTests: TestCase {
   }
 
   func testIsCurrentUserCreatorOfProject_IsCreator() {
-    let creator = User.template
+    let creator = User.projectCreator
       |> User.lens.id .~ 5
 
     let project = Project.cosmicSurgery
