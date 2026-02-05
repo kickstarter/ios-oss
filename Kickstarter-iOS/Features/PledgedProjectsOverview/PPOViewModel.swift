@@ -386,6 +386,12 @@ extension Sequence where Element == PPOProjectCardViewModel {
         pledgeManagementCount += 1
       case .surveySubmitted, .pledgeCollected, .addressConfirmed, .awaitingReward, .rewardReceived:
         fundedProjectCount += 1
+      case .campaignLive, .campaignFunded, .campaignEnded:
+        // TODO(MBL-2962): Add analytics for live projects.
+        continue
+      case .campaignFailed, .pledgeDropped, .pledgeCanceled:
+        // TODO(MBL-2962): Add analytics for failed/canceled pledges.
+        continue
       }
     }
 
