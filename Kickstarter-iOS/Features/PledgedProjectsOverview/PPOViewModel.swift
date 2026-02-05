@@ -255,8 +255,10 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         properties: overallProperties
       )
     case .manageLivePledge:
-      // TODO(MBL-2962): Add analytics event.
-      break
+      AppEnvironment.current.ksrAnalytics.trackPPOManageLivePledge(
+        project: cardModel.projectAnalytics,
+        properties: overallProperties
+      )
     }
   }
 
@@ -380,6 +382,8 @@ extension Sequence where Element == PPOProjectCardViewModel {
     var pledgeManagementCount: Int = 0
 
     var fundedProjectCount: Int = 0
+    var liveProjectCount: Int = 0
+    var unsuccessfulPledgeCount: Int = 0
 
     for viewModel in self {
       switch viewModel.card.tierType {
@@ -396,11 +400,9 @@ extension Sequence where Element == PPOProjectCardViewModel {
       case .surveySubmitted, .pledgeCollected, .addressConfirmed, .awaitingReward, .rewardReceived:
         fundedProjectCount += 1
       case .campaignLive, .campaignFunded, .campaignEnded:
-        // TODO(MBL-2962): Add analytics for live projects.
-        continue
+        liveProjectCount += 1
       case .campaignFailed, .pledgeDropped, .pledgeCanceled:
-        // TODO(MBL-2962): Add analytics for failed/canceled pledges.
-        continue
+        unsuccessfulPledgeCount += 1
       }
     }
 
@@ -411,6 +413,8 @@ extension Sequence where Element == PPOProjectCardViewModel {
       paymentFailedCount: paymentFailedCount,
       cardAuthRequiredCount: cardAuthRequiredCount,
       fundedProjectCount: fundedProjectCount,
+      liveProjectCount: liveProjectCount,
+      unsuccessfulPledgeCount: unsuccessfulPledgeCount,
       total: total,
       page: page
     )
