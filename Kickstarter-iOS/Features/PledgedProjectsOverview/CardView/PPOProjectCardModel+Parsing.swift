@@ -62,7 +62,11 @@ extension PPOProjectCardModel {
       action = Self.actionForAuthentication(clientSecret: backing?.clientSecret)
     case .pledgeManagement:
       action = Self.actionForPledgeManagement(url: webviewUrl)
-    case .surveySubmitted, .pledgeCollected, .addressConfirmed, .awaitingReward, .rewardReceived:
+    case .campaignLive, .campaignFunded:
+      // TODO(MBL-2958): Show manage pledge action instead.
+      action = PPOParsedAction(action: nil, tierType: tierType)
+    case .surveySubmitted, .pledgeCollected, .addressConfirmed, .awaitingReward, .rewardReceived,
+         .campaignEnded, .campaignFailed, .pledgeDropped, .pledgeCanceled:
       action = PPOParsedAction(action: nil, tierType: tierType)
     }
 

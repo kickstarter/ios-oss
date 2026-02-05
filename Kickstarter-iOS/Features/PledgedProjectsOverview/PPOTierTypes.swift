@@ -19,6 +19,14 @@ public enum PPOTierType: String {
   case awaitingReward = "AwaitingReward"
   case rewardReceived = "RewardReceived"
 
+  case campaignLive = "CampaignLive"
+  case campaignFunded = "CampaignFunded"
+  case campaignEnded = "CampaignEnded"
+
+  case campaignFailed = "CampaignFailed"
+  case pledgeDropped = "PledgeDropped"
+  case pledgeCanceled = "PledgeCanceled"
+
   public static func projectAlertTypes() -> [PPOTierType] {
     return [
       .fixPayment,
@@ -60,6 +68,14 @@ public enum PPOTierType: String {
     case .addressConfirmed: return .addressConfirmed
     case .awaitingReward: return .awaitingReward
     case .rewardReceived: return .rewardReceived
+
+    case .campaignLive: return .campaignLive
+    case .campaignFunded: return .campaignFunded
+    case .campaignEnded: return .campaignEnded
+
+    case .campaignFailed: return .campaignFailed
+    case .pledgeDropped: return .pledgeDropped
+    case .pledgeCanceled: return .pledgeCanceled
     }
   }
 }
