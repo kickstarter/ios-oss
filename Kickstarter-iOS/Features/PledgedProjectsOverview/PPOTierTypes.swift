@@ -55,6 +55,7 @@ public enum PPOTierType: String {
     return self.fundedProjectTypes().map { $0.toPledgeProjectsOverviewSort() }
   }
 
+  // swiftlint:disable:next cyclomatic_complexity
   public func toPledgeProjectsOverviewSort() -> PledgeProjectsOverviewSort {
     switch self {
     case .fixPayment: return .tier1PaymentFailed
