@@ -3437,7 +3437,6 @@
 		E15803032D8363210000BAB3 /* SearchQuery_AnotherFiveResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_AnotherFiveResults.json; sourceTree = "<group>"; };
 		E15803052D83632F0000BAB3 /* SearchQuery_EmptyResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_EmptyResults.json; sourceTree = "<group>"; };
 		E15E22CD2E54B91B00EE6BB0 /* KDS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = KDS; sourceTree = "<group>"; };
-		E161DDB52F339EEE005B4050 /* PublicUserFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PublicUserFragment.graphql; sourceTree = "<group>"; };
 		E16794272B7EAA5200064063 /* OAuthTokenExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenExchange.swift; sourceTree = "<group>"; };
 		E16794292B85136900064063 /* OAuthTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTests.swift; sourceTree = "<group>"; };
 		E16D0B0B2ECCD3A3004F28CC /* ShippingLocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingLocationsView.swift; sourceTree = "<group>"; };
@@ -7661,7 +7660,6 @@
 				E190EB2E2E29944E006A6DB6 /* PPOUserSetupFragment.graphql */,
 				E190EB2F2E29944E006A6DB6 /* ProjectAnalyticsFragment.graphql */,
 				E190EB302E29944E006A6DB6 /* ProjectCardFragment.graphql */,
-				E161DDB52F339EEE005B4050 /* PublicUserFragment.graphql */,
 				E190EB312E29944E006A6DB6 /* ProjectFragment.graphql */,
 				E190EB322E29944E006A6DB6 /* ProjectPamphletMainCellPropertiesFragment.graphql */,
 				E190EB332E29944E006A6DB6 /* RewardFragment.graphql */,
