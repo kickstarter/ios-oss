@@ -409,7 +409,7 @@ extension Project {
       view: { $0.location?.displayableName ?? "" },
       set: { newDisplayableName, project in
         /// Only update if we actually have a Location
-        var updatedLocation: Location?
+        var updatedLocation: Location? = nil
         if let location = project.location {
           updatedLocation = Location.lens.displayableName.set(newDisplayableName, location)
         } else {

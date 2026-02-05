@@ -605,7 +605,7 @@ public func checkoutProperties(
   let rewardId = String(baseReward.id)
   let estimatedDelivery = baseReward.estimatedDeliveryOn
 
-  var paymentType: String?
+  var paymentType: String? = nil
   if let isApplePay = isApplePay {
     paymentType = isApplePay
       ? PaymentType.applePay.trackingString
@@ -774,7 +774,7 @@ public func attributedCurrency(withProject project: Project, total: Double) -> N
 
 private func estimatedMinMax(
   from rewards: [Reward],
-  locationId: Int,
+  locationId _: Int,
   selectedQuantities: SelectedRewardQuantities?
 ) -> (Double, Double) {
   var min: Double = 0
@@ -784,7 +784,7 @@ private func estimatedMinMax(
     guard reward.shipping.enabled,
           let shippingRules = reward.shippingRulesExpanded ?? reward.shippingRules else { return }
 
-    var shipping: ShippingRule? = shippingRules.first(where: { $0.location.id == locationId })
+    var shipping: ShippingRule? = nil
 
     if shipping == nil && reward.shipping.preference == .unrestricted {
       shipping = shippingRules.first

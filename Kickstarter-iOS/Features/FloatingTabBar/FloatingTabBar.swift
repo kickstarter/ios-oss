@@ -87,7 +87,7 @@ final class FloatingTabBar: UITabBar {
   }
 
   /// Move the green background when the selected item changes.
-  override var selectedItem: UITabBarItem? {
+  override var selectedItem: UITabBarItem? = nil {
     didSet {
       self.updateSelection(animated: true)
     }

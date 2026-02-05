@@ -955,8 +955,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 private func deepLinkCategories(rawParams: [String: String]) -> (Param?, Param?) {
   let parentCategoryParams = rawParams["parent_category_id"]
   let subCategoryParams = rawParams["category_id"]
-  var categoryParam: Param?
-  var subcategoryParam: Param?
+  var categoryParam: Param? = nil
+  var subcategoryParam: Param? = nil
 
   let rawId: (String?) -> Int? = { rawParam in
     guard let rawParamValue = rawParam else {

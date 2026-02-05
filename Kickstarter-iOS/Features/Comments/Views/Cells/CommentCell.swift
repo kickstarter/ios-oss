@@ -19,7 +19,7 @@ final class CommentCell: UITableViewCell, ValueCell {
     CommentCellHeaderStackView(frame: .zero)
   }()
 
-  weak var delegate: CommentCellDelegate?
+  weak var delegate: CommentCellDelegate? = nil
 
   private lazy var flagButton = { UIButton(frame: .zero) }()
   private lazy var postedButton = { UIButton(frame: .zero) }()

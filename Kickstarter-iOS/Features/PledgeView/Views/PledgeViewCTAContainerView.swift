@@ -62,7 +62,7 @@ final class PledgeViewCTAContainerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  weak var delegate: PledgeViewCTAContainerViewDelegate?
+  weak var delegate: PledgeViewCTAContainerViewDelegate? = nil
 
   private let viewModel: PledgeViewCTAContainerViewModelType = PledgeViewCTAContainerViewModel()
 

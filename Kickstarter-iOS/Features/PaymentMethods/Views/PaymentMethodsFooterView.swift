@@ -8,7 +8,7 @@ public protocol PaymentMethodsFooterViewDelegate: AnyObject {
 }
 
 public final class PaymentMethodsFooterView: UIView, NibLoading {
-  public weak var delegate: PaymentMethodsFooterViewDelegate?
+  public weak var delegate: PaymentMethodsFooterViewDelegate? = nil
 
   @IBOutlet private var addCardButton: UIButton!
   @IBOutlet private var separatorView: UIView!

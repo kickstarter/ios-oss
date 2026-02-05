@@ -11,7 +11,7 @@ internal protocol ActivitySurveyResponseCellDelegate: AnyObject {
 
 internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: ActivitySurveyResponseCellViewModelType = ActivitySurveyResponseCellViewModel()
-  internal weak var delegate: ActivitySurveyResponseCellDelegate?
+  internal weak var delegate: ActivitySurveyResponseCellDelegate? = nil
 
   @IBOutlet fileprivate var cardView: UIView!
   @IBOutlet fileprivate var containerView: UIView!

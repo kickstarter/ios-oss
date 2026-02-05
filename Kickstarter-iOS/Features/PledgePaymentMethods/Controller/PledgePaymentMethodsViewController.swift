@@ -27,11 +27,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> \.rowHeight .~ UITableView.automaticDimension
   }()
 
-  internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
-  internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
+  internal weak var delegate: PledgePaymentMethodsViewControllerDelegate? = nil
+  internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying? = nil
   private let viewModel: PledgePaymentMethodsViewModelType =
     PledgePaymentMethodsViewModel(stripeIntentService: StripeIntentService())
-  private var paymentSheetFlowController: PaymentSheet.FlowController?
+  private var paymentSheetFlowController: PaymentSheet.FlowController? = nil
 
   // MARK: - Lifecycle
 

@@ -2,7 +2,7 @@ import KsApi
 import UIKit
 
 public final class ProjectActivityItemProvider: UIActivityItemProvider {
-  private var project: Project?
+  private var project: Project? = nil
 
   public convenience init(project: Project) {
     self.init(placeholderItem: project.name)

@@ -7,7 +7,7 @@ import UIKit
 final class PledgeExpandableRewardsHeaderViewController: UIViewController {
   // MARK: - Properties
 
-  public weak var animatingViewDelegate: UIView?
+  public weak var animatingViewDelegate: UIView? = nil
 
   private let dataSource = PledgeExpandableRewardsHeaderDataSource()
 
@@ -22,7 +22,7 @@ final class PledgeExpandableRewardsHeaderViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private var tableViewContainerHeightConstraint: NSLayoutConstraint?
+  private var tableViewContainerHeightConstraint: NSLayoutConstraint? = nil
 
   private lazy var tableViewContainer: UIView = {
     UIView(frame: .zero)

@@ -29,7 +29,7 @@ public struct ServerConfig: ServerConfigType {
   public var apiBaseUrl: URL
   public var webBaseUrl: URL
   public var apiClientAuth: ClientAuthType
-  public var basicHTTPAuth: BasicHTTPAuthType?
+  public var basicHTTPAuth: BasicHTTPAuthType? = nil
   public var graphQLEndpointUrl: URL
   public var environment: EnvironmentType
 

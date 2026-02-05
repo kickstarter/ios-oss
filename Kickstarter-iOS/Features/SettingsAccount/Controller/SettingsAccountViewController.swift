@@ -9,7 +9,7 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
   @IBOutlet private var tableView: UITableView!
 
   private let dataSource = SettingsAccountDataSource()
-  internal var messageBannerViewController: MessageBannerViewController?
+  internal var messageBannerViewController: MessageBannerViewController? = nil
 
   fileprivate let viewModel: SettingsAccountViewModelType = SettingsAccountViewModel(
     SettingsAccountViewController.viewController(for:currency:)

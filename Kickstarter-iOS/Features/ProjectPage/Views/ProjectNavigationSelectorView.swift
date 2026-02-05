@@ -19,9 +19,9 @@ internal protocol ProjectNavigationSelectorViewDelegate: AnyObject {
 final class ProjectNavigationSelectorView: UIView {
   // MARK: - Properties
 
-  internal weak var delegate: ProjectNavigationSelectorViewDelegate?
-  private var selectedButtonBorderViewLeadingConstraint: NSLayoutConstraint?
-  private var selectedButtonBorderViewWidthConstraint: NSLayoutConstraint?
+  internal weak var delegate: ProjectNavigationSelectorViewDelegate? = nil
+  private var selectedButtonBorderViewLeadingConstraint: NSLayoutConstraint? = nil
+  private var selectedButtonBorderViewWidthConstraint: NSLayoutConstraint? = nil
   private let viewModel: ProjectNavigationSelectorViewModelType = ProjectNavigationSelectorViewModel()
 
   private lazy var buttonsStackView: UIStackView = {

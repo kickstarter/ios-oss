@@ -56,10 +56,10 @@ final class CreatePasswordTableViewController: UITableViewController {
   // MARK: - Properties
 
   private let viewModel: CreatePasswordViewModelType = CreatePasswordViewModel()
-  weak var delegate: CreatePasswordTableViewControllerDelegate?
-  private weak var newPasswordTextField: UITextField?
-  private weak var newPasswordConfirmationTextField: UITextField?
-  private weak var groupedFooterView: SettingsGroupedFooterView?
+  weak var delegate: CreatePasswordTableViewControllerDelegate? = nil
+  private weak var newPasswordTextField: UITextField? = nil
+  private weak var newPasswordConfirmationTextField: UITextField? = nil
+  private weak var groupedFooterView: SettingsGroupedFooterView? = nil
 
   // MARK: - Lifecycle
 

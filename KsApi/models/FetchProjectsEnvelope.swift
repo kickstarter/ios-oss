@@ -15,7 +15,7 @@ public enum ProfileProjectsType: Decodable {
 public struct FetchProjectsEnvelope: Decodable {
   public var type: ProfileProjectsType
   public var projects: [Project]
-  public var cursor: String?
+  public var cursor: String? = nil
   public var hasNextPage: Bool
   public var totalCount: Int
 }

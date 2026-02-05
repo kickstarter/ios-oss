@@ -11,7 +11,7 @@ private enum FacepileAvatarSize {
 }
 
 final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
-  internal weak var delegate: DiscoveryPostcardCellDelegate?
+  internal weak var delegate: DiscoveryPostcardCellDelegate? = nil
 
   // MARK: - Properties
 
@@ -28,7 +28,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private lazy var percentFundedLabel = { UILabel(frame: .zero) }()
   private let pillsViewContainer: UIView = UIView(frame: .zero)
   private let pillsView: PillsView = PillsView(frame: .zero)
-  private var pillsViewHeightConstraint: NSLayoutConstraint?
+  private var pillsViewHeightConstraint: NSLayoutConstraint? = nil
   private lazy var projectDetailsStackView = { UIStackView(frame: .zero) }()
   private lazy var projectBlurbLabel = { UILabel(frame: .zero) }()
   private lazy var projectImageView = { UIImageView(frame: .zero) }()
@@ -41,7 +41,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private lazy var projectStatusStackView = { UIStackView(frame: .zero) }()
   private lazy var rootStackView = { UIStackView(frame: .zero) }()
   private lazy var saveButton = { UIButton(type: .custom) }()
-  private var tagsCollectionViewHeightConstraint: NSLayoutConstraint?
+  private var tagsCollectionViewHeightConstraint: NSLayoutConstraint? = nil
   private lazy var youreABackerLabel = { UILabel(frame: .zero) }()
   private lazy var youreABackerView = { UIView(frame: .zero) }()
 
@@ -50,9 +50,9 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
   // MARK: - Notification Observers
 
-  private var projectSavedObserver: Any?
-  private var sessionEndedObserver: Any?
-  private var sessionStartedObserver: Any?
+  private var projectSavedObserver: Any? = nil
+  private var sessionEndedObserver: Any? = nil
+  private var sessionStartedObserver: Any? = nil
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)

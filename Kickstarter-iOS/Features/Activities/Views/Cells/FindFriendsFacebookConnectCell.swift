@@ -19,7 +19,7 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
   @IBOutlet fileprivate var subtitleLabel: UILabel!
   @IBOutlet fileprivate var titleLabel: UILabel!
 
-  internal weak var delegate: FindFriendsFacebookConnectCellDelegate?
+  internal weak var delegate: FindFriendsFacebookConnectCellDelegate? = nil
 
   fileprivate let viewModel: FindFriendsFacebookConnectCellViewModelType =
     FindFriendsFacebookConnectCellViewModel()

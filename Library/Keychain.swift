@@ -115,7 +115,7 @@ public struct Keychain {
       kSecReturnData as String: kCFBooleanTrue
     ]
 
-    var passwordObject: AnyObject?
+    var passwordObject: AnyObject? = nil
     let status = SecItemCopyMatching(query as CFDictionary, &passwordObject)
 
     if status == errSecItemNotFound {

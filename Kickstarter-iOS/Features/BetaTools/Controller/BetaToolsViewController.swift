@@ -10,7 +10,7 @@ import UIKit
 internal final class BetaToolsViewController: UITableViewController {
   // MARK: - Properties
 
-  private var betaToolsData: BetaToolsData?
+  private var betaToolsData: BetaToolsData? = nil
   private let helpViewModel: HelpViewModelType = HelpViewModel()
   private let viewModel: BetaToolsViewModelType = BetaToolsViewModel()
 

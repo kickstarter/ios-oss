@@ -9,7 +9,7 @@ protocol CommentRemovedCellDelegate: AnyObject {
 }
 
 final class CommentRemovedCell: UITableViewCell, ValueCell {
-  weak var delegate: CommentRemovedCellDelegate?
+  weak var delegate: CommentRemovedCellDelegate? = nil
 
   // MARK: - Properties
 

@@ -17,16 +17,16 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
   // MARK: - Properties
 
-  private var configUpdatedObserver: Any?
-  private var currentEnvironmentChangedObserver: Any?
-  private var blockedUserObserver: Any?
+  private var configUpdatedObserver: Any? = nil
+  private var currentEnvironmentChangedObserver: Any? = nil
+  private var blockedUserObserver: Any? = nil
   fileprivate let dataSource = DiscoveryProjectsDataSource()
-  public weak var delegate: DiscoveryPageViewControllerDelegate?
-  fileprivate var emptyStatesController: EmptyStatesViewController?
+  public weak var delegate: DiscoveryPageViewControllerDelegate? = nil
+  fileprivate var emptyStatesController: EmptyStatesViewController? = nil
   private lazy var headerLabel = { UILabel(frame: .zero) }()
-  private var onboardingCompletedObserver: Any?
-  private var sessionEndedObserver: Any?
-  private var sessionStartedObserver: Any?
+  private var onboardingCompletedObserver: Any? = nil
+  private var sessionEndedObserver: Any? = nil
+  private var sessionStartedObserver: Any? = nil
 
   internal static func configuredWith(sort: DiscoveryParams.Sort) -> DiscoveryPageViewController {
     let vc = Storyboard.DiscoveryPage.instantiate(DiscoveryPageViewController.self)

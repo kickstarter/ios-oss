@@ -3,7 +3,7 @@ import Library
 import ReactiveSwift
 
 class MockAppTrackingTransparency: AppTrackingTransparencyType {
-  public private(set) var advertisingIdentifier: String?
+  public private(set) var advertisingIdentifier: String? = nil
   public var requestAndSetAuthorizationStatusFlag = false
 
   public var shouldRequestAuthStatus: Bool {

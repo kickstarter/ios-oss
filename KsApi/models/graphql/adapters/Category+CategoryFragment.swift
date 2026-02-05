@@ -16,7 +16,7 @@ extension Category {
     subcategories: Category.SubcategoryConnection?,
     totalProjectCount: Int?
   ) -> Category? {
-    var newParentCategory: ParentCategory?
+    var newParentCategory: ParentCategory? = nil
 
     if let existingParentCategory = categoryFragment.parentCategory {
       newParentCategory = Category.parentCategory(from: existingParentCategory)

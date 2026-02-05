@@ -30,7 +30,7 @@ public struct PillData: Equatable {
 private class PillView: UIView {
   private var data: PillData
   private var label = UILabel(frame: .zero)
-  private var imageView: UIImageView?
+  private var imageView: UIImageView? = nil
 
   public init(with data: PillData) {
     self.data = data
@@ -113,7 +113,7 @@ private class PillView: UIView {
 
 public final class PillsView: UIView {
   private var heightCache = NSCache<UIView, NSValue>()
-  private var data: PillsViewData?
+  private var data: PillsViewData? = nil
   private var pillViews: [UIView] = []
   private var preferredSize: CGSize = .zero
 
@@ -146,7 +146,7 @@ public final class PillsView: UIView {
 
     var pillsIterator = self.pillViews.makeIterator()
 
-    var prevViewSize: CGSize?
+    var prevViewSize: CGSize? = nil
 
     while let pillView = pillsIterator.next() {
       let size: CGSize

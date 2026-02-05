@@ -10,7 +10,7 @@ internal protocol SortPagerViewControllerDelegate: AnyObject {
 }
 
 internal final class SortPagerViewController: UIViewController {
-  internal weak var delegate: SortPagerViewControllerDelegate?
+  internal weak var delegate: SortPagerViewControllerDelegate? = nil
   fileprivate let viewModel: SortPagerViewModelType = SortPagerViewModel()
 
   @IBOutlet fileprivate var borderLineView: UIView!
@@ -21,7 +21,7 @@ internal final class SortPagerViewController: UIViewController {
   @IBOutlet fileprivate var sortsStackView: UIStackView!
   @IBOutlet fileprivate var sortsStackViewLeadingConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate var sortsStackViewTrailingConstraint: NSLayoutConstraint!
-  fileprivate var sortsStackViewCenterXConstraint: NSLayoutConstraint?
+  fileprivate var sortsStackViewCenterXConstraint: NSLayoutConstraint? = nil
 
   internal static func instantiate() -> SortPagerViewController {
     return Storyboard.Discovery.instantiate(SortPagerViewController.self)

@@ -11,7 +11,7 @@ final class CreatePasswordViewController: UIViewController, MessageBannerViewCon
     return tableViewController
   }()
 
-  internal var messageBannerViewController: MessageBannerViewController?
+  internal var messageBannerViewController: MessageBannerViewController? = nil
 
   private lazy var saveButtonView: LoadingBarButtonItemView = {
     let buttonView = LoadingBarButtonItemView.instantiate()

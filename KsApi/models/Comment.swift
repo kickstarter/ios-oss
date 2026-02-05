@@ -7,8 +7,8 @@ public struct Comment {
   public let createdAt: TimeInterval?
   public var id: String
   public var isDeleted: Bool
-  public var parentId: String?
-  public var replyCount: Int?
+  public var parentId: String? = nil
+  public var replyCount: Int? = nil
   public var hasFlaggings: Bool
   public var removedPerGuidelines: Bool
   public var sustained: Bool

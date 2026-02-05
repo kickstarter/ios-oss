@@ -34,7 +34,7 @@ final class PledgeViewController: UIViewController,
     [self.pledgeDisclaimerView]
   }()
 
-  public weak var delegate: PledgeViewControllerDelegate?
+  public weak var delegate: PledgeViewControllerDelegate? = nil
 
   private var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
@@ -42,7 +42,7 @@ final class PledgeViewController: UIViewController,
 
   private var paymentSectionLabel: UILabel = { UILabel(frame: .zero) }()
 
-  internal var processingView: ProcessingView? = ProcessingView(frame: .zero)
+  internal var processingView: ProcessingView? = nil
   private lazy var pledgeDisclaimerView: PledgeDisclaimerView = {
     PledgeDisclaimerView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -57,7 +57,7 @@ final class PledgeViewController: UIViewController,
       |> \.cancelsTouchesInView .~ false
   }()
 
-  internal var messageBannerViewController: MessageBannerViewController?
+  internal var messageBannerViewController: MessageBannerViewController? = nil
 
   private lazy var pledgeAmountSummaryViewController: PledgeAmountSummaryViewController = {
     PledgeAmountSummaryViewController.instantiate()
@@ -122,7 +122,7 @@ final class PledgeViewController: UIViewController,
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private var sessionStartedObserver: Any?
+  private var sessionStartedObserver: Any? = nil
   private let viewModel: PledgeViewModelType = PledgeViewModel()
 
   // MARK: - Lifecycle

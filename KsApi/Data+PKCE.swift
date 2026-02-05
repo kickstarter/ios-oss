@@ -41,7 +41,7 @@ public extension Data {
 
   func sha256Hash() throws -> Data {
     let hash = SHA256.hash(data: self)
-    var hashData: Data?
+    var hashData: Data? = nil
 
     hash.withUnsafeBytes { pointer in
       let dataPointer = pointer.bindMemory(to: UInt8.self)

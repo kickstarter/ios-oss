@@ -7,7 +7,7 @@ import SwiftUI
 struct PPOProjectCard: View {
   @StateObject var viewModel: PPOProjectCardViewModel
   var parentSize: CGSize
-  var onHandleEvent: ((PPOProjectCardModel, PPOCardEvent) -> Void)?
+  var onHandleEvent: ((PPOProjectCardModel, PPOCardEvent) -> Void)? = nil
 
   var body: some View {
     VStack(spacing: Constants.spacing) {

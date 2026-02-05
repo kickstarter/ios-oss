@@ -11,11 +11,11 @@ enum ReportProjectInfoListItemType {
 struct ReportProjectInfoListItem: Identifiable, Hashable {
   var id = UUID()
   var type: ReportProjectInfoListItemType
-  var flaggingKind: GraphAPI.NonDeprecatedFlaggingKind?
+  var flaggingKind: GraphAPI.NonDeprecatedFlaggingKind? = nil
   var title: String
   var subtitle: String
-  var subItems: [ReportProjectInfoListItem]?
-  var exampleMenuItems: [ReportProjectInfoListItem]?
+  var subItems: [ReportProjectInfoListItem]? = nil
+  var exampleMenuItems: [ReportProjectInfoListItem]? = nil
 }
 
 /// Hierarchical structure of the ReportProjectInfo List View

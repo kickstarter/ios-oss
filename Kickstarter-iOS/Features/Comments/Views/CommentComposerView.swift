@@ -41,8 +41,8 @@ final class CommentComposerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  weak var delegate: CommentComposerViewDelegate?
-  private var inputAreaHeightConstraint: NSLayoutConstraint?
+  weak var delegate: CommentComposerViewDelegate? = nil
+  private var inputAreaHeightConstraint: NSLayoutConstraint? = nil
   private let viewModel: CommentComposerViewModelType = CommentComposerViewModel()
 
   // MARK: - Lifecycle

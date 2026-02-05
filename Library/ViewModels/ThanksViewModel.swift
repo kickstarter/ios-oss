@@ -216,9 +216,9 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       self.configureWithDataProperty.signal.skipNil()
     )
     .observeValues { project, configData in
-      var pledgeAmount: Double?
-      var shipping: Double?
-      var transactionId: String?
+      var pledgeAmount: Double? = nil
+      var shipping: Double? = nil
+      var transactionId: String? = nil
 
       if let checkoutDataValues = configData.checkoutData {
         transactionId = checkoutDataValues.checkoutId

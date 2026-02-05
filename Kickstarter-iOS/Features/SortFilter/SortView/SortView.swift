@@ -4,8 +4,8 @@ import SwiftUI
 
 struct SortView<T: SortOption>: View {
   @StateObject var viewModel: SortViewModel<T>
-  var onSelectedSort: ((T) -> Void)?
-  var onClosed: (() -> Void)?
+  var onSelectedSort: ((T) -> Void)? = nil
+  var onClosed: (() -> Void)? = nil
 
   var body: some View {
     VStack(spacing: 0) {

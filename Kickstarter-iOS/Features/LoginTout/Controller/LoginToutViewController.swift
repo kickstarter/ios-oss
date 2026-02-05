@@ -42,7 +42,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
   private lazy var loginContextStackView = { UIStackView() }()
   private lazy var logoImageView = { UIImageView(frame: .zero) }()
-  internal var processingView: ProcessingView? = ProcessingView(frame: .zero)
+  internal var processingView: ProcessingView? = nil
   private lazy var rootStackView = { UIStackView() }()
   private lazy var scrollView = {
     UIScrollView(frame: .zero)
@@ -51,7 +51,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   }()
 
   private lazy var separatorView: UIView = { UIView(frame: .zero) }()
-  private var sessionStartedObserver: Any?
+  private var sessionStartedObserver: Any? = nil
 
   private let viewModel: LoginToutViewModelType = LoginToutViewModel()
 

@@ -26,15 +26,15 @@ internal final class BackerDashboardViewController: UIViewController {
   @IBOutlet private var containerBottomToSafeArea: NSLayoutConstraint!
 
   /// Bottom constraint when using the floating tab bar (full-height)
-  private var containerBottomToSuperview: NSLayoutConstraint?
+  private var containerBottomToSuperview: NSLayoutConstraint? = nil
 
-  fileprivate weak var pageViewController: UIPageViewController?
+  fileprivate weak var pageViewController: UIPageViewController? = nil
 
   fileprivate let viewModel: BackerDashboardViewModelType = BackerDashboardViewModel()
   fileprivate var pagesDataSource: BackerDashboardPagesDataSource!
 
   private var panGesture = UIPanGestureRecognizer()
-  private var projectSavedObserver: Any?
+  private var projectSavedObserver: Any? = nil
 
   internal static func instantiate() -> BackerDashboardViewController {
     return Storyboard.BackerDashboard.instantiate(BackerDashboardViewController.self)

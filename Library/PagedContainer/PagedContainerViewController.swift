@@ -5,7 +5,7 @@ import SwiftUI
 import UIKit
 
 open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
-  private weak var activeController: UIViewController?
+  private weak var activeController: UIViewController? = nil
   private var subscriptions = Set<AnyCancellable>()
   private let viewModel = PagedContainerViewModel<Page>()
 

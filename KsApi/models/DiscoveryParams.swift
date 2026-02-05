@@ -2,27 +2,27 @@
 import Prelude
 
 public struct DiscoveryParams {
-  public var backed: Bool?
-  public var category: Category?
-  public var collaborated: Bool?
-  public var created: Bool?
-  public var hasVideo: Bool?
-  public var includePOTD: Bool?
-  public var page: Int?
-  public var perPage: Int?
-  public var query: String?
-  public var recommended: Bool?
-  public var seed: Int?
-  public var similarTo: Project?
-  public var social: Bool?
-  public var sort: Sort?
-  public var staffPicks: Bool?
-  public var starred: Bool?
-  public var state: State?
-  public var percentRaised: PercentRaisedBucket?
-  public var location: Location?
-  public var amountRaised: AmountRaisedBucket?
-  public var goal: GoalBucket?
+  public var backed: Bool? = nil
+  public var category: Category? = nil
+  public var collaborated: Bool? = nil
+  public var created: Bool? = nil
+  public var hasVideo: Bool? = nil
+  public var includePOTD: Bool? = nil
+  public var page: Int? = nil
+  public var perPage: Int? = nil
+  public var query: String? = nil
+  public var recommended: Bool? = nil
+  public var seed: Int? = nil
+  public var similarTo: Project? = nil
+  public var social: Bool? = nil
+  public var sort: Sort? = nil
+  public var staffPicks: Bool? = nil
+  public var starred: Bool? = nil
+  public var state: State? = nil
+  public var percentRaised: PercentRaisedBucket? = nil
+  public var location: Location? = nil
+  public var amountRaised: AmountRaisedBucket? = nil
+  public var goal: GoalBucket? = nil
 
   public enum State: String, Decodable {
     case all

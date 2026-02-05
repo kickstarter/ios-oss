@@ -27,8 +27,8 @@ public final class MockApolloClient: ApolloClientProtocol {
   public var fetchShouldSucceed = false
   public var performShouldSucceed = false
 
-  private(set) var lastFetchQueue: DispatchQueue?
-  private(set) var lastPerformQueue: DispatchQueue?
+  private(set) var lastFetchQueue: DispatchQueue? = nil
+  private(set) var lastPerformQueue: DispatchQueue? = nil
 
   @discardableResult
   public func fetch<Query: GraphQLQuery>(

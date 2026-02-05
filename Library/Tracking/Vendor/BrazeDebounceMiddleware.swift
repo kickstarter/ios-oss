@@ -8,10 +8,10 @@ private let __brazeIntegrationName = "Appboy"
 /// https://github.com/segmentio/analytics-react-native/blob/master/packages/plugins/plugin-braze-middleware/src/BrazeMiddlewarePlugin.tsx
 /// for a plugin example
 public class BrazeDebounceMiddlewarePlugin: EventPlugin {
-  public weak var analytics: Segment.Analytics?
+  public weak var analytics: Segment.Analytics? = nil
 
   public let type = PluginType.before
-  private var previousIdentifyEvent: IdentifyEvent?
+  private var previousIdentifyEvent: IdentifyEvent? = nil
 
   public init(analytics: Segment.Analytics? = nil, previousIdentifyEvent: IdentifyEvent? = nil) {
     self.analytics = analytics

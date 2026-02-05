@@ -24,7 +24,7 @@ final class PledgePaymentPlansViewController: UIViewController {
   private lazy var pledgeInFullLoadingOption = PledgePaymentPlanOptionLoadingView(frame: .zero)
   private lazy var pledgeOverTimeLoadingOption = PledgePaymentPlanOptionLoadingView(frame: .zero)
 
-  internal weak var delegate: PledgePaymentPlansViewControllerDelegate?
+  internal weak var delegate: PledgePaymentPlansViewControllerDelegate? = nil
 
   private let viewModel: PledgePaymentPlansViewModelType = PledgePaymentPlansViewModel()
 

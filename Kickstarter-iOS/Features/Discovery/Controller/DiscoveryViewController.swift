@@ -6,12 +6,12 @@ import UIKit
 
 internal final class DiscoveryViewController: UIViewController {
   fileprivate let viewModel: DiscoveryViewModelType = DiscoveryViewModel()
-  fileprivate var dataSource: DiscoveryPagesDataSource?
+  fileprivate var dataSource: DiscoveryPagesDataSource? = nil
 
-  private var recommendationsChangedObserver: Any?
+  private var recommendationsChangedObserver: Any? = nil
   private weak var navigationHeaderViewController: DiscoveryNavigationHeaderViewController!
-  private var remoteConfigConfiguredObserver: Any?
-  private var remoteConfigConfigurationFailedObserver: Any?
+  private var remoteConfigConfiguredObserver: Any? = nil
+  private var remoteConfigConfigurationFailedObserver: Any? = nil
   private weak var pageViewController: UIPageViewController!
   private weak var sortPagerViewController: SortPagerViewController!
 

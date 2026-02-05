@@ -17,11 +17,11 @@ public protocol ReportProjectFormViewModelType {
 
 public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
   ReportProjectFormViewModelInputs, ReportProjectFormViewModelOutputs, ObservableObject {
-  @Published public var retrievedEmail: String?
+  @Published public var retrievedEmail: String? = nil
   @Published public var saveButtonEnabled: Bool = false
   @Published public var saveButtonLoading: Bool = false
   @Published public var detailsText: String = ""
-  @Published public var bannerMessage: MessageBannerViewViewModel?
+  @Published public var bannerMessage: MessageBannerViewViewModel? = nil
 
   @Published public var submitSuccess: Bool = false
 
@@ -30,8 +30,8 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
 
   private var cancellables = Set<AnyCancellable>()
 
-  public var projectID: String?
-  public var projectFlaggingKind: GraphAPI.NonDeprecatedFlaggingKind?
+  public var projectID: String? = nil
+  public var projectFlaggingKind: GraphAPI.NonDeprecatedFlaggingKind? = nil
 
   public init() {
     /// Only enable the save button if the user has entered detail text

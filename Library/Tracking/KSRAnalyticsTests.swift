@@ -769,7 +769,7 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     var callBackEvents = [String]()
-    var callBackProperties: [String: Any]?
+    var callBackProperties: [String: Any]? = nil
     ksrAnalytics.logEventCallback = { event, properties in
       callBackEvents.append(event)
       callBackProperties = properties

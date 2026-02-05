@@ -44,7 +44,7 @@ internal final class CommentsViewController: UITableViewController, MessageBanne
   internal let viewModel: CommentsViewModelType = CommentsViewModel()
   private let dataSource = CommentsDataSource()
 
-  public var messageBannerViewController: MessageBannerViewController?
+  public var messageBannerViewController: MessageBannerViewController? = nil
 
   // MARK: - Accessors
 

@@ -2,7 +2,7 @@ import KsApi
 import UIKit
 
 public final class UpdateActivityItemProvider: UIActivityItemProvider {
-  fileprivate var update: Update?
+  fileprivate var update: Update? = nil
 
   public convenience init(update: Update) {
     self.init(placeholderItem: update.title)

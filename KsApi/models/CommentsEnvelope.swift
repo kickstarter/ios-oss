@@ -4,11 +4,11 @@ import ReactiveSwift
 
 public struct CommentsEnvelope: Decodable {
   public var comments: [Comment]
-  public var cursor: String?
+  public var cursor: String? = nil
   public var hasNextPage: Bool
-  public var slug: String?
+  public var slug: String? = nil
   public var totalCount: Int
-  public var updateID: String?
+  public var updateID: String? = nil
 }
 
 extension CommentsEnvelope {

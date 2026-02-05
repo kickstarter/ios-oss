@@ -14,7 +14,7 @@ internal protocol ProjectPamphletMainCellDelegate: VideoViewControllerDelegate {
 }
 
 internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
-  internal weak var delegate: ProjectPamphletMainCellDelegate? {
+  internal weak var delegate: ProjectPamphletMainCellDelegate? = nil {
     didSet {
       self.viewModel.inputs.delegateDidSet()
     }
@@ -22,7 +22,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
   fileprivate let viewModel: ProjectPamphletMainCellViewModelType = ProjectPamphletMainCellViewModel()
 
-  fileprivate weak var videoController: VideoViewController?
+  fileprivate weak var videoController: VideoViewController? = nil
 
   @IBOutlet fileprivate var backersSubtitleLabel: UILabel!
   @IBOutlet fileprivate var backersTitleLabel: UILabel!

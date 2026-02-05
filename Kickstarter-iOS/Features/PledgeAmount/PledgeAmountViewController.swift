@@ -15,7 +15,7 @@ protocol PledgeAmountViewControllerDelegate: AnyObject {
 final class PledgeAmountViewController: UIViewController {
   // MARK: - Properties
 
-  public weak var delegate: PledgeAmountViewControllerDelegate?
+  public weak var delegate: PledgeAmountViewControllerDelegate? = nil
   private let viewModel: PledgeAmountViewModelType = PledgeAmountViewModel()
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()

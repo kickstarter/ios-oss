@@ -18,7 +18,7 @@ internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var newslettersSwitch: UISwitch!
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
-  public weak var delegate: SettingsNewslettersCellDelegate?
+  public weak var delegate: SettingsNewslettersCellDelegate? = nil
 
   override func awakeFromNib() {
     super.awakeFromNib()

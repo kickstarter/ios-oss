@@ -23,7 +23,7 @@ protocol RewardTrackingDetailsViewDelegate: AnyObject {
 final class RewardTrackingDetailsView: UIView {
   // MARK: Properties
 
-  public weak var delegate: RewardTrackingDetailsViewDelegate?
+  public weak var delegate: RewardTrackingDetailsViewDelegate? = nil
   private let viewModel: RewardTrackingDetailsViewModelType = RewardTrackingDetailsViewModel()
   private var style: RewardTrackingDetailsViewStyle
 

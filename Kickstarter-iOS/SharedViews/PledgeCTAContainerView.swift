@@ -90,9 +90,9 @@ final class PledgeCTAContainerView: UIView {
 
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
-  private var projectSavedObserver: Any?
+  private var projectSavedObserver: Any? = nil
 
-  weak var delegate: PledgeCTAContainerViewDelegate?
+  weak var delegate: PledgeCTAContainerViewDelegate? = nil
 
   private let viewModel: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
 

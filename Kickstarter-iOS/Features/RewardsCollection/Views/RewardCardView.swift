@@ -11,7 +11,7 @@ protocol RewardCardViewDelegate: AnyObject {
 public final class RewardCardView: UIView {
   // MARK: - Properties
 
-  weak var delegate: RewardCardViewDelegate?
+  weak var delegate: RewardCardViewDelegate? = nil
   private let viewModel: RewardCardViewModelType = RewardCardViewModel()
 
   private let rootStackView: UIStackView = UIStackView(frame: .zero)
@@ -30,7 +30,7 @@ public final class RewardCardView: UIView {
   private let minimumPriceConversionLabel = UILabel(frame: .zero)
   private let minimumPriceLabel = UILabel(frame: .zero)
   private let pillsView: PillsView = PillsView(frame: .zero)
-  private var pillsViewHeightConstraint: NSLayoutConstraint?
+  private var pillsViewHeightConstraint: NSLayoutConstraint? = nil
   private let priceStackView = UIStackView(frame: .zero)
   private let rewardLocationStackView = UIStackView(frame: .zero)
   private let rewardLocationTitleLabel = UILabel(frame: .zero)

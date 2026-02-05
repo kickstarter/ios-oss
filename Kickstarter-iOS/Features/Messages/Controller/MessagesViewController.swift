@@ -11,8 +11,8 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
   fileprivate let viewModel: MessagesViewModelType = MessagesViewModel()
   fileprivate let dataSource = MessagesDataSource()
 
-  public var messageBannerViewController: MessageBannerViewController?
-  var dismissedAfterBlockingUserHandler: (() -> Void)?
+  public var messageBannerViewController: MessageBannerViewController? = nil
+  var dismissedAfterBlockingUserHandler: (() -> Void)? = nil
 
   internal static func configuredWith(messageThread: MessageThread) -> MessagesViewController {
     let vc = self.instantiate()

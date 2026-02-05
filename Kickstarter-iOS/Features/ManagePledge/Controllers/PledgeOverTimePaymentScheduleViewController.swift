@@ -28,7 +28,7 @@ final class PledgeOverTimePaymentScheduleViewController: UIViewController {
   private let viewModel: PledgeOverTimePaymentScheduleViewModelType =
     PledgeOverTimePaymentScheduleViewModel()
 
-  public weak var delegate: PledgeOverTimePaymentScheduleDelegate?
+  public weak var delegate: PledgeOverTimePaymentScheduleDelegate? = nil
 
   // MARK: - Lifecycle
 

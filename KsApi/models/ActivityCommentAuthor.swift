@@ -8,7 +8,7 @@ public struct ActivityCommentAuthor: Decodable {
   public var urls: Url
 
   public struct Avatar: Decodable {
-    public var medium: String?
+    public var medium: String? = nil
     public var small: String
     public var thumb: String
   }

@@ -18,7 +18,7 @@ final class CommentTableViewFooterView: UIView {
     return indicator
   }()
 
-  weak var delegate: CommentTableViewFooterViewDelegate?
+  weak var delegate: CommentTableViewFooterViewDelegate? = nil
 
   private lazy var retryButton = { UIButton(type: .custom) }()
 

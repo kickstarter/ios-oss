@@ -17,7 +17,7 @@ class AudioVideoViewElementCell: UITableViewCell, ValueCell {
   private let observerKeyPath = "timeControlStatus"
   private lazy var playerController: AVPlayerViewController = { AVPlayerViewController() }()
 
-  weak var delegate: AudioVideoViewElementCellPlaybackDelegate?
+  weak var delegate: AudioVideoViewElementCellPlaybackDelegate? = nil
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)

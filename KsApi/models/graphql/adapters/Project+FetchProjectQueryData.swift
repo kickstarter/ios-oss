@@ -56,7 +56,7 @@ extension Project {
     from data: GraphAPI.FetchProjectByIdQuery.Data,
     configCurrency: String?
   ) -> (Project?, Int?) {
-    var projectBackingId: Int?
+    var projectBackingId: Int? = nil
 
     if let backingId = data.project?.backing?.id {
       projectBackingId = decompose(id: backingId)
@@ -81,7 +81,7 @@ extension Project {
     from data: GraphAPI.FetchProjectBySlugQuery.Data,
     configCurrency: String?
   ) -> (Project?, Int?) {
-    var projectBackingId: Int?
+    var projectBackingId: Int? = nil
 
     if let backingId = data.project?.backing?.id {
       projectBackingId = decompose(id: backingId)

@@ -23,7 +23,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  internal weak var delegate: RewardCellDelegate?
+  internal weak var delegate: RewardCellDelegate? = nil
   private let viewModel: RewardCellViewModelType = RewardCellViewModel()
 
   internal let rewardCardContainerView = RewardCardContainerView(frame: .zero)

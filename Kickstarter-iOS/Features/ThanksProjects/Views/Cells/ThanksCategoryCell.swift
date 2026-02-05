@@ -8,7 +8,7 @@ internal protocol ThanksCategoryCellDelegate: AnyObject {
 }
 
 internal final class ThanksCategoryCell: UITableViewCell, ValueCell {
-  internal weak var delegate: ThanksCategoryCellDelegate?
+  internal weak var delegate: ThanksCategoryCellDelegate? = nil
   fileprivate let viewModel: ThanksCategoryCellViewModelType = ThanksCategoryCellViewModel()
 
   @IBOutlet fileprivate var seeAllProjectsButton: UIButton!

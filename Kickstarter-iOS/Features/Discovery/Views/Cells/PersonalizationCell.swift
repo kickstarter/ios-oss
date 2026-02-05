@@ -14,7 +14,7 @@ protocol PersonalizationCellDelegate: AnyObject {
 }
 
 final class PersonalizationCell: UITableViewCell, ValueCell {
-  weak var delegate: PersonalizationCellDelegate?
+  weak var delegate: PersonalizationCellDelegate? = nil
 
   // MARK: - Properties
 

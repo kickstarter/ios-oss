@@ -36,7 +36,7 @@ class AmountInputView: UIView {
   }()
 
   private lazy var stackView: UIStackView = { UIStackView(frame: .zero) }()
-  private var labelCenterYAnchor: NSLayoutConstraint?
+  private var labelCenterYAnchor: NSLayoutConstraint? = nil
 
   // MARK: - Lifecycle
 

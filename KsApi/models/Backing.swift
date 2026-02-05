@@ -33,12 +33,12 @@ public struct Backing {
   public let status: Status
 
   public struct PaymentSource {
-    public var expirationDate: String?
-    public var id: String?
-    public var lastFour: String?
+    public var expirationDate: String? = nil
+    public var id: String? = nil
+    public var lastFour: String? = nil
     public var paymentType: PaymentType
-    public var state: String?
-    public var type: CreditCardType?
+    public var state: String? = nil
+    public var type: CreditCardType? = nil
   }
 
   public enum Status: String, CaseIterable, Decodable {

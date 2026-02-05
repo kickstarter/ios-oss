@@ -11,7 +11,7 @@ protocol ProjectRisksDisclaimerCellDelegate: AnyObject {
 final class ProjectRisksDisclaimerCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  weak var delegate: ProjectRisksDisclaimerCellDelegate?
+  weak var delegate: ProjectRisksDisclaimerCellDelegate? = nil
   private let viewModel = ProjectRisksDisclaimerCellViewModel()
 
   private lazy var descriptionLabel: UILabel = { UILabel(frame: .zero) }()

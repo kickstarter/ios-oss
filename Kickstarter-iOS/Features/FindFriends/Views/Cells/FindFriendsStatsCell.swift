@@ -17,7 +17,7 @@ internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var backedProjectsCountLabel: UILabel!
   @IBOutlet fileprivate var followAllButton: UIButton!
 
-  internal weak var delegate: FindFriendsStatsCellDelegate?
+  internal weak var delegate: FindFriendsStatsCellDelegate? = nil
 
   fileprivate let viewModel: FindFriendsStatsCellViewModelType = FindFriendsStatsCellViewModel()
 

@@ -16,7 +16,7 @@ internal final class SearchEmptyStateCell: UITableViewCell, ValueCell {
 
   fileprivate let viewModel: SearchEmptyStateCellViewModelType = SearchEmptyStateCellViewModel()
 
-  weak var delegate: SearchEmptyStateCellDelegate?
+  weak var delegate: SearchEmptyStateCellDelegate? = nil
 
   private var titleLabel: UILabel = UILabel()
   private var subtitleLabel: UILabel = UILabel()

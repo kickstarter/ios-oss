@@ -19,7 +19,7 @@ internal final class MessageCell: UITableViewCell, ValueCell {
   @IBOutlet private var bodyTextView: UITextView!
   @IBOutlet var participantStackView: UIStackView!
 
-  weak var delegate: MessageCellDelegate?
+  weak var delegate: MessageCellDelegate? = nil
 
   override func awakeFromNib() {
     super.awakeFromNib()

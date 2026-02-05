@@ -14,7 +14,7 @@ final class ActivityErroredBackingsCell: UITableViewCell, ValueCell {
   }()
 
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  public weak var delegate: ErroredBackingViewDelegate? {
+  public weak var delegate: ErroredBackingViewDelegate? = nil {
     didSet {
       self.rootStackView.arrangedSubviews
         .compactMap { $0 as? ErroredBackingView }

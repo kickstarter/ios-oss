@@ -6,7 +6,7 @@ import SwiftUI
 public struct LocationView: View {
   let defaultLocations: [Location]
   let suggestedLocations: [Location]
-  @Binding var selectedLocation: Location?
+  @Binding var selectedLocation: Location? = nil
   let onSearchedForLocations: (String) -> Void
 
   @State var searchText: String = ""

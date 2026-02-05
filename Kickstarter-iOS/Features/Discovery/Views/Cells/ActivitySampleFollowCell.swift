@@ -11,7 +11,7 @@ internal protocol ActivitySampleFollowCellDelegate: AnyObject {
 
 internal final class ActivitySampleFollowCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: ActivitySampleFollowCellViewModelType = ActivitySampleFollowCellViewModel()
-  internal weak var delegate: ActivitySampleFollowCellDelegate?
+  internal weak var delegate: ActivitySampleFollowCellDelegate? = nil
 
   @IBOutlet fileprivate var activityStackView: UIStackView!
   @IBOutlet fileprivate var activityTitleLabel: UILabel!

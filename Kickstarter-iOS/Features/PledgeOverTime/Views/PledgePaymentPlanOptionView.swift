@@ -38,7 +38,7 @@ final class PledgePaymentPlanOptionView: UIView {
 
   private let viewModel: PledgePaymentPlansOptionViewModelType = PledgePaymentPlansOptionViewModel()
 
-  public weak var delegate: PledgePaymentPlanOptionViewDelegate?
+  public weak var delegate: PledgePaymentPlanOptionViewDelegate? = nil
 
   override init(frame: CGRect) {
     super.init(frame: frame)

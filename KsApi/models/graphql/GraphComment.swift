@@ -8,7 +8,7 @@ struct GraphComment: Decodable {
   var createdAt: TimeInterval
   var deleted: Bool
   var id: String
-  var parentId: String?
+  var parentId: String? = nil
   var replyCount: Int
 
   struct GraphAuthor: Decodable {

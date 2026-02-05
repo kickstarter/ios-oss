@@ -35,7 +35,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     }
   }
 
-  internal weak var delegate: DiscoveryNavigationHeaderViewDelegate?
+  internal weak var delegate: DiscoveryNavigationHeaderViewDelegate? = nil
 
   internal static func instantiate() -> DiscoveryNavigationHeaderViewController {
     return Storyboard.Discovery.instantiate(DiscoveryNavigationHeaderViewController.self)

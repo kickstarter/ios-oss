@@ -7,11 +7,11 @@ import UIKit
 internal final class ActivitiesViewController: UITableViewController {
   fileprivate let viewModel: ActivitiesViewModelType = ActivitiesViewModel()
   fileprivate let dataSource = ActivitiesDataSource()
-  private var sessionEndedObserver: Any?
-  private var sessionStartedObserver: Any?
-  private var userUpdatedObserver: Any?
+  private var sessionEndedObserver: Any? = nil
+  private var sessionStartedObserver: Any? = nil
+  private var userUpdatedObserver: Any? = nil
 
-  fileprivate var emptyStatesController: EmptyStatesViewController?
+  fileprivate var emptyStatesController: EmptyStatesViewController? = nil
 
   internal static func instantiate() -> ActivitiesViewController {
     return Storyboard.Activity.instantiate(ActivitiesViewController.self)

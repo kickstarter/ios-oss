@@ -5,14 +5,14 @@ import UIKit
 /// Mock implementation of FacebookSDKType for testing
 public struct MockFacebookSDK: FacebookSDKType {
   public static var configureCalled = false
-  public static var configureAppID: String?
-  public static var configureApplication: UIApplication?
-  public static var configureLaunchOptions: [UIApplication.LaunchOptionsKey: Any]?
+  public static var configureAppID: String? = nil
+  public static var configureApplication: UIApplication? = nil
+  public static var configureLaunchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
 
   public static var handleOpenURLCalled = false
-  public static var handleOpenURLApp: UIApplication?
-  public static var handleOpenURLURL: URL?
-  public static var handleOpenURLOptions: [UIApplication.OpenURLOptionsKey: Any]?
+  public static var handleOpenURLApp: UIApplication? = nil
+  public static var handleOpenURLURL: URL? = nil
+  public static var handleOpenURLOptions: [UIApplication.OpenURLOptionsKey: Any]? = nil
   public static var handleOpenURLReturnValue = false
 
   public static func configure(

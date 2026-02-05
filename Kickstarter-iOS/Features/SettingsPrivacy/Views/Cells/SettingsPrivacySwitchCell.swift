@@ -19,7 +19,7 @@ final class SettingsPrivacySwitchCell: UITableViewCell, ValueCell, NibLoading {
 
   private let viewModel: SettingsPrivacySwitchCellViewModelType = SettingsPrivacySwitchCellViewModel()
 
-  weak var delegate: SettingsPrivacySwitchCellDelegate?
+  weak var delegate: SettingsPrivacySwitchCellDelegate? = nil
 
   override func awakeFromNib() {
     super.awakeFromNib()

@@ -14,7 +14,7 @@ public protocol AppTrackingTransparencyType {
 }
 
 public class AppTrackingTransparency: AppTrackingTransparencyType {
-  public private(set) var advertisingIdentifier: String?
+  public private(set) var advertisingIdentifier: String? = nil
 
   public init() {
     self.updateAdvertisingIdentifier()

@@ -17,7 +17,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
   private let dataSource = DiscoveryFiltersDataSource()
   private let viewModel: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
 
-  internal weak var delegate: DiscoveryFiltersViewControllerDelegate?
+  internal weak var delegate: DiscoveryFiltersViewControllerDelegate? = nil
 
   internal static func configuredWith(selectedRow: SelectableRow)
     -> DiscoveryFiltersViewController {

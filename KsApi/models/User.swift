@@ -2,43 +2,43 @@
 
 public struct User {
   public var avatar: Avatar
-  public var chosenCurrency: String?
-  public var erroredBackingsCount: Int?
-  public var facebookConnected: Bool?
+  public var chosenCurrency: String? = nil
+  public var erroredBackingsCount: Int? = nil
+  public var facebookConnected: Bool? = nil
   public var id: Int
-  public var isAdmin: Bool?
-  public var isEmailVerified: Bool?
-  public var isFriend: Bool?
+  public var isAdmin: Bool? = nil
+  public var isEmailVerified: Bool? = nil
+  public var isFriend: Bool? = nil
   public var isBlocked: Bool
-  public var location: Location?
+  public var location: Location? = nil
   public var name: String
-  public var needsFreshFacebookToken: Bool?
-  public var needsPassword: Bool?
+  public var needsFreshFacebookToken: Bool? = nil
+  public var needsPassword: Bool? = nil
   public var newsletters: NewsletterSubscriptions
   public var notifications: Notifications
-  public var optedOutOfRecommendations: Bool?
-  public var showPublicProfile: Bool?
-  public var social: Bool?
+  public var optedOutOfRecommendations: Bool? = nil
+  public var showPublicProfile: Bool? = nil
+  public var social: Bool? = nil
   public var stats: Stats
-  public var unseenActivityCount: Int?
+  public var unseenActivityCount: Int? = nil
 
   public struct Avatar {
-    public var large: String?
+    public var large: String? = nil
     public var medium: String
     public var small: String
   }
 
   public struct NewsletterSubscriptions {
-    public var arts: Bool?
-    public var games: Bool?
-    public var happening: Bool?
-    public var invent: Bool?
-    public var promo: Bool?
-    public var weekly: Bool?
-    public var films: Bool?
-    public var publishing: Bool?
-    public var alumni: Bool?
-    public var music: Bool?
+    public var arts: Bool? = nil
+    public var games: Bool? = nil
+    public var happening: Bool? = nil
+    public var invent: Bool? = nil
+    public var promo: Bool? = nil
+    public var weekly: Bool? = nil
+    public var films: Bool? = nil
+    public var publishing: Bool? = nil
+    public var alumni: Bool? = nil
+    public var music: Bool? = nil
 
     public static func all(on: Bool) -> NewsletterSubscriptions {
       return NewsletterSubscriptions(
@@ -57,34 +57,34 @@ public struct User {
   }
 
   public struct Notifications {
-    public var backings: Bool?
-    public var commentReplies: Bool?
-    public var comments: Bool?
-    public var creatorDigest: Bool?
-    public var creatorTips: Bool?
-    public var follower: Bool?
-    public var friendActivity: Bool?
-    public var messages: Bool?
-    public var mobileBackings: Bool?
-    public var mobileComments: Bool?
-    public var mobileFollower: Bool?
-    public var mobileFriendActivity: Bool?
-    public var mobileMarketingUpdate: Bool?
-    public var mobileMessages: Bool?
-    public var mobilePostLikes: Bool?
-    public var mobileUpdates: Bool?
-    public var postLikes: Bool?
-    public var updates: Bool?
+    public var backings: Bool? = nil
+    public var commentReplies: Bool? = nil
+    public var comments: Bool? = nil
+    public var creatorDigest: Bool? = nil
+    public var creatorTips: Bool? = nil
+    public var follower: Bool? = nil
+    public var friendActivity: Bool? = nil
+    public var messages: Bool? = nil
+    public var mobileBackings: Bool? = nil
+    public var mobileComments: Bool? = nil
+    public var mobileFollower: Bool? = nil
+    public var mobileFriendActivity: Bool? = nil
+    public var mobileMarketingUpdate: Bool? = nil
+    public var mobileMessages: Bool? = nil
+    public var mobilePostLikes: Bool? = nil
+    public var mobileUpdates: Bool? = nil
+    public var postLikes: Bool? = nil
+    public var updates: Bool? = nil
   }
 
   public struct Stats {
-    public var backedProjectsCount: Int?
-    public var createdProjectsCount: Int?
-    public var draftProjectsCount: Int?
-    public var memberProjectsCount: Int?
-    public var starredProjectsCount: Int?
-    public var unansweredSurveysCount: Int?
-    public var unreadMessagesCount: Int?
+    public var backedProjectsCount: Int? = nil
+    public var createdProjectsCount: Int? = nil
+    public var draftProjectsCount: Int? = nil
+    public var memberProjectsCount: Int? = nil
+    public var starredProjectsCount: Int? = nil
+    public var unansweredSurveysCount: Int? = nil
+    public var unreadMessagesCount: Int? = nil
   }
 
   public var isCreator: Bool {

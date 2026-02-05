@@ -3,30 +3,30 @@ import Prelude
 import ReactiveSwift
 
 public struct Project {
-  public var availableCardTypes: [String]?
+  public var availableCardTypes: [String]? = nil
   public var blurb: String
-  public var category: Category?
+  public var category: Category? = nil
   public var country: Country
   public var creator: User
-  public var extendedProjectProperties: ExtendedProjectProperties?
+  public var extendedProjectProperties: ExtendedProjectProperties? = nil
   public var memberData: MemberData
   public var dates: Dates
-  public var displayPrelaunch: Bool?
-  public var flagging: Bool?
+  public var displayPrelaunch: Bool? = nil
+  public var flagging: Bool? = nil
   public var id: Int
-  public var lastWave: LastWave?
-  public var location: Location?
+  public var lastWave: LastWave? = nil
+  public var location: Location? = nil
   public var name: String
-  public var pledgeManager: PledgeManager?
-  public var pledgeOverTimeCollectionPlanChargeExplanation: String?
-  public var pledgeOverTimeCollectionPlanChargedAsNPayments: String?
-  public var pledgeOverTimeCollectionPlanShortPitch: String?
-  public var pledgeOverTimeMinimumExplanation: String?
+  public var pledgeManager: PledgeManager? = nil
+  public var pledgeOverTimeCollectionPlanChargeExplanation: String? = nil
+  public var pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil
+  public var pledgeOverTimeCollectionPlanShortPitch: String? = nil
+  public var pledgeOverTimeMinimumExplanation: String? = nil
   public var personalization: Personalization
   public var photo: Photo
   public var isInPostCampaignPledgingPhase: Bool
   public var postCampaignPledgingEnabled: Bool
-  public var prelaunchActivated: Bool?
+  public var prelaunchActivated: Bool? = nil
   public var redemptionPageUrl: String
   public var rewardData: RewardData
   public var sendMetaCapiEvents: Bool
@@ -34,19 +34,19 @@ public struct Project {
   public var staffPick: Bool
   public var state: State
   public var stats: Stats
-  public var tags: [String]?
+  public var tags: [String]? = nil
   public var urls: UrlsEnvelope
-  public var video: Video?
-  public var watchesCount: Int?
-  public var isPledgeOverTimeAllowed: Bool?
+  public var video: Video? = nil
+  public var watchesCount: Int? = nil
+  public var isPledgeOverTimeAllowed: Bool? = nil
 
   public struct Category {
-    public var analyticsName: String?
+    public var analyticsName: String? = nil
     public var id: Int
     public var name: String
-    public var parentAnalyticsName: String?
-    public var parentId: Int?
-    public var parentName: String?
+    public var parentAnalyticsName: String? = nil
+    public var parentId: Int? = nil
+    public var parentName: String? = nil
 
     public var rootId: Int {
       return self.parentId ?? self.id
@@ -58,14 +58,14 @@ public struct Project {
 
     public struct WebEnvelope {
       public var project: String
-      public var updates: String?
+      public var updates: String? = nil
     }
   }
 
   public struct Video {
     public var id: Int
     public var high: String
-    public var hls: String?
+    public var hls: String? = nil
   }
 
   public enum State: String, CaseIterable, Decodable {
@@ -81,20 +81,20 @@ public struct Project {
 
   public struct Stats {
     public var backersCount: Int
-    public var commentsCount: Int?
-    public var convertedPledgedAmount: Float?
+    public var commentsCount: Int? = nil
+    public var convertedPledgedAmount: Float? = nil
     /// The currency code of the project ex. USD
     public var projectCurrency: String
     /// The currency code of the User's preferred currency ex. SEK
-    public var userCurrency: String?
+    public var userCurrency: String? = nil
     /// The currency conversion rate between the User's preferred currency
     /// and the Project's currency
-    public var userCurrencyRate: Float?
+    public var userCurrencyRate: Float? = nil
     public var goal: Int
     public var pledged: Int
     public var staticUsdRate: Float
-    public var updatesCount: Int?
-    public var usdExchangeRate: Float?
+    public var updatesCount: Int? = nil
+    public var usdExchangeRate: Float? = nil
 
     /// Percent funded as measured from `0.0` to `1.0`. See `percentFunded` for a value from `0` to `100`.
     public var fundingProgress: Float {
@@ -161,10 +161,10 @@ public struct Project {
   }
 
   public struct MemberData {
-    public var lastUpdatePublishedAt: TimeInterval?
+    public var lastUpdatePublishedAt: TimeInterval? = nil
     public var permissions: [Permission]
-    public var unreadMessagesCount: Int?
-    public var unseenActivityCount: Int?
+    public var unreadMessagesCount: Int? = nil
+    public var unseenActivityCount: Int? = nil
 
     public enum Permission: String {
       case editProject = "edit_project"
@@ -178,10 +178,10 @@ public struct Project {
   }
 
   public struct Dates {
-    public var deadline: TimeInterval?
-    public var featuredAt: TimeInterval?
-    public var finalCollectionDate: TimeInterval?
-    public var launchedAt: TimeInterval?
+    public var deadline: TimeInterval? = nil
+    public var featuredAt: TimeInterval? = nil
+    public var finalCollectionDate: TimeInterval? = nil
+    public var launchedAt: TimeInterval? = nil
     public var stateChangedAt: TimeInterval
 
     /**
@@ -215,21 +215,21 @@ public struct Project {
   }
 
   public struct Personalization {
-    public var backing: Backing?
-    public var friends: [User]?
-    public var isBacking: Bool?
-    public var isStarred: Bool?
+    public var backing: Backing? = nil
+    public var friends: [User]? = nil
+    public var isBacking: Bool? = nil
+    public var isStarred: Bool? = nil
   }
 
   public struct Photo {
     public var full: String
     public var med: String
-    public var size1024x768: String?
+    public var size1024x768: String? = nil
     public var small: String
   }
 
   public struct RewardData {
-    public var addOns: [Reward]?
+    public var addOns: [Reward]? = nil
     public var rewards: [Reward]
   }
 

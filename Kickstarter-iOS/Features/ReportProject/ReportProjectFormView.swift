@@ -17,7 +17,7 @@ struct ReportProjectFormView: View {
   @SwiftUI.Environment(\.dismiss) private var dismiss
   @StateObject private var viewModel = ReportProjectFormViewModel()
 
-  @FocusState private var focusField: ReportFormFocusField?
+  @FocusState private var focusField: ReportFormFocusField? = nil
 
   var body: some View {
     GeometryReader { proxy in

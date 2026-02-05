@@ -13,7 +13,7 @@ protocol CancelPledgeViewControllerDelegate: AnyObject {
 }
 
 final class CancelPledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
-  weak var delegate: CancelPledgeViewControllerDelegate?
+  weak var delegate: CancelPledgeViewControllerDelegate? = nil
   private let viewModel: CancelPledgeViewModelType = CancelPledgeViewModel()
 
   // MARK: - Properties
@@ -34,7 +34,7 @@ final class CancelPledgeViewController: UIViewController, MessageBannerViewContr
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  internal var messageBannerViewController: MessageBannerViewController?
+  internal var messageBannerViewController: MessageBannerViewController? = nil
   private lazy var rootStackView = { UIStackView(frame: .zero) }()
   private lazy var scrollView = { UIScrollView(frame: .zero) }()
 

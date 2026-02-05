@@ -26,11 +26,11 @@ final class KSRSearchBar: UIView {
 
   /// Callback triggered whenever the text in the search field changes.
   /// Use this to update search results.
-  var onTextChange: ((String) -> Void)?
+  var onTextChange: ((String) -> Void)? = nil
 
   /// Callback triggered when the user taps the Cancel button.
   /// Use this to dismiss the search context or reset search state.
-  var onCancel: (() -> Void)?
+  var onCancel: (() -> Void)? = nil
 
   // MARK: - UI Elements
 

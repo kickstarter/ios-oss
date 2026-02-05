@@ -7,11 +7,11 @@ struct FilterRootView: View {
   @State var navigationState: [SearchFilterModalType]
   @ObservedObject var searchFilters: SearchFilters
 
-  var onFilter: ((SearchFilterEvent) -> Void)?
-  var onSearchedForLocations: ((String) -> Void)?
-  var onReset: ((SearchFilterModalType) -> Void)?
-  var onResults: (() -> Void)?
-  var onClose: (() -> Void)?
+  var onFilter: ((SearchFilterEvent) -> Void)? = nil
+  var onSearchedForLocations: ((String) -> Void)? = nil
+  var onReset: ((SearchFilterModalType) -> Void)? = nil
+  var onResults: (() -> Void)? = nil
+  var onClose: (() -> Void)? = nil
 
   var modalType: SearchFilterModalType {
     self.navigationState.first ?? .allFilters

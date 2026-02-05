@@ -155,7 +155,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     }
   }
 
-  public var messageBannerViewController: MessageBannerViewController?
+  public var messageBannerViewController: MessageBannerViewController? = nil
 
   private var subscriptions = Set<AnyCancellable>()
 

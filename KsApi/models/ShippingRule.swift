@@ -9,7 +9,7 @@ public struct ShippingRule {
 
   // TODO: This is a temporary patch to fix the fact that the SimpleShippingRule type is not translated.
   // This (and `localizedLocationNameForCheckout`) can be removed when MBL-2859 is fixed.
-  public var overrideLocationLocalizedName: String?
+  public var overrideLocationLocalizedName: String? = nil
 
   public var localizedLocationNameForCheckout: String {
     return self.overrideLocationLocalizedName ?? self.location.localizedName

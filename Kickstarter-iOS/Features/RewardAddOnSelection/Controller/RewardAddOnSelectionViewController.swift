@@ -23,7 +23,7 @@ final class RewardAddOnSelectionViewController: UIViewController {
       |> \.delegate .~ self
   }()
 
-  public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
+  public weak var pledgeViewDelegate: PledgeViewControllerDelegate? = nil
 
   private lazy var refreshControl: UIRefreshControl = { UIRefreshControl() }()
 

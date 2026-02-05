@@ -52,7 +52,7 @@ extension UIImageView {
       resources: [url],
       options: options
     ) { cachedImages, failedImages, downloadedImages in
-      var crossPlatformImage: UIImage?
+      var crossPlatformImage: UIImage? = nil
 
       guard failedImages.isEmpty,
             let image = (cachedImages + downloadedImages).first else {

@@ -3,7 +3,7 @@ import SwiftSoup
 
 extension Element {
   func extractViewElementTypeFromDiv() -> ViewElementType? {
-    var type: ViewElementType?
+    var type: ViewElementType? = nil
 
     if self.isImageAudioOrVideoStructure() {
       type = .imageAudioOrVideo
@@ -64,8 +64,8 @@ extension Element {
 
   func parseImageElement() -> ImageViewElement? {
     var src = ""
-    var caption: String?
-    var href: String?
+    var caption: String? = nil
+    var href: String? = nil
 
     if let parent = parent(),
        parent.tag().getName() == HTMLRawText.Link.anchor.rawValue {
@@ -88,7 +88,7 @@ extension Element {
 
   func parseExternalElement() -> ExternalSourceViewElement {
     var contentString = ""
-    var contentHeight: Int?
+    var contentHeight: Int? = nil
 
     guard let iFrameElement = try? children().first()?.getElementsByTag(HTMLRawText.Base.iframe.rawValue)
       .first(),

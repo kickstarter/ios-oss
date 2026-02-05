@@ -4,7 +4,7 @@ import Prelude
 import UIKit
 
 final class SettingsNotificationsDataSource: ValueCellDataSource {
-  weak var cellDelegate: SettingsNotificationCellDelegate?
+  weak var cellDelegate: SettingsNotificationCellDelegate? = nil
 
   func load(user: User) {
     _ = SettingsNotificationSectionType.allCases

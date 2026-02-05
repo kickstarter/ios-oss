@@ -15,11 +15,11 @@ public protocol VideoViewControllerDelegate: AnyObject {
 }
 
 public final class VideoViewController: UIViewController {
-  internal weak var delegate: VideoViewControllerDelegate?
-  internal weak var playbackDelegate: AudioVideoViewControllerPlaybackDelegate?
+  internal weak var delegate: VideoViewControllerDelegate? = nil
+  internal weak var playbackDelegate: AudioVideoViewControllerPlaybackDelegate? = nil
   fileprivate let viewModel: VideoViewModelType = VideoViewModel()
   fileprivate var playerController: AVPlayerViewController!
-  fileprivate var timeObserver: Any?
+  fileprivate var timeObserver: Any? = nil
 
   @IBOutlet fileprivate var playButton: UIButton!
   @IBOutlet fileprivate var projectImageView: UIImageView!

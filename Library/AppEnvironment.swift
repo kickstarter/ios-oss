@@ -403,8 +403,8 @@ public struct AppEnvironment: AppEnvironmentType {
     let data = userDefaults.dictionary(forKey: self.environmentStorageKey) ?? [:]
 
     var service = self.current.apiService
-    var currentUser: User? // Will only be set if an OAuth token is also set
-    var currentUserServerFeatures: [ServerFeature]? // Will only be set if an OAuth token is also set
+    var currentUser: User? = nil // Will only be set if an OAuth token is also set
+    var currentUserServerFeatures: [ServerFeature]? = nil // Will only be set if an OAuth token is also set
     let configDict: [String: Any]? = data["config"] as? [String: Any]
     let config: Config? = configDict.flatMap(Config.decodeJSONDictionary)
 

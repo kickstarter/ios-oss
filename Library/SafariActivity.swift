@@ -7,7 +7,7 @@ public struct SafariURL {
 }
 
 public final class SafariActivity: UIActivity {
-  fileprivate var url: URL?
+  fileprivate var url: URL? = nil
 
   public convenience init(url: SafariURL) {
     self.init()

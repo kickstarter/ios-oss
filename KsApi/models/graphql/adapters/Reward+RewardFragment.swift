@@ -29,7 +29,7 @@ extension Reward {
 
     let rewardHasAddons = rewardFragment.allowedAddons.pageInfo.startCursor != nil
 
-    var location: Location?
+    var location: Location? = nil
 
     if let locationFragment = rewardFragment.localReceiptLocation?.fragments.locationFragment {
       location = Location.location(from: locationFragment)

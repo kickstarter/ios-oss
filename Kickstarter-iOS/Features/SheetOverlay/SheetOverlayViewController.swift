@@ -18,7 +18,7 @@ final class SheetOverlayViewController: UIViewController {
   private let childViewController: UIViewController
   private let offset: CGFloat
   private let transitionAnimator = SheetOverlayTransitionAnimator()
-  private var topAnchorConstraint: NSLayoutConstraint?
+  private var topAnchorConstraint: NSLayoutConstraint? = nil
 
   init(child: UIViewController, offset: CGFloat = 45.0) {
     self.childViewController = child

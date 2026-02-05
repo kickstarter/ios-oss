@@ -15,7 +15,7 @@ protocol RewardAddOnCardViewDelegate: AnyObject {
 public final class RewardAddOnCardView: UIView {
   // MARK: - Properties
 
-  weak var delegate: RewardAddOnCardViewDelegate?
+  weak var delegate: RewardAddOnCardViewDelegate? = nil
   private let viewModel: RewardAddOnCardViewModelType = RewardAddOnCardViewModel()
 
   private let rootStackView = UIStackView(frame: .zero)
@@ -37,7 +37,7 @@ public final class RewardAddOnCardView: UIView {
   private let quantityLabel = UILabel(frame: .zero)
   private let quantityLabelContainer = UIView(frame: .zero)
   private let pillsView: PillsView = PillsView(frame: .zero)
-  private var pillsViewHeightConstraint: NSLayoutConstraint?
+  private var pillsViewHeightConstraint: NSLayoutConstraint? = nil
   private let stepper: UIStepper = UIStepper(frame: .zero)
   private let stepperStackView = UIStackView(frame: .zero)
   private let rewardLocationStackView = UIStackView(frame: .zero)

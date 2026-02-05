@@ -19,9 +19,9 @@ final class SimilarProjectsCollectionViewCell: UICollectionViewCell, ValueCell {
 
   private lazy var projectCardView: ProjectCardView = { ProjectCardView(frame: .zero) }()
 
-  internal var project: ProjectCardProperties?
+  internal var project: ProjectCardProperties? = nil
 
-  weak var delegate: SimilarProjectsCollectionViewCellDelegate?
+  weak var delegate: SimilarProjectsCollectionViewCellDelegate? = nil
 
   // MARK: - Lifecycle
 

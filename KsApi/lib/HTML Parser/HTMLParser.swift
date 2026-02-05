@@ -25,7 +25,7 @@ class HTMLParser {
     viewElements: inout [HTMLViewElement]
   ) {
     let viewElementType = ViewElementType(element: child)
-    var element: HTMLViewElement?
+    var element: HTMLViewElement? = nil
 
     switch viewElementType {
     case .imageAudioOrVideo:

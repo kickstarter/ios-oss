@@ -21,7 +21,7 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
   }()
 
   private let viewModel: ExternalSourceViewElementCellViewModelType = ExternalSourceViewElementCellViewModel()
-  private var contentHeightConstraint: NSLayoutConstraint?
+  private var contentHeightConstraint: NSLayoutConstraint? = nil
 
   // MARK: Initializers
 

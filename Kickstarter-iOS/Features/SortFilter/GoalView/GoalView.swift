@@ -5,7 +5,7 @@ import SwiftUI
 
 public struct GoalView: View {
   var buckets: [DiscoveryParams.GoalBucket]
-  @Binding var selectedBucket: DiscoveryParams.GoalBucket?
+  @Binding var selectedBucket: DiscoveryParams.GoalBucket? = nil
 
   public var body: some View {
     VStack(alignment: .leading, spacing: Constants.spacing) {

@@ -16,7 +16,7 @@ public struct PledgePaymentIncrement: Equatable, Decodable {
 
   public internal(set) var amount: PledgePaymentIncrementAmount
   /// Badge will only be set for pledge increments with a backing.
-  public internal(set) var badge: PledgePaymentIncrement.Badge?
+  public internal(set) var badge: PledgePaymentIncrement.Badge? = nil
   /// Refund status will only be set for pledge increments with a backing. Otherwise, it will be `.unknown`
   public internal(set) var refundStatus: RefundStatus
   public internal(set) var scheduledCollection: TimeInterval

@@ -56,11 +56,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  weak var navigationDelegate: ProjectPageNavigationBarViewDelegate?
-  weak var playbackDelegate: AudioVideoViewControllerPlaybackDelegate?
-  public var messageBannerViewController: MessageBannerViewController?
-  private var pinchToZoomData: PinchToZoomData?
-  internal var overlayView: OverlayView? = OverlayView(frame: .zero)
+  weak var navigationDelegate: ProjectPageNavigationBarViewDelegate? = nil
+  weak var playbackDelegate: AudioVideoViewControllerPlaybackDelegate? = nil
+  public var messageBannerViewController: MessageBannerViewController? = nil
+  private var pinchToZoomData: PinchToZoomData? = nil
+  internal var overlayView: OverlayView? = nil
 
   public static func configuredWith(
     projectOrParam: Either<Project, any ProjectPageParam>,
@@ -455,7 +455,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         elements.forEach { element in
           guard let url = URL(string: element.sourceURLString) else { return }
 
-          var audioVideoThumbnailURL: URL?
+          var audioVideoThumbnailURL: URL? = nil
 
           if let audioVideoThumbnailURLString = element.thumbnailURLString {
             audioVideoThumbnailURL = URL(string: audioVideoThumbnailURLString)
@@ -476,7 +476,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { [weak self] element, indexPath in
         guard let url = URL(string: element.sourceURLString) else { return }
 
-        var audioVideoThumbnailURL: URL?
+        var audioVideoThumbnailURL: URL? = nil
 
         if let audioVideoThumbnailURLString = element.thumbnailURLString {
           audioVideoThumbnailURL = URL(string: audioVideoThumbnailURLString)
@@ -620,7 +620,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     completionHandler: @escaping (AVPlayer?, UIImage?) -> Void
   ) {
     // Fetch the thumbnail
-    var cachedImage: UIImage?
+    var cachedImage: UIImage? = nil
 
     if let audioVideoThumbnailURL = thumbnailURL {
       UIImageView.ksr_cacheImageWith(audioVideoThumbnailURL) { image in
@@ -632,8 +632,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     let asset = AVAsset(url: audioVideoURL)
 
     asset.loadValuesAsynchronously(forKeys: ["duration", "tracks"]) {
-      var durationError: NSError?
-      var tracksError: NSError?
+      var durationError: NSError? = nil
+      var tracksError: NSError? = nil
 
       if asset.statusOfValue(forKey: "duration", error: &durationError) == .loaded,
          asset.statusOfValue(forKey: "tracks", error: &tracksError) == .loaded {
@@ -642,8 +642,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
           automaticallyLoadedAssetKeys: ["duration", "tracks"]
         )
 
-        var player: AVPlayer?
-        var cancellable: AnyCancellable?
+        var player: AVPlayer? = nil
+        var cancellable: AnyCancellable? = nil
 
         cancellable = playerItem.publisher(for: \.status)
           .subscribe(on: DispatchQueue.global(qos: .background))

@@ -8,7 +8,7 @@ internal protocol DiscoveryOnboardingCellDelegate: AnyObject {
 }
 
 internal final class DiscoveryOnboardingCell: UITableViewCell, ValueCell {
-  internal weak var delegate: DiscoveryOnboardingCellDelegate?
+  internal weak var delegate: DiscoveryOnboardingCellDelegate? = nil
 
   @IBOutlet fileprivate var loginButton: UIButton!
   @IBOutlet fileprivate var logoImageView: UIImageView!

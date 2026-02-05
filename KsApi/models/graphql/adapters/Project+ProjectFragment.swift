@@ -33,12 +33,12 @@ extension Project {
       let creator = User.user(from: userFragment)
     else { return nil }
 
-    var category: Category?
+    var category: Category? = nil
     if let categoryFragment = projectFragment.category?.fragments.categoryFragment {
       category = Project.Category.category(from: categoryFragment)
     }
 
-    var location: Location?
+    var location: Location? = nil
     if let locationFragment = projectFragment.location?.fragments.locationFragment {
       location = Location.location(from: locationFragment)
     }
@@ -151,7 +151,7 @@ private func projectDates(from projectFragment: GraphAPI.ProjectFragment) -> Pro
 
   let startOfToday = Calendar.current.startOfDay(for: Date()).timeIntervalSince1970
 
-  var featuredAtDate: TimeInterval?
+  var featuredAtDate: TimeInterval? = nil
 
   if let projectOfTheDay = projectFragment.isProjectOfTheDay {
     featuredAtDate = projectOfTheDay ? startOfToday : nil
@@ -219,7 +219,7 @@ private func projectStats(
   let fxRateValue = Float(projectFragment.fxRate)
   let convertedPledgedAmountValue = pledgedRawData != nil ? pledgedRawValue * fxRateValue : nil
   let staticUSDRateValue = Float(projectFragment.usdExchangeRate ?? 0)
-  var usdExchangeRate: Float?
+  var usdExchangeRate: Float? = nil
 
   if let usdExchangeRateRawValue = projectFragment.usdExchangeRate {
     usdExchangeRate = Float(usdExchangeRateRawValue)
@@ -326,7 +326,7 @@ private func extendedProjectFAQs(
         continue
       }
 
-      var createdAtDate: TimeInterval?
+      var createdAtDate: TimeInterval? = nil
 
       if let existingDate = faq?.createdAt {
         createdAtDate = TimeInterval(existingDate)

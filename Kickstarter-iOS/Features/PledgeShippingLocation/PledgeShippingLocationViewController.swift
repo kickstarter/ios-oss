@@ -22,7 +22,7 @@ protocol PledgeShippingLocationViewControllerDelegate: AnyObject {
 final class PledgeShippingLocationViewController: UIViewController {
   // MARK: - Properties
 
-  public weak var delegate: PledgeShippingLocationViewControllerDelegate?
+  public weak var delegate: PledgeShippingLocationViewControllerDelegate? = nil
   private let viewModel: PledgeShippingLocationViewModelType = PledgeShippingLocationViewModel()
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()

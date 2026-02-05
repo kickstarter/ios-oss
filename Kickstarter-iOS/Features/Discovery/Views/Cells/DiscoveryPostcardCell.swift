@@ -16,7 +16,7 @@ internal protocol DiscoveryPostcardCellDelegate: AnyObject {
 internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: DiscoveryPostcardViewModelType = DiscoveryPostcardViewModel()
   private let watchProjectViewModel: WatchProjectViewModelType = WatchProjectViewModel()
-  internal weak var delegate: DiscoveryPostcardCellDelegate?
+  internal weak var delegate: DiscoveryPostcardCellDelegate? = nil
 
   @IBOutlet fileprivate var cardView: UIView!
   @IBOutlet fileprivate var backgroundGradientView: GradientView!
@@ -51,9 +51,9 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   fileprivate weak var projectCategoryView: DiscoveryProjectCategoryView!
   fileprivate weak var projectIsStaffPickView: DiscoveryProjectCategoryView!
 
-  private var projectSavedObserver: Any?
-  private var sessionEndedObserver: Any?
-  private var sessionStartedObserver: Any?
+  private var projectSavedObserver: Any? = nil
+  private var sessionEndedObserver: Any? = nil
+  private var sessionStartedObserver: Any? = nil
 
   internal override func awakeFromNib() {
     if let categoryView = DiscoveryProjectCategoryView.fromNib(nib: Nib.DiscoveryProjectCategoryView) {

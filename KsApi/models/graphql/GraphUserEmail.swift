@@ -2,7 +2,7 @@ import Foundation
 import Prelude
 
 public struct GraphUserEmail: Decodable {
-  public var email: String?
+  public var email: String? = nil
 }
 
 extension GraphUserEmail: Equatable {

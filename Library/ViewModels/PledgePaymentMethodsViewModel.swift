@@ -168,7 +168,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let configuredCards: Signal<PledgePaymentMethodsAndSelectionData, Never> = cards
       .map { cellData, selectedCard -> PledgePaymentMethodsAndSelectionData in
 
-        var selectedPaymentMethod: PaymentSourceSelected?
+        var selectedPaymentMethod: PaymentSourceSelected? = nil
         if let card = selectedCard {
           selectedPaymentMethod = createSelectedPaymentMethod(from: card)
         }

@@ -10,8 +10,8 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
   private lazy var imageAndCaptionStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var textView: UITextView = { UITextView(frame: .zero) }()
   private lazy var storyImageView: GIFAnimatedImageView = { GIFAnimatedImageView(frame: .zero) }()
-  private var textViewHeightConstraint: NSLayoutConstraint?
-  private var imageViewAspectConstraint: NSLayoutConstraint? {
+  private var textViewHeightConstraint: NSLayoutConstraint? = nil
+  private var imageViewAspectConstraint: NSLayoutConstraint? = nil {
     didSet {
       if let oldValue = oldValue {
         self.storyImageView.removeConstraint(oldValue)
@@ -26,7 +26,7 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
   private let viewModel = ImageViewElementCellViewModel()
   private var pinchGesture: UIPinchGestureRecognizer!
   private var imageAspectRatio = CGFloat.zero
-  weak var pinchToZoomDelegate: PinchToZoomDelegate?
+  weak var pinchToZoomDelegate: PinchToZoomDelegate? = nil
 
   // MARK: Initializers
 

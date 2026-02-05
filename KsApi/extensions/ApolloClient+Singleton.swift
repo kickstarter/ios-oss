@@ -4,7 +4,7 @@ import Foundation
 class GraphQL {
   // MARK: - Properties
 
-  private var apollo: ApolloClient?
+  private var apollo: ApolloClient? = nil
   var client: ApolloClient {
     guard let client = self.apollo else {
       fatalError("Apollo Client accessed before calling configure(with:headers:additionalHeaders:)")

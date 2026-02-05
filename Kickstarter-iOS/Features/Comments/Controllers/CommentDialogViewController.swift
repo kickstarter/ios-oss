@@ -13,7 +13,7 @@ internal protocol CommentDialogDelegate: AnyObject {
 
 internal final class CommentDialogViewController: UIViewController {
   fileprivate let viewModel: CommentDialogViewModelType = CommentDialogViewModel()
-  internal weak var delegate: CommentDialogDelegate?
+  internal weak var delegate: CommentDialogDelegate? = nil
 
   @IBOutlet fileprivate var bottomConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate var cancelButton: UIBarButtonItem!

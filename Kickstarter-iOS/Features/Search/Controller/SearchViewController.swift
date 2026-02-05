@@ -19,11 +19,11 @@ internal final class SearchViewController: UITableViewController {
   @IBOutlet fileprivate var searchBarContainerView: UIView!
 
   private lazy var searchBar = { KSRSearchBar() }()
-  private var searchBarWidthConstraint: NSLayoutConstraint?
+  private var searchBarWidthConstraint: NSLayoutConstraint? = nil
 
   private let backgroundView = UIView()
   private let searchLoaderIndicator = UIActivityIndicatorView()
-  private var sortAndFilterHeader: UIViewController?
+  private var sortAndFilterHeader: UIViewController? = nil
 
   private var searchBarWidth: CGFloat {
     return self.view.bounds.width * Constants.searchBarWidthFactor
@@ -262,7 +262,7 @@ internal final class SearchViewController: UITableViewController {
     return self.sortAndFilterHeader?.view
   }
 
-  private var headerHeight: CGFloat?
+  private var headerHeight: CGFloat? = nil
   override func tableView(_: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     guard section == SearchDataSource.Section.projects.rawValue else {
       return 0

@@ -3,7 +3,7 @@ import Library
 import UIKit
 
 final class PaymentMethodsDataSource: ValueCellDataSource {
-  public var deletionHandler: ((UserCreditCards.CreditCard) -> Void)?
+  public var deletionHandler: ((UserCreditCards.CreditCard) -> Void)? = nil
 
   func load(creditCards: [UserCreditCards.CreditCard]) {
     self.set(

@@ -5,7 +5,7 @@ import SwiftUI
 
 public struct PercentRaisedView: View {
   var buckets: [DiscoveryParams.PercentRaisedBucket]
-  @Binding var selectedBucket: DiscoveryParams.PercentRaisedBucket?
+  @Binding var selectedBucket: DiscoveryParams.PercentRaisedBucket? = nil
 
   public var body: some View {
     VStack(alignment: .leading, spacing: Constants.spacing) {

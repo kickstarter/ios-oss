@@ -30,8 +30,8 @@ public final class GradientView: UIView {
     }
   }
 
-  @IBInspectable public var startColor: UIColor?
-  @IBInspectable public var endColor: UIColor?
+  @IBInspectable public var startColor: UIColor? = nil
+  @IBInspectable public var endColor: UIColor? = nil
 
   public override func awakeFromNib() {
     super.awakeFromNib()

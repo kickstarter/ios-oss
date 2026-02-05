@@ -17,7 +17,7 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
   @IBOutlet fileprivate var stackView: UIStackView!
 
   private var saveButtonView: LoadingBarButtonItemView!
-  internal var messageBannerViewController: MessageBannerViewController?
+  internal var messageBannerViewController: MessageBannerViewController? = nil
 
   private let viewModel: ChangePasswordViewModelType = ChangePasswordViewModel()
 

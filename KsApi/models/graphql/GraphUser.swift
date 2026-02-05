@@ -3,16 +3,16 @@ import Prelude
 
 // TODO: Remove public access
 public struct GraphUser: Decodable {
-  public var chosenCurrency: String?
-  public var email: String?
-  public var hasPassword: Bool?
+  public var chosenCurrency: String? = nil
+  public var email: String? = nil
+  public var hasPassword: Bool? = nil
   public var id: String
-  public var isBlocked: Bool?
-  public var isCreator: Bool?
+  public var isBlocked: Bool? = nil
+  public var isCreator: Bool? = nil
   public var imageUrl: String
-  public var isAppleConnected: Bool?
-  public var isEmailVerified: Bool?
-  public var isDeliverable: Bool?
+  public var isAppleConnected: Bool? = nil
+  public var isEmailVerified: Bool? = nil
+  public var isDeliverable: Bool? = nil
   public var name: String
   public var storedCards: UserCreditCards
   public var uid: String

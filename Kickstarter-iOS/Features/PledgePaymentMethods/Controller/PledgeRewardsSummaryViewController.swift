@@ -16,7 +16,7 @@ public enum PledgeRewardsSummaryStyles {
 final class PledgeRewardsSummaryViewController: UIViewController {
   // MARK: - Properties
 
-  private var tableViewContainerHeightConstraint: NSLayoutConstraint?
+  private var tableViewContainerHeightConstraint: NSLayoutConstraint? = nil
 
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)

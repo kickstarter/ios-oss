@@ -46,7 +46,7 @@ final class ProjectPageNavigationBarView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  weak var delegate: ProjectPageViewControllerDelegate?
+  weak var delegate: ProjectPageViewControllerDelegate? = nil
 
   // MARK: - Lifecycle
 

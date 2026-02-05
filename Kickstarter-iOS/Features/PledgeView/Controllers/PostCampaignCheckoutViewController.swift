@@ -23,9 +23,9 @@ final class PostCampaignCheckoutViewController: UIViewController,
   ProcessingViewPresenting {
   // MARK: - Properties
 
-  internal var messageBannerViewController: MessageBannerViewController?
+  internal var messageBannerViewController: MessageBannerViewController? = nil
 
-  fileprivate var applePayPaymentIntent: String?
+  fileprivate var applePayPaymentIntent: String? = nil
 
   private lazy var titleLabel = UILabel(frame: .zero)
 
@@ -57,7 +57,7 @@ final class PostCampaignCheckoutViewController: UIViewController,
     PostCampaignPledgeRewardsSummaryViewController.instantiate()
   }()
 
-  internal var processingView: ProcessingView? = ProcessingView(frame: .zero)
+  internal var processingView: ProcessingView? = nil
 
   private lazy var rootScrollView: UIScrollView = {
     UIScrollView(frame: .zero)
@@ -79,7 +79,7 @@ final class PostCampaignCheckoutViewController: UIViewController,
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private var sessionStartedObserver: Any?
+  private var sessionStartedObserver: Any? = nil
 
   private let viewModel: PostCampaignCheckoutViewModelType =
     PostCampaignCheckoutViewModel(stripeIntentService: StripeIntentService())

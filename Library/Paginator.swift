@@ -174,7 +174,7 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
   private var requestFromCursor: (Cursor) -> AnyPublisher<Envelope, SomeError>
   private var cancellables = Set<AnyCancellable>()
 
-  private var lastCursor: Cursor?
+  private var lastCursor: Cursor? = nil
 
   public init(
     valuesFromEnvelope: @escaping ((Envelope) -> [Value]),

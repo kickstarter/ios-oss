@@ -16,7 +16,7 @@ final class BadgeView: UIView {
   // MARK: - Properties
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private var imageView: UIImageView?
+  private var imageView: UIImageView? = nil
   private lazy var badgeLabel: UILabel = { UILabel(frame: .zero) }()
   private var style: BadgeStyle = .success
 

@@ -7,8 +7,8 @@ import UIKit
 final class RewardsCollectionViewController: UICollectionViewController {
   // MARK: - Properties
 
-  private var collectionViewBottomConstraintSuperview: NSLayoutConstraint?
-  private var collectionViewBottomConstraintFooterView: NSLayoutConstraint?
+  private var collectionViewBottomConstraintSuperview: NSLayoutConstraint? = nil
+  private var collectionViewBottomConstraintFooterView: NSLayoutConstraint? = nil
 
   private let dataSource = RewardsCollectionViewDataSource()
 
@@ -40,7 +40,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: LegacyColors.ksr_support_400.uiColor())
   }()
 
-  public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
+  public weak var pledgeViewDelegate: PledgeViewControllerDelegate? = nil
 
   private lazy var rewardsCollectionFooterView: RewardsCollectionViewFooter = {
     RewardsCollectionViewFooter(frame: .zero)

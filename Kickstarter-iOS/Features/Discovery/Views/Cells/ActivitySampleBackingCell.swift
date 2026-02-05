@@ -11,7 +11,7 @@ internal protocol ActivitySampleBackingCellDelegate: AnyObject {
 
 internal final class ActivitySampleBackingCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: ActivitySampleBackingCellViewModelType = ActivitySampleBackingCellViewModel()
-  internal weak var delegate: ActivitySampleBackingCellDelegate?
+  internal weak var delegate: ActivitySampleBackingCellDelegate? = nil
 
   @IBOutlet fileprivate var activityStackView: UIStackView!
   @IBOutlet fileprivate var activityTitleLabel: UILabel!

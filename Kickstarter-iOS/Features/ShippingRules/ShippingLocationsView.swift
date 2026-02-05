@@ -28,8 +28,8 @@ class ShippingLocations {
 
 private struct ShippingLocationsView: View {
   @StateObject private var viewModel: ShippingLocationsViewModel
-  fileprivate var onSelectedLocation: ((Location) -> Void)?
-  fileprivate var onCancelled: (() -> Void)?
+  fileprivate var onSelectedLocation: ((Location) -> Void)? = nil
+  fileprivate var onCancelled: (() -> Void)? = nil
 
   // This pattern can lead to unexpected behavior if this view becomes
   // a child view of another SwiftUI view. If you're refactoring this to be embedded

@@ -114,7 +114,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
       return foundAsCommentCell || foundAsOtherCell
     }
 
-    var indexPath: IndexPath?
+    var indexPath: IndexPath? = nil
 
     // We found an existing comment, let's update the value at that IndexPath.
     if let commentIndex = commentIndex {

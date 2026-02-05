@@ -7,13 +7,13 @@ import UIKit
 
 public final class KSRAnalytics {
   private let bundle: NSBundleType
-  internal private(set) var config: Config?
+  internal private(set) var config: Config? = nil
   private let device: UIDeviceType
-  private(set) var loggedInUser: User?
-  private var appTrackingTransparency: AppTrackingTransparencyType?
-  public var logEventCallback: ((String, [String: Any]) -> Void)?
+  private(set) var loggedInUser: User? = nil
+  private var appTrackingTransparency: AppTrackingTransparencyType? = nil
+  public var logEventCallback: ((String, [String: Any]) -> Void)? = nil
   private let screen: UIScreenType
-  private var segmentClient: (TrackingClientType & IdentifyingTrackingClient)?
+  private var segmentClient: (TrackingClientType & IdentifyingTrackingClient)? = nil
 
   /// Configures `KSRAnalytics` with a Segment tracking client. Call is idempotent and will only set once.
   public func configureSegmentClient(_ segmentClient: TrackingClientType & IdentifyingTrackingClient) {

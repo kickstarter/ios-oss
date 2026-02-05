@@ -8,7 +8,7 @@ protocol SimilarProjectsCollectionViewDataSourceDelegate: AnyObject {
 }
 
 final class SimilarProjectsCollectionViewDataSource: ValueCellDataSource {
-  weak var delegate: SimilarProjectsCollectionViewDataSourceDelegate?
+  weak var delegate: SimilarProjectsCollectionViewDataSourceDelegate? = nil
 
   func load(_ values: [ProjectCardProperties], isLoading: Bool = false) {
     guard isLoading == false else {

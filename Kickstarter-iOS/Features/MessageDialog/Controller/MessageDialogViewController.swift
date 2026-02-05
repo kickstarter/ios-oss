@@ -12,7 +12,7 @@ internal protocol MessageDialogViewControllerDelegate: AnyObject {
 
 internal final class MessageDialogViewController: UIViewController {
   fileprivate let viewModel: MessageDialogViewModelType = MessageDialogViewModel()
-  internal weak var delegate: MessageDialogViewControllerDelegate?
+  internal weak var delegate: MessageDialogViewControllerDelegate? = nil
 
   @IBOutlet private var bodyTextView: UITextView!
   @IBOutlet private var bottomConstraint: NSLayoutConstraint!

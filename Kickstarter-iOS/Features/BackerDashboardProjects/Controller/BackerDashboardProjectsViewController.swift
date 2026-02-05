@@ -4,7 +4,7 @@ import Prelude
 import UIKit
 
 internal final class BackerDashboardProjectsViewController: UITableViewController {
-  private var userUpdatedObserver: Any?
+  private var userUpdatedObserver: Any? = nil
   fileprivate let viewModel: BackerDashboardProjectsViewModelType = BackerDashboardProjectsViewModel()
   fileprivate let dataSource = BackerDashboardProjectsDataSource()
 

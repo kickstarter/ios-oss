@@ -21,7 +21,7 @@ internal final class EmptyStatesViewController: UIViewController {
   @IBOutlet fileprivate var subtitleLabel: UILabel!
   @IBOutlet fileprivate var titleLabel: UILabel!
 
-  internal weak var delegate: EmptyStatesViewControllerDelegate?
+  internal weak var delegate: EmptyStatesViewControllerDelegate? = nil
 
   fileprivate let viewModel: EmptyStatesViewModelType = EmptyStatesViewModel()
 

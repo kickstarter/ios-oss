@@ -9,7 +9,7 @@ protocol ManagePledgePaymentMethodViewDelegate: AnyObject {
 }
 
 final class ManagePledgePaymentMethodView: UIView {
-  weak var delegate: ManagePledgePaymentMethodViewDelegate?
+  weak var delegate: ManagePledgePaymentMethodViewDelegate? = nil
 
   // MARK: - Properties
 

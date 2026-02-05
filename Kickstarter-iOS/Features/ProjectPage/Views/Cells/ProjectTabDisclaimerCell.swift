@@ -14,7 +14,7 @@ protocol ProjectTabDisclaimerCellDelegate: AnyObject {
 final class ProjectTabDisclaimerCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  weak var delegate: ProjectTabDisclaimerCellDelegate?
+  weak var delegate: ProjectTabDisclaimerCellDelegate? = nil
   private let viewModel = ProjectTabDisclaimerCellViewModel()
 
   private lazy var descriptionTextView: UITextView = {

@@ -6,7 +6,7 @@ import SnapshotTesting
 import XCTest
 
 final class ProjectCardViewTests: TestCase {
-  var similarProject: ProjectCardProperties?
+  var similarProject: ProjectCardProperties? = nil
 
   override func setUp() {
     super.setUp()

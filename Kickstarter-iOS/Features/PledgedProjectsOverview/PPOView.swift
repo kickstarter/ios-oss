@@ -5,8 +5,8 @@ import SwiftUI
 struct PPOView: View {
   @StateObject var viewModel = PPOViewModel()
   var shouldRefresh: AnyPublisher<Void, Never>
-  var onCountChange: ((Int?) -> Void)?
-  var onHandleEvent: ((PPOPreparedEvent) -> Void)?
+  var onCountChange: ((Int?) -> Void)? = nil
+  var onHandleEvent: ((PPOPreparedEvent) -> Void)? = nil
 
   @AccessibilityFocusState private var isBannerFocused: Bool
 

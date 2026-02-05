@@ -13,7 +13,7 @@ internal protocol SettingsFollowCellDelegate: AnyObject {
 
 internal final class SettingsFollowCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: SettingsFollowCellViewModelType = SettingsFollowCellViewModel()
-  internal weak var delegate: SettingsFollowCellDelegate?
+  internal weak var delegate: SettingsFollowCellDelegate? = nil
 
   @IBOutlet fileprivate var followingLabel: UILabel!
   @IBOutlet fileprivate var followStackView: UIStackView!

@@ -27,23 +27,23 @@ public class SearchFilters: ObservableObject {
 
   public struct PercentRaisedOptions {
     public let buckets: [DiscoveryParams.PercentRaisedBucket]
-    public var selectedBucket: DiscoveryParams.PercentRaisedBucket?
+    public var selectedBucket: DiscoveryParams.PercentRaisedBucket? = nil
   }
 
   public struct LocationOptions {
     public var defaultLocations: [Location]
     public var suggestedLocations: [Location]
-    public var selectedLocation: Location?
+    public var selectedLocation: Location? = nil
   }
 
   public struct AmountRaisedOptions {
     public let buckets: [DiscoveryParams.AmountRaisedBucket]
-    public var selectedBucket: DiscoveryParams.AmountRaisedBucket?
+    public var selectedBucket: DiscoveryParams.AmountRaisedBucket? = nil
   }
 
   public struct GoalOptions {
     public let buckets: [DiscoveryParams.GoalBucket]
-    public var selectedBucket: DiscoveryParams.GoalBucket?
+    public var selectedBucket: DiscoveryParams.GoalBucket? = nil
   }
 
   public struct ShowOnlyOptions {

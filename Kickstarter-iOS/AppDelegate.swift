@@ -22,15 +22,15 @@ import UserNotifications
 
 @UIApplicationMain
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
-  var window: UIWindow?
+  var window: UIWindow? = nil
   fileprivate let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
   fileprivate var disposables: [any Disposable] = []
   // Custom Braze cancellable type. As long as we keep a reference to this active, Braze will
   // use this to tell us about any Braze push notifications the app handles.
-  fileprivate var brazeSubscription: BrazeKit.Braze.Cancellable?
+  fileprivate var brazeSubscription: BrazeKit.Braze.Cancellable? = nil
 
-  private var analytics: Segment.Analytics?
-  private weak var braze: Braze?
+  private var analytics: Segment.Analytics? = nil
+  private weak var braze: Braze? = nil
 
   internal var rootTabBarController: RootTabBarViewController? {
     return self.window?.rootViewController as? RootTabBarViewController

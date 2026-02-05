@@ -18,7 +18,7 @@ public protocol CustomFontAccessible {
 
 extension UIFont {
   static func registerFontFromFileURL(_ fontURL: URL) throws {
-    var cfError: Unmanaged<CFError>?
+    var cfError: Unmanaged<CFError>? = nil
     let registered = CTFontManagerRegisterFontsForURL(fontURL as CFURL, .process, &cfError)
 
     if !registered, let error = cfError?.takeRetainedValue() as? Error {

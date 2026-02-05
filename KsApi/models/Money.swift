@@ -4,8 +4,8 @@ import Prelude
 
 public struct Money: Decodable, Equatable {
   public var amount: Double
-  public var currency: CurrencyCode?
-  public var symbol: String?
+  public var currency: CurrencyCode? = nil
+  public var symbol: String? = nil
 
   public enum CurrencyCode: String, CaseIterable, Decodable, Equatable {
     case aud = "AUD"

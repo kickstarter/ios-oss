@@ -3,7 +3,7 @@ import Library
 import SwiftUI
 
 struct MessageBannerView: View {
-  @Binding var viewModel: MessageBannerViewViewModel?
+  @Binding var viewModel: MessageBannerViewViewModel? = nil
   @SwiftUI.Environment(\.accessibilityVoiceOverEnabled) private var voiceOverEnabled
 
   private enum Constants {
@@ -67,6 +67,6 @@ struct MessageBannerView: View {
 }
 
 #Preview {
-  @State var viewModel: MessageBannerViewViewModel? = MessageBannerViewViewModel((.success, "Short string"))
+  @State var viewModel: MessageBannerViewViewModel? = nil
   return MessageBannerView(viewModel: $viewModel)
 }

@@ -7,8 +7,8 @@ import UIKit
 final class ProjectTabAIGenerationCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  private var consentText: String?
-  private var detailsText: String?
+  private var consentText: String? = nil
+  private var detailsText: String? = nil
 
   private lazy var categoryLabel: UILabel = {
     UILabel(frame: .zero)

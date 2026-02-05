@@ -13,7 +13,7 @@ private struct PaginationExampleProjectList: View {
   @Binding var projects: [PaginationExampleViewModel.ProjectData]
   @Binding var showProgressView: Bool
   @Binding var statusText: String
-  @State var selectedItem: PaginationExampleViewModel.ProjectData?
+  @State var selectedItem: PaginationExampleViewModel.ProjectData? = nil
 
   let onRefresh: () async -> Void
   let onLoadMore: () async -> Void

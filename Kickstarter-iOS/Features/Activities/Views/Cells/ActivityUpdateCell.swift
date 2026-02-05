@@ -13,7 +13,7 @@ internal protocol ActivityUpdateCellDelegate: AnyObject {
 
 internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
   fileprivate var viewModel: ActivityUpdateViewModelType = ActivityUpdateViewModel()
-  internal weak var delegate: ActivityUpdateCellDelegate?
+  internal weak var delegate: ActivityUpdateCellDelegate? = nil
 
   @IBOutlet fileprivate var bodyLabel: UILabel!
   @IBOutlet fileprivate var cardView: UIView!

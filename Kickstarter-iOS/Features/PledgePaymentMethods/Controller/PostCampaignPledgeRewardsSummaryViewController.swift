@@ -6,7 +6,7 @@ import UIKit
 final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
   // MARK: - Properties
 
-  private var tableViewContainerHeightConstraint: NSLayoutConstraint?
+  private var tableViewContainerHeightConstraint: NSLayoutConstraint? = nil
 
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)

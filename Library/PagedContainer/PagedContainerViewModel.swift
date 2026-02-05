@@ -110,7 +110,7 @@ public class PagedContainerViewModel<Page: TabBarPage>: PagedContainerViewModelI
   }
 
   // Outputs
-  @Published public private(set) var displayPage: (page: Page, viewController: UIViewController)?
+  @Published public private(set) var displayPage: (page: Page, viewController: UIViewController)? = nil
   @Published public private(set) var pages: [(page: Page, viewController: UIViewController)] = []
 
   // Internal

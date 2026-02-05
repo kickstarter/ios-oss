@@ -11,7 +11,7 @@ internal protocol ProjectNotificationCellDelegate: AnyObject {
 
 internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
   fileprivate let viewModel = ProjectNotificationCellViewModel()
-  internal weak var delegate: ProjectNotificationCellDelegate?
+  internal weak var delegate: ProjectNotificationCellDelegate? = nil
 
   @IBOutlet fileprivate var nameLabel: UILabel!
   @IBOutlet fileprivate var notificationSwitch: UISwitch!

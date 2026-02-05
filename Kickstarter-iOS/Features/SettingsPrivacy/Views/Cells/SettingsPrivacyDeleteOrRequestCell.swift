@@ -12,7 +12,7 @@ internal protocol SettingsPrivacyDeleteOrRequestCellDelegate: AnyObject {
 
 internal final class SettingsPrivacyDeleteOrRequestCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: SettingsDeleteOrRequestCellViewModelType = SettingsDeleteOrRequestCellViewModel()
-  internal weak var delegate: SettingsPrivacyDeleteOrRequestCellDelegate?
+  internal weak var delegate: SettingsPrivacyDeleteOrRequestCellDelegate? = nil
 
   internal enum CellType {
     case delete

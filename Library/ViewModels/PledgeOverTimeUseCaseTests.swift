@@ -11,7 +11,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
   let (pledgeTotalSignal, pledgeTotalObserver) = Signal<Double, Never>.pipe()
   let (pledgeViewContextSignal, pledgeViewContextObserver) = Signal<PledgeViewContext, Never>.pipe()
 
-  var useCase: PledgeOverTimeUseCase?
+  var useCase: PledgeOverTimeUseCase? = nil
 
   let buildPaymentPlanInputs = TestObserver<(String, String), Never>()
   let pledgeOverTimeIsLoading = TestObserver<Bool, Never>()

@@ -83,24 +83,24 @@ extension User {
       return Notifications()
     }
 
-    var backingsNotification: Bool?
-    var commentRepliesNotification: Bool?
-    var commentsNotification: Bool?
-    var creatorDigestNotification: Bool?
-    var creatorTipsNotification: Bool?
-    var followerNotification: Bool?
-    var friendActivityNotification: Bool?
-    var messagesNotification: Bool?
-    var postLikesNotification: Bool?
-    var updatesNotification: Bool?
-    var mobileBackingsNotification: Bool?
-    var mobileCommentsNotification: Bool?
-    var mobileFollowerNotification: Bool?
-    var mobileFriendActivityNotification: Bool?
-    var mobileMarketingUpdateNotification: Bool?
-    var mobileMessagesNotification: Bool?
-    var mobilePostLikesNotification: Bool?
-    var mobileUpdatesNotification: Bool?
+    var backingsNotification: Bool? = nil
+    var commentRepliesNotification: Bool? = nil
+    var commentsNotification: Bool? = nil
+    var creatorDigestNotification: Bool? = nil
+    var creatorTipsNotification: Bool? = nil
+    var followerNotification: Bool? = nil
+    var friendActivityNotification: Bool? = nil
+    var messagesNotification: Bool? = nil
+    var postLikesNotification: Bool? = nil
+    var updatesNotification: Bool? = nil
+    var mobileBackingsNotification: Bool? = nil
+    var mobileCommentsNotification: Bool? = nil
+    var mobileFollowerNotification: Bool? = nil
+    var mobileFriendActivityNotification: Bool? = nil
+    var mobileMarketingUpdateNotification: Bool? = nil
+    var mobileMessagesNotification: Bool? = nil
+    var mobilePostLikesNotification: Bool? = nil
+    var mobileUpdatesNotification: Bool? = nil
 
     for notification in userNotifications {
       switch (notification.topic, notification.mobile, notification.email) {
@@ -218,7 +218,7 @@ extension User {
   }
 
   private static func isFacebookConnected(userFragment: GraphAPI.UserFragment) -> Bool? {
-    var isFacebookConnected: Bool?
+    var isFacebookConnected: Bool? = nil
 
     if let facebookConnected = userFragment.isFacebookConnected {
       isFacebookConnected = facebookConnected
@@ -236,7 +236,7 @@ extension User {
   }
 
   private static func isAdmin(userFragment: GraphAPI.UserFragment) -> Bool? {
-    var isAdmin: Bool?
+    var isAdmin: Bool? = nil
 
     if let ksrAdmin = userFragment.isKsrAdmin {
       isAdmin = ksrAdmin
@@ -246,7 +246,7 @@ extension User {
   }
 
   private static func isEmailVerified(userFragment: GraphAPI.UserFragment) -> Bool? {
-    var isEmailVerified: Bool?
+    var isEmailVerified: Bool? = nil
 
     if let emailVerified = userFragment.isEmailVerified {
       isEmailVerified = emailVerified

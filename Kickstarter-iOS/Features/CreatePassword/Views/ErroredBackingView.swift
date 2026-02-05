@@ -23,7 +23,7 @@ protocol ErroredBackingViewDelegate: AnyObject {
 final class ErroredBackingView: UIView {
   // MARK: - Properties
 
-  public weak var delegate: ErroredBackingViewDelegate?
+  public weak var delegate: ErroredBackingViewDelegate? = nil
   private let backingInfoStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let finalCollectionDateLabel: UILabel = { UILabel(frame: .zero) }()
   private let finalCollectionDateStackView: UIStackView = { UIStackView(frame: .zero) }()

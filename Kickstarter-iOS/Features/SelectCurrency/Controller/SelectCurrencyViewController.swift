@@ -7,7 +7,7 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
   private let dataSource = SelectCurrencyDataSource()
   private let viewModel: SelectCurrencyViewModelType = SelectCurrencyViewModel()
 
-  internal var messageBannerViewController: MessageBannerViewController?
+  internal var messageBannerViewController: MessageBannerViewController? = nil
   private var saveButtonView: LoadingBarButtonItemView!
 
   internal static func instantiate() -> SelectCurrencyViewController {

@@ -20,7 +20,7 @@ protocol ShippingLocationsViewModelType: ObservableObject {
 class ShippingLocationsViewModel: ObservableObject, ShippingLocationsViewModelType,
   ShippingLocationsViewModelInputs, ShippingLocationsViewModelOutputs {
   @Published var displayedLocations: [Location]
-  @Published var selectedLocation: Location?
+  @Published var selectedLocation: Location? = nil
 
   // All the possible locations, used for filtering.
   private var allLocations: [Location]

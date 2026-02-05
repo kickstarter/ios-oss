@@ -17,7 +17,7 @@ protocol RootCommentCellDelegate: AnyObject {
 final class RootCommentCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  weak var delegate: RootCommentCellDelegate?
+  weak var delegate: RootCommentCellDelegate? = nil
 
   private lazy var bodyTextView: UITextView = { UITextView(frame: .zero) }()
   private lazy var bottomBorder: UIView = {

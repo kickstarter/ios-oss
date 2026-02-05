@@ -19,7 +19,7 @@ final class BetaToolsFooterView: UIView {
   private let deviceIdentifierTitleLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
-  internal weak var delegate: BetaToolsFooterViewDelegate?
+  internal weak var delegate: BetaToolsFooterViewDelegate? = nil
 
   override init(frame: CGRect) {
     super.init(frame: frame)

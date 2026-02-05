@@ -20,7 +20,7 @@ internal final class BackingCell: UITableViewCell, ValueCell {
   @IBOutlet private var rewardLabel: UILabel!
   @IBOutlet private var rootStackView: UIStackView!
 
-  internal weak var delegate: BackingCellDelegate?
+  internal weak var delegate: BackingCellDelegate? = nil
 
   internal override func awakeFromNib() {
     super.awakeFromNib()

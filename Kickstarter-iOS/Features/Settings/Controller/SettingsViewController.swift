@@ -8,7 +8,7 @@ final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate var tableView: UITableView!
 
   private let dataSource = SettingsDataSource()
-  private var userUpdatedObserver: Any?
+  private var userUpdatedObserver: Any? = nil
   private let viewModel: SettingsViewModelType = SettingsViewModel(
     SettingsViewController.viewController(for:)
   )

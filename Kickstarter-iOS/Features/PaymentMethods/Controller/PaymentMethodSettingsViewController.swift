@@ -16,8 +16,8 @@ internal final class PaymentMethodSettingsViewController: UIViewController,
   private let dataSource = PaymentMethodsDataSource()
   private let viewModel: PaymentMethodsViewModelType =
     PaymentMethodSettingsViewModel(stripeIntentService: StripeIntentService())
-  private var paymentSheetFlowController: PaymentSheet.FlowController?
-  private weak var cancellationDelegate: PaymentMethodSettingsViewControllerDelegate?
+  private var paymentSheetFlowController: PaymentSheet.FlowController? = nil
+  private weak var cancellationDelegate: PaymentMethodSettingsViewControllerDelegate? = nil
   @IBOutlet private var tableView: UITableView!
 
   fileprivate lazy var editButton: UIBarButtonItem = {
@@ -29,7 +29,7 @@ internal final class PaymentMethodSettingsViewController: UIViewController,
     )
   }()
 
-  internal var messageBannerViewController: MessageBannerViewController?
+  internal var messageBannerViewController: MessageBannerViewController? = nil
 
   public static func instantiate() -> PaymentMethodSettingsViewController {
     return Storyboard.Settings.instantiate(PaymentMethodSettingsViewController.self)

@@ -20,8 +20,8 @@ final class CommentRepliesViewController: UITableViewController, MessageBannerVi
   private let dataSource = CommentRepliesDataSource()
   internal let viewModel: CommentRepliesViewModelType = CommentRepliesViewModel()
 
-  public var messageBannerViewController: MessageBannerViewController?
-  weak var delegate: CommentRepliesViewControllerDelegate?
+  public var messageBannerViewController: MessageBannerViewController? = nil
+  weak var delegate: CommentRepliesViewControllerDelegate? = nil
 
   private lazy var commentComposer: CommentComposerView = {
     let frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: Layout.Composer.originalHeight)

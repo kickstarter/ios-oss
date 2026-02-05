@@ -17,14 +17,14 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
   @IBOutlet fileprivate var stackView: UIStackView!
   @IBOutlet fileprivate var titleLabel: UILabel!
 
-  weak var delegate: SettingsNotificationCellDelegate?
+  weak var delegate: SettingsNotificationCellDelegate? = nil
 
   private let viewModel: SettingsNotificationCellViewModelType = SettingsNotificationCellViewModel()
   private lazy var tapGesture: UITapGestureRecognizer = {
     UITapGestureRecognizer(target: self, action: #selector(self.cellBackgroundTapped))
   }()
 
-  private var notificationType: SettingsNotificationCellType?
+  private var notificationType: SettingsNotificationCellType? = nil
 
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)

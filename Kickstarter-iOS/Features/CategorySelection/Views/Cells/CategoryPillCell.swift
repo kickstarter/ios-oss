@@ -15,9 +15,9 @@ protocol CategoryPillCellDelegate: AnyObject {
 
 final class CategoryPillCell: UICollectionViewCell, ValueCell {
   private lazy var button: UIButton = { UIButton(type: .custom) }()
-  var buttonWidthConstraint: NSLayoutConstraint?
+  var buttonWidthConstraint: NSLayoutConstraint? = nil
 
-  weak var delegate: CategoryPillCellDelegate?
+  weak var delegate: CategoryPillCellDelegate? = nil
 
   // MARK: - Properties
 

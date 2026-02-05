@@ -13,11 +13,11 @@ import Foundation
 public struct ExtendedProjectProperties {
   public var environmentalCommitments: [ProjectTabCategoryDescription]
   public var faqs: [ProjectFAQ]
-  public var aiDisclosure: ProjectAIDisclosure?
+  public var aiDisclosure: ProjectAIDisclosure? = nil
   public var risks: String
   public var story: ProjectStoryElements
   public var minimumPledgeAmount: Int
-  public var projectNotice: String?
+  public var projectNotice: String? = nil
 
   public init(
     environmentalCommitments: [ProjectTabCategoryDescription],
@@ -41,19 +41,19 @@ public struct ExtendedProjectProperties {
 public struct ProjectAIDisclosure {
   public var id: Int
   public var funding: ProjectTabFundingOptions
-  public var generationDisclosure: ProjectTabGenerationDisclosure?
+  public var generationDisclosure: ProjectTabGenerationDisclosure? = nil
   public var involvesAi: Bool
   public var involvesFunding: Bool
   public var involvesGeneration: Bool
   public var involvesOther: Bool
-  public var otherAiDetails: ProjectTabCategoryDescription?
+  public var otherAiDetails: ProjectTabCategoryDescription? = nil
 }
 
 public struct ProjectFAQ {
   public var answer: String
   public var question: String
   public var id: Int
-  public var createdAt: TimeInterval?
+  public var createdAt: TimeInterval? = nil
 }
 
 public struct ProjectStoryElements {
@@ -67,8 +67,8 @@ public struct ProjectTabCategoryDescription {
 }
 
 public struct ProjectTabGenerationDisclosure: Equatable {
-  public var consent: String?
-  public var details: String?
+  public var consent: String? = nil
+  public var details: String? = nil
 }
 
 public struct ProjectTabFundingOptions {

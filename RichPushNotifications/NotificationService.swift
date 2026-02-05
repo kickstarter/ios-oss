@@ -13,9 +13,9 @@ private func printDebug(_ items: Any...) {
 }
 
 class NotificationService: UNNotificationServiceExtension {
-  var bestAttemptContent: UNMutableNotificationContent?
-  var contentHandler: ((UNNotificationContent) -> Void)?
-  var originalContent: UNMutableNotificationContent?
+  var bestAttemptContent: UNMutableNotificationContent? = nil
+  var contentHandler: ((UNNotificationContent) -> Void)? = nil
+  var originalContent: UNMutableNotificationContent? = nil
   var abortOnAttachmentFailure: Bool = false
 
   override func didReceive(

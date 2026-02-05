@@ -21,7 +21,7 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
   @IBOutlet fileprivate var warningMessageLabel: UILabel!
 
   private let viewModel: ChangeEmailViewModelType = ChangeEmailViewModel()
-  internal var messageBannerViewController: MessageBannerViewController?
+  internal var messageBannerViewController: MessageBannerViewController? = nil
 
   private weak var saveButtonView: LoadingBarButtonItemView!
 

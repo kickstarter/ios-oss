@@ -26,7 +26,7 @@ internal final class PaymentMethodsDataSourceTests: XCTestCase {
       return
     }
 
-    var deletedCard: UserCreditCards.CreditCard?
+    var deletedCard: UserCreditCards.CreditCard? = nil
     let deletionHandler = { card in
       deletedCard = card
     }

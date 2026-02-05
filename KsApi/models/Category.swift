@@ -13,13 +13,13 @@ private let unrecognizedCategoryId: Int = -1
 
 public struct Category: Swift.Codable {
   public static let gamesId: Int = 12
-  public var analyticsName: String?
+  public var analyticsName: String? = nil
   public var id: String
   public var name: String
   internal let _parent: ParentCategory?
-  public var parentId: String?
-  public var subcategories: SubcategoryConnection?
-  public var totalProjectCount: Int?
+  public var parentId: String? = nil
+  public var subcategories: SubcategoryConnection? = nil
+  public var totalProjectCount: Int? = nil
 
   public init(
     analyticsName: String?,

@@ -16,7 +16,7 @@ final class PledgeDisclaimerView: UIView {
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var textView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
 
-  weak var delegate: PledgeDisclaimerViewDelegate?
+  weak var delegate: PledgeDisclaimerViewDelegate? = nil
   private let viewModel: PledgeDisclaimerViewModelType = PledgeDisclaimerViewModel()
 
   // MARK: - Lifecycle

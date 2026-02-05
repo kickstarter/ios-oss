@@ -5,7 +5,7 @@ import Prelude
 struct GraphCategory: Decodable {
   var id: String
   var name: String
-  var parentCategory: ParentCategory?
+  var parentCategory: ParentCategory? = nil
 
   struct ParentCategory: Decodable {
     var id: String

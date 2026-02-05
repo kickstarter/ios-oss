@@ -3,9 +3,9 @@ import Library
 internal final class MockTrackingClient: TrackingClientType {
   internal var tracks: [(event: String, properties: [String: Any])] = []
   internal var screens: [(title: String, properties: [String: Any])] = []
-  internal var userId: String?
+  internal var userId: String? = nil
   internal var anonymousId: String = "fake-anon-id"
-  internal var traits: [String: Any]?
+  internal var traits: [String: Any]? = nil
 
   func track(name: String, properties: [String: Any]?) {
     self.tracks.append((event: name, properties: properties ?? [:]))

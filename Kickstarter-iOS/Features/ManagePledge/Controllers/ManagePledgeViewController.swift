@@ -13,7 +13,7 @@ protocol ManagePledgeViewControllerDelegate: AnyObject {
 }
 
 final class ManagePledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
-  weak var delegate: ManagePledgeViewControllerDelegate?
+  weak var delegate: ManagePledgeViewControllerDelegate? = nil
   private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
 
   // MARK: - Properties
@@ -51,7 +51,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     )
   }()
 
-  internal var messageBannerViewController: MessageBannerViewController?
+  internal var messageBannerViewController: MessageBannerViewController? = nil
 
   private lazy var paymentMethodSectionSeparator: UIView = {
     UIView(frame: .zero)

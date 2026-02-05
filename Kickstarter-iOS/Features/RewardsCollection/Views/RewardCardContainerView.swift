@@ -9,7 +9,7 @@ private enum Constants {
 }
 
 public final class RewardCardContainerView: UIView {
-  internal var delegate: RewardCardViewDelegate? {
+  internal var delegate: RewardCardViewDelegate? = nil {
     didSet {
       self.rewardCardView.delegate = self.delegate
     }
@@ -25,7 +25,7 @@ public final class RewardCardContainerView: UIView {
   }()
 
   private let pledgeButtonLayoutGuide = UILayoutGuide()
-  private var pledgeButtonMarginConstraints: [NSLayoutConstraint]?
+  private var pledgeButtonMarginConstraints: [NSLayoutConstraint]? = nil
   private var pledgeButtonShownConstraints: [NSLayoutConstraint] = []
   private var pledgeButtonHiddenConstraints: [NSLayoutConstraint] = []
   private let rewardCardMaskView = {

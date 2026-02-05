@@ -23,12 +23,12 @@ extension Backing {
 
     let reward = backingReward(from: backingFragment)
     let backer = User.user(from: user)
-    var locationId: Int?
+    var locationId: Int? = nil
     if let locationGraphId = backingFragment.location?.fragments.locationFragment.id {
       locationId = decompose(id: locationGraphId)
     }
 
-    var backingOrder: Order?
+    var backingOrder: Order? = nil
 
     if let order = backingFragment.order {
       backingOrder = Order(withGraphQLFragment: order.fragments.orderFragment)

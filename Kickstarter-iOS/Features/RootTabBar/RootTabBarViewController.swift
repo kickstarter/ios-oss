@@ -18,20 +18,20 @@ extension TabBarControllerScrollable where Self: UIViewController {
 }
 
 public final class RootTabBarViewController: UITabBarController, MessageBannerViewControllerPresenting {
-  private var applicationWillEnterForegroundObserver: Any?
-  public var messageBannerViewController: MessageBannerViewController?
-  private var sessionEndedObserver: Any?
-  private var sessionStartedObserver: Any?
-  private var userUpdatedObserver: Any?
-  private var userLocalePreferencesChangedObserver: Any?
-  private var voiceOverStatusDidChangeObserver: Any?
+  private var applicationWillEnterForegroundObserver: Any? = nil
+  public var messageBannerViewController: MessageBannerViewController? = nil
+  private var sessionEndedObserver: Any? = nil
+  private var sessionStartedObserver: Any? = nil
+  private var userUpdatedObserver: Any? = nil
+  private var userLocalePreferencesChangedObserver: Any? = nil
+  private var voiceOverStatusDidChangeObserver: Any? = nil
 
   fileprivate let viewModel: RootViewModelType = RootViewModel()
 
   /// Keep the applied tab bar mode in sync with the ViewModel (single source of truth)
   /// Accounts for remote config feature flag load issues.
   private var isFloatingTabBarEnabled: Bool = false
-  private var standardTabBar: UITabBar?
+  private var standardTabBar: UITabBar? = nil
 
   public override func viewDidLoad() {
     super.viewDidLoad()

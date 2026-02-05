@@ -9,7 +9,7 @@ public struct PaginatingList<Data, Cell, Header>: View where
   Header: View {
   var data: [Data] = []
   var canLoadMore: Bool
-  var selectedItem: Binding<Data?>?
+  var selectedItem: Binding<Data?>? = nil
 
   @State private var isLoadingMore: Bool = false
 

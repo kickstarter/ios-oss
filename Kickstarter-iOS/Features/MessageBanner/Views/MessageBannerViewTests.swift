@@ -6,10 +6,7 @@ import XCTest
 
 internal final class MessageBannerViewTests: TestCase {
   func testBannerSuccess() {
-    @State var viewModel: MessageBannerViewViewModel? = MessageBannerViewViewModel((
-      .success,
-      "Everything completed successfully and now's the time to celebrate! Goooooo team!"
-    ))
+    @State var viewModel: MessageBannerViewViewModel? = nil
     let messageBannerView = MessageBannerView(viewModel: $viewModel)
       .defaultPortraitFrame()
 
@@ -17,10 +14,7 @@ internal final class MessageBannerViewTests: TestCase {
   }
 
   func testBannerError() {
-    @State var viewModel: MessageBannerViewViewModel? = MessageBannerViewViewModel((
-      .error,
-      "Something went wrong"
-    ))
+    @State var viewModel: MessageBannerViewViewModel? = nil
     let messageBannerView = MessageBannerView(viewModel: $viewModel)
       .defaultPortraitFrame()
 
@@ -28,10 +22,7 @@ internal final class MessageBannerViewTests: TestCase {
   }
 
   func testBannerInfo_shortString() {
-    @State var viewModel: MessageBannerViewViewModel? = MessageBannerViewViewModel((
-      .info,
-      "Something happened"
-    ))
+    @State var viewModel: MessageBannerViewViewModel? = nil
     let messageBannerView = MessageBannerView(viewModel: $viewModel)
       .defaultPortraitFrame()
 
@@ -39,10 +30,7 @@ internal final class MessageBannerViewTests: TestCase {
   }
 
   func testBannerInfo_longString() {
-    @State var viewModel: MessageBannerViewViewModel? = MessageBannerViewViewModel((
-      .info,
-      "Something unexpected happened but everything is probably fine."
-    ))
+    @State var viewModel: MessageBannerViewViewModel? = nil
     let messageBannerView = MessageBannerView(viewModel: $viewModel)
       .defaultPortraitFrame()
 

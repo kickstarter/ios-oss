@@ -10,7 +10,7 @@ enum FocusField {
 
 struct ChangeEmailView: View {
   @SwiftUI.Environment(\.defaultMinListRowHeight) var minListRow
-  @FocusState private var focusField: FocusField?
+  @FocusState private var focusField: FocusField? = nil
   private let contentPadding = Spacing.unit_03
   @ObservedObject private var reactiveViewModel = ChangeEmailViewModelSwiftUIIntegrationTest()
   @State private var retrievedEmailText = ""
@@ -19,7 +19,7 @@ struct ChangeEmailView: View {
   @State private var saveEnabled = false
   @State private var showLoading = false
   @State private var showBannerMessage = false
-  @State private var bannerMessage: MessageBannerViewViewModel?
+  @State private var bannerMessage: MessageBannerViewViewModel? = nil
 
   var body: some View {
     GeometryReader { proxy in

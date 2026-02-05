@@ -19,7 +19,7 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
   @IBOutlet fileprivate var iconImageView: UIImageView!
   @IBOutlet fileprivate var messageLabel: UILabel!
 
-  private var bannerType: MessageBannerType?
+  private var bannerType: MessageBannerType? = nil
 
   public enum DismissType {
     // Banner cannot be dismissed and will not be dismissed automatically.
@@ -34,10 +34,10 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
 
   private var dismissType: DismissType = .bannerOnly
 
-  internal var bottomConstraint: NSLayoutConstraint?
+  internal var bottomConstraint: NSLayoutConstraint? = nil
   private let viewModel: MessageBannerViewModelType = MessageBannerViewModel()
 
-  weak var delegate: MessageBannerViewControllerDelegate?
+  weak var delegate: MessageBannerViewControllerDelegate? = nil
 
   struct AnimationConstants {
     static let hideDuration: TimeInterval = 0.25

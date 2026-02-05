@@ -22,7 +22,7 @@ enum SimilarProjectsCellConstants {
 final class SimilarProjectsTableViewCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  weak var delegate: SimilarProjectsTableViewCellDelegate?
+  weak var delegate: SimilarProjectsTableViewCellDelegate? = nil
 
   private let dataSource: SimilarProjectsCollectionViewDataSource = SimilarProjectsCollectionViewDataSource()
   private let layout = UICollectionViewFlowLayout()

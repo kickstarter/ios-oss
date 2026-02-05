@@ -7,10 +7,10 @@ import WebKit
 
 internal class WebViewController: UIViewController {
   internal let webView = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())
-  internal var bottomAnchorConstraint: NSLayoutConstraint?
+  internal var bottomAnchorConstraint: NSLayoutConstraint? = nil
 
   // Enables us to pass the http cookie from Perimeter X for additional protection
-  private var webKitCookieStore: WKHTTPCookieStore?
+  private var webKitCookieStore: WKHTTPCookieStore? = nil
 
   override func loadView() {
     super.loadView()
