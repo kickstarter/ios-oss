@@ -125,3 +125,6 @@ excluded:
   # Other stuff
   - Frameworks/native-secrets/ios/Secrets.swift
   - bin
+
+implicit_optional_initialization: 
+  style: never

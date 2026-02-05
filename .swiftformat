@@ -31,6 +31,7 @@
 # Disabled rules
 --disable redundantInit
 --disable void
+--disable redundantNilInit
 
 # These are rules that were all added to swiftformat when we upgraded from 0.44 to 0.53.
 # In the interest of minimizing changes, we disabled them - but these are perfectly good rules
