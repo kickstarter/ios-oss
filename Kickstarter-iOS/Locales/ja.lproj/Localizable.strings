@@ -480,6 +480,7 @@
 "News_events" = "1年に数回だけ、お近くのニュースやイベント情報をお届け。";
 "Newsletters" = "ニュースレター";
 "No_Results" = "該当結果なし";
+"No_backings" = "支援なし";
 "No_comments_yet" = "まだコメントはありません。";
 "No_funded_backings" = "ファンディング成立済みの支援はありません";
 "No_go_back" = "いいえ、戻ります";
@@ -648,6 +649,7 @@
 "Retry" = "もう一度試す";
 "Retry_or_select_another_method" = "再試行するか別のお支払い方法を選択してください。";
 "Reusability_and_recyclability" = "再利用可能性とリサイクル可能性";
+"Review_edits_made_to_your_order" = "ご注文への編集内容を確認してください";
 "Reward_Surveys.few" = "%{reward_survey_count} リワードのサーベイ";
 "Reward_Surveys.many" = "%{reward_survey_count} リワードのサーベイ";
 "Reward_Surveys.one" = "リワードサーベイ";
@@ -925,6 +927,7 @@
 "When_projects_youve_backed_have_successfully_funded_youll_see_them_here" = "バックしたプロジェクトのファンディングが成功すると、こちらに表示されます。";
 "When_projects_youve_backed_need_your_attention_youll_see_them_here" = "バックしたプロジェクトに関してお知らせやアラートがある場合はこちらに表示されます。";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "プロジェクトを保存し、終了の48時間前にリマインドする。";
+"When_youve_backed_a_project_itll_show_up_here" = "プロジェクトをバック(支援)するとここに表示されます。";
 "Which_categories_interest_you" = "興味のあるカテゴリーは？";
 "Working_on_it" = "Working on it";
 "Write_a_bio" = "簡単な自己紹介を書いてください。ほんの１～２文で構いません。";

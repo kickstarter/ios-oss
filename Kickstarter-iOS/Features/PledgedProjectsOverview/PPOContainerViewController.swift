@@ -37,8 +37,6 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       (.activityFeed(.none), activitiesViewController)
     ])
 
-    let tabBarController = self.tabBarController as? RootTabBarViewController
-
     // Update badges in the paging tab bar at the top of the view
     Publishers.CombineLatest(
       self.viewModel.projectAlertsBadge,
@@ -72,29 +70,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       .store(in: &self.subscriptions)
 
     self.viewModel.preparedEvents.sink { [weak self] event in
-      switch event {
-      case .backedProjects:
-        tabBarController?.switchToProfile()
-      case let .projectDetails(projectId):
-        self?.openProjectPage(projectId)
-      case let .editAddress(url), let .survey(url), let .managePledge(url):
-        self?.openSurvey(url)
-      case let .contactCreator(messageSubject):
-        self?.messageCreator(messageSubject)
-      case let .fixPaymentMethod(projectId, backingId):
-        self?.fixPayment(projectId: projectId, backingId: backingId)
-      case let .fix3DSChallenge(clientSecret, onProgress):
-        self?.handle3DSChallenge(clientSecret: clientSecret, onProgress: onProgress)
-      case let .confirmAddress(backingId, addressId, address, onProgress):
-        self?.confirmAddress(
-          backingId: backingId,
-          addressId: addressId,
-          address: address,
-          onProgress: onProgress
-        )
-      case let .updateRewardReceived(backingId: backingId, rewardReceived: rewardReceived):
-        self?.updateRewardReceived(backingId: backingId, rewardReceived: rewardReceived)
-      }
+      self?.handleEvent(event)
     }.store(in: &self.subscriptions)
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
@@ -160,6 +136,36 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
   private var subscriptions = Set<AnyCancellable>()
 
   // MARK: - Event Helpers
+
+  private func handleEvent(_ event: PPOPreparedEvent) {
+    let tabBarController = self.tabBarController as? RootTabBarViewController
+
+    switch event {
+    case .backedProjects:
+      tabBarController?.switchToProfile()
+    case .exploreProjects:
+      tabBarController?.switchToDiscovery(params: nil)
+    case let .projectDetails(projectId):
+      self.openProjectPage(projectId)
+    case let .editAddress(url), let .survey(url), let .managePledge(url):
+      self.openSurvey(url)
+    case let .contactCreator(messageSubject):
+      self.messageCreator(messageSubject)
+    case let .fixPaymentMethod(projectId, backingId):
+      self.fixPayment(projectId: projectId, backingId: backingId)
+    case let .fix3DSChallenge(clientSecret, onProgress):
+      self.handle3DSChallenge(clientSecret: clientSecret, onProgress: onProgress)
+    case let .confirmAddress(backingId, addressId, address, onProgress):
+      self.confirmAddress(
+        backingId: backingId,
+        addressId: addressId,
+        address: address,
+        onProgress: onProgress
+      )
+    case let .updateRewardReceived(backingId: backingId, rewardReceived: rewardReceived):
+      self.updateRewardReceived(backingId: backingId, rewardReceived: rewardReceived)
+    }
+  }
 
   private func fixPayment(projectId: Int, backingId: Int) {
     let data = (projectParam: Param.id(projectId), backingParam: Param.id(backingId))

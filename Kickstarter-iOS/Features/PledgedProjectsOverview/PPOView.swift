@@ -80,9 +80,10 @@ struct PPOView: View {
   }
 
   @ViewBuilder var emptyView: some View {
-    PPOEmptyStateView {
-      self.onHandleEvent?(.backedProjects)
-    }
+    PPOEmptyStateView(
+      onOpenBackedProjects: { self.onHandleEvent?(.backedProjects) },
+      onExploreProjects: { self.onHandleEvent?(.exploreProjects) }
+    )
     .frame(maxHeight: .infinity)
   }
 
