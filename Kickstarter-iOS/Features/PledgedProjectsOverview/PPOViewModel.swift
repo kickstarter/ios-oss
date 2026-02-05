@@ -18,7 +18,6 @@ protocol PPOViewModelInputs {
   func refresh() async
   func loadMore() async
 
-  func openBackedProjects()
   func handleCardEvent(_: PPOCardEvent, from: PPOProjectCardModel)
 }
 
@@ -29,6 +28,7 @@ protocol PPOViewModelOutputs {
 
 enum PPOPreparedEvent: Equatable {
   case backedProjects
+  case exploreProjects
   case fixPaymentMethod(projectId: Int, backingId: Int)
   case fix3DSChallenge(clientSecret: String, onProgress: (PPOActionState) -> Void)
   case survey(url: String)
@@ -44,6 +44,7 @@ enum PPOPreparedEvent: Equatable {
   case contactCreator(messageSubject: MessageSubject)
   case updateRewardReceived(backingId: String, rewardReceived: Bool)
 
+  // swiftlint:disable:next cyclomatic_complexity
   static func == (lhs: PPOPreparedEvent, rhs: PPOPreparedEvent) -> Bool {
     switch (lhs, rhs) {
     case let (.survey(lhsUrl), .survey(rhsUrl)):
@@ -72,6 +73,8 @@ enum PPOPreparedEvent: Equatable {
     ):
       return lhsProjectId == rhsProjectId && lhsBackingId == rhsBackingId
     case (.backedProjects, .backedProjects):
+      return true
+    case (.exploreProjects, .exploreProjects):
       return true
     case let (
       .updateRewardReceived(lhsBackingId, lhsRewardReceived),
@@ -149,18 +152,13 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       .store(in: &self.cancellables)
 
     // Prepare and route events
-
-    Publishers.Merge(
-      self.openBackedProjectsSubject
-        .map { PPOPreparedEvent.backedProjects },
-      self.handleCardEventSubject
-        .map { event, card in
-          self.preparedEvent(for: event, cardModel: card)
-        }
-    )
-    .eraseToAnyPublisher()
-    .subscribe(self.preparedEventSubject)
-    .store(in: &self.cancellables)
+    self.handleCardEventSubject
+      .map { event, card in
+        self.preparedEvent(for: event, cardModel: card)
+      }
+      .eraseToAnyPublisher()
+      .subscribe(self.preparedEventSubject)
+      .store(in: &self.cancellables)
 
     let latestLoadedResults = self.paginator.$results
       .compactMap { results in
@@ -326,10 +324,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     _ = await self.paginator.nextResult()
   }
 
-  func openBackedProjects() {
-    self.openBackedProjectsSubject.send(())
-  }
-
   func handleCardEvent(_ cardAction: PPOCardEvent, from cardModel: PPOProjectCardModel) {
     self.handleCardEventSubject.send((cardAction, cardModel))
   }
@@ -349,7 +343,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let viewDidAppearSubject = PassthroughSubject<Void, Never>()
   private let loadMoreSubject = PassthroughSubject<Void, Never>()
   private let pullToRefreshSubject = PassthroughSubject<Void, Never>()
-  private let openBackedProjectsSubject = PassthroughSubject<Void, Never>()
   private let confirmAddressProgressSubject = PassthroughSubject<
     (PPOProjectCardModel, PPOActionState),
     Never
