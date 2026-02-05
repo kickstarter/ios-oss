@@ -50,20 +50,16 @@ extension User {
   )
 
   internal static let backer = User(
-    avatar: Avatar(
-      large: "https://i.kickstarter.com/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?fit=crop&height=80&origin=ugc&q=92&width=80&sig=fVf5SA513LFbbFr5PYXBGGzhuW%2FktUYIBG1NxAaA8zg%3D",
-      medium: "https://i.kickstarter.com/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?fit=crop&height=80&origin=ugc&q=92&width=80&sig=fVf5SA513LFbbFr5PYXBGGzhuW%2FktUYIBG1NxAaA8zg%3D",
-      small: "https://i.kickstarter.com/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?fit=crop&height=80&origin=ugc&q=92&width=80&sig=fVf5SA513LFbbFr5PYXBGGzhuW%2FktUYIBG1NxAaA8zg%3D"
-    ),
+    avatar: User.Avatar.template,
     chosenCurrency: nil,
     facebookConnected: nil,
-    id: "Backer".hash,
+    id: 1,
     isAdmin: nil,
     isEmailVerified: nil,
     isFriend: nil,
     isBlocked: false,
     location: nil,
-    name: "Backer",
+    name: "Blob",
     needsFreshFacebookToken: nil,
     needsPassword: nil,
     newsletters: User.NewsletterSubscriptions(),
