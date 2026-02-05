@@ -17,8 +17,6 @@ final class PPOProjectCardTests: TestCase {
     super.tearDown()
   }
 
-  // MARK: Test funded project cards.
-
   @MainActor
   func testFundedCards() {
     orthogonalCombos(
@@ -42,6 +40,36 @@ final class PPOProjectCardTests: TestCase {
         let traits = UITraitCollection.init(userInterfaceStyle: interfaceStyle)
         assertSnapshot(of: card, as: .image(traits: traits), named: cardTemplate.tierType.rawValue)
       }
+    }
+  }
+
+  @MainActor
+  func testLiveCards() {
+    forEachScreenshotType(
+      withData: PPOProjectCardModel.liveProjectTemplates,
+      // TODO(MBL-3044): Update view and test to support more content sizes.
+      contentSizes: [.large]
+    ) { type, template in
+      let card = PPOProjectCard(
+        viewModel: PPOProjectCardViewModel(card: template),
+        parentSize: type.device.deviceSize
+      )
+      assertSnapshot(forSwiftUIView: card, withType: type)
+    }
+  }
+
+  @MainActor
+  func testFailedCards() {
+    forEachScreenshotType(
+      withData: PPOProjectCardModel.failedPledgeTemplates,
+      // TODO(MBL-3044): Update view and test to support more content sizes.
+      contentSizes: [.large]
+    ) { type, template in
+      let card = PPOProjectCard(
+        viewModel: PPOProjectCardViewModel(card: template),
+        parentSize: type.device.deviceSize
+      )
+      assertSnapshot(forSwiftUIView: card, withType: type)
     }
   }
 
