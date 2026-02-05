@@ -97,14 +97,7 @@ extension Project {
     |> Project.lens.stats.userCurrencyRate .~ 1.31
     |> Project.lens.locationDisplayableName .~ "Hastings, UK"
     |> Project.lens.country .~ .gb
-    |> Project.lens.creator .~ (
-      User.template
-        |> \.id .~ "Alma Haser".hash
-        |> \.name .~ "Alma Haser"
-        |> \.avatar.large .~ "https://i.kickstarter.com/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?fit=crop&height=80&origin=ugc&q=92&width=80&sig=fVf5SA513LFbbFr5PYXBGGzhuW%2FktUYIBG1NxAaA8zg%3D"
-        |> \.avatar.medium .~ "https://i.kickstarter.com/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?fit=crop&height=80&origin=ugc&q=92&width=80&sig=fVf5SA513LFbbFr5PYXBGGzhuW%2FktUYIBG1NxAaA8zg%3D"
-        |> \.avatar.small .~ "https://i.kickstarter.com/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?fit=crop&height=80&origin=ugc&q=92&width=80&sig=fVf5SA513LFbbFr5PYXBGGzhuW%2FktUYIBG1NxAaA8zg%3D"
-    )
+    |> Project.lens.creator .~ User.projectCreator
     |> Project.lens.urls.web.project .~ "https://www.kickstarter.com/projects/1171937901/cosmic-surgery"
     |> Project.lens.rewardData.rewards .~ cosmicSurgeryRewards
     |> Project.lens.displayPrelaunch .~ false

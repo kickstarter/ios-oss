@@ -3,6 +3,49 @@ import GraphAPI
 
 extension User {
   /**
+   Returns a minimal `User` from a `GraphAPI.PublicUserFragment`.
+   This only includes fields which are publicly visible.
+   */
+
+  static func publicUser(from userFragment: GraphAPI.PublicUserFragment) -> User? {
+    guard let id = decompose(id: userFragment.id) else { return nil }
+
+    return User(
+      avatar: Avatar(
+        large: userFragment.imageUrl,
+        medium: userFragment.imageUrl,
+        small: userFragment.imageUrl
+      ),
+      erroredBackingsCount: nil,
+      facebookConnected: nil,
+      id: id,
+      isAdmin: nil,
+      isEmailVerified: nil,
+      isFriend: userFragment.isFollowing,
+      isBlocked: userFragment.isBlocked ?? false,
+      location: self.location(locationFragment: userFragment.location?.fragments.locationFragment),
+      name: userFragment.name,
+      needsFreshFacebookToken: nil,
+      needsPassword: nil,
+      newsletters: NewsletterSubscriptions(),
+      notifications: Notifications(),
+      optedOutOfRecommendations: nil,
+      showPublicProfile: nil,
+      social: nil,
+      stats: Stats(
+        backedProjectsCount: userFragment.backingsCount,
+        createdProjectsCount: userFragment.createdProjects?.totalCount,
+        draftProjectsCount: nil,
+        memberProjectsCount: nil,
+        starredProjectsCount: nil,
+        unansweredSurveysCount: nil,
+        unreadMessagesCount: nil
+      ),
+      unseenActivityCount: nil
+    )
+  }
+
+  /**
    Returns a minimal `User` from a `GraphAPI.UserFragment`
    */
   static func user(from userFragment: GraphAPI.UserFragment) -> User? {
@@ -31,7 +74,7 @@ extension User {
       isEmailVerified: self.isEmailVerified(userFragment: userFragment),
       isFriend: userFragment.isFollowing,
       isBlocked: userFragment.isBlocked ?? false,
-      location: self.location(userFragment: userFragment),
+      location: self.location(locationFragment: userFragment.location?.fragments.locationFragment),
       name: userFragment.name,
       needsFreshFacebookToken: userFragment.needsFreshFacebookToken,
       needsPassword: self.needsPassword(userFragment: userFragment),
@@ -40,7 +83,7 @@ extension User {
       optedOutOfRecommendations: userFragment.optedOutOfRecommendations,
       showPublicProfile: userFragment.showPublicProfile,
       social: userFragment.isSocializing,
-      stats: self.userStats(userFragment: userFragment),
+      stats: self.userStats(from: userFragment),
       unseenActivityCount: unseenUserActivityCount
     )
   }
@@ -164,7 +207,7 @@ extension User {
     return notifications
   }
 
-  private static func userStats(userFragment: GraphAPI.UserFragment) -> Stats {
+  private static func userStats(from userFragment: GraphAPI.UserFragment) -> Stats {
     let backedProjectsCount = userFragment.backingsCount
     let createdProjectsCount = userFragment.createdProjects?.totalCount
     let draftProjectsCount: Int? = nil /// Unavailable on GQL at this time.
@@ -255,8 +298,8 @@ extension User {
     return isEmailVerified
   }
 
-  private static func location(userFragment: GraphAPI.UserFragment) -> Location? {
-    guard let locationFragment = userFragment.location?.fragments.locationFragment else {
+  private static func location(locationFragment: GraphAPI.LocationFragment?) -> Location? {
+    guard let locationFragment = locationFragment else {
       return nil
     }
 

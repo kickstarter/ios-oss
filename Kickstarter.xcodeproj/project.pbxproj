@@ -3422,6 +3422,7 @@
 		E11E06AA2D885E4C002E81B9 /* SearchQuery_SearchViewControllerTests_Prelaunch.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_SearchViewControllerTests_Prelaunch.json; sourceTree = "<group>"; };
 		E12C883A2C08B8DA008AACCA /* ConfirmBackingAddressMutationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBackingAddressMutationTests.swift; sourceTree = "<group>"; };
 		E135005B2C07ABA600A30161 /* PledgePaymentMethodsAndSelectionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsAndSelectionData.swift; sourceTree = "<group>"; };
+		E137D9AE2F3537F80089183D /* PublicUserFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PublicUserFragment.graphql; sourceTree = "<group>"; };
 		E13D76702D4011BF00FB58CE /* PaymentMethodsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsUseCase.swift; sourceTree = "<group>"; };
 		E13D76722D40438100FB58CE /* PaymentMethodsUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsUseCaseTests.swift; sourceTree = "<group>"; };
 		E13D76752D41698000FB58CE /* ApplePayTokenUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayTokenUseCase.swift; sourceTree = "<group>"; };
@@ -7650,6 +7651,7 @@
 				E190EB272E29944E006A6DB6 /* PaymentIncrementFragment.graphql */,
 				33AA26C82E39EA00002DBD60 /* PaymentIncrementBackingFragment.graphql */,
 				E190EB282E29944E006A6DB6 /* PaymentSourceFragment.graphql */,
+				E137D9AE2F3537F80089183D /* PublicUserFragment.graphql */,
 				E190EB292E29944E006A6DB6 /* PledgeManagerFragment.graphql */,
 				E190EB2A2E29944E006A6DB6 /* PledgeOverTimeFragment.graphql */,
 				E190EB2B2E29944E006A6DB6 /* PPOBackingFragment.graphql */,
