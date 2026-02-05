@@ -199,14 +199,10 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
     label.textColor = LegacyColors.ksr_black.uiColor()
     label.numberOfLines = 0
     label.frame = CGRect(
-      x:
-      CheckoutConstants.PledgeView.Inset.leftRight,
-      y:
-      0,
-      width:
-      self.tableView.frame.size.width,
-      height:
-      PledgeRewardsSummaryStyles.Layout.sectionHeaderLabelHeight
+      x: CheckoutConstants.PledgeView.Inset.leftRight,
+      y: 0,
+      width: self.tableView.frame.size.width,
+      height: PledgeRewardsSummaryStyles.Layout.sectionHeaderLabelHeight
     )
   }
 
