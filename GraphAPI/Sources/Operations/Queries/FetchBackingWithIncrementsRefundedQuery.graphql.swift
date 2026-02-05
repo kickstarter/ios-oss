@@ -243,6 +243,8 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
           public var isMaxPledge: Bool { __data["isMaxPledge"] }
           /// Whether or not the reward is available for new pledges
           public var available: Bool { __data["available"] }
+          /// Whether or not the reward is featured
+          public var featured: Bool { __data["featured"] }
           /// Items in the reward.
           public var items: Items? { __data["items"] }
           /// A reward limit.
@@ -295,6 +297,7 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
             id: GraphAPI.ID,
             isMaxPledge: Bool,
             available: Bool,
+            featured: Bool,
             items: Items? = nil,
             limit: Int? = nil,
             limitPerBacker: Int? = nil,
@@ -326,6 +329,7 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
                 "id": id,
                 "isMaxPledge": isMaxPledge,
                 "available": available,
+                "featured": featured,
                 "items": items._fieldData,
                 "limit": limit,
                 "limitPerBacker": limitPerBacker,
@@ -1281,6 +1285,8 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
         public var isMaxPledge: Bool { __data["isMaxPledge"] }
         /// Whether or not the reward is available for new pledges
         public var available: Bool { __data["available"] }
+        /// Whether or not the reward is featured
+        public var featured: Bool { __data["featured"] }
         /// Items in the reward.
         public var items: Items? { __data["items"] }
         /// A reward limit.
@@ -1333,6 +1339,7 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
           id: GraphAPI.ID,
           isMaxPledge: Bool,
           available: Bool,
+          featured: Bool,
           items: Items? = nil,
           limit: Int? = nil,
           limitPerBacker: Int? = nil,
@@ -1364,6 +1371,7 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
               "id": id,
               "isMaxPledge": isMaxPledge,
               "available": available,
+              "featured": featured,
               "items": items._fieldData,
               "limit": limit,
               "limitPerBacker": limitPerBacker,
