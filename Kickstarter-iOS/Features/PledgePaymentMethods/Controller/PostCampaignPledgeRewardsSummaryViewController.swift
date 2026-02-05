@@ -186,17 +186,26 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
 
   private func applySectionHeaderViewStyle(_ view: UIView) {
     view.translatesAutoresizingMaskIntoConstraints = false
-    view.frame = CGRectMake(0, 0, self.tableView.frame.size.width, self.tableView.frame.size.height)
+    view.frame = CGRect(
+      x: 0,
+      y: 0,
+      width: self.tableView.frame.size.width,
+      height: self.tableView.frame.size.height
+    )
   }
 
   private func applySectionHeaderLabelStyle(_ label: UILabel) {
     label.font = UIFont.ksr_subhead().bolded
     label.textColor = LegacyColors.ksr_black.uiColor()
     label.numberOfLines = 0
-    label.frame = CGRectMake(
+    label.frame = CGRect(
+      x:
       CheckoutConstants.PledgeView.Inset.leftRight,
+      y:
       0,
+      width:
       self.tableView.frame.size.width,
+      height:
       PledgeRewardsSummaryStyles.Layout.sectionHeaderLabelHeight
     )
   }

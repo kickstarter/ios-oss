@@ -15,7 +15,7 @@ struct PPOView: View {
     case .unloaded, .loading(.unloaded),
          .loading(.empty),
          .loading(.error),
-         .loading(previous: .loading(_)):
+         .loading(previous: .loading):
       self.loadingView
     case .empty:
       self.emptyView

@@ -9,10 +9,6 @@ internal final class ReportProjectCell: UITableViewCell, ValueCell {
     self.setupReportProjectLabelView(projectFlagged: projectFlagged)
   }
 
-  internal override func layoutSubviews() {
-    super.layoutSubviews()
-  }
-
   internal override func bindStyles() {
     super.bindStyles()
 

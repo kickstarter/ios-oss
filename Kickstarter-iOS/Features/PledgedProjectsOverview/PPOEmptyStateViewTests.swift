@@ -5,14 +5,6 @@ import SwiftUI
 import XCTest
 
 final class PPOEmptyStateViewTests: TestCase {
-  override func setUp() {
-    super.setUp()
-  }
-
-  override func tearDown() {
-    super.tearDown()
-  }
-
   func testEmptyStateView() {
     orthogonalCombos(Language.allLanguages, Device.allCases, Orientation.allCases).forEach {
       language, device, orientation in

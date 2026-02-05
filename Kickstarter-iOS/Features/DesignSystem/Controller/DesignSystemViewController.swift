@@ -83,8 +83,18 @@ final class DesignSystemViewController: UIViewController {
 
     self.dropdownButton.setTitle("United States", for: .normal)
 
-    let emailTextFieldpaddingView = UIView(frame: CGRectMake(0, 0, 15, self.emailTextField.frame.height))
-    let passTextFieldpaddingView = UIView(frame: CGRectMake(0, 0, 15, self.passwordTextField.frame.height))
+    let emailTextFieldpaddingView = UIView(frame: CGRect(
+      x: 0,
+      y: 0,
+      width: 15,
+      height: self.emailTextField.frame.height
+    ))
+    let passTextFieldpaddingView = UIView(frame: CGRect(
+      x: 0,
+      y: 0,
+      width: 15,
+      height: self.passwordTextField.frame.height
+    ))
     self.emailTextField.leftView = emailTextFieldpaddingView
     self.emailTextField.leftViewMode = .always
     self.passwordTextField.leftView = passTextFieldpaddingView

@@ -6,8 +6,6 @@ private enum Constants {
   static let stackViewSpacing = Styles.grid(1)
 }
 
-import UIKit
-
 final class PledgeOverTimePaymentScheduleItemView: UIView {
   // MARK: - Properties
 
