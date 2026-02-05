@@ -152,4 +152,5 @@ public enum Feature: String, EnumType {
   case editShippingPmConfigPostLaunch2026 = "edit_shipping_pm_config_post_launch_2026"
   case partnerProgramRefresh = "partner_program_refresh"
   case collaboratorCreatorDashboardAccess = "collaborator_creator_dashboard_access"
+  case polls2026 = "polls_2026"
 }

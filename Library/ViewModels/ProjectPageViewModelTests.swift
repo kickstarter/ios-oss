@@ -455,43 +455,39 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  func testConfiguredProject_WithFriendsNoBacking_Succcessfully() {
+  func testConfiguredProject_WithNoBacking_Succcessfully() {
     let project = Project.template
-    let friends = [User.template, User.brando]
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
     let refTag = RefTag.category
 
     withEnvironment(apiService: MockService(
       fetchProjectAndBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .success(friends),
       fetchProjectRewardsResult: .success([.template])
     )) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(refTag))
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
 
-      let projectWithFriends = project |> \.personalization.friends .~ friends
-
       self.scheduler.advance()
 
-      XCTAssertEqual(
+      XCTAssertNil(
         self.configureChildViewControllersWithProject.values.last!.personalization.friends,
-        friends
       )
-      self.configureChildViewControllersWithProject.assertValues([projectWithFriends, projectWithFriends])
+
+      self.configureChildViewControllersWithProject.assertValues([project, project])
     }
   }
 
-  func testConfiguredProject_WithNoFriendsNoBacking_Unsucccessfully() {
+  func testConfiguredProject_WithNoBacking_Unsuccessfully() {
     let project = Project.template
     let refTag = RefTag.category
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
     withEnvironment(apiService: MockService(
-      fetchProjectAndBackingResult: .success(.template),
+      // If there's no backingID, we won't fetch a backing.
+      // fetchProjectAndBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .failure(.couldNotParseJSON),
       fetchProjectRewardsResult: .success([.template])
     )) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(refTag))
@@ -500,25 +496,22 @@ final class ProjectPageViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      XCTAssertTrue(
-        self.configureChildViewControllersWithProject.values.last!.personalization.friends!
-          .isEmpty
+      XCTAssertNil(
+        self.configureChildViewControllersWithProject.values.last!.personalization.friends
       )
       self.configureChildViewControllersWithProject.assertValues([project, project])
     }
   }
 
-  func testConfiguredProject_WithFriendsWithBacking_Succcessfully() {
+  func testConfiguredProject_WithBacking_Succcessfully() {
     let project = Project.template
     let refTag = RefTag.category
-    let friends = [User.template, User.brando]
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: 1)
 
     withEnvironment(apiService: MockService(
-      fetchProjectAndBackingResult: .success(.template),
+      fetchProjectAndBackingResult: .success(ProjectAndBackingEnvelope.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .success(friends),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsResult: .success([Reward.template])
     )) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(refTag))
       self.vm.inputs.viewDidLoad()

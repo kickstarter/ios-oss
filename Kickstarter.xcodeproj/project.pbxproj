@@ -162,9 +162,6 @@
 		06BD75CD26C4322C00A12D4E /* CommentDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75CC26C4322C00A12D4E /* CommentDialogViewController.swift */; };
 		06C1256226A89408003BE6B9 /* Comment+CommentFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C1256126A89408003BE6B9 /* Comment+CommentFragmentTests.swift */; };
 		06C38CBB26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C38CBA26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift */; };
-		06D23BBF26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D23BBE26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift */; };
-		06D23BC126F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D23BC026F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift */; };
-		06D23BC226F2533800F76122 /* Project+FetchProjectFriendsQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D23BBC26F2454700F76122 /* Project+FetchProjectFriendsQueryData.swift */; };
 		06DC4144266FF184005205F7 /* RootCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC413C266FF179005205F7 /* RootCommentCell.swift */; };
 		06E3296B270E39B300216306 /* ProjectPageNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E3296A270E39B300216306 /* ProjectPageNavigationBarView.swift */; };
 		06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = 06EA2D4B280F76B700F4DE2E /* Prelude */; };
@@ -1984,9 +1981,6 @@
 		06C1256126A89408003BE6B9 /* Comment+CommentFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+CommentFragmentTests.swift"; sourceTree = "<group>"; };
 		06C38CBA26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift"; sourceTree = "<group>"; };
 		06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsDataSource.swift; sourceTree = "<group>"; };
-		06D23BBC26F2454700F76122 /* Project+FetchProjectFriendsQueryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchProjectFriendsQueryData.swift"; sourceTree = "<group>"; };
-		06D23BBE26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchProjectFriendsQueryDataTests.swift"; sourceTree = "<group>"; };
-		06D23BC026F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProjectFriendsQueryTemplate.swift; sourceTree = "<group>"; };
 		06DC413C266FF179005205F7 /* RootCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCell.swift; sourceTree = "<group>"; };
 		06E3296A270E39B300216306 /* ProjectPageNavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageNavigationBarView.swift; sourceTree = "<group>"; };
 		06EA2D36280F1F1900F4DE2E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -3526,8 +3520,6 @@
 		E190EB5C2E29944E006A6DB6 /* FetchProjectByIdQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectByIdQuery.graphql; sourceTree = "<group>"; };
 		E190EB5D2E29944E006A6DB6 /* FetchProjectBySlugQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectBySlugQuery.graphql; sourceTree = "<group>"; };
 		E190EB5E2E29944E006A6DB6 /* FetchProjectComments.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectComments.graphql; sourceTree = "<group>"; };
-		E190EB5F2E29944E006A6DB6 /* FetchProjectFriendsById.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectFriendsById.graphql; sourceTree = "<group>"; };
-		E190EB602E29944E006A6DB6 /* FetchProjectFriendsBySlug.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectFriendsBySlug.graphql; sourceTree = "<group>"; };
 		E190EB612E29944E006A6DB6 /* FetchProjectRewardsByIdQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectRewardsByIdQuery.graphql; sourceTree = "<group>"; };
 		E190EB622E29944E006A6DB6 /* FetchRootCategories.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchRootCategories.graphql; sourceTree = "<group>"; };
 		E190EB632E29944E006A6DB6 /* FetchUpdateComments.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUpdateComments.graphql; sourceTree = "<group>"; };
@@ -3775,7 +3767,6 @@
 			children = (
 				0665C74A26E930BC00A0EDA1 /* FetchProjectQueryTemplate.swift */,
 				064AEF10270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift */,
-				06D23BC026F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift */,
 				06032A8926CEAD2F0013AAB9 /* FetchProjectCommentsQueryTemplate.swift */,
 				069C07E52767BD79009B7534 /* FetchCommentRepliesQueryTemplate.swift */,
 				06032A8F26CEC3290013AAB9 /* FetchUpdateCommentsQueryTemplate.swift */,
@@ -6400,8 +6391,6 @@
 				8AC3E0B32698F03200168BF8 /* Project+FetchAddOnsQueryDataTests.swift */,
 				06B3605D26E12EB7006CB9E4 /* Project+FetchProjectQueryData.swift */,
 				0665C74826E9302100A0EDA1 /* Project+FetchProjectQueryDataTests.swift */,
-				06D23BBC26F2454700F76122 /* Project+FetchProjectFriendsQueryData.swift */,
-				06D23BBE26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift */,
 				06566374270BAA7C00CE7EDF /* Project+FetchProjectRewardsByIdQueryData.swift */,
 				064AEF0E270CECF0006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift */,
 				8AC3E03826977C0200168BF8 /* Project+ProjectFragment.swift */,
@@ -7718,8 +7707,6 @@
 				E190EB5C2E29944E006A6DB6 /* FetchProjectByIdQuery.graphql */,
 				E190EB5D2E29944E006A6DB6 /* FetchProjectBySlugQuery.graphql */,
 				E190EB5E2E29944E006A6DB6 /* FetchProjectComments.graphql */,
-				E190EB5F2E29944E006A6DB6 /* FetchProjectFriendsById.graphql */,
-				E190EB602E29944E006A6DB6 /* FetchProjectFriendsBySlug.graphql */,
 				E190EB612E29944E006A6DB6 /* FetchProjectRewardsByIdQuery.graphql */,
 				E190EB622E29944E006A6DB6 /* FetchRootCategories.graphql */,
 				E190EB632E29944E006A6DB6 /* FetchUpdateComments.graphql */,
@@ -9776,7 +9763,6 @@
 				D01588C11EEB2ED7006E7684 /* ProjectStatsEnvelopeLenses.swift in Sources */,
 				06261605273B10BC00389981 /* GraphAPI.PostCommentInput+PostCommentInput.swift in Sources */,
 				60C996EE2AC2030C006BE4F4 /* CreateFlaggingInput.swift in Sources */,
-				06D23BC226F2533800F76122 /* Project+FetchProjectFriendsQueryData.swift in Sources */,
 				D015890B1EEB2ED7006E7684 /* ProjectStatsEnvelope.swift in Sources */,
 				D015889B1EEB2ED7006E7684 /* ItemLenses.swift in Sources */,
 				D755ECA72315E95C0096F189 /* CreateBackingMutation.swift in Sources */,
@@ -9921,7 +9907,6 @@
 				60F7FAB32E7323CB004B3177 /* MockApolloClient.swift in Sources */,
 				8A15574326951A4B00017845 /* Backing+BackingFragmentTests.swift in Sources */,
 				0665C74B26E930BC00A0EDA1 /* FetchProjectQueryTemplate.swift in Sources */,
-				06D23BBF26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift in Sources */,
 				8AC3E0592697ABD900168BF8 /* Project.Category+CategoryFragmentTests.swift in Sources */,
 				E170B9112B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift in Sources */,
 				D0E78C3822A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift in Sources */,
@@ -10006,7 +9991,6 @@
 				0622C92C273499B60039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesEnvelopeDataTests.swift in Sources */,
 				0622C92627347EE10039AAC9 /* CategoryEnvelope+FetchCategoryQueryDataTests.swift in Sources */,
 				D755ECB123217D5B0096F189 /* CreateBackingEnvelopeTests.swift in Sources */,
-				06D23BC126F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift in Sources */,
 				8ADCCD912655D4030079D308 /* ApolloInterceptorsTests.swift in Sources */,
 				0665C74926E9302100A0EDA1 /* Project+FetchProjectQueryDataTests.swift in Sources */,
 				3959A6282B69AE6D00FE8055 /* CombineTestObserverTests.swift in Sources */,

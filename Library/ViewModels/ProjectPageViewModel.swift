@@ -263,22 +263,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         .materialize()
       }
 
-    let projectFriends = MutableProperty([User]())
-
-    projectFriends <~ self.configDataProperty.signal.skipNil()
-      .switchMap { projectParamAndRefTag -> SignalProducer<[User], Never> in
-        let (projectOrParam, _, _) = projectParamAndRefTag
-        return fetchProjectFriends(projectOrParam: projectOrParam).demoteErrors()
-      }
-
     let freshProjectAndRefTag: Signal<(Project, RefTag?), Never> = freshProjectAndRefTagEvent.values()
-      .map { project, refTag -> (Project, RefTag?) in
-        let updatedProjectWithFriends = project
-          |> Project.lens.personalization.friends .~ projectFriends.value
-          |> Project.lens.extendedProjectProperties .~ project.extendedProjectProperties
-
-        return (updatedProjectWithFriends, refTag)
-      }
 
     let project = freshProjectAndRefTag
       .map(first)
@@ -929,16 +914,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   // MARK: - RewardsUseCase
 
   private let rewardsUseCase: RewardsUseCase
-}
-
-private func fetchProjectFriends(projectOrParam: Either<Project, any ProjectPageParam>)
-  -> SignalProducer<[User], ErrorEnvelope> {
-  let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
-
-  let projectFriendsProducer = AppEnvironment.current.apiService.fetchProjectFriends(param: param.param)
-    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-
-  return projectFriendsProducer
 }
 
 private func fetchProject(
