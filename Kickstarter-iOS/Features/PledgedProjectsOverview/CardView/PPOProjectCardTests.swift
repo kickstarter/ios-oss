@@ -19,27 +19,16 @@ final class PPOProjectCardTests: TestCase {
 
   @MainActor
   func testFundedCards() {
-    orthogonalCombos(
-      PPOProjectCardModel.fundedProjectTemplates,
-      Language.allLanguages,
-      [UIUserInterfaceStyle.light, UIUserInterfaceStyle.dark]
-    ).forEach {
-      cardTemplate, language, interfaceStyle in
-      withEnvironment(
-        language: language
-      ) {
-        let card = VStack {
-          PPOProjectCard(viewModel: PPOProjectCardViewModel(
-            card: cardTemplate
-          ), parentSize: self.size)
-            .frame(width: self.size.width)
-            .frame(maxHeight: .infinity)
-            .padding()
-        }.frame(height: 500)
-
-        let traits = UITraitCollection.init(userInterfaceStyle: interfaceStyle)
-        assertSnapshot(of: card, as: .image(traits: traits), named: cardTemplate.tierType.rawValue)
-      }
+    forEachScreenshotType(
+      withData: PPOProjectCardModel.fundedProjectTemplates,
+      // TODO(MBL-3044): Update view and test to support more content sizes.
+      contentSizes: [.large]
+    ) { type, template in
+      let card = PPOProjectCard(
+        viewModel: PPOProjectCardViewModel(card: template),
+        parentSize: type.device.deviceSize
+      )
+      assertSnapshot(forSwiftUIView: card, withType: type)
     }
   }
 
@@ -73,120 +62,33 @@ final class PPOProjectCardTests: TestCase {
     }
   }
 
-  // MARK: Test project alert cards.
-
   @MainActor
-  func testAddressLocks() async {
-    let card =
-      VStack {
-        PPOProjectCard(viewModel: PPOProjectCardViewModel(
-          card: .confirmAddressTemplate
-        ), parentSize: self.size)
-          .frame(width: self.size.width)
-          .frame(maxHeight: .infinity)
-          .padding()
-      }.frame(height: 500)
-    try? await Task.sleep(nanoseconds: 10_000_000)
-    assertSnapshot(matching: card, as: .image, named: "addressLocks")
+  func testAlertCards() {
+    forEachScreenshotType(
+      withData: PPOProjectCardModel.alertTemplates,
+      // TODO(MBL-3044): Update view and test to support more content sizes.
+      contentSizes: [.large]
+    ) { type, template in
+      let card = PPOProjectCard(
+        viewModel: PPOProjectCardViewModel(card: template),
+        parentSize: type.device.deviceSize
+      )
+      assertSnapshot(forSwiftUIView: card, withType: type)
+    }
   }
 
   @MainActor
-  func testSurveyAvailableAddressLocks() async {
-    let card = VStack {
-      PPOProjectCard(viewModel: PPOProjectCardViewModel(
-        card: .addressLockTemplate
-      ), parentSize: self.size)
-        .frame(width: self.size.width)
-        .frame(maxHeight: .infinity)
-        .padding()
-    }.frame(height: 500)
-    try? await Task.sleep(nanoseconds: 10_000_000)
-    assertSnapshot(matching: card, as: .image, named: "surveyAvailableAddressLocks")
-  }
-
-  @MainActor
-  func testPaymentFailedPledgeDropped() async {
-    let card = VStack {
-      PPOProjectCard(viewModel: PPOProjectCardViewModel(
-        card: .fixPaymentTemplate
-      ), parentSize: self.size)
-        .frame(width: self.size.width)
-        .frame(maxHeight: .infinity)
-        .padding()
-    }.frame(height: 500)
-    try? await Task.sleep(nanoseconds: 10_000_000)
-    assertSnapshot(matching: card, as: .image, named: "paymentFailedPledgeDropped")
-  }
-
-  @MainActor
-  func testCardAuthPledgeDropped() async {
-    let card = VStack {
-      PPOProjectCard(viewModel: PPOProjectCardViewModel(
-        card: .authenticateCardTemplate
-      ), parentSize: self.size)
-        .frame(width: self.size.width)
-        .frame(maxHeight: .infinity)
-        .padding()
-    }.frame(height: 500)
-    try? await Task.sleep(nanoseconds: 10_000_000)
-    assertSnapshot(matching: card, as: .image, named: "cardAuthPledgeDropped")
-  }
-
-  @MainActor
-  func testSurveyAvailable() async {
-    let card = VStack {
-      PPOProjectCard(viewModel: PPOProjectCardViewModel(
-        card: .completeSurveyTemplate
-      ), parentSize: self.size)
-        .frame(width: self.size.width)
-        .frame(maxHeight: .infinity)
-        .padding()
-    }.frame(height: 500)
-    try? await Task.sleep(nanoseconds: 10_000_000)
-    assertSnapshot(matching: card, as: .image, named: "surveyAvailable")
-  }
-
-  @MainActor
-  func testFinalizeYourPledge() async {
-    let card = VStack {
-      PPOProjectCard(viewModel: PPOProjectCardViewModel(
-        card: .managePledgeTemplate
-      ), parentSize: self.size)
-        .frame(width: self.size.width)
-        .frame(maxHeight: .infinity)
-        .padding()
-    }.frame(height: 500)
-    try? await Task.sleep(nanoseconds: 10_000_000)
-    assertSnapshot(matching: card, as: .image, named: "finalizeYourPledge")
-  }
-
-  // MARK: Test UI edge cases.
-
-  @MainActor
-  func testShortTemplateText() async {
-    let card = VStack {
-      PPOProjectCard(viewModel: PPOProjectCardViewModel(
-        card: .shortTextTemplate
-      ), parentSize: self.size)
-        .frame(width: self.size.width)
-        .frame(maxHeight: .infinity)
-        .padding()
-    }.frame(height: 500)
-    try? await Task.sleep(nanoseconds: 10_000_000)
-    assertSnapshot(matching: card, as: .image, named: "testShortTemplateText")
-  }
-
-  @MainActor
-  func testLotsOfFlags() async {
-    let card = VStack {
-      PPOProjectCard(viewModel: PPOProjectCardViewModel(
-        card: .lotsOfFlagsTemplate
-      ), parentSize: self.size)
-        .frame(width: self.size.width)
-        .frame(maxHeight: .infinity)
-        .padding()
-    }.frame(height: 500)
-    try? await Task.sleep(nanoseconds: 10_000_000)
-    assertSnapshot(matching: card, as: .image, named: "testLotsOfFlags")
+  func testUIEdgeCases() {
+    forEachScreenshotType(
+      withData: PPOProjectCardModel.uiEdgeCaseTemplates,
+      // TODO(MBL-3044): Update view and test to support more content sizes.
+      contentSizes: [.large]
+    ) { type, template in
+      let card = PPOProjectCard(
+        viewModel: PPOProjectCardViewModel(card: template),
+        parentSize: type.device.deviceSize
+      )
+      assertSnapshot(forSwiftUIView: card, withType: type)
+    }
   }
 }

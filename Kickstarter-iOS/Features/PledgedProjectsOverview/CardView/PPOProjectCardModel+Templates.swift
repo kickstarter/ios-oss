@@ -11,38 +11,18 @@ import KsApi
       digitalRewardReceivedTemplate,
       managePledgeTemplate,
       confirmAddressTemplate,
-      addressLockTemplate,
-      fixPaymentTemplate,
       authenticateCardTemplate,
-      completeSurveyTemplate,
       campaignFundedTemplate,
       pledgeDroppedTemplate
     ]
 
-    // Minimal set of funded project templates that makes sure each tier type
-    // and each reward type is represented at least once (instead of containing
-    // every possible combination of tier type and reward type).
-    public static let fundedProjectTemplates: [PPOProjectCardModel] = [
-      noRewardPledgeCollected,
-      surveySubmittedTemplate,
-      addressConfirmedTemplate,
-      digitalRewardReceivedTemplate,
-      awaitingShippableRewardTemplate
-    ]
+    // MARK: Live projects
 
     public static let liveProjectTemplates: [PPOProjectCardModel] = [
       campaignLiveTemplate,
       campaignFundedTemplate,
       campaignEndedTemplate
     ]
-
-    public static let failedPledgeTemplates: [PPOProjectCardModel] = [
-      campaignFailedTemplate,
-      pledgeDroppedTemplate,
-      pledgeCanceledTemplate
-    ]
-
-    // MARK: Live projects
 
     internal static let campaignLiveTemplate = PPOProjectCardModel(
       isUnread: true,
@@ -105,6 +85,12 @@ import KsApi
 
     // MARK: Failed/canceled pledges
 
+    public static let failedPledgeTemplates: [PPOProjectCardModel] = [
+      campaignFailedTemplate,
+      pledgeDroppedTemplate,
+      pledgeCanceledTemplate
+    ]
+
     internal static let campaignFailedTemplate = PPOProjectCardModel(
       isUnread: true,
       alerts: [
@@ -163,6 +149,17 @@ import KsApi
     )
 
     // MARK: Funded projects
+
+    // Minimal set of funded project templates that makes sure each tier type
+    // and each reward type is represented at least once (instead of containing
+    // every possible combination of tier type and reward type).
+    public static let fundedProjectTemplates: [PPOProjectCardModel] = [
+      noRewardPledgeCollected,
+      surveySubmittedTemplate,
+      addressConfirmedTemplate,
+      digitalRewardReceivedTemplate,
+      awaitingShippableRewardTemplate
+    ]
 
     internal static let noRewardPledgeCollected = PPOProjectCardModel(
       isUnread: true,
@@ -281,6 +278,15 @@ import KsApi
     )
 
     // MARK: Project alerts
+
+    public static let alertTemplates: [PPOProjectCardModel] = [
+      confirmAddressTemplate,
+      addressLockTemplate,
+      fixPaymentTemplate,
+      authenticateCardTemplate,
+      completeSurveyTemplate,
+      managePledgeTemplate
+    ]
 
     internal static let confirmAddressTemplate = PPOProjectCardModel(
       isUnread: true,
@@ -422,36 +428,12 @@ import KsApi
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
     )
 
-    internal static let projectAnalyticsFragmentTemplate = GraphAPI.ProjectAnalyticsFragment(
-      addOns: nil,
-      backersCount: 42,
-      backing: nil,
-      category: nil,
-      commentsCount: 42,
-      country: .init(code: GraphQLEnum.case(.us)),
-      creator: nil,
-      currency: GraphQLEnum.case(.usd),
-      deadlineAt: nil,
-      launchedAt: nil,
-      pid: 42,
-      name: "Test",
-      isInPostCampaignPledgingPhase: true,
-      isWatched: true,
-      percentFunded: 100,
-      isPrelaunchActivated: false,
-      projectTags: [],
-      postCampaignPledgingEnabled: false,
-      rewards: nil,
-      state: GraphQLEnum.case(.successful),
-      video: nil,
-      pledged: .init(amount: nil),
-      fxRate: 4,
-      usdExchangeRate: nil,
-      posts: ProjectAnalyticsFragment.Posts(totalCount: 0),
-      goal: nil
-    )
-
     // MARK: UI edge cases
+
+    public static let uiEdgeCaseTemplates: [PPOProjectCardModel] = [
+      shortTextTemplate,
+      lotsOfFlagsTemplate
+    ]
 
     internal static let shortTextTemplate = PPOProjectCardModel(
       isUnread: true,
@@ -509,5 +491,37 @@ import KsApi
       backingGraphId: "backing-fake-id",
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
     )
+
+    // MARK: Helpers
+
+    internal static let projectAnalyticsFragmentTemplate = GraphAPI.ProjectAnalyticsFragment(
+      addOns: nil,
+      backersCount: 42,
+      backing: nil,
+      category: nil,
+      commentsCount: 42,
+      country: .init(code: GraphQLEnum.case(.us)),
+      creator: nil,
+      currency: GraphQLEnum.case(.usd),
+      deadlineAt: nil,
+      launchedAt: nil,
+      pid: 42,
+      name: "Test",
+      isInPostCampaignPledgingPhase: true,
+      isWatched: true,
+      percentFunded: 100,
+      isPrelaunchActivated: false,
+      projectTags: [],
+      postCampaignPledgingEnabled: false,
+      rewards: nil,
+      state: GraphQLEnum.case(.successful),
+      video: nil,
+      pledged: .init(amount: nil),
+      fxRate: 4,
+      usdExchangeRate: nil,
+      posts: ProjectAnalyticsFragment.Posts(totalCount: 0),
+      goal: nil
+    )
   }
+
 #endif
