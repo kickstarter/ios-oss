@@ -9,14 +9,6 @@ import XCTest
 final class PPOProjectCardTests: TestCase {
   let size = CGSize(width: 375, height: 700)
 
-  override func setUp() {
-    super.setUp()
-  }
-
-  override func tearDown() {
-    super.tearDown()
-  }
-
   // MARK: Test funded project cards.
 
   @MainActor

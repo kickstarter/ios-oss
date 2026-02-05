@@ -17,11 +17,11 @@ public protocol ReportProjectFormViewModelType {
 
 public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
   ReportProjectFormViewModelInputs, ReportProjectFormViewModelOutputs, ObservableObject {
-  @Published public var retrievedEmail: String? = nil
+  @Published public var retrievedEmail: String?
   @Published public var saveButtonEnabled: Bool = false
   @Published public var saveButtonLoading: Bool = false
   @Published public var detailsText: String = ""
-  @Published public var bannerMessage: MessageBannerViewViewModel? = nil
+  @Published public var bannerMessage: MessageBannerViewViewModel?
 
   @Published public var submitSuccess: Bool = false
 

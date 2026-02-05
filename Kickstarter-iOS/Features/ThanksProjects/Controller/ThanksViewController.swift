@@ -56,10 +56,6 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     }
   }
 
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-  }
-
   override func bindStyles() {
     super.bindStyles()
 

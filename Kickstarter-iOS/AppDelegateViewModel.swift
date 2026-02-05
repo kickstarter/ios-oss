@@ -402,7 +402,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let deepLink = deeplinkActivated
 
     let updatedUserNotificationSettings = deepLink.filter { nav in
-      guard case .settings(.notifications(_, _)) = nav else { return false }
+      guard case .settings(.notifications) = nav else { return false }
       return true
     }
     .flatMap(updateUserNotificationSetting)

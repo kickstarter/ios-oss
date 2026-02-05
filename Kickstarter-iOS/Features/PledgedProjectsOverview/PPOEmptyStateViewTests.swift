@@ -5,14 +5,6 @@ import SwiftUI
 import XCTest
 
 final class PPOEmptyStateViewTests: TestCase {
-  override func setUp() {
-    super.setUp()
-  }
-
-  override func tearDown() {
-    super.tearDown()
-  }
-
   func testEmptyStateView() {
     forEachScreenshotType { type in
       let mockConfigClient = MockRemoteConfigClient()

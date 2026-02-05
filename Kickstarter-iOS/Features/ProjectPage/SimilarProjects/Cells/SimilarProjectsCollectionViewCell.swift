@@ -41,10 +41,6 @@ final class SimilarProjectsCollectionViewCell: UICollectionViewCell, ValueCell {
     fatalError("init(coder:) has not been implemented")
   }
 
-  internal override func layoutSubviews() {
-    super.layoutSubviews()
-  }
-
   private func configureViews() {
     self.contentView.addSubview(self.projectCardView)
 

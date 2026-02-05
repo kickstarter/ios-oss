@@ -8,7 +8,7 @@ final class AlertBanner: UIView {
   public var button = UIButton(configuration: .plain())
   private let title = UILabel()
   private let subtitle = UILabel()
-  private var buttonAction: (() -> Void)? = nil
+  private var buttonAction: (() -> Void)?
 
   // MARK: - Initialization
 

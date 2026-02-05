@@ -3,8 +3,8 @@ import Library
 import SwiftUI
 
 struct PPOEmptyStateView: View {
-  var onOpenBackedProjects: (() -> Void)? = nil
-  var onExploreProjects: (() -> Void)? = nil
+  var onOpenBackedProjects: (() -> Void)?
+  var onExploreProjects: (() -> Void)?
 
   private enum Constants {
     public static let largePadding = Spacing.unit_06
