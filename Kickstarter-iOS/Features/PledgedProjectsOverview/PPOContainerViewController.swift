@@ -147,13 +147,13 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       tabBarController?.switchToDiscovery(params: nil)
     case let .projectDetails(projectId):
       self.openProjectPage(projectId)
-    case let .editAddress(url), let .survey(url), let .managePledge(url):
+    case let .editAddress(url), let .survey(url), let .openPledgeManager(url):
       self.openSurvey(url)
     case let .contactCreator(messageSubject):
       self.messageCreator(messageSubject)
     case let .fixPaymentMethod(projectId, backingId),
          let .manageLivePledge(projectId, backingId):
-        self?.openNativeManagePledge(projectId: projectId, backingId: backingId)
+      self.openNativeManagePledge(projectId: projectId, backingId: backingId)
     case let .fix3DSChallenge(clientSecret, onProgress):
       self.handle3DSChallenge(clientSecret: clientSecret, onProgress: onProgress)
     case let .confirmAddress(backingId, addressId, address, onProgress):
