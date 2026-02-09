@@ -59,7 +59,7 @@ public protocol SearchViewModelInputs {
 
 public protocol SearchViewModelOutputs {
   /// Emits a project ID  and ref tag when the project page should be opened.
-  var goToProject: Signal<(Int, RefTag), Never> { get }
+  var goToProject: Signal<(ProjectPageParam, RefTag), Never> { get }
 
   /// Used to power the datasource. Emits projects, whether or not to show the "Popular" title, and the results count. May emit an array of empty projects if the page was cleared and new results are loading.
   var searchResults: Signal<SearchResults, Never> { get }
@@ -243,8 +243,9 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .map { ($0.0, $0.1, $1) } // ((a, b) c) -> (a, b, c)
       .map { projects, query, index in
 
+        let emptyResult: (ProjectPageParam, RefTag)? = nil
+
         guard index >= 0, index < projects.count else {
-          let emptyResult: (Int, RefTag)? = nil
           assert(false, "Tapped card out of bounds.")
           return emptyResult
         }
@@ -252,14 +253,16 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         let project = projects[index]
         let graphQLID = project.fragments.backerDashboardProjectCellFragment.projectId
 
-        guard let projectId = decompose(id: graphQLID) else {
-          let emptyResult: (Int, RefTag)? = nil
+        guard let projectId = decompose(id: graphQLID),
+              let cardProperties = ProjectCardProperties(project.fragments.projectCardFragment)
+        else {
           return emptyResult
         }
 
         let refTag = refTag(query: query, projects: projects, project: project)
 
-        return (projectId, refTag)
+        let param = cardProperties.projectPageParam
+        return (param, refTag)
       }
       .skipNil()
 
@@ -390,7 +393,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   private let searchFiltersUseCase: SearchFiltersUseCase
   private let locationsUseCase: FetchLocationsUseCase
 
-  public let goToProject: Signal<(Int, RefTag), Never>
+  public let goToProject: Signal<(ProjectPageParam, RefTag), Never>
   public let projects: Signal<[SearchResultCard], Never>
   public let searchLoaderIndicatorIsAnimating: Signal<Bool, Never>
   public let showEmptyState: Signal<(DiscoveryParams, Bool), Never>
