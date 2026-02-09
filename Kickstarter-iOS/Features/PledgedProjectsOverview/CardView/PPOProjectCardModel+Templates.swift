@@ -166,7 +166,7 @@ import KsApi
       creatorName: "rokaplay",
       address: .hidden,
       rewardReceivedToggleState: .hidden,
-      action: nil, // TODO(MBL-2959): Add manage live pledge action once it's ready.
+      action: .manageLivePledge,
       tierType: .campaignLive,
       backingId: 47,
       backingGraphId: "backing-fake-id",
@@ -186,7 +186,7 @@ import KsApi
       creatorName: "rokaplay",
       address: .hidden,
       rewardReceivedToggleState: .hidden,
-      action: nil, // TODO(MBL-2959): Add manage live pledge action once it's ready.
+      action: .manageLivePledge,
       tierType: .campaignFunded,
       backingId: 47,
       backingGraphId: "backing-fake-id",

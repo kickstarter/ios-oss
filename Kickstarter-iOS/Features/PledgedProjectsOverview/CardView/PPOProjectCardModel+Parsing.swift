@@ -155,8 +155,7 @@ extension PPOProjectCardModel {
     case .pledgeManagement:
       return self.actionForPledgeManagement(url: webviewUrl)
     case .campaignLive, .campaignFunded:
-      // TODO(MBL-2958): Show manage pledge action instead.
-      return PPOParsedAction(action: nil, tierType: tierType)
+      return PPOParsedAction(action: .manageLivePledge, tierType: tierType)
     case .surveySubmitted, .pledgeCollected, .addressConfirmed, .awaitingReward, .rewardReceived,
          .campaignEnded, .campaignFailed, .pledgeDropped, .pledgeCanceled:
       return PPOParsedAction(action: nil, tierType: tierType)
