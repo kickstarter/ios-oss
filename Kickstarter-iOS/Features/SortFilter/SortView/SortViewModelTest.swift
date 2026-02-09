@@ -22,7 +22,7 @@ final class SortViewModelTest: XCTestCase {
   func testSortOptionSelected() throws {
     var cancellables: [AnyCancellable] = []
 
-    var optionSelected: ConcreteSortOption? = nil
+    var optionSelected: ConcreteSortOption?
     let expectation = expectation(description: "Waiting for a sort option selected")
     self.viewModel.selectedSortOption.sink { option in
       optionSelected = option

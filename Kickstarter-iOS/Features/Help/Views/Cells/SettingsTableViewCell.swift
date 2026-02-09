@@ -28,10 +28,6 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
       .~ !cellType.showArrowImageView
   }
 
-  override func bindStyles() {
-    super.bindStyles()
-  }
-
   override func setHighlighted(_ highlighted: Bool, animated: Bool) {
     super.setHighlighted(highlighted, animated: animated)
 

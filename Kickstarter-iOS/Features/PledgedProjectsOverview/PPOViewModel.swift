@@ -32,7 +32,7 @@ enum PPOPreparedEvent: Equatable {
   case fixPaymentMethod(projectId: Int, backingId: Int)
   case fix3DSChallenge(clientSecret: String, onProgress: (PPOActionState) -> Void)
   case survey(url: String)
-  case managePledge(url: String)
+  case openPledgeManager(url: String)
   case projectDetails(projectId: Int)
   case editAddress(url: String)
   case confirmAddress(
@@ -43,13 +43,14 @@ enum PPOPreparedEvent: Equatable {
   )
   case contactCreator(messageSubject: MessageSubject)
   case updateRewardReceived(backingId: String, rewardReceived: Bool)
+  case manageLivePledge(projectId: Int, backingId: Int)
 
   // swiftlint:disable:next cyclomatic_complexity
   static func == (lhs: PPOPreparedEvent, rhs: PPOPreparedEvent) -> Bool {
     switch (lhs, rhs) {
     case let (.survey(lhsUrl), .survey(rhsUrl)):
       return lhsUrl == rhsUrl
-    case let (.managePledge(lhsUrl), .managePledge(rhsUrl)):
+    case let (.openPledgeManager(lhsUrl), .openPledgeManager(rhsUrl)):
       return lhsUrl == rhsUrl
     case let (.projectDetails(lhsId), .projectDetails(rhsId)):
       return lhsId == rhsId
@@ -227,8 +228,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         project: cardModel.projectAnalytics,
         properties: overallProperties
       )
-    case .managePledge:
-      AppEnvironment.current.ksrAnalytics.trackPPOManagePledge(
+    case .openPledgeManager:
+      AppEnvironment.current.ksrAnalytics.trackPPOOpenPledgeManager(
         project: cardModel.projectAnalytics,
         properties: overallProperties
       )
@@ -253,6 +254,9 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         project: cardModel.projectAnalytics,
         properties: overallProperties
       )
+    case .manageLivePledge:
+      // TODO(MBL-2962): Add analytics event.
+      break
     }
   }
 
@@ -283,8 +287,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         projectId: cardModel.projectId,
         backingId: cardModel.backingId
       )
-    case let .managePledge(url):
-      return PPOPreparedEvent.managePledge(url: url)
+    case let .openPledgeManager(url):
+      return PPOPreparedEvent.openPledgeManager(url: url)
     case let .confirmAddress(address, addressId):
       return PPOPreparedEvent.confirmAddress(
         backingId: cardModel.backingGraphId,
@@ -298,6 +302,11 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       return PPOPreparedEvent.fix3DSChallenge(
         clientSecret: clientSecret,
         onProgress: onProgress
+      )
+    case .manageLivePledge:
+      return PPOPreparedEvent.manageLivePledge(
+        projectId: cardModel.projectId,
+        backingId: cardModel.backingId
       )
     }
   }

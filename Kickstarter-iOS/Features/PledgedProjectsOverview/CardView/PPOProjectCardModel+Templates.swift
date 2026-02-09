@@ -9,7 +9,7 @@ import KsApi
       noRewardPledgeCollected,
       awaitingShippableRewardTemplate,
       digitalRewardReceivedTemplate,
-      managePledgeTemplate,
+      openPledgeManagerTemplate,
       confirmAddressTemplate,
       fixPaymentTemplate,
       campaignFundedTemplate,
@@ -400,7 +400,7 @@ import KsApi
       projectAnalytics: Self.projectAnalyticsFragmentTemplate
     )
 
-    internal static let managePledgeTemplate = PPOProjectCardModel(
+    internal static let openPledgeManagerTemplate = PPOProjectCardModel(
       isUnread: true,
       alerts: [
         .init(type: .warning, icon: .alert, message: "Finalize your pledge")
@@ -412,7 +412,7 @@ import KsApi
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: .hidden,
       rewardReceivedToggleState: .hidden,
-      action: .managePledge(url: "fakePledgeManagerUrl"),
+      action: .openPledgeManager(url: "fakePledgeManagerUrl"),
       tierType: .pledgeManagement,
       backingId: 47,
       backingGraphId: "backing-fake-id",

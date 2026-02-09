@@ -24,7 +24,7 @@ internal final class ActivitySampleBackingCellViewModelTests: TestCase {
       |> \.name .~ "Best Friend"
       |> \.avatar.medium .~ "http://coolpic.com/cool.png"
 
-    let creator = User.template
+    let creator = User.projectCreator
       |> \.name .~ "Super Cool Creator"
 
     let project = .template

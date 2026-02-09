@@ -3,8 +3,8 @@ import Library
 import SwiftUI
 
 struct PPOEmptyStateView: View {
-  var onOpenBackedProjects: (() -> Void)? = nil
-  var onExploreProjects: (() -> Void)? = nil
+  var onOpenBackedProjects: (() -> Void)?
+  var onExploreProjects: (() -> Void)?
 
   private enum Constants {
     public static let largePadding = Spacing.unit_06
@@ -37,12 +37,12 @@ struct PPOEmptyStateView: View {
           Button(Strings.Explore_projects()) {
             self.onExploreProjects?()
           }
-          .buttonStyle(KSRButtonStyleModifier(style: .green))
+          .buttonStyle(KSRButtonStyleModifier(style: KSRButtonStyle.green))
         } else {
           Button(Strings.See_all_backed__projects()) {
             self.onOpenBackedProjects?()
           }
-          .buttonStyle(KSRButtonStyleModifier(style: .green))
+          .buttonStyle(KSRButtonStyleModifier(style: KSRButtonStyle.green))
         }
       }
       .padding(EdgeInsets(

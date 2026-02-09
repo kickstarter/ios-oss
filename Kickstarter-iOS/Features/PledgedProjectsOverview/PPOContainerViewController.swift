@@ -147,12 +147,13 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       tabBarController?.switchToDiscovery(params: nil)
     case let .projectDetails(projectId):
       self.openProjectPage(projectId)
-    case let .editAddress(url), let .survey(url), let .managePledge(url):
+    case let .editAddress(url), let .survey(url), let .openPledgeManager(url):
       self.openSurvey(url)
     case let .contactCreator(messageSubject):
       self.messageCreator(messageSubject)
-    case let .fixPaymentMethod(projectId, backingId):
-      self.fixPayment(projectId: projectId, backingId: backingId)
+    case let .fixPaymentMethod(projectId, backingId),
+         let .manageLivePledge(projectId, backingId):
+      self.openNativeManagePledge(projectId: projectId, backingId: backingId)
     case let .fix3DSChallenge(clientSecret, onProgress):
       self.handle3DSChallenge(clientSecret: clientSecret, onProgress: onProgress)
     case let .confirmAddress(backingId, addressId, address, onProgress):
@@ -167,7 +168,7 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     }
   }
 
-  private func fixPayment(projectId: Int, backingId: Int) {
+  private func openNativeManagePledge(projectId: Int, backingId: Int) {
     let data = (projectParam: Param.id(projectId), backingParam: Param.id(backingId))
     let vc = ManagePledgeViewController.controller(with: data, delegate: self)
     vc.presentationController?.delegate = self

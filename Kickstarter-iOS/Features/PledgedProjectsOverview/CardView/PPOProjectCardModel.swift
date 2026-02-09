@@ -64,9 +64,10 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public enum ButtonAction: Identifiable, Equatable, Hashable {
     case confirmAddress(address: String, addressId: String)
     case completeSurvey(url: String)
-    case managePledge(url: String)
+    case openPledgeManager(url: String)
     case fixPayment
     case authenticateCard(clientSecret: String)
+    case manageLivePledge
 
     public var label: String {
       switch self {
@@ -74,12 +75,14 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
         Strings.Confirm()
       case .completeSurvey:
         Strings.Take_survey()
-      case .managePledge:
+      case .openPledgeManager:
         Strings.Finalize_pledge()
       case .fixPayment:
         Strings.Fix_payment()
       case .authenticateCard:
         Strings.Authenticate_card()
+      case .manageLivePledge:
+        Strings.project_manage_button()
       }
     }
 
@@ -89,25 +92,27 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
         .green
       case .completeSurvey:
         .green
-      case .managePledge:
+      case .openPledgeManager:
         .green
       case .fixPayment:
         .red
       case .authenticateCard:
         .red
+      case .manageLivePledge:
+        .blue
       }
     }
 
     public enum Style: Identifiable, Equatable {
       case green
       case red
-      case black
+      case blue
 
       public var id: String {
         switch self {
         case .green: "green"
         case .red: "red"
-        case .black: "black"
+        case .blue: "blue"
         }
       }
     }

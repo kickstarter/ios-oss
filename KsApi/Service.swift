@@ -585,14 +585,14 @@ public struct Service: ServiceType {
     switch (projectParam.id, projectParam.slug) {
     case let (.some(projectId), _):
       let query = GraphAPI
-        .FetchProjectByIdQuery(projectId: projectId, withStoredCards: false)
+        .FetchProjectByIdQuery(projectId: projectId)
 
       return GraphQL.shared.client
         .fetch(query: query)
         .flatMap { Project.projectProducer(from: $0, configCurrency: configCurrency) }
     case let (_, .some(projectSlug)):
       let query = GraphAPI
-        .FetchProjectBySlugQuery(slug: projectSlug, withStoredCards: false)
+        .FetchProjectBySlugQuery(slug: projectSlug)
 
       return GraphQL.shared.client
         .fetch(query: query)
@@ -713,7 +713,6 @@ public struct Service: ServiceType {
       projectSlug: slug,
       shippingEnabled: shippingEnabled,
       locationId: GraphQLNullable.someOrNil(locationId),
-      withStoredCards: false,
       includeShippingRules: true,
       includeLocalPickup: true
     )

@@ -518,7 +518,6 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
     case .userCancellation:
       // User canceled the payment
       self.viewModel.inputs.checkoutTerminated()
-      break
     @unknown default:
       self.viewModel.inputs.checkoutTerminated()
       fatalError()
