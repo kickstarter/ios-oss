@@ -12,4 +12,5 @@ public enum CreditCardTypes: String, EnumType {
   case visa = "VISA"
   case diners = "DINERS"
   case unionpay = "UNIONPAY"
+  case link = "LINK"
 }

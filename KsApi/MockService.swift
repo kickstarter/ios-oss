@@ -1182,7 +1182,6 @@
         projectSlug: slug,
         shippingEnabled: shippingEnabled,
         locationId: GraphQLNullable.someOrNil(locationId),
-        withStoredCards: false,
         includeShippingRules: true,
         includeLocalPickup: true
       )
@@ -1315,7 +1314,7 @@
       switch (projectParam.id, projectParam.slug) {
       case let (.some(paramId), _):
         let fetchProjectQuery = GraphAPI
-          .FetchProjectByIdQuery(projectId: paramId, withStoredCards: false)
+          .FetchProjectByIdQuery(projectId: paramId)
 
         let projectOrErrorOnlyResult: Result<Project, ErrorEnvelope>
 
@@ -1346,7 +1345,7 @@
         return producer
       case let (_, .some(paramSlug)):
         let fetchProjectQuery = GraphAPI
-          .FetchProjectBySlugQuery(slug: paramSlug, withStoredCards: false)
+          .FetchProjectBySlugQuery(slug: paramSlug)
 
         let projectOrErrorOnlyResult: Result<Project, ErrorEnvelope>
 
@@ -1480,7 +1479,7 @@
       }
 
       let fetchProjectCommentsQuery = GraphAPI
-        .FetchProjectByIdQuery(projectId: project.id, withStoredCards: false)
+        .FetchProjectByIdQuery(projectId: project.id)
 
       let projectOnlyResult: Result<Project, ErrorEnvelope>
 

@@ -15,7 +15,7 @@ struct PPOView: View {
     case .unloaded, .loading(.unloaded),
          .loading(.empty),
          .loading(.error),
-         .loading(previous: .loading(_)):
+         .loading(previous: .loading):
       self.loadingView
     case .empty:
       self.emptyView
@@ -80,9 +80,10 @@ struct PPOView: View {
   }
 
   @ViewBuilder var emptyView: some View {
-    PPOEmptyStateView {
-      self.onHandleEvent?(.backedProjects)
-    }
+    PPOEmptyStateView(
+      onOpenBackedProjects: { self.onHandleEvent?(.backedProjects) },
+      onExploreProjects: { self.onHandleEvent?(.exploreProjects) }
+    )
     .frame(maxHeight: .infinity)
   }
 

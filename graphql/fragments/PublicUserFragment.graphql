@@ -1,0 +1,19 @@
+# A fragment which only includes publicly visible User fields
+fragment PublicUserFragment on User {
+  id
+  imageUrl: imageUrl(blur: false, width: 1024)
+  isBlocked
+  isFollowing
+  location {
+    ...LocationFragment
+  }
+  name
+  showPublicProfile
+  uid
+  
+  # Fields for stats
+  backingsCount
+  createdProjects {
+    totalCount
+  }
+}

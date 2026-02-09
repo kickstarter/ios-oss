@@ -7956,6 +7956,23 @@ with friends."
     )
   }
   /**
+   "No backings"
+
+   - **en**: "No backings"
+   - **de**: "Keine Finanzierungsbeiträge"
+   - **es**: "No hay contribuciones"
+   - **fr**: "Aucun engagement"
+   - **ja**: "支援なし"
+  */
+  public static func No_backings() -> String {
+    return localizedString(
+      key: "No_backings",
+      defaultValue: "No backings",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "No comments yet."
 
    - **en**: "No comments yet."
@@ -10813,6 +10830,23 @@ daring ideas."
     return localizedString(
       key: "Reusability_and_recyclability",
       defaultValue: "Reusability and recyclability",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Review edits made to your order"
+
+   - **en**: "Review edits made to your order"
+   - **de**: "Änderungen an deiner Bestellung prüfen"
+   - **es**: "Revisa las modificaciones realizadas en tu pedido"
+   - **fr**: "Vérifions les modifications apportées à votre commande"
+   - **ja**: "ご注文への編集内容を確認してください"
+  */
+  public static func Review_edits_made_to_your_order() -> String {
+    return localizedString(
+      key: "Review_edits_made_to_your_order",
+      defaultValue: "Review edits made to your order",
       count: nil,
       substitutions: [:]
     )
@@ -15190,6 +15224,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "When_you_save_a_project_we_ll_send_you_a_reminder",
       defaultValue: "When you save a project we’ll send you a reminder 48 hours before it ends",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "When you’ve backed a project, it’ll show up here."
+
+   - **en**: "When you’ve backed a project, it’ll show up here."
+   - **de**: "Hier werden Projekte angezeigt, die du unterstützt hast."
+   - **es**: "Verás aquí los proyectos que hayas patrocinado."
+   - **fr**: "Vos engagements à venir apparaîtront ici."
+   - **ja**: "プロジェクトをバック(支援)するとここに表示されます。"
+  */
+  public static func When_youve_backed_a_project_itll_show_up_here() -> String {
+    return localizedString(
+      key: "When_youve_backed_a_project_itll_show_up_here",
+      defaultValue: "When you’ve backed a project, it’ll show up here.",
       count: nil,
       substitutions: [:]
     )
@@ -21979,7 +22030,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -25576,7 +25627,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
+   - **es**: "%{project_count} PROYECTOS APOYADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -28755,7 +28806,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count} \n件バック済み"
+   - **ja**: "%{projects_count}\n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -29707,7 +29758,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count} プロジェクト"
+   - **ja**: "%{created_count}プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(

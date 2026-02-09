@@ -72,6 +72,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
               "id": "UmV3YXJkLTgzNDExODA=",
               "isMaxPledge": false,
               "available": false,
+              "featured": false,
               "items": {
                 "__typename": "RewardItemsConnection",
                 "edges": [
@@ -515,6 +516,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                 {
                   "__typename": "Reward",
                   "available": true,
+                  "featured": false,
                   "project": {
                     "__typename": "Project",
                     "id": "UHJvamVjdC0xMTg3NjM3ODg3"
@@ -873,6 +875,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                   "estimatedDeliveryOn": "2028-12-01",
                   "limit": null,
                   "isMaxPledge": false,
+                  "featured": false,
                   "shippingPreference": "restricted",
                   "startsAt": null,
                   "audienceData": {

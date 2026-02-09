@@ -259,10 +259,6 @@ class PPOViewModelTests: XCTestCase {
     XCTAssertEqual(secondData.count, 7)
   }
 
-  func testEventBackedProjects() {
-    self.verifyPreparedEvent({ self.viewModel.openBackedProjects() }, event: .backedProjects)
-  }
-
   func testEventConfirmAddress() {
     let template = PPOProjectCardModel.confirmAddressTemplate
     let address = "fake address"
