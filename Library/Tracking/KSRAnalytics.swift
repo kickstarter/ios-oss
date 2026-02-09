@@ -577,7 +577,6 @@ public final class KSRAnalytics {
     let fundedProjectCount: Int
     let liveProjectCount: Int
     let unsuccessfulPledgeCount: Int
-    let total: Int?
     let page: Int?
 
     var alertCardCount: Int {
@@ -586,6 +585,13 @@ public final class KSRAnalytics {
         self.pledgeManagementCount +
         self.paymentFailedCount +
         self.cardAuthRequiredCount
+    }
+
+    var total: Int {
+      return self.alertCardCount +
+        self.fundedProjectCount +
+        self.liveProjectCount +
+        self.unsuccessfulPledgeCount
     }
 
     public init(
@@ -597,7 +603,6 @@ public final class KSRAnalytics {
       fundedProjectCount: Int,
       liveProjectCount: Int,
       unsuccessfulPledgeCount: Int,
-      total: Int?,
       page: Int?
     ) {
       self.addressLocksSoonCount = addressLocksSoonCount
@@ -608,7 +613,6 @@ public final class KSRAnalytics {
       self.fundedProjectCount = fundedProjectCount
       self.liveProjectCount = liveProjectCount
       self.unsuccessfulPledgeCount = unsuccessfulPledgeCount
-      self.total = total
       self.page = page
     }
   }
@@ -809,7 +813,7 @@ public final class KSRAnalytics {
       properties: props
     )
   }
-  
+
   public func trackPPOManageLivePledge(
     project: any ProjectAnalyticsProperties,
     properties: PledgedProjectOverviewProperties
@@ -1790,10 +1794,7 @@ private func pledgedProjectOverviewProperties(
   result["notification_count_live_project"] = properties.liveProjectCount
   result["notification_count_unsuccessful_pledge"] = properties.unsuccessfulPledgeCount
 
-  if let total = properties.total {
-    result["notification_count_total"] = total
-  }
-
+  result["notification_count_total"] = properties.total
   if let page = properties.page {
     result["context_page_number"] = page
   }
