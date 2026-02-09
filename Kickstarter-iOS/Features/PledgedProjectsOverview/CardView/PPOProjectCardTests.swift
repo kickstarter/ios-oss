@@ -114,7 +114,7 @@ final class PPOProjectCardTests: TestCase {
   func testFinalizeYourPledge() async {
     let card = VStack {
       PPOProjectCard(viewModel: PPOProjectCardViewModel(
-        card: .managePledgeTemplate
+        card: .openPledgeManagerTemplate
       ), parentSize: self.size)
         .frame(width: self.size.width)
         .frame(maxHeight: .infinity)

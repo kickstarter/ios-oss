@@ -172,7 +172,7 @@ extension PPOProjectCardModel {
   private static func actionForPledgeManagement(url: String?) -> PPOParsedAction? {
     guard let url else { return nil }
     return PPOParsedAction(
-      action: .managePledge(url: url),
+      action: .openPledgeManager(url: url),
       tierType: .pledgeManagement
     )
   }

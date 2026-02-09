@@ -37,12 +37,12 @@ struct PPOEmptyStateView: View {
           Button(Strings.Explore_projects()) {
             self.onExploreProjects?()
           }
-          .buttonStyle(KSRButtonStyleModifier(style: .green))
+          .buttonStyle(KSRButtonStyleModifier(style: KSRButtonStyle.green))
         } else {
           Button(Strings.See_all_backed__projects()) {
             self.onOpenBackedProjects?()
           }
-          .buttonStyle(KSRButtonStyleModifier(style: .green))
+          .buttonStyle(KSRButtonStyleModifier(style: KSRButtonStyle.green))
         }
       }
       .padding(EdgeInsets(
