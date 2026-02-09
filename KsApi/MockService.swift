@@ -1387,35 +1387,6 @@
       }
     }
 
-    internal func fetchProjectFriends(param: Param) -> SignalProducer<[User], ErrorEnvelope> {
-      guard let client = self.apolloClient else {
-        return .empty
-      }
-
-      switch (param.id, param.slug) {
-      case let (.some(paramId), _):
-        let fetchProjectWithFriendsQuery = GraphAPI
-          .FetchProjectFriendsByIdQuery(projectId: paramId, withStoredCards: false)
-
-        return client
-          .fetchWithResult(
-            query: fetchProjectWithFriendsQuery,
-            result: self.fetchProjectFriendsEnvelopeResult
-          )
-      case let (_, .some(paramSlug)):
-        let fetchProjectWithFriendsQuery = GraphAPI
-          .FetchProjectFriendsBySlugQuery(slug: paramSlug, withStoredCards: false)
-
-        return client
-          .fetchWithResult(
-            query: fetchProjectWithFriendsQuery,
-            result: self.fetchProjectFriendsEnvelopeResult
-          )
-      default:
-        return .empty
-      }
-    }
-
     func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int)
       -> SignalProducer<
         RewardsAndPledgeOverTimeEnvelope,
