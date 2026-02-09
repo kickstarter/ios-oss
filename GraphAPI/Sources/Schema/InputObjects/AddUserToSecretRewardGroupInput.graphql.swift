@@ -12,27 +12,43 @@ public struct AddUserToSecretRewardGroupInput: InputObject {
   }
 
   public init(
-    projectId: ID,
     secretRewardToken: String,
+    projectId: GraphQLNullable<ID> = nil,
+    pid: GraphQLNullable<Int> = nil,
+    slug: GraphQLNullable<String> = nil,
     clientMutationId: GraphQLNullable<String> = nil
   ) {
     __data = InputDict([
-      "projectId": projectId,
       "secretRewardToken": secretRewardToken,
+      "projectId": projectId,
+      "pid": pid,
+      "slug": slug,
       "clientMutationId": clientMutationId
     ])
-  }
-
-  /// ID of the project with secret rewards
-  public var projectId: ID {
-    get { __data["projectId"] }
-    set { __data["projectId"] = newValue }
   }
 
   /// Secret reward token shared by the creator
   public var secretRewardToken: String {
     get { __data["secretRewardToken"] }
     set { __data["secretRewardToken"] = newValue }
+  }
+
+  /// ID of the project with secret rewards
+  public var projectId: GraphQLNullable<ID> {
+    get { __data["projectId"] }
+    set { __data["projectId"] = newValue }
+  }
+
+  /// Project ID of the project with secret rewards
+  public var pid: GraphQLNullable<Int> {
+    get { __data["pid"] }
+    set { __data["pid"] = newValue }
+  }
+
+  /// Slug of the project with secret rewards
+  public var slug: GraphQLNullable<String> {
+    get { __data["slug"] }
+    set { __data["slug"] = newValue }
   }
 
   /// A unique identifier for the client performing the mutation.

@@ -934,7 +934,7 @@ private func fetchProject(
     .switchMap { projectPamphletData -> SignalProducer<Project, ErrorEnvelope> in
       guard let backingId = projectPamphletData.backingId else {
         return RewardsUseCase.addUserToSecretRewardGroupIfNeeded(
-          project: projectPamphletData.project,
+          project: Param.id(projectPamphletData.project.id),
           secretRewardToken: secretRewardToken
         )
         .then(fetchProjectRewards(project: projectPamphletData.project))
@@ -952,7 +952,7 @@ private func fetchProject(
             |> Project.lens.stats.userCurrency .~ projectPamphletData.project.stats.userCurrency
 
           return RewardsUseCase.addUserToSecretRewardGroupIfNeeded(
-            project: updatedProjectWithBacking,
+            project: Param.id(updatedProjectWithBacking.id),
             secretRewardToken: secretRewardToken
           )
           .then(fetchProjectRewards(project: updatedProjectWithBacking))
