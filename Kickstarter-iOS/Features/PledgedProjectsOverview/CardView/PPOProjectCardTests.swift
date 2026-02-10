@@ -39,8 +39,6 @@ final class PPOProjectCardTests: TestCase {
   func testLiveCards() {
     forEachScreenshotType(
       withData: PPOProjectCardModel.liveProjectTemplates,
-      // TODO(MBL-3044): Update view and test to support more content sizes.
-      contentSizes: [.large]
     ) { type, template in
       let card = PPOProjectCard(
         viewModel: PPOProjectCardViewModel(card: template),
@@ -54,8 +52,6 @@ final class PPOProjectCardTests: TestCase {
   func testFailedCards() {
     forEachScreenshotType(
       withData: PPOProjectCardModel.failedPledgeTemplates,
-      // TODO(MBL-3044): Update view and test to support more content sizes.
-      contentSizes: [.large]
     ) { type, template in
       let card = PPOProjectCard(
         viewModel: PPOProjectCardViewModel(card: template),
