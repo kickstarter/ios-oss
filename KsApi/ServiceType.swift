@@ -259,9 +259,6 @@ public protocol ServiceType {
   /// Fetch the project's rewards only, without shipping rules
   func fetchProjectRewards(projectId: Int) -> SignalProducer<[Reward], ErrorEnvelope>
 
-  /// Fetch a project's friendly backers from its id or slug.
-  func fetchProjectFriends(param: Param) -> SignalProducer<[User], ErrorEnvelope>
-
   /// Fetch a single project with the specified discovery params.
   func fetchProject(_ params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope>
 
