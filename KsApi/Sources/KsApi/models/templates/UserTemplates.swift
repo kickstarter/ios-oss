@@ -49,6 +49,28 @@ extension User {
     unseenActivityCount: nil
   )
 
+  internal static let backer = User(
+    avatar: User.Avatar.template,
+    chosenCurrency: nil,
+    facebookConnected: nil,
+    id: 1,
+    isAdmin: nil,
+    isEmailVerified: nil,
+    isFriend: nil,
+    isBlocked: false,
+    location: nil,
+    name: "Blob",
+    needsFreshFacebookToken: nil,
+    needsPassword: nil,
+    newsletters: User.NewsletterSubscriptions(),
+    notifications: User.Notifications(),
+    optedOutOfRecommendations: nil,
+    showPublicProfile: false,
+    social: nil,
+    stats: User.Stats(),
+    unseenActivityCount: nil
+  )
+
   // swiftformat:disable wrap
   internal static let brando = User.template
     |> \.avatar.large .~ "https://i.kickstarter.com/assets/006/258/518/b9033f46095b83119188cf9a66d19356_original.jpg?fit=crop&height=160&origin=ugc&q=92&width=160&sig=DXAnyfMrnKL%2F6k3oAaqRRpeq5hfWTa%2FNnp%2BpPIrvPK4%3D"

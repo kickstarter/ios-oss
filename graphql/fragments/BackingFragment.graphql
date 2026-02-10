@@ -3,7 +3,7 @@ fragment BackingFragment on Backing {
     ...MoneyFragment
   }
   backer {
-    ...UserFragment
+    ...PublicUserFragment
   }
   backerCompleted
   bonusAmount {

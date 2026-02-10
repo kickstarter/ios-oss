@@ -522,7 +522,7 @@ internal final class MessagesViewModelTests: TestCase {
   }
 
   func testEmptyStateIsVisibleAndMessage_CurrentUserIsCollaboratorAndBacker() {
-    let collaborator = User.template |> \.id .~ 20
+    let collaborator = User.backer |> \.id .~ 20
     let project = .template
       |> Project.lens.creator .. User.lens.id .~ 40
       |> Project.lens.memberData.permissions .~ [.viewPledges]

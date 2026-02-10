@@ -218,8 +218,7 @@ public protocol ServiceType {
   /// Fetch `Backing` data, and the backing's `Project`, using a `Backing` ID.
   /// - Parameters:
   ///    - id: backing ID
-  ///    - withStoredCards: Whether or not to include the user's payment cards.
-  func fetchBacking(id: Int, withStoredCards: Bool)
+  func fetchBacking(id: Int)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
 
   /// Explicitly fetches a `Backing`, with suitable information for loading the Manage Pledge page.

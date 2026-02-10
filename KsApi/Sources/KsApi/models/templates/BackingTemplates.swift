@@ -5,7 +5,7 @@ extension Backing {
   internal static let template = Backing(
     addOns: [.template],
     amount: 10.00,
-    backer: .template,
+    backer: User.backer,
     backerId: 1,
     backerCompleted: true,
     backingDetailsPageRoute: "https://ksr.com/backing/survey_repsonses",
