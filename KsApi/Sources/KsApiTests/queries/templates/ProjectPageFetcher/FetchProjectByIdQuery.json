@@ -1,0 +1,155 @@
+{
+  "data": {
+    "me": {
+      "__typename": "User",
+      "chosenCurrency": "EUR"
+    },
+    "project": {
+      "__typename": "Project",
+      "backing": {
+        "__typename": "Backing",
+        "id": "QmFja2luZy0xODE5ODMxNjQ="
+      },
+      "flagging": null,
+      "availableCardTypes": [
+        "VISA",
+        "MASTERCARD",
+        "AMEX",
+        "DISCOVER",
+        "JCB",
+        "DINERS",
+        "UNIONPAY",
+        "LINK"
+      ],
+      "backersCount": 3,
+      "category": {
+        "__typename": "Category",
+        "id": "Q2F0ZWdvcnktMzEw",
+        "name": "Farmer's Markets",
+        "analyticsName": "Farmer's Markets",
+        "parentCategory": {
+          "__typename": "Category",
+          "id": "Q2F0ZWdvcnktMTA=",
+          "name": "Food",
+          "analyticsName": "Food"
+        }
+      },
+      "canComment": true,
+      "commentsCount": 0,
+      "country": {
+        "__typename": "Country",
+        "code": "US",
+        "name": "the United States"
+      },
+      "creator": {
+        "__typename": "User",
+        "id": "VXNlci0xOTUxNDM3MDQ5",
+        "imageUrl": "https://i-dev.kickstarter.com/assets/043/358/826/147f9cf700b6241d3b996c034ef13363_original.png?anim=false&blur=false&fit=cover&height=1024&origin=ugc-qa&q=92&v=1702391083&width=1024&sig=IC4OrgEzG8mkvwmf5IGhplOIO%2FD1ndFIeSribkE5s7E%3D",
+        "isBlocked": false,
+        "isFollowing": false,
+        "location": {
+          "__typename": "Location",
+          "country": "US",
+          "countryName": "United States",
+          "displayableName": "Somerville, MA",
+          "id": "TG9jYXRpb24tMjQ5NTczOQ==",
+          "name": "Somerville"
+        },
+        "name": "Amy",
+        "showPublicProfile": null,
+        "uid": "1951437049",
+        "backingsCount": 141,
+        "createdProjects": {
+          "__typename": "UserCreatedProjectsConnection",
+          "totalCount": 15
+        }
+      },
+      "currency": "USD",
+      "deadlineAt": 1775336112,
+      "description": "test blurb",
+      "environmentalCommitments": [],
+      "aiDisclosure": {
+        "__typename": "AiDisclosure",
+        "id": "QWlEaXNjbG9zdXJlLTExMzczNg==",
+        "fundingForAiAttribution": null,
+        "fundingForAiConsent": null,
+        "fundingForAiOption": null,
+        "generatedByAiConsent": null,
+        "generatedByAiDetails": null,
+        "involvesAi": false,
+        "involvesFunding": false,
+        "involvesGeneration": false,
+        "involvesOther": false,
+        "otherAiDetails": null
+      },
+      "faqs": {
+        "__typename": "ProjectFaqConnection",
+        "nodes": []
+      },
+      "finalCollectionDate": null,
+      "fxRate": 0.848212,
+      "goal": {
+        "__typename": "Money",
+        "amount": "1000.0",
+        "currency": "USD",
+        "symbol": "$"
+      },
+      "image": {
+        "__typename": "Photo",
+        "id": "UGhvdG8tNDgzNTk2OTI=",
+        "url": "https://i-dev.kickstarter.com/assets/048/359/692/baeaf26900358612770dba99882cc7c7_original.?anim=false&fit=cover&gravity=auto&height=576&origin=ugc-qa&q=92&v=1770151830&width=1024&sig=1UuTOMHq0CHy0xVAXwrLgfzIj2veDxXKViJy5wN2D74%3D"
+      },
+      "isPledgeOverTimeAllowed": true,
+      "isProjectWeLove": false,
+      "isProjectOfTheDay": false,
+      "isWatched": false,
+      "isLaunched": true,
+      "isInPostCampaignPledgingPhase": false,
+      "lastWave": null,
+      "launchedAt": 1770152108,
+      "location": {
+        "__typename": "Location",
+        "country": "US",
+        "countryName": "United States",
+        "displayableName": "United States",
+        "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
+        "name": "United States"
+      },
+      "maxPledge": 10000,
+      "minPledge": 1,
+      "name": "Crossfit Think Tank Cooler",
+      "pid": 1452473812,
+      "pledgeManager": null,
+      "pledgeOverTimeCollectionPlanChargeExplanation": "The first charge will occur when the project ends successfully, then every month until fully paid.",
+      "pledgeOverTimeCollectionPlanChargedAsNPayments": "charged as 3 payments",
+      "pledgeOverTimeCollectionPlanShortPitch": "You will be charged for your pledge over three payments, at no extra cost.",
+      "pledgeOverTimeMinimumExplanation": "Available for pledges over $125",
+      "pledged": {
+        "__typename": "Money",
+        "amount": "1351.0",
+        "currency": "USD",
+        "symbol": "$"
+      },
+      "postCampaignPledgingEnabled": false,
+      "posts": {
+        "__typename": "PostConnection",
+        "totalCount": 0
+      },
+      "prelaunchActivated": false,
+      "projectNotice": null,
+      "redemptionPageUrl": "/projects/amy-at-kickstarter/crossfit-think-tank-cooler/backing/redeem",
+      "risks": "May not deliver",
+      "sendMetaCapiEvents": false,
+      "slug": "amy-at-kickstarter/crossfit-think-tank-cooler",
+      "state": "LIVE",
+      "stateChangedAt": 1770152111,
+      "story": "This project is fantastic!",
+      "tags": [],
+      "url": "https://staging.kickstarter.com/projects/amy-at-kickstarter/crossfit-think-tank-cooler",
+      "usdExchangeRate": 1,
+      "video": null,
+      "watchesCount": 0
+    }
+  }
+}
+

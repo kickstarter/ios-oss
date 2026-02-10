@@ -941,62 +941,22 @@ private func fetchProject(
   shouldPrefix: Bool
 )
   -> SignalProducer<Project, ErrorEnvelope> {
-  let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
+  let param = projectOrParam.param
   let configCurrency = AppEnvironment.current.launchedCountries.countries
     .first(where: { $0.countryCode == AppEnvironment.current.countryCode })?.currencyCode
 
-  let projectAndBackingIdProducer = AppEnvironment.current.apiService
-    .fetchProject(projectParam: param.param, configCurrency: configCurrency)
-    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-
-  let projectAndBackingProducer = projectAndBackingIdProducer
-    .switchMap { projectPamphletData -> SignalProducer<Project, ErrorEnvelope> in
-      guard let backingId = projectPamphletData.backingId else {
-        return fetchProjectRewards(project: projectPamphletData.project)
-      }
-
-      let projectWithBackingAndRewards = AppEnvironment.current.apiService
-        .fetchBacking(id: backingId)
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .switchMap { projectWithBacking -> SignalProducer<Project, ErrorEnvelope> in
-          let updatedProjectWithBacking = projectWithBacking.project
-            |> Project.lens.personalization.backing .~ projectWithBacking.backing
-            |> Project.lens.personalization.isBacking .~ true
-            |> Project.lens.extendedProjectProperties .~ projectWithBacking.project.extendedProjectProperties
-            // INFO: Seems like in the `fetchBacking` call we nil out the chosen currency set by `fetchProject` b/c the query for backing doesn't have `me { chosenCurrency }`, so its' being included here.
-            |> Project.lens.stats.userCurrency .~ projectPamphletData.project.stats.userCurrency
-
-          return fetchProjectRewards(project: updatedProjectWithBacking)
-        }
-
-      return projectWithBackingAndRewards
-    }
+  let fetcher = ProjectPageFetcher(withService: AppEnvironment.current.apiService)
+  let producer = fetcher.fetchProjectPage(
+    projectParam: param.param,
+    configCurrency: configCurrency
+  )
+  .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 
   if let project = projectOrParam.left, shouldPrefix {
-    return projectAndBackingProducer.prefix(value: project)
+    return producer.prefix(value: project)
   }
 
-  return projectAndBackingProducer
-}
-
-private func fetchProjectRewards(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
-  return AppEnvironment.current.apiService
-    .fetchProjectRewards(projectId: project.id)
-    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-    .switchMap { projectRewards -> SignalProducer<Project, ErrorEnvelope> in
-
-      var allRewards = projectRewards
-
-      if let noRewardReward = project.rewardData.rewards.first {
-        allRewards.insert(noRewardReward, at: 0)
-      }
-
-      let projectWithBackingAndRewards = project
-        |> Project.lens.rewardData.rewards .~ allRewards
-        |> Project.lens.extendedProjectProperties .~ project.extendedProjectProperties
-
-      return SignalProducer(value: projectWithBackingAndRewards)
-    }
+  return producer
 }
 
 private func shouldGoToManagePledge(with ctaType: PledgeStateCTAType) -> Bool {

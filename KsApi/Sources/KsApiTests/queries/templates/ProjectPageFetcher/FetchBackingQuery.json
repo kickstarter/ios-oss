@@ -1,0 +1,331 @@
+{
+  "data": {
+    "backing": {
+      "__typename": "Backing",
+      "addOns": {
+        "__typename": "RewardTotalCountConnection",
+        "nodes": []
+      },
+      "project": {
+        "__typename": "Project",
+        "pid": 1452473812,
+        "fxRate": 0.848212,
+        "minPledge": 1,
+        "country": {
+          "__typename": "Country",
+          "code": "US",
+          "name": "the United States"
+        },
+        "availableCardTypes": [
+          "VISA",
+          "MASTERCARD",
+          "AMEX",
+          "DISCOVER",
+          "JCB",
+          "DINERS",
+          "UNIONPAY",
+          "LINK"
+        ],
+        "backersCount": 3,
+        "category": {
+          "__typename": "Category",
+          "id": "Q2F0ZWdvcnktMzEw",
+          "name": "Farmer's Markets",
+          "analyticsName": "Farmer's Markets",
+          "parentCategory": {
+            "__typename": "Category",
+            "id": "Q2F0ZWdvcnktMTA=",
+            "name": "Food",
+            "analyticsName": "Food"
+          }
+        },
+        "canComment": true,
+        "commentsCount": 0,
+        "creator": {
+          "__typename": "User",
+          "id": "VXNlci0xOTUxNDM3MDQ5",
+          "imageUrl": "https://i-dev.kickstarter.com/assets/043/358/826/147f9cf700b6241d3b996c034ef13363_original.png?anim=false&blur=false&fit=cover&height=1024&origin=ugc-qa&q=92&v=1702391083&width=1024&sig=IC4OrgEzG8mkvwmf5IGhplOIO%2FD1ndFIeSribkE5s7E%3D",
+          "isBlocked": false,
+          "isFollowing": false,
+          "location": {
+            "__typename": "Location",
+            "country": "US",
+            "countryName": "United States",
+            "displayableName": "Somerville, MA",
+            "id": "TG9jYXRpb24tMjQ5NTczOQ==",
+            "name": "Somerville"
+          },
+          "name": "Amy",
+          "showPublicProfile": null,
+          "uid": "1951437049",
+          "backingsCount": 141,
+          "createdProjects": {
+            "__typename": "UserCreatedProjectsConnection",
+            "totalCount": 15
+          }
+        },
+        "currency": "USD",
+        "deadlineAt": 1775336112,
+        "description": "test blurb",
+        "environmentalCommitments": [],
+        "aiDisclosure": {
+          "__typename": "AiDisclosure",
+          "id": "QWlEaXNjbG9zdXJlLTExMzczNg==",
+          "fundingForAiAttribution": null,
+          "fundingForAiConsent": null,
+          "fundingForAiOption": null,
+          "generatedByAiConsent": null,
+          "generatedByAiDetails": null,
+          "involvesAi": false,
+          "involvesFunding": false,
+          "involvesGeneration": false,
+          "involvesOther": false,
+          "otherAiDetails": null
+        },
+        "faqs": {
+          "__typename": "ProjectFaqConnection",
+          "nodes": []
+        },
+        "finalCollectionDate": null,
+        "goal": {
+          "__typename": "Money",
+          "amount": "1000.0",
+          "currency": "USD",
+          "symbol": "$"
+        },
+        "image": {
+          "__typename": "Photo",
+          "id": "UGhvdG8tNDgzNTk2OTI=",
+          "url": "https://i-dev.kickstarter.com/assets/048/359/692/baeaf26900358612770dba99882cc7c7_original.?anim=false&fit=cover&gravity=auto&height=576&origin=ugc-qa&q=92&v=1770151830&width=1024&sig=1UuTOMHq0CHy0xVAXwrLgfzIj2veDxXKViJy5wN2D74%3D"
+        },
+        "isPledgeOverTimeAllowed": true,
+        "isProjectWeLove": false,
+        "isProjectOfTheDay": false,
+        "isWatched": false,
+        "isLaunched": true,
+        "isInPostCampaignPledgingPhase": false,
+        "lastWave": null,
+        "launchedAt": 1770152108,
+        "location": {
+          "__typename": "Location",
+          "country": "US",
+          "countryName": "United States",
+          "displayableName": "United States",
+          "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
+          "name": "United States"
+        },
+        "maxPledge": 10000,
+        "name": "Crossfit Think Tank Cooler",
+        "pledgeManager": null,
+        "pledgeOverTimeCollectionPlanChargeExplanation": "The first charge will occur when the project ends successfully, then every month until fully paid.",
+        "pledgeOverTimeCollectionPlanChargedAsNPayments": "charged as 3 payments",
+        "pledgeOverTimeCollectionPlanShortPitch": "You will be charged for your pledge over three payments, at no extra cost.",
+        "pledgeOverTimeMinimumExplanation": "Available for pledges over $125",
+        "pledged": {
+          "__typename": "Money",
+          "amount": "1351.0",
+          "currency": "USD",
+          "symbol": "$"
+        },
+        "postCampaignPledgingEnabled": false,
+        "posts": {
+          "__typename": "PostConnection",
+          "totalCount": 0
+        },
+        "prelaunchActivated": false,
+        "projectNotice": null,
+        "redemptionPageUrl": "/projects/amy-at-kickstarter/crossfit-think-tank-cooler/backing/redeem",
+        "risks": "May not deliver",
+        "sendMetaCapiEvents": false,
+        "slug": "amy-at-kickstarter/crossfit-think-tank-cooler",
+        "state": "LIVE",
+        "stateChangedAt": 1770152111,
+        "story": "This project is fantastic!",
+        "tags": [],
+        "url": "https://staging.kickstarter.com/projects/amy-at-kickstarter/crossfit-think-tank-cooler",
+        "usdExchangeRate": 1,
+        "video": null,
+        "watchesCount": 0
+      },
+      "paymentIncrements": [],
+      "amount": {
+        "__typename": "Money",
+        "amount": "111.0",
+        "currency": "USD",
+        "symbol": "$"
+      },
+      "backer": {
+        "__typename": "User",
+        "id": "VXNlci01MjkxMjE4MjI=",
+        "imageUrl": "https://i-dev.kickstarter.com/missing_user_avatar.png?anim=false&blur=false&fit=cover&height=1024&origin=ugc-qa&q=92&width=1024&sig=djLfT02gZDEKpnM1kX9kie8n5z8AvhjnlINzhlh5kzk%3D",
+        "isBlocked": null,
+        "isFollowing": false,
+        "location": {
+          "__typename": "Location",
+          "country": "US",
+          "countryName": "United States",
+          "displayableName": "Boston, MA",
+          "id": "TG9jYXRpb24tMjM2NzEwNQ==",
+          "name": "Boston"
+        },
+        "name": "Test Amy",
+        "showPublicProfile": false,
+        "uid": "529121822",
+        "backingsCount": 1,
+        "createdProjects": {
+          "__typename": "UserCreatedProjectsConnection",
+          "totalCount": 0
+        }
+      },
+      "backerCompleted": false,
+      "bonusAmount": {
+        "__typename": "Money",
+        "amount": "72.0",
+        "currency": "USD",
+        "symbol": "$"
+      },
+      "cancelable": true,
+      "paymentSource": {
+        "__typename": "CreditCard",
+        "expirationDate": "2028-12-01",
+        "id": "79503763",
+        "lastFour": "1111",
+        "paymentType": "CREDIT_CARD",
+        "type": "VISA",
+        "stripeCardId": "pm_fake"
+      },
+      "id": "QmFja2luZy0xODE5ODMxNjQ=",
+      "isLatePledge": false,
+      "location": {
+        "__typename": "Location",
+        "country": "CA",
+        "countryName": "Canada",
+        "displayableName": "Canada",
+        "id": "TG9jYXRpb24tMjM0MjQ3NzU=",
+        "name": "Canada"
+      },
+      "order": null,
+      "pledgedOn": 1771513670,
+      "reward": {
+        "__typename": "Reward",
+        "amount": {
+          "__typename": "Money",
+          "amount": "24.0",
+          "currency": "USD",
+          "symbol": "$"
+        },
+        "backersCount": 1,
+        "convertedAmount": {
+          "__typename": "Money",
+          "amount": "21.0",
+          "currency": "EUR",
+          "symbol": "€"
+        },
+        "allowedAddons": {
+          "__typename": "RewardConnection",
+          "pageInfo": {
+            "__typename": "PageInfo",
+            "startCursor": "MQ=="
+          }
+        },
+        "description": "stickers for all!",
+        "displayName": "restricted reward shipping ($24)",
+        "endsAt": null,
+        "estimatedDeliveryOn": "2026-04-05",
+        "id": "UmV3YXJkLTEwNDAzMDI5",
+        "isMaxPledge": false,
+        "available": true,
+        "featured": false,
+        "items": {
+          "__typename": "RewardItemsConnection",
+          "edges": [
+            {
+              "__typename": "RewardItemEdge",
+              "quantity": 4,
+              "node": {
+                "__typename": "RewardItem",
+                "id": "UmV3YXJkSXRlbS0yOTA1MTIy",
+                "name": "T-Shirt 2"
+              }
+            }
+          ]
+        },
+        "limit": null,
+        "limitPerBacker": 1,
+        "localReceiptLocation": null,
+        "name": "restricted reward shipping",
+        "pledgeAmount": {
+          "__typename": "Money",
+          "amount": "24.0",
+          "currency": "USD",
+          "symbol": "$"
+        },
+        "latePledgeAmount": {
+          "__typename": "Money",
+          "amount": "0.0",
+          "currency": "USD",
+          "symbol": "$"
+        },
+        "postCampaignPledgingEnabled": false,
+        "project": {
+          "__typename": "Project",
+          "id": "UHJvamVjdC0xNDUyNDczODEy"
+        },
+        "remainingQuantity": null,
+        "shippingPreference": "restricted",
+        "shippingSummary": "Only Canada",
+        "shippingRules": [
+          {
+            "__typename": "ShippingRule",
+            "cost": {
+              "__typename": "Money",
+              "amount": "15.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "id": "U2hpcHBpbmdSdWxlLTE2NDQwMjQw",
+            "location": {
+              "__typename": "Location",
+              "country": "CA",
+              "countryName": "Canada",
+              "displayableName": "Canada",
+              "id": "TG9jYXRpb24tMjM0MjQ3NzU=",
+              "name": "Canada"
+            },
+            "estimatedMin": {
+              "__typename": "Money",
+              "amount": "13",
+              "currency": "USD"
+            },
+            "estimatedMax": {
+              "__typename": "Money",
+              "amount": "16",
+              "currency": "USD"
+            }
+          }
+        ],
+        "startsAt": null,
+        "image": null,
+        "audienceData": {
+          "__typename": "ResourceAudience",
+          "secret": false
+        }
+      },
+      "rewardsAmount": {
+        "__typename": "Money",
+        "amount": "24.0",
+        "currency": "USD",
+        "symbol": "$"
+      },
+      "sequence": 3,
+      "shippingAmount": {
+        "__typename": "Money",
+        "amount": "15.0",
+        "currency": "USD",
+        "symbol": "$"
+      },
+      "status": "pledged",
+      "backingDetailsPageRoute": "https://staging.kickstarter.com/projects/amy-at-kickstarter/crossfit-think-tank-cooler/backing/survey_responses"
+    }
+  }
+}

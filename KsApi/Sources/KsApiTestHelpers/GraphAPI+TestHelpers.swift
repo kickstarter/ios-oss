@@ -71,7 +71,7 @@ public func testGraphObject<T: GraphAPI.SelectionSet>(
   message: "Instead of using testGraphObject to create objects from raw data, you should use GraphAPITestMocks or the object's auto-generated, strongly-typed initializer."
 )
 
-func testGraphObject<T: GraphAPI.SelectionSet>(
+public func testGraphObject<T: GraphAPI.SelectionSet>(
   fromResource resource: URL,
   variables: GraphQLOperation.Variables? = nil
 ) throws -> T {
