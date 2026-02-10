@@ -4,6 +4,9 @@ import Library
 import SwiftUI
 
 struct PPOAlertFlag: View {
+  // Defining this variable ensures the view responds to size category changes.
+  @SwiftUI.Environment(\.sizeCategory) var sizeCategory
+
   let alert: PPOProjectCardModel.Alert
 
   var body: some View {
@@ -19,7 +22,7 @@ struct PPOAlertFlag: View {
       }
 
       Text(self.alert.message)
-        .font(Font(PPOStyles.flagFont))
+        .font(Font(PPOStyles.flagFont()))
         .foregroundStyle(self.foregroundColor)
         .frame(minHeight: Constants.imageSize)
     }
@@ -68,7 +71,6 @@ struct PPOAlertFlag: View {
     static let imageSize: CGFloat = 18
     static let spacerWidth = Spacing.unit_01
     static let cornerRadius: CGFloat = 6
-    static let font = UIFont.ksr_caption1().bolded
     static let padding = EdgeInsets(
       top: Spacing.unit_01,
       leading: Spacing.unit_03,

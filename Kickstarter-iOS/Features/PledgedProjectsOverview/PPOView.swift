@@ -3,6 +3,9 @@ import Library
 import SwiftUI
 
 struct PPOView: View {
+  // Defining this variable ensures the view responds to size category changes.
+  @SwiftUI.Environment(\.sizeCategory) var sizeCategory
+
   @StateObject var viewModel = PPOViewModel()
   var shouldRefresh: AnyPublisher<Void, Never>
   var onCountChange: ((Int?) -> Void)?
@@ -36,7 +39,7 @@ struct PPOView: View {
         Strings.Backings() :
         Strings.Alerts_count(count: numberOfValues.formatted())
     )
-    .font(Font(PPOStyles.header.font))
+    .font(Font(PPOStyles.header.font()))
     .background(Color(PPOStyles.header.background))
     .foregroundStyle(Color(PPOStyles.header.foreground))
     .padding(PPOStyles.header.padding)
@@ -104,7 +107,7 @@ struct PPOView: View {
           }
       }
       Text(Strings.general_error_something_wrong())
-        .font(Font(PPOStyles.error.font))
+        .font(Font(PPOStyles.error.font()))
         .foregroundStyle(Color(PPOStyles.error.foreground))
         .background(Color(PPOStyles.error.background))
       Spacer()
