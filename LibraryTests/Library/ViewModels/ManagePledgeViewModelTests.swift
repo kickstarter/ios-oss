@@ -445,7 +445,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testMenuButtonTapped_WhenProject_IsSuccessful_CreatorContext() {
-    let user = User.template
+    let user = User.projectCreator
     let project = Project.template
       |> Project.lens.state .~ .successful
       |> Project.lens.creator .~ user
@@ -521,7 +521,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testMenuButtonTapped_WhenProject_IsLive_BackingStatus_IsPreAuth_CreatorContext() {
-    let user = User.template
+    let user = User.projectCreator
     let project = Project.template
       |> Project.lens.creator .~ user
       |> Project.lens.state .~ .live
@@ -1562,7 +1562,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   func testPaymentMethodViewHidden_UserIsCreatorOfProject() {
     self.paymentMethodViewHidden.assertDidNotEmitValue()
 
-    let user = User.template
+    let user = User.projectCreator
 
     let project = Project.cosmicSurgery
       |> Project.lens.creator .~ user
@@ -1588,7 +1588,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   func testPaymentMethodViewHidden_UserIsNotCreatorOfProject() {
     self.paymentMethodViewHidden.assertDidNotEmitValue()
 
-    let user = User.template
+    let user = User.projectCreator
 
     let project = Project.cosmicSurgery
       |> Project.lens.creator .~ (user |> User.lens.id .~ 999)
@@ -1637,7 +1637,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   func testPledgeDetailsSectionLabelText_UserIsNotCreatorOfProject() {
     self.pledgeDetailsSectionLabelText.assertDidNotEmitValue()
 
-    let user = User.template
+    let user = User.projectCreator
 
     let project = Project.cosmicSurgery
       |> Project.lens.creator .~ (user |> User.lens.id .~ 999)
@@ -1663,7 +1663,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   func testPledgeDetailsSectionLabelText_UserIsCreatorOfProject() {
     self.pledgeDetailsSectionLabelText.assertDidNotEmitValue()
 
-    let user = User.template
+    let user = User.projectCreator
 
     let project = Project.cosmicSurgery
       |> Project.lens.creator .~ user
@@ -1694,7 +1694,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let backing = Backing.template
 
-    let user = User.template
+    let user = User.projectCreator
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
@@ -1713,7 +1713,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testPledgeDisclaimerViewHidden_Shipping_UserIsCreatorOfProject() {
-    let user = User.template
+    let user = User.projectCreator
 
     let project = Project.cosmicSurgery
       |> Project.lens.creator .~ user
@@ -1741,7 +1741,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testPledgeDisclaimerViewHidden_NoShipping_UserIsNotCreatorOfProject() {
-    let user = User.template
+    let user = User.projectCreator
 
     let project = Project.cosmicSurgery
       |> Project.lens.creator .~ (user |> User.lens.id .~ 999)
@@ -1787,7 +1787,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testPledgeDisclaimerViewHidden_Shipping_UserIsNotCreatorOfProject() {
-    let user = User.template
+    let user = User.projectCreator
 
     let project = Project.cosmicSurgery
       |> Project.lens.creator .~ (user |> User.lens.id .~ 999)
@@ -1815,7 +1815,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testPlotPaymentScheduleView_IsVisibleWhenFeatureFlagIsEnabled() {
-    let user = User.template
+    let user = User.projectCreator
 
     let project = Project.cosmicSurgery
       |> Project.lens.creator .~ user

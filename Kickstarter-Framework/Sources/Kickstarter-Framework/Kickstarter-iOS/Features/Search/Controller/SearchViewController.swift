@@ -262,7 +262,7 @@ internal final class SearchViewController: UITableViewController {
     return self.sortAndFilterHeader?.view
   }
 
-  private var headerHeight: CGFloat? = nil
+  private var headerHeight: CGFloat?
   override func tableView(_: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     guard section == SearchDataSource.Section.projects.rawValue else {
       return 0

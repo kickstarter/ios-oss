@@ -11,8 +11,8 @@ import XCTest
 
 final class RewardCardContainerViewTests: TestCase {
   func testLive_BackedProject_BackedReward() {
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(language: language) {
+    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+      withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -27,24 +27,26 @@ final class RewardCardContainerViewTests: TestCase {
           )
 
         let vc = rewardCardInViewController(
-          language: language,
-          device: device,
           project: project,
           reward: reward
         )
 
+        let size = type.device.deviceSize(in: type.orientation)
+
         assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          forView: vc.view,
+          withType: type,
+          size: size,
+          perceptualPrecision: 0.98,
+          testName: "testLive_BackedProject_BackedReward_\(rewardDescription)"
         )
       }
     }
   }
 
   func testLive_BackedProject_RewardImage() {
-    combos([Language.en], [Device.phone4_7inch]).forEach { language, device in
-      withEnvironment(language: language) {
+    forEachScreenshotType(languages: [.en]) { type in
+      withSnapshotEnvironment(language: type.language) {
         let reward = Reward.postcards
           |> Reward.lens.isAvailable .~ true
           |> Reward.lens.image .~ Reward.Image(altText: "The image", url: "https://ksr.com/image.jpg")
@@ -61,17 +63,21 @@ final class RewardCardContainerViewTests: TestCase {
           )
 
         let vc = rewardCardInViewController(
-          language: language,
-          device: device,
           project: project,
           reward: reward
         )
 
-        vc.view.frame.size.height = 900
+        let size = CGSize(
+          width: type.device.deviceSize(in: type.orientation).width,
+          height: 900
+        )
+
         assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "lang_\(language)_device_\(device)"
+          forView: vc.view,
+          withType: type,
+          size: size,
+          perceptualPrecision: 0.98,
+          testName: "testLive_BackedProject_RewardImage"
         )
       }
     }
@@ -80,8 +86,8 @@ final class RewardCardContainerViewTests: TestCase {
   func testLive_BackedProject_BackedReward_LoggedIn() {
     let user = User.template
 
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(currentUser: user, language: language) {
+    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+      withSnapshotEnvironment(currentUser: user, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -96,24 +102,26 @@ final class RewardCardContainerViewTests: TestCase {
           )
 
         let vc = rewardCardInViewController(
-          language: language,
-          device: device,
           project: project,
           reward: reward
         )
 
+        let size = type.device.deviceSize(in: type.orientation)
+
         assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          forView: vc.view,
+          withType: type,
+          size: size,
+          perceptualPrecision: 0.98,
+          testName: "testLive_BackedProject_BackedReward_LoggedIn_\(rewardDescription)"
         )
       }
     }
   }
 
   func testLive_BackedProject_NonBackedReward() {
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(language: language) {
+    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+      withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -128,16 +136,18 @@ final class RewardCardContainerViewTests: TestCase {
           )
 
         let vc = rewardCardInViewController(
-          language: language,
-          device: device,
           project: project,
           reward: reward
         )
 
+        let size = type.device.deviceSize(in: type.orientation)
+
         assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          forView: vc.view,
+          withType: type,
+          size: size,
+          perceptualPrecision: 0.98,
+          testName: "testLive_BackedProject_NonBackedReward_\(rewardDescription)"
         )
       }
     }
@@ -147,8 +157,8 @@ final class RewardCardContainerViewTests: TestCase {
     let nonCreator = User.template
       |> User.lens.id .~ 5
 
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(currentUser: nonCreator, language: language) {
+    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+      withSnapshotEnvironment(currentUser: nonCreator, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -157,55 +167,54 @@ final class RewardCardContainerViewTests: TestCase {
           |> Project.lens.personalization.backing .~ nil
 
         let vc = rewardCardInViewController(
-          language: language,
-          device: device,
           project: project,
           reward: reward
         )
 
+        let size = type.device.deviceSize(in: type.orientation)
+
         assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          forView: vc.view,
+          withType: type,
+          size: size,
+          perceptualPrecision: 0.98,
+          testName: "testLive_NonBackedProject_LoggedIn_\(rewardDescription)"
         )
       }
     }
   }
 
   func testLive_NonBackedProject_LoggedOut() {
-    let language = Language.en
-    let device = Device.phone4_7inch
-    orthogonalCombos([UIUserInterfaceStyle.light, UIUserInterfaceStyle.dark], allRewards)
-      .forEach { style, rewardTuple in
-        withEnvironment(currentUser: nil, language: language) {
-          let (rewardDescription, reward) = rewardTuple
+    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+      withSnapshotEnvironment(currentUser: nil, language: type.language) {
+        let (rewardDescription, reward) = rewardTuple
 
-          let project = Project.cosmicSurgery
-            |> Project.lens.state .~ .live
-            |> Project.lens.personalization.isBacking .~ nil
-            |> Project.lens.personalization.backing .~ nil
+        let project = Project.cosmicSurgery
+          |> Project.lens.state .~ .live
+          |> Project.lens.personalization.isBacking .~ nil
+          |> Project.lens.personalization.backing .~ nil
 
-          let vc = rewardCardInViewController(
-            language: language,
-            device: device,
-            project: project,
-            reward: reward
-          )
-          vc.overrideUserInterfaceStyle = style
+        let vc = rewardCardInViewController(
+          project: project,
+          reward: reward
+        )
 
-          let styleDescription = style == .light ? "light" : "dark"
-          assertSnapshot(
-            matching: vc,
-            as: .image(perceptualPrecision: 0.98),
-            named: "\(rewardDescription)_lang_\(language)_device_\(device)_\(styleDescription)"
-          )
-        }
+        let size = type.device.deviceSize(in: type.orientation)
+
+        assertSnapshot(
+          forView: vc.view,
+          withType: type,
+          size: size,
+          perceptualPrecision: 0.98,
+          testName: "testLive_NonBackedProject_LoggedOut_\(rewardDescription)"
+        )
       }
+    }
   }
 
   func testNonLive_BackedProject_BackedReward() {
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(language: language) {
+    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+      withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -220,24 +229,26 @@ final class RewardCardContainerViewTests: TestCase {
           )
 
         let vc = rewardCardInViewController(
-          language: language,
-          device: device,
           project: project,
           reward: reward
         )
 
+        let size = type.device.deviceSize(in: type.orientation)
+
         assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          forView: vc.view,
+          withType: type,
+          size: size,
+          perceptualPrecision: 0.98,
+          testName: "testNonLive_BackedProject_BackedReward_\(rewardDescription)"
         )
       }
     }
   }
 
   func testNonLive_BackedProject_NonBackedReward() {
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(language: language) {
+    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+      withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -252,24 +263,26 @@ final class RewardCardContainerViewTests: TestCase {
           )
 
         let vc = rewardCardInViewController(
-          language: language,
-          device: device,
           project: project,
           reward: reward
         )
 
+        let size = type.device.deviceSize(in: type.orientation)
+
         assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          forView: vc.view,
+          withType: type,
+          size: size,
+          perceptualPrecision: 0.98,
+          testName: "testNonLive_BackedProject_NonBackedReward_\(rewardDescription)"
         )
       }
     }
   }
 
   func testNonLive_NonBackedProject() {
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(language: language) {
+    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+      withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -277,16 +290,18 @@ final class RewardCardContainerViewTests: TestCase {
           |> Project.lens.personalization.isBacking .~ false
 
         let vc = rewardCardInViewController(
-          language: language,
-          device: device,
           project: project,
           reward: reward
         )
 
+        let size = type.device.deviceSize(in: type.orientation)
+
         assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          forView: vc.view,
+          withType: type,
+          size: size,
+          perceptualPrecision: 0.98,
+          testName: "testNonLive_NonBackedProject_\(rewardDescription)"
         )
       }
     }
@@ -299,8 +314,8 @@ final class RewardCardContainerViewTests: TestCase {
         !name.lowercased().contains("unavailable")
       }
 
-    combos([Language.en], [Device.phone4_7inch], filteredRewards).forEach { language, device, rewardTuple in
-      withEnvironment(language: language) {
+    forEachScreenshotType(withData: filteredRewards, languages: [.en]) { type, rewardTuple in
+      withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -316,16 +331,18 @@ final class RewardCardContainerViewTests: TestCase {
           )
 
         let vc = rewardCardInViewController(
-          language: language,
-          device: device,
           project: project,
           reward: reward
         )
 
+        let size = type.device.deviceSize(in: type.orientation)
+
         assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          forView: vc.view,
+          withType: type,
+          size: size,
+          perceptualPrecision: 0.98,
+          testName: "testLive_BackedProject_BackedReward_Errored_\(rewardDescription)"
         )
       }
     }
@@ -338,8 +355,8 @@ final class RewardCardContainerViewTests: TestCase {
         !name.lowercased().contains("unavailable")
       }
 
-    combos([Language.en], [Device.phone4_7inch], filteredRewards).forEach { language, device, rewardTuple in
-      withEnvironment(language: language) {
+    forEachScreenshotType(withData: filteredRewards, languages: [.en]) { type, rewardTuple in
+      withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -355,16 +372,18 @@ final class RewardCardContainerViewTests: TestCase {
           )
 
         let vc = rewardCardInViewController(
-          language: language,
-          device: device,
           project: project,
           reward: reward
         )
 
+        let size = type.device.deviceSize(in: type.orientation)
+
         assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          forView: vc.view,
+          withType: type,
+          size: size,
+          perceptualPrecision: 0.98,
+          testName: "testNonLive_BackedProject_BackedReward_Errored_\(rewardDescription)"
         )
       }
     }
@@ -379,21 +398,23 @@ final class RewardCardContainerViewTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.personalization.backing .~ nil
 
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(currentUser: user, language: language) {
+    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+      withSnapshotEnvironment(currentUser: user, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let vc = rewardCardInViewController(
-          language: language,
-          device: device,
           project: project,
           reward: reward
         )
 
+        let size = type.device.deviceSize(in: type.orientation)
+
         assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          forView: vc.view,
+          withType: type,
+          size: size,
+          perceptualPrecision: 0.98,
+          testName: "testLive_IsCreator_\(rewardDescription)"
         )
       }
     }
@@ -408,21 +429,23 @@ final class RewardCardContainerViewTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.personalization.backing .~ nil
 
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(currentUser: user, language: language) {
+    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+      withSnapshotEnvironment(currentUser: user, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let vc = rewardCardInViewController(
-          language: language,
-          device: device,
           project: project,
           reward: reward
         )
 
+        let size = type.device.deviceSize(in: type.orientation)
+
         assertSnapshot(
-          matching: vc,
-          as: .image(perceptualPrecision: 0.98),
-          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+          forView: vc.view,
+          withType: type,
+          size: size,
+          perceptualPrecision: 0.98,
+          testName: "testNonLive_IsCreator_\(rewardDescription)"
         )
       }
     }
@@ -430,13 +453,12 @@ final class RewardCardContainerViewTests: TestCase {
 }
 
 private func rewardCardInViewController(
-  language _: Language, device: Device, project: Project, reward: Reward
+  project: Project, reward: Reward
 ) -> UIViewController {
   let view = RewardCardContainerView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
   let controller = UIViewController(nibName: nil, bundle: nil)
-  let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
   _ = controller.view
     |> checkoutBackgroundStyle
   controller.view.addSubview(view)
@@ -449,14 +471,43 @@ private func rewardCardInViewController(
     view.bottomAnchor.constraint(lessThanOrEqualTo: controller.view.layoutMarginsGuide.bottomAnchor)
   ])
 
+  let safeProject = stripImageURLs(project)
+
   view.configure(with: RewardCardViewData(
-    project: project,
+    project: safeProject,
     reward: reward,
     context: .pledge,
     currentShippingLocation: nil
   ))
 
-  return parent
+  return controller
+}
+
+private func stripImageURLs(_ project: Project) -> Project {
+  project
+    |> Project.lens.photo.full .~ ""
+    |> Project.lens.photo.med .~ ""
+    |> Project.lens.photo.small .~ ""
+}
+
+private extension RewardCardContainerViewTests {
+  func withSnapshotEnvironment(
+    currentUser: User? = nil,
+    language: Language,
+    body: () -> Void
+  ) {
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = TimeZone(identifier: "GMT")!
+
+    self.withEnvironment(
+      calendar: calendar,
+      currentUser: currentUser,
+      language: language,
+      locale: Locale(identifier: language.rawValue),
+      mainBundle: Bundle(for: RewardCardContainerViewTests.self),
+      body: body
+    )
+  }
 }
 
 let allRewards: [(String, Reward)] = {

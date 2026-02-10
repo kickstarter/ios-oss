@@ -6,7 +6,7 @@ import XCTest
 
 internal final class AlertBannerTests: TestCase {
   func testView() {
-    let banner = AlertBanner(frame: CGRectZero)
+    let banner = AlertBanner(frame: CGRect.zero)
     banner.configureWith(
       title: "Fake title",
       subtitle: "Oh no! Here's the details of what went wrong :(",

@@ -24,7 +24,7 @@ final class PagedContainerViewModelTests: XCTestCase {
 
   func testEnsureTabSelectedWhenViewAppears() throws {
     let viewModel = self.makeViewModel()
-    var foundPage: FakeTabBarPage? = nil
+    var foundPage: FakeTabBarPage?
     let expectation = self.expectation(description: "Waiting for a page to be selected")
     viewModel.$displayPage
       .compactMap { $0 }
@@ -54,8 +54,8 @@ final class PagedContainerViewModelTests: XCTestCase {
     ])
     viewModel.viewWillAppear()
 
-    var existingPage: FakeTabBarPage? = nil
-    var selectedPage: FakeTabBarPage? = nil
+    var existingPage: FakeTabBarPage?
+    var selectedPage: FakeTabBarPage?
 
     let existingExpectation = self.expectation(description: "Existing tab")
     let selectedExpectation = self.expectation(description: "Selected tab")

@@ -714,7 +714,7 @@ public final class KSRAnalytics {
     )
   }
 
-  public func trackPPOManagePledge(
+  public func trackPPOOpenPledgeManager(
     project: any ProjectAnalyticsProperties,
     properties: PledgedProjectOverviewProperties
   ) {

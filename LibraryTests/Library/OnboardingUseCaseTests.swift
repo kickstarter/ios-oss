@@ -26,10 +26,6 @@ final class OnboardingUseCaseTests: TestCase {
       .observe(self.didCompletePushNotificationSystemDialog.observer)
   }
 
-  override func tearDown() {
-    super.tearDown()
-  }
-
   func testUseCase_onboardingItems_EmitsAListOfAll5OboardingItemTypes_Once() {
     self.onboardingItems.assertValueCount(1)
 

@@ -7,11 +7,11 @@ struct FilterRootView: View {
   @State var navigationState: [SearchFilterModalType]
   @ObservedObject var searchFilters: SearchFilters
 
-  var onFilter: ((SearchFilterEvent) -> Void)? = nil
-  var onSearchedForLocations: ((String) -> Void)? = nil
-  var onReset: ((SearchFilterModalType) -> Void)? = nil
-  var onResults: (() -> Void)? = nil
-  var onClose: (() -> Void)? = nil
+  var onFilter: ((SearchFilterEvent) -> Void)?
+  var onSearchedForLocations: ((String) -> Void)?
+  var onReset: ((SearchFilterModalType) -> Void)?
+  var onResults: (() -> Void)?
+  var onClose: (() -> Void)?
 
   var modalType: SearchFilterModalType {
     self.navigationState.first ?? .allFilters
@@ -191,7 +191,7 @@ struct FilterRootView: View {
           action(self.modalType)
         }
       }
-      .buttonStyle(KSRButtonStyleModifier(style: .outlined))
+      .buttonStyle(KSRButtonStyleModifier(style: KSRButtonStyle.outlined))
       .frame(maxWidth: Constants.resetButtonMaxWidth)
       .disabled(!self.searchFilters.canReset(filter: self.modalType))
 
@@ -200,7 +200,7 @@ struct FilterRootView: View {
           action()
         }
       }
-      .buttonStyle(KSRButtonStyleModifier(style: .filled))
+      .buttonStyle(KSRButtonStyleModifier(style: KSRButtonStyle.filled))
       .frame(maxWidth: .infinity)
     }
     .padding(Constants.sectionPadding)

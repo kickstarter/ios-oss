@@ -111,6 +111,7 @@ private func rewardDictionary() -> [String: Any] {
     "id": "UmV3YXJkLTgxNzM5MDE=",
     "isMaxPledge": false,
     "available": false,
+    "featured": false,
     "items": {
       "__typename": "RewardItemsConnection",
       "edges": [

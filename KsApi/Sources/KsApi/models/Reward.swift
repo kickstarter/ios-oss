@@ -7,6 +7,7 @@ public struct Reward {
   public let description: String
   public let endsAt: TimeInterval?
   public let estimatedDeliveryOn: TimeInterval?
+  public let featured: Bool
   public let hasAddOns: Bool
   public let id: Int
   public let latePledgeAmount: Double
@@ -147,6 +148,7 @@ extension Reward: Decodable {
     case reward
     case endsAt = "ends_at"
     case estimatedDeliveryOn = "estimated_delivery_on"
+    case featured
     case hasAddOns = "has_addons"
     case id
     case latePledgeAmount
@@ -175,6 +177,7 @@ extension Reward: Decodable {
     }
     self.endsAt = try values.decodeIfPresent(TimeInterval.self, forKey: .endsAt)
     self.estimatedDeliveryOn = try values.decodeIfPresent(TimeInterval.self, forKey: .estimatedDeliveryOn)
+    self.featured = try values.decodeIfPresent(Bool.self, forKey: .featured) ?? false
     self.hasAddOns = try values.decodeIfPresent(Bool.self, forKey: .hasAddOns) ?? false
     self.id = try values.decode(Int.self, forKey: .id)
     self.latePledgeAmount = try values.decodeIfPresent(Double.self, forKey: .latePledgeAmount) ?? 0

@@ -338,7 +338,7 @@ internal final class MessagesViewModelTests: TestCase {
   }
 
   func testParticipantPreviouslyBlockedFlow_True() {
-    let creator = User.template
+    let creator = User.projectCreator
       |> \.isBlocked .~ true
 
     let project = Project.template
@@ -405,7 +405,7 @@ internal final class MessagesViewModelTests: TestCase {
   }
 
   func testParticipantPreviouslyBlockedFlow_False() {
-    let creator = User.template
+    let creator = User.projectCreator
       |> \.id .~ 20
       |> \.isBlocked .~ false
 
@@ -477,8 +477,8 @@ internal final class MessagesViewModelTests: TestCase {
       |> Project.lens.id .~ 42
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.creator .. User.lens.id .~ 20
-    let backing = .template
-      |> Backing.lens.backer .~ .template
+
+    let backing = Backing.template
 
     withEnvironment(currentUser: .template) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -498,7 +498,7 @@ internal final class MessagesViewModelTests: TestCase {
   }
 
   func testEmptyStateIsVisibleAndMessage_CurrentUserIsCreator() {
-    let creator = User.template |> \.id .~ 20
+    let creator = User.projectCreator |> \.id .~ 20
     let project = .template
       |> Project.lens.id .~ 42
       |> Project.lens.creator .~ creator

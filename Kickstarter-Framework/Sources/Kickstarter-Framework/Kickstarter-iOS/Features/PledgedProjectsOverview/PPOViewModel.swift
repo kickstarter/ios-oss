@@ -18,7 +18,6 @@ protocol PPOViewModelInputs {
   func refresh() async
   func loadMore() async
 
-  func openBackedProjects()
   func handleCardEvent(_: PPOCardEvent, from: PPOProjectCardModel)
 }
 
@@ -29,10 +28,11 @@ protocol PPOViewModelOutputs {
 
 enum PPOPreparedEvent: Equatable {
   case backedProjects
+  case exploreProjects
   case fixPaymentMethod(projectId: Int, backingId: Int)
   case fix3DSChallenge(clientSecret: String, onProgress: (PPOActionState) -> Void)
   case survey(url: String)
-  case managePledge(url: String)
+  case openPledgeManager(url: String)
   case projectDetails(projectId: Int)
   case editAddress(url: String)
   case confirmAddress(
@@ -43,12 +43,14 @@ enum PPOPreparedEvent: Equatable {
   )
   case contactCreator(messageSubject: MessageSubject)
   case updateRewardReceived(backingId: String, rewardReceived: Bool)
+  case manageLivePledge(projectId: Int, backingId: Int)
 
+  // swiftlint:disable:next cyclomatic_complexity
   static func == (lhs: PPOPreparedEvent, rhs: PPOPreparedEvent) -> Bool {
     switch (lhs, rhs) {
     case let (.survey(lhsUrl), .survey(rhsUrl)):
       return lhsUrl == rhsUrl
-    case let (.managePledge(lhsUrl), .managePledge(rhsUrl)):
+    case let (.openPledgeManager(lhsUrl), .openPledgeManager(rhsUrl)):
       return lhsUrl == rhsUrl
     case let (.projectDetails(lhsId), .projectDetails(rhsId)):
       return lhsId == rhsId
@@ -72,6 +74,8 @@ enum PPOPreparedEvent: Equatable {
     ):
       return lhsProjectId == rhsProjectId && lhsBackingId == rhsBackingId
     case (.backedProjects, .backedProjects):
+      return true
+    case (.exploreProjects, .exploreProjects):
       return true
     case let (
       .updateRewardReceived(lhsBackingId, lhsRewardReceived),
@@ -149,18 +153,13 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       .store(in: &self.cancellables)
 
     // Prepare and route events
-
-    Publishers.Merge(
-      self.openBackedProjectsSubject
-        .map { PPOPreparedEvent.backedProjects },
-      self.handleCardEventSubject
-        .map { event, card in
-          self.preparedEvent(for: event, cardModel: card)
-        }
-    )
-    .eraseToAnyPublisher()
-    .subscribe(self.preparedEventSubject)
-    .store(in: &self.cancellables)
+    self.handleCardEventSubject
+      .map { event, card in
+        self.preparedEvent(for: event, cardModel: card)
+      }
+      .eraseToAnyPublisher()
+      .subscribe(self.preparedEventSubject)
+      .store(in: &self.cancellables)
 
     let latestLoadedResults = self.paginator.$results
       .compactMap { results in
@@ -229,8 +228,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         project: cardModel.projectAnalytics,
         properties: overallProperties
       )
-    case .managePledge:
-      AppEnvironment.current.ksrAnalytics.trackPPOManagePledge(
+    case .openPledgeManager:
+      AppEnvironment.current.ksrAnalytics.trackPPOOpenPledgeManager(
         project: cardModel.projectAnalytics,
         properties: overallProperties
       )
@@ -255,6 +254,9 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         project: cardModel.projectAnalytics,
         properties: overallProperties
       )
+    case .manageLivePledge:
+      // TODO(MBL-2962): Add analytics event.
+      break
     }
   }
 
@@ -285,8 +287,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
         projectId: cardModel.projectId,
         backingId: cardModel.backingId
       )
-    case let .managePledge(url):
-      return PPOPreparedEvent.managePledge(url: url)
+    case let .openPledgeManager(url):
+      return PPOPreparedEvent.openPledgeManager(url: url)
     case let .confirmAddress(address, addressId):
       return PPOPreparedEvent.confirmAddress(
         backingId: cardModel.backingGraphId,
@@ -300,6 +302,11 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
       return PPOPreparedEvent.fix3DSChallenge(
         clientSecret: clientSecret,
         onProgress: onProgress
+      )
+    case .manageLivePledge:
+      return PPOPreparedEvent.manageLivePledge(
+        projectId: cardModel.projectId,
+        backingId: cardModel.backingId
       )
     }
   }
@@ -326,10 +333,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     _ = await self.paginator.nextResult()
   }
 
-  func openBackedProjects() {
-    self.openBackedProjectsSubject.send(())
-  }
-
   func handleCardEvent(_ cardAction: PPOCardEvent, from cardModel: PPOProjectCardModel) {
     self.handleCardEventSubject.send((cardAction, cardModel))
   }
@@ -349,7 +352,6 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   private let viewDidAppearSubject = PassthroughSubject<Void, Never>()
   private let loadMoreSubject = PassthroughSubject<Void, Never>()
   private let pullToRefreshSubject = PassthroughSubject<Void, Never>()
-  private let openBackedProjectsSubject = PassthroughSubject<Void, Never>()
   private let confirmAddressProgressSubject = PassthroughSubject<
     (PPOProjectCardModel, PPOActionState),
     Never

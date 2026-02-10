@@ -585,14 +585,14 @@ public struct Service: ServiceType {
     switch (projectParam.id, projectParam.slug) {
     case let (.some(projectId), _):
       let query = GraphAPI
-        .FetchProjectByIdQuery(projectId: projectId, withStoredCards: false)
+        .FetchProjectByIdQuery(projectId: projectId)
 
       return GraphQL.shared.client
         .fetch(query: query)
         .flatMap { Project.projectProducer(from: $0, configCurrency: configCurrency) }
     case let (_, .some(projectSlug)):
       let query = GraphAPI
-        .FetchProjectBySlugQuery(slug: projectSlug, withStoredCards: false)
+        .FetchProjectBySlugQuery(slug: projectSlug)
 
       return GraphQL.shared.client
         .fetch(query: query)
@@ -646,25 +646,6 @@ public struct Service: ServiceType {
       .flatMap(Project.projectRewardsAndPledgeOverTimeDataProducer(from:))
   }
 
-  public func fetchProjectFriends(param: Param) -> SignalProducer<[User], ErrorEnvelope> {
-    switch (param.id, param.slug) {
-    case let (.some(projectId), _):
-      let query = GraphAPI.FetchProjectFriendsByIdQuery(projectId: projectId, withStoredCards: false)
-
-      return GraphQL.shared.client
-        .fetch(query: query)
-        .flatMap(Project.projectFriendsProducer(from:))
-    case let (_, .some(projectSlug)):
-      let query = GraphAPI.FetchProjectFriendsBySlugQuery(slug: projectSlug, withStoredCards: false)
-
-      return GraphQL.shared.client
-        .fetch(query: query)
-        .flatMap(Project.projectFriendsProducer(from:))
-    default:
-      return .empty
-    }
-  }
-
   public func fetchProject(_ params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
     return request(.discover(params |> DiscoveryParams.lens.perPage .~ 1))
   }
@@ -713,7 +694,6 @@ public struct Service: ServiceType {
       projectSlug: slug,
       shippingEnabled: shippingEnabled,
       locationId: GraphQLNullable.someOrNil(locationId),
-      withStoredCards: false,
       includeShippingRules: true,
       includeLocalPickup: true
     )

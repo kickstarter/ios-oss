@@ -16,7 +16,7 @@ public class MockStripeIntentService: StripeIntentServiceType {
     pledgeTotal: Double
   ) -> SignalProducer<PaymentIntentEnvelope, ErrorEnvelope> {
     assert(
-      AppEnvironment.current.apiService as? MockService != nil,
+      AppEnvironment.current.apiService is MockService,
       "AppEnvironment.current.apiService should be a MockService when used in test."
     )
 
@@ -37,7 +37,7 @@ public class MockStripeIntentService: StripeIntentServiceType {
     context: GraphAPI.StripeIntentContextTypes
   ) -> SignalProducer<ClientSecretEnvelope, ErrorEnvelope> {
     assert(
-      AppEnvironment.current.apiService as? MockService != nil,
+      AppEnvironment.current.apiService is MockService,
       "AppEnvironment.current.apiService should be a MockService when used in test."
     )
 

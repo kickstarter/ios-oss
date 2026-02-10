@@ -58,7 +58,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var backingContainerViewLeadingConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate var backingLabel: UILabel!
 
-  private var alertBanner = AlertBanner(frame: CGRectZero)
+  private var alertBanner = AlertBanner(frame: CGRect.zero)
 
   internal override func awakeFromNib() {
     super.awakeFromNib()

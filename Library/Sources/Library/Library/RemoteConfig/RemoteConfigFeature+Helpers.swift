@@ -35,6 +35,10 @@ public func featurePledgedProjectsOverviewV2Enabled() -> Bool {
   featureEnabled(feature: .pledgedProjectsOverviewV2Enabled)
 }
 
+public func featurePledgedProjectsOverviewV4Enabled() -> Bool {
+  featureEnabled(feature: .pledgedProjectsOverviewV4Enabled)
+}
+
 public func featurePledgeOverTimeEnabled() -> Bool {
   featureEnabled(feature: .pledgeOverTime)
 }

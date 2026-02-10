@@ -543,7 +543,7 @@ final class RewardCardContainerViewModelTests: TestCase {
   }
 
   func testLive_IsCreator_LoggedIn() {
-    let creator = User.template
+    let creator = User.projectCreator
       |> User.lens.id .~ 5
     withEnvironment(currentUser: creator) {
       self.pledgeButtonStyleType.assertValueCount(0)
@@ -586,7 +586,7 @@ final class RewardCardContainerViewModelTests: TestCase {
   }
 
   func testNonLive_IsCreator_LoggedIn() {
-    let creator = User.template
+    let creator = User.projectCreator
       |> User.lens.id .~ 5
 
     withEnvironment(currentUser: creator) {

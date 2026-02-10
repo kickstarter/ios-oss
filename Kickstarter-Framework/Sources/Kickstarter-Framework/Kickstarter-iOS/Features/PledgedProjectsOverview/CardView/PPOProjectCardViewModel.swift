@@ -10,18 +10,20 @@ public enum PPOCardEvent: Equatable {
   case viewProjectDetails
   case confirmAddress(address: String, addressId: String)
   case completeSurvey(url: String)
-  case managePledge(url: String)
+  case openPledgeManager(url: String)
   case fixPayment
   case authenticateCard(clientSecret: String, onProgress: (PPOActionState) -> Void)
+  case manageLivePledge
 
   public static func == (lhs: PPOCardEvent, rhs: PPOCardEvent) -> Bool {
     switch (lhs, rhs) {
     case (.sendMessage, .sendMessage): return true
     case (.viewProjectDetails, .viewProjectDetails): return true
     case (.fixPayment, .fixPayment): return true
+    case (.manageLivePledge, .manageLivePledge): return true
     case let (.editAddress(lhsUrl), .editAddress(rhsUrl)): return lhsUrl == rhsUrl
     case let (.completeSurvey(lhsUrl), .completeSurvey(rhsUrl)): return lhsUrl == rhsUrl
-    case let (.managePledge(lhsUrl), .managePledge(rhsUrl)): return lhsUrl == rhsUrl
+    case let (.openPledgeManager(lhsUrl), .openPledgeManager(rhsUrl)): return lhsUrl == rhsUrl
     case let (
       .confirmAddress(address: lhsAddress, addressId: lhsId),
       .confirmAddress(address: rhsAddress, addressId: rhsId)
@@ -59,7 +61,7 @@ extension PPOProjectCardViewModelOutputs {
   // Action details related to the action, if any.
   var actionDetails: String? {
     switch self.card.action {
-    case .managePledge:
+    case .openPledgeManager:
       return Strings.This_may_involve_submitting_a_delivery_address()
     default:
       return nil
@@ -115,8 +117,10 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
       event = .confirmAddress(address: address, addressId: addressId)
     case .fixPayment:
       event = .fixPayment
-    case let .managePledge(url: url):
-      event = .managePledge(url: url)
+    case let .openPledgeManager(url: url):
+      event = .openPledgeManager(url: url)
+    case .manageLivePledge:
+      event = .manageLivePledge
     }
     self.handleEventSubject.send(event)
   }

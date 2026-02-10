@@ -44,10 +44,6 @@ final class ProjectCardView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  internal override func layoutSubviews() {
-    super.layoutSubviews()
-  }
-
   // MARK: - Configuration
 
   private func configureViews() {

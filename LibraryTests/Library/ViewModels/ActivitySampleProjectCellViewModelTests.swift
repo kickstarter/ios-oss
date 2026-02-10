@@ -65,7 +65,7 @@ internal final class ActivitySampleProjectCellViewModelTests: TestCase {
 
   func testProjectLaunchActivity() {
     let user = User.template
-    let project = Project.template |> Project.lens.creator .~ user
+    let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .launch
       |> Activity.lens.user .~ user

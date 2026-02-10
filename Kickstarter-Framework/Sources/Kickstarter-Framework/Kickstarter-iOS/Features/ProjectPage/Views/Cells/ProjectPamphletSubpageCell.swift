@@ -78,8 +78,4 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
     self.subpageLabel.rac.text = self.viewModel.outputs.labelText
     self.subpageLabel.rac.textColor = self.viewModel.outputs.labelTextColor
   }
-
-  internal override func layoutSubviews() {
-    super.layoutSubviews()
-  }
 }
