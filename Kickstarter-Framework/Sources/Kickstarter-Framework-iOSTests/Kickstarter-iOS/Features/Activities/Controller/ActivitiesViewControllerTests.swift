@@ -26,7 +26,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func DISABLED_testActivities_All() {
+  func testActivities_All() {
     let daysAgoDate = self.dateType.init().timeIntervalSince1970 - 60 * 60 * 24 * 2
 
     let follow = .template
