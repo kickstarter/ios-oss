@@ -941,7 +941,7 @@ private func fetchProject(
       }
 
       let projectWithBackingAndRewards = AppEnvironment.current.apiService
-        .fetchBacking(id: backingId, withStoredCards: false)
+        .fetchBacking(id: backingId)
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .switchMap { projectWithBacking -> SignalProducer<Project, ErrorEnvelope> in
           let updatedProjectWithBacking = projectWithBacking.project

@@ -1161,8 +1161,7 @@
       return SignalProducer(value: envelope)
     }
 
-    // TODO: Refactor this test to use `self.apolloClient`, `ProjectAndBackingEnvelope` needs to be `Decodable` and tested in-app.
-    func fetchBacking(id _: Int, withStoredCards _: Bool)
+    func fetchBacking(id _: Int)
       -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
       return producer(for: self.fetchProjectAndBackingResult)
     }

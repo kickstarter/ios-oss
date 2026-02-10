@@ -21,7 +21,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
   func testView_CurrentUser_IsBacker() {
     let user = User.template
-      |> User.lens.id .~ 1
+      |> User.lens.id .~ Backing.template.backer!.id
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
@@ -71,9 +71,6 @@ final class ManagePledgeViewControllerTests: TestCase {
   }
 
   func testView_CurrentUser_IsNotBacker_IsCreator() {
-    let device = Device.phone4_7inch
-    let language = Language.en
-
     let user = User.template
       |> User.lens.id .~ 1
 
@@ -83,7 +80,12 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
 
+    let backer = User.backer
+      |> User.lens.id .~ 2
+
     let backing = Backing.template
+      |> Backing.lens.backer .~ backer
+      |> Backing.lens.backerId .~ backer.id
       |> Backing.lens.addOns .~ addOns
       |> Backing.lens.amount .~ 22
       |> Backing.lens.reward .~ reward
@@ -91,7 +93,7 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
 
     let project = Project.cosmicSurgery
-      |> Project.lens.creator.id .~ 1
+      |> Project.lens.creator.id .~ user.id
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),

@@ -504,7 +504,6 @@ public struct Service: ServiceType {
         query: GraphAPI
           .FetchUserBackingsQuery(
             status: GraphQLEnum.case(status),
-            withStoredCards: false,
             includeShippingRules: true,
             includeLocalPickup: false
           )
@@ -512,14 +511,13 @@ public struct Service: ServiceType {
       .flatMap(ErroredBackingsEnvelope.producer(from:))
   }
 
-  public func fetchBacking(id: Int, withStoredCards: Bool)
+  public func fetchBacking(id: Int)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
       .fetch(
         query: GraphAPI
           .FetchBackingQuery(
             id: "\(id)",
-            withStoredCards: withStoredCards,
             includeShippingRules: true,
             includeLocalPickup: true
           )
@@ -546,7 +544,6 @@ public struct Service: ServiceType {
         query: GraphAPI
           .FetchBackingWithIncrementsRefundedQuery(
             id: "\(id)",
-            withStoredCards: false,
             includeShippingRules: true,
             includeLocalPickup: true
           )
