@@ -103,8 +103,8 @@ internal final class SearchViewController: UITableViewController {
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
-      .observeValues { [weak self] projectId, refTag in
-        self?.goTo(projectId: projectId, refTag: refTag)
+      .observeValues { [weak self] param, refTag in
+        self?.goTo(project: param, refTag: refTag)
       }
 
     self.searchLoaderIndicator.rac.animating = self.viewModel.outputs.searchLoaderIndicatorIsAnimating
@@ -220,10 +220,9 @@ internal final class SearchViewController: UITableViewController {
     self.present(hostingController, animated: true)
   }
 
-  fileprivate func goTo(projectId: Int, refTag: RefTag) {
-    let projectParam = Either<Project, any ProjectPageParam>(right: Param.id(projectId))
+  fileprivate func goTo(project projectParam: ProjectPageParam, refTag: RefTag) {
     let vc = ProjectPageViewController.configuredWith(
-      projectOrParam: projectParam,
+      projectOrParam: Either.right(projectParam),
       refInfo: RefInfo(refTag)
     )
 
