@@ -3,7 +3,7 @@
   "schemaDownload": {
     "downloadMethod": {
       "introspection": {
-        "endpointURL": "https://ksr.test/graph",
+        "endpointURL": "https://staging.kickstarter.com/graph",
         "httpMethod": {
           "POST": {}
         },

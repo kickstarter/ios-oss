@@ -969,15 +969,125 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  func testSecretRewards_GoToRewards() {
-    withEnvironment(config: .template, currentUser: .template, mainBundle: self.releaseBundle) {
-      let project = Project.template
+  func test_loadingFromParameter_loadsAllData() {
+    let project = Project.template
 
+    let projectFull = Project.template
+      |> Project.lens.rewardData.rewards .~ []
+
+    let projectAndBacking = ProjectAndBackingEnvelope(project: projectFull, backing: Backing.template)
+    let initialProject = Project.ProjectPamphletData(project: projectFull, backingId: 1)
+
+    let mockService = MockService(
+      fetchProjectAndBackingResult: .success(projectAndBacking),
+      fetchProjectPamphletResult: .success(initialProject),
+      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template]),
+    )
+
+    let param = ProjectPageParamBox(param: .id(project.id), initialProject: nil)
+    let initialData = Either<Project, any ProjectPageParam>.right(param)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.configureInitialState(initialData)
+
+      self.configureChildViewControllersWithProject.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.configureChildViewControllersWithProject.assertDidEmitValue()
+      guard let loadedProject = self.configureChildViewControllersWithProject.lastValue else {
+        XCTFail("Expected project to have loaded")
+        return
+      }
+
+      XCTAssertEqual(loadedProject.rewards.count, 2)
+      XCTAssertEqual(loadedProject.rewards.first, Reward.noReward)
+      XCTAssertEqual(loadedProject.personalization.backing, Backing.template)
+    }
+  }
+
+  func test_loadingFromParameter_withSecretRewards_loadsAllData() {
+    let project = Project.template
+
+    let projectFull = Project.template
+      |> Project.lens.rewardData.rewards .~ []
+
+    let projectAndBacking = ProjectAndBackingEnvelope(project: projectFull, backing: Backing.template)
+    let initialProject = Project.ProjectPamphletData(project: projectFull, backingId: 1)
+
+    let mockService = MockService(
+      addUserToSecretRewardGroup: .success(EmptyResponseEnvelope.init()),
+      fetchProjectAndBackingResult: .success(projectAndBacking),
+      fetchProjectPamphletResult: .success(initialProject),
+      fetchProjectRewardsResult: .success([Reward.secretRewardTemplate, Reward.noReward, Reward.template]),
+    )
+
+    let param = ProjectPageParamBox(param: .id(project.id), initialProject: nil)
+    let initialData = Either<Project, any ProjectPageParam>.right(param)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.configureInitialState(initialData, secretRewardToken: "foobar")
+
+      self.configureChildViewControllersWithProject.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.configureChildViewControllersWithProject.assertDidEmitValue()
+      guard let loadedProject = self.configureChildViewControllersWithProject.lastValue else {
+        XCTFail("Expected project to have loaded")
+        return
+      }
+
+      XCTAssertEqual(loadedProject.rewards.count, 3)
+      XCTAssertEqual(loadedProject.rewards.first, Reward.secretRewardTemplate)
+      XCTAssertEqual(loadedProject.personalization.backing, Backing.template)
+    }
+  }
+
+  func test_loadingFromParameter_oneRequestFails_triggersError() {
+    let project = Project.template
+
+    let projectFull = Project.template
+      |> Project.lens.rewardData.rewards .~ []
+
+    let projectAndBacking = ProjectAndBackingEnvelope(project: projectFull, backing: Backing.template)
+    let initialProject = Project.ProjectPamphletData(project: projectFull, backingId: 1)
+
+    let mockService = MockService(
+      fetchProjectAndBackingResult: .failure(.couldNotParseJSON),
+      fetchProjectPamphletResult: .success(initialProject),
+      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template]),
+    )
+
+    let param = ProjectPageParamBox(param: .id(project.id), initialProject: nil)
+    let initialData = Either<Project, any ProjectPageParam>.right(param)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.configureInitialState(initialData)
+
+      self.configureChildViewControllersWithProject.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.configureChildViewControllersWithProject.assertDidNotEmitValue()
+    }
+  }
+
+  func testSecretRewards_GoToRewards() {
+    let project = Project.template
+
+    withEnvironment(
+      config: .template,
+      currentUser: .template,
+      mainBundle: self.releaseBundle
+    ) {
       self.configureInitialState(.left(project), secretRewardToken: "secret-reward-token")
 
       self.goToRewardsProject.assertDidNotEmitValue()
       self.goToRewardsRefTag.assertDidNotEmitValue()
       self.goToLoginWithIntent.assertDidNotEmitValue()
+
+      self.scheduler.advance()
 
       self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
 

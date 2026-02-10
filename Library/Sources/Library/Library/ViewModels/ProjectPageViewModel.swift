@@ -250,8 +250,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .switchMap { projectOrParam, refInfo, secretRewardToken, shouldPrefix in
         fetchProject(
           projectOrParam: projectOrParam,
-          secretRewardToken: secretRewardToken,
-          shouldPrefix: shouldPrefix
+          shouldPrefix: shouldPrefix,
+          afterAddingSecretRewardToken: secretRewardToken
         )
         .on(
           starting: { isLoading.value = true },
@@ -918,7 +918,26 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
 private func fetchProject(
   projectOrParam: Either<Project, any ProjectPageParam>,
-  secretRewardToken: String?,
+  shouldPrefix: Bool,
+  afterAddingSecretRewardToken token: String?
+) -> SignalProducer<Project, ErrorEnvelope> {
+  // TODO: We're posting this mutation more frequently than we need to.
+  // Instead of on every fetch, this should be moved out to only happen on `viewDidLoad`
+  // and session login.
+  return RewardsUseCase.addUserToSecretRewardGroupIfNeeded(
+    project: projectOrParam.param,
+    secretRewardToken: token
+  )
+  .then(
+    fetchProject(
+      projectOrParam: projectOrParam,
+      shouldPrefix: shouldPrefix
+    )
+  )
+}
+
+private func fetchProject(
+  projectOrParam: Either<Project, any ProjectPageParam>,
   shouldPrefix: Bool
 )
   -> SignalProducer<Project, ErrorEnvelope> {
@@ -933,11 +952,7 @@ private func fetchProject(
   let projectAndBackingProducer = projectAndBackingIdProducer
     .switchMap { projectPamphletData -> SignalProducer<Project, ErrorEnvelope> in
       guard let backingId = projectPamphletData.backingId else {
-        return RewardsUseCase.addUserToSecretRewardGroupIfNeeded(
-          project: Param.id(projectPamphletData.project.id),
-          secretRewardToken: secretRewardToken
-        )
-        .then(fetchProjectRewards(project: projectPamphletData.project))
+        return fetchProjectRewards(project: projectPamphletData.project)
       }
 
       let projectWithBackingAndRewards = AppEnvironment.current.apiService
@@ -951,11 +966,7 @@ private func fetchProject(
             // INFO: Seems like in the `fetchBacking` call we nil out the chosen currency set by `fetchProject` b/c the query for backing doesn't have `me { chosenCurrency }`, so its' being included here.
             |> Project.lens.stats.userCurrency .~ projectPamphletData.project.stats.userCurrency
 
-          return RewardsUseCase.addUserToSecretRewardGroupIfNeeded(
-            project: Param.id(updatedProjectWithBacking.id),
-            secretRewardToken: secretRewardToken
-          )
-          .then(fetchProjectRewards(project: updatedProjectWithBacking))
+          return fetchProjectRewards(project: updatedProjectWithBacking)
         }
 
       return projectWithBackingAndRewards
@@ -994,5 +1005,16 @@ private func shouldGoToManagePledge(with ctaType: PledgeStateCTAType) -> Bool {
     return true
   default:
     return false
+  }
+}
+
+private extension Either where A == Project, B == ProjectPageParam {
+  var param: Param {
+    switch self {
+    case let .left(project):
+      return Param.id(project.id)
+    case let .right(projectParam):
+      return projectParam.param
+    }
   }
 }
