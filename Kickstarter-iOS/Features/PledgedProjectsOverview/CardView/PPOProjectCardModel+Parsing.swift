@@ -29,7 +29,6 @@ extension PPOProjectCardModel {
     // Fall back to backingDetailsPageRoute if needed.
     let webviewUrl = card.webviewUrl ?? backing?.backingDetailsPageRoute
 
-    let addressId: String? = backing?.deliveryAddress?.id
     let addressWithoutName = Self.addressWithoutName(deliveryAddress: backing?.deliveryAddress)
     let displayAddress = Self.displayAddress(
       card: card,
@@ -45,26 +44,13 @@ extension PPOProjectCardModel {
     else {
       return nil
     }
-    let action: PPOParsedAction?
-    switch tierType {
-    case .fixPayment:
-      action = Self.actionForPaymentFailed()
-    case .confirmAddress:
-      // Confirm address action will fall back to complete survey action if no address.
-      action = Self.actionForConfirmAddress(
-        showAddress: card.showShippingAddress,
-        address: addressWithoutName,
-        addressId: addressId
-      ) ?? Self.actionForSurvey(url: webviewUrl)
-    case .openSurvey:
-      action = Self.actionForSurvey(url: webviewUrl)
-    case .authenticateCard:
-      action = Self.actionForAuthentication(clientSecret: backing?.clientSecret)
-    case .pledgeManagement:
-      action = Self.actionForPledgeManagement(url: webviewUrl)
-    case .surveySubmitted, .pledgeCollected, .addressConfirmed, .awaitingReward, .rewardReceived:
-      action = PPOParsedAction(action: nil, tierType: tierType)
-    }
+    let action = Self.actionForTierType(
+      tierType: tierType,
+      showShippingAddress: card.showShippingAddress,
+      addressWithoutName: addressWithoutName,
+      webviewUrl: webviewUrl,
+      backing: backing
+    )
 
     let projectAnalyticsFragment = backing?.project?.fragments.projectAnalyticsFragment
 
@@ -105,6 +91,8 @@ extension PPOProjectCardModel {
     }
   }
 
+  // MARK: Address helpers
+
   private static func addressWithoutName(deliveryAddress: PPOBackingFragment.DeliveryAddress?) -> String? {
     guard let deliveryAddress else { return nil }
     let cityRegionFields: [String?] = [
@@ -138,6 +126,40 @@ extension PPOProjectCardModel {
       return .editable(address: address, editUrl: webviewUrl)
     }
     return .locked(address: address)
+  }
+
+  // MARK: Action helpers
+
+  private static func actionForTierType(
+    tierType: PPOTierType,
+    showShippingAddress: Bool,
+    addressWithoutName: String?,
+    webviewUrl: String?,
+    backing: PPOBackingFragment?
+  ) -> PPOParsedAction? {
+    switch tierType {
+    case .fixPayment:
+      return self.actionForPaymentFailed()
+    case .confirmAddress:
+      let addressId: String? = backing?.deliveryAddress?.id
+      // Confirm address action will fall back to complete survey action if no address.
+      return self.actionForConfirmAddress(
+        showAddress: showShippingAddress,
+        address: addressWithoutName,
+        addressId: addressId
+      ) ?? self.actionForSurvey(url: webviewUrl)
+    case .openSurvey:
+      return self.actionForSurvey(url: webviewUrl)
+    case .authenticateCard:
+      return self.actionForAuthentication(clientSecret: backing?.clientSecret)
+    case .pledgeManagement:
+      return self.actionForPledgeManagement(url: webviewUrl)
+    case .campaignLive, .campaignFunded:
+      return PPOParsedAction(action: .manageLivePledge, tierType: tierType)
+    case .surveySubmitted, .pledgeCollected, .addressConfirmed, .awaitingReward, .rewardReceived,
+         .campaignEnded, .campaignFailed, .pledgeDropped, .pledgeCanceled:
+      return PPOParsedAction(action: nil, tierType: tierType)
+    }
   }
 
   private static func actionForPaymentFailed() -> PPOParsedAction {
