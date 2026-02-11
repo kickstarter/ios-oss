@@ -1,0 +1,46 @@
+@testable import Library
+@testable import LibraryTestHelpers
+import Prelude
+import XCTest
+
+final class RemoteConfigFeatureHelpersTests: TestCase {
+  func assert(
+    featureFlagIsFalse checkFeatureFlag: () -> Bool,
+    whenRemoteConfigFeatureIsFalse feature: RemoteConfigFeature
+  ) {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [feature.rawValue: false]
+
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      XCTAssertFalse(checkFeatureFlag())
+    }
+  }
+
+  func assert(
+    featureFlagIsTrue checkFeatureFlag: () -> Bool,
+    whenRemoteConfigFeatureIsTrue feature: RemoteConfigFeature
+  ) {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [feature.rawValue: true]
+
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      XCTAssertTrue(checkFeatureFlag())
+    }
+  }
+
+  func testUseKeychainForOAuthTokenEnabled_RemoteConfig_FeatureFlag_False() {
+    self
+      .assert(
+        featureFlagIsFalse: featureUseKeychainForOAuthTokenEnabled,
+        whenRemoteConfigFeatureIsFalse: .useKeychainForOAuthToken
+      )
+  }
+
+  func testUseKeychainForOAuthTokenEnabled_RemoteConfig_FeatureFlag_True() {
+    self
+      .assert(
+        featureFlagIsTrue: featureUseKeychainForOAuthTokenEnabled,
+        whenRemoteConfigFeatureIsTrue: .useKeychainForOAuthToken
+      )
+  }
+}

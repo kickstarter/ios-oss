@@ -22,7 +22,7 @@ extension UIFont {
     let registered = CTFontManagerRegisterFontsForURL(fontURL as CFURL, .process, &cfError)
 
     if !registered, let error = cfError?.takeRetainedValue() as? Error {
-      throw error
+      _ = error
     }
   }
 

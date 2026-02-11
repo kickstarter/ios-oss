@@ -1,0 +1,70 @@
+{
+  "configurations" : [
+    {
+      "id" : "C03188CE-FAEF-4DAB-B58C-D6A695C053AF",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "environmentVariableEntries" : [
+      {
+        "enabled" : false,
+        "key" : "TRACKING_ENABLED",
+        "value" : "true"
+      },
+      {
+        "enabled" : false,
+        "key" : "OS_ACTIVITY_MODE",
+        "value" : "disable"
+      }
+    ],
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Kickstarter.xcodeproj",
+      "identifier" : "A7D1F9441C850B7C000D41D5",
+      "name" : "Kickstarter-iOS"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:KDS",
+        "identifier" : "KDSTests",
+        "name" : "KDSTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Kickstarter-Framework",
+        "identifier" : "Kickstarter-Framework-Tests",
+        "name" : "Kickstarter-Framework-Tests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:KsApi",
+        "identifier" : "KsApiTests",
+        "name" : "KsApiTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Kickstarter.xcodeproj",
+        "identifier" : "E113BD802B7D255000D3A809",
+        "name" : "Library-Keychain-iOSTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Kickstarter.xcodeproj",
+        "identifier" : "AAF3BB562F1845A200DAE921",
+        "name" : "LibraryTests"
+      }
+    }
+  ],
+  "version" : 1
+}
