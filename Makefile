@@ -1,5 +1,5 @@
 XCODEBUILD := xcodebuild
-BUILD_FLAGS = -scheme $(SCHEME) -destination $(DESTINATION)
+BUILD_FLAGS = -scheme "$(SCHEME)" -destination $(DESTINATION)
 
 SCHEME ?= $(TARGET)-$(PLATFORM)
 TARGET ?= Kickstarter-Framework
@@ -28,12 +28,30 @@ endif
 build: dependencies
 	$(XCODEBUILD) $(BUILD_FLAGS) $(XCPRETTY)
 
-test-all:
+test-all: test-app test-modules
+
+test-app:
 	PLATFORM=iOS "$(MAKE)" test
-	PLATFORM=iOS TARGET=Library "$(MAKE)" test
+
+test-modules: test-kds test-ksapi test-library test-kickstarter-framework
+
+test-kds:
+	PLATFORM=iOS PACKAGE=KDS SCHEME=KDS "$(MAKE)" test-spm
+
+test-ksapi:
+	PLATFORM=iOS PACKAGE=KsApi SCHEME=KsApi-Package "$(MAKE)" test-spm
+
+test-library:
+	PLATFORM=iOS PACKAGE=Library SCHEME=Library-Package "$(MAKE)" test-spm
+
+test-kickstarter-framework:
+	PLATFORM=iOS PACKAGE=Kickstarter-Framework SCHEME=Kickstarter-Framework "$(MAKE)" test-spm
 
 test: bootstrap
 	$(XCODEBUILD) test $(BUILD_FLAGS) $(XCPRETTY)
+
+test-spm: bootstrap
+	(cd $(PACKAGE) && $(XCODEBUILD) test -scheme "$(SCHEME)" -sdk iphonesimulator -destination $(DESTINATION))
 
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
@@ -129,7 +147,7 @@ cleanup:
 
 strings:
 	cp Frameworks/native-secrets/ios/Secrets.swift bin/StringsScript/Sources/StringsScriptCore
-	./bin/strings-script "./Library/Strings.swift" "./Kickstarter-iOS/Locales"
+	./bin/strings-script "./Library/Sources/Library/Library/Strings.swift" "./Library/Sources/Library/Resources/Locales"
 
 secrets:
 	-@rm -rf Frameworks/native-secrets
@@ -138,7 +156,10 @@ secrets:
 	then \
 		mkdir -p Frameworks/native-secrets/ios \
 		&& cp -n Configs/Secrets.swift.example Frameworks/native-secrets/ios/Secrets.swift \
+		&& cp -n Configs/Secrets.swift.example KsApi/Sources/KsApi/Secrets.swift \
 		|| true; \
+	else \
+		cp -n Frameworks/native-secrets/ios/Secrets.swift KsApi/Sources/KsApi/Secrets.swift || true; \
 	fi
 
 .PHONY: test-all test clean dependencies submodules deploy secrets strings
