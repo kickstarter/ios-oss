@@ -231,6 +231,10 @@ public class Paginator<Envelope, Value: Equatable, Cursor: Equatable, SomeError:
         if allValues.count == 0 {
           results = .empty
         } else if let nextCursor, !newValues.isEmpty {
+          // Warning: This total count may be incorrect. It should represent the total number of
+          // cards that a user has, but because of the way the fetch works on the backend, that
+          // number is currently unknown. The backend returns the number of cards in the fetch
+          // itself instead.
           let total = self.totalFromEnvelope(envelope)
           results = .someLoaded(values: allValues, cursor: nextCursor, total: total, page: newPage)
         } else {

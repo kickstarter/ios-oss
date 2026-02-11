@@ -587,6 +587,8 @@ public final class KSRAnalytics {
         self.cardAuthRequiredCount
     }
 
+    // Calculate the total number of cards that have been fetched.
+    // This ensures the total count is consistent with other counts.
     var total: Int {
       return self.alertCardCount +
         self.fundedProjectCount +
