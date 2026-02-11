@@ -76,6 +76,9 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.textColor .~ LegacyColors.ksr_support_400.uiColor()
 
+    self.bodyLabel.numberOfLines = 6
+    self.bodyLabel.lineBreakMode = .byTruncatingTail
+
     _ = self.projectImageView
       |> ignoresInvertColorsImageViewStyle
 
