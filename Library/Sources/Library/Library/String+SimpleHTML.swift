@@ -1,4 +1,5 @@
 import Foundation
+import SwiftSoup
 import UIKit
 
 public extension String {
@@ -98,35 +99,26 @@ public extension String {
   /**
    Removes all HTML from `self`.
 
-   - parameter trimWhitespace: If `true`, then all whitespace will be trimmed from the stripped string.
-                               Defaults to `true`.
-
    - returns: A string with all HTML stripped.
    */
-  func htmlStripped(trimWhitespace: Bool = true) -> String? {
-    func parsedHtml() -> String? {
-      guard let data = self.data(using: String.Encoding.utf8) else { return nil }
+  func htmlStripped() -> String? {
+    do {
+      let doc = try SwiftSoup.parse(self)
+      // The old NSAttributedString parser turned <p> tags into newlines.
+      // Insert newlines into the HTML to mimic that.
+      let paragraphs = try doc.select("p")
+      try paragraphs.before("\n")
 
-      let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
-        NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html,
-        NSAttributedString.DocumentReadingOptionKey.characterEncoding: String.Encoding.utf8.rawValue
-      ]
+      // Trim the HTML, but don't remove excess whitespace.
+      // This preserves the newlines we just added.
+      let plainText = try doc.text(trimAndNormaliseWhitespace: false)
 
-      let string = try? NSAttributedString.init(data: data, options: options, documentAttributes: nil)
-      let result = string?.string
-
-      if trimWhitespace {
-        return result?.trimmingCharacters(in: .whitespacesAndNewlines)
-      }
-      return result
-    }
-
-    if Thread.isMainThread {
-      return parsedHtml()
-    } else {
-      return DispatchQueue.main.sync {
-        parsedHtml()
-      }
+      // SwiftSoup adds a space between each element when it strips the HTML.
+      // Remove those spaces if they're added after our new newline,
+      // and trim any whitespace at the beginning or end of the string.
+      return plainText.replacingOccurrences(of: "\n ", with: "\n").trimmed()
+    } catch {
+      return nil
     }
   }
 }

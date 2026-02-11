@@ -111,7 +111,9 @@ final class StringSimpleHTMLTests: XCTestCase {
   // FIXME: MBL-2857
   func test_htmlStripped_WithParagraphTags() {
     let html = "<b>Hello</b> <i>Brandon</i>,<p>how are you?</p>"
-    XCTAssertEqual("Hello Brandon,\nhow are you?", html.htmlStripped())
-    XCTAssertEqual("Hello Brandon,\nhow are you?\n", html.htmlStripped(trimWhitespace: false))
+    XCTAssertEqual(html.htmlStripped(), "Hello Brandon,\nhow are you?")
+
+    let html2 = "<p><b>Hello</b> <i>Brandon</i>,<p>how are you?</p></p>"
+    XCTAssertEqual(html2.htmlStripped(), "Hello Brandon,\nhow are you?")
   }
 }
