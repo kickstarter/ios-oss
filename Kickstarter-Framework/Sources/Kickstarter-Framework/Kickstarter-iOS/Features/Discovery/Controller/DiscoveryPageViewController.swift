@@ -362,15 +362,18 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.present(nav, animated: true, completion: nil)
   }
 
-  fileprivate func goTo(project: Project, initialPlaylist _: [Project], refTag: RefTag) {
-    let projectParam = Either<Project, any ProjectPageParam>(left: project)
-    let vc = ProjectPageViewController.configuredWith(
-      projectOrParam: projectParam,
-      refInfo: RefInfo(refTag)
-    )
+  fileprivate func goTo(project: Project, initialPlaylist _: [Project], refTag _: RefTag) {
+//    let projectParam = Either<Project, any ProjectPageParam>(left: project)
+//    let vc = ProjectPageViewController.configuredWith(
+//      projectOrParam: projectParam,
+//      refInfo: RefInfo(refTag)
+//    )
+//
+//    let nav = NavigationController(rootViewController: vc)
+//    nav.modalPresentationStyle = self.traitCollection.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
 
-    let nav = NavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = self.traitCollection.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
+    let nav = NavigationController(rootViewController: VideoFeedViewController(project: project))
+    nav.modalPresentationStyle = .fullScreen
 
     self.present(nav, animated: true, completion: nil)
   }
