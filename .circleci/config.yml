@@ -55,7 +55,7 @@ test_job: &test_job
         command: make test
         no_output_timeout: "20m" # 20 minutes
     - store_artifacts:
-        path: ./Failed_Snapshot_Tests
+        path: /tmp/failed-snapshots
 
 test_spm_job: &test_spm_job
   steps:
@@ -67,7 +67,7 @@ test_spm_job: &test_spm_job
         command: make test-spm
         no_output_timeout: "20m" # 20 minutes
     - store_artifacts:
-        path: ./Failed_Snapshot_Tests
+        path: /tmp/failed-snapshots
 
 distribute_job: &distribute_job
   steps:

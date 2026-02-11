@@ -12,6 +12,7 @@ BRANCH ?= main
 DIST_BRANCH = $(RELEASE)-dist
 COMMIT ?= $(CIRCLE_SHA1)
 CURRENT_BRANCH ?= $(CIRCLE_BRANCH)
+SNAPSHOT_ARTIFACTS = /tmp/failed-snapshots
 
 ifeq ($(PLATFORM),iOS)
 	DESTINATION ?= 'platform=iOS Simulator,name=$(IPHONE_NAME),OS=$(IOS_VERSION)'
@@ -40,9 +41,11 @@ test-modules:
 	PLATFORM=iOS PACKAGE=Kickstarter-Framework SCHEME=Kickstarter-Framework "$(MAKE)" test-spm
 
 test: bootstrap
+	mkdir -p "$(SNAPSHOT_ARTIFACTS)"
 	$(XCODEBUILD) test $(BUILD_FLAGS) $(XCPRETTY)
 
 test-spm: bootstrap
+	mkdir -p "$(SNAPSHOT_ARTIFACTS)"
 	(cd $(PACKAGE) && $(XCODEBUILD) test -scheme "$(SCHEME)" -sdk iphonesimulator -destination $(DESTINATION))
 
 clean:
