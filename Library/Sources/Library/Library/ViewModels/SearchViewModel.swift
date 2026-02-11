@@ -1,0 +1,458 @@
+import Foundation
+import GraphAPI
+import KsApi
+import Prelude
+import ReactiveSwift
+
+public typealias SearchResultCard = ProjectCardProperties
+public typealias SearchResult = GraphAPI.SearchQuery.Data.Projects.Node
+
+public struct SearchResults {
+  public let isProjectsTitleVisible: Bool
+  public let count: Int
+  public let projects: [BackerDashboardProjectCellViewModel.ProjectCellModel]
+
+  public init(
+    isProjectsTitleVisible: Bool,
+    count: Int,
+    projects: [BackerDashboardProjectCellViewModel.ProjectCellModel]
+  ) {
+    self.isProjectsTitleVisible = isProjectsTitleVisible
+    self.count = count
+    self.projects = projects
+  }
+}
+
+public protocol SearchViewModelInputs {
+  /// Call when the user enters a new search term.
+  func searchTextChanged(_ searchText: String)
+
+  /// Call when the view loads.
+  func viewDidLoad()
+
+  /// Call when the view will appear.
+  func viewWillAppear(animated: Bool)
+
+  /// Call when a project is tapped.
+  func tapped(projectAtIndex index: Int)
+
+  /// Call this when the user taps on a button to show one of the sort options.
+  func tappedButton(forFilterType type: SearchFilterPill.FilterType)
+
+  /// Call this when the user updates a sort or filter option
+  func selectedFilter(_ event: SearchFilterEvent)
+
+  /// Call this when the user types a location query string in the location filter
+  func searchedForLocations(_ query: String)
+
+  /// Call this when the user taps reset on a filter modal
+  func resetFilters(for: SearchFilterModalType)
+
+  /**
+   Call from the controller's `tableView:willDisplayCell:forRowAtIndexPath` method.
+
+   - parameter row:       The 0-based index of the row displaying.
+   - parameter totalRows: The total number of rows in the table view.
+   */
+  func willDisplayRow(_ row: Int, outOf totalRows: Int)
+}
+
+public protocol SearchViewModelOutputs {
+  /// Emits a project ID  and ref tag when the project page should be opened.
+  var goToProject: Signal<(ProjectPageParam, RefTag), Never> { get }
+
+  /// Used to power the datasource. Emits projects, whether or not to show the "Popular" title, and the results count. May emit an array of empty projects if the page was cleared and new results are loading.
+  var searchResults: Signal<SearchResults, Never> { get }
+
+  /// Emits when loading indicator should be hidden.
+  var searchLoaderIndicatorIsAnimating: Signal<Bool, Never> { get }
+
+  /// Emits true when no search results should be shown, and false otherwise.
+  var showEmptyState: Signal<(DiscoveryParams, Bool), Never> { get }
+
+  /// Sends a model object which can be used to display all filter options, and a type describing which filters to display.
+  var showFilters: Signal<SearchFilterModalType, Never> { get }
+
+  /// An @ObservableObject model which SwiftUI can use to display the search filters modals and header.
+  /// Owned and automatically updated by the `SearchFiltersUseCase`.
+  var searchFilters: SearchFilters { get }
+}
+
+public protocol SearchViewModelType {
+  var inputs: SearchViewModelInputs { get }
+  var outputs: SearchViewModelOutputs { get }
+}
+
+public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, SearchViewModelOutputs {
+  public init() {
+    self.categoriesUseCase = FetchCategoriesUseCase(
+      initialSignal: self.viewDidLoadProperty.signal
+    )
+
+    self.locationsUseCase = FetchLocationsUseCase(
+      initialSignal:
+      self.viewDidLoadProperty.signal
+    )
+
+    self.searchFiltersUseCase = SearchFiltersUseCase(
+      initialSignal: self.viewDidLoadProperty.signal,
+      categories: self.categoriesUseCase.dataOutputs.categories,
+      defaultLocations: self.locationsUseCase.dataOutputs.defaultLocations,
+      suggestedLocations: self.locationsUseCase.dataOutputs.suggestedLocations
+    )
+
+    let viewWillAppearNotAnimated = self.viewWillAppearAnimatedProperty.signal.filter(isTrue).ignoreValues()
+
+    // What the user has typed in the search bar (or empty, if they've cleared their search).
+    let queryText = Signal
+      .merge(
+        self.searchTextChangedProperty.signal,
+        viewWillAppearNotAnimated.mapConst("").take(first: 1)
+      )
+
+    // DiscoveryParams using the users currently selected query text, sort and filters.
+    let queryParams: Signal<DiscoveryParams, Never> = Signal.combineLatest(
+      queryText,
+      self.searchFiltersUseCase.dataOutputs.selectedSort,
+      self.searchFiltersUseCase.dataOutputs.selectedCategory,
+      self.searchFiltersUseCase.dataOutputs.selectedState,
+      self.searchFiltersUseCase.dataOutputs.selectedPercentRaisedBucket,
+      self.searchFiltersUseCase.dataOutputs.selectedLocation,
+      self.searchFiltersUseCase.dataOutputs.selectedAmountRaisedBucket,
+      self.searchFiltersUseCase.dataOutputs.selectedGoalBucket,
+      self.searchFiltersUseCase.dataOutputs.selectedToggles
+    )
+    .map { query, sort, category, state, percentRaised, location, amountRaised, goal, toggles in
+      DiscoveryParams.withQuery(
+        query,
+        sort: sort,
+        category: category.category,
+        state: state,
+        percentRaised: percentRaised,
+        location: location,
+        amountRaised: amountRaised,
+        goal: goal,
+        toggles: toggles
+      )
+    }
+
+    // Every time the user changes their query, sort or filters, we set an empty
+    // results set to clear out the page. The user will just see the spinner.
+    let clears = queryParams.mapConst([SearchResult]())
+
+    let requestFirstPageWith: Signal<DiscoveryParams, Never> = queryParams
+
+    let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
+      .map { row, total in
+        row >= total - 3
+      }
+      .skipRepeats()
+      .filter(isTrue)
+      .ignoreValues()
+
+    var firstRequest = true
+    let requestFromOptionsWithDebounce: (DiscoveryParams)
+      -> SignalProducer<GraphAPI.SearchQuery.Data, ErrorEnvelope> = { params in
+        SignalProducer<(), ErrorEnvelope>(value: ())
+          .switchMap {
+            let query = GraphAPI.SearchQuery.from(discoveryParams: params)
+            let request = AppEnvironment.current.apiService.fetch(query: query)
+            // Don't debounce if the page is empty and this is the first request.
+            let debounce = firstRequest ? DispatchTimeInterval.seconds(0) : AppEnvironment.current
+              .debounceInterval
+
+            if firstRequest {
+              firstRequest = false
+            }
+
+            return request
+              .ksr_debounce(
+                debounce, on: AppEnvironment.current.scheduler
+              )
+          }
+      }
+
+    let statsProperty = MutableProperty<Int>(0)
+    let optionsProperty = MutableProperty<DiscoveryParams?>(nil)
+    optionsProperty <~ requestFirstPageWith // Bound to the SearchOptions for the current query
+
+    let (paginatedProjects, isLoading, page, _) = paginate(
+      requestFirstPageWith: requestFirstPageWith,
+      requestNextPageWhen: isCloseToBottom,
+      clearOnNewRequest: false,
+      skipRepeats: false,
+      valuesFromEnvelope: { [statsProperty] (data: GraphAPI.SearchQuery.Data) -> [
+        SearchResult
+      ] in
+        statsProperty.value = data.projects?.totalCount ?? 0
+        return data.projects?.nodes?.compact() ?? []
+      },
+      cursorFromEnvelope: { data in
+        guard let pageInfo = data.projects?.pageInfo else {
+          return nil
+        }
+
+        return pageInfo.hasNextPage ? pageInfo.endCursor : nil
+      },
+      requestFromParams: requestFromOptionsWithDebounce,
+      requestFromCursor: { [optionsProperty] (maybeCursor: String?) -> SignalProducer<
+        GraphAPI.SearchQuery.Data,
+        ErrorEnvelope
+      > in
+        guard let options = optionsProperty.value, let cursor = maybeCursor else {
+          return SignalProducer.empty
+        }
+
+        let query = GraphAPI.SearchQuery.from(discoveryParams: options, withCursor: cursor)
+        return AppEnvironment.current.apiService.fetch(query: query)
+      }
+    )
+
+    let stats = statsProperty.signal
+
+    self.searchLoaderIndicatorIsAnimating = isLoading
+
+    let searchResults: Signal<[SearchResult], Never> = Signal.merge(clears, paginatedProjects)
+      .skipRepeats(==)
+
+    // Show the 'Discover projects' title if we're showing 'Discover' results (i.e. no query)
+    let isProjectsTitleVisible = Signal.combineLatest(queryText, searchResults)
+      .map { query, projects in query.isEmpty && !projects.isEmpty }
+      .skipRepeats()
+
+    self.projects = searchResults
+      .map { (nodes: [SearchResult]) -> [SearchResultCard] in
+        nodes.compactMap { node in
+          let fragment = node.fragments.projectCardFragment
+          return ProjectCardProperties(fragment)
+        }
+      }
+
+    let shouldShowEmptyState = Signal.combineLatest(paginatedProjects, isLoading)
+      .map { projects, isLoading in
+        if isLoading { return false }
+        return projects.isEmpty
+      }
+      .skipRepeats()
+
+    self.showEmptyState = requestFirstPageWith
+      .takePairWhen(shouldShowEmptyState)
+
+    self.goToProject = Signal.combineLatest(searchResults, queryText)
+      .takePairWhen(self.tappedProjectIndexSignal)
+      .map { ($0.0, $0.1, $1) } // ((a, b) c) -> (a, b, c)
+      .map { projects, query, index in
+
+        let emptyResult: (ProjectPageParam, RefTag)? = nil
+
+        guard index >= 0, index < projects.count else {
+          assert(false, "Tapped card out of bounds.")
+          return emptyResult
+        }
+
+        let project = projects[index]
+        let graphQLID = project.fragments.backerDashboardProjectCellFragment.projectId
+
+        guard let projectId = decompose(id: graphQLID),
+              let cardProperties = ProjectCardProperties(project.fragments.projectCardFragment)
+        else {
+          return emptyResult
+        }
+
+        let refTag = refTag(query: query, projects: projects, project: project)
+
+        let param = cardProperties.projectPageParam
+        return (param, refTag)
+      }
+      .skipNil()
+
+    // Tracking
+
+    // This represents search results count whenever the search page is viewed.
+    // An initial value is emitted on first visit.
+    let viewWillAppearSearchResultsCount = Signal.merge(
+      stats,
+      viewWillAppearNotAnimated.mapConst(0).take(first: 1)
+    )
+
+    Signal.combineLatest(queryText, queryParams, viewWillAppearSearchResultsCount)
+      .takeWhen(viewWillAppearNotAnimated)
+      .observeValues { query, params, searchResults in
+        let results = query.isEmpty ? 0 : searchResults
+        AppEnvironment.current.ksrAnalytics
+          .trackProjectSearchView(params: params, results: results)
+      }
+
+    let hasResults = Signal.combineLatest(paginatedProjects, isLoading)
+      .filter(second >>> isFalse)
+      .map(first)
+      .map { !$0.isEmpty }
+
+    let firstPageResults = Signal.zip(hasResults, page)
+      .filter { _, page in page == 1 }
+      .map(first)
+
+    // This represents search results count only when a search is performed
+    // and there is a response from the API for the query.
+    let newQuerySearchResultsCount = Signal.merge(
+      viewWillAppearSearchResultsCount.filter { $0 == 0 },
+      viewWillAppearSearchResultsCount.takeWhen(firstPageResults)
+    )
+
+    Signal.combineLatest(queryText, requestFirstPageWith)
+      .takePairWhen(newQuerySearchResultsCount)
+      .map(unpack)
+      .filter { query, _, _ in !query.isEmpty }
+      .observeValues { _, params, stats in
+        AppEnvironment.current.ksrAnalytics
+          .trackProjectSearchView(params: params, results: stats)
+      }
+
+    Signal.combineLatest(requestFirstPageWith, searchResults)
+      .takePairWhen(self.tappedProjectIndexSignal)
+      .map { ($0.0, $0.1, $1) } // ((a, b), c) -> (a, b, c)
+      .observeValues { params, results, index in
+
+        guard index >= 0, index < results.count else {
+          assert(false, "Tapped card out of bounds.")
+          return
+        }
+
+        let projectAnalytics = results[index].fragments.projectAnalyticsFragment
+
+        AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
+          page: .search,
+          project: projectAnalytics,
+          typeContext: .results,
+          location: .searchResults,
+          params: params
+        )
+      }
+
+    let emptyResultsOnFirstAppearance = viewWillAppearNotAnimated
+      .take(first: 1)
+      .mapConst(
+        SearchResults(
+          isProjectsTitleVisible: false,
+          count: 0,
+          projects: []
+        )
+      )
+
+    self.searchResults = Signal.combineLatest(
+      isProjectsTitleVisible,
+      stats,
+      self.projects
+    ).map { isProjectsTitleVisible, resultCount, projects in
+      SearchResults(
+        isProjectsTitleVisible: isProjectsTitleVisible,
+        count: resultCount,
+        projects: projects.map { $0.projectCellModel }
+      )
+    }.merge(with: emptyResultsOnFirstAppearance)
+  }
+
+  fileprivate let searchTextChangedProperty = MutableProperty("")
+  public func searchTextChanged(_ searchText: String) {
+    self.searchTextChangedProperty.value = searchText
+
+    if searchText.isEmpty {
+      self.searchFiltersUseCase.inputs.clearedQueryText()
+    }
+  }
+
+  fileprivate let (tappedProjectIndexSignal, tappedProjectIndexObserver) = Signal<Int, Never>.pipe()
+  public func tapped(projectAtIndex index: Int) {
+    self.tappedProjectIndexObserver.send(value: index)
+  }
+
+  fileprivate let viewDidLoadProperty = MutableProperty(())
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
+  }
+
+  fileprivate let viewWillAppearAnimatedProperty = MutableProperty(false)
+  public func viewWillAppear(animated: Bool) {
+    self.viewWillAppearAnimatedProperty.value = animated
+  }
+
+  fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
+  public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
+    self.willDisplayRowProperty.value = (row, totalRows)
+  }
+
+  public func tappedButton(forFilterType type: SearchFilterPill.FilterType) {
+    self.searchFiltersUseCase.inputs.tappedButton(forFilterType: type)
+  }
+
+  public func resetFilters(for type: SearchFilterModalType) {
+    self.searchFiltersUseCase.inputs.resetFilters(for: type)
+  }
+
+  private let categoriesUseCase: FetchCategoriesUseCase
+  private let searchFiltersUseCase: SearchFiltersUseCase
+  private let locationsUseCase: FetchLocationsUseCase
+
+  public let goToProject: Signal<(ProjectPageParam, RefTag), Never>
+  public let projects: Signal<[SearchResultCard], Never>
+  public let searchLoaderIndicatorIsAnimating: Signal<Bool, Never>
+  public let showEmptyState: Signal<(DiscoveryParams, Bool), Never>
+  public let searchResults: Signal<SearchResults, Never>
+
+  public var showFilters: Signal<SearchFilterModalType, Never> {
+    return self.searchFiltersUseCase.showFilters
+  }
+
+  public func selectedFilter(_ event: SearchFilterEvent) {
+    self.searchFiltersUseCase.selectedFilter(event)
+  }
+
+  public func searchedForLocations(_ query: String) {
+    self.locationsUseCase.searchedForLocations(query)
+  }
+
+  public var searchFilters: SearchFilters {
+    return self.searchFiltersUseCase.searchFilters
+  }
+
+  public var inputs: SearchViewModelInputs { return self }
+  public var outputs: SearchViewModelOutputs { return self }
+}
+
+/// Calculates a ref tag from the search query, the list of displayed projects, and the project
+/// tapped.
+private func refTag(query: String, projects: [SearchResult], project: SearchResult) -> RefTag {
+  if project == projects.first, query.isEmpty {
+    return RefTag.searchPopularFeatured
+  } else if project == projects.first, !query.isEmpty {
+    return RefTag.searchFeatured
+  } else if query.isEmpty {
+    return RefTag.searchPopular
+  } else {
+    return RefTag.search
+  }
+}
+
+private struct ProjectCardPropertiesProjectCellModel: BackerDashboardProjectCellViewModel.ProjectCellModel {
+  private let properties: ProjectCardProperties
+  init(_ properties: ProjectCardProperties) {
+    self.properties = properties
+  }
+
+  var name: String { self.properties.name }
+  var state: KsApi.Project.State { self.properties.state }
+  var imageURL: String? { self.properties.image.url?.absoluteString }
+  var fundingProgress: Float { Float(self.properties.percentFunded) / 100 }
+  var percentFunded: Int { self.properties.percentFunded }
+  var displayPrelaunch: Bool? { self.properties.shouldDisplayPrelaunch }
+  var prelaunchActivated: Bool? { self.properties.isPrelaunchActivated }
+  var launchedAt: TimeInterval? { self.properties.launchedAt?.timeIntervalSince1970 }
+  var deadline: TimeInterval? { self.properties.deadlineAt?.timeIntervalSince1970 }
+  var isStarred: Bool? { self.properties.isStarred }
+}
+
+extension ProjectCardProperties: BackerDashboardProjectCellViewModel.HasProjectCellModel {
+  public var projectCellModel: any BackerDashboardProjectCellViewModel.ProjectCellModel {
+    ProjectCardPropertiesProjectCellModel(self)
+  }
+}
