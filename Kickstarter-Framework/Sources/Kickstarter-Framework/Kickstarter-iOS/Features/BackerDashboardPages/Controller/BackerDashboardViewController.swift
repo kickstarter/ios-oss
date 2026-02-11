@@ -206,11 +206,15 @@ internal final class BackerDashboardViewController: UIViewController {
 
     self.messagesButtonItem.image = image(named: "inbox-icon")
     self.messagesButtonItem.accessibilityLabel = Strings.profile_buttons_messages()
-    self.messagesButtonItem.tintColor = Colors.Icon.subtle.uiColor()
 
     self.settingsButtonItem.image = image(named: "settings-icon")
     self.settingsButtonItem.accessibilityLabel = Strings.profile_settings_navbar_title()
-    self.settingsButtonItem.tintColor = Colors.Icon.subtle.uiColor()
+
+    // If OS is too old for liquid glass theming, set color to gray.
+    if #unavailable(iOS 26.0) {
+      self.messagesButtonItem.tintColor = Colors.Icon.subtle.uiColor()
+      self.settingsButtonItem.tintColor = Colors.Icon.subtle.uiColor()
+    }
 
     _ = self.dividerView
       |> UIView.lens.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
