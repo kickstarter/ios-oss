@@ -116,4 +116,11 @@ final class StringSimpleHTMLTests: XCTestCase {
     let html2 = "<p><b>Hello</b> <i>Brandon</i>,<p>how are you?</p></p>"
     XCTAssertEqual(html2.htmlStripped(), "Hello Brandon,\nhow are you?")
   }
+
+  func test_htmlStripped_withParagraphAndList() {
+    let html = """
+    <div><p>First paragraph</p><h3>Heading</h3><ul><li>List item 1</li><li>List item 2</li><li>List item 3</li></ul></div>
+    """
+    XCTAssertEqual(html.htmlStripped(), "First paragraph\nHeading\nList item 1\nList item 2\nList item 3")
+  }
 }
