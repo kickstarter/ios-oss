@@ -102,16 +102,23 @@ final class StringSimpleHTMLTests: XCTestCase {
     }
   }
 
-  // FIXME: MBL-2857
   func test_htmlStripped_WithSimpleHtml() {
     let html = "<b>Hello</b> <i>Brandon</i>, how are you?"
     XCTAssertEqual("Hello Brandon, how are you?", html.htmlStripped())
   }
 
-  // FIXME: MBL-2857
   func test_htmlStripped_WithParagraphTags() {
     let html = "<b>Hello</b> <i>Brandon</i>,<p>how are you?</p>"
-    XCTAssertEqual("Hello Brandon,\nhow are you?", html.htmlStripped())
-    XCTAssertEqual("Hello Brandon,\nhow are you?\n", html.htmlStripped(trimWhitespace: false))
+    XCTAssertEqual(html.htmlStripped(), "Hello Brandon,\nhow are you?")
+
+    let html2 = "<p><b>Hello</b> <i>Brandon</i>,<p>how are you?</p></p>"
+    XCTAssertEqual(html2.htmlStripped(), "Hello Brandon,\nhow are you?")
+  }
+
+  func test_htmlStripped_withParagraphAndList() {
+    let html = """
+    <div><p>First paragraph</p><h3>Heading</h3><ul><li>List item 1</li><li>List item 2</li><li>List item 3</li></ul></div>
+    """
+    XCTAssertEqual(html.htmlStripped(), "First paragraph\nHeading\nList item 1\nList item 2\nList item 3")
   }
 }
