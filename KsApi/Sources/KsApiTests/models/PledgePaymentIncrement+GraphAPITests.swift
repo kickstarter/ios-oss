@@ -6,6 +6,10 @@ import GraphAPITestMocks
 import XCTest
 
 final class PledgePaymentIncrementGraphAPITests: XCTestCase {
+  func test_tests() {
+    XCTFail("Testing a failing test to test the tests")
+  }
+
   func testPaymentIncrementViewModel_fromValidFragment_isCorrect() {
     let mock = Mock<GraphAPITestMocks.PaymentIncrement>()
     mock.amount = Mock<GraphAPITestMocks.PaymentIncrementAmount>()
