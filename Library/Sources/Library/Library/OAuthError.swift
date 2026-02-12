@@ -33,17 +33,41 @@ struct OAuthError {
   )
 
   static func exchangeFailedError(_ error: ErrorEnvelope?) -> OAuthError {
-    guard let httpCode = error?.httpCode else {
+    guard let ksrCode = error?.ksrCode else {
       return OAuthError(
         code: .exchangeFailed,
         message: "Exchange API call failed"
       )
     }
 
-    return OAuthError(
-      code: .exchangeFailed,
-      message: "Exchange API call failed with HTTP code \(httpCode)"
-    )
+    switch ksrCode {
+    case .JSONParsingFailed:
+      return OAuthError(
+        code: .exchangeFailed,
+        message: "Exchange API call failed, due to JSON parsing failure."
+      )
+    case .DecodingJSONFailed:
+      let underlyingError = error?.errorMessages.first ?? ""
+      return OAuthError(
+        code: .exchangeFailed,
+        message: "Exchange API call failed, due to JSON decoding failure. \(underlyingError)"
+      )
+    case .ErrorEnvelopeJSONParsingFailed:
+      return OAuthError(
+        code: .exchangeFailed,
+        message: "Exchange API call failed, unable to parse error envelope."
+      )
+    case .InvalidPaginationUrl:
+      return OAuthError(
+        code: .exchangeFailed,
+        message: "Exchange API call failed, due to invalid pagination URL."
+      )
+    default:
+      return OAuthError(
+        code: .exchangeFailed,
+        message: "Exchange API call failed"
+      )
+    }
   }
 
   static func redirectError(_ error: Error?) -> OAuthError {
