@@ -15,4 +15,10 @@ public enum PledgeProjectsOverviewSort: String, EnumType {
   case addressConfirmed = "ADDRESS_CONFIRMED"
   case awaitingReward = "AWAITING_REWARD"
   case rewardReceived = "REWARD_RECEIVED"
+  case campaignLive = "CAMPAIGN_LIVE"
+  case campaignFunded = "CAMPAIGN_FUNDED"
+  case campaignEnded = "CAMPAIGN_ENDED"
+  case campaignFailed = "CAMPAIGN_FAILED"
+  case pledgeDropped = "PLEDGE_DROPPED"
+  case pledgeCanceled = "PLEDGE_CANCELED"
 }

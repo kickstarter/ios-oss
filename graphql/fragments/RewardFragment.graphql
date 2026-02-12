@@ -18,6 +18,7 @@ fragment RewardFragment on Reward {
   id
   isMaxPledge
   available
+  featured
   items {
     edges {
       quantity

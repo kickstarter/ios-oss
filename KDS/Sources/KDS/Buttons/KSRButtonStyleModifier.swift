@@ -3,11 +3,11 @@ import SwiftUI
 /// `KSRButtonStyleModifier` applies the new Design System `KSRButtonStyle` to SwiftUI buttons.
 /// It configures the button's font, background color, foreground color, border, and state (enabled, pressed, disabled).
 public struct KSRButtonStyleModifier: SwiftUI.ButtonStyle {
-  let style: KSRButtonStyle
+  let style: KSRButtonStyleConfiguration
 
   @SwiftUI.Environment(\.isEnabled) private var isEnabled
 
-  public init(style: KSRButtonStyle) {
+  public init(style: KSRButtonStyleConfiguration) {
     self.style = style
   }
 

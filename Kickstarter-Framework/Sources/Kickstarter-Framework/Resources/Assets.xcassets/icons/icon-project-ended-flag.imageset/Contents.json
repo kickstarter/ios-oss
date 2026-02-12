@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "icon-project-ended-flag.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

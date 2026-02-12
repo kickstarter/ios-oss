@@ -5,7 +5,7 @@
 
 public struct PaymentIncrementFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment PaymentIncrementFragment on PaymentIncrement { __typename amount { __typename amountFormattedInProjectNativeCurrency currency } scheduledCollection state stateReason }"#
+    #"fragment PaymentIncrementFragment on PaymentIncrement { __typename amount { __typename amountFormattedInProjectNativeCurrency currency } scheduledCollection }"#
   }
 
   public let __data: DataDict
@@ -16,30 +16,21 @@ public struct PaymentIncrementFragment: GraphAPI.SelectionSet, Fragment {
     .field("__typename", String.self),
     .field("amount", Amount.self),
     .field("scheduledCollection", GraphAPI.ISO8601DateTime.self),
-    .field("state", GraphQLEnum<GraphAPI.PaymentIncrementState>.self),
-    .field("stateReason", GraphQLEnum<GraphAPI.PaymentIncrementStateReason>?.self),
   ] }
 
   /// The payment increment amount represented in various formats
   public var amount: Amount { __data["amount"] }
   public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
-  /// The state of the payment increment
-  public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }
-  public var stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? { __data["stateReason"] }
 
   public init(
     amount: Amount,
-    scheduledCollection: GraphAPI.ISO8601DateTime,
-    state: GraphQLEnum<GraphAPI.PaymentIncrementState>,
-    stateReason: GraphQLEnum<GraphAPI.PaymentIncrementStateReason>? = nil
+    scheduledCollection: GraphAPI.ISO8601DateTime
   ) {
     self.init(_dataDict: DataDict(
       data: [
         "__typename": GraphAPI.Objects.PaymentIncrement.typename,
         "amount": amount._fieldData,
         "scheduledCollection": scheduledCollection,
-        "state": state,
-        "stateReason": stateReason,
       ],
       fulfilledFragments: [
         ObjectIdentifier(PaymentIncrementFragment.self)

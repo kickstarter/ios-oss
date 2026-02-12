@@ -1,11 +1,11 @@
-// swift-tools-version:6.0
+// swift-tools-version:5.7
 
 import PackageDescription
 
 let package = Package(
   name: "GraphAPI",
   platforms: [
-    .iOS(.v18),
+    .iOS(.v12),
     .macOS(.v10_14),
     .tvOS(.v12),
     .watchOS(.v5),
@@ -33,6 +33,5 @@ let package = Package(
       ],
       path: "./GraphAPITestMocks"
     ),
-  ],
-  swiftLanguageModes: [.v5]
+  ]
 )

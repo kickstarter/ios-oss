@@ -10,7 +10,7 @@ fragment ProjectFragment on Project {
     ...CountryFragment
   }
   creator {
-    ...UserFragment
+    ...PublicUserFragment
   }
   currency
   deadlineAt
