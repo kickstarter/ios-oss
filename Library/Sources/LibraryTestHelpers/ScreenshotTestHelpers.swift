@@ -1,6 +1,5 @@
 import Foundation
 import Library
-@testable import LibraryTestHelpers
 import ReactiveSwift
 import SnapshotTesting
 import SwiftUI
@@ -308,25 +307,11 @@ internal func assertSnapshot<Content: View>(
   line: UInt = #line
 ) {
   let hosting = UIHostingController(rootView: view)
-
-  let targetSize: CGSize = {
-    if let size = size {
-      return size
-    } else if useIntrinsicSize {
-      let proposed = type.device.deviceSize(in: type.orientation)
-      let fitting = hosting.sizeThatFits(in: CGSize(width: proposed.width, height: .greatestFiniteMagnitude))
-      if fitting.width > 0, fitting.height > 0 {
-        return fitting
-      }
-    }
-    return type.device.deviceSize(in: type.orientation)
-  }()
-
-  hosting.view.frame = CGRect(origin: .zero, size: targetSize)
-
   assertSnapshot(
-    forController: hosting,
+    forView: hosting.view,
     withType: type,
+    size: size,
+    useIntrinsicSize: useIntrinsicSize,
     perceptualPrecision: perceptualPrecision,
     record: record,
     file: file,

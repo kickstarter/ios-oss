@@ -70,7 +70,9 @@ let package = Package(
       name: "LibraryTestHelpers",
       dependencies: [
         .byName(name: "Library"),
-        .product(name: "KsApiTestHelpers", package: "KsApi")
+        .product(name: "KsApiTestHelpers", package: "KsApi"),
+        .product(name: "KDS", package: "KDS"),
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
       ],
       path: "Sources/LibraryTestHelpers"
     ),
