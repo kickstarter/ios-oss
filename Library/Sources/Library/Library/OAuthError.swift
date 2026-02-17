@@ -7,6 +7,12 @@ struct OAuthError {
     case exchangeFailed = 2
     case redirectError = 3
     case pkceError = 4
+    // More specific variants of `exchangeFailed`
+    case exchangeFailedJSONParsing = 5
+    case exchangeFailedJSONDecoding = 6
+    case exchangeFailedEnvelopeParsing = 7
+    case exchangeFailedInvalidPagination = 8
+    case exchangeFailedOtherKSRCode = 9
   }
 
   private let code: OAuthError.Code
@@ -43,29 +49,29 @@ struct OAuthError {
     switch ksrCode {
     case .JSONParsingFailed:
       return OAuthError(
-        code: .exchangeFailed,
+        code: .exchangeFailedJSONParsing,
         message: "Exchange API call failed, due to JSON parsing failure."
       )
     case .DecodingJSONFailed:
       let underlyingError = error?.errorMessages.first ?? ""
       return OAuthError(
-        code: .exchangeFailed,
+        code: .exchangeFailedJSONDecoding,
         message: "Exchange API call failed, due to JSON decoding failure. \(underlyingError)"
       )
     case .ErrorEnvelopeJSONParsingFailed:
       return OAuthError(
-        code: .exchangeFailed,
+        code: .exchangeFailedEnvelopeParsing,
         message: "Exchange API call failed, unable to parse error envelope."
       )
     case .InvalidPaginationUrl:
       return OAuthError(
-        code: .exchangeFailed,
+        code: .exchangeFailedInvalidPagination,
         message: "Exchange API call failed, due to invalid pagination URL."
       )
     default:
       return OAuthError(
-        code: .exchangeFailed,
-        message: "Exchange API call failed"
+        code: .exchangeFailedOtherKSRCode,
+        message: "Exchange API call failed with other KSR code: \(ksrCode)"
       )
     }
   }
