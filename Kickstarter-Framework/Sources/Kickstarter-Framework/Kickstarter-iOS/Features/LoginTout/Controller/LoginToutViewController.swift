@@ -277,17 +277,12 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       .observeForControllerAction()
       .observeValues { [weak self] message in
         self?.present(UIAlertController.genericError(message), animated: true)
+      }
 
-        // Crashlytics prefers NSErrors
-        let appleLoginError = NSError(
-          domain: "LoginTOutViewController",
-          code: 0,
-          userInfo: [
-            NSLocalizedDescriptionKey: "Apple login failure"
-          ]
-        )
-
-        Crashlytics.crashlytics().record(error: appleLoginError)
+    self.viewModel.outputs.logAppleError
+      .observeForUI()
+      .observeValues { error in
+        Crashlytics.crashlytics().record(error: error)
       }
 
     self.viewModel.outputs.isLoading
@@ -582,7 +577,7 @@ extension LoginToutViewController: ASAuthorizationControllerDelegate {
     didCompleteWithError error: Error
   ) {
     if let error = error as? ASAuthorizationError {
-      let authError: AuthServicesError
+      let authError: AppleAuthServicesError
       switch error.errorCode {
       case ASAuthorizationError.canceled.rawValue:
         authError = .canceled

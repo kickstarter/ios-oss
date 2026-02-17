@@ -1,3 +1,4 @@
+import AuthenticationServices
 import FacebookLogin
 import KsApi
 import Prelude
@@ -5,17 +6,12 @@ import ReactiveSwift
 
 public typealias SignInWithAppleData = (appId: String, firstName: String?, lastName: String?, token: String)
 
-public enum AuthServicesError {
-  case canceled
-  case other(Error)
-}
-
 public protocol LoginToutViewModelInputs {
   /// Call when Apple completes authorization
   func appleAuthorizationDidSucceed(with data: SignInWithAppleData?)
 
   /// Call when Apple completes authorization with error
-  func appleAuthorizationDidFail(with error: AuthServicesError)
+  func appleAuthorizationDidFail(with error: AppleAuthServicesError)
 
   /// Call when Continue withApple button is pressed
   func appleLoginButtonPressed()
@@ -79,6 +75,9 @@ public protocol LoginToutViewModelOutputs {
 
   /// Emits when should show Apple error alert with error message
   var showAppleErrorAlert: Signal<String, Never> { get }
+
+  /// Emits when we should log a non-fatal Apple error
+  var logAppleError: Signal<NSError, Never> { get }
 
   /// Emits when should show Facebook error alert with AlertError
   var showFacebookErrorAlert: Signal<AlertError, Never> { get }
@@ -256,6 +255,11 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.showAppleErrorAlert = Signal
       .merge(appleAuthorizationError, fetchUserEventError, appleSignInEventError)
 
+    self.logAppleError = self.appleAuthorizationDidFailWithErrorProperty.signal
+      .skipNil()
+      .map { $0.nsError }
+      .skipNil()
+
     self.logIntoEnvironmentWithApple = logIntoEnvironmentWithApple.signal
     self.logIntoEnvironmentWithFacebook = logIntoEnvironmentWithFacebook.signal
 
@@ -280,8 +284,8 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.appleAuthorizationDidSucceedWithDataProperty.value = data
   }
 
-  fileprivate let appleAuthorizationDidFailWithErrorProperty = MutableProperty<AuthServicesError?>(nil)
-  public func appleAuthorizationDidFail(with error: AuthServicesError) {
+  fileprivate let appleAuthorizationDidFailWithErrorProperty = MutableProperty<AppleAuthServicesError?>(nil)
+  public func appleAuthorizationDidFail(with error: AppleAuthServicesError) {
     self.appleAuthorizationDidFailWithErrorProperty.value = error
   }
 
@@ -344,6 +348,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let startTwoFactorChallenge: Signal<String, Never>
   public let showAppleErrorAlert: Signal<String, Never>
   public let showFacebookErrorAlert: Signal<AlertError, Never>
+  public let logAppleError: Signal<NSError, Never>
 }
 
 private func statusString(_ forStatus: LoginIntent) -> String {
@@ -359,7 +364,7 @@ private func statusString(_ forStatus: LoginIntent) -> String {
   }
 }
 
-private func errorMessage(from error: AuthServicesError) -> String? {
+private func errorMessage(from error: AppleAuthServicesError) -> String? {
   switch error {
   case let .other(error):
     return error.localizedDescription
