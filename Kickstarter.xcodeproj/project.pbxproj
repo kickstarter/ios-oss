@@ -272,16 +272,6 @@
 		AAF549AF2F2445C0001DB5AC /* UIViewController+URLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548CE2F2445C0001DB5AC /* UIViewController+URLTests.swift */; };
 		AAF549B02F2445C0001DB5AC /* UpdateActivityItemProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548CF2F2445C0001DB5AC /* UpdateActivityItemProviderTests.swift */; };
 		AAF549B12F2445C0001DB5AC /* UpdateBackingInput+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548D02F2445C0001DB5AC /* UpdateBackingInput+ConstructorTests.swift */; };
-		AAF549B22F2445C0001DB5AC /* testBadgeAndDot.badge-and-dot.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547E32F2445C0001DB5AC /* testBadgeAndDot.badge-and-dot.png */; };
-		AAF549B32F2445C0001DB5AC /* testLongBadge.long-badge.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547E42F2445C0001DB5AC /* testLongBadge.long-badge.png */; };
-		AAF549B42F2445C0001DB5AC /* testLongGermanNames.German.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547E52F2445C0001DB5AC /* testLongGermanNames.German.png */; };
-		AAF549B52F2445C0001DB5AC /* testLongName.long-name.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547E62F2445C0001DB5AC /* testLongName.long-name.png */; };
-		AAF549B62F2445C0001DB5AC /* testNoBadges.no-badges.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547E72F2445C0001DB5AC /* testNoBadges.no-badges.png */; };
-		AAF549B72F2445C0001DB5AC /* testNoBadgesLongNames.no-badges.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547E82F2445C0001DB5AC /* testNoBadgesLongNames.no-badges.png */; };
-		AAF549B82F2445C0001DB5AC /* testSecondTabBadge.long-name.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547E92F2445C0001DB5AC /* testSecondTabBadge.long-name.png */; };
-		AAF549B92F2445C0001DB5AC /* testTabSelection.firstTab.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547EA2F2445C0001DB5AC /* testTabSelection.firstTab.png */; };
-		AAF549BA2F2445C0001DB5AC /* testTabSelection.secondTab.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547EB2F2445C0001DB5AC /* testTabSelection.secondTab.png */; };
-		AAF549BB2F2445C0001DB5AC /* testThreeTabs.long-name.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF547EC2F2445C0001DB5AC /* testThreeTabs.long-name.png */; };
 		AAF549BC2F2445C0001DB5AC /* SearchQuery_AnotherFiveResults.json in Resources */ = {isa = PBXBuildFile; fileRef = AAF548D22F2445C0001DB5AC /* SearchQuery_AnotherFiveResults.json */; };
 		AAF549BD2F2445C0001DB5AC /* SearchQuery_EmptyResults.json in Resources */ = {isa = PBXBuildFile; fileRef = AAF548D32F2445C0001DB5AC /* SearchQuery_EmptyResults.json */; };
 		AAF549BE2F2445C0001DB5AC /* SearchQuery_FiveResults.json in Resources */ = {isa = PBXBuildFile; fileRef = AAF548D42F2445C0001DB5AC /* SearchQuery_FiveResults.json */; };
@@ -403,16 +393,6 @@
 		AAF547DE2F2445C0001DB5AC /* ValueCellDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueCellDataSourceTests.swift; sourceTree = "<group>"; };
 		AAF547E02F2445C0001DB5AC /* DoubleCurrencyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleCurrencyTests.swift; sourceTree = "<group>"; };
 		AAF547E12F2445C0001DB5AC /* Feature+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feature+HelpersTests.swift"; sourceTree = "<group>"; };
-		AAF547E32F2445C0001DB5AC /* testBadgeAndDot.badge-and-dot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testBadgeAndDot.badge-and-dot.png"; sourceTree = "<group>"; };
-		AAF547E42F2445C0001DB5AC /* testLongBadge.long-badge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testLongBadge.long-badge.png"; sourceTree = "<group>"; };
-		AAF547E52F2445C0001DB5AC /* testLongGermanNames.German.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testLongGermanNames.German.png; sourceTree = "<group>"; };
-		AAF547E62F2445C0001DB5AC /* testLongName.long-name.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testLongName.long-name.png"; sourceTree = "<group>"; };
-		AAF547E72F2445C0001DB5AC /* testNoBadges.no-badges.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testNoBadges.no-badges.png"; sourceTree = "<group>"; };
-		AAF547E82F2445C0001DB5AC /* testNoBadgesLongNames.no-badges.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testNoBadgesLongNames.no-badges.png"; sourceTree = "<group>"; };
-		AAF547E92F2445C0001DB5AC /* testSecondTabBadge.long-name.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testSecondTabBadge.long-name.png"; sourceTree = "<group>"; };
-		AAF547EA2F2445C0001DB5AC /* testTabSelection.firstTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testTabSelection.firstTab.png; sourceTree = "<group>"; };
-		AAF547EB2F2445C0001DB5AC /* testTabSelection.secondTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testTabSelection.secondTab.png; sourceTree = "<group>"; };
-		AAF547EC2F2445C0001DB5AC /* testThreeTabs.long-name.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testThreeTabs.long-name.png"; sourceTree = "<group>"; };
 		AAF547EF2F2445C0001DB5AC /* PagedContainerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedContainerViewModelTests.swift; sourceTree = "<group>"; };
 		AAF547F02F2445C0001DB5AC /* PagedTabBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedTabBarTests.swift; sourceTree = "<group>"; };
 		AAF547F22F2445C0001DB5AC /* RemoteConfigFeature+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfigFeature+HelpersTests.swift"; sourceTree = "<group>"; };
@@ -855,35 +835,9 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		AAF547ED2F2445C0001DB5AC /* PagedTabBarTests */ = {
-			isa = PBXGroup;
-			children = (
-				AAF547E32F2445C0001DB5AC /* testBadgeAndDot.badge-and-dot.png */,
-				AAF547E42F2445C0001DB5AC /* testLongBadge.long-badge.png */,
-				AAF547E52F2445C0001DB5AC /* testLongGermanNames.German.png */,
-				AAF547E62F2445C0001DB5AC /* testLongName.long-name.png */,
-				AAF547E72F2445C0001DB5AC /* testNoBadges.no-badges.png */,
-				AAF547E82F2445C0001DB5AC /* testNoBadgesLongNames.no-badges.png */,
-				AAF547E92F2445C0001DB5AC /* testSecondTabBadge.long-name.png */,
-				AAF547EA2F2445C0001DB5AC /* testTabSelection.firstTab.png */,
-				AAF547EB2F2445C0001DB5AC /* testTabSelection.secondTab.png */,
-				AAF547EC2F2445C0001DB5AC /* testThreeTabs.long-name.png */,
-			);
-			path = PagedTabBarTests;
-			sourceTree = "<group>";
-		};
-		AAF547EE2F2445C0001DB5AC /* __Snapshots__ */ = {
-			isa = PBXGroup;
-			children = (
-				AAF547ED2F2445C0001DB5AC /* PagedTabBarTests */,
-			);
-			path = __Snapshots__;
-			sourceTree = "<group>";
-		};
 		AAF547F12F2445C0001DB5AC /* PagedContainer */ = {
 			isa = PBXGroup;
 			children = (
-				AAF547EE2F2445C0001DB5AC /* __Snapshots__ */,
 				AAF547EF2F2445C0001DB5AC /* PagedContainerViewModelTests.swift */,
 				AAF547F02F2445C0001DB5AC /* PagedTabBarTests.swift */,
 			);
@@ -1545,16 +1499,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AAF549B22F2445C0001DB5AC /* testBadgeAndDot.badge-and-dot.png in Resources */,
-				AAF549B32F2445C0001DB5AC /* testLongBadge.long-badge.png in Resources */,
-				AAF549B42F2445C0001DB5AC /* testLongGermanNames.German.png in Resources */,
-				AAF549B52F2445C0001DB5AC /* testLongName.long-name.png in Resources */,
-				AAF549B62F2445C0001DB5AC /* testNoBadges.no-badges.png in Resources */,
-				AAF549B72F2445C0001DB5AC /* testNoBadgesLongNames.no-badges.png in Resources */,
-				AAF549B82F2445C0001DB5AC /* testSecondTabBadge.long-name.png in Resources */,
-				AAF549B92F2445C0001DB5AC /* testTabSelection.firstTab.png in Resources */,
-				AAF549BA2F2445C0001DB5AC /* testTabSelection.secondTab.png in Resources */,
-				AAF549BB2F2445C0001DB5AC /* testThreeTabs.long-name.png in Resources */,
 				AAF549BC2F2445C0001DB5AC /* SearchQuery_AnotherFiveResults.json in Resources */,
 				AAF549BD2F2445C0001DB5AC /* SearchQuery_EmptyResults.json in Resources */,
 				AAF549BE2F2445C0001DB5AC /* SearchQuery_FiveResults.json in Resources */,
