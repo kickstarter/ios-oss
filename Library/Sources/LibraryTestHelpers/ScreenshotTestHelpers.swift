@@ -306,6 +306,8 @@ internal func assertSnapshot<Content: View>(
   testName: String = #function,
   line: UInt = #line
 ) {
+  // SwiftUI views need a UIHostingController to produce a UIKit view for snapshotting.
+  // https://developer.apple.com/documentation/swiftui/uihostingcontroller
   let hosting = UIHostingController(rootView: view)
   assertSnapshot(
     forView: hosting.view,
