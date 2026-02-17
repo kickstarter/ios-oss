@@ -314,9 +314,13 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
   }
 
   static func tierTypes() -> [PledgeProjectsOverviewSort] {
-    return featurePledgedProjectsOverviewV2Enabled()
-      ? PPOTierType.fundedProjectGraphQLTypes()
-      : PPOTierType.projectAlertGraphQLTypes()
+    if featurePledgedProjectsOverviewV4Enabled() {
+      return PPOTierType.allGraphQLTypes()
+    }
+    if featurePledgedProjectsOverviewV2Enabled() {
+      return PPOTierType.fundedProjectGraphQLTypes()
+    }
+    return PPOTierType.projectAlertGraphQLTypes()
   }
 
   // MARK: - Inputs
