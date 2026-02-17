@@ -17,7 +17,7 @@ final class DecodeErrorTests: XCTestCase {
 
     do {
       let data = json.data(using: .utf8)!
-      let _ = try JSONDecoder().decode(Foo.self, from: data)
+      _ = try JSONDecoder().decode(Foo.self, from: data)
       XCTFail("Decode should have thrown")
     } catch let error as DecodingError {
       XCTAssertEqual(error.prettyDescription, "JSON decoding failed: missing key \"bar\"")
@@ -36,7 +36,7 @@ final class DecodeErrorTests: XCTestCase {
 
     do {
       let data = json.data(using: .utf8)!
-      let _ = try JSONDecoder().decode(Foo.self, from: data)
+      _ = try JSONDecoder().decode(Foo.self, from: data)
       XCTFail("Decode should have thrown")
     } catch let error as DecodingError {
       XCTAssertEqual(error.prettyDescription, "JSON decoding failed: missing value for \"bar\"")
@@ -55,7 +55,7 @@ final class DecodeErrorTests: XCTestCase {
 
     do {
       let data = json.data(using: .utf8)!
-      let _ = try JSONDecoder().decode(Foo.self, from: data)
+      _ = try JSONDecoder().decode(Foo.self, from: data)
       XCTFail("Decode should have thrown")
     } catch let error as DecodingError {
       XCTAssertEqual(error.prettyDescription, "JSON decoding failed: type mismatch for \"bar\"")
