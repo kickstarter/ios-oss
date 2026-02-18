@@ -68,7 +68,7 @@ public final class RewardsUseCase: RewardsUseCaseType, RewardsUseCaseOutputs {
   /// - Returns: `true` if the GraphQL mutation `addUserToSecretRewardGroup` was triggered successfully.
   ///            `false` if the user is not logged in or the token is missing/empty, thus skipping the mutation.
   static func addUserToSecretRewardGroupIfNeeded(
-    project: Project,
+    project param: Param,
     secretRewardToken: String?
   ) -> SignalProducer<Bool, ErrorEnvelope> {
     let isUserLoggedIn = AppEnvironment.current.currentUser != nil
@@ -78,13 +78,8 @@ public final class RewardsUseCase: RewardsUseCaseType, RewardsUseCaseOutputs {
           !secretRewardToken.isEmpty else {
       return SignalProducer(value: false)
     }
-
-    let input = AddUserToSecretRewardGroupInput(
-      projectId: project.graphID,
-      secretRewardToken: secretRewardToken
-    )
     return AppEnvironment.current.apiService
-      .addUserToSecretRewardGroup(input: input)
+      .addUserToSecretRewardGroup(token: secretRewardToken, forProject: param)
       .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
       .switchMap { _ -> SignalProducer<Bool, ErrorEnvelope> in
         SignalProducer(value: true)

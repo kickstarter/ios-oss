@@ -110,12 +110,12 @@ public struct Service: ServiceType {
       .flatMap(CreatePaymentSourceEnvelope.producer(from:))
   }
 
-  public func addUserToSecretRewardGroup(input: AddUserToSecretRewardGroupInput)
+  public func addUserToSecretRewardGroup(token: String, forProject param: Param)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+    let input = GraphAPI.AddUserToSecretRewardGroupInput.from(token: token, forProject: param)
     return GraphQL.shared.client
       .perform(
-        mutation: GraphAPI
-          .AddUserToSecretRewardGroupMutation(input: GraphAPI.AddUserToSecretRewardGroupInput.from(input))
+        mutation: GraphAPI.AddUserToSecretRewardGroupMutation(input: input)
       )
       .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
