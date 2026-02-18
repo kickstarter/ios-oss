@@ -10,7 +10,8 @@ struct PPOProjectCreator: View {
   var body: some View {
     HStack(alignment: .center) {
       Text("\(Strings.project_menu_created_by()) **\(self.creatorName)**")
-        .font(Font(PPOStyles.subtitle.font))
+        .font(Font(PPOStyles.subtitle.font()))
+        .multilineTextAlignment(.leading)
         .background(Color(PPOStyles.background))
         .foregroundStyle(Color(PPOStyles.subtitle.color))
         .frame(
