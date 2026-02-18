@@ -41,6 +41,7 @@ class TestCase: XCTestCase {
 
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
+    UIActivityViewController.swizzle()
 
     var calendar = Calendar(identifier: .gregorian)
     calendar.timeZone = TimeZone(identifier: "GMT")!
