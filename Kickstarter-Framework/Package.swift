@@ -24,6 +24,7 @@ let package = Package(
     .package(url: "https://github.com/braze-inc/braze-segment-swift", from: "6.0.0"),
     .package(url: "https://github.com/facebook/facebook-ios-sdk", from: "12.0.0"),
     .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "11.4.0"),
+    .package(url: "https://github.com/MrAsterisco/HyphenableText", from: "1.0.2"),
     .package(url: "https://github.com/onevcat/Kingfisher", from: "8.5.0"),
     .package(url: "https://github.com/stripe/stripe-ios-spm", from: "23.32.0"),
     .package(url: "https://github.com/yeatse/KingfisherWebP.git", from: "1.6.0"),

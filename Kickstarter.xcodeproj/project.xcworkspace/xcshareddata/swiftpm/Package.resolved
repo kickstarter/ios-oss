@@ -145,6 +145,15 @@
       }
     },
     {
+      "identity" : "hyphenabletext",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MrAsterisco/HyphenableText",
+      "state" : {
+        "revision" : "32d9d19d5aba2ac1b11dc182736d2bdfd456a852",
+        "version" : "1.0.2"
+      }
+    },
+    {
       "identity" : "interop-ios-for-google-sdks",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/interop-ios-for-google-sdks.git",
