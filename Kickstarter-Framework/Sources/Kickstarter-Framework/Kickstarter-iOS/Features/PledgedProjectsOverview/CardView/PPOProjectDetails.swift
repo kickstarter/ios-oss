@@ -29,7 +29,7 @@ struct PPOProjectDetails: View {
       VStack {
         if let title {
           Text(title)
-            .font(Font(PPOStyles.title.font))
+            .font(Font(PPOStyles.title.font()))
             .background(Color(PPOStyles.background))
             .foregroundStyle(Color(PPOStyles.title.color))
             .frame(
@@ -40,7 +40,7 @@ struct PPOProjectDetails: View {
             .multilineTextAlignment(Constants.multilineTextAlignment)
         }
         Text(Strings.Pledge_amount_pledged(pledge_amount: self.pledge))
-          .font(Font(PPOStyles.subtitle.font))
+          .font(Font(PPOStyles.subtitle.font()))
           .background(Color(PPOStyles.background))
           .foregroundStyle(Color(PPOStyles.subtitle.color))
           .frame(

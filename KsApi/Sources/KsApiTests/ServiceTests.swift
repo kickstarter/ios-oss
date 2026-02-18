@@ -167,8 +167,12 @@ final class ServiceTests: XCTestCase {
       .decodeModelToResult(data: data, ofType: MySwiftModel.self)
 
     switch result {
-    case .success: XCTFail("Decode should have failed.")
-    case let .failure(error): XCTAssertNotNil(error)
+    case .success:
+      XCTFail("Decode should have failed.")
+    case let .failure(error):
+      XCTAssertNotNil(error)
+      XCTAssertEqual(error.ksrCode, .DecodingJSONFailed)
+      XCTAssertEqual(error.errorMessages, ["JSON decoding failed: missing key \"array\""])
     }
   }
 

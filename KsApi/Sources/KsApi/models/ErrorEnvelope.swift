@@ -101,8 +101,15 @@ public struct ErrorEnvelope {
    - returns: An error envelope that describes why decoding failed.
    */
   internal static func couldNotDecodeJSON(_ decodeError: Error) -> ErrorEnvelope {
+    let errorMessage: String
+    if let jsonDecodeError = decodeError as? DecodingError {
+      errorMessage = jsonDecodeError.prettyDescription
+    } else {
+      errorMessage = "Could not decode JSON (with unknown error)"
+    }
+
     return ErrorEnvelope(
-      errorMessages: [decodeError.localizedDescription],
+      errorMessages: [errorMessage],
       ksrCode: .DecodingJSONFailed,
       httpCode: 400,
       exception: nil,
