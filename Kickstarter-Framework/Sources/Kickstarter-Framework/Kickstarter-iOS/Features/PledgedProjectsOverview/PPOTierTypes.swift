@@ -55,6 +55,21 @@ public enum PPOTierType: String {
     return self.fundedProjectTypes().map { $0.toPledgeProjectsOverviewSort() }
   }
 
+  public static func allTypes() -> [PPOTierType] {
+    return self.fundedProjectTypes() + [
+      .campaignLive,
+      .campaignFunded,
+      .campaignEnded,
+      .campaignFailed,
+      .pledgeDropped,
+      .pledgeCanceled
+    ]
+  }
+
+  public static func allGraphQLTypes() -> [PledgeProjectsOverviewSort] {
+    return self.allTypes().map { $0.toPledgeProjectsOverviewSort() }
+  }
+
   // swiftlint:disable:next cyclomatic_complexity
   public func toPledgeProjectsOverviewSort() -> PledgeProjectsOverviewSort {
     switch self {

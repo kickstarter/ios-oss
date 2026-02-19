@@ -616,15 +616,15 @@
       return client.performWithResult(mutation: mutation, result: self.addPaymentSheetPaymentSourceResult)
     }
 
-    public func addUserToSecretRewardGroup(input: AddUserToSecretRewardGroupInput)
+    public func addUserToSecretRewardGroup(token: String, forProject param: Param)
       -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
       guard let client = self.apolloClient else {
         return .empty
       }
 
-      let mutation = GraphAPI
-        .AddUserToSecretRewardGroupMutation(input: GraphAPI.AddUserToSecretRewardGroupInput.from(input))
+      let input = GraphAPI.AddUserToSecretRewardGroupInput.from(token: token, forProject: param)
 
+      let mutation = GraphAPI.AddUserToSecretRewardGroupMutation(input: input)
       return client.performWithResult(mutation: mutation, result: self.addUserToSecretRewardGroup)
     }
 

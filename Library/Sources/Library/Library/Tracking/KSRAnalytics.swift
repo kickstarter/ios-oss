@@ -154,6 +154,7 @@ public final class KSRAnalytics {
     case logInOrSignUp
     case logInSubmit
     case messageCreatorInitiate
+    case nativeManagePledge
     case pledgeConfirm
     case pledgeInitiate
     case pledgeSubmit
@@ -193,6 +194,7 @@ public final class KSRAnalytics {
       case .fixPledgeInitiate: return "fix_pledge_initiate"
       case .forgotPassword: return "forgot_password"
       case .messageCreatorInitiate: return "message_creator_initiate"
+      case .nativeManagePledge: return "native_manage_pledge"
       case .onboardingClose: return "close"
       case .onboardingNext: return "next"
       case .onboardingGetNotified: return "get_notified"
@@ -573,7 +575,8 @@ public final class KSRAnalytics {
     let paymentFailedCount: Int
     let cardAuthRequiredCount: Int
     let fundedProjectCount: Int
-    let total: Int?
+    let liveProjectCount: Int
+    let unsuccessfulPledgeCount: Int
     let page: Int?
 
     var alertCardCount: Int {
@@ -584,6 +587,15 @@ public final class KSRAnalytics {
         self.cardAuthRequiredCount
     }
 
+    // Calculate the total number of cards that have been fetched.
+    // This ensures the total count is consistent with other counts.
+    var total: Int {
+      return self.alertCardCount +
+        self.fundedProjectCount +
+        self.liveProjectCount +
+        self.unsuccessfulPledgeCount
+    }
+
     public init(
       addressLocksSoonCount: Int,
       surveyAvailableCount: Int,
@@ -591,7 +603,8 @@ public final class KSRAnalytics {
       paymentFailedCount: Int,
       cardAuthRequiredCount: Int,
       fundedProjectCount: Int,
-      total: Int?,
+      liveProjectCount: Int,
+      unsuccessfulPledgeCount: Int,
       page: Int?
     ) {
       self.addressLocksSoonCount = addressLocksSoonCount
@@ -600,7 +613,8 @@ public final class KSRAnalytics {
       self.paymentFailedCount = paymentFailedCount
       self.cardAuthRequiredCount = cardAuthRequiredCount
       self.fundedProjectCount = fundedProjectCount
-      self.total = total
+      self.liveProjectCount = liveProjectCount
+      self.unsuccessfulPledgeCount = unsuccessfulPledgeCount
       self.page = page
     }
   }
@@ -791,6 +805,23 @@ public final class KSRAnalytics {
   ) {
     let props = contextProperties(
       ctaContext: .authenticateCardInitiate,
+      page: .projectAlerts
+    )
+    .withAllValuesFrom(projectProperties(from: project))
+    .withAllValuesFrom(pledgedProjectOverviewProperties(from: properties))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  public func trackPPOManageLivePledge(
+    project: any ProjectAnalyticsProperties,
+    properties: PledgedProjectOverviewProperties
+  ) {
+    let props = contextProperties(
+      ctaContext: .nativeManagePledge,
       page: .projectAlerts
     )
     .withAllValuesFrom(projectProperties(from: project))
@@ -1762,11 +1793,10 @@ private func pledgedProjectOverviewProperties(
 
   result["notification_count_alert_card"] = properties.alertCardCount
   result["notification_count_funded_project"] = properties.fundedProjectCount
+  result["notification_count_live_project"] = properties.liveProjectCount
+  result["notification_count_unsuccessful_pledge"] = properties.unsuccessfulPledgeCount
 
-  if let total = properties.total {
-    result["notification_count_total"] = total
-  }
-
+  result["notification_count_total"] = properties.total
   if let page = properties.page {
     result["context_page_number"] = page
   }

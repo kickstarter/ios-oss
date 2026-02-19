@@ -5,7 +5,7 @@ import SwiftUI
 
 enum PPOStyles {
   static let header = (
-    font: UIFont.ksr_title2(),
+    font: { UIFont.ksr_title2() },
     foreground: Colors.Text.primary.uiColor(),
     background: Colors.Background.Surface.primary.uiColor(),
     padding: Edge.Set.top
@@ -19,7 +19,7 @@ enum PPOStyles {
   )
 
   static let error = (
-    font: UIFont.ksr_callout(),
+    font: { UIFont.ksr_callout() },
     foreground: LegacyColors.ksr_black.uiColor(),
     background: LegacyColors.ksr_white.uiColor()
   )
@@ -40,21 +40,21 @@ enum PPOStyles {
   )
 
   static let title = (
-    font: UIFont.ksr_subhead().bolded,
+    font: { UIFont.ksr_subhead().bolded },
     color: LegacyColors.ksr_black.uiColor()
   )
 
   static let subtitle = (
-    font: UIFont.ksr_footnote(),
+    font: { UIFont.ksr_footnote() },
     color: LegacyColors.ksr_support_400.uiColor()
   )
 
   static let body = (
-    font: UIFont.ksr_caption1(),
+    font: { UIFont.ksr_caption1() },
     color: LegacyColors.ksr_black.uiColor()
   )
 
-  static let flagFont = UIFont.ksr_caption1().bolded
+  static let flagFont = { UIFont.ksr_caption1().bolded }
   static let flagSpacing: CGFloat = Spacing.unit_02
 
   static let bannerPadding = 7

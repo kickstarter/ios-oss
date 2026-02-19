@@ -186,7 +186,7 @@ struct PPOProjectCard: View {
   private var actionDetails: some View {
     if let actionDetails = self.viewModel.actionDetails {
       Text(actionDetails)
-        .font(Font(PPOStyles.subtitle.font))
+        .font(Font(PPOStyles.subtitle.font()))
         .frame(
           maxWidth: .infinity,
           alignment: .leading
@@ -199,7 +199,7 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private var rewardReceivedToggle: some View {
     Toggle(Strings.Reward_received(), isOn: self.$viewModel.rewardToggleEnabled)
-      .font(Font(PPOStyles.title.font))
+      .font(Font(PPOStyles.title.font()))
       .foregroundStyle(Color(PPOStyles.title.color))
       .tint(Colors.Background.Accent.Green.bold.swiftUIColor())
       .padding([.horizontal])

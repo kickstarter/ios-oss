@@ -37,7 +37,7 @@ public protocol ServiceType {
   )
 
   /// Adds a user to a secret reward user group
-  func addUserToSecretRewardGroup(input: AddUserToSecretRewardGroupInput) ->
+  func addUserToSecretRewardGroup(token: String, forProject param: Param) ->
     SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
   /// Fetches a GraphQL query and returns the data.
