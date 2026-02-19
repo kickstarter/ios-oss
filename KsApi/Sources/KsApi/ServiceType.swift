@@ -252,11 +252,14 @@ public protocol ServiceType {
     -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope>
 
   /// Fetch the project's rewards and pledge over time data
-  func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int)
+  func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int, location: String?)
     -> SignalProducer<RewardsAndPledgeOverTimeEnvelope, ErrorEnvelope>
 
+  /// Fetch shippable locations for a project
+  func fetchShippableLocations(projectId: Int) -> SignalProducer<[Location], ErrorEnvelope>
+
   /// Fetch the project's rewards only, without shipping rules
-  func fetchProjectRewards(projectId: Int) -> SignalProducer<[Reward], ErrorEnvelope>
+  func fetchProjectRewards(projectId: Int, location: String?) -> SignalProducer<[Reward], ErrorEnvelope>
 
   /// Fetch a single project with the specified discovery params.
   func fetchProject(_ params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope>

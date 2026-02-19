@@ -613,14 +613,29 @@ public struct Service: ServiceType {
     return request(.project(param))
   }
 
-  public func fetchProjectRewards(projectId: Int)
+  public func fetchShippableLocations(projectId: Int)
+    -> SignalProducer<[Location], ErrorEnvelope> {
+    return self.fetch(query: GraphAPI.ShippableLocationsForProjectQuery(id: projectId))
+      .map { Location.locations(from: $0) }
+  }
+
+  public func fetchProjectRewards(projectId: Int, location: String? = nil)
     -> SignalProducer<[Reward], ErrorEnvelope> {
+    let locationCountryCode: GraphQLNullable<GraphQLEnum<GraphAPI.CountryCode>> = {
+      guard let code = location,
+            let countryCode = GraphAPI.CountryCode(rawValue: code) else {
+        return .none
+      }
+      return .some(GraphQLEnum(countryCode))
+    }()
     let query = GraphAPI
       .FetchProjectRewardsByIdQuery(
         projectId: projectId,
         includeShippingRules: true,
         includeLocalPickup: true,
-        includePledgeOverTime: false
+        includePledgeOverTime: false,
+        sort: GraphQLNullable.some(GraphQLEnum(GraphAPI.ProjectRewardsSort.eligibility)),
+        location: locationCountryCode
       )
 
     return GraphQL.shared.client
@@ -628,14 +643,23 @@ public struct Service: ServiceType {
       .flatMap(Project.projectRewardsProducer(from:))
   }
 
-  public func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int)
+  public func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int, location: String? = nil)
     -> SignalProducer<RewardsAndPledgeOverTimeEnvelope, ErrorEnvelope> {
+    let locationCountryCode: GraphQLNullable<GraphQLEnum<GraphAPI.CountryCode>> = {
+      guard let code = location,
+            let countryCode = GraphAPI.CountryCode(rawValue: code) else {
+        return .none
+      }
+      return .some(GraphQLEnum(countryCode))
+    }()
     let query = GraphAPI
       .FetchProjectRewardsByIdQuery(
         projectId: projectId,
         includeShippingRules: true,
         includeLocalPickup: true,
-        includePledgeOverTime: true
+        includePledgeOverTime: true,
+        sort: GraphQLNullable.some(GraphQLEnum(GraphAPI.ProjectRewardsSort.eligibility)),
+        location: locationCountryCode
       )
 
     return GraphQL.shared.client

@@ -979,9 +979,12 @@ private func fetchProject(
   return projectAndBackingProducer
 }
 
-private func fetchProjectRewards(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
+private func fetchProjectRewards(
+  project: Project,
+  location: String? = nil
+) -> SignalProducer<Project, ErrorEnvelope> {
   return AppEnvironment.current.apiService
-    .fetchProjectRewards(projectId: project.id)
+    .fetchProjectRewards(projectId: project.id, location: location)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     .switchMap { projectRewards -> SignalProducer<Project, ErrorEnvelope> in
 

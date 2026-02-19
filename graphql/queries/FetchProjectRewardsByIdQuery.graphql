@@ -1,6 +1,6 @@
-query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!, $includePledgeOverTime: Boolean!) {
+query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!, $includePledgeOverTime: Boolean!, $sort: ProjectRewardsSort, $location: CountryCode) {
   project(pid: $projectId) {
-    rewards {
+    rewards(sort: $sort, location: $location) {
       nodes {
         ...RewardFragment
         simpleShippingRulesExpanded @include(if: $includeShippingRules) {

@@ -70,7 +70,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       }
 
     let rewards = project
-      .map(allowableSortedProjectRewards)
+      .map(\.rewards)
 
     let filteredByLocationRewards = Signal.combineLatest(rewards, self.shippingLocationSelectedSignal)
       .map(filteredRewardsByLocation)
@@ -537,33 +537,33 @@ private func backingAndShippingTotal(for project: Project, and reward: Reward) -
   return (backing, shippingTotal)
 }
 
-private func allowableSortedProjectRewards(from project: Project) -> [Reward] {
-  var notReward: [Reward] = []
-  var unavailableRewards: [Reward] = []
-  var secretRewards: [Reward] = []
-  var availableRewards: [Reward] = []
+// private func allowableSortedProjectRewards(from project: Project) -> [Reward] {
+//   var notReward: [Reward] = []
+//   var unavailableRewards: [Reward] = []
+//   var secretRewards: [Reward] = []
+//   var availableRewards: [Reward] = []
 
-  for reward in project.rewards {
-    if reward.isNoReward {
-      notReward.append(reward)
-      continue
-    }
+//   for reward in project.rewards {
+//     if reward.isNoReward {
+//       notReward.append(reward)
+//       continue
+//     }
 
-    if reward.isAvailable != true {
-      unavailableRewards.append(reward)
-      continue
-    }
+//     if reward.isAvailable != true {
+//       unavailableRewards.append(reward)
+//       continue
+//     }
 
-    if reward.isSecretReward {
-      secretRewards.append(reward)
-      continue
-    }
+//     if reward.isSecretReward {
+//       secretRewards.append(reward)
+//       continue
+//     }
 
-    availableRewards.append(reward)
-  }
+//     availableRewards.append(reward)
+//   }
 
-  return notReward + secretRewards + availableRewards + unavailableRewards
-}
+//   return notReward + secretRewards + availableRewards + unavailableRewards
+// }
 
 private func filteredRewardsByLocation(
   _ rewards: [Reward],

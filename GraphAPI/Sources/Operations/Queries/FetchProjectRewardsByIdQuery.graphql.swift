@@ -7,7 +7,7 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
   public static let operationName: String = "FetchProjectRewardsById"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!, $includePledgeOverTime: Boolean!) { project(pid: $projectId) { __typename rewards { __typename nodes { __typename ...RewardFragment simpleShippingRulesExpanded @include(if: $includeShippingRules) { __typename cost estimatedMin estimatedMax currency locationId locationName country } } } ...PledgeOverTimeFragment @include(if: $includePledgeOverTime) } }"#,
+      #"query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!, $includePledgeOverTime: Boolean!, $sort: ProjectRewardsSort, $location: CountryCode) { project(pid: $projectId) { __typename rewards(sort: $sort, location: $location) { __typename nodes { __typename ...RewardFragment simpleShippingRulesExpanded @include(if: $includeShippingRules) { __typename cost estimatedMin estimatedMax currency locationId locationName country } } } ...PledgeOverTimeFragment @include(if: $includePledgeOverTime) } }"#,
       fragments: [LocationFragment.self, MoneyFragment.self, PledgeOverTimeFragment.self, RewardFragment.self, ShippingRuleFragment.self]
     ))
 
@@ -15,24 +15,32 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
   public var includeShippingRules: Bool
   public var includeLocalPickup: Bool
   public var includePledgeOverTime: Bool
+  public var sort: GraphQLNullable<GraphQLEnum<ProjectRewardsSort>>
+  public var location: GraphQLNullable<GraphQLEnum<CountryCode>>
 
   public init(
     projectId: Int,
     includeShippingRules: Bool,
     includeLocalPickup: Bool,
-    includePledgeOverTime: Bool
+    includePledgeOverTime: Bool,
+    sort: GraphQLNullable<GraphQLEnum<ProjectRewardsSort>>,
+    location: GraphQLNullable<GraphQLEnum<CountryCode>>
   ) {
     self.projectId = projectId
     self.includeShippingRules = includeShippingRules
     self.includeLocalPickup = includeLocalPickup
     self.includePledgeOverTime = includePledgeOverTime
+    self.sort = sort
+    self.location = location
   }
 
   public var __variables: Variables? { [
     "projectId": projectId,
     "includeShippingRules": includeShippingRules,
     "includeLocalPickup": includeLocalPickup,
-    "includePledgeOverTime": includePledgeOverTime
+    "includePledgeOverTime": includePledgeOverTime,
+    "sort": sort,
+    "location": location
   ] }
 
   public struct Data: GraphAPI.SelectionSet {
@@ -71,7 +79,10 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
       public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Project }
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
-        .field("rewards", Rewards?.self),
+        .field("rewards", Rewards?.self, arguments: [
+          "sort": .variable("sort"),
+          "location": .variable("location")
+        ]),
         .include(if: "includePledgeOverTime", .inlineFragment(IfIncludePledgeOverTime.self)),
       ] }
 

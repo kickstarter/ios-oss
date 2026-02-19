@@ -37,10 +37,10 @@ final class RewardsCollectionViewModelTests: TestCase {
       |> Reward.lens.isAvailable .~ false
 
     let rewards = [
-      availableReward,
       Reward.noReward,
-      notAvailableReward,
-      Reward.secretRewardTemplate
+      Reward.secretRewardTemplate,
+      availableReward,
+      notAvailableReward
     ]
 
     let testProject = Project.template
@@ -67,10 +67,10 @@ final class RewardsCollectionViewModelTests: TestCase {
       |> Reward.lens.isAvailable .~ false
 
     let rewards = [
-      availableReward,
       Reward.noReward,
-      notAvailableReward,
-      Reward.secretRewardTemplate
+      Reward.secretRewardTemplate,
+      availableReward,
+      notAvailableReward
     ]
 
     let testProject = Project.template

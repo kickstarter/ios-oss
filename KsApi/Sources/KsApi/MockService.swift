@@ -1386,7 +1386,11 @@
       }
     }
 
-    func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int)
+    func fetchShippableLocations(projectId _: Int) -> SignalProducer<[Location], ErrorEnvelope> {
+      return SignalProducer(value: [])
+    }
+
+    func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int, location: String? = nil)
       -> SignalProducer<
         RewardsAndPledgeOverTimeEnvelope,
         ErrorEnvelope
@@ -1400,7 +1404,9 @@
           projectId: projectId,
           includeShippingRules: false,
           includeLocalPickup: true,
-          includePledgeOverTime: true
+          includePledgeOverTime: true,
+          sort: GraphQLNullable.some(GraphQLEnum(GraphAPI.ProjectRewardsSort.eligibility)),
+          location: GraphQLNullable.someOrNil(nil)
         )
 
       return client
@@ -1410,7 +1416,10 @@
         )
     }
 
-    internal func fetchProjectRewards(projectId: Int) -> SignalProducer<[Reward], ErrorEnvelope> {
+    internal func fetchProjectRewards(
+      projectId: Int,
+      location: String? = nil
+    ) -> SignalProducer<[Reward], ErrorEnvelope> {
       guard let client = self.apolloClient else {
         return .empty
       }
@@ -1420,7 +1429,9 @@
           projectId: projectId,
           includeShippingRules: false,
           includeLocalPickup: true,
-          includePledgeOverTime: false
+          includePledgeOverTime: false,
+          sort: GraphQLNullable.some(GraphQLEnum(GraphAPI.ProjectRewardsSort.eligibility)),
+          location: GraphQLNullable.someOrNil(nil)
         )
 
       return client
