@@ -17,6 +17,7 @@ let package = Package(
   dependencies: [
     .package(path: "../KsApi"),
     .package(path: "../Library"),
+    .package(path: "../ServerDrivenUI"),
     .package(url: "https://github.com/kickstarter/Kickstarter-Prelude.git", from: "1.0.0"),
     .package(url: "https://github.com/kickstarter/Kickstarter-ReactiveExtensions", from: "2.0.0"),
 
@@ -35,6 +36,7 @@ let package = Package(
       dependencies: [
         .product(name: "KsApi", package: "KsApi"),
         .product(name: "Library", package: "Library"),
+        .product(name: "ServerDrivenUI", package: "ServerDrivenUI"),
         .product(name: "Prelude", package: "Kickstarter-Prelude"),
         .product(name: "AlamofireImage", package: "AlamofireImage"),
         .product(name: "Kingfisher", package: "Kingfisher"),

@@ -395,6 +395,7 @@
 		A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppEnvironmentTests.swift; sourceTree = "<group>"; };
 		AAC413552F215CE000DAD7C6 /* Kickstarter.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Kickstarter.xctestplan; sourceTree = "<group>"; };
 		AAC4135C2F218F3200DAD7C6 /* KsApi.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = KsApi.xctestplan; path = KsApi/KsApi.xctestplan; sourceTree = "<group>"; };
+		AAD997442F3D2C510027D211 /* ServerDrivenUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ServerDrivenUI; sourceTree = "<group>"; };
 		AAF3BB3C2F14C6DF00DAE921 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AAF3BB4C2F16FD7D00DAE921 /* Kickstarter-Framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = "Kickstarter-Framework"; sourceTree = "<group>"; };
 		AAF3BB4D2F16FD7D00DAE921 /* KsApi */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = KsApi; sourceTree = "<group>"; };
@@ -816,6 +817,7 @@
 				AAF3BB4C2F16FD7D00DAE921 /* Kickstarter-Framework */,
 				AAF3BB4D2F16FD7D00DAE921 /* KsApi */,
 				AAF3BB4E2F16FD7D00DAE921 /* Library */,
+				AAD997442F3D2C510027D211 /* ServerDrivenUI */,
 				AAF548D62F2445C0001DB5AC /* LibraryTests */,
 				E113BD822B7D255000D3A809 /* Library-Keychain-iOSTests */,
 				E10BE8CE2B02975C00F73DC9 /* RichPushNotifications */,
