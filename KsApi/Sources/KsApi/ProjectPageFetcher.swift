@@ -1,4 +1,3 @@
-import GraphAPI
 import Prelude
 import ReactiveSwift
 
