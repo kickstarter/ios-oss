@@ -62,9 +62,6 @@ public protocol BackerDashboardViewModelOutputs {
   /// The currently selected tab.
   var currentSelectedTab: BackerDashboardTab { get }
 
-  /// Emits a CGFloat to set the top constraint of the embedded views when the sort bar is hidden or not.
-  var embeddedViewTopConstraintConstant: Signal<CGFloat, Never> { get }
-
   /// Emits when to present Messages.
   var goToMessages: Signal<(), Never> { get }
 
@@ -88,9 +85,6 @@ public protocol BackerDashboardViewModelOutputs {
 
   /// Emits the selected BackerDashboardTab to set the selected button and update all button selected states.
   var setSelectedButton: Signal<BackerDashboardTab, Never> { get }
-
-  /// Emits a boolean whether the sort bar is hidden or not.
-  var sortBarIsHidden: Signal<Bool, Never> { get }
 
   /// Emits a fresh user to be updated in the app environment.
   var updateCurrentUserInEnvironment: Signal<User, Never> { get }
@@ -188,11 +182,6 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
 
     self.goToSettings = self.settingsButtonTappedProperty.signal
 
-    self.sortBarIsHidden = self.viewDidLoadProperty.signal.mapConst(true)
-
-    self.embeddedViewTopConstraintConstant = self.sortBarIsHidden
-      .map { $0 ? 0.0 : Styles.grid(2) }
-
     self.initialTopConstantProperty <~ self.beganPanGestureProperty.signal
       .skipNil()
       // NB: This min value accounts for when the header is collapsed by panning the header view
@@ -281,7 +270,6 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
   public let backedButtonTitleText: Signal<String, Never>
   public let backerNameText: Signal<String, Never>
   public let configurePagesDataSource: Signal<(BackerDashboardTab, DiscoveryParams.Sort), Never>
-  public let embeddedViewTopConstraintConstant: Signal<CGFloat, Never>
   public let goToMessages: Signal<(), Never>
   public let goToSettings: Signal<(), Never>
   public let navigateToTab: Signal<BackerDashboardTab, Never>
@@ -289,7 +277,6 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
   public let postNotification: Signal<Notification, Never>
   public let savedButtonTitleText: Signal<String, Never>
   public let setSelectedButton: Signal<BackerDashboardTab, Never>
-  public let sortBarIsHidden: Signal<Bool, Never>
   public let updateCurrentUserInEnvironment: Signal<User, Never>
 
   public var inputs: BackerDashboardViewModelInputs { return self }
