@@ -324,7 +324,6 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.inputs.shippingLocationSelected(Location.usa)
 
     self.vm.inputs.rewardSelected(with: digitalReward.id)
-
     self.goToCustomizeYourReward.assertDidEmitValue()
 
     if let pledgeData = self.goToCustomizeYourReward.lastValue {
