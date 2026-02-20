@@ -7,7 +7,9 @@ import XCTest
 
 final class PPOEmptyStateViewTests: TestCase {
   func testEmptyStateView() {
-    forEachScreenshotType { type in
+    forEachScreenshotType(
+      contentSizes: [.large]
+    ) { type in
       let mockConfigClient = MockRemoteConfigClient()
       mockConfigClient.features = [
         RemoteConfigFeature.pledgedProjectsOverviewV4Enabled.rawValue: true,
