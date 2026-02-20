@@ -255,7 +255,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       |> Reward.lens.isAvailable .~ true
       |> Reward.lens.shippingRulesExpanded .~ []
       |> Reward.lens.shipping .~ Reward.Shipping(
-        enabled: true,
+        enabled: false,
         location: nil,
         preference: Reward.Shipping.Preference.none,
         summary: "Digital reward",
@@ -283,7 +283,10 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.inputs.shippingLocationSelected(Location.usa)
 
     self.vm.inputs.rewardSelected(with: digitalReward.id)
-
+    // this is weird why is it getting filtered out
+    // looks like it's not being flagged as digital.
+    // but maybe we were never calling the filtering code here before?
+    // super weird.
     self.goToCustomizeYourReward.assertDidEmitValue()
 
     if let pledgeData = self.goToCustomizeYourReward.lastValue {

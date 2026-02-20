@@ -69,11 +69,21 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         secretRewardToken
       }
 
-    let rewards = project
-      .map(allowableSortedProjectRewards)
+    let shippingLocation = Signal.merge(
+      configData.mapConst(nil), // Default selected shipping location to nil
+      self.shippingLocationSelectedSignal
+    )
 
-    let filteredByLocationRewards = Signal.combineLatest(rewards, self.shippingLocationSelectedSignal)
-      .map(filteredRewardsByLocation)
+    let rewards = project
+      .takePairWhen(shippingLocation)
+      .map { project, location in
+        let sorted = allowableSortedProjectRewards(project.rewards)
+        if let location = location {
+          return filteredRewardsByLocation(sorted, location: location)
+        } else {
+          return sorted
+        }
+      }
 
     self.title = configData
       .map { project, _, context, _ in (context, project) }
@@ -84,24 +94,18 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.scrollToRewardIndexPath = Signal.combineLatest(
       project,
       rewards,
-      filteredByLocationRewards,
       secretRewardToken
     )
     .takeWhen(self.viewDidLayoutSubviewsProperty.signal.ignoreValues())
-    .map { project, rewards, filteredRewardsByLocation, secretRewardToken in
+    .map { project, rewards, secretRewardToken in
       rewardToScrollIndexPath(
         project,
-        rewards: filteredRewardsByLocation.isEmpty ? rewards : filteredRewardsByLocation,
+        rewards: rewards,
         secretRewardToken: secretRewardToken
       )
     }
     .skipNil()
     .take(first: 1)
-
-    let shippingLocation = Signal.merge(
-      configData.mapConst(nil), // Default selected shipping location to nil
-      self.shippingLocationSelectedSignal
-    )
 
     let selectedShippingRule: Signal<ShippingRule?, Never> = shippingLocation
       .takePairWhen(self.selectedRewardProperty.signal.skipNil())
@@ -112,19 +116,12 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.reloadDataWithValues = Signal.combineLatest(
       project,
       rewards,
-      filteredByLocationRewards,
       self.shippingLocationSelectedSignal.signal
     )
-    .map { project, rewards, filteredByLocationRewards, location in
-      if !filteredByLocationRewards.isEmpty {
-        filteredByLocationRewards
-          .filter { reward in isStartDateBeforeToday(for: reward) }
-          .map { reward in (project, reward, .pledge, location) }
-      } else {
-        rewards
-          .filter { reward in isStartDateBeforeToday(for: reward) }
-          .map { reward in (project, reward, .pledge, nil) }
-      }
+    .map { project, rewards, location in
+      rewards
+        .filter { reward in isStartDateBeforeToday(for: reward) }
+        .map { reward in (project, reward, .pledge, location) }
     }
 
     self.configureRewardsCollectionViewFooterWithCount = self.reloadDataWithValues
@@ -537,13 +534,13 @@ private func backingAndShippingTotal(for project: Project, and reward: Reward) -
   return (backing, shippingTotal)
 }
 
-private func allowableSortedProjectRewards(from project: Project) -> [Reward] {
+private func allowableSortedProjectRewards(_ rewards: [Reward]) -> [Reward] {
   var notReward: [Reward] = []
   var unavailableRewards: [Reward] = []
   var secretRewards: [Reward] = []
   var availableRewards: [Reward] = []
 
-  for reward in project.rewards {
+  for reward in rewards {
     if reward.isNoReward {
       notReward.append(reward)
       continue
@@ -567,7 +564,7 @@ private func allowableSortedProjectRewards(from project: Project) -> [Reward] {
 
 private func filteredRewardsByLocation(
   _ rewards: [Reward],
-  location: Location?
+  location: Location
 ) -> [Reward] {
   return rewards.filter { reward in
     var shouldDisplayReward = false
@@ -582,7 +579,7 @@ private func filteredRewardsByLocation(
 
       // If restricted shipping, compare against selected shipping location.
     } else if isRestrictedShippingReward {
-      shouldDisplayReward = rewardShipsTo(selectedLocation: location?.id, reward)
+      shouldDisplayReward = rewardShipsTo(selectedLocation: location.id, reward)
     }
 
     return shouldDisplayReward
