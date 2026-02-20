@@ -6,6 +6,8 @@ import Library
 import SwiftUI
 
 struct PPOProjectDetails: View {
+  @SwiftUI.Environment(\.sizeCategory) var sizeCategory
+
   let image: Source?
   let title: String?
   let pledge: String

@@ -3,6 +3,8 @@ import Library
 import SwiftUI
 
 struct PPOEmptyStateView: View {
+  @SwiftUI.Environment(\.sizeCategory) var sizeCategory
+
   var onOpenBackedProjects: (() -> Void)?
   var onExploreProjects: (() -> Void)?
 

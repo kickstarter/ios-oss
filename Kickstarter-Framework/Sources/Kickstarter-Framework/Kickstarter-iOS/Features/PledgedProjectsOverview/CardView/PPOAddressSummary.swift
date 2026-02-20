@@ -4,6 +4,8 @@ import Library
 import SwiftUI
 
 struct PPOAddressSummary: View {
+  @SwiftUI.Environment(\.sizeCategory) var sizeCategory
+
   let address: String
   let leadingColumnWidth: CGFloat
   let editable: Bool
