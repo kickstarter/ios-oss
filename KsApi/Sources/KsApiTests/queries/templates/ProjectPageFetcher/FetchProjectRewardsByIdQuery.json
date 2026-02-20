@@ -1,0 +1,2849 @@
+{
+  "data": {
+    "project": {
+      "__typename": "Project",
+      "rewards": {
+        "__typename": "ProjectRewardConnection",
+        "nodes": [
+          {
+            "__typename": "Reward",
+            "simpleShippingRulesExpanded": [
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3Mzk=",
+                "locationName": "Afghanistan",
+                "country": "AF"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMTI1Nzc4NjU=",
+                "locationName": "Aland Islands",
+                "country": "AX"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NDI=",
+                "locationName": "Albania",
+                "country": "AL"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NDA=",
+                "locationName": "Algeria",
+                "country": "DZ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NDY=",
+                "locationName": "American Samoa",
+                "country": "AS"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NDQ=",
+                "locationName": "Andorra",
+                "country": "AD"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NDU=",
+                "locationName": "Angola",
+                "country": "AO"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NTE=",
+                "locationName": "Anguilla",
+                "country": "AI"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjgyODk0MDk=",
+                "locationName": "Antarctica",
+                "country": "AQ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3Mzc=",
+                "locationName": "Antigua and Barbuda",
+                "country": "AG"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NDc=",
+                "locationName": "Argentina",
+                "country": "AR"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NDM=",
+                "locationName": "Armenia",
+                "country": "AM"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3MzY=",
+                "locationName": "Aruba",
+                "country": "AW"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NDg=",
+                "locationName": "Australia",
+                "country": "AU"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NTA=",
+                "locationName": "Austria",
+                "country": "AT"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NDE=",
+                "locationName": "Azerbaijan",
+                "country": "AZ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NTM=",
+                "locationName": "Bahrain",
+                "country": "BH"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NTk=",
+                "locationName": "Bangladesh",
+                "country": "BD"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NTQ=",
+                "locationName": "Barbados",
+                "country": "BB"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NjU=",
+                "locationName": "Belarus",
+                "country": "BY"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NTc=",
+                "locationName": "Belgium",
+                "country": "BE"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NjA=",
+                "locationName": "Belize",
+                "country": "BZ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NjQ=",
+                "locationName": "Benin",
+                "country": "BJ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NTY=",
+                "locationName": "Bermuda",
+                "country": "BM"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NzA=",
+                "locationName": "Bhutan",
+                "country": "BT"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NjI=",
+                "locationName": "Bolivia",
+                "country": "BO"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NjE=",
+                "locationName": "Bosnia and Herzegovina",
+                "country": "BA"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NTU=",
+                "locationName": "Botswana",
+                "country": "BW"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjgyODk0MTA=",
+                "locationName": "Bouvet Island",
+                "country": "BV"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3Njg=",
+                "locationName": "Brazil",
+                "country": "BR"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NDk=",
+                "locationName": "British Indian Ocean Territory",
+                "country": "IO"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5ODM=",
+                "locationName": "British Virgin Islands",
+                "country": "VG"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NzM=",
+                "locationName": "Brunei",
+                "country": "BN"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NzE=",
+                "locationName": "Bulgaria",
+                "country": "BG"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5Nzg=",
+                "locationName": "Burkina Faso",
+                "country": "BF"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NzQ=",
+                "locationName": "Burundi",
+                "country": "BI"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NzY=",
+                "locationName": "Cambodia",
+                "country": "KH"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3ODU=",
+                "locationName": "Cameroon",
+                "country": "CM"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NzU=",
+                "locationName": "Canada",
+                "country": "CA"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3OTQ=",
+                "locationName": "Cape Verde",
+                "country": "CV"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tNTY1NTgwNTY=",
+                "locationName": "Caribbean Netherlands",
+                "country": "BQ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3ODM=",
+                "locationName": "Cayman Islands",
+                "country": "KY"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3OTI=",
+                "locationName": "Central African Republic",
+                "country": "CF"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3ODI=",
+                "locationName": "Chile",
+                "country": "CL"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3ODE=",
+                "locationName": "China",
+                "country": "CN"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4Njk=",
+                "locationName": "Christmas Island",
+                "country": "CX"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3ODQ=",
+                "locationName": "Cocos (Keeling) Islands",
+                "country": "CC"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3ODc=",
+                "locationName": "Colombia",
+                "country": "CO"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3ODY=",
+                "locationName": "Comoros",
+                "country": "KM"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3Nzk=",
+                "locationName": "Congo",
+                "country": "CG"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3OTU=",
+                "locationName": "Cook Islands",
+                "country": "CK"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3OTE=",
+                "locationName": "Costa Rica",
+                "country": "CR"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NDM=",
+                "locationName": "Croatia",
+                "country": "HR"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tNTY1NTgwNTc=",
+                "locationName": "Curaçao",
+                "country": "CW"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjY4MTIzNDY=",
+                "locationName": "Cyprus",
+                "country": "CY"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MTA=",
+                "locationName": "Czech Republic",
+                "country": "CZ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3ODA=",
+                "locationName": "Democratic Republic of Congo",
+                "country": "CD"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3OTY=",
+                "locationName": "Denmark",
+                "country": "DK"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5Mjg=",
+                "locationName": "Disputed Territory",
+                "country": "XX"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3OTc=",
+                "locationName": "Djibouti",
+                "country": "DJ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3OTg=",
+                "locationName": "Dominica",
+                "country": "DM"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MDA=",
+                "locationName": "Dominican Republic",
+                "country": "DO"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5Njg=",
+                "locationName": "East Timor",
+                "country": "TL"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MDE=",
+                "locationName": "Ecuador",
+                "country": "EC"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MDI=",
+                "locationName": "Egypt",
+                "country": "EG"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MDc=",
+                "locationName": "El Salvador",
+                "country": "SV"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MDQ=",
+                "locationName": "Equatorial Guinea",
+                "country": "GQ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MDY=",
+                "locationName": "Eritrea",
+                "country": "ER"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MDU=",
+                "locationName": "Estonia",
+                "country": "EE"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MDg=",
+                "locationName": "Ethiopia",
+                "country": "ET"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MTQ=",
+                "locationName": "Falkland Islands",
+                "country": "FK"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MTY=",
+                "locationName": "Faroe Islands",
+                "country": "FO"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MTU=",
+                "locationName": "Federated States of Micronesia",
+                "country": "FM"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MTM=",
+                "locationName": "Fiji",
+                "country": "FJ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MTI=",
+                "locationName": "Finland",
+                "country": "FI"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MTk=",
+                "locationName": "France",
+                "country": "FR"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MTE=",
+                "locationName": "French Guiana",
+                "country": "GF"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MTc=",
+                "locationName": "French Polynesia",
+                "country": "PF"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MjI=",
+                "locationName": "Gabon",
+                "country": "GA"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MjM=",
+                "locationName": "Georgia",
+                "country": "GE"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4Mjk=",
+                "locationName": "Germany",
+                "country": "DE"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MjQ=",
+                "locationName": "Ghana",
+                "country": "GH"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MjU=",
+                "locationName": "Gibraltar",
+                "country": "GI"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MzM=",
+                "locationName": "Greece",
+                "country": "GR"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4Mjg=",
+                "locationName": "Greenland",
+                "country": "GL"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MjY=",
+                "locationName": "Grenada",
+                "country": "GD"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MzE=",
+                "locationName": "Guadeloupe",
+                "country": "GP"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MzI=",
+                "locationName": "Guam",
+                "country": "GU"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MzQ=",
+                "locationName": "Guatemala",
+                "country": "GT"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MzU=",
+                "locationName": "Guinea",
+                "country": "GN"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5Mjk=",
+                "locationName": "Guinea-Bissau",
+                "country": "GW"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MzY=",
+                "locationName": "Guyana",
+                "country": "GY"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4Mzk=",
+                "locationName": "Haiti",
+                "country": "HT"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjgyODk0MTE=",
+                "locationName": "Heard Island and McDonald Islands",
+                "country": "HM"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NDE=",
+                "locationName": "Honduras",
+                "country": "HN"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjQ4NjU2OTg=",
+                "locationName": "Hong Kong",
+                "country": "HK"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NDQ=",
+                "locationName": "Hungary",
+                "country": "HU"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NDU=",
+                "locationName": "Iceland",
+                "country": "IS"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NDg=",
+                "locationName": "India",
+                "country": "IN"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NDY=",
+                "locationName": "Indonesia",
+                "country": "ID"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NTU=",
+                "locationName": "Iraq",
+                "country": "IQ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5OTg=",
+                "locationName": "Iraq-Saudi Arabia Neutral Zone",
+                "country": "XE"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MDM=",
+                "locationName": "Ireland",
+                "country": "IE"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NTI=",
+                "locationName": "Israel",
+                "country": "IL"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NTM=",
+                "locationName": "Italy",
+                "country": "IT"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NTQ=",
+                "locationName": "Ivory Coast",
+                "country": "CI"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NTg=",
+                "locationName": "Jamaica",
+                "country": "JM"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NTY=",
+                "locationName": "Japan",
+                "country": "JP"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NjA=",
+                "locationName": "Jordan",
+                "country": "JO"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NzE=",
+                "locationName": "Kazakhstan",
+                "country": "KZ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NjM=",
+                "locationName": "Kenya",
+                "country": "KE"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4Njc=",
+                "locationName": "Kiribati",
+                "country": "KI"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjkzODkyMDE=",
+                "locationName": "Kosovo",
+                "country": "XK"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NzA=",
+                "locationName": "Kuwait",
+                "country": "KW"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NjQ=",
+                "locationName": "Kyrgyzstan",
+                "country": "KG"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NzI=",
+                "locationName": "Laos",
+                "country": "LA"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NzQ=",
+                "locationName": "Latvia",
+                "country": "LV"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NzM=",
+                "locationName": "Lebanon",
+                "country": "LB"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4ODA=",
+                "locationName": "Lesotho",
+                "country": "LS"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NzY=",
+                "locationName": "Liberia",
+                "country": "LR"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4ODI=",
+                "locationName": "Libya",
+                "country": "LY"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4Nzk=",
+                "locationName": "Liechtenstein",
+                "country": "LI"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4NzU=",
+                "locationName": "Lithuania",
+                "country": "LT"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4ODE=",
+                "locationName": "Luxembourg",
+                "country": "LU"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjAwNzAwMTc=",
+                "locationName": "Macao",
+                "country": "MO"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4ODM=",
+                "locationName": "Madagascar",
+                "country": "MG"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4ODk=",
+                "locationName": "Malawi",
+                "country": "MW"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MDE=",
+                "locationName": "Malaysia",
+                "country": "MY"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4OTk=",
+                "locationName": "Maldives",
+                "country": "MV"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4OTE=",
+                "locationName": "Mali",
+                "country": "ML"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4OTc=",
+                "locationName": "Malta",
+                "country": "MT"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MzI=",
+                "locationName": "Marshall Islands",
+                "country": "MH"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4ODQ=",
+                "locationName": "Martinique",
+                "country": "MQ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4OTY=",
+                "locationName": "Mauritania",
+                "country": "MR"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4OTQ=",
+                "locationName": "Mauritius",
+                "country": "MU"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4ODY=",
+                "locationName": "Mayotte",
+                "country": "YT"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MDA=",
+                "locationName": "Mexico",
+                "country": "MX"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4ODU=",
+                "locationName": "Moldova",
+                "country": "MD"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4OTI=",
+                "locationName": "Monaco",
+                "country": "MC"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4ODc=",
+                "locationName": "Mongolia",
+                "country": "MN"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjAwNjk4MTc=",
+                "locationName": "Montenegro",
+                "country": "ME"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4ODg=",
+                "locationName": "Montserrat",
+                "country": "MS"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4OTM=",
+                "locationName": "Morocco",
+                "country": "MA"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MDI=",
+                "locationName": "Mozambique",
+                "country": "MZ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NjM=",
+                "locationName": "Myanmar",
+                "country": "MM"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5ODc=",
+                "locationName": "Namibia",
+                "country": "NA"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MTI=",
+                "locationName": "Nauru",
+                "country": "NR"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MTE=",
+                "locationName": "Nepal",
+                "country": "NP"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MDk=",
+                "locationName": "Netherlands",
+                "country": "NL"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MDM=",
+                "locationName": "New Caledonia",
+                "country": "NC"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MTY=",
+                "locationName": "New Zealand",
+                "country": "NZ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MTU=",
+                "locationName": "Nicaragua",
+                "country": "NI"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MDY=",
+                "locationName": "Niger",
+                "country": "NE"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MDg=",
+                "locationName": "Nigeria",
+                "country": "NG"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MDQ=",
+                "locationName": "Niue",
+                "country": "NU"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MDU=",
+                "locationName": "Norfolk Island",
+                "country": "NF"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4OTA=",
+                "locationName": "Macedonia",
+                "country": "MK"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3ODg=",
+                "locationName": "Northern Mariana Islands",
+                "country": "MP"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MTA=",
+                "locationName": "Norway",
+                "country": "NO"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4OTg=",
+                "locationName": "Oman",
+                "country": "OM"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MjI=",
+                "locationName": "Pakistan",
+                "country": "PK"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5Mjc=",
+                "locationName": "Palau",
+                "country": "PW"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjgyODk0MDg=",
+                "locationName": "Palestine",
+                "country": "PS"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MjQ=",
+                "locationName": "Panama",
+                "country": "PA"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MjY=",
+                "locationName": "Papua New Guinea",
+                "country": "PG"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MTc=",
+                "locationName": "Paraguay",
+                "country": "PY"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MTk=",
+                "locationName": "Peru",
+                "country": "PE"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MzQ=",
+                "locationName": "Philippines",
+                "country": "PH"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MTg=",
+                "locationName": "Pitcairn Islands",
+                "country": "PN"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MjM=",
+                "locationName": "Poland",
+                "country": "PL"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MjU=",
+                "locationName": "Portugal",
+                "country": "PT"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MzU=",
+                "locationName": "Puerto Rico",
+                "country": "PR"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MzA=",
+                "locationName": "Qatar",
+                "country": "QA"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MzE=",
+                "locationName": "Réunion",
+                "country": "RE"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MzM=",
+                "locationName": "Romania",
+                "country": "RO"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MzY=",
+                "locationName": "Russia",
+                "country": "RU"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5Mzc=",
+                "locationName": "Rwanda",
+                "country": "RW"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tNTYwNDIzMDQ=",
+                "locationName": "Saint Barthélemy",
+                "country": "BL"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NDA=",
+                "locationName": "Saint Kitts and Nevis",
+                "country": "KN"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tNTYwNDIzMDU=",
+                "locationName": "Saint Martin (French part)",
+                "country": "MF"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5ODE=",
+                "locationName": "Saint Vincent and the Grenadines",
+                "country": "VC"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5Mzk=",
+                "locationName": "Saint Pierre and Miquelon",
+                "country": "PM"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5OTI=",
+                "locationName": "Samoa",
+                "country": "WS"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NDc=",
+                "locationName": "San Marino",
+                "country": "SM"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NjY=",
+                "locationName": "Sao Tome and Principe",
+                "country": "ST"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5Mzg=",
+                "locationName": "Saudi Arabia",
+                "country": "SA"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NDM=",
+                "locationName": "Senegal",
+                "country": "SN"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjAwNjk4MTg=",
+                "locationName": "Serbia",
+                "country": "RS"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NDE=",
+                "locationName": "Seychelles",
+                "country": "SC"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NDY=",
+                "locationName": "Sierra Leone",
+                "country": "SL"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NDg=",
+                "locationName": "Singapore",
+                "country": "SG"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tNTY1NTgwNTg=",
+                "locationName": "Sint Maarten (Dutch part)",
+                "country": "SX"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4Nzc=",
+                "locationName": "Slovakia",
+                "country": "SK"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NDU=",
+                "locationName": "Slovenia",
+                "country": "SI"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NjY=",
+                "locationName": "Solomon Islands",
+                "country": "SB"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NDk=",
+                "locationName": "Somalia",
+                "country": "SO"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NDI=",
+                "locationName": "South Africa",
+                "country": "ZA"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NTU=",
+                "locationName": "South Georgia and the South Sandwich Islands",
+                "country": "GS"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4Njg=",
+                "locationName": "South Korea",
+                "country": "KR"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NTA=",
+                "locationName": "Spain",
+                "country": "ES"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MjE=",
+                "locationName": "Spratly Islands",
+                "country": "XS"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3Nzg=",
+                "locationName": "Sri Lanka",
+                "country": "LK"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NDQ=",
+                "locationName": "Saint Helena, Ascension and Tristan da Cunha",
+                "country": "SH"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NTE=",
+                "locationName": "Saint Lucia",
+                "country": "LC"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NTI=",
+                "locationName": "Sudan",
+                "country": "SD"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MTM=",
+                "locationName": "Suriname",
+                "country": "SR"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjgyODk0MTM=",
+                "locationName": "Svalbard and Jan Mayen",
+                "country": "SJ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5OTM=",
+                "locationName": "Swaziland",
+                "country": "SZ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NTQ=",
+                "locationName": "Sweden",
+                "country": "SE"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NTc=",
+                "locationName": "Switzerland",
+                "country": "CH"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NzE=",
+                "locationName": "Taiwan",
+                "country": "TW"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NjE=",
+                "locationName": "Tajikistan",
+                "country": "TJ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NzM=",
+                "locationName": "Tanzania, United Republic of",
+                "country": "TZ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3Nzc=",
+                "locationName": "Chad",
+                "country": "TD"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjgyODk0MDY=",
+                "locationName": "French Southern Territories",
+                "country": "TF"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NjA=",
+                "locationName": "Thailand",
+                "country": "TH"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NTg=",
+                "locationName": "The Bahamas",
+                "country": "BS"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4MjE=",
+                "locationName": "Gambia",
+                "country": "GM"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NjU=",
+                "locationName": "Togo",
+                "country": "TG"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NjM=",
+                "locationName": "Tokelau",
+                "country": "TK"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NjQ=",
+                "locationName": "Tonga",
+                "country": "TO"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NTg=",
+                "locationName": "Trinidad and Tobago",
+                "country": "TT"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5Njc=",
+                "locationName": "Tunisia",
+                "country": "TN"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5Njk=",
+                "locationName": "Turkey",
+                "country": "TR"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NzI=",
+                "locationName": "Turkmenistan",
+                "country": "TM"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NjI=",
+                "locationName": "Turks and Caicos Islands",
+                "country": "TC"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NzA=",
+                "locationName": "Tuvalu",
+                "country": "TV"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NzQ=",
+                "locationName": "Uganda",
+                "country": "UG"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NzY=",
+                "locationName": "Ukraine",
+                "country": "UA"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3Mzg=",
+                "locationName": "United Arab Emirates",
+                "country": "AE"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5NzU=",
+                "locationName": "United Kingdom",
+                "country": "GB"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5OTc=",
+                "locationName": "United Nations Neutral Zone",
+                "country": "XD"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5Nzc=",
+                "locationName": "United States",
+                "country": "US"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjgyODk0MDc=",
+                "locationName": "United States Minor Outlying Islands",
+                "country": "UM"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5Nzk=",
+                "locationName": "Uruguay",
+                "country": "UY"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5ODU=",
+                "locationName": "Virgin Islands, U.S.",
+                "country": "VI"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5ODA=",
+                "locationName": "Uzbekistan",
+                "country": "UZ"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5MDc=",
+                "locationName": "Vanuatu",
+                "country": "VU"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5ODY=",
+                "locationName": "Holy See (Vatican City State)",
+                "country": "VA"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5ODI=",
+                "locationName": "Venezuela",
+                "country": "VE"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5ODQ=",
+                "locationName": "Vietnam",
+                "country": "VN"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5ODk=",
+                "locationName": "Wallis and Futuna",
+                "country": "WF"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ5OTA=",
+                "locationName": "Western Sahara",
+                "country": "EH"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjUwMDI=",
+                "locationName": "Yemen",
+                "country": "YE"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjUwMDM=",
+                "locationName": "Zambia",
+                "country": "ZM"
+              },
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "10.0",
+                "estimatedMin": null,
+                "estimatedMax": null,
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjUwMDQ=",
+                "locationName": "Zimbabwe",
+                "country": "ZW"
+              }
+            ],
+            "amount": {
+              "__typename": "Money",
+              "amount": "12.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "backersCount": 0,
+            "convertedAmount": {
+              "__typename": "Money",
+              "amount": "11.0",
+              "currency": "EUR",
+              "symbol": "€"
+            },
+            "allowedAddons": {
+              "__typename": "RewardConnection",
+              "pageInfo": {
+                "__typename": "PageInfo",
+                "startCursor": "MQ=="
+              }
+            },
+            "description": "stickers for all!",
+            "displayName": "reward shipping everywhere ($12)",
+            "endsAt": null,
+            "estimatedDeliveryOn": "2026-04-05",
+            "id": "UmV3YXJkLTEwNDAzMDI4",
+            "isMaxPledge": false,
+            "available": true,
+            "featured": false,
+            "items": {
+              "__typename": "RewardItemsConnection",
+              "edges": [
+                {
+                  "__typename": "RewardItemEdge",
+                  "quantity": 5,
+                  "node": {
+                    "__typename": "RewardItem",
+                    "id": "UmV3YXJkSXRlbS0yOTA1MTIy",
+                    "name": "T-Shirt 2"
+                  }
+                }
+              ]
+            },
+            "limit": null,
+            "limitPerBacker": 1,
+            "localReceiptLocation": null,
+            "name": "reward shipping everywhere",
+            "pledgeAmount": {
+              "__typename": "Money",
+              "amount": "12.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "latePledgeAmount": {
+              "__typename": "Money",
+              "amount": "0.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "postCampaignPledgingEnabled": false,
+            "project": {
+              "__typename": "Project",
+              "id": "UHJvamVjdC0xNDUyNDczODEy"
+            },
+            "remainingQuantity": null,
+            "shippingPreference": "unrestricted",
+            "shippingSummary": "Anywhere in the world",
+            "shippingRules": [
+              {
+                "__typename": "ShippingRule",
+                "cost": {
+                  "__typename": "Money",
+                  "amount": "10.0",
+                  "currency": "USD",
+                  "symbol": "$"
+                },
+                "id": "U2hpcHBpbmdSdWxlLTE2NDQwMjM5",
+                "location": {
+                  "__typename": "Location",
+                  "country": "ZZ",
+                  "countryName": null,
+                  "displayableName": "Earth",
+                  "id": "TG9jYXRpb24tMQ==",
+                  "name": "Rest of World"
+                },
+                "estimatedMin": null,
+                "estimatedMax": null
+              }
+            ],
+            "startsAt": null,
+            "image": null,
+            "audienceData": {
+              "__typename": "ResourceAudience",
+              "secret": false
+            }
+          },
+          {
+            "__typename": "Reward",
+            "simpleShippingRulesExpanded": [
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "15.0",
+                "estimatedMin": "13",
+                "estimatedMax": "16",
+                "currency": "EUR",
+                "locationId": "TG9jYXRpb24tMjM0MjQ3NzU=",
+                "locationName": "Canada",
+                "country": "CA"
+              }
+            ],
+            "amount": {
+              "__typename": "Money",
+              "amount": "24.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "backersCount": 1,
+            "convertedAmount": {
+              "__typename": "Money",
+              "amount": "21.0",
+              "currency": "EUR",
+              "symbol": "€"
+            },
+            "allowedAddons": {
+              "__typename": "RewardConnection",
+              "pageInfo": {
+                "__typename": "PageInfo",
+                "startCursor": "MQ=="
+              }
+            },
+            "description": "stickers for all!",
+            "displayName": "restricted reward shipping ($24)",
+            "endsAt": null,
+            "estimatedDeliveryOn": "2026-04-05",
+            "id": "UmV3YXJkLTEwNDAzMDI5",
+            "isMaxPledge": false,
+            "available": true,
+            "featured": false,
+            "items": {
+              "__typename": "RewardItemsConnection",
+              "edges": [
+                {
+                  "__typename": "RewardItemEdge",
+                  "quantity": 4,
+                  "node": {
+                    "__typename": "RewardItem",
+                    "id": "UmV3YXJkSXRlbS0yOTA1MTIy",
+                    "name": "T-Shirt 2"
+                  }
+                }
+              ]
+            },
+            "limit": null,
+            "limitPerBacker": 1,
+            "localReceiptLocation": null,
+            "name": "restricted reward shipping",
+            "pledgeAmount": {
+              "__typename": "Money",
+              "amount": "24.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "latePledgeAmount": {
+              "__typename": "Money",
+              "amount": "0.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "postCampaignPledgingEnabled": false,
+            "project": {
+              "__typename": "Project",
+              "id": "UHJvamVjdC0xNDUyNDczODEy"
+            },
+            "remainingQuantity": null,
+            "shippingPreference": "restricted",
+            "shippingSummary": "Only Canada",
+            "shippingRules": [
+              {
+                "__typename": "ShippingRule",
+                "cost": {
+                  "__typename": "Money",
+                  "amount": "15.0",
+                  "currency": "USD",
+                  "symbol": "$"
+                },
+                "id": "U2hpcHBpbmdSdWxlLTE2NDQwMjQw",
+                "location": {
+                  "__typename": "Location",
+                  "country": "CA",
+                  "countryName": "Canada",
+                  "displayableName": "Canada",
+                  "id": "TG9jYXRpb24tMjM0MjQ3NzU=",
+                  "name": "Canada"
+                },
+                "estimatedMin": {
+                  "__typename": "Money",
+                  "amount": "13",
+                  "currency": "USD"
+                },
+                "estimatedMax": {
+                  "__typename": "Money",
+                  "amount": "16",
+                  "currency": "USD"
+                }
+              }
+            ],
+            "startsAt": null,
+            "image": null,
+            "audienceData": {
+              "__typename": "ResourceAudience",
+              "secret": false
+            }
+          },
+          {
+            "__typename": "Reward",
+            "simpleShippingRulesExpanded": [],
+            "amount": {
+              "__typename": "Money",
+              "amount": "31.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "backersCount": 2,
+            "convertedAmount": {
+              "__typename": "Money",
+              "amount": "27.0",
+              "currency": "EUR",
+              "symbol": "€"
+            },
+            "allowedAddons": {
+              "__typename": "RewardConnection",
+              "pageInfo": {
+                "__typename": "PageInfo",
+                "startCursor": "MQ=="
+              }
+            },
+            "description": "stickers for da locals!",
+            "displayName": "pickup yer stickers ($31)",
+            "endsAt": null,
+            "estimatedDeliveryOn": "2026-04-05",
+            "id": "UmV3YXJkLTEwNDAzMDMw",
+            "isMaxPledge": false,
+            "available": true,
+            "featured": false,
+            "items": {
+              "__typename": "RewardItemsConnection",
+              "edges": [
+                {
+                  "__typename": "RewardItemEdge",
+                  "quantity": 5,
+                  "node": {
+                    "__typename": "RewardItem",
+                    "id": "UmV3YXJkSXRlbS0yOTA1MTIy",
+                    "name": "T-Shirt 2"
+                  }
+                }
+              ]
+            },
+            "limit": null,
+            "limitPerBacker": 1,
+            "localReceiptLocation": {
+              "__typename": "Location",
+              "country": "US",
+              "countryName": "United States",
+              "displayableName": "Brooklyn, NY",
+              "id": "TG9jYXRpb24tMTI1ODkzMzU=",
+              "name": "Brooklyn"
+            },
+            "name": "pickup yer stickers",
+            "pledgeAmount": {
+              "__typename": "Money",
+              "amount": "31.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "latePledgeAmount": {
+              "__typename": "Money",
+              "amount": "0.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "postCampaignPledgingEnabled": false,
+            "project": {
+              "__typename": "Project",
+              "id": "UHJvamVjdC0xNDUyNDczODEy"
+            },
+            "remainingQuantity": null,
+            "shippingPreference": "local",
+            "shippingSummary": "Brooklyn, NY",
+            "shippingRules": [],
+            "startsAt": null,
+            "image": null,
+            "audienceData": {
+              "__typename": "ResourceAudience",
+              "secret": false
+            }
+          },
+          {
+            "__typename": "Reward",
+            "simpleShippingRulesExpanded": [],
+            "amount": {
+              "__typename": "Money",
+              "amount": "56.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "backersCount": 0,
+            "convertedAmount": {
+              "__typename": "Money",
+              "amount": "48.0",
+              "currency": "EUR",
+              "symbol": "€"
+            },
+            "allowedAddons": {
+              "__typename": "RewardConnection",
+              "pageInfo": {
+                "__typename": "PageInfo",
+                "startCursor": "MQ=="
+              }
+            },
+            "description": "social media shoutout",
+            "displayName": "Digital reward ($56)",
+            "endsAt": null,
+            "estimatedDeliveryOn": "2026-04-05",
+            "id": "UmV3YXJkLTEwNDAzMDI3",
+            "isMaxPledge": false,
+            "available": true,
+            "featured": false,
+            "items": {
+              "__typename": "RewardItemsConnection",
+              "edges": [
+                {
+                  "__typename": "RewardItemEdge",
+                  "quantity": 5,
+                  "node": {
+                    "__typename": "RewardItem",
+                    "id": "UmV3YXJkSXRlbS0yOTA1MTIy",
+                    "name": "T-Shirt 2"
+                  }
+                }
+              ]
+            },
+            "limit": null,
+            "limitPerBacker": 1,
+            "localReceiptLocation": null,
+            "name": "Digital reward",
+            "pledgeAmount": {
+              "__typename": "Money",
+              "amount": "56.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "latePledgeAmount": {
+              "__typename": "Money",
+              "amount": "0.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "postCampaignPledgingEnabled": false,
+            "project": {
+              "__typename": "Project",
+              "id": "UHJvamVjdC0xNDUyNDczODEy"
+            },
+            "remainingQuantity": null,
+            "shippingPreference": "none",
+            "shippingSummary": null,
+            "shippingRules": [],
+            "startsAt": null,
+            "image": null,
+            "audienceData": {
+              "__typename": "ResourceAudience",
+              "secret": false
+            }
+          }
+        ]
+      }
+    }
+  }
+}
