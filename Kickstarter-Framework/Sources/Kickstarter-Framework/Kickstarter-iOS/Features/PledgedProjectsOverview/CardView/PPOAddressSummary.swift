@@ -5,7 +5,6 @@ import SwiftUI
 
 struct PPOAddressSummary: View {
   let address: String
-  let leadingColumnWidth: CGFloat
   let editable: Bool
 
   var body: some View {
@@ -46,29 +45,25 @@ struct PPOAddressSummary: View {
 }
 
 #Preview {
-  GeometryReader(content: { geometry in
-    VStack(spacing: 28) {
-      PPOAddressSummary(
-        address: """
-          Firsty Lasty
-          123 First Street, Apt #5678
-          Los Angeles, CA 90025-1234
-          United States
-        """,
-        leadingColumnWidth: geometry.size.width / 4,
-        editable: true
-      )
-      PPOAddressSummary(
-        address: """
-          Final Address
-          123 First Street, Apt #5678
-          Los Angeles, CA 90025-1234
-          United States
-        """,
-        leadingColumnWidth: geometry.size.width / 4,
-        editable: false
-      )
-    }
-  })
+  VStack(spacing: 28) {
+    PPOAddressSummary(
+      address: """
+      Firsty Lasty
+      123 First Street, Apt #5678
+      Los Angeles, CA 90025-1234
+      United States
+      """,
+      editable: true
+    )
+    PPOAddressSummary(
+      address: """
+      Final Address
+      123 First Street, Apt #5678
+      Los Angeles, CA 90025-1234
+      United States
+      """,
+      editable: false
+    )
+  }
   .padding(28)
 }
