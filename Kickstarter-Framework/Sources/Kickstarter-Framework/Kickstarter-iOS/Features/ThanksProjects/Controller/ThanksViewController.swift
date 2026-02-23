@@ -8,7 +8,7 @@ import StoreKit
 import UIKit
 
 internal final class ThanksViewController: UIViewController, UITableViewDelegate {
-  @IBOutlet fileprivate var closeButton: UIButton!
+  @IBOutlet fileprivate var closeButtonContainerView: UIButton!
   @IBOutlet fileprivate var shareMoreButton: UIButton!
   @IBOutlet fileprivate var projectsTableView: UITableView!
   @IBOutlet fileprivate var backedLabel: UILabel!
@@ -38,13 +38,29 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     self.projectsTableView.dataSource = self.dataSource
     self.projectsTableView.delegate = self
 
-    self.closeButton.addTarget(
-      self,
-      action: #selector(self.closeButtonTapped),
-      for: .touchUpInside
-    )
+    self.setupCloseButton()
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  private func setupCloseButton() {
+    let closeButtonView = CloseButtonView { [weak self] in
+      self?.viewModel.inputs.closeButtonTapped()
+    }
+    closeButtonView.translatesAutoresizingMaskIntoConstraints = false
+    self.closeButtonContainerView.addSubview(closeButtonView)
+    NSLayoutConstraint.activate([
+      closeButtonView.centerXAnchor.constraint(
+        equalTo: self.closeButtonContainerView.centerXAnchor,
+        constant: 8
+      ),
+      closeButtonView.centerYAnchor.constraint(
+        equalTo: self.closeButtonContainerView.centerYAnchor,
+        constant: 8
+      ),
+      closeButtonView.widthAnchor.constraint(equalToConstant: 44),
+      closeButtonView.heightAnchor.constraint(equalToConstant: 44)
+    ])
   }
 
   override func viewDidLayoutSubviews() {
@@ -61,11 +77,11 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
     self.view.backgroundColor = Colors.Background.Surface.primary.uiColor()
 
-    _ = self.closeButton
-      |> UIButton.lens.title(for: .normal) .~ nil
-      |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
-      |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
+    // _ = self.closeButton
+    //   |> UIButton.lens.title(for: .normal) .~ nil
+    //   |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
+    //   |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
+    //   |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
 
     _ = self.projectsTableView
       |> UITableView.lens.separatorStyle .~ .none
