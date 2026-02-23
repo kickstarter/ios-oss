@@ -74,16 +74,19 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       self.shippingLocationSelectedSignal
     )
 
-    let rewards = project
+    self.rewardsProperty <~ self.shippingLocationSelectedSignal
+      .mapConst([])
+
+    self.rewardsProperty <~ project
       .takePairWhen(shippingLocation)
-      .map { project, location in
-        let sorted = allowableSortedProjectRewards(project.rewards)
-        if let location = location {
-          return filteredRewardsByLocation(sorted, location: location)
-        } else {
-          return sorted
-        }
+      .flatMap { project, _ in
+        AppEnvironment.current.apiService
+          .fetchProjectRewards(projectId: project.id) // TODO: for location
+          .materialize()
+          .values() // TODO: handle errors
       }
+
+    let rewards = self.rewardsProperty.signal
 
     self.title = configData
       .map { project, _, context, _ in (context, project) }
@@ -440,6 +443,8 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }
+
+  private let rewardsProperty = MutableProperty<[Reward]>([])
 
   public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
   public let configureRewardsCollectionViewFooterWithCount: Signal<Int, Never>
