@@ -132,10 +132,10 @@ import KsApi
       pledge: "$50.00",
       creatorName: "rokaplay truncate if longer than this extra long string",
       address: .locked(address: """
-        Firsty Lasty
-        123 First Street, Apt #5678
-        Los Angeles, CA 90025-1234
-        United States
+      Firsty Lasty
+      123 First Street, Apt #5678
+      Los Angeles, CA 90025-1234
+      United States
       """),
       rewardReceivedToggleState: .notReceived,
       action: nil,

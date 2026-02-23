@@ -10,17 +10,19 @@ struct PPOAddressSummary: View {
 
   var body: some View {
     HStack(alignment: .top, spacing: Spacing.unit_02) {
-      Text(Strings.Shipping_address())
-        .font(Font(PPOStyles.body.font()).weight(.semibold))
-        .multilineTextAlignment(.leading)
-        .foregroundStyle(Color(PPOStyles.title.color))
-        .frame(width: self.leadingColumnWidth, alignment: Constants.textAlignment)
+      VStack(alignment: .leading, spacing: Spacing.unit_02) {
+        Text(Strings.Shipping_address())
+          .font(Font(PPOStyles.body.font()).weight(.semibold))
+          .multilineTextAlignment(.leading)
+          .foregroundStyle(Color(PPOStyles.title.color))
+          .frame(maxWidth: Constants.maxWidth, alignment: Constants.textAlignment)
 
-      Text(self.address)
-        .font(Font(PPOStyles.body.font()))
-        .multilineTextAlignment(.leading)
-        .foregroundStyle(Color(PPOStyles.body.color))
-        .frame(maxWidth: Constants.maxWidth, alignment: Constants.textAlignment)
+        Text(self.address)
+          .font(Font(PPOStyles.body.font()))
+          .multilineTextAlignment(.leading)
+          .foregroundStyle(Color(PPOStyles.body.color))
+          .frame(maxWidth: Constants.maxWidth, alignment: Constants.textAlignment)
+      }
 
       if self.editable {
         Image(PPOStyles.editAddressImage)
