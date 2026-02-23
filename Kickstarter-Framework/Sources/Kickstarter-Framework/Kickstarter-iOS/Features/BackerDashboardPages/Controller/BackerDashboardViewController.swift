@@ -9,7 +9,6 @@ internal final class BackerDashboardViewController: UIViewController {
   @IBOutlet private var backedMenuButton: UIButton!
   @IBOutlet private var backerNameLabel: UILabel!
   @IBOutlet private var dividerView: UIView!
-  @IBOutlet private var embeddedViewTopLayoutConstraint: NSLayoutConstraint!
   @IBOutlet private var headerTopContainerView: UIView!
   @IBOutlet private var headerStackView: UIStackView!
   @IBOutlet private var headerView: UIView!
@@ -21,7 +20,6 @@ internal final class BackerDashboardViewController: UIViewController {
   @IBOutlet private var selectedButtonIndicatorView: UIView!
   @IBOutlet private var selectedButtonIndicatorWidthConstraint: NSLayoutConstraint!
   @IBOutlet private var settingsButtonItem: UIBarButtonItem!
-  @IBOutlet private var sortBar: ProfileSortBarView!
   @IBOutlet private var topBackgroundView: UIView!
   @IBOutlet private var containerBottomToSafeArea: NSLayoutConstraint!
 
@@ -117,9 +115,6 @@ internal final class BackerDashboardViewController: UIViewController {
 
     self.avatarImageView.rac.ksr_imageUrl = self.viewModel.outputs.avatarURL
     self.backerNameLabel.rac.text = self.viewModel.outputs.backerNameText
-    self.embeddedViewTopLayoutConstraint.rac.constant =
-      self.viewModel.outputs.embeddedViewTopConstraintConstant
-    self.sortBar.rac.hidden = self.viewModel.outputs.sortBarIsHidden
 
     self.viewModel.outputs.backedButtonTitleText
       .observeForUI()
