@@ -28,6 +28,9 @@ final class VideoFeedViewController: UIViewController {
 
   private var itemsDisposable: Disposable?
 
+  private var confirmationToastView: VideoFeedConfirmationToastView?
+  private var confirmationToastHideWorkItem: DispatchWorkItem?
+
   init(project: Project) {
     self.viewModel = VideoFeedViewModel(project: project)
 
@@ -215,7 +218,6 @@ final class VideoFeedViewController: UIViewController {
       let playerItem = AVPlayerItem(url: item.videoURL)
       let player = AVPlayer(playerItem: playerItem)
       player.actionAtItemEnd = .pause
-
       self.playersByID[item.id] = player
     }
   }
@@ -327,17 +329,115 @@ extension VideoFeedViewController: UICollectionViewDelegate {
         self?.presentNotInterestedReasons(for: item)
       }
     }
+
+    vc.onMoreLikeThisTapped = { [weak self, weak vc] in
+      /// Dismiss first, then show the confirmation toast.
+      vc?.dismiss(animated: true) {
+        self?.showConfirmationToast(
+          message: "We’ll suggest more videos like this",
+          undoTapped: nil
+        )
+      }
+    }
     present(vc, animated: true)
   }
 
   func presentNotInterestedReasons(for _: VideoFeedItem) {
     let vc = VideoFeedNotInterestedReasonsSheetViewController()
 
-    vc.onReasonSelected = { [weak vc] _ in
-      /// simply dismiss for now
-      vc?.dismiss(animated: true)
+    vc.onReasonSelected = { [weak vc] reason in
+      /// Dismiss first, then show the confirmation toast.
+      vc?.dismiss(animated: true) { [weak self] in
+        self?.showConfirmationToast(
+          message: "You’ll see fewer videos like this",
+          undoTapped: nil
+        )
+        _ = reason
+      }
+    }
+    present(vc, animated: true)
+  }
+
+  func showConfirmationToast(
+    message: String,
+    undoTapped: (() -> Void)?
+  ) {
+    self.hideConfirmationToast(animated: false)
+
+    let toast = VideoFeedConfirmationToastView()
+    toast.configure(
+      with: .init(
+        message: message,
+        undoTapped: { [weak self] in
+          self?.hideConfirmationToast(animated: true)
+          undoTapped?()
+        }
+      )
+    )
+
+    view.addSubview(toast)
+
+    NSLayoutConstraint.activate([
+      toast.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+      toast.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+      toast.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8)
+    ])
+
+    view.layoutIfNeeded()
+
+    /// Start just above the top safe area, then slide down.
+    toast.transform = CGAffineTransform(translationX: 0, y: -(toast.bounds.height + 16))
+
+    UIView.animate(
+      withDuration: 0.35,
+      delay: 0,
+      usingSpringWithDamping: 0.9,
+      initialSpringVelocity: 0.4,
+      options: [.curveEaseOut, .allowUserInteraction]
+    ) {
+      toast.transform = .identity
     }
 
-    present(vc, animated: true)
+    self.confirmationToastView = toast
+
+    /// Auto-dismiss after a short delay.
+    let workItem = DispatchWorkItem { [weak self] in
+      self?.hideConfirmationToast(animated: true)
+    }
+
+    self.confirmationToastHideWorkItem = workItem
+
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: workItem)
+  }
+
+  func hideConfirmationToast(animated: Bool) {
+    self.confirmationToastHideWorkItem?.cancel()
+    self.confirmationToastHideWorkItem = nil
+
+    guard let toast = self.confirmationToastView else { return }
+
+    self.confirmationToastView = nil
+
+    let animations = {
+      toast.transform = CGAffineTransform(translationX: 0, y: -(toast.bounds.height + 16))
+      toast.alpha = 0
+    }
+
+    let completion: (Bool) -> Void = { _ in
+      toast.removeFromSuperview()
+    }
+
+    if animated {
+      UIView.animate(
+        withDuration: 0.25,
+        delay: 0,
+        options: [.curveEaseIn],
+        animations: animations,
+        completion: completion
+      )
+    } else {
+      animations()
+      completion(true)
+    }
   }
 }

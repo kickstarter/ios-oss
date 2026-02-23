@@ -5,6 +5,7 @@ import UIKit
 /// - Everything else just dismisses the sheet for now
 final class VideoFeedMoreMenuSheetViewController: VideoFeedBottomSheetViewController {
   var onNotInterestedTapped: (() -> Void)?
+  var onMoreLikeThisTapped: (() -> Void)?
   var onDismissRequested: (() -> Void)?
 
   private let stack = UIStackView()
@@ -36,7 +37,7 @@ final class VideoFeedMoreMenuSheetViewController: VideoFeedBottomSheetViewContro
 
     self.stack.addArrangedSubview(
       self.makeActionRowButton(title: "More like this", systemImage: "face.smiling") { [weak self] in
-        self?.onDismissRequested?()
+        self?.onMoreLikeThisTapped?()
       }
     )
 
