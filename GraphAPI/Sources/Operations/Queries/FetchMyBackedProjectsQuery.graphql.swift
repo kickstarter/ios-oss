@@ -8,7 +8,7 @@ public class FetchMyBackedProjectsQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FetchMyBackedProjects($first: Int = null, $after: String = null) { projects(first: $first, after: $after, backed: true, sort: END_DATE) { __typename nodes { __typename ...ProjectFragment } pageInfo { __typename hasNextPage endCursor hasPreviousPage startCursor } totalCount } }"#,
-      fragments: [CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self]
+      fragments: [CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self]
     ))
 
   public var first: GraphQLNullable<Int>
@@ -219,6 +219,7 @@ public class FetchMyBackedProjectsQuery: GraphQLQuery {
           public init(_dataDict: DataDict) { __data = _dataDict }
 
           public var projectFragment: ProjectFragment { _toFragment() }
+          public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
         }
 
         public init(
@@ -333,7 +334,8 @@ public class FetchMyBackedProjectsQuery: GraphQLQuery {
             ],
             fulfilledFragments: [
               ObjectIdentifier(FetchMyBackedProjectsQuery.Data.Projects.Node.self),
-              ObjectIdentifier(ProjectFragment.self)
+              ObjectIdentifier(ProjectFragment.self),
+              ObjectIdentifier(NoRewardRewardFragment.self)
             ]
           ))
         }

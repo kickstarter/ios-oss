@@ -8,7 +8,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FetchAddOns($projectSlug: String!, $shippingEnabled: Boolean!, $locationId: ID, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { project(slug: $projectSlug) { __typename ...ProjectFragment addOns { __typename nodes { __typename ...RewardFragment shippingRulesExpanded(forLocation: $locationId) @include(if: $shippingEnabled) { __typename nodes { __typename ...ShippingRuleFragment } } } } } }"#,
-      fragments: [CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
+      fragments: [CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
     ))
 
   public var projectSlug: String
@@ -190,6 +190,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
         public init(_dataDict: DataDict) { __data = _dataDict }
 
         public var projectFragment: ProjectFragment { _toFragment() }
+        public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
       }
 
       public init(
@@ -306,7 +307,8 @@ public class FetchAddOnsQuery: GraphQLQuery {
           ],
           fulfilledFragments: [
             ObjectIdentifier(FetchAddOnsQuery.Data.Project.self),
-            ObjectIdentifier(ProjectFragment.self)
+            ObjectIdentifier(ProjectFragment.self),
+            ObjectIdentifier(NoRewardRewardFragment.self)
           ]
         ))
       }

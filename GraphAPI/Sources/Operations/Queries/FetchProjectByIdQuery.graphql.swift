@@ -8,7 +8,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FetchProjectById($projectId: Int!) { me { __typename chosenCurrency } project(pid: $projectId) { __typename ...ProjectFragment backing { __typename id } flagging { __typename id kind } } }"#,
-      fragments: [CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self]
+      fragments: [CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self]
     ))
 
   public var projectId: Int
@@ -209,6 +209,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
         public init(_dataDict: DataDict) { __data = _dataDict }
 
         public var projectFragment: ProjectFragment { _toFragment() }
+        public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
       }
 
       public init(
@@ -327,7 +328,8 @@ public class FetchProjectByIdQuery: GraphQLQuery {
           ],
           fulfilledFragments: [
             ObjectIdentifier(FetchProjectByIdQuery.Data.Project.self),
-            ObjectIdentifier(ProjectFragment.self)
+            ObjectIdentifier(ProjectFragment.self),
+            ObjectIdentifier(NoRewardRewardFragment.self)
           ]
         ))
       }
