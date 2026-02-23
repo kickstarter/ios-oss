@@ -8,7 +8,7 @@ public class FetchUserBackingsQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FetchUserBackings($status: BackingState!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { me { __typename backings(status: $status) { __typename nodes { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment project { __typename ...ProjectFragment } errorReason paymentIncrements { __typename ...PaymentIncrementFragment } } totalCount } id imageUrl: imageUrl(blur: false, width: 1024) name uid } }"#,
-      fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
+      fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
     ))
 
   public var status: GraphQLEnum<BackingState>
@@ -954,6 +954,7 @@ public class FetchUserBackingsQuery: GraphQLQuery {
               public init(_dataDict: DataDict) { __data = _dataDict }
 
               public var projectFragment: ProjectFragment { _toFragment() }
+              public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
             }
 
             public init(
@@ -1069,6 +1070,7 @@ public class FetchUserBackingsQuery: GraphQLQuery {
                 fulfilledFragments: [
                   ObjectIdentifier(FetchUserBackingsQuery.Data.Me.Backings.Node.Project.self),
                   ObjectIdentifier(ProjectFragment.self),
+                  ObjectIdentifier(NoRewardRewardFragment.self),
                   ObjectIdentifier(BackingFragment.Project.self)
                 ]
               ))

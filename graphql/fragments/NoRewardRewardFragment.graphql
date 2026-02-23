@@ -1,0 +1,4 @@
+fragment NoRewardRewardFragment on Project {
+  minPledge
+  fxRate
+}

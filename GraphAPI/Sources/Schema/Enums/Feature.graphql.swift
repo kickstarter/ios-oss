@@ -144,7 +144,6 @@ public enum Feature: String, EnumType {
   case sauceProjectFaqs = "sauce_project_faqs"
   case sauceLoginSignup = "sauce_login_signup"
   case shipstationTwoWaySync = "shipstation_two_way_sync"
-  case freeItems2026 = "free_items_2026"
   case multipleTrackingNumbers = "multiple_tracking_numbers"
   case sauceGlobalFooter = "sauce_global_footer"
   case editIntroPmConfigPostLaunch2026 = "edit_intro_pm_config_post_launch_2026"
@@ -153,4 +152,5 @@ public enum Feature: String, EnumType {
   case partnerProgramRefresh = "partner_program_refresh"
   case collaboratorCreatorDashboardAccess = "collaborator_creator_dashboard_access"
   case polls2026 = "polls_2026"
+  case digitalFiles2026 = "digital_files_2026"
 }

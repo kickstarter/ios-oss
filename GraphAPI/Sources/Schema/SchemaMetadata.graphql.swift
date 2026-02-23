@@ -53,6 +53,8 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "VideoTrack": return GraphAPI.Objects.VideoTrack
     case "VideoTrackCue": return GraphAPI.Objects.VideoTrackCue
     case "Flagging": return GraphAPI.Objects.Flagging
+    case "ChangeLog": return GraphAPI.Objects.ChangeLog
+    case "VersionHistory": return GraphAPI.Objects.VersionHistory
     case "CreatorPrompt": return GraphAPI.Objects.CreatorPrompt
     case "InterviewQuestion": return GraphAPI.Objects.InterviewQuestion
     case "InterviewAnswer": return GraphAPI.Objects.InterviewAnswer
