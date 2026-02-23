@@ -7,8 +7,8 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
   public static let operationName: String = "FetchProjectRewardsById"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!, $includePledgeOverTime: Boolean!) { project(pid: $projectId) { __typename rewards { __typename nodes { __typename ...RewardFragment simpleShippingRulesExpanded @include(if: $includeShippingRules) { __typename cost estimatedMin estimatedMax currency locationId locationName country } } } ...PledgeOverTimeFragment @include(if: $includePledgeOverTime) } }"#,
-      fragments: [LocationFragment.self, MoneyFragment.self, PledgeOverTimeFragment.self, RewardFragment.self, ShippingRuleFragment.self]
+      #"query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!, $includePledgeOverTime: Boolean!) { project(pid: $projectId) { __typename rewards { __typename nodes { __typename ...RewardFragment simpleShippingRulesExpanded @include(if: $includeShippingRules) { __typename cost estimatedMin estimatedMax currency locationId locationName country } } } ...PledgeOverTimeFragment @include(if: $includePledgeOverTime) ...NoRewardRewardFragment } }"#,
+      fragments: [LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeOverTimeFragment.self, RewardFragment.self, ShippingRuleFragment.self]
     ))
 
   public var projectId: Int
@@ -72,11 +72,16 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
         .field("rewards", Rewards?.self),
+        .fragment(NoRewardRewardFragment.self),
         .include(if: "includePledgeOverTime", .inlineFragment(IfIncludePledgeOverTime.self)),
       ] }
 
       /// Project rewards.
       public var rewards: Rewards? { __data["rewards"] }
+      /// The min pledge amount for a single reward tier.
+      public var minPledge: Int { __data["minPledge"] }
+      /// Exchange rate for the current user's currency
+      public var fxRate: Double { __data["fxRate"] }
 
       public var ifIncludePledgeOverTime: IfIncludePledgeOverTime? { _asInlineFragment() }
 
@@ -84,19 +89,25 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
         public let __data: DataDict
         public init(_dataDict: DataDict) { __data = _dataDict }
 
+        public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
         public var pledgeOverTimeFragment: PledgeOverTimeFragment? { _toFragment() }
       }
 
       public init(
-        rewards: Rewards? = nil
+        rewards: Rewards? = nil,
+        minPledge: Int,
+        fxRate: Double
       ) {
         self.init(_dataDict: DataDict(
           data: [
             "__typename": GraphAPI.Objects.Project.typename,
             "rewards": rewards._fieldData,
+            "minPledge": minPledge,
+            "fxRate": fxRate,
           ],
           fulfilledFragments: [
-            ObjectIdentifier(FetchProjectRewardsByIdQuery.Data.Project.self)
+            ObjectIdentifier(FetchProjectRewardsByIdQuery.Data.Project.self),
+            ObjectIdentifier(NoRewardRewardFragment.self)
           ]
         ))
       }
@@ -752,12 +763,17 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
         public var pledgeOverTimeCollectionPlanShortPitch: String? { __data["pledgeOverTimeCollectionPlanShortPitch"] }
         /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
         public var pledgeOverTimeMinimumExplanation: String? { __data["pledgeOverTimeMinimumExplanation"] }
+        /// The min pledge amount for a single reward tier.
+        public var minPledge: Int { __data["minPledge"] }
+        /// Exchange rate for the current user's currency
+        public var fxRate: Double { __data["fxRate"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict
           public init(_dataDict: DataDict) { __data = _dataDict }
 
           public var pledgeOverTimeFragment: PledgeOverTimeFragment { _toFragment() }
+          public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
         }
 
         public init(
@@ -766,7 +782,9 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
           pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
           pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil,
           pledgeOverTimeCollectionPlanShortPitch: String? = nil,
-          pledgeOverTimeMinimumExplanation: String? = nil
+          pledgeOverTimeMinimumExplanation: String? = nil,
+          minPledge: Int,
+          fxRate: Double
         ) {
           self.init(_dataDict: DataDict(
             data: [
@@ -777,11 +795,14 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
               "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments,
               "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch,
               "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation,
+              "minPledge": minPledge,
+              "fxRate": fxRate,
             ],
             fulfilledFragments: [
               ObjectIdentifier(FetchProjectRewardsByIdQuery.Data.Project.self),
               ObjectIdentifier(FetchProjectRewardsByIdQuery.Data.Project.IfIncludePledgeOverTime.self),
-              ObjectIdentifier(PledgeOverTimeFragment.self)
+              ObjectIdentifier(PledgeOverTimeFragment.self),
+              ObjectIdentifier(NoRewardRewardFragment.self)
             ]
           ))
         }

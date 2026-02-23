@@ -15,5 +15,6 @@ query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!,
       }
     }
     ...PledgeOverTimeFragment @include(if: $includePledgeOverTime)
+    ...NoRewardRewardFragment
   }
 }

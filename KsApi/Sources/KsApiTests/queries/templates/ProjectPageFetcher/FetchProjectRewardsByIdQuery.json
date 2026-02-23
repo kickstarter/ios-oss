@@ -2,6 +2,8 @@
   "data": {
     "project": {
       "__typename": "Project",
+      "fxRate": 0.845978,
+      "minPledge": 1,
       "rewards": {
         "__typename": "ProjectRewardConnection",
         "nodes": [

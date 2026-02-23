@@ -49,14 +49,8 @@ public struct ProjectPageFetcher {
       .fetchProjectRewards(projectId: project.id)
       .switchMap { projectRewards -> SignalProducer<Project, ErrorEnvelope> in
 
-        var allRewards = projectRewards
-
-        if let noRewardReward = project.rewardData.rewards.first {
-          allRewards.insert(noRewardReward, at: 0)
-        }
-
         let projectWithBackingAndRewards = project
-          |> Project.lens.rewardData.rewards .~ allRewards
+          |> Project.lens.rewardData.rewards .~ projectRewards
           |> Project.lens.extendedProjectProperties .~ project.extendedProjectProperties
 
         return SignalProducer(value: projectWithBackingAndRewards)

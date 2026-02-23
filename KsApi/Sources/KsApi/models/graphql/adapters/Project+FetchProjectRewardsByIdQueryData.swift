@@ -12,7 +12,7 @@ extension Project {
     return SignalProducer(value: projectRewards)
   }
 
-  static func projectRewards(from data: GraphAPI.FetchProjectRewardsByIdQuery.Data) -> [Reward] {
+  private static func projectRewards(from data: GraphAPI.FetchProjectRewardsByIdQuery.Data) -> [Reward] {
     let projectRewards = data.project?.rewards?.nodes?
       .compactMap { node -> (GraphAPI.RewardFragment, [ShippingRule]?)? in
         guard let rewardFragment = node?.fragments.rewardFragment else { return nil }
@@ -61,7 +61,10 @@ extension Project {
       ) -> Reward? in
         Reward.reward(from: rewardFragment, expandedShippingRules: expandedShippingRules)
       }
-    return projectRewards ?? []
+
+    let noRewardReward = Reward.noRewardReward(from: data.project?.fragments.noRewardRewardFragment)
+    let allRewards = projectRewards ?? []
+    return [noRewardReward] + allRewards
   }
 
   static func projectRewardsAndPledgeOverTimeDataProducer(
@@ -75,7 +78,7 @@ extension Project {
     return SignalProducer(value: projectRewards)
   }
 
-  static func projectRewardsAndPledgeOverTimeData(
+  private static func projectRewardsAndPledgeOverTimeData(
     from data: GraphAPI.FetchProjectRewardsByIdQuery
       .Data
   ) -> RewardsAndPledgeOverTimeEnvelope {
