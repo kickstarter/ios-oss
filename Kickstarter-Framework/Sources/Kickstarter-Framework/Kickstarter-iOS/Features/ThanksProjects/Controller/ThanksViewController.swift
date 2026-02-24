@@ -77,12 +77,6 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
     self.view.backgroundColor = Colors.Background.Surface.primary.uiColor()
 
-    // _ = self.closeButton
-    //   |> UIButton.lens.title(for: .normal) .~ nil
-    //   |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
-    //   |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
-    //   |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
-
     _ = self.projectsTableView
       |> UITableView.lens.separatorStyle .~ .none
       |> UITableView.lens.rowHeight .~ UITableView.automaticDimension
