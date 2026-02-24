@@ -135,7 +135,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     )
     .map { project, rewards, location in
       rewards
-        .filter { reward in isStartDateBeforeToday(for: reward) }
         .map { reward in (project, reward, .pledge, location) }
     }
 
