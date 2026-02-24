@@ -74,19 +74,31 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       self.shippingLocationSelectedSignal
     )
 
-    self.rewardsProperty <~ self.shippingLocationSelectedSignal
-      .mapConst([])
+    // Use the initial project rewards if we can
+    // These will need to get sorted properly
+    // And maybe pass in a default shipping location
+    self.rewardsProperty <~ project.map { RewardsForLocation(rewards: $0.rewards, location: nil) }
 
+    // Clear the displayed rewards so we can reload the page
+    self.rewardsProperty <~ self.shippingLocationSelectedSignal.skipNil()
+      .mapConst(nil)
+
+    // When you pick a new shipping location, fetch the re-sorted rewards
     self.rewardsProperty <~ project
       .takePairWhen(shippingLocation)
-      .flatMap { project, _ in
+      .flatMap { project, location in
         AppEnvironment.current.apiService
           .fetchProjectRewards(projectId: project.id) // TODO: for location
           .materialize()
           .values() // TODO: handle errors
+          .map { RewardsForLocation(rewards: $0, location: location) }
       }
 
     let rewards = self.rewardsProperty.signal
+      .skipRepeats { a, b in
+        a?.location?.id == b?.location?.id
+      }
+      .map { $0?.rewards ?? [] }
 
     self.title = configData
       .map { project, _, context, _ in (context, project) }
@@ -444,7 +456,12 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.viewWillAppearProperty.value = ()
   }
 
-  private let rewardsProperty = MutableProperty<[Reward]>([])
+  private struct RewardsForLocation {
+    let rewards: [Reward]
+    let location: Location?
+  }
+
+  private let rewardsProperty = MutableProperty<RewardsForLocation?>(nil)
 
   public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
   public let configureRewardsCollectionViewFooterWithCount: Signal<Int, Never>
