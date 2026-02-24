@@ -7,48 +7,47 @@ struct RichTextStylePreviewView: View {
   @Environment(\.richTextStyle) private var style
 
   var body: some View {
-    VStack(alignment: .leading, spacing: style.blockSpacing) {
+    VStack(alignment: .leading, spacing: self.style.blockSpacing) {
       Text("Body")
-        .font(style.bodyFont)
-        .foregroundStyle(style.bodyColor)
+        .font(self.style.bodyFont)
+        .foregroundStyle(self.style.bodyColor)
 
       Text("Heading 1")
-        .font(style.heading1Font)
-        .foregroundStyle(style.headingColor)
+        .font(self.style.heading1Font)
+        .foregroundStyle(self.style.headingColor)
 
       Text("Heading 2")
-        .font(style.heading2Font)
-        .foregroundStyle(style.headingColor)
+        .font(self.style.heading2Font)
+        .foregroundStyle(self.style.headingColor)
 
       Text("Heading 3")
-        .font(style.heading3Font)
-        .foregroundStyle(style.headingColor)
+        .font(self.style.heading3Font)
+        .foregroundStyle(self.style.headingColor)
 
       Text("Heading 4")
-        .font(style.heading4Font)
-        .foregroundStyle(style.headingColor)
+        .font(self.style.heading4Font)
+        .foregroundStyle(self.style.headingColor)
 
       Text("Link")
-        .font(style.bodyFont)
-        .foregroundStyle(style.linkColor)
-        .underline(style.linkUnderlined)
+        .font(self.style.bodyFont)
+        .foregroundStyle(self.style.linkColor)
+        .underline(self.style.linkUnderlined)
 
-      RoundedRectangle(cornerRadius: style.mediaCornerRadius)
-        .fill(style.bodyColor)
+      RoundedRectangle(cornerRadius: self.style.mediaCornerRadius)
+        .fill(self.style.bodyColor)
         .frame(height: 40)
 
       VStack(alignment: .leading, spacing: 4) {
-        Text("listIndentation: \(style.listIndentation, specifier: "%.0f")")
-          .font(style.bodyFont)
-          .foregroundStyle(style.bodyColor)
+        Text("listIndentation: \(self.style.listIndentation, specifier: "%.0f")")
+          .font(self.style.bodyFont)
+          .foregroundStyle(self.style.bodyColor)
       }
     }
-    .padding(style.contentHorizontalPadding)
+    .padding(self.style.contentHorizontalPadding)
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-    .background(style.backgroundColor)
+    .background(self.style.backgroundColor)
   }
 }
-
 
 // MARK: - Snapshot tests
 
