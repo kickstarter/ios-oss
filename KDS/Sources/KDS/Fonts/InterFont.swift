@@ -1,3 +1,4 @@
+import Synchronization
 import UIKit
 
 public enum InterFont: CustomFont, CaseIterable {
@@ -75,15 +76,18 @@ public enum InterFont: CustomFont, CaseIterable {
   }
 }
 
-var registeredInterfont = false
-
 extension InterFont: CustomFontAccessible {
+  private static let registeredInterfont = Mutex<Bool>(false)
   public static var isRegistered: Bool {
     get {
-      registeredInterfont
+      registeredInterfont.withLock { isRegistered in
+        isRegistered
+      }
     }
     set {
-      registeredInterfont = newValue
+      registeredInterfont.withLock { isRegistered in
+        isRegistered = newValue
+      }
     }
   }
 

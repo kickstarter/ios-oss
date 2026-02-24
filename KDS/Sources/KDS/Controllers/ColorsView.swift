@@ -176,13 +176,13 @@ public struct ColorsView: View {
   }
 }
 
-extension SemanticColor: @retroactive Identifiable {
+extension SemanticColor: Identifiable {
   public var id: String {
     return self.name
   }
 }
 
-extension LegacyColor: @retroactive Identifiable {
+extension LegacyColor: Identifiable {
   public var id: String {
     return self.name
   }
