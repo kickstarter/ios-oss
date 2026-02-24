@@ -8,7 +8,7 @@ import StoreKit
 import UIKit
 
 internal final class ThanksViewController: UIViewController, UITableViewDelegate {
-  @IBOutlet fileprivate var closeButtonContainerView: UIButton!
+  @IBOutlet fileprivate var closeButtonContainerView: UIView!
   @IBOutlet fileprivate var shareMoreButton: UIButton!
   @IBOutlet fileprivate var projectsTableView: UITableView!
   @IBOutlet fileprivate var backedLabel: UILabel!
@@ -57,9 +57,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       closeButtonView.centerYAnchor.constraint(
         equalTo: self.closeButtonContainerView.centerYAnchor,
         constant: 8
-      ),
-      closeButtonView.widthAnchor.constraint(equalToConstant: 44),
-      closeButtonView.heightAnchor.constraint(equalToConstant: 44)
+      )
     ])
   }
 
