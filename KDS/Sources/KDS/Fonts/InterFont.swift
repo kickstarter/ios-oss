@@ -77,17 +77,13 @@ public enum InterFont: CustomFont, CaseIterable {
 }
 
 extension InterFont: CustomFontAccessible {
-  private static let registeredInterfont = Mutex<Bool>(false)
+  private static let registeredInterfont = Atomic(false)
   public static var isRegistered: Bool {
     get {
-      registeredInterfont.withLock { isRegistered in
-        isRegistered
-      }
+      registeredInterfont.load(ordering: .acquiring)
     }
     set {
-      registeredInterfont.withLock { isRegistered in
-        isRegistered = newValue
-      }
+      _ = registeredInterfont.exchange(newValue, ordering: .acquiringAndReleasing)
     }
   }
 
