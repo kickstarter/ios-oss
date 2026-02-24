@@ -20,7 +20,7 @@ private struct StyleBodyColorCaptureView: View {
   @Binding var captured: Color?
 
   var body: some View {
-    let _ = (captured = self.style.bodyColor)
+    _ = (captured = self.style.bodyColor)
     return Color.clear
       .onAppear { self.captured = self.style.bodyColor }
   }
