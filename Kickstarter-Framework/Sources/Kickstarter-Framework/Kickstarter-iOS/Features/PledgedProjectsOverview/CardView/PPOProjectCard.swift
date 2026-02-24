@@ -18,7 +18,7 @@ struct PPOProjectCard: View {
 
       if self.showAddressSection() {
         self.divider
-        self.addressDetails(leadingColumnWidth: self.parentSize.width * Constants.firstColumnWidth)
+        self.addressDetails
       }
 
       if self.showDividerBeforeAction() {
@@ -117,17 +117,17 @@ struct PPOProjectCard: View {
   }
 
   @ViewBuilder
-  private func addressDetails(leadingColumnWidth: CGFloat) -> some View {
+  private var addressDetails: some View {
     switch self.viewModel.card.address {
     case let .editable(address, editUrl):
       Button { [weak viewModel] () in
         viewModel?.eventTriggered(.editAddress(url: editUrl))
       } label: {
-        self.addressContents(leadingColumnWidth: leadingColumnWidth, address: address, editable: true)
+        self.addressContents(address: address, editable: true)
       }
       .buttonStyle(BorderlessButtonStyle())
     case let .locked(address):
-      self.addressContents(leadingColumnWidth: leadingColumnWidth, address: address, editable: false)
+      self.addressContents(address: address, editable: false)
     case .hidden:
       // Explicitly create an empty view, since the ViewBuilder requires consistency.
       EmptyView()
@@ -135,10 +135,9 @@ struct PPOProjectCard: View {
   }
 
   @ViewBuilder
-  private func addressContents(leadingColumnWidth: CGFloat, address: String, editable: Bool) -> some View {
+  private func addressContents(address: String, editable: Bool) -> some View {
     PPOAddressSummary(
       address: address,
-      leadingColumnWidth: leadingColumnWidth,
       editable: editable
     )
     .padding([.horizontal])
