@@ -19,6 +19,9 @@ public struct VideoFeedItem: Hashable {
   /// Small pill label text (category / tag).
   let categoryPillText: String
 
+  /// Secondary pill text (e.g. countdown / metadata).
+  let secondaryPillText: String
+
   /// CTA button label.
   let ctaTitle: String
 

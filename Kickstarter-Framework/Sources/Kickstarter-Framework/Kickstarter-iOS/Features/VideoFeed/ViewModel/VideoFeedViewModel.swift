@@ -68,6 +68,7 @@ final class VideoFeedViewModel: VideoFeedViewModelType, VideoFeedViewModelInputs
         creator: self.project.creator.name,
         statsText: "",
         categoryPillText: "Project We Love",
+        secondaryPillText: "3 days left",
         ctaTitle: "View project"
       )
     }

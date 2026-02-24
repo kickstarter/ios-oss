@@ -28,11 +28,8 @@ final class VideoFeedCell: UICollectionViewCell {
   /// Observes whether the player layer has a frame ready to show (prevents black screens)
   private var readyForDisplayObservation: NSKeyValueObservation?
 
-  // MARK: - Loading UI (prevents "black" perception)
-
   /// Full-screen overlay used to hide black frames while video is not ready
   private let loadingOverlay = UIView()
-
   /// Spinner shown while we’re waiting on the first renderable frame or buffering
   private let loadingIndicator = UIActivityIndicatorView(style: .large)
 
@@ -64,10 +61,17 @@ final class VideoFeedCell: UICollectionViewCell {
 
   /// Bottom-left content area (pill/title/stats/cta)
   private let bottomContainer = UIView()
-  private let pillLabel = UILabel()
+  private let primaryPillView = VideoFeedPillView()
+  private let secondaryPillView = VideoFeedPillView()
   private let titleLabel = UILabel()
   private let statsLabel = UILabel()
   private let ctaButton = UIButton(type: .system)
+
+  /// Thin playback progress bar (below CTA).
+  private let progressView = UIProgressView(progressViewStyle: .default)
+
+  /// Periodic time observer token used for progress updates.
+  private var progressObserverToken: Any?
 
   // MARK: - Callbacks
 
@@ -119,7 +123,11 @@ final class VideoFeedCell: UICollectionViewCell {
 
     self.titleLabel.text = nil
     self.statsLabel.text = nil
-    self.pillLabel.text = nil
+
+    self.primaryPillView.configure(systemImage: nil, text: "")
+    self.secondaryPillView.configure(systemImage: nil, text: "")
+
+    self.progressView.progress = 0
   }
 
   override func layoutSubviews() {
@@ -135,15 +143,26 @@ final class VideoFeedCell: UICollectionViewCell {
     /// Apply the text UI (video playback is handled separately)
     self.titleLabel.text = item.title
     self.statsLabel.text = item.statsText
-    self.pillLabel.text = item.categoryPillText
 
-    /// Build a simple filled CTA style
-    var ctaConfig = UIButton.Configuration.filled()
+    self.primaryPillView.configure(
+      systemImage: "heart.fill",
+      text: item.categoryPillText
+    )
+    self.secondaryPillView.configure(
+      systemImage: "clock",
+      text: item.secondaryPillText
+    )
+
+    /// Match the design: transparent background + border.
+    var ctaConfig = UIButton.Configuration.plain()
     ctaConfig.title = item.ctaTitle
-    ctaConfig.baseBackgroundColor = .systemBackground
-    ctaConfig.baseForegroundColor = .label
+    ctaConfig.baseForegroundColor = .white
     ctaConfig.cornerStyle = .capsule
     ctaConfig.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 16)
+
+    ctaConfig.background.backgroundColor = .clear
+    ctaConfig.background.strokeColor = UIColor(white: 1.0, alpha: 0.9)
+    ctaConfig.background.strokeWidth = 1
     self.ctaButton.configuration = ctaConfig
   }
 
@@ -154,8 +173,17 @@ final class VideoFeedCell: UICollectionViewCell {
     self.timeControlObservation = nil
     self.readyForDisplayObservation = nil
 
+    /// Stop any in-flight progress observation for the previous player.
+    if let token = self.progressObserverToken {
+      self.player?.removeTimeObserver(token)
+      self.progressObserverToken = nil
+    }
+
     player = newPlayer
     self.playerLayer.player = newPlayer
+
+    /// Reset progress for reused cells / new players.
+    self.progressView.progress = 0
 
     /// We manage loading UI ourselves; don’t let AVFoundation “wait a bit” before playing
     newPlayer?.automaticallyWaitsToMinimizeStalling = false
@@ -180,6 +208,14 @@ final class VideoFeedCell: UICollectionViewCell {
       /// No player/item means we can’t render anything yet
       self.setLoading(true)
       return
+    }
+
+    /// Update progress while playing.
+    self.progressObserverToken = player.addPeriodicTimeObserver(
+      forInterval: CMTime(seconds: 0.25, preferredTimescale: 600),
+      queue: .main
+    ) { [weak self] time in
+      self?.updateProgress(currentTime: time)
     }
 
     /// Observe when the item becomes ready to play
@@ -235,14 +271,27 @@ final class VideoFeedCell: UICollectionViewCell {
       guard self.isActive else { return }
 
       /// Start playback immediately after seek completes for a clean transition
-      if #available(iOS 10.0, *) {
-        player.playImmediately(atRate: 1.0)
-      } else {
-        player.play()
-      }
+      player.playImmediately(atRate: 1.0)
 
       self.updateLoadingBasedOnState()
+
+      /// Keep progress in sync with the new start frame.
+      self.updateProgress(currentTime: .zero)
     }
+  }
+
+  private func updateProgress(currentTime: CMTime) {
+    guard let player, let item = player.currentItem else { return }
+
+    let durationSeconds = item.duration.seconds
+    guard durationSeconds.isFinite, durationSeconds > 0 else {
+      self.progressView.progress = 0
+      return
+    }
+
+    let currentSeconds = currentTime.seconds
+    let progress = max(0, min(1, currentSeconds / durationSeconds))
+    self.progressView.progress = Float(progress)
   }
 
   private func updateLoadingBasedOnState() {
@@ -480,7 +529,7 @@ final class VideoFeedCell: UICollectionViewCell {
       ),
       self.bottomContainer.trailingAnchor.constraint(
         equalTo: self.overlayContainer.trailingAnchor,
-        constant: -72
+        constant: -16
       ),
       self.bottomContainer.bottomAnchor.constraint(
         equalTo: self.overlayContainer.safeAreaLayoutGuide.bottomAnchor,
@@ -488,27 +537,31 @@ final class VideoFeedCell: UICollectionViewCell {
       )
     ])
 
-    /// Pill label style (with a wrapper to create padding)
-    self.pillLabel.translatesAutoresizingMaskIntoConstraints = false
-    self.pillLabel.textColor = .white
-    self.pillLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-    self.pillLabel.backgroundColor = UIColor(white: 0.0, alpha: 0.35)
-    self.pillLabel.layer.cornerRadius = 10
-    self.pillLabel.layer.masksToBounds = true
-    self.pillLabel.setContentHuggingPriority(.required, for: .horizontal)
-    self.pillLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+    /// Pill row (Project We Love + Days left)
+    self.primaryPillView.translatesAutoresizingMaskIntoConstraints = false
+    self.secondaryPillView.translatesAutoresizingMaskIntoConstraints = false
 
-    let pillWrapper = UIView()
-    pillWrapper.translatesAutoresizingMaskIntoConstraints = false
-    pillWrapper.backgroundColor = .clear
-    pillWrapper.addSubview(self.pillLabel)
+    /// Add a flexible spacer so pills only take the space they need.
+    let pillsSpacer = UIView()
+    pillsSpacer.translatesAutoresizingMaskIntoConstraints = false
 
-    NSLayoutConstraint.activate([
-      self.pillLabel.leadingAnchor.constraint(equalTo: pillWrapper.leadingAnchor, constant: 10),
-      self.pillLabel.trailingAnchor.constraint(equalTo: pillWrapper.trailingAnchor, constant: -10),
-      self.pillLabel.topAnchor.constraint(equalTo: pillWrapper.topAnchor, constant: 4),
-      self.pillLabel.bottomAnchor.constraint(equalTo: pillWrapper.bottomAnchor, constant: -4)
-    ])
+    let pillsRow = UIStackView(arrangedSubviews: [self.primaryPillView, self.secondaryPillView, pillsSpacer])
+    pillsRow.translatesAutoresizingMaskIntoConstraints = false
+    pillsRow.axis = .horizontal
+    pillsRow.alignment = .center
+    pillsRow.spacing = 8
+    pillsRow.distribution = .fill
+
+    /// Prevent pill views from stretching wider than their content.
+    self.primaryPillView.setContentHuggingPriority(.required, for: .horizontal)
+    self.primaryPillView.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+    self.secondaryPillView.setContentHuggingPriority(.required, for: .horizontal)
+    self.secondaryPillView.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+    /// Spacer should absorb any extra width.
+    pillsSpacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    pillsSpacer.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
     /// Title label style
     self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -527,23 +580,45 @@ final class VideoFeedCell: UICollectionViewCell {
     self.ctaButton.translatesAutoresizingMaskIntoConstraints = false
     self.ctaButton.addTarget(self, action: #selector(self.ctaTapped), for: .touchUpInside)
 
+    /// Full-width CTA like the design.
+    self.ctaButton.contentHorizontalAlignment = .center
+    self.ctaButton.setContentHuggingPriority(.defaultLow, for: .horizontal)
+
+    /// Progress bar directly below the CTA.
+    self.progressView.translatesAutoresizingMaskIntoConstraints = false
+    self.progressView.trackTintColor = UIColor(white: 1.0, alpha: 0.25)
+    self.progressView.progressTintColor = UIColor(white: 1.0, alpha: 0.9)
+
     /// Stack everything vertically
-    let stack = UIStackView(arrangedSubviews: [pillWrapper, titleLabel, statsLabel, ctaButton])
+    let stack = UIStackView(arrangedSubviews: [pillsRow, titleLabel, statsLabel, ctaButton, progressView])
     stack.translatesAutoresizingMaskIntoConstraints = false
     stack.axis = .vertical
-    stack.alignment = .leading
-    stack.spacing = 8
+    stack.alignment = .fill
+
+    /// Default stack spacing (used for title ↔ stats only).
+    stack.spacing = 4
+
+    /// Exact design spacings.
+    /// - pills → title: 8
+    /// - title+stats → CTA: 16 (implemented as stats → CTA)
+    /// - CTA → progress: 24
+    stack.setCustomSpacing(8, after: pillsRow)
+    stack.setCustomSpacing(16, after: self.statsLabel)
+    stack.setCustomSpacing(24, after: self.ctaButton)
 
     self.bottomContainer.addSubview(stack)
 
     NSLayoutConstraint.activate([
       stack.leadingAnchor.constraint(equalTo: self.bottomContainer.leadingAnchor),
-      stack.trailingAnchor.constraint(lessThanOrEqualTo: self.bottomContainer.trailingAnchor),
+      stack.trailingAnchor.constraint(equalTo: self.bottomContainer.trailingAnchor),
       stack.topAnchor.constraint(equalTo: self.bottomContainer.topAnchor),
       stack.bottomAnchor.constraint(equalTo: self.bottomContainer.bottomAnchor),
 
       /// Keep CTA at a reasonable tappable height
-      self.ctaButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
+      self.ctaButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 40),
+
+      /// Thin progress bar height (matches the design).
+      self.progressView.heightAnchor.constraint(equalToConstant: 2)
     ])
   }
 
