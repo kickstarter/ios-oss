@@ -613,14 +613,35 @@ public struct Service: ServiceType {
     return request(.project(param))
   }
 
-  public func fetchProjectRewards(projectId: Int)
+  private func rewardSortForLocation(_ maybeLocation: Location?)
+    -> GraphQLNullable<GraphQLEnum<GraphAPI.ProjectRewardsSort>> {
+    if maybeLocation != nil {
+      return GraphQLEnum.caseOrNil(.eligibility)
+    } else {
+      return GraphQLEnum.caseOrNil(.availability)
+    }
+  }
+
+  private func countryCodeForLocation(_ maybeLocation: Location?)
+    -> GraphQLNullable<GraphQLEnum<GraphAPI.CountryCode>> {
+    if let location = maybeLocation {
+      let code = GraphAPI.CountryCode(rawValue: location.country)
+      return GraphQLEnum.caseOrNil(code)
+    } else {
+      return GraphQLEnum.caseOrNil(nil)
+    }
+  }
+
+  public func fetchProjectRewards(projectId: Int, forLocation location: Location?)
     -> SignalProducer<[Reward], ErrorEnvelope> {
     let query = GraphAPI
       .FetchProjectRewardsByIdQuery(
         projectId: projectId,
         includeShippingRules: true,
         includeLocalPickup: true,
-        includePledgeOverTime: false
+        includePledgeOverTime: false,
+        location: self.countryCodeForLocation(location),
+        sort: self.rewardSortForLocation(location)
       )
 
     return GraphQL.shared.client
@@ -628,14 +649,16 @@ public struct Service: ServiceType {
       .flatMap(Project.projectRewardsProducer(from:))
   }
 
-  public func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int)
+  public func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int, forLocation location: Location?)
     -> SignalProducer<RewardsAndPledgeOverTimeEnvelope, ErrorEnvelope> {
     let query = GraphAPI
       .FetchProjectRewardsByIdQuery(
         projectId: projectId,
         includeShippingRules: true,
         includeLocalPickup: true,
-        includePledgeOverTime: true
+        includePledgeOverTime: true,
+        location: self.countryCodeForLocation(location),
+        sort: self.rewardSortForLocation(location)
       )
 
     return GraphQL.shared.client

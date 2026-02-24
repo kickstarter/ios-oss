@@ -1386,7 +1386,7 @@
       }
     }
 
-    func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int)
+    func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int, forLocation _: Location?)
       -> SignalProducer<
         RewardsAndPledgeOverTimeEnvelope,
         ErrorEnvelope
@@ -1400,7 +1400,9 @@
           projectId: projectId,
           includeShippingRules: false,
           includeLocalPickup: true,
-          includePledgeOverTime: true
+          includePledgeOverTime: true,
+          location: GraphQLEnum.caseOrNil(.us),
+          sort: GraphQLEnum.caseOrNil(.eligibility)
         )
 
       return client
@@ -1410,7 +1412,10 @@
         )
     }
 
-    internal func fetchProjectRewards(projectId: Int) -> SignalProducer<[Reward], ErrorEnvelope> {
+    internal func fetchProjectRewards(
+      projectId: Int,
+      forLocation _: Location?
+    ) -> SignalProducer<[Reward], ErrorEnvelope> {
       guard let client = self.apolloClient else {
         return .empty
       }
@@ -1420,7 +1425,9 @@
           projectId: projectId,
           includeShippingRules: false,
           includeLocalPickup: true,
-          includePledgeOverTime: false
+          includePledgeOverTime: false,
+          location: GraphQLEnum.caseOrNil(.us),
+          sort: GraphQLEnum.caseOrNil(.eligibility)
         )
 
       return client
