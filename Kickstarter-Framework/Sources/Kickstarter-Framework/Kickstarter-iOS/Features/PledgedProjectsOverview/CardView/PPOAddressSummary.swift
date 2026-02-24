@@ -5,22 +5,23 @@ import SwiftUI
 
 struct PPOAddressSummary: View {
   let address: String
-  let leadingColumnWidth: CGFloat
   let editable: Bool
 
   var body: some View {
     HStack(alignment: .top, spacing: Spacing.unit_02) {
-      Text(Strings.Shipping_address())
-        .font(Font(PPOStyles.body.font()).weight(.semibold))
-        .multilineTextAlignment(.leading)
-        .foregroundStyle(Color(PPOStyles.title.color))
-        .frame(width: self.leadingColumnWidth, alignment: Constants.textAlignment)
+      VStack(alignment: .leading, spacing: Spacing.unit_02) {
+        Text(Strings.Shipping_address())
+          .font(Font(PPOStyles.body.font()).weight(.semibold))
+          .multilineTextAlignment(.leading)
+          .foregroundStyle(Color(PPOStyles.title.color))
+          .frame(maxWidth: Constants.maxWidth, alignment: Constants.textAlignment)
 
-      Text(self.address)
-        .font(Font(PPOStyles.body.font()))
-        .multilineTextAlignment(.leading)
-        .foregroundStyle(Color(PPOStyles.body.color))
-        .frame(maxWidth: Constants.maxWidth, alignment: Constants.textAlignment)
+        Text(self.address)
+          .font(Font(PPOStyles.body.font()))
+          .multilineTextAlignment(.leading)
+          .foregroundStyle(Color(PPOStyles.body.color))
+          .frame(maxWidth: Constants.maxWidth, alignment: Constants.textAlignment)
+      }
 
       if self.editable {
         Image(PPOStyles.editAddressImage)
@@ -44,29 +45,25 @@ struct PPOAddressSummary: View {
 }
 
 #Preview {
-  GeometryReader(content: { geometry in
-    VStack(spacing: 28) {
-      PPOAddressSummary(
-        address: """
-          Firsty Lasty
-          123 First Street, Apt #5678
-          Los Angeles, CA 90025-1234
-          United States
-        """,
-        leadingColumnWidth: geometry.size.width / 4,
-        editable: true
-      )
-      PPOAddressSummary(
-        address: """
-          Final Address
-          123 First Street, Apt #5678
-          Los Angeles, CA 90025-1234
-          United States
-        """,
-        leadingColumnWidth: geometry.size.width / 4,
-        editable: false
-      )
-    }
-  })
+  VStack(spacing: 28) {
+    PPOAddressSummary(
+      address: """
+      Firsty Lasty
+      123 First Street, Apt #5678
+      Los Angeles, CA 90025-1234
+      United States
+      """,
+      editable: true
+    )
+    PPOAddressSummary(
+      address: """
+      Final Address
+      123 First Street, Apt #5678
+      Los Angeles, CA 90025-1234
+      United States
+      """,
+      editable: false
+    )
+  }
   .padding(28)
 }

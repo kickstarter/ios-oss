@@ -15,7 +15,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
   private let backerNameText = TestObserver<String, Never>()
   private let configurePagesDataSourceTab = TestObserver<BackerDashboardTab, Never>()
   private let configurePagesDataSourceSort = TestObserver<DiscoveryParams.Sort, Never>()
-  private let embeddedViewTopConstraintConstant = TestObserver<CGFloat, Never>()
   private let goToMessages = TestObserver<(), Never>()
   private let goToProject = TestObserver<Project, Never>()
   private let goToSettings = TestObserver<(), Never>()
@@ -25,7 +24,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
   private let postNotification = TestObserver<Notification, Never>()
   private let savedButtonTitleText = TestObserver<String, Never>()
   private let setSelectedButton = TestObserver<BackerDashboardTab, Never>()
-  private let sortBarIsHidden = TestObserver<Bool, Never>()
   private let updateCurrentUserInEnvironment = TestObserver<User, Never>()
 
   override func setUp() {
@@ -36,7 +34,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
     self.vm.outputs.backerNameText.observe(self.backerNameText.observer)
     self.vm.outputs.configurePagesDataSource.map(first).observe(self.configurePagesDataSourceTab.observer)
     self.vm.outputs.configurePagesDataSource.map(second).observe(self.configurePagesDataSourceSort.observer)
-    self.vm.outputs.embeddedViewTopConstraintConstant.observe(self.embeddedViewTopConstraintConstant.observer)
     self.vm.outputs.goToMessages.observe(self.goToMessages.observer)
     self.vm.outputs.goToSettings.observe(self.goToSettings.observer)
     self.vm.outputs.navigateToTab.observe(self.navigateToTab.observer)
@@ -45,7 +42,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
       .observe(self.pinSelectedIndicatorToTabAnimated.observer)
     self.vm.outputs.savedButtonTitleText.observe(self.savedButtonTitleText.observer)
     self.vm.outputs.setSelectedButton.observe(self.setSelectedButton.observer)
-    self.vm.outputs.sortBarIsHidden.observe(self.sortBarIsHidden.observer)
     self.vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
     self.vm.outputs.postNotification.observe(self.postNotification.observer)
   }
@@ -76,7 +72,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
       self.pinSelectedIndicatorToTabAnimated.assertValueCount(0)
       self.savedButtonTitleText.assertValueCount(0)
       self.setSelectedButton.assertValueCount(0)
-      self.sortBarIsHidden.assertValueCount(0)
       self.postNotification.assertValueCount(0)
       self.updateCurrentUserInEnvironment.assertValueCount(0)
 
@@ -91,8 +86,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
       self.backerNameText.assertValues(["Princess Vespa", "Princess Vespa"])
       self.savedButtonTitleText.assertValues(["58\nsaved"])
       self.setSelectedButton.assertValues([.backed])
-      self.sortBarIsHidden.assertValues([true])
-      self.embeddedViewTopConstraintConstant.assertValues([0.0])
       self.postNotification.assertValueCount(0)
       self.updateCurrentUserInEnvironment.assertValues([user])
 

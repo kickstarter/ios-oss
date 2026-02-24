@@ -107,14 +107,14 @@
                                     </constraints>
                                 </view>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I5Z-r3-uNR">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I5Z-r3-uNR" userLabel="Close button container">
                                 <rect key="frame" x="0.0" y="20" width="52" height="52"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="52" id="Cte-tU-q44"/>
                                     <constraint firstAttribute="width" constant="52" id="eFJ-nV-qZP"/>
                                 </constraints>
                                 <state key="normal" image="close-icon"/>
-                            </button>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="WMM-y8-QSH"/>
                         <constraints>
@@ -128,7 +128,7 @@
                     </view>
                     <connections>
                         <outlet property="backedLabel" destination="0W0-Br-5Lh" id="w6N-Ob-dK4"/>
-                        <outlet property="closeButton" destination="I5Z-r3-uNR" id="2j1-En-Csp"/>
+                        <outlet property="closeButtonContainerView" destination="I5Z-r3-uNR" id="2j1-En-Csp"/>
                         <outlet property="headerView" destination="LC4-lC-v0V" id="fZQ-u8-dLf"/>
                         <outlet property="projectsTableView" destination="K36-s7-mGm" id="ISM-6m-3DU"/>
                         <outlet property="recommendationsLabel" destination="3ZZ-Ud-4qC" id="oUA-3v-9RG"/>
