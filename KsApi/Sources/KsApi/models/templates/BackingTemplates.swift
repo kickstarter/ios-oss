@@ -15,6 +15,7 @@ extension Backing {
     isLatePledge: false,
     locationId: 1,
     locationName: "United States",
+    locationCountryCode: "US",
     order: nil,
     paymentIncrements: [],
     paymentSource: .template,

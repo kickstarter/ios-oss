@@ -51,6 +51,7 @@ extension Backing {
       isLatePledge: backingFragment.isLatePledge,
       locationId: locationId,
       locationName: backingFragment.location?.fragments.locationFragment.name,
+      locationCountryCode: backingFragment.location?.fragments.locationFragment.country,
       order: backingOrder,
       paymentIncrements: paymentIncrements,
       paymentSource: backingPaymentSource(from: backingFragment),
