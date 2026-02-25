@@ -364,11 +364,52 @@ public func selectedRewardQuantities(in backing: Backing) -> SelectedRewardQuant
   return quantities
 }
 
+public func filteredRewardsByLocation(
+  _ rewards: [Reward],
+  location: Location
+) -> [Reward] {
+  return rewards.filter { reward in
+    var shouldDisplayReward = false
+
+    let isRewardLocalOrDigital = isRewardDigital(reward) || isRewardLocalPickup(reward)
+    let isUnrestrictedShippingReward = reward.isUnRestrictedShippingPreference
+    let isRestrictedShippingReward = reward.isRestrictedShippingPreference
+
+    // Return all rewards that are no reward, digital, local pickup, or ship anywhere in the world.
+    if rewards.first?.id == reward.id || isRewardLocalOrDigital || isUnrestrictedShippingReward {
+      shouldDisplayReward = true
+
+      // If restricted shipping, compare against selected shipping location.
+    } else if isRestrictedShippingReward {
+      shouldDisplayReward = restrictedRewardShipsTo(selectedLocation: location.id, reward)
+    }
+
+    return shouldDisplayReward
+  }
+}
+
+/// Returns true if a given selection location matches the countries the given reward is available to ship to.
+private func restrictedRewardShipsTo(
+  selectedLocation locationId: Int?,
+  _ reward: Reward
+) -> Bool {
+  guard let selectedLocationId = locationId else { return false }
+
+  var shippingLocationIds: [Int] = []
+
+  reward.shippingRulesExpanded?.forEach { rule in
+    shippingLocationIds.append(rule.location.id)
+  }
+
+  return shippingLocationIds.contains(selectedLocationId)
+}
+
 public func rewardsCarouselCanNavigateToReward(_ reward: Reward, in project: Project) -> Bool {
   guard !currentUserIsCreator(of: project) else { return false }
 
   let isBacking = userIsBacking(reward: reward, inProject: project)
   let isAvailableForNewBacker = rewardIsAvailable(reward) && !isBacking
+
   /// Backers should always be able to edit the currently backed reward. It's the only path to update the pledge/bonus amount.
   let isAvailableForExistingBackerToEdit = isBacking
 

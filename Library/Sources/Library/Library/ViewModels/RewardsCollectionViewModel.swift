@@ -98,7 +98,17 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       .skipRepeats { a, b in
         a?.location?.id == b?.location?.id
       }
-      .map { $0?.rewards ?? [] }
+      .map { maybe in
+        guard let tuple = maybe else {
+          return [] as [Reward]
+        }
+
+        guard let location = maybe?.location else {
+          return tuple.rewards
+        }
+
+        return filteredRewardsByLocation(tuple.rewards, location: location)
+      }
 
     self.title = configData
       .map { project, _, context, _ in (context, project) }
@@ -581,46 +591,6 @@ private func allowableSortedProjectRewards(_ rewards: [Reward]) -> [Reward] {
   }
 
   return notReward + secretRewards + availableRewards + unavailableRewards
-}
-
-private func filteredRewardsByLocation(
-  _ rewards: [Reward],
-  location: Location
-) -> [Reward] {
-  return rewards.filter { reward in
-    var shouldDisplayReward = false
-
-    let isRewardLocalOrDigital = isRewardDigital(reward) || isRewardLocalPickup(reward)
-    let isUnrestrictedShippingReward = reward.isUnRestrictedShippingPreference
-    let isRestrictedShippingReward = reward.isRestrictedShippingPreference
-
-    // Return all rewards that are no reward, digital, local pickup, or ship anywhere in the world.
-    if rewards.first?.id == reward.id || isRewardLocalOrDigital || isUnrestrictedShippingReward {
-      shouldDisplayReward = true
-
-      // If restricted shipping, compare against selected shipping location.
-    } else if isRestrictedShippingReward {
-      shouldDisplayReward = rewardShipsTo(selectedLocation: location.id, reward)
-    }
-
-    return shouldDisplayReward
-  }
-}
-
-/// Returns true if a given selection location matches the countries the given reward is available to ship to.
-private func rewardShipsTo(
-  selectedLocation locationId: Int?,
-  _ reward: Reward
-) -> Bool {
-  guard let selectedLocationId = locationId else { return false }
-
-  var shippingLocationIds: [Int] = []
-
-  reward.shippingRulesExpanded?.forEach { rule in
-    shippingLocationIds.append(rule.location.id)
-  }
-
-  return shippingLocationIds.contains(selectedLocationId)
 }
 
 private func shippingRule(forReward reward: Reward, selectedLocation location: Location?) -> ShippingRule? {
