@@ -211,7 +211,6 @@ public let keyboardToolbarStyle: ToolbarStyle = { toolbar -> UIToolbar in
 }
 
 public let keyboardDoneButtonStyle: ButtonStyle = { button -> UIButton in
-  button
   var config = UIButton.Configuration.borderless()
   config.baseForegroundColor = Colors.Background.Action.primary.uiColor()
   config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 12)
