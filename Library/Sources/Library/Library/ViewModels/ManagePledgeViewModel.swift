@@ -481,7 +481,7 @@ public final class ManagePledgeViewModel:
 private func fetchProjectRewards(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
   return AppEnvironment.current.apiService
     // TODO:
-    .fetchProjectRewards(projectId: project.id, forLocation: nil)
+    .fetchAllProjectRewards(projectId: project.id)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     .switchMap { projectRewards -> SignalProducer<Project, ErrorEnvelope> in
 

@@ -46,7 +46,7 @@ public struct ProjectPageFetcher {
 
   private func fetchProjectRewards(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
     return self.apiService
-      .fetchProjectRewards(projectId: project.id, forLocation: nil)
+      .fetchAllProjectRewards(projectId: project.id)
       .switchMap { projectRewards -> SignalProducer<Project, ErrorEnvelope> in
 
         let projectWithBackingAndRewards = project

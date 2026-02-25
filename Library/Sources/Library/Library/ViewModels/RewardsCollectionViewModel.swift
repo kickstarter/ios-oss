@@ -87,8 +87,15 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.rewardsProperty <~ project
       .takePairWhen(shippingLocation)
       .flatMap { project, location in
-        AppEnvironment.current.apiService
-          .fetchProjectRewards(projectId: project.id, forLocation: location) // TODO: for location
+        guard let location = location else {
+          return AppEnvironment.current.apiService
+            .fetchAllProjectRewards(projectId: project.id) // TODO: for location
+            .materialize()
+            .values() // TODO: handle errors
+            .map { RewardsForLocation(rewards: $0, location: location) }
+        }
+        return AppEnvironment.current.apiService
+          .fetchProjectRewards(projectId: project.id, filteredToLocation: location) // TODO: for location
           .materialize()
           .values() // TODO: handle errors
           .map { RewardsForLocation(rewards: $0, location: location) }
