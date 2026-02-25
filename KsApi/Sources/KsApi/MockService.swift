@@ -1412,9 +1412,31 @@
         )
     }
 
-    internal func fetchProjectRewards(
+    func fetchAllProjectRewards(projectId: Int) -> SignalProducer<[Reward], ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let fetchProjectRewardsQuery = GraphAPI
+        .FetchProjectRewardsByIdQuery(
+          projectId: projectId,
+          includeShippingRules: false,
+          includeLocalPickup: true,
+          includePledgeOverTime: false,
+          location: nil,
+          sort: nil
+        )
+
+      return client
+        .fetchWithResult(
+          query: fetchProjectRewardsQuery,
+          result: self.fetchProjectRewardsEnvelopeResult
+        )
+    }
+
+    func fetchProjectRewards(
       projectId: Int,
-      forLocation _: Location?
+      filteredToLocation location: Location
     ) -> SignalProducer<[Reward], ErrorEnvelope> {
       guard let client = self.apolloClient else {
         return .empty

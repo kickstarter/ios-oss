@@ -255,8 +255,10 @@ public protocol ServiceType {
   func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int, forLocation maybeLocation: Location?)
     -> SignalProducer<RewardsAndPledgeOverTimeEnvelope, ErrorEnvelope>
 
-  /// Fetch the project's rewards only, without shipping rules
-  func fetchProjectRewards(projectId: Int, forLocation maybeLocation: Location?)
+  /// Fetch the project's rewards only
+  func fetchAllProjectRewards(projectId: Int) -> SignalProducer<[Reward], ErrorEnvelope>
+
+  func fetchProjectRewards(projectId: Int, filteredToLocation location: Location)
     -> SignalProducer<[Reward], ErrorEnvelope>
 
   /// Fetch a single project with the specified discovery params.
