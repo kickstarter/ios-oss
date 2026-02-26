@@ -1436,7 +1436,7 @@
 
     func fetchProjectRewards(
       projectId: Int,
-      filteredToLocation location: Location
+      sortedForShippingCountryCode _: String
     ) -> SignalProducer<[Reward], ErrorEnvelope> {
       guard let client = self.apolloClient else {
         return .empty

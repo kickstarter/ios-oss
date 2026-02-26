@@ -648,9 +648,9 @@ public struct Service: ServiceType {
       .flatMap(Project.projectRewardsProducer(from:))
   }
 
-  public func fetchProjectRewards(projectId: Int, filteredToLocation location: Location)
+  public func fetchProjectRewards(projectId: Int, sortedForShippingCountryCode code: String)
     -> SignalProducer<[Reward], ErrorEnvelope> {
-    let code = GraphAPI.CountryCode(rawValue: location.country)
+    let code = GraphAPI.CountryCode(rawValue: code)
     assert(code != nil, "Couldn't create a country code from the country location.")
 
     let query = GraphAPI

@@ -95,7 +95,10 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
             .map { RewardsForLocation(rewards: $0, location: location) }
         }
         return AppEnvironment.current.apiService
-          .fetchProjectRewards(projectId: project.id, filteredToLocation: location) // TODO: for location
+          .fetchProjectRewards(
+            projectId: project.id,
+            sortedForShippingCountryCode: location.country
+          ) // TODO: for location
           .materialize()
           .values() // TODO: handle errors
           .map { RewardsForLocation(rewards: $0, location: location) }
