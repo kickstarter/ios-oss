@@ -656,8 +656,8 @@ public struct Service: ServiceType {
     let query = GraphAPI
       .FetchProjectRewardsByIdQuery(
         projectId: projectId,
-        includeShippingRules: true,
-        includeLocalPickup: true,
+        includeShippingRules: false,
+        includeLocalPickup: false,
         includePledgeOverTime: false,
         location: GraphQLEnum.caseOrNil(code),
         sort: GraphQLEnum.caseOrNil(.eligibility)

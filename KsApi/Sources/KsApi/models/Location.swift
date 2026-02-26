@@ -17,6 +17,10 @@ extension Location: Decodable {
     case name
   }
 
+  public init(fromCountryCode code: String) {
+    self.init(country: code, displayableName: "", id: 0, localizedName: "", name: "")
+  }
+
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     self.country = try values.decode(String.self, forKey: .country)

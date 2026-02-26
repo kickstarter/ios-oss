@@ -69,15 +69,24 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         secretRewardToken
       }
 
+    let defaultShippingLocation = project
+      .map { project in
+        if let code = project.personalization.backing?.locationCountryCode {
+          return Location(fromCountryCode: code)
+        } else {
+          return Location(fromCountryCode: AppEnvironment.current.countryCode)
+        }
+      }
+
     let shippingLocation = Signal.merge(
-      configData.mapConst(nil), // Default selected shipping location to nil
-      self.shippingLocationSelectedSignal
+      defaultShippingLocation, // Default selected shipping location to nil
+      self.shippingLocationSelectedSignal.skipNil()
     )
 
     // Use the initial project rewards if we can
     // These will need to get sorted properly
     // And maybe pass in a default shipping location
-    self.rewardsProperty <~ project.map { RewardsForLocation(rewards: $0.rewards, location: nil) }
+    // self.rewardsProperty <~ project.map { RewardsForLocation(rewards: $0.rewards, location: nil) }
 
     // Clear the displayed rewards so we can reload the page
     self.rewardsProperty <~ self.shippingLocationSelectedSignal.skipNil()
@@ -87,14 +96,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.rewardsProperty <~ project
       .takePairWhen(shippingLocation)
       .flatMap { project, location in
-        guard let location = location else {
-          return AppEnvironment.current.apiService
-            .fetchAllProjectRewards(projectId: project.id) // TODO: for location
-            .materialize()
-            .values() // TODO: handle errors
-            .map { RewardsForLocation(rewards: $0, location: location) }
-        }
-        return AppEnvironment.current.apiService
+        AppEnvironment.current.apiService
           .fetchProjectRewards(
             projectId: project.id,
             sortedForShippingCountryCode: location.country
