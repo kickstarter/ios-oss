@@ -211,15 +211,13 @@ public let keyboardToolbarStyle: ToolbarStyle = { toolbar -> UIToolbar in
 }
 
 public let keyboardDoneButtonStyle: ButtonStyle = { button -> UIButton in
-  var config = UIButton.Configuration.borderless()
-  config.baseForegroundColor = Colors.Background.Action.primary.uiColor()
-  config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 12)
-  button.configuration = config
-  button.tintColor = Colors.Background.Action.primary.uiColor()
-
-  NSLayoutConstraint.activate([
-    button.widthAnchor.constraint(equalToConstant: 72)
-  ])
+  if #available(iOS 26.0, *) {
+    var config = UIButton.Configuration.borderless()
+    config.baseForegroundColor = Colors.Background.Action.primary.uiColor()
+    button.configuration = config
+  } else {
+    button.applyStyleConfiguration(KSRButtonStyle.green)
+  }
   return button
 }
 
