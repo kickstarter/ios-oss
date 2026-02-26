@@ -632,14 +632,5 @@ private func shippingRule(forReward reward: Reward, selectedLocation location: L
     return nil
   }
 
-  // TODO: This is a temporary patch to fix the fact that the SimpleShippingRule type is not translated.
-  // These `ShippingRule`s were created by a `SimpleShippingRule` and will always be shown in English,
-  // but we want to show the actual translated location name during checkout.
-  // Because the `selectedLocation` was fetched from the backend as a `Location` type, it is translated.
-  // This fix can be removed when MBL-2859 is fixed.
-  if rule.location.localizedName != selectedLocation.localizedName {
-    rule.overrideLocationLocalizedName = selectedLocation.localizedName
-  }
-
   return rule
 }
