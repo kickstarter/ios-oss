@@ -69,8 +69,14 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         secretRewardToken
       }
 
-    let defaultShippingLocation = project
+    let defaultShippingLocation: Signal<Location?, Never> = project
       .map { project in
+        if !projectHasShippableRewards(project) {
+          return nil
+        }
+
+        // TODO: can I make these not bodged messes?
+        // TODO: can I move this into the pledge thingy?
         if let code = project.personalization.backing?.locationCountryCode {
           return Location(fromCountryCode: code)
         } else {
@@ -80,46 +86,31 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
     let shippingLocation = Signal.merge(
       defaultShippingLocation, // Default selected shipping location to nil
-      self.shippingLocationSelectedSignal.skipNil()
-    )
+      self.shippingLocationSelectedSignal
+    ).skipRepeats { a, b in
+      a?.country == b?.country
+    }
 
-    // Use the initial project rewards if we can
-    // These will need to get sorted properly
-    // And maybe pass in a default shipping location
-    // self.rewardsProperty <~ project.map { RewardsForLocation(rewards: $0.rewards, location: nil) }
-
-    // Clear the displayed rewards so we can reload the page
+    // Clear the displayed rewards when you change the shipping location
     self.rewardsProperty <~ self.shippingLocationSelectedSignal.skipNil()
       .mapConst(nil)
 
     // When you pick a new shipping location, fetch the re-sorted rewards
     self.rewardsProperty <~ project
-      .takePairWhen(shippingLocation)
+      .combineLatest(with: shippingLocation)
       .flatMap { project, location in
         AppEnvironment.current.apiService
           .fetchProjectRewards(
             projectId: project.id,
-            sortedForShippingCountryCode: location.country
-          ) // TODO: for location
+            sortedForShippingCountryCode: location?.country
+          )
           .materialize()
           .values() // TODO: handle errors
-          .map { RewardsForLocation(rewards: $0, location: location) }
       }
 
     let rewards = self.rewardsProperty.signal
-      .skipRepeats { a, b in
-        a?.location?.id == b?.location?.id
-      }
       .map { maybe in
-        guard let tuple = maybe else {
-          return [] as [Reward]
-        }
-
-        guard let location = maybe?.location else {
-          return tuple.rewards
-        }
-
-        return filteredRewardsByLocation(tuple.rewards, location: location)
+        maybe ?? []
       }
 
     self.title = configData
@@ -477,12 +468,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.viewWillAppearProperty.value = ()
   }
 
-  private struct RewardsForLocation {
-    let rewards: [Reward]
-    let location: Location?
-  }
-
-  private let rewardsProperty = MutableProperty<RewardsForLocation?>(nil)
+  private let rewardsProperty = MutableProperty<[Reward]?>(nil)
 
   public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
   public let configureRewardsCollectionViewFooterWithCount: Signal<Int, Never>
