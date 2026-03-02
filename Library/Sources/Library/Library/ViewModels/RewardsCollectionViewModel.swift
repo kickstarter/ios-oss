@@ -614,10 +614,25 @@ private func rewardFilterCountryForProject(_ project: Project) -> String? {
     return nil
   }
 
-  // TODO: can I move this into the pledge thingy?
   if let code = project.personalization.backing?.locationCountryCode {
     return code
+  }
+
+  var countrySet = Set<String>()
+  for reward in project.rewards {
+    if let rules = reward.shippingRulesExpanded {
+      for rule in rules {
+        countrySet.insert(rule.location.country)
+      }
+    }
+  }
+
+  let countries = Array(countrySet).sorted()
+  let defaultCode = AppEnvironment.current.countryCode
+
+  if countries.contains(defaultCode) {
+    return defaultCode
   } else {
-    return AppEnvironment.current.countryCode
+    return countries.first
   }
 }
