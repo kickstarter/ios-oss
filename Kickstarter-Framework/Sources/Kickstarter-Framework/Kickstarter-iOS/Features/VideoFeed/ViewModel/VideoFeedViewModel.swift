@@ -61,17 +61,28 @@ final class VideoFeedViewModel: VideoFeedViewModelType, VideoFeedViewModelInputs
 
     /// This spike repeats the same project/video across 20 “pages”.
     return (0..<count).map { i in
-      VideoFeedItem(
+      /// Creator avatar is used in the right-side vertical actions.
+      let creatorAvatarURL = self.creatorAvatarURL(for: self.project)
+
+      return VideoFeedItem(
         id: "\(self.project.id)-\(i)",
         videoURL: url,
         title: self.project.name,
         creator: self.project.creator.name,
+        creatorImageURL: creatorAvatarURL,
         statsText: "",
         categoryPillText: "Project We Love",
         secondaryPillText: "3 days left",
         ctaTitle: "View project"
       )
     }
+  }
+
+  private func creatorAvatarURL(for project: Project) -> URL? {
+    /// Prefer the smallest image for faster loading in a scrolling feed.
+    /// Note: `KsApi.User.Avatar` exposes string URLs (small/medium/large).
+    let avatarString = project.creator.avatar.small
+    return URL(string: avatarString)
   }
 
   private func videoURL(for project: Project) -> URL? {

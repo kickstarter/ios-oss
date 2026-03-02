@@ -13,6 +13,9 @@ public struct VideoFeedItem: Hashable {
   /// Creator name shown in the bottom overlay.
   let creator: String
 
+  /// Creator avatar URL used in the right-side vertical actions.
+  let creatorImageURL: URL?
+
   /// Secondary stats text (can be empty in this spike).
   let statsText: String
 

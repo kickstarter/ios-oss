@@ -4,7 +4,7 @@ import UIKit
 // MARK: - Reusable pill
 
 /// Small rounded pill used for the bottom overlay metadata.
-private final class VideoFeedPillView: UIView {
+public final class VideoFeedPillView: UIView {
   private let iconView = UIImageView()
   private let label = UILabel()
 

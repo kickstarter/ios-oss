@@ -44,9 +44,9 @@ final class VideoFeedCell: UICollectionViewCell {
   /// Right-side vertical stack (like/save/share/more)
   private let rightRailStack = UIStackView()
 
-  /// Like button + count
-  private let likeButton = UIButton(type: .system)
-  private let likeCountLabel = UILabel()
+  /// Creator avatar (replaces the "Like" button + count)
+  private let creatorButton = UIButton(type: .system)
+  private var creatorImageTask: URLSessionDataTask?
 
   /// Save button + count
   private let saveButton = UIButton(type: .system)
@@ -93,6 +93,9 @@ final class VideoFeedCell: UICollectionViewCell {
   /// Called when like is tapped
   var onLikeTapped: (() -> Void)?
 
+  /// Called when the creator avatar is tapped.
+  var onCreatorTapped: (() -> Void)?
+
   // MARK: - Lifecycle
 
   override init(frame: CGRect) {
@@ -127,6 +130,11 @@ final class VideoFeedCell: UICollectionViewCell {
     self.primaryPillView.configure(systemImage: nil, text: "")
     self.secondaryPillView.configure(systemImage: nil, text: "")
 
+    /// Cancel any in-flight avatar request for reused cells.
+    self.creatorImageTask?.cancel()
+    self.creatorImageTask = nil
+    self.creatorButton.setImage(nil, for: .normal)
+
     self.progressView.progress = 0
   }
 
@@ -152,6 +160,9 @@ final class VideoFeedCell: UICollectionViewCell {
       systemImage: "clock",
       text: item.secondaryPillText
     )
+
+    /// Load the real creator avatar (cached) into the tappable circle.
+    self.setCreatorAvatar(url: item.creatorImageURL)
 
     /// Match the design: transparent background + border.
     var ctaConfig = UIButton.Configuration.plain()
@@ -442,8 +453,7 @@ final class VideoFeedCell: UICollectionViewCell {
     ])
 
     /// Configure buttons + labels
-    self.configureRailButton(self.likeButton, systemImage: "hand.thumbsup", accessibilityLabel: "Like")
-    self.configureCountLabel(self.likeCountLabel, text: "1k")
+    self.configureCreatorAvatarButton(self.creatorButton)
 
     self.configureRailButton(self.saveButton, systemImage: "bookmark", accessibilityLabel: "Save")
     self.configureCountLabel(self.saveCountLabel, text: "50")
@@ -458,16 +468,13 @@ final class VideoFeedCell: UICollectionViewCell {
     self.configureRailButton(self.moreButton, systemImage: "ellipsis", accessibilityLabel: "More")
 
     /// Wire up taps to callbacks
-    self.likeButton.addTarget(self, action: #selector(self.likeTapped), for: .touchUpInside)
+    self.creatorButton.addTarget(self, action: #selector(self.creatorTapped), for: .touchUpInside)
     self.saveButton.addTarget(self, action: #selector(self.saveTapped), for: .touchUpInside)
     self.shareButton.addTarget(self, action: #selector(self.shareTapped), for: .touchUpInside)
     self.moreButton.addTarget(self, action: #selector(self.moreTapped), for: .touchUpInside)
 
     /// Build the rail layout
-    self.rightRailStack.addArrangedSubview(self.makeRailItem(
-      button: self.likeButton,
-      label: self.likeCountLabel
-    ))
+    self.rightRailStack.addArrangedSubview(self.creatorButton)
     self.rightRailStack.addArrangedSubview(self.makeRailItem(
       button: self.saveButton,
       label: self.saveCountLabel
@@ -479,6 +486,9 @@ final class VideoFeedCell: UICollectionViewCell {
     self.rightRailStack.addArrangedSubview(self.moreButton)
 
     NSLayoutConstraint.activate([
+      self.creatorButton.widthAnchor.constraint(equalToConstant: 44),
+      self.creatorButton.heightAnchor.constraint(equalToConstant: 44),
+
       self.moreButton.widthAnchor.constraint(equalToConstant: 44),
       self.moreButton.heightAnchor.constraint(equalToConstant: 44)
     ])
@@ -506,6 +516,47 @@ final class VideoFeedCell: UICollectionViewCell {
     button.tintColor = .white
     button.backgroundColor = .clear
     button.accessibilityLabel = accessibilityLabel
+  }
+
+  private func configureCreatorAvatarButton(_ button: UIButton) {
+    /// Circular, tappable creator avatar.
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.backgroundColor = UIColor(white: 1.0, alpha: 0.10)
+    button.clipsToBounds = true
+    button.layer.cornerRadius = 22
+    button.accessibilityLabel = "Creator"
+    button.imageView?.contentMode = .scaleAspectFill
+  }
+
+  private func setCreatorAvatar(url: URL?) {
+    /// Keep the last request from racing into a reused cell.
+    self.creatorImageTask?.cancel()
+    self.creatorImageTask = nil
+
+    guard let url else {
+      self.creatorButton.setImage(nil, for: .normal)
+      return
+    }
+
+    if let cached = VideoFeedImageCache.shared.image(for: url) {
+      self.creatorButton.setImage(cached, for: .normal)
+      return
+    }
+
+    /// Minimal async loading (no third-party deps) with in-memory caching.
+    self.creatorImageTask = URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
+      guard let self else { return }
+      guard let data, let image = UIImage(data: data) else { return }
+
+      let rendered = image.withRenderingMode(.alwaysOriginal)
+      VideoFeedImageCache.shared.store(image: rendered, for: url)
+
+      DispatchQueue.main.async { [weak self] in
+        self?.creatorButton.setImage(rendered, for: .normal)
+      }
+    }
+
+    self.creatorImageTask?.resume()
   }
 
   private func configureCountLabel(_ label: UILabel, text: String) {
@@ -630,4 +681,22 @@ final class VideoFeedCell: UICollectionViewCell {
   @objc private func moreTapped() { self.onMoreTapped?() }
   @objc private func saveTapped() { self.onSaveTapped?() }
   @objc private func likeTapped() { self.onLikeTapped?() }
+
+  @objc private func creatorTapped() { self.onCreatorTapped?() }
+}
+
+// MARK: - Simple image cache
+
+private final class VideoFeedImageCache {
+  static let shared = VideoFeedImageCache()
+
+  private let cache = NSCache<NSURL, UIImage>()
+
+  func image(for url: URL) -> UIImage? {
+    self.cache.object(forKey: url as NSURL)
+  }
+
+  func store(image: UIImage, for url: URL) {
+    self.cache.setObject(image, forKey: url as NSURL)
+  }
 }
