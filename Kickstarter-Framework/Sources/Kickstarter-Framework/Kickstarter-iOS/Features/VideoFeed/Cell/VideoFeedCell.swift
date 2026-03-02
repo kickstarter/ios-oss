@@ -1,4 +1,5 @@
 import AVFoundation
+import KDS
 import UIKit
 
 final class VideoFeedCell: UICollectionViewCell {
@@ -167,12 +168,17 @@ final class VideoFeedCell: UICollectionViewCell {
     /// Match the design: transparent background + border.
     var ctaConfig = UIButton.Configuration.plain()
     ctaConfig.title = item.ctaTitle
-    ctaConfig.baseForegroundColor = .white
+    ctaConfig.baseForegroundColor = Colors.Text.primary.uiColor()
     ctaConfig.cornerStyle = .capsule
     ctaConfig.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 16)
+    ctaConfig.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attributes in
+      var attributes = attributes
+      attributes.font = UIFont.ksr_headline(size: 16)
+      return attributes
+    }
 
     ctaConfig.background.backgroundColor = .clear
-    ctaConfig.background.strokeColor = UIColor(white: 1.0, alpha: 0.9)
+    ctaConfig.background.strokeColor = Colors.Text.primary.uiColor().withAlphaComponent(0.9)
     ctaConfig.background.strokeWidth = 1
     self.ctaButton.configuration = ctaConfig
   }
@@ -409,7 +415,7 @@ final class VideoFeedCell: UICollectionViewCell {
     /// Close button in top-left corner
     self.closeButton.translatesAutoresizingMaskIntoConstraints = false
     self.closeButton.setImage(UIImage(systemName: "xmark"), for: .normal)
-    self.closeButton.tintColor = .white
+    self.closeButton.tintColor = Colors.Text.primary.uiColor()
     self.closeButton.backgroundColor = .clear
     self.closeButton.accessibilityLabel = "Close"
 
@@ -513,7 +519,7 @@ final class VideoFeedCell: UICollectionViewCell {
     /// Standard rail button styling
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setImage(UIImage(systemName: systemImage), for: .normal)
-    button.tintColor = .white
+    button.tintColor = Colors.Text.primary.uiColor()
     button.backgroundColor = .clear
     button.accessibilityLabel = accessibilityLabel
   }
@@ -563,8 +569,8 @@ final class VideoFeedCell: UICollectionViewCell {
     /// Standard rail count label styling
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = text
-    label.textColor = .white
-    label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+    label.textColor = Colors.Text.primary.uiColor()
+    label.font = UIFont.ksr_caption1(size: 12)
   }
 
   private func setUpBottomArea() {
@@ -616,15 +622,15 @@ final class VideoFeedCell: UICollectionViewCell {
 
     /// Title label style
     self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
-    self.titleLabel.textColor = .white
+    self.titleLabel.textColor = Colors.Text.primary.uiColor()
     self.titleLabel.numberOfLines = 2
-    self.titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+    self.titleLabel.font = UIFont.ksr_headline(size: 16)
 
     /// Stats label style
     self.statsLabel.translatesAutoresizingMaskIntoConstraints = false
-    self.statsLabel.textColor = .white
+    self.statsLabel.textColor = Colors.Text.primary.uiColor()
     self.statsLabel.numberOfLines = 2
-    self.statsLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+    self.statsLabel.font = UIFont.ksr_caption1(size: 12)
     self.statsLabel.alpha = 0.9
 
     /// CTA button tap handler
@@ -637,8 +643,8 @@ final class VideoFeedCell: UICollectionViewCell {
 
     /// Progress bar directly below the CTA.
     self.progressView.translatesAutoresizingMaskIntoConstraints = false
-    self.progressView.trackTintColor = UIColor(white: 1.0, alpha: 0.25)
-    self.progressView.progressTintColor = UIColor(white: 1.0, alpha: 0.9)
+    self.progressView.trackTintColor = Colors.Background.Surface.inverse.uiColor().withAlphaComponent(0.25)
+    self.progressView.progressTintColor = Colors.Background.Surface.inverse.uiColor().withAlphaComponent(0.9)
 
     /// Stack everything vertically
     let stack = UIStackView(arrangedSubviews: [pillsRow, titleLabel, statsLabel, ctaButton, progressView])

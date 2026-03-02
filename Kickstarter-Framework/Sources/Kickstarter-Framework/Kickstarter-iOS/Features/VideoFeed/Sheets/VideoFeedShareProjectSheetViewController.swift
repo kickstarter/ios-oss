@@ -1,5 +1,6 @@
 import UIKit
 
+import KDS
 /// Bottom sheet shown when the user taps the Share button.
 ///
 /// This is a static placeholder that matches the intended layout:
@@ -8,7 +9,8 @@ import UIKit
 /// - A grid of share targets (no-op for now)
 final class VideoFeedShareProjectSheetViewController: UIViewController {
   private enum Constants {
-    static let backgroundColor = VideoFeedColors.surface202020
+    /// KDS surface token for bottom sheets.
+    static let backgroundColor = KDS.Colors.Elevation.Surface.raised.uiColor()
 
     static let horizontalInset: CGFloat = 16
     static let topInset: CGFloat = 16
@@ -16,17 +18,17 @@ final class VideoFeedShareProjectSheetViewController: UIViewController {
 
     static let titleText = "Share project"
     static let titleFont = UIFont.preferredFont(forTextStyle: .headline)
-    static let titleColor = VideoFeedColors.white
+    static let titleColor = KDS.Colors.Text.primary.uiColor()
 
     static let gridRowSpacing: CGFloat = 12
     static let gridRowItemSpacing: CGFloat = 12
     static let gridItemCornerRadius: CGFloat = 10
-    static let gridItemBackgroundColor = VideoFeedColors.surface2B2B2D25
-    static let gridItemTextColor = VideoFeedColors.green05CE78
+    static let gridItemBackgroundColor = KDS.Colors.Background.Surface.raisedHigher.uiColor(opacity: 0.25)
+    static let gridItemTextColor = KDS.Colors.Text.Accent.green.uiColor()
     static let gridItemFont = UIFont.preferredFont(forTextStyle: .footnote)
 
     static let previewCornerRadius: CGFloat = 12
-    static let previewBackgroundColor = VideoFeedColors.surface2B2B2D25
+    static let previewBackgroundColor = KDS.Colors.Background.Surface.raisedHigher.uiColor(opacity: 0.25)
     static let previewImageWidth: CGFloat = 110
     static let previewTextSpacing: CGFloat = 4
     static let previewImageTextSpacing: CGFloat = 12
@@ -34,7 +36,7 @@ final class VideoFeedShareProjectSheetViewController: UIViewController {
 
     static let previewTitleFont = UIFont.preferredFont(forTextStyle: .headline)
     static let previewCreatorFont = UIFont.preferredFont(forTextStyle: .subheadline)
-    static let previewCreatorColor = VideoFeedColors.grayD4
+    static let previewCreatorColor = KDS.Colors.Text.secondary.uiColor()
   }
 
   /// Simple preview card shown at the top of the sheet.
@@ -102,11 +104,11 @@ final class VideoFeedShareProjectSheetViewController: UIViewController {
 /// Simple card used in the share sheet header.
 private final class VideoFeedProjectSharePreviewCardView: UIView {
   private enum Constants {
-    static let backgroundColor = VideoFeedColors.surface2B2B2D25
+    static let backgroundColor = KDS.Colors.Background.Surface.raisedHigher.uiColor(opacity: 0.25)
     static let cornerRadius: CGFloat = 12
 
     static let imageWidth: CGFloat = 110
-    static let imageBackgroundColor = VideoFeedColors.surface2B2B2D25
+    static let imageBackgroundColor = KDS.Colors.Background.Surface.raisedHigher.uiColor(opacity: 0.25)
 
     static let imageTextSpacing: CGFloat = 12
     static let horizontalInset: CGFloat = 12
@@ -115,7 +117,7 @@ private final class VideoFeedProjectSharePreviewCardView: UIView {
     static let titleLines = 2
 
     static let creatorFont = UIFont.preferredFont(forTextStyle: .subheadline)
-    static let creatorColor = VideoFeedColors.grayD4
+    static let creatorColor = KDS.Colors.Text.secondary.uiColor()
     static let textSpacing: CGFloat = 4
   }
 
@@ -138,7 +140,7 @@ private final class VideoFeedProjectSharePreviewCardView: UIView {
     /// Placeholder image behavior for the spike.
     /// If we have a URL, show a generic photo glyph (no networking yet).
     self.imageView.image = UIImage(systemName: "photo")
-    self.imageView.tintColor = VideoFeedColors.grayD4
+    self.imageView.tintColor = KDS.Colors.Text.secondary.uiColor()
   }
 
   private func setUpView() {
@@ -153,7 +155,7 @@ private final class VideoFeedProjectSharePreviewCardView: UIView {
 
     self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
     self.titleLabel.font = Constants.titleFont
-    self.titleLabel.textColor = VideoFeedColors.white
+    self.titleLabel.textColor = KDS.Colors.Text.primary.uiColor()
     self.titleLabel.numberOfLines = Constants.titleLines
 
     self.creatorLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -192,8 +194,8 @@ private final class VideoFeedShareTargetsGridView: UIView {
     static let rowCornerRadius: CGFloat = 10
 
     static let buttonFont = UIFont.preferredFont(forTextStyle: .footnote)
-    static let buttonBackgroundColor = VideoFeedColors.surface2B2B2D25
-    static let buttonTextColor = VideoFeedColors.green05CE78
+    static let buttonBackgroundColor = KDS.Colors.Background.Surface.raisedHigher.uiColor(opacity: 0.25)
+    static let buttonTextColor = KDS.Colors.Text.Accent.green.uiColor()
   }
 
   private let stack = UIStackView()

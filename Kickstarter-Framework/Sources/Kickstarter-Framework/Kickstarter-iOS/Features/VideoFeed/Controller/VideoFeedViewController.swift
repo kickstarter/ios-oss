@@ -3,12 +3,14 @@ import KsApi
 import ReactiveSwift
 import UIKit
 
+import KDS
 /// Full-screen swipeable video feed.
 /// Finite batch (no pagination).
 /// Simple model: 1 AVPlayer per item, created immediately when items load.
 final class VideoFeedViewController: UIViewController {
   private enum Constants {
-    static let backgroundColor = VideoFeedColors.black
+    /// KDS surface token for the feed background.
+    static let backgroundColor = KDS.Colors.Background.Surface.secondary.uiColor()
     static let initialIndexPath = IndexPath(item: 0, section: 0)
 
     /// Sheet sizing.

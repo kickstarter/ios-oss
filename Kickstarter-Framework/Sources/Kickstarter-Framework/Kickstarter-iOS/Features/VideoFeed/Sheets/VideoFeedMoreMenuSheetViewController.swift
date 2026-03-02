@@ -1,5 +1,6 @@
 import UIKit
 
+import KDS
 /// Bottom sheet shown when the user taps the “…” button.
 ///
 /// This is a static placeholder menu:
@@ -7,7 +8,7 @@ import UIKit
 /// - Everything else just dismisses the sheet for now
 final class VideoFeedMoreMenuSheetViewController: UIViewController {
   private enum Constants {
-    static let backgroundColor = VideoFeedColors.surface202020
+    static let backgroundColor = KDS.Colors.Elevation.Surface.raised.uiColor()
     static let horizontalInset: CGFloat = 16
     static let topInset: CGFloat = 16
     static let rowSpacing: CGFloat = 12
@@ -17,11 +18,11 @@ final class VideoFeedMoreMenuSheetViewController: UIViewController {
     static let titleFont = UIFont.preferredFont(forTextStyle: .headline)
     static let rowFont = UIFont.preferredFont(forTextStyle: .body)
 
-    static let textColor = VideoFeedColors.white
-    static let secondaryTextColor = VideoFeedColors.grayD4
+    static let textColor = KDS.Colors.Text.primary.uiColor()
+    static let secondaryTextColor = KDS.Colors.Text.secondary.uiColor()
 
-    static let rowBackgroundColor = VideoFeedColors.surface2B2B2D25
-    static let reportTint = VideoFeedColors.redFF6969
+    static let rowBackgroundColor = KDS.Colors.Background.Surface.raisedHigher.uiColor(opacity: 0.25)
+    static let reportTint = KDS.Colors.Text.Accent.red.uiColor()
 
     /// Layout
     static let rowContentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)

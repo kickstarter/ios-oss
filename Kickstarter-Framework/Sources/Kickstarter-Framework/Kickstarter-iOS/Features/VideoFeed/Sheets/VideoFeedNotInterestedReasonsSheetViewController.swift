@@ -1,28 +1,29 @@
 import UIKit
 
+import KDS
 /// Bottom sheet shown after “Not interested”.
 ///
 /// This is a static placeholder that lets the user pick a reason.
 /// We don’t persist anything yet; selecting a reason just calls the callback.
 final class VideoFeedNotInterestedReasonsSheetViewController: UIViewController {
   private enum Constants {
-    static let backgroundColor = VideoFeedColors.surface202020
+    static let backgroundColor = KDS.Colors.Elevation.Surface.raised.uiColor()
     static let horizontalInset: CGFloat = 16
     static let topInset: CGFloat = 16
     static let sectionSpacing: CGFloat = 12
 
     static let titleFont = UIFont.preferredFont(forTextStyle: .headline)
-    static let titleColor = VideoFeedColors.white
+    static let titleColor = KDS.Colors.Text.primary.uiColor()
 
     static let rowSpacing: CGFloat = 10
     static let rowCornerRadius: CGFloat = 14
     static let rowHeight: CGFloat = 48
-    static let rowBackgroundColor = VideoFeedColors.surface2B2B2D25
-    static let rowTextColor = VideoFeedColors.white
+    static let rowBackgroundColor = KDS.Colors.Background.Surface.raisedHigher.uiColor(opacity: 0.25)
+    static let rowTextColor = KDS.Colors.Text.primary.uiColor()
 
     /// Radio icon
     static let circleImageName = "circle"
-    static let circleTintColor = VideoFeedColors.grayD4
+    static let circleTintColor = KDS.Colors.Text.secondary.uiColor()
     static let rowContentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
     static let rowImagePadding: CGFloat = 12
   }
