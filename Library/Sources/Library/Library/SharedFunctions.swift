@@ -376,7 +376,8 @@ public func filteredRewardsByLocation(
     let isRestrictedShippingReward = reward.isRestrictedShippingPreference
 
     // Return all rewards that are no reward, digital, local pickup, or ship anywhere in the world.
-    if rewards.first?.id == reward.id || isRewardLocalOrDigital || isUnrestrictedShippingReward {
+
+    if reward.id == 0 || isRewardLocalOrDigital || isUnrestrictedShippingReward {
       shouldDisplayReward = true
 
       // If restricted shipping, compare against selected shipping location.
