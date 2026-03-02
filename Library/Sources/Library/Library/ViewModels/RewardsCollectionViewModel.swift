@@ -69,25 +69,15 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         secretRewardToken
       }
 
-    let defaultShippingLocation: Signal<Location?, Never> = project
-      .map { project in
-        if !projectHasShippableRewards(project) {
-          return nil
-        }
-
-        // TODO: can I make these not bodged messes?
-        // TODO: can I move this into the pledge thingy?
-        if let code = project.personalization.backing?.locationCountryCode {
-          return Location(fromCountryCode: code)
-        } else {
-          return Location(fromCountryCode: AppEnvironment.current.countryCode)
-        }
-      }
-
     let shippingLocation = Signal.merge(
-      defaultShippingLocation, // Default selected shipping location to nil
+      project.mapConst(nil), // Default selected shipping location to nil
       self.shippingLocationSelectedSignal
     )
+
+    let filterRewardsToCountryCode: Signal<String?, Never> = project
+      .map { rewardFilterCountryForProject($0) }
+      .merge(with: shippingLocation.map { $0?.country })
+      .skipRepeats()
 
     // Clear the displayed rewards when you change the shipping location
     self.rewardsProperty <~ self.shippingLocationSelectedSignal.skipNil()
@@ -95,14 +85,12 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
     // When you pick a new shipping location, fetch the re-sorted rewards
     self.rewardsProperty <~ project
-      .combineLatest(with: shippingLocation.skipRepeats { a, b in
-        a?.country == b?.country
-      })
+      .combineLatest(with: filterRewardsToCountryCode)
       .flatMap { project, location in
         AppEnvironment.current.apiService
           .fetchProjectRewards(
             projectId: project.id,
-            sortedForShippingCountryCode: location?.country
+            sortedForShippingCountryCode: location
           )
           .materialize()
           .values() // TODO: handle errors
@@ -619,4 +607,17 @@ private func shippingRule(forReward reward: Reward, selectedLocation location: L
   }
 
   return rule
+}
+
+private func rewardFilterCountryForProject(_ project: Project) -> String? {
+  if !projectHasShippableRewards(project) {
+    return nil
+  }
+
+  // TODO: can I move this into the pledge thingy?
+  if let code = project.personalization.backing?.locationCountryCode {
+    return code
+  } else {
+    return AppEnvironment.current.countryCode
+  }
 }
