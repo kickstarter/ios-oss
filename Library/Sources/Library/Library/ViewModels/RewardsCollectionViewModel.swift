@@ -87,9 +87,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     let shippingLocation = Signal.merge(
       defaultShippingLocation, // Default selected shipping location to nil
       self.shippingLocationSelectedSignal
-    ).skipRepeats { a, b in
-      a?.country == b?.country
-    }
+    )
 
     // Clear the displayed rewards when you change the shipping location
     self.rewardsProperty <~ self.shippingLocationSelectedSignal.skipNil()
@@ -97,7 +95,9 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
     // When you pick a new shipping location, fetch the re-sorted rewards
     self.rewardsProperty <~ project
-      .combineLatest(with: shippingLocation)
+      .combineLatest(with: shippingLocation.skipRepeats { a, b in
+        a?.country == b?.country
+      })
       .flatMap { project, location in
         AppEnvironment.current.apiService
           .fetchProjectRewards(
