@@ -1445,7 +1445,7 @@
       let fetchProjectRewardsQuery = GraphAPI
         .FetchProjectRewardsByIdQuery(
           projectId: projectId,
-          includeShippingRules: false,
+          includeShippingRules: true,
           includeLocalPickup: true,
           includePledgeOverTime: false,
           location: GraphQLEnum.caseOrNil(.us),
