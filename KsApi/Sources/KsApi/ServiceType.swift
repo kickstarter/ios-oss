@@ -258,7 +258,7 @@ public protocol ServiceType {
   /// Fetch the project's rewards only
   func fetchAllProjectRewards(projectId: Int) -> SignalProducer<[Reward], ErrorEnvelope>
 
-  func fetchProjectRewards(projectId: Int, sortedForShippingCountryCode: String)
+  func fetchProjectRewards(projectId: Int, sortedForShippingCountryCode: String?)
     -> SignalProducer<[Reward], ErrorEnvelope>
 
   /// Fetch a single project with the specified discovery params.

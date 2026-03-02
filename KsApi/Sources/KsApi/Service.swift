@@ -648,10 +648,15 @@ public struct Service: ServiceType {
       .flatMap(Project.projectRewardsProducer(from:))
   }
 
-  public func fetchProjectRewards(projectId: Int, sortedForShippingCountryCode code: String)
+  public func fetchProjectRewards(projectId: Int, sortedForShippingCountryCode maybeCode: String?)
     -> SignalProducer<[Reward], ErrorEnvelope> {
-    let code = GraphAPI.CountryCode(rawValue: code)
-    assert(code != nil, "Couldn't create a country code from the country location.")
+    let graphCountryCode: GraphAPI.CountryCode?
+
+    if let code = maybeCode {
+      graphCountryCode = GraphAPI.CountryCode(rawValue: code)
+    } else {
+      graphCountryCode = nil
+    }
 
     let query = GraphAPI
       .FetchProjectRewardsByIdQuery(
@@ -659,7 +664,7 @@ public struct Service: ServiceType {
         includeShippingRules: false,
         includeLocalPickup: false,
         includePledgeOverTime: false,
-        location: GraphQLEnum.caseOrNil(code),
+        location: GraphQLEnum.caseOrNil(graphCountryCode),
         sort: GraphQLEnum.caseOrNil(.eligibility)
       )
 
