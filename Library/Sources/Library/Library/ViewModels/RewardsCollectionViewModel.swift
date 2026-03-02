@@ -74,16 +74,20 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       self.shippingLocationSelectedSignal
     )
 
-    let filterRewardsToCountryCode: Signal<String?, Never> = project
-      .map { rewardFilterCountryForProject($0) }
-      .merge(with: shippingLocation.map { $0?.country })
-      .skipRepeats()
+    let filterRewardsToCountryCode: Signal<String?, Never> = Signal.merge(
+      // A best guess at what the default selected shipping location will be
+      project.map { rewardFilterCountryForProject($0) },
+
+      // The actual selected shipping location
+      shippingLocation.map { $0?.country }
+    )
+    .skipRepeats()
 
     // Clear the displayed rewards when you change the shipping location
     self.rewardsProperty <~ self.shippingLocationSelectedSignal.skipNil()
       .mapConst(nil)
 
-    // When you pick a new shipping location, fetch the re-sorted rewards
+    // Fetch the sorted rewards when a shipping country code is selected
     self.rewardsProperty <~ project
       .combineLatest(with: filterRewardsToCountryCode)
       .flatMap { project, location in
@@ -609,9 +613,11 @@ private func shippingRule(forReward reward: Reward, selectedLocation location: L
   return rule
 }
 
-private func rewardFilterCountryForProject(_ project: Project) -> String? {
+private func rewardFilterCountryForProject(_ project: Project) -> String {
+  let defaultCode = AppEnvironment.current.countryCode
+
   if !projectHasShippableRewards(project) {
-    return nil
+    return defaultCode
   }
 
   if let code = project.personalization.backing?.locationCountryCode {
@@ -628,11 +634,10 @@ private func rewardFilterCountryForProject(_ project: Project) -> String? {
   }
 
   let countries = Array(countrySet).sorted()
-  let defaultCode = AppEnvironment.current.countryCode
 
   if countries.contains(defaultCode) {
     return defaultCode
-  } else {
-    return countries.first
   }
+
+  return countries.first ?? defaultCode
 }
