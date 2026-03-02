@@ -14,27 +14,35 @@ private struct StyleBlockSpacingCaptureView: View {
   }
 }
 
-// Captures bodyColor from the current RichTextStyle
-private struct StyleBodyColorCaptureView: View {
+// Captures backgroundColor from the current RichTextStyle
+private struct StyleBackgroundColorCaptureView: View {
   @Environment(\.richTextStyle) var style
   @Binding var captured: Color?
 
   var body: some View {
     Color.clear
-      .onAppear { self.captured = self.style.bodyColor }
+      .onAppear {
+        self.captured = self.style.backgroundColor
+      }
   }
 }
 
-// Provides either Light or Dark style based on a binding
+// Observable controller used to drive style changes from tests
+private final class StyleToggleController: ObservableObject {
+  @Published var useLight: Bool = true
+}
+
+// Provides either Light or Dark style based on an observed controller
 private struct StyleProviderCaptureView: View {
-  @Binding var useLightStyle: Bool?
+  @ObservedObject var controller: StyleToggleController
   @Binding var capturedColor: Color?
 
   var body: some View {
-    StyleBodyColorCaptureView(captured: self.$capturedColor)
+    StyleBackgroundColorCaptureView(captured: self.$capturedColor)
+      .id(self.controller.useLight) // force recreation so onAppear runs again
       .environment(
         \.richTextStyle,
-        (self.useLightStyle ?? true) ? LightRichTextStyle() as any RichTextStyle :
+        self.controller.useLight ? LightRichTextStyle() as any RichTextStyle :
           DarkRichTextStyle() as any RichTextStyle
       )
   }
@@ -96,12 +104,12 @@ private final class Holder<T>: @unchecked Sendable {
 @Test @MainActor func swiftUIView_automaticRichTextStyle_rerendersWhenThemeChanges() async throws {
   // Given a provider that switches between Light and Dark styles
   let colorHolder = Holder<Color>()
-  let useLightHolder = Holder<Bool>()
-  useLightHolder.value = true
+  let controller = StyleToggleController()
+  controller.useLight = true
 
-  // And a hosted view that exposes the current bodyColor
+  // And a hosted view that exposes the current backgroundColor
   let hosting = UIHostingController(rootView: StyleProviderCaptureView(
-    useLightStyle: useLightHolder.binding,
+    controller: controller,
     capturedColor: colorHolder.binding
   ))
   let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
@@ -116,12 +124,8 @@ private final class Holder<T>: @unchecked Sendable {
   // Then the captured color should be non-nil
   #expect(lightColor != nil)
 
-  // When we toggle to dark and re-host the view with the updated binding
-  useLightHolder.value = false
-  hosting.rootView = StyleProviderCaptureView(
-    useLightStyle: useLightHolder.binding,
-    capturedColor: colorHolder.binding
-  )
+  // When we toggle to dark by updating the controller inside SwiftUI
+  controller.useLight = false
 
   // And the view re-renders
   hosting.view.layoutIfNeeded()
