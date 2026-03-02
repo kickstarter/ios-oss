@@ -83,8 +83,8 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     )
     .skipRepeats()
 
-    // Clear the displayed rewards when you change the shipping location
-    self.rewardsProperty <~ self.shippingLocationSelectedSignal.skipNil()
+    // Clear the displayed rewards when the filter country changes
+    self.rewardsProperty <~ filterRewardsToCountryCode
       .mapConst(nil)
 
     // Fetch the sorted rewards when a shipping country code is selected
@@ -101,8 +101,13 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       }
 
     let rewards = self.rewardsProperty.signal
-      .map { maybe in
-        maybe ?? []
+      .combineLatest(with: shippingLocation)
+      .map { rewards, shippingLocation in
+        if let location = shippingLocation {
+          return filteredRewardsByLocation(rewards ?? [], location: location)
+        } else {
+          return rewards ?? []
+        }
       }
 
     self.title = configData
