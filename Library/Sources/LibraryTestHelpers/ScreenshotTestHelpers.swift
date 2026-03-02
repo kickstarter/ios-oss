@@ -294,6 +294,47 @@ internal func assertSnapshot(
   }
 }
 
+// Configures environment, traits, style, font size, and naming before asserting a snapshot of a SwiftUI View,
+// hosted in a UIViewController.
+internal func assertHostedSnapshot<Content: View>(
+  forSwiftUIView view: Content,
+  withType type: ScreenshotType,
+  size: CGSize? = nil,
+  useIntrinsicSize: Bool = false,
+  perceptualPrecision: Float? = nil,
+  record: Bool = false,
+  file: StaticString = #file,
+  testName: String = #function,
+  line: UInt = #line
+) {
+  let hosting = UIHostingController(rootView: view)
+
+  let targetSize: CGSize = {
+    if let size = size {
+      return size
+    } else if useIntrinsicSize {
+      let proposed = type.device.deviceSize(in: type.orientation)
+      let fitting = hosting.sizeThatFits(in: CGSize(width: proposed.width, height: .greatestFiniteMagnitude))
+      if fitting.width > 0, fitting.height > 0 {
+        return fitting
+      }
+    }
+    return type.device.deviceSize(in: type.orientation)
+  }()
+
+  hosting.view.frame = CGRect(origin: .zero, size: targetSize)
+
+  assertSnapshot(
+    forController: hosting,
+    withType: type,
+    perceptualPrecision: perceptualPrecision,
+    record: record,
+    file: file,
+    testName: testName,
+    line: line
+  )
+}
+
 // Configures environment, traits, style, font size, and naming before asserting a snapshot of a SwiftUI View.
 internal func assertSnapshot<Content: View>(
   forSwiftUIView view: Content,

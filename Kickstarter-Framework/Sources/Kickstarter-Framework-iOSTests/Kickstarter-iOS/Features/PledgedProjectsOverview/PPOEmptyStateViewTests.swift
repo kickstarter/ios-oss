@@ -8,7 +8,6 @@ import XCTest
 final class PPOEmptyStateViewTests: TestCase {
   func testEmptyStateView() {
     forEachScreenshotType(
-      contentSizes: [.large]
     ) { type in
       let mockConfigClient = MockRemoteConfigClient()
       mockConfigClient.features = [
@@ -18,7 +17,7 @@ final class PPOEmptyStateViewTests: TestCase {
 
       withEnvironment(language: type.language, remoteConfigClient: mockConfigClient) {
         let view = PPOEmptyStateView()
-        assertSnapshot(
+        assertHostedSnapshot(
           forSwiftUIView: view,
           withType: type
         )
