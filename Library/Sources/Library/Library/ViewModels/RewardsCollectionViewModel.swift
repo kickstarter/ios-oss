@@ -73,7 +73,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       .map(allowableSortedProjectRewards)
 
     let filteredByLocationRewards = Signal.combineLatest(rewards, self.shippingLocationSelectedSignal)
-      .map(filteredRewardsByLocation)
+      .map(filteredRewards)
 
     self.title = configData
       .map { project, _, context, _ in (context, project) }
@@ -118,11 +118,9 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     .map { project, rewards, filteredByLocationRewards, location in
       if !filteredByLocationRewards.isEmpty {
         filteredByLocationRewards
-          .filter { reward in isStartDateBeforeToday(for: reward) }
           .map { reward in (project, reward, .pledge, location) }
       } else {
         rewards
-          .filter { reward in isStartDateBeforeToday(for: reward) }
           .map { reward in (project, reward, .pledge, nil) }
       }
     }
@@ -565,28 +563,46 @@ private func allowableSortedProjectRewards(from project: Project) -> [Reward] {
   return notReward + secretRewards + availableRewards + unavailableRewards
 }
 
-private func filteredRewardsByLocation(
+private func filteredRewards(
   _ rewards: [Reward],
   location: Location?
 ) -> [Reward] {
-  return rewards.filter { reward in
-    var shouldDisplayReward = false
+  return rewards.filter { shouldShowReward($0, forLocation: location) }
+}
 
-    let isRewardLocalOrDigital = isRewardDigital(reward) || isRewardLocalPickup(reward)
-    let isUnrestrictedShippingReward = reward.isUnRestrictedShippingPreference
-    let isRestrictedShippingReward = reward.isRestrictedShippingPreference
+private func shouldShowReward(
+  _ reward: Reward,
+  forLocation location: Location?
+) -> Bool {
+  // Check if the reward isn't available yet.
+  // These are usually filtered out by the backend, but may be visible if you're the project creator.
+  if !isStartDateBeforeToday(for: reward) {
+    return false
+  }
 
-    // Return all rewards that are no reward, digital, local pickup, or ship anywhere in the world.
-    if rewards.first?.id == reward.id || isRewardLocalOrDigital || isUnrestrictedShippingReward {
-      shouldDisplayReward = true
+  let isRewardLocalOrDigital = isRewardDigital(reward) || isRewardLocalPickup(reward)
+  let isUnrestrictedShippingReward = reward.isUnRestrictedShippingPreference
+  let isRestrictedShippingReward = reward.isRestrictedShippingPreference
+  let isNoRewardReward = reward.isNoReward
 
-      // If restricted shipping, compare against selected shipping location.
-    } else if isRestrictedShippingReward {
-      shouldDisplayReward = rewardShipsTo(selectedLocation: location?.id, reward)
+  // Return all rewards that are no reward, digital, local pickup, or ship anywhere in the world.
+  if isNoRewardReward || isRewardLocalOrDigital || isUnrestrictedShippingReward {
+    return true
+  }
+
+  // If restricted shipping, compare against selected shipping location.
+  if isRestrictedShippingReward {
+    guard let location else {
+      // This is a restricted reward, but the user hasn't selected a shipping location yet.
+      // Filter it out until a location is set.
+      return false
     }
 
-    return shouldDisplayReward
+    return rewardShipsTo(selectedLocation: location.id, reward)
   }
+
+  assert(false, "The reward should either be restricted, or unrestricted. Showing the reward.")
+  return true
 }
 
 /// Returns true if a given selection location matches the countries the given reward is available to ship to.
