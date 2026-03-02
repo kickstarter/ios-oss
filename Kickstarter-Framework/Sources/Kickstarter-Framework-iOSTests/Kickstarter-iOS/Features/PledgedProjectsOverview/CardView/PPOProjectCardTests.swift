@@ -46,7 +46,7 @@ final class PPOProjectCardTests: TestCase {
         viewModel: PPOProjectCardViewModel(card: template),
         parentSize: type.device.deviceSize
       )
-      assertSnapshot(forSwiftUIView: card, withType: type)
+      assertHostedSnapshot(forSwiftUIView: card, withType: type)
     }
   }
 
@@ -59,7 +59,7 @@ final class PPOProjectCardTests: TestCase {
         viewModel: PPOProjectCardViewModel(card: template),
         parentSize: type.device.deviceSize
       )
-      assertSnapshot(forSwiftUIView: card, withType: type)
+      assertHostedSnapshot(forSwiftUIView: card, withType: type)
     }
   }
 
