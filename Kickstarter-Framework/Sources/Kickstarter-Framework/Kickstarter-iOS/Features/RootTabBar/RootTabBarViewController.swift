@@ -31,6 +31,7 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
   /// Keep the applied tab bar mode in sync with the ViewModel (single source of truth)
   /// Accounts for remote config feature flag load issues.
   private var isFloatingTabBarEnabled: Bool = false
+  private var lastTabBarItemsData: TabBarItemsData?
   private var standardTabBar: UITabBar?
 
   public override func viewDidLoad() {
@@ -95,6 +96,14 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  public override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    guard let data = lastTabBarItemsData else { return }
+    self.setTabBarItemStyles(withData: data)
+    view.setNeedsLayout()
+    view.layoutIfNeeded()
   }
 
   deinit {
@@ -253,6 +262,7 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
   }
 
   fileprivate func setTabBarItemStyles(withData data: TabBarItemsData) {
+    self.lastTabBarItemsData = data
     data.items.forEach { item in
       switch item {
       case let .home(index):

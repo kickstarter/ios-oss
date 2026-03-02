@@ -211,7 +211,13 @@ public let keyboardToolbarStyle: ToolbarStyle = { toolbar -> UIToolbar in
 }
 
 public let keyboardDoneButtonStyle: ButtonStyle = { button -> UIButton in
-  button.applyStyleConfiguration(KSRButtonStyle.green)
+  if #available(iOS 26.0, *) {
+    var config = UIButton.Configuration.borderless()
+    config.baseForegroundColor = Colors.Background.Action.primary.uiColor()
+    button.configuration = config
+  } else {
+    button.applyStyleConfiguration(KSRButtonStyle.green)
+  }
   return button
 }
 
