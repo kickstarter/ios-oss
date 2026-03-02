@@ -560,34 +560,6 @@ private func backingAndShippingTotal(for project: Project, and reward: Reward) -
   return (backing, shippingTotal)
 }
 
-private func allowableSortedProjectRewards(_ rewards: [Reward]) -> [Reward] {
-  var notReward: [Reward] = []
-  var unavailableRewards: [Reward] = []
-  var secretRewards: [Reward] = []
-  var availableRewards: [Reward] = []
-
-  for reward in rewards {
-    if reward.isNoReward {
-      notReward.append(reward)
-      continue
-    }
-
-    if reward.isAvailable != true {
-      unavailableRewards.append(reward)
-      continue
-    }
-
-    if reward.isSecretReward {
-      secretRewards.append(reward)
-      continue
-    }
-
-    availableRewards.append(reward)
-  }
-
-  return notReward + secretRewards + availableRewards + unavailableRewards
-}
-
 private func shippingRule(forReward reward: Reward, selectedLocation location: Location?) -> ShippingRule? {
   guard let selectedLocation = location else {
     return nil
