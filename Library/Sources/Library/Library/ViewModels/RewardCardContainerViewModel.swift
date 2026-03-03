@@ -3,7 +3,7 @@ import Prelude
 import ReactiveSwift
 
 public protocol RewardCardContainerViewModelInputs {
-  func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>)
+  func configureWith(project: Project, reward: Reward)
   func pledgeButtonTapped()
 }
 
@@ -24,22 +24,11 @@ public protocol RewardCardContainerViewModelType {
 public final class RewardCardContainerViewModel: RewardCardContainerViewModelType,
   RewardCardContainerViewModelInputs, RewardCardContainerViewModelOutputs {
   public init() {
-    let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), Never> =
-      self.projectAndRewardOrBackingProperty.signal.skipNil()
+    let projectAndReward: Signal<(Project, Reward), Never> =
+      self.projectAndRewardProperty.signal.skipNil()
 
-    let project: Signal<Project, Never> = projectAndRewardOrBacking.map(first)
-
-    let reward: Signal<Reward, Never> = projectAndRewardOrBacking
-      .map { project, rewardOrBacking -> Reward in
-        switch rewardOrBacking {
-        case let .left(reward):
-          return reward
-        case let .right(backing):
-          return Library.reward(from: backing, inProject: project)
-        }
-      }
-
-    let projectAndReward = Signal.zip(project, reward)
+    let reward: Signal<Reward, Never> = projectAndReward
+      .map(second)
 
     self.currentRewardProperty <~ reward
 
@@ -63,9 +52,9 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
       .map { $0.id }
   }
 
-  private let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
-  public func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>) {
-    self.projectAndRewardOrBackingProperty.value = (project, rewardOrBacking)
+  private let projectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
+  public func configureWith(project: Project, reward: Reward) {
+    self.projectAndRewardProperty.value = (project, reward)
   }
 
   private let pledgeButtonTappedProperty = MutableProperty(())
