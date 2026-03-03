@@ -578,6 +578,22 @@ private func shouldShowReward(
     return false
   }
 
+  // If the reward is No Reward, digital, local, or ships anywhere, it doesn't matter
+  // what location you selected.
+  if rewardAvailableInAllLocations(reward) {
+    return true
+  }
+
+  guard let location else {
+    // This is a restricted reward, but the user hasn't selected a shipping location yet.
+    // Filter it out until a location is set.
+    return false
+  }
+
+  return rewardShipsTo(selectedLocation: location.id, reward)
+}
+
+private func rewardAvailableInAllLocations(_ reward: Reward) -> Bool {
   let isRewardLocalOrDigital = isRewardDigital(reward) || isRewardLocalPickup(reward)
   let isUnrestrictedShippingReward = reward.isUnRestrictedShippingPreference
   let isRestrictedShippingReward = reward.isRestrictedShippingPreference
@@ -588,18 +604,11 @@ private func shouldShowReward(
     return true
   }
 
-  // If restricted shipping, compare against selected shipping location.
   if isRestrictedShippingReward {
-    guard let location else {
-      // This is a restricted reward, but the user hasn't selected a shipping location yet.
-      // Filter it out until a location is set.
-      return false
-    }
-
-    return rewardShipsTo(selectedLocation: location.id, reward)
+    return false
   }
 
-  assert(false, "The reward should either be restricted, or unrestricted. Showing the reward.")
+  assert(false, "A reward should either be restricted, or unrestricted. Showing in all locations.")
   return true
 }
 
