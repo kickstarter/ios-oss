@@ -3,7 +3,7 @@ import Prelude
 
 public struct Reward {
   public let backersCount: Int?
-  public let convertedMinimum: Double
+  public private(set) var convertedMinimum: Double
   public let description: String
   public let endsAt: TimeInterval?
   public let estimatedDeliveryOn: TimeInterval?
@@ -13,7 +13,7 @@ public struct Reward {
   public let latePledgeAmount: Double
   public let limit: Int?
   public let limitPerBacker: Int?
-  public let minimum: Double
+  public private(set) var minimum: Double
   public let pledgeAmount: Double
   public let postCampaignPledgingEnabled: Bool
   public let remaining: Int?
@@ -36,6 +36,13 @@ public struct Reward {
   /// Returns `true` is this is the "fake" "No reward" reward.
   public var isNoReward: Bool {
     return self.id == Reward.noReward.id
+  }
+
+  internal static func noReward(withMinimum minimum: Double, convertedMinimum: Double) -> Reward {
+    var reward = Reward.noReward
+    reward.minimum = minimum
+    reward.convertedMinimum = convertedMinimum
+    return reward
   }
 
   /// Returns `true` if the `Reward` has a value for the `limit` property.

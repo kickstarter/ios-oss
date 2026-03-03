@@ -8,7 +8,7 @@ public class FetchBackingQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FetchBacking($id: ID!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment project { __typename ...ProjectFragment } paymentIncrements { __typename ...PaymentIncrementFragment } } }"#,
-      fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
+      fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
     ))
 
   public var id: ID
@@ -862,6 +862,7 @@ public class FetchBackingQuery: GraphQLQuery {
           public init(_dataDict: DataDict) { __data = _dataDict }
 
           public var projectFragment: ProjectFragment { _toFragment() }
+          public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
         }
 
         public init(
@@ -977,6 +978,7 @@ public class FetchBackingQuery: GraphQLQuery {
             fulfilledFragments: [
               ObjectIdentifier(FetchBackingQuery.Data.Backing.Project.self),
               ObjectIdentifier(ProjectFragment.self),
+              ObjectIdentifier(NoRewardRewardFragment.self),
               ObjectIdentifier(BackingFragment.Project.self)
             ]
           ))

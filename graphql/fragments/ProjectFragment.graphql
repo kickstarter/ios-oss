@@ -107,4 +107,5 @@ fragment ProjectFragment on Project {
     }
   }
   watchesCount
+  ...NoRewardRewardFragment
 }

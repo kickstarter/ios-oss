@@ -5,7 +5,7 @@
 
 public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment ProjectFragment on Project { __typename availableCardTypes backersCount category { __typename ...CategoryFragment } canComment commentsCount(withReplies: true) country { __typename ...CountryFragment } creator { __typename ...PublicUserFragment } currency deadlineAt description environmentalCommitments { __typename commitmentCategory description id } aiDisclosure { __typename id fundingForAiAttribution fundingForAiConsent fundingForAiOption generatedByAiConsent generatedByAiDetails involvesAi involvesFunding involvesGeneration involvesOther otherAiDetails } faqs { __typename nodes { __typename question answer id createdAt } } finalCollectionDate fxRate goal { __typename ...MoneyFragment } image { __typename id url(width: 1024) } isPledgeOverTimeAllowed isProjectWeLove isProjectOfTheDay isWatched isLaunched isInPostCampaignPledgingPhase lastWave { __typename ...LastWaveFragment } launchedAt location { __typename ...LocationFragment } maxPledge minPledge name pid pledgeManager { __typename ...PledgeManagerFragment } pledgeOverTimeCollectionPlanChargeExplanation pledgeOverTimeCollectionPlanChargedAsNPayments pledgeOverTimeCollectionPlanShortPitch pledgeOverTimeMinimumExplanation pledged { __typename ...MoneyFragment } postCampaignPledgingEnabled posts { __typename totalCount } prelaunchActivated projectNotice redemptionPageUrl risks sendMetaCapiEvents slug state stateChangedAt story tags(scope: DISCOVER) { __typename name } url usdExchangeRate video { __typename id videoSources { __typename high { __typename src } hls { __typename src } } } watchesCount }"#
+    #"fragment ProjectFragment on Project { __typename availableCardTypes backersCount category { __typename ...CategoryFragment } canComment commentsCount(withReplies: true) country { __typename ...CountryFragment } creator { __typename ...PublicUserFragment } currency deadlineAt description environmentalCommitments { __typename commitmentCategory description id } aiDisclosure { __typename id fundingForAiAttribution fundingForAiConsent fundingForAiOption generatedByAiConsent generatedByAiDetails involvesAi involvesFunding involvesGeneration involvesOther otherAiDetails } faqs { __typename nodes { __typename question answer id createdAt } } finalCollectionDate fxRate goal { __typename ...MoneyFragment } image { __typename id url(width: 1024) } isPledgeOverTimeAllowed isProjectWeLove isProjectOfTheDay isWatched isLaunched isInPostCampaignPledgingPhase lastWave { __typename ...LastWaveFragment } launchedAt location { __typename ...LocationFragment } maxPledge minPledge name pid pledgeManager { __typename ...PledgeManagerFragment } pledgeOverTimeCollectionPlanChargeExplanation pledgeOverTimeCollectionPlanChargedAsNPayments pledgeOverTimeCollectionPlanShortPitch pledgeOverTimeMinimumExplanation pledged { __typename ...MoneyFragment } postCampaignPledgingEnabled posts { __typename totalCount } prelaunchActivated projectNotice redemptionPageUrl risks sendMetaCapiEvents slug state stateChangedAt story tags(scope: DISCOVER) { __typename name } url usdExchangeRate video { __typename id videoSources { __typename high { __typename src } hls { __typename src } } } watchesCount ...NoRewardRewardFragment }"#
   }
 
   public let __data: DataDict
@@ -66,6 +66,7 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     .field("usdExchangeRate", Double?.self),
     .field("video", Video?.self),
     .field("watchesCount", Int?.self),
+    .fragment(NoRewardRewardFragment.self),
   ] }
 
   /// Available card types.
@@ -171,6 +172,13 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public var video: Video? { __data["video"] }
   /// Number of watchers a project has.
   public var watchesCount: Int? { __data["watchesCount"] }
+
+  public struct Fragments: FragmentContainer {
+    public let __data: DataDict
+    public init(_dataDict: DataDict) { __data = _dataDict }
+
+    public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
+  }
 
   public init(
     availableCardTypes: [GraphQLEnum<GraphAPI.CreditCardTypes>],
