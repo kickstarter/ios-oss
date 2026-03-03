@@ -22,6 +22,26 @@ internal extension ScreenshotType {
   }
 }
 
+var defaultLightScreenshotType: ScreenshotType {
+  ScreenshotType(
+    device: .phone4_7inch,
+    language: .en,
+    style: .light,
+    contentSizeCategory: .large,
+    orientation: .portrait
+  )
+}
+
+var defaultDarkScreenshotType: ScreenshotType {
+  ScreenshotType(
+    device: .phone4_7inch,
+    language: .en,
+    style: .dark,
+    contentSizeCategory: .large,
+    orientation: .portrait
+  )
+}
+
 // Iterates through default screenshot configs using orthogonal sampling.
 /// Iterates over a representative set of screenshot configs using orthogonal sampling to avoid
 /// full Cartesian explosion while ensuring each dimension is covered at least once.

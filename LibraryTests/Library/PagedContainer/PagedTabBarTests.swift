@@ -27,32 +27,21 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    forEachScreenshotType(
-      languages: [.en],
-      contentSizes: [.large]
-    ) { type in
-      assertSnapshot(
-        forSwiftUIView: tabs,
-        withType: type,
-        size: CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: self.size.height
-        ),
-        testName: "testTabSelection_firstTab"
-      )
+    assertSnapshot(
+      forSwiftUIView: tabs,
+      withType: defaultLightScreenshotType,
+      size: self.size,
+      testName: "testTabSelection_firstTab"
+    )
 
-      viewModel.didSelect(page: secondPage)
+    viewModel.didSelect(page: secondPage)
 
-      assertSnapshot(
-        forSwiftUIView: tabs,
-        withType: type,
-        size: CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: self.size.height
-        ),
-        testName: "testTabSelection_secondTab"
-      )
-    }
+    assertSnapshot(
+      forSwiftUIView: tabs,
+      withType: defaultDarkScreenshotType,
+      size: self.size,
+      testName: "testTabSelection_secondTab"
+    )
   }
 
   func testSecondTabBadge() {
@@ -68,20 +57,7 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    forEachScreenshotType(
-      languages: [.en],
-      contentSizes: [.large]
-    ) { type in
-      assertSnapshot(
-        forSwiftUIView: tabs,
-        withType: type,
-        size: CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: self.size.height
-        ),
-        testName: "testSecondTabBadge"
-      )
-    }
+    assertSnapshot(forSwiftUIView: tabs, withType: defaultLightScreenshotType, size: self.size)
   }
 
   func testThreeTabs() {
@@ -99,20 +75,7 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    forEachScreenshotType(
-      languages: [.en],
-      contentSizes: [.large]
-    ) { type in
-      assertSnapshot(
-        forSwiftUIView: tabs,
-        withType: type,
-        size: CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: self.size.height
-        ),
-        testName: "testThreeTabs"
-      )
-    }
+    assertSnapshot(forSwiftUIView: tabs, withType: defaultDarkScreenshotType, size: self.size)
   }
 
   func testLongName() {
@@ -128,20 +91,7 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    forEachScreenshotType(
-      languages: [.en],
-      contentSizes: [.large]
-    ) { type in
-      assertSnapshot(
-        forSwiftUIView: tabs,
-        withType: type,
-        size: CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: self.size.height
-        ),
-        testName: "testLongName"
-      )
-    }
+    assertSnapshot(forSwiftUIView: tabs, withType: defaultLightScreenshotType, size: self.size)
   }
 
   func testLongGermanNames() {
@@ -157,20 +107,7 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    forEachScreenshotType(
-      languages: [.en],
-      contentSizes: [.large]
-    ) { type in
-      assertSnapshot(
-        forSwiftUIView: tabs,
-        withType: type,
-        size: CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: self.size.height
-        ),
-        testName: "testLongGermanNames"
-      )
-    }
+    assertSnapshot(forSwiftUIView: tabs, withType: defaultDarkScreenshotType, size: self.size)
   }
 
   func testLongBadge() {
@@ -186,20 +123,7 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    forEachScreenshotType(
-      languages: [.en],
-      contentSizes: [.large]
-    ) { type in
-      assertSnapshot(
-        forSwiftUIView: tabs,
-        withType: type,
-        size: CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: self.size.height
-        ),
-        testName: "testLongBadge"
-      )
-    }
+    assertSnapshot(forSwiftUIView: tabs, withType: defaultLightScreenshotType, size: self.size)
   }
 
   func testNoBadges() {
@@ -215,20 +139,7 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    forEachScreenshotType(
-      languages: [.en],
-      contentSizes: [.large]
-    ) { type in
-      assertSnapshot(
-        forSwiftUIView: tabs,
-        withType: type,
-        size: CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: self.size.height
-        ),
-        testName: "testNoBadges"
-      )
-    }
+    assertSnapshot(forSwiftUIView: tabs, withType: defaultDarkScreenshotType, size: self.size)
   }
 
   func testNoBadgesLongNames() {
@@ -244,20 +155,7 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    forEachScreenshotType(
-      languages: [.en],
-      contentSizes: [.large]
-    ) { type in
-      assertSnapshot(
-        forSwiftUIView: tabs,
-        withType: type,
-        size: CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: self.size.height
-        ),
-        testName: "testNoBadgesLongNames"
-      )
-    }
+    assertSnapshot(forSwiftUIView: tabs, withType: defaultLightScreenshotType, size: self.size)
   }
 
   func testBadgeAndDot() {
@@ -273,19 +171,6 @@ final class PagedTabBarTests: TestCase {
     let tabs = PagedTabBar(viewModel: viewModel)
       .frame(width: self.size.width, height: self.size.height)
 
-    forEachScreenshotType(
-      languages: [.en],
-      contentSizes: [.large]
-    ) { type in
-      assertSnapshot(
-        forSwiftUIView: tabs,
-        withType: type,
-        size: CGSize(
-          width: type.device.deviceSize(in: type.orientation).width,
-          height: self.size.height
-        ),
-        testName: "testBadgeAndDot"
-      )
-    }
+    assertSnapshot(forSwiftUIView: tabs, withType: defaultDarkScreenshotType, size: self.size)
   }
 }
