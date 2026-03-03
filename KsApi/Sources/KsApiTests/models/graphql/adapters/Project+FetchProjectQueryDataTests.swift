@@ -189,6 +189,8 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     }
 
     XCTAssertTrue(firstReward.isNoReward)
+    XCTAssertEqual(firstReward.minimum, 1.0)
+    XCTAssertEqual(firstReward.convertedMinimum, 1.49547966)
 
     guard let extendedProjectProperties = project.extendedProjectProperties,
           let firstTextElement = extendedProjectProperties.story.htmlViewElements.first as? TextViewElement,
