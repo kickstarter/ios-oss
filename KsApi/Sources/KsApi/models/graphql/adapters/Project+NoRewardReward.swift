@@ -11,7 +11,7 @@ extension Reward {
 
     let convertedMinimumAmount = currentUsersCurrencyFXRate * Double(projectMinimumPledgeAmount)
 
-    var emptyReward = Reward.noReward(
+    let emptyReward = Reward.noReward(
       withMinimum: Double(projectMinimumPledgeAmount),
       convertedMinimum: convertedMinimumAmount
     )
