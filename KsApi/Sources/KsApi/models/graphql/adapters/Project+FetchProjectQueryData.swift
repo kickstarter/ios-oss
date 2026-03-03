@@ -62,14 +62,13 @@ extension Project {
       projectBackingId = decompose(id: backingId)
     }
 
-    let noRewardReward = Reward.noRewardReward(from: data.project?.fragments.noRewardRewardFragment)
-
     guard
       let fragment = data.project?.fragments.projectFragment,
+      let noRewardFragment = data.project?.fragments.noRewardRewardFragment,
       let project = Project.project(
         from: fragment,
         flagging: data.project?.flagging != nil,
-        rewards: [noRewardReward],
+        rewards: [Reward.noRewardReward(from: noRewardFragment)],
         addOns: nil,
         backing: nil,
         currentUserChosenCurrency: data.me?.chosenCurrency ?? configCurrency
@@ -89,14 +88,13 @@ extension Project {
       projectBackingId = decompose(id: backingId)
     }
 
-    let noRewardReward = Reward.noRewardReward(from: data.project?.fragments.noRewardRewardFragment)
-
     guard
       let fragment = data.project?.fragments.projectFragment,
+      let noRewardFragment = data.project?.fragments.noRewardRewardFragment,
       let project = Project.project(
         from: fragment,
         flagging: data.project?.flagging != nil,
-        rewards: [noRewardReward],
+        rewards: [Reward.noRewardReward(from: noRewardFragment)],
         addOns: nil,
         backing: nil,
         currentUserChosenCurrency: data.me?.chosenCurrency ?? configCurrency
