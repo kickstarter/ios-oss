@@ -2,7 +2,7 @@ import SwiftUI
 
 /// Reactive container for all style information needed to render rich text content blocks.
 /// Exposed via `@Environment` so views adopt styles automatically. Implementations derive
-/// from KDS (typography, colors, spacing)
+/// from KDS.
 public protocol RichTextStyle: Sendable {
   // MARK: - Typography
 
@@ -23,22 +23,22 @@ public protocol RichTextStyle: Sendable {
 
   // MARK: - Colors
 
-  /// Background for container or blocks.
+  /// Background for container or blocks
   var backgroundColor: Color { get }
 
   // MARK: - Spacing
 
-  /// Vertical gap between content blocks.
+  /// Vertical gap between content blocks
   var blockSpacing: CGFloat { get }
 
-  /// Indentation or spacing for list items and nesting.
+  /// Indentation or spacing for list items and nesting
   var listIndentation: CGFloat { get }
 
-  /// Horizontal padding for content.
+  /// Horizontal padding for content
   var contentHorizontalPadding: CGFloat { get }
 
-  // MARK: - Component (media blocks)
+  // MARK: - Media blocks
 
-  /// Corner radius for image, audio/video, and oEmbed blocks.
+  /// Corner radius for image, audio/video, and oEmbed blocks
   var mediaCornerRadius: CGFloat { get }
 }
