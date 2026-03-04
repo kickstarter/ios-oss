@@ -48,6 +48,9 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
     self.saveButtonView.addTarget(self, action: #selector(SelectCurrencyViewController.saveButtonTapped(_:)))
 
     let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
+    if #available(iOS 26.0, *) {
+      navigationBarButton.hidesSharedBackground = true
+    }
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
 
     self.viewModel.inputs.viewDidLoad()
