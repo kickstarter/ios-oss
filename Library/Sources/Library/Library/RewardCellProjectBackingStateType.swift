@@ -8,12 +8,11 @@ public enum RewardCellProjectBackingStateType: Equatable {
     case inPostCampaignPledgingPhase
   }
 
-  case backedError
   case nonBacked(live: ProjectState)
   case backed(live: ProjectState)
 
   static func state(with project: Project) -> RewardCellProjectBackingStateType {
-    guard let backing = project.personalization.backing else {
+    guard project.personalization.backing != nil else {
       if project.isInPostCampaignPledgingPhase {
         return .nonBacked(live: .inPostCampaignPledgingPhase)
       }
@@ -21,11 +20,10 @@ public enum RewardCellProjectBackingStateType: Equatable {
       return .nonBacked(live: project.state == .live ? .live : .nonLive)
     }
 
-    // NB: Add error case back once correctly returned
-    switch (project.state, backing.status) {
-    case(.live, _):
+    switch project.state {
+    case .live:
       return .backed(live: .live)
-    case (_, _):
+    default:
       return .backed(live: .nonLive)
     }
   }
