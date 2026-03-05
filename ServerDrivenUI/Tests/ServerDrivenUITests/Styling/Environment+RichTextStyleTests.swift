@@ -1,4 +1,5 @@
 @testable import ServerDrivenUI
+import ServerDrivenUITestHelpers
 import SwiftUI
 import Testing
 import UIKit
@@ -22,7 +23,7 @@ private struct StyleBackgroundColorCaptureView: View {
   var body: some View {
     Color.clear
       .onAppear {
-        self.captured = self.style.backgroundColor
+        self.captured = self.style.backgroundColor.swiftUIColor()
       }
   }
 }

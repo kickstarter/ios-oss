@@ -1,4 +1,5 @@
 @testable import ServerDrivenUI
+import ServerDrivenUITestHelpers
 import SnapshotTesting
 import SwiftUI
 import XCTest
@@ -10,42 +11,42 @@ struct RichTextStylePreviewView: View {
     VStack(alignment: .leading, spacing: self.style.blockSpacing) {
       Text("Body")
         .font(self.style.bodyFont)
-        .foregroundStyle(self.style.bodyColor)
+        .foregroundStyle(self.style.bodyColor.swiftUIColor())
 
       Text("Heading 1")
         .font(self.style.heading1Font)
-        .foregroundStyle(self.style.headingColor)
+        .foregroundStyle(self.style.headingColor.swiftUIColor())
 
       Text("Heading 2")
         .font(self.style.heading2Font)
-        .foregroundStyle(self.style.headingColor)
+        .foregroundStyle(self.style.headingColor.swiftUIColor())
 
       Text("Heading 3")
         .font(self.style.heading3Font)
-        .foregroundStyle(self.style.headingColor)
+        .foregroundStyle(self.style.headingColor.swiftUIColor())
 
       Text("Heading 4")
         .font(self.style.heading4Font)
-        .foregroundStyle(self.style.headingColor)
+        .foregroundStyle(self.style.headingColor.swiftUIColor())
 
       Text("Link")
         .font(self.style.bodyFont)
-        .foregroundStyle(self.style.linkColor)
+        .foregroundStyle(self.style.linkColor.swiftUIColor())
         .underline(self.style.linkUnderlined)
 
       RoundedRectangle(cornerRadius: self.style.mediaCornerRadius)
-        .fill(self.style.bodyColor)
+        .fill(self.style.bodyColor.swiftUIColor())
         .frame(height: 40)
 
       VStack(alignment: .leading, spacing: 4) {
         Text("listIndentation: \(self.style.listIndentation, specifier: "%.0f")")
           .font(self.style.bodyFont)
-          .foregroundStyle(self.style.bodyColor)
+          .foregroundStyle(self.style.bodyColor.swiftUIColor())
       }
     }
     .padding(self.style.contentHorizontalPadding)
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-    .background(self.style.backgroundColor)
+    .background(self.style.backgroundColor.swiftUIColor())
   }
 }
 

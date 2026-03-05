@@ -13,7 +13,11 @@ let package = Package(
     .library(
       name: "ServerDrivenUI",
       targets: ["ServerDrivenUI"],
-    )
+    ),
+    .library(
+      name: "ServerDrivenUITestHelpers",
+      targets: ["ServerDrivenUITestHelpers"],
+    ),
   ],
   dependencies: [
     .package(name: "KDS", path: "../KDS"),
@@ -30,10 +34,18 @@ let package = Package(
         .byName(name: "GraphAPI")
       ]
     ),
+    .target(
+      name: "ServerDrivenUITestHelpers",
+      dependencies: [
+        .byName(name: "KDS"),
+        .byName(name: "ServerDrivenUI"),
+      ]
+    ),
     .testTarget(
       name: "ServerDrivenUITests",
       dependencies: [
         "ServerDrivenUI",
+        "ServerDrivenUITestHelpers",
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
       ]
     )

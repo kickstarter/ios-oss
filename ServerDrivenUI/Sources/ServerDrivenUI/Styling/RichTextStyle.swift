@@ -1,3 +1,4 @@
+import KDS
 import SwiftUI
 
 /// Reactive container for all style information needed to render rich text content blocks.
@@ -8,23 +9,23 @@ public protocol RichTextStyle: Sendable {
 
   /// Font and color for body/paragraph text
   var bodyFont: Font { get }
-  var bodyColor: Color { get }
+  var bodyColor: AdaptiveColor { get }
 
   /// Fonts and color for headings
   var heading1Font: Font { get }
   var heading2Font: Font { get }
   var heading3Font: Font { get }
   var heading4Font: Font { get }
-  var headingColor: Color { get }
+  var headingColor: AdaptiveColor { get }
 
   /// Link appearance
-  var linkColor: Color { get }
+  var linkColor: AdaptiveColor { get }
   var linkUnderlined: Bool { get }
 
   // MARK: - Colors
 
   /// Background for container or blocks
-  var backgroundColor: Color { get }
+  var backgroundColor: AdaptiveColor { get }
 
   // MARK: - Spacing
 

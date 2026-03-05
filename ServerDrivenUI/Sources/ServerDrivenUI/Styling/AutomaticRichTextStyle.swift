@@ -7,35 +7,63 @@ import UIKit
 /// Use as the default environment style so block views adapt to light/dark automatically.
 /// When the app’s color scheme changes, SwiftUI re-renders views that read this style.
 public struct AutomaticRichTextStyle: RichTextStyle, Sendable {
-  private let lightStyle: LightRichTextStyle
-  private let darkStyle: DarkRichTextStyle
-
-  public init() {
-    self.lightStyle = LightRichTextStyle()
-    self.darkStyle = DarkRichTextStyle()
-  }
-
-  private var current: any RichTextStyle {
-    if UITraitCollection.current.userInterfaceStyle == .dark {
-      return self.darkStyle
-    }
-    return self.lightStyle
-  }
+  public init() {}
 
   // MARK: RichTextStyle
 
-  public var bodyFont: Font { self.current.bodyFont }
-  public var bodyColor: Color { self.current.bodyColor }
-  public var heading1Font: Font { self.current.heading1Font }
-  public var heading2Font: Font { self.current.heading2Font }
-  public var heading3Font: Font { self.current.heading3Font }
-  public var heading4Font: Font { self.current.heading4Font }
-  public var headingColor: Color { self.current.headingColor }
-  public var linkColor: Color { self.current.linkColor }
-  public var linkUnderlined: Bool { self.current.linkUnderlined }
-  public var backgroundColor: Color { self.current.backgroundColor }
-  public var blockSpacing: CGFloat { self.current.blockSpacing }
-  public var listIndentation: CGFloat { self.current.listIndentation }
-  public var contentHorizontalPadding: CGFloat { self.current.contentHorizontalPadding }
-  public var mediaCornerRadius: CGFloat { self.current.mediaCornerRadius }
+  public var bodyFont: Font {
+    InterFont.bodyLG.swiftUIFont(size: nil)
+  }
+
+  public var bodyColor: AdaptiveColor {
+    Colors.Text.primary
+  }
+
+  public var heading1Font: Font {
+    InterFont.heading2XL.swiftUIFont(size: nil)
+  }
+
+  public var heading2Font: Font {
+    InterFont.headingXL.swiftUIFont(size: nil)
+  }
+
+  public var heading3Font: Font {
+    InterFont.headingLG.swiftUIFont(size: nil)
+  }
+
+  public var heading4Font: Font {
+    InterFont.headingMD.swiftUIFont(size: nil)
+  }
+
+  public var headingColor: AdaptiveColor {
+    Colors.Text.primary
+  }
+
+  public var linkColor: AdaptiveColor {
+    Colors.Text.Accent.Blue.bolder
+  }
+
+  public var linkUnderlined: Bool {
+    true
+  }
+
+  public var backgroundColor: AdaptiveColor {
+    Colors.Background.Surface.primary
+  }
+
+  public var blockSpacing: CGFloat {
+    Spacing.unit_04
+  }
+
+  public var listIndentation: CGFloat {
+    Spacing.unit_06
+  }
+
+  public var contentHorizontalPadding: CGFloat {
+    Spacing.unit_04
+  }
+
+  public var mediaCornerRadius: CGFloat {
+    Dimension.CornerRadius.medium
+  }
 }

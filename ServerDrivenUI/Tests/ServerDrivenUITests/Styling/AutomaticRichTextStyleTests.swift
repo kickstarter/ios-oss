@@ -1,4 +1,5 @@
 @testable import ServerDrivenUI
+import ServerDrivenUITestHelpers
 import SwiftUI
 import Testing
 
@@ -14,5 +15,5 @@ import Testing
 @Test func lightAndDarkRichTextStyle_bodyColorsDiffer() async throws {
   let light = LightRichTextStyle()
   let dark = DarkRichTextStyle()
-  #expect(light.bodyColor != dark.bodyColor)
+  #expect(light.bodyColor.uiColor() != dark.bodyColor.uiColor())
 }
