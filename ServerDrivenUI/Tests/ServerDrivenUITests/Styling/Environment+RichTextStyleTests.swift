@@ -50,7 +50,7 @@ private struct StyleProviderCaptureView: View {
 }
 
 /// A tiny box that stores a value and exposes it as an optional Binding for capture in SwiftUI.
-private final class Holder<T>: @unchecked Sendable {
+private final class BindingHolder<T>: @unchecked Sendable {
   var value: T?
 
   init(value: T? = nil) {
@@ -87,7 +87,7 @@ private final class Holder<T>: @unchecked Sendable {
 
 @Test @MainActor func view_receivesInjectedRichTextStyle_fromEnvironment() async throws {
   // Given a view that captures blockSpacing from the environment
-  let holder = Holder<CGFloat>()
+  let holder = BindingHolder<CGFloat>()
   let view = StyleBlockSpacingCaptureView(captured: holder.binding)
     .environment(\.richTextStyle, LightRichTextStyle())
   // When the view is hosted and laid out
@@ -104,7 +104,7 @@ private final class Holder<T>: @unchecked Sendable {
 
 @Test @MainActor func swiftUIView_automaticRichTextStyle_rerendersWhenThemeChanges() async throws {
   // Given a provider that switches between Light and Dark styles
-  let colorHolder = Holder<Color>()
+  let colorHolder = BindingHolder<Color>()
   let controller = StyleToggleController()
   controller.useLight = true
 
