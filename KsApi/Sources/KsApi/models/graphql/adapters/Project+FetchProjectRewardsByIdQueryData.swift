@@ -12,12 +12,38 @@ extension Project {
     return SignalProducer(value: projectRewards)
   }
 
+  static func projectRewards(from data: GraphAPI.FetchSortedProjectRewardsByIdQuery.Data) -> [Reward] {
+    guard let project = data.project else {
+      return []
+    }
+
+    let projectRewards = project.rewards?.nodes?
+      .compactMap { node -> Reward? in
+        guard let node else {
+          return nil
+        }
+
+        let rewardFragment = node.fragments.rewardFragment
+        let shippingRuleFragment = node.fragments.simpleShippingRulesExpandedFragment
+        let expandedShippingRules = ShippingRule.simpleShippingRulesExpanded(from: shippingRuleFragment)
+
+        return Reward.reward(from: rewardFragment, expandedShippingRules: expandedShippingRules)
+      } ?? []
+
+    let noReward = Reward.noRewardReward(from: project.fragments.noRewardRewardFragment)
+    return [noReward] + projectRewards
+  }
+
   static func projectRewards(from data: GraphAPI.FetchProjectRewardsByIdQuery.Data) -> [Reward] {
     let projectRewards = data.project?.rewards?.nodes?
       .compactMap { node -> Reward? in
-        guard let rewardFragment = node?.fragments.rewardFragment else { return nil }
+        guard let node else {
+          return nil
+        }
 
-        guard let shippingRuleFragment = node?.fragments.simpleShippingRulesExpandedFragment else {
+        let rewardFragment = node.fragments.rewardFragment
+
+        guard let shippingRuleFragment = node.fragments.simpleShippingRulesExpandedFragment else {
           return Reward.reward(from: rewardFragment, expandedShippingRules: nil)
         }
 

@@ -1430,6 +1430,29 @@
         )
     }
 
+    func fetchProjectRewardsAndNoReward(
+      projectId: Int,
+      sortedForShippingCountryCode _: String?
+    ) -> SignalProducer<[Reward], ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let fetchProjectRewardsQuery = GraphAPI
+        .FetchSortedProjectRewardsByIdQuery(
+          projectId: projectId,
+          includeShippingRules: false,
+          includeLocalPickup: true,
+          location: nil
+        )
+
+      return client
+        .fetchWithResult(
+          query: fetchProjectRewardsQuery,
+          result: self.fetchProjectRewardsEnvelopeResult
+        )
+    }
+
     internal func fetchProject(
       _ params: DiscoveryParams
     ) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
