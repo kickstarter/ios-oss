@@ -101,13 +101,19 @@ open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
       self.stopDisplayingChildViewController(activeController)
     }
 
+    let bottomConstraint = if #available(iOS 26, *) {
+      self.view.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor)
+    } else {
+      self.view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor)
+    }
+
     self.displayChildViewController(
       controller,
       withConstraints: [
         self.toggle.view.bottomAnchor.constraint(equalTo: controller.view.topAnchor),
         self.view.safeAreaLayoutGuide.leftAnchor.constraint(equalTo: controller.view.leftAnchor),
         self.view.safeAreaLayoutGuide.rightAnchor.constraint(equalTo: controller.view.rightAnchor),
-        self.view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor)
+        bottomConstraint
       ]
     )
 
