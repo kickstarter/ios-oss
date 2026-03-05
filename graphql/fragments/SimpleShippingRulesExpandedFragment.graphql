@@ -1,0 +1,11 @@
+fragment SimpleShippingRulesExpandedFragment on Reward {
+  simpleShippingRulesExpanded {
+      cost,
+      estimatedMin,
+      estimatedMax,
+      currency,
+      locationId,
+      locationName,
+      country
+  }
+}
