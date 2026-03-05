@@ -9,6 +9,18 @@ final class LoadingBarButtonItemView: UIView {
 
   private let viewModel: LoadingBarButtonItemViewModelType = LoadingBarButtonItemViewModel()
 
+  // Helper function for creating a UIBarButtonItem for the LoadingBarButtonItemView with liquid
+  // glass animation off. The liquid glass animation is added directly to the UIButton instead,
+  // which is necessary in order for it to respect the UIButton state.
+  public static func uiBarButtonItem(for loadingBarButtonItemView: LoadingBarButtonItemView)
+    -> UIBarButtonItem {
+    let barButtonItem = UIBarButtonItem(customView: loadingBarButtonItemView)
+    if #available(iOS 26.0, *) {
+      barButtonItem.hidesSharedBackground = true
+    }
+    return barButtonItem
+  }
+
   public static func instantiate() -> LoadingBarButtonItemView {
     let saveButtonView = LoadingBarButtonItemView.init()
     saveButtonView.translatesAutoresizingMaskIntoConstraints = false
