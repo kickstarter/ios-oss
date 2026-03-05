@@ -7,6 +7,7 @@ import GraphAPI
 public enum FetchProjectRewardsByIdQueryTemplate {
   case validRewardWithAllFields
   case expandedShippingReward
+  case includeShippingRulesFalse
 
   /// `FetchProjectBySlug` returns identical data.
   var data: GraphAPI.FetchProjectRewardsByIdQuery.Data {
@@ -23,6 +24,11 @@ public enum FetchProjectRewardsByIdQueryTemplate {
       return try! testGraphObject(
         jsonString: self.expandedShippingRewardJSON,
         variables: ["includeShippingRules": true]
+      )
+    case .includeShippingRulesFalse:
+      return try! testGraphObject(
+        jsonString: self.expandedShippingRewardJSON,
+        variables: ["includeShippingRules": false]
       )
     }
   }

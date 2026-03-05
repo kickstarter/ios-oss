@@ -87,4 +87,25 @@ final class Project_FetchProjectRewardsByIdQueryDataTests: XCTestCase {
     XCTAssertEqual(reward.shippingRulesExpanded?[0].location.name, "Austria")
     XCTAssertEqual(reward.shippingRulesExpanded?[0].location.id, decompose(id: "TG9jYXRpb24tMjM0MjQ3NTA="))
   }
+
+  func test_allShippingProperties_areNil_whenIncludeShippingRules_isFalse() {
+    // Test on reward that has restricted shipping; only to the EU.
+    let rewardsProducer = Project
+      .projectRewardsProducer(from: FetchProjectRewardsByIdQueryTemplate.includeShippingRulesFalse.data)
+
+    guard let rewards = MockGraphQLClient.shared.client.data(from: rewardsProducer) else {
+      XCTFail("Should have produced rewards")
+      return
+    }
+
+    XCTAssertEqual(rewards.count, 1, "Even if shipping rules aren't set, rewards should be parsed.")
+
+    guard let reward = rewards.first else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    XCTAssertNil(reward.shippingRules)
+    XCTAssertNil(reward.shippingRulesExpanded)
+  }
 }

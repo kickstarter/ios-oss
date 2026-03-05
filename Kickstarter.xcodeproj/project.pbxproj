@@ -634,6 +634,7 @@
 		AAF548D32F2445C0001DB5AC /* SearchQuery_EmptyResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_EmptyResults.json; sourceTree = "<group>"; };
 		AAF548D42F2445C0001DB5AC /* SearchQuery_FiveResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_FiveResults.json; sourceTree = "<group>"; };
 		D0C9BAD521B1AB920098CABA /* Alpha.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Alpha.entitlements; sourceTree = "<group>"; };
+		E1047B662F59DAC80071584F /* SimpleShippingRulesExpandedFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = SimpleShippingRulesExpandedFragment.graphql; sourceTree = "<group>"; };
 		E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RichPushNotifications.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		E10BE8D12B02975C00F73DC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1259,6 +1260,7 @@
 				E190EB312E29944E006A6DB6 /* ProjectFragment.graphql */,
 				E190EB322E29944E006A6DB6 /* ProjectPamphletMainCellPropertiesFragment.graphql */,
 				E190EB332E29944E006A6DB6 /* RewardFragment.graphql */,
+				E1047B662F59DAC80071584F /* SimpleShippingRulesExpandedFragment.graphql */,
 				E190EB342E29944E006A6DB6 /* ShippingRuleFragment.graphql */,
 				E190EB352E29944E006A6DB6 /* UserEmailFragment.graphql */,
 				E190EB362E29944E006A6DB6 /* UserFeaturesFragment.graphql */,
