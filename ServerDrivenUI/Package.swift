@@ -17,7 +17,7 @@ let package = Package(
     .library(
       name: "ServerDrivenUITestHelpers",
       targets: ["ServerDrivenUITestHelpers"],
-    ),
+    )
   ],
   dependencies: [
     .package(name: "KDS", path: "../KDS"),
@@ -38,7 +38,7 @@ let package = Package(
       name: "ServerDrivenUITestHelpers",
       dependencies: [
         .byName(name: "KDS"),
-        .byName(name: "ServerDrivenUI"),
+        .byName(name: "ServerDrivenUI")
       ]
     ),
     .testTarget(

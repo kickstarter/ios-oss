@@ -9,6 +9,7 @@ public struct LightRichTextStyle: RichTextStyle, Sendable {
   public init() {}
 
   // MARK: - RichTextStyle
+
   public var bodyFont: Font { self.parent.bodyFont }
   public var bodyColor: AdaptiveColor { self.parent.bodyColor.resolvedForLightMode() }
   public var heading1Font: Font { self.parent.heading1Font }
