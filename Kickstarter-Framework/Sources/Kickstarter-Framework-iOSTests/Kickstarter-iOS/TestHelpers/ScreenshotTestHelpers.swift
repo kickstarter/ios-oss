@@ -23,6 +23,28 @@ internal extension ScreenshotType {
   }
 }
 
+internal var defaultDarkScreenshotType = ScreenshotType(
+  device: .phone4_7inch,
+  language: .en,
+  style: .dark,
+  contentSizeCategory: .large,
+  orientation: .portrait
+)
+
+internal var defaultLightScreenshotType = ScreenshotType(
+  device: .phone4_7inch,
+  language: .en,
+  style: .light,
+  contentSizeCategory: .large,
+  orientation: .portrait
+)
+
+// Convenience iterator for testing dark and light mode only. All other screenshot type
+// properties are set to a reasonable default.
+internal func forEachScreenshotStyleType(body: (ScreenshotType) -> Void) {
+  forEachScreenshotType(devices: [.phone4_7inch], languages: [.en], contentSizes: [.large], body: body)
+}
+
 // Iterates through default screenshot configs using orthogonal sampling.
 /// Iterates over a representative set of screenshot configs using orthogonal sampling to avoid
 /// full Cartesian explosion while ensuring each dimension is covered at least once.
