@@ -10,5 +10,15 @@ public class AttachedAudio: MockObject {
   public typealias MockValueCollectionType = Array<Mock<AttachedAudio>>
 
   public struct MockFields {
+    @Field<GraphAPI.ID>("id") public var id
+  }
+}
+
+public extension Mock where O == AttachedAudio {
+  convenience init(
+    id: GraphAPI.ID? = nil
+  ) {
+    self.init()
+    _setScalar(id, for: \.id)
   }
 }

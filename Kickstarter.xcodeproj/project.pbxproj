@@ -393,6 +393,7 @@
 		A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7D1F9551C850B7C000D41D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppEnvironmentTests.swift; sourceTree = "<group>"; };
+		AA0F32452F57BF1F0024E906 /* RichTextFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = RichTextFragment.graphql; sourceTree = "<group>"; };
 		AAC413552F215CE000DAD7C6 /* Kickstarter.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Kickstarter.xctestplan; sourceTree = "<group>"; };
 		AAC4135C2F218F3200DAD7C6 /* KsApi.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = KsApi.xctestplan; path = KsApi/KsApi.xctestplan; sourceTree = "<group>"; };
 		AAD997442F3D2C510027D211 /* ServerDrivenUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ServerDrivenUI; sourceTree = "<group>"; };
@@ -1257,6 +1258,7 @@
 				E190EB2F2E29944E006A6DB6 /* ProjectAnalyticsFragment.graphql */,
 				E190EB302E29944E006A6DB6 /* ProjectCardFragment.graphql */,
 				E190EB312E29944E006A6DB6 /* ProjectFragment.graphql */,
+				AA0F32452F57BF1F0024E906 /* RichTextFragment.graphql */,
 				E190EB322E29944E006A6DB6 /* ProjectPamphletMainCellPropertiesFragment.graphql */,
 				E190EB332E29944E006A6DB6 /* RewardFragment.graphql */,
 				E190EB342E29944E006A6DB6 /* ShippingRuleFragment.graphql */,

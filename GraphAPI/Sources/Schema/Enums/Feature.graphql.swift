@@ -119,7 +119,6 @@ public enum Feature: String, EnumType {
   case pledgeOverTimeGa2025 = "pledge_over_time_ga_2025"
   case pledgeOverTimeMonthlyCadence2025 = "pledge_over_time_monthly_cadence_2025"
   case removeEventSourcing2025 = "remove_event_sourcing_2025"
-  case digitalRewards2025 = "digital_rewards_2025"
   case digitalRewards_UploadButton2025 = "digital_rewards__upload_button_2025"
   case pledgeOverTimeEditPledge2025 = "pledge_over_time_edit_pledge_2025"
   case eufymakeBackerReport = "eufymake_backer_report"
@@ -152,5 +151,7 @@ public enum Feature: String, EnumType {
   case partnerProgramRefresh = "partner_program_refresh"
   case collaboratorCreatorDashboardAccess = "collaborator_creator_dashboard_access"
   case polls2026 = "polls_2026"
-  case digitalFiles2026 = "digital_files_2026"
+  case backerTypeFilters2026 = "backer_type_filters_2026"
+  case backgroundTaskManagement2026 = "background_task_management_2026"
+  case improvingRefundOrchestration2026 = "improving_refund_orchestration_2026"
 }
