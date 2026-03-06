@@ -6,4 +6,5 @@ import GraphAPI
 
 public extension MockObject {
   typealias PaymentSource = Union
+  typealias RichTextItem = Union
 }
