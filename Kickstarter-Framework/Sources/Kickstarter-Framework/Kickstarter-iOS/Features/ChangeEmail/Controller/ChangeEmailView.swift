@@ -129,22 +129,7 @@ struct ChangeEmailView: View {
       .background(LegacyColors.ksr_support_100.swiftUIColor())
       .listStyle(.plain)
       .toolbar {
-        ToolbarItem(placement: .navigationBarTrailing) {
-          LoadingBarButtonItem(
-            saveEnabled: self.$saveEnabled,
-            showLoading: self.$showLoading,
-            titleText: Strings.Save()
-          ) {
-            self.focusField = nil
-            self.reactiveViewModel.didTapSaveButton()
-          }
-          .onReceive(self.reactiveViewModel.saveButtonEnabled) { newValue in
-            self.saveEnabled = newValue
-          }
-          .onReceive(self.reactiveViewModel.resetEditableText) { newValue in
-            self.showLoading = !newValue
-          }
-        }
+        self.saveButton
       }
       .overlay(alignment: .bottom) {
         MessageBannerView(viewModel: self.$bannerMessage)
@@ -162,6 +147,31 @@ struct ChangeEmailView: View {
       .onAppear {
         self.reactiveViewModel.inputs.viewDidLoad()
       }
+    }
+  }
+
+  @ToolbarContentBuilder
+  private var saveButton: some ToolbarContent {
+    let toolbarItem = ToolbarItem(placement: .navigationBarTrailing) {
+      LoadingBarButtonItem(
+        saveEnabled: self.$saveEnabled,
+        showLoading: self.$showLoading,
+        titleText: Strings.Save()
+      ) {
+        self.focusField = nil
+        self.reactiveViewModel.didTapSaveButton()
+      }
+      .onReceive(self.reactiveViewModel.saveButtonEnabled) { newValue in
+        self.saveEnabled = newValue
+      }
+      .onReceive(self.reactiveViewModel.resetEditableText) { newValue in
+        self.showLoading = !newValue
+      }
+    }
+    if #available(iOS 26, *) {
+      toolbarItem.sharedBackgroundVisibility(.hidden)
+    } else {
+      toolbarItem
     }
   }
 
