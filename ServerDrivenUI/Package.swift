@@ -31,7 +31,7 @@ let package = Package(
     ),
     .testTarget(
       name: "ServerDrivenUITests",
-      dependencies: ["ServerDrivenUI"]
+      dependencies: ["ServerDrivenUI", "GraphAPI"]
     )
   ]
 )
