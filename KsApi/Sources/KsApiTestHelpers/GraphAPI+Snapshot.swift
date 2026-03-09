@@ -4,65 +4,88 @@ import GraphAPI
 import XCTest
 
 public extension GraphQLQuery {
-  func snapshot(_ snapshotName: String, record: Bool = false, filePath: String = #filePath) -> Data? {
-    if record {
-      self.toSnapshot(snapshotName, forTestPath: filePath)
+  func snapshot(_ snapshotName: String, recordQuery: Bool = false, filePath: String = #filePath) -> Data? {
+    if recordQuery {
+      self.saveQueryToSnapshot(snapshotName, forTestPath: filePath)
     }
 
     return self.fromSnapshot(snapshotName, forTestPath: filePath)
   }
 
-  internal var stagingClient: ApolloClient {
-    // This is currently hardcoded to staging, and it's logged out.
-    // It would be a fun party trick to use this only in hosted tests;
-    // then you could log into the app and get whatever state you wanted when you hit record.
-    let configuration = ServerConfig.staging
-    let service = Service(serverConfig: configuration)
-
-    return ApolloClient.client(
-      with: configuration.graphQLEndpointUrl,
-      headers: service.defaultHeaders,
-      additionalHeaders: { service.defaultHeaders }
-    )
-  }
-
   internal func snapshotURL(_ snapshotName: String, forTestPath path: String) -> URL {
+    // TODO: Create a __DATA__ directory and save the snapshot there
     let fileUrl = URL(fileURLWithPath: path, isDirectory: false)
     let testDirectory = fileUrl.deletingLastPathComponent()
 
-    // TODO: Put this in a directory like __Data__
     let snapshotName = "\(snapshotName).json"
     return testDirectory.appendingPathComponent(snapshotName)
   }
 
-  internal func toSnapshot(_ snapshotName: String, forTestPath path: String) {
-    let snapshotURL = snapshotURL(snapshotName, forTestPath: path)
-    let expectation = XCTestExpectation(description: "Fetching GraphQL query for snapshot.")
-
-    let client = self.stagingClient
-    client.fetch(query: self, cachePolicy: .fetchIgnoringCacheCompletely) { [weak self] result in
-      switch result {
-      case let .success(data):
-        self?.writeData(data, toURL: snapshotURL)
-      case let .failure(error):
-        XCTFail("Failed to fetch GraphQL request for snapshot: \(error.localizedDescription)")
-      }
-      expectation.fulfill()
-    }
-
-    let waiter = XCTWaiter()
-    waiter.wait(for: [expectation], timeout: 10.0)
+  private func blockComment(_ string: String) -> String {
+    return "# " + string.components(separatedBy: CharacterSet.newlines)
+      .joined(separator: "\n# ")
   }
 
-  internal func writeData(_ result: GraphQLResult<Self.Data>, toURL snapshotURL: URL) {
-    do {
-      let data = result.asJSONDictionary()
-      let serializedData = try JSONSerialization.data(withJSONObject: data)
-      try serializedData.write(to: snapshotURL)
+  private func prettyPrintVariables() -> String {
+    guard let variables = self.__variables else {
+      return "{}"
+    }
 
-      XCTFail("Successfully recorded snapshot. Turn off recording to make your test pass.")
+    do {
+      let jsonEncodedVariables = try JSONSerialization.data(
+        withJSONObject: variables as Any,
+        options: [.prettyPrinted]
+      )
+      if let variablesString = String(data: jsonEncodedVariables, encoding: .utf8) {
+        return variablesString
+      }
+    } catch {}
+
+    return "{}"
+  }
+
+  private func createQueryText() -> String {
+    let queryText = Self.operationDocument.definition?.queryDocument ?? ""
+
+    let warning = """
+    Fetch this query using your GraphQL interface of choice, 
+    and copy the results into the snapshot file.
+
+    With great power comes great responsibility:
+    ⚠️ *YOU* are responsible for reviewing and redacting this data.
+    """
+
+    let variables = self.prettyPrintVariables()
+
+    return """
+    \(self.blockComment(warning))
+
+    # Variables:
+    \(self.blockComment(variables))
+
+    # Query:
+    \(queryText)
+    """
+  }
+
+  internal func saveQueryToSnapshot(_ snapshotName: String, forTestPath path: String) {
+    let snapshotURL = snapshotURL(snapshotName, forTestPath: path)
+    self.writeData(self.createQueryText(), toURL: snapshotURL)
+  }
+
+  internal func writeData(_ result: String, toURL snapshotURL: URL) {
+    do {
+      if let data = result.data(using: .utf8) {
+        try data.write(to: snapshotURL)
+      } else {
+        XCTFail("Unable to record query defintion.")
+      }
+
+      XCTFail(
+        "Successfully recorded query definition to \(snapshotURL.absoluteString). Use the query definition to record your GraphQL query."
+      )
     } catch {
-      XCTFail("Failed to write GraphQL data to snapshot: \(error.localizedDescription)")
+      XCTFail("Failed to write query to snapshot: \(error.localizedDescription)")
     }
   }
 
@@ -71,6 +94,9 @@ public extension GraphQLQuery {
 
     do {
       let jsonData = try Foundation.Data(contentsOf: url)
+
+      // TODO: Verify that this is actually loading GraphQL data, not the test query.
+      // Can probably do that here.
       let json = try JSONSerialization.jsonObject(with: jsonData) as! JSONObject
       let data = json["data"]
       return try Data.init(data: data as! JSONObject, variables: self.__variables)
