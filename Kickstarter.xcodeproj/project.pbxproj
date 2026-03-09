@@ -39,6 +39,7 @@
 		3959A62F2B69BC6D00FE8055 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		3976B36E2E57DC7F00D2DD50 /* SegmentBrazeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 3976B36D2E57DC7F00D2DD50 /* SegmentBrazeUI */; };
 		600944E42E5CB3A7004A089F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 600944E22E5CB3A7004A089F /* InfoPlist.strings */; };
+		6069CC542F5F66160029A67F /* Statsig in Frameworks */ = {isa = PBXBuildFile; productRef = 6069CC532F5F66160029A67F /* Statsig */; };
 		60A80F532BD7F9A00052A829 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */; };
 		8A65E79E2501AE89006F81CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */; };
 		8A86D7F324FED01D00037A7B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A86D7F224FED01C00037A7B /* GoogleService-Info.plist */; };
@@ -737,6 +738,7 @@
 				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
 				AAF3BB3B2F14988F00DAE921 /* Kickstarter-Framework in Frameworks */,
 				AAF3BB382F14987300DAE921 /* KsApi in Frameworks */,
+				6069CC542F5F66160029A67F /* Statsig in Frameworks */,
 				3976B36E2E57DC7F00D2DD50 /* SegmentBrazeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1373,6 +1375,7 @@
 				3976B36D2E57DC7F00D2DD50 /* SegmentBrazeUI */,
 				AAF3BB372F14987300DAE921 /* KsApi */,
 				AAF3BB3A2F14988F00DAE921 /* Kickstarter-Framework */,
+				6069CC532F5F66160029A67F /* Statsig */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -1518,6 +1521,7 @@
 				AAF3BB362F14987300DAE921 /* XCLocalSwiftPackageReference "KsApi" */,
 				AAF3BB392F14988F00DAE921 /* XCLocalSwiftPackageReference "Kickstarter-Framework" */,
 				AA7B64922F20420F00602E54 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */,
+				6069CC522F5F66160029A67F /* XCRemoteSwiftPackageReference "statsig-kit" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -2949,6 +2953,14 @@
 				minimumVersion = 12.0.0;
 			};
 		};
+		6069CC522F5F66160029A67F /* XCRemoteSwiftPackageReference "statsig-kit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/statsig-io/statsig-kit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.60.3;
+			};
+		};
 		60DA50F628BFA331002E2DF1 /* XCRemoteSwiftPackageReference "AlamofireImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/AlamofireImage";
@@ -3009,6 +3021,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3976B3682E57AEC200D2DD50 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
 			productName = SegmentBrazeUI;
+		};
+		6069CC532F5F66160029A67F /* Statsig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6069CC522F5F66160029A67F /* XCRemoteSwiftPackageReference "statsig-kit" */;
+			productName = Statsig;
 		};
 		AA7B64932F20420F00602E54 /* Stripe */ = {
 			isa = XCSwiftPackageProductDependency;
