@@ -628,6 +628,29 @@ public struct Service: ServiceType {
       .flatMap(Project.projectRewardsProducer(from:))
   }
 
+  public func fetchProjectRewardsWithNoReward(
+    projectId: Int,
+    sortedForShippingCountryCode code: String?
+  ) -> SignalProducer<[Reward], ErrorEnvelope> {
+    let graphCountryCode: GraphAPI.CountryCode?
+    if let code {
+      graphCountryCode = GraphAPI.CountryCode(rawValue: code)
+    } else {
+      graphCountryCode = nil
+    }
+
+    let query = GraphAPI.FetchSortedProjectRewardsByIdQuery(
+      projectId: projectId,
+      includeShippingRules: true,
+      includeLocalPickup: true,
+      location: GraphQLEnum.caseOrNil(graphCountryCode)
+    )
+
+    return GraphQL.shared.client
+      .fetch(query: query)
+      .map(Project.projectRewards(from:))
+  }
+
   public func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int)
     -> SignalProducer<RewardsAndPledgeOverTimeEnvelope, ErrorEnvelope> {
     let query = GraphAPI

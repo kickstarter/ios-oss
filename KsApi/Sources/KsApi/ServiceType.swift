@@ -258,6 +258,10 @@ public protocol ServiceType {
   /// Fetch the project's rewards only, without shipping rules
   func fetchProjectRewards(projectId: Int) -> SignalProducer<[Reward], ErrorEnvelope>
 
+  /// Fetch the project's rewards, including 'No Reward'. Includes all shipping rules.
+  func fetchProjectRewardsWithNoReward(projectId: Int, sortedForShippingCountryCode: String?)
+    -> SignalProducer<[Reward], ErrorEnvelope>
+
   /// Fetch a single project with the specified discovery params.
   func fetchProject(_ params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope>
 
