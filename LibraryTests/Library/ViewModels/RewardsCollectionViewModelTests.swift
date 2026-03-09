@@ -59,13 +59,43 @@ final class RewardsCollectionViewModelTests: TestCase {
         type: .singleLocation
       )
 
+    let digitalReward = Reward.template
+      |> Reward.lens.id .~ 1
+      |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.shippingRulesExpanded .~ []
+      |> Reward.lens.shipping .~ Reward.Shipping(
+        enabled: false,
+        location: nil,
+        preference: Reward.Shipping.Preference.none,
+        summary: "Digital reward",
+        type: .noShipping
+      )
+
+    let localShippingReward = Reward.template
+      |> Reward.lens.id .~ 2
+      |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.shippingRulesExpanded .~ []
+      |> Reward.lens.shipping .~ Reward.Shipping(
+        enabled: false,
+        location: Reward.Shipping.Location(
+          id: 1,
+          localizedName: "Pickup your stuff"
+        ),
+        preference: Reward.Shipping.Preference.local,
+        summary: "Digital reward",
+        type: .noShipping
+      )
+      |> Reward.lens.localPickup .~ Location.template
+
     let rewards = [
       availableReward,
       Reward.noReward,
       notAvailableReward,
       Reward.secretRewardTemplate,
       notStartedYetReward,
-      onlyShipsToUSAReward
+      onlyShipsToUSAReward,
+      digitalReward,
+      localShippingReward
     ]
 
     let testProject = Project.template
@@ -79,15 +109,18 @@ final class RewardsCollectionViewModelTests: TestCase {
       Reward.noReward,
       Reward.secretRewardTemplate,
       availableReward,
+      digitalReward,
+      localShippingReward,
       notAvailableReward
     ])
 
     self.vm.shippingLocationSelected(Location.australia)
-
     self.reloadDataWithValues.assertLastValue([
       Reward.noReward,
       Reward.secretRewardTemplate,
       availableReward,
+      digitalReward,
+      localShippingReward,
       notAvailableReward
     ])
 
@@ -96,8 +129,10 @@ final class RewardsCollectionViewModelTests: TestCase {
       Reward.noReward,
       Reward.secretRewardTemplate,
       availableReward,
-      notAvailableReward,
-      onlyShipsToUSAReward
+      onlyShipsToUSAReward,
+      digitalReward,
+      localShippingReward,
+      notAvailableReward
     ])
   }
 
