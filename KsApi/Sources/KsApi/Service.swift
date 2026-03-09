@@ -628,12 +628,12 @@ public struct Service: ServiceType {
       .flatMap(Project.projectRewardsProducer(from:))
   }
 
-  public func fetchProjectRewardsAndNoReward(
+  public func fetchProjectRewardsWithNoReward(
     projectId: Int,
-    sortedForShippingCountryCode maybeCode: String?
+    sortedForShippingCountryCode code: String?
   ) -> SignalProducer<[Reward], ErrorEnvelope> {
     let graphCountryCode: GraphAPI.CountryCode?
-    if let code = maybeCode {
+    if let code {
       graphCountryCode = GraphAPI.CountryCode(rawValue: code)
     } else {
       graphCountryCode = nil

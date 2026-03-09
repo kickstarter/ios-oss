@@ -1430,7 +1430,7 @@
         )
     }
 
-    func fetchProjectRewardsAndNoReward(
+    func fetchProjectRewardsWithNoReward(
       projectId: Int,
       sortedForShippingCountryCode _: String?
     ) -> SignalProducer<[Reward], ErrorEnvelope> {
