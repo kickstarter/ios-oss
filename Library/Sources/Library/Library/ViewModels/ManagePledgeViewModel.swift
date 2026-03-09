@@ -473,6 +473,12 @@ public final class ManagePledgeViewModel:
 
 // MARK: - Functions
 
+// TODO: Clean up rewards fetch.
+// We now fetch the rewards directly in the RewardsCollectionViewController.
+// However, other parts of the pledge flow use the rewards attached to the Project to handle other logic -
+// like checking to see if the project has rewards that require shipping, or picking the correct shipping rule.
+// If we can clean up and decouple that behavior from the rest of the pledge flow, we can eliminate this fetch,
+// making the Manage page load substantially faster.
 private func fetchProjectRewards(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
   return AppEnvironment.current.apiService
     .fetchProjectRewards(projectId: project.id)

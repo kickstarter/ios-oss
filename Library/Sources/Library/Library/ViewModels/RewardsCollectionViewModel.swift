@@ -20,6 +20,7 @@ public protocol RewardsCollectionViewModelInputs {
   func rewardSelected(with rewardId: Int)
   func shippingLocationViewDidFailToLoad()
   func shippingLocationSelected(_ location: Location?)
+  func rewardsFilterCountryCodeSelected(_ countryCode: String)
   func traitCollectionDidChange(_ traitCollection: UITraitCollection)
   func viewDidAppear()
   func viewDidLayoutSubviews()
@@ -29,7 +30,6 @@ public protocol RewardsCollectionViewModelInputs {
 
 public protocol RewardsCollectionViewModelOutputs {
   var configureRewardsCollectionViewFooterWithCount: Signal<Int, Never> { get }
-  var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var flashScrollIndicators: Signal<Void, Never> { get }
   var goToAddOnSelection: Signal<PledgeViewData, Never> { get }
   var goToCustomizeYourReward: Signal<PledgeViewData, Never> { get }
@@ -38,7 +38,6 @@ public protocol RewardsCollectionViewModelOutputs {
   var showPlaceholderRewardCards: Signal<Int, Never> { get }
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
   var scrollToRewardIndexPath: Signal<IndexPath, Never> { get }
-  var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var showEditRewardConfirmationPrompt: Signal<(String, String), Never> { get }
   var title: Signal<String, Never> { get }
 
@@ -51,8 +50,7 @@ public protocol RewardsCollectionViewModelType {
 }
 
 public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
-  RewardsCollectionViewModelInputs,
-  RewardsCollectionViewModelOutputs {
+  RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
   public init() {
     let configData = self.configDataProperty.signal
       .skipNil()
@@ -72,27 +70,43 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       .map(titleForContext)
 
     // The actual selected shipping location
-    // May be nil if there are no shippable rewards,
-    // or if the backer hasn't selected a location yet.
-    let shippingLocation = Signal.merge(
-      configData.mapConst(nil), // Default selected shipping location to nil
-      self.shippingLocationSelectedSignal
-    )
+    let selectedShippingLocation = self.shippingLocationSelectedSignal
 
-    let rewards = project
-      .takePairWhen(shippingLocation)
-      .map { project, location in
-        let sorted = allowableSortedProjectRewards(project.rewards)
-        return filteredRewards(sorted, location: location)
+    // The country to which we should filter the rewards.
+    let filterCountry = self.rewardsFilterCountryCodeProperty
+      .signal
+      .skipRepeats()
+
+    let isLoadingProperty = MutableProperty(true)
+
+    // Fetch the sorted rewards when a shipping country code is selected
+    let fetchedRewards = project
+      .combineLatest(with: filterCountry)
+      .on(value: { _ in
+        isLoadingProperty.value = true
+      })
+      .flatMap { project, location in
+        AppEnvironment.current.apiService
+          .fetchProjectRewardsWithNoReward(
+            projectId: project.id,
+            sortedForShippingCountryCode: location
+          )
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+          .values()
+          .on(completed: {
+            isLoadingProperty.value = false
+          })
       }
+      .map(filteredRewards)
 
     self.scrollToRewardIndexPath = Signal.combineLatest(
       project,
-      rewards,
-      secretRewardToken
+      fetchedRewards,
+      secretRewardToken,
+      self.viewDidLayoutSubviewsProperty.signal
     )
-    .takeWhen(self.viewDidLayoutSubviewsProperty.signal.ignoreValues())
-    .map { project, rewards, secretRewardToken in
+    .map { project, rewards, secretRewardToken, _ in
       rewardToScrollIndexPath(
         project,
         rewards: rewards,
@@ -102,41 +116,20 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     .skipNil()
     .take(first: 1)
 
-    let selectedShippingRule: Signal<ShippingRule?, Never> = shippingLocation
-      .takePairWhen(self.selectedRewardProperty.signal.skipNil())
-      .map { location, reward in
-        shippingRule(forReward: reward, selectedLocation: location)
-      }
-
-    let requiresShippingLocation = self.configDataProperty.signal
-      .skipNil()
-      .map { project, _, _, _ in
-        projectRequiresShippingLocation(project)
-      }
-
-    // The rewards should be hidden until a location is selected.
-    // If the project has only rewards which don't require a shipping location,
-    // show the rewards immediately (and don't show a loading state).
-
-    let shippingIsLoading = Signal.merge(
-      requiresShippingLocation,
-      // A valid location was selected
-      self.shippingLocationSelectedSignal.skipNil().mapConst(false)
-    )
-
-    let showRewards = shippingIsLoading.negate()
+    let isLoading = isLoadingProperty
+      .signal(takeInitialValueWhen: configData.ignoreValues())
+      .skipRepeats()
 
     self.showPlaceholderRewardCards = project
-      .filterWhenLatestFrom(showRewards, satisfies: isFalse)
-      .map { $0.rewards.count } // Show placeholders for all rewards, including no-reward.
+      .combineLatestAndFilterOn(isLoading)
+      .map { $0.rewards.count }
 
     self.reloadDataWithValues = Signal.combineLatest(
       project,
-      rewards,
-      self.shippingLocationSelectedSignal,
+      fetchedRewards,
+      selectedShippingLocation
     )
-    // Don't show rewards until the shipping has loaded.
-    .filterWhenLatestFrom(showRewards, satisfies: isTrue)
+    .combineLatestAndFilterOn(isLoading.signal.negate())
     .map { project, rewards, location in
       rewards.map { reward in
         RewardCardViewData(
@@ -155,23 +148,13 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
     // MARK: Shipping Location
 
-    self.shippingLocationViewHidden = requiresShippingLocation
-      .negate()
-      .takeWhen(self.viewDidLoadProperty.signal)
+    let selectedShippingRule: Signal<ShippingRule?, Never> = selectedShippingLocation
+      .takePairWhen(self.selectedRewardProperty.signal.skipNil())
+      .map { location, reward in
+        shippingRule(forReward: reward, selectedLocation: location)
+      }
 
-    // Only shown for regular non-add-ons based rewards
-    self.configureShippingLocationViewWithData = Signal.combineLatest(
-      project,
-      requiresShippingLocation.filter(isTrue)
-    )
-    .map { project, _ in
-      PledgeShippingLocationViewData(
-        project: project,
-        selectedLocationId: nil
-      )
-    }
-
-    let selectedRewardFromId = rewards
+    let selectedRewardFromId = fetchedRewards
       .takePairWhen(self.rewardSelectedWithRewardIdProperty.signal.skipNil())
       .map { rewards, rewardId in
         rewards.first(where: { $0.id == rewardId })
@@ -453,7 +436,11 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.viewWillAppearProperty.value = ()
   }
 
-  public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
+  private let rewardsFilterCountryCodeProperty = MutableProperty<String?>(nil)
+  public func rewardsFilterCountryCodeSelected(_ countryCode: String) {
+    self.rewardsFilterCountryCodeProperty.value = countryCode
+  }
+
   public let configureRewardsCollectionViewFooterWithCount: Signal<Int, Never>
   public let flashScrollIndicators: Signal<Void, Never>
   public let goToAddOnSelection: Signal<PledgeViewData, Never>
@@ -463,7 +450,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public let showPlaceholderRewardCards: Signal<Int, Never>
   public let rewardsCollectionViewFooterIsHidden: Signal<Bool, Never>
   public let scrollToRewardIndexPath: Signal<IndexPath, Never>
-  public var shippingLocationViewHidden: Signal<Bool, Never>
   public let showEditRewardConfirmationPrompt: Signal<(String, String), Never>
   public let title: Signal<String, Never>
 
@@ -477,11 +463,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 }
 
 // MARK: - Functions
-
-private func projectRequiresShippingLocation(_ project: Project) -> Bool {
-  project.rewards
-    .contains(where: { $0.isUnRestrictedShippingPreference || $0.isRestrictedShippingPreference })
-}
 
 private func titleForContext(_ context: RewardsCollectionViewContext, project: Project) -> String {
   if currentUserIsCreator(of: project) {
@@ -546,52 +527,19 @@ private func backingAndShippingTotal(for project: Project, and reward: Reward) -
   return (backing, shippingTotal)
 }
 
-private func allowableSortedProjectRewards(_ rewards: [Reward]) -> [Reward] {
-  var notReward: [Reward] = []
-  var unavailableRewards: [Reward] = []
-  var secretRewards: [Reward] = []
-  var availableRewards: [Reward] = []
-
-  for reward in rewards {
-    if reward.isNoReward {
-      notReward.append(reward)
-      continue
-    }
-
-    if reward.isAvailable != true {
-      unavailableRewards.append(reward)
-      continue
-    }
-
-    if reward.isSecretReward {
-      secretRewards.append(reward)
-      continue
-    }
-
-    availableRewards.append(reward)
-  }
-
-  return notReward + secretRewards + availableRewards + unavailableRewards
-}
-
 private func filteredRewards(
-  _ rewards: [Reward],
-  location: Location?
+  _ rewards: [Reward]
 ) -> [Reward] {
-  return rewards.filter { shouldShowReward($0, forLocation: location) }
+  return rewards.filter { shouldShowReward($0) }
 }
 
 private func shouldShowReward(
-  _ reward: Reward,
-  forLocation location: Location?
+  _ reward: Reward
 ) -> Bool {
   // Check if the reward isn't available yet.
   // These are usually filtered out by the backend, but may be visible if you're the project creator.
+  // We filter these out so that creators aren't concerned that backers may see them.
   if !isStartDateBeforeToday(for: reward) {
-    return false
-  }
-
-  if !rewardCanShip(reward, toLocation: location) {
     return false
   }
 
@@ -626,4 +574,17 @@ private func shippingRule(forReward reward: Reward, selectedLocation location: L
   }
 
   return rule
+}
+
+// Combines a value signal with a boolean signal, returning filtered results.
+//
+// This will fire when _either_ the value signal, or the boolean signal, fires -
+// unlike filterWhenLatestFrom(someSignal, satisfies: isTrue), which will only fire
+// when the value signal changes.
+private extension Signal where Error == Never {
+  func combineLatestAndFilterOn(_ signal: Signal<Bool, Never>) -> Signal<Value, Never> {
+    return self.combineLatest(with: signal)
+      .filter { _, test in test == true }
+      .map { value, _ in value }
+  }
 }

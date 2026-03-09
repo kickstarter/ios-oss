@@ -8,7 +8,11 @@ import UIKit
 protocol PledgeShippingLocationViewControllerDelegate: AnyObject {
   func pledgeShippingLocationViewController(
     _ viewController: PledgeShippingLocationViewController,
-    didSelect location: Location
+    didSelect location: Location?
+  )
+  func pledgeShippingLocationViewController(
+    _ viewController: PledgeShippingLocationViewController,
+    didFilterRewardsToCountryCode: String
   )
   func pledgeShippingLocationViewControllerFailedToLoad(
     _ viewController: PledgeShippingLocationViewController
@@ -99,6 +103,8 @@ final class PledgeShippingLocationViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.view.rac.hidden = self.viewModel.outputs.shippingLocationViewHidden
+
     self.adaptableStackView.rac.hidden = self.viewModel.outputs.adaptableStackViewIsHidden
     self.shimmerLoadingView.rac.hidden = self.viewModel.outputs.shimmerLoadingViewIsHidden
     self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocationButtonTitle
@@ -109,6 +115,17 @@ final class PledgeShippingLocationViewController: UIViewController {
         guard let self = self else { return }
 
         self.delegate?.pledgeShippingLocationViewController(self, didSelect: location)
+      }
+
+    self.viewModel.outputs.notifyDelegateOfRewardFilterLocation
+      .observeForUI()
+      .observeValues { [weak self] countryCode in
+        guard let self = self else { return }
+
+        self.delegate?.pledgeShippingLocationViewController(
+          self,
+          didFilterRewardsToCountryCode: countryCode
+        )
       }
 
     self.viewModel.outputs.presentShippingLocations
