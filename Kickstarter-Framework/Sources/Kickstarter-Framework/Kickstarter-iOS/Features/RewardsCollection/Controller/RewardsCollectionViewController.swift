@@ -82,7 +82,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource
-      |> \.isHidden .~ true
 
     _ = (self.headerView, self.view)
       |> ksr_addSubviewToParent()
@@ -98,6 +97,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> ksr_addSubviewToParent()
 
     self.collectionView.register(RewardCell.self)
+    self.collectionView.register(RewardCardLoadingCell.self)
 
     self.collectionView.register(
       RewardsCollectionViewHeaderView.self,
@@ -127,6 +127,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     let itemSize = self.calculateItemSize(from: layout, using: self.collectionView)
 
     if itemSize != layout.itemSize {
+      layout.itemSize = itemSize
       layout.invalidateLayout()
     } else {
       self.viewModel.inputs.viewDidLayoutSubviews()
@@ -197,12 +198,12 @@ final class RewardsCollectionViewController: UICollectionViewController {
         self.goToAddOnSelection(data: data)
       }
 
-    self.viewModel.outputs.rewardsCollectionViewIsHidden
+    self.viewModel.outputs.showLoadingRewards
       .observeForUI()
-      .observeValues { [weak self] rewardsCollectionViewIsHidden in
+      .observeValues { [weak self] rewardsCount in
         guard let self else { return }
-
-        self.collectionView.isHidden = rewardsCollectionViewIsHidden
+        self.dataSource.isLoading(rewardsCount: rewardsCount)
+        self.collectionView.reloadData()
       }
 
     self.viewModel.outputs.rewardsCollectionViewFooterIsHidden

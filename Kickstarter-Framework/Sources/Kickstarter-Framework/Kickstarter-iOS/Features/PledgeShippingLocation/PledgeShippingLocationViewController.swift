@@ -154,6 +154,12 @@ final class PledgeShippingLocationViewController: UIViewController {
       }
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.shimmerLoadingView.layoutSubviews()
+  }
+
   // MARK: - Configuration
 
   func configureWith(value: PledgeShippingLocationViewData) {

@@ -14,6 +14,7 @@ final class RewardsCollectionViewModelTests: TestCase {
   private let scrollToRewardIndex = TestObserver<Int, Never>()
   private let goToCustomizeYourReward = TestObserver<PledgeViewData, Never>()
   private let shippingLocationViewHidden = TestObserver<Bool, Never>()
+  private let showLoadingRewards = TestObserver<Int, Never>()
 
   private let vm = RewardsCollectionViewModel()
 
@@ -28,6 +29,8 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.outputs.goToCustomizeYourReward.observe(self.goToCustomizeYourReward.observer)
 
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
+
+    self.vm.outputs.showLoadingRewards.observe(self.showLoadingRewards.observer)
   }
 
   func testRewardsOrderedAndFiltered() {
@@ -105,14 +108,8 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.shippingLocationSelected(nil)
     self.vm.viewDidLoad()
 
-    self.reloadDataWithValues.assertLastValue([
-      Reward.noReward,
-      Reward.secretRewardTemplate,
-      availableReward,
-      digitalReward,
-      localShippingReward,
-      notAvailableReward
-    ])
+    self.reloadDataWithValues
+      .assertDidNotEmitValue("Shouldn't load rewards until a valid shipping location is selected ")
 
     self.vm.shippingLocationSelected(Location.australia)
     self.reloadDataWithValues.assertLastValue([
@@ -433,5 +430,87 @@ final class RewardsCollectionViewModelTests: TestCase {
         "Pledge data should have no shipping rule, because the reward is local."
       )
     }
+  }
+
+  func test_projectWithShippableRewards_showsLoadingState_untilLocationLoads() {
+    let usaShippingRule = ShippingRule(
+      cost: 10,
+      id: 1,
+      location: Location.usa,
+      estimatedMin: nil,
+      estimatedMax: nil
+    )
+
+    let onlyShipsToUSAReward = Reward.template
+      |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.shippingRulesExpanded .~ [usaShippingRule]
+      |> Reward.lens.shipping .~ Reward.Shipping(
+        enabled: true,
+        location: nil,
+        preference: .restricted,
+        summary: "Restricted shipping",
+        type: .singleLocation
+      )
+
+    let rewards = [
+      Reward.noReward,
+      onlyShipsToUSAReward
+    ]
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ rewards
+
+    self.vm.configure(with: project, refTag: nil, context: .createPledge, secretRewardToken: nil)
+    self.vm.viewDidLoad()
+    self.vm.shippingLocationSelected(nil)
+
+    self.shippingLocationViewHidden.assertValues([false], "Shipping location view should be hidden")
+    self.reloadDataWithValues.assertDidNotEmitValue()
+    self.showLoadingRewards.assertValues(
+      [2],
+      "Should show loading placeholder rewards until location is selected"
+    )
+
+    self.vm.shippingLocationSelected(.usa)
+
+    self.reloadDataWithValues.assertLastValue(rewards)
+    self.showLoadingRewards.assertValues([2])
+
+    self.vm.shippingLocationSelected(.australia)
+    self.reloadDataWithValues.assertLastValue([Reward.noReward])
+    self.showLoadingRewards.assertValues([2])
+  }
+
+  func test_projectWithNoShippableRewards_doesNotShowLoadingState() {
+    let digitalReward = Reward.template
+      |> Reward.lens.id .~ 1
+      |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.shippingRulesExpanded .~ []
+      |> Reward.lens.shipping .~ Reward.Shipping(
+        enabled: false,
+        location: nil,
+        preference: Reward.Shipping.Preference.none,
+        summary: "Digital reward",
+        type: .noShipping
+      )
+
+    let rewards = [
+      Reward.noReward,
+      digitalReward
+    ]
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ rewards
+
+    self.vm.configure(with: project, refTag: nil, context: .createPledge, secretRewardToken: nil)
+    self.vm.viewDidLoad()
+    self.vm.shippingLocationSelected(nil)
+
+    self.reloadDataWithValues.assertLastValue(
+      rewards,
+      "Rewards should display immediately if there are no rewards that require a shipping location"
+    )
+    self.showLoadingRewards.assertDidNotEmitValue()
+    self.shippingLocationViewHidden.assertValues([true])
   }
 }
