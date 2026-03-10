@@ -16,7 +16,6 @@ public protocol RewardsCollectionViewModelInputs {
     secretRewardToken: String?
   )
   func confirmedEditReward()
-  func pledgeShippingLocationViewControllerDidUpdate(_ shimmerLoadingViewIsHidden: Bool)
   func rewardCellShouldShowDividerLine(_ show: Bool)
   func rewardSelected(with rewardId: Int)
   func shippingLocationViewDidFailToLoad()
@@ -400,11 +399,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   private let confirmedEditRewardProperty = MutableProperty(())
   public func confirmedEditReward() {
     self.confirmedEditRewardProperty.value = ()
-  }
-
-  private let pledgeShippingLocationViewControllerDidUpdateProperty = MutableProperty<Bool>(false)
-  public func pledgeShippingLocationViewControllerDidUpdate(_ shimmerLoadingViewIsHidden: Bool) {
-    self.pledgeShippingLocationViewControllerDidUpdateProperty.value = shimmerLoadingViewIsHidden
   }
 
   private let rewardCellShouldShowDividerLineProperty = MutableProperty<Bool>(false)

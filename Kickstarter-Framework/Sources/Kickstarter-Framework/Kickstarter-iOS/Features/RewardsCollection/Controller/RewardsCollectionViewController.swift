@@ -392,13 +392,6 @@ extension RewardsCollectionViewController: PledgeShippingLocationViewControllerD
     self.viewModel.inputs.shippingLocationSelected(location)
   }
 
-  func pledgeShippingLocationViewControllerLayoutDidUpdate(
-    _: PledgeShippingLocationViewController,
-    _ shimmerLoadingViewIsHidden: Bool
-  ) {
-    self.viewModel.inputs.pledgeShippingLocationViewControllerDidUpdate(shimmerLoadingViewIsHidden)
-  }
-
   func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {
     self.viewModel.inputs.shippingLocationViewDidFailToLoad()
   }
