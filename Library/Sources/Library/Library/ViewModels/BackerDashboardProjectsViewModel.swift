@@ -37,6 +37,9 @@ public protocol BackerDashboardProjectsViewModelOutputs {
   /// Emits when the pull-to-refresh control is refreshing or not.
   var isRefreshing: Signal<Bool, Never> { get }
 
+  /// Emits `true` when the next page is loading.
+  var isLoadingNextPage: Signal<Bool, Never> { get }
+
   /// Emits a list of projects for the tableview datasource.
   var projects: Signal<[Project], Never> { get }
 }
@@ -108,7 +111,23 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
       }
     )
 
-    self.isRefreshing = isLoading
+    let latestLoadingWasRefresh = Signal.merge(
+      userUpdatedProjectCount.mapConst(true),
+      isCloseToBottom.mapConst(false),
+      self.refreshProperty.signal.mapConst(true)
+    )
+
+    self.isRefreshing = Signal.combineLatest(isLoading, latestLoadingWasRefresh)
+      .map { isLoading, latestLoadingWasRefresh in
+        isLoading && latestLoadingWasRefresh
+      }
+      .skipRepeats()
+
+    self.isLoadingNextPage = Signal.combineLatest(isLoading, latestLoadingWasRefresh)
+      .map { isLoading, latestLoadingWasRefresh in
+        isLoading && !latestLoadingWasRefresh
+      }
+      .skipRepeats()
 
     self.emptyStateIsVisible = Signal.combineLatest(projectsType, self.projects)
       .map { type, projects in
@@ -179,6 +198,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
   public let emptyStateIsVisible: Signal<(Bool, ProfileProjectsType), Never>
   public let goToProject: Signal<(Project, [Project], RefTag), Never>
   public let isRefreshing: Signal<Bool, Never>
+  public let isLoadingNextPage: Signal<Bool, Never>
   public let projects: Signal<[Project], Never>
 
   public var inputs: BackerDashboardProjectsViewModelInputs { return self }
