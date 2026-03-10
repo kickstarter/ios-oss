@@ -50,9 +50,7 @@ public final class PledgeOverTimeUseCase: PledgeOverTimeUseCaseType, PledgeOverT
   ) {
     let pledgeOverTimeUIEnabled = Signal.combineLatest(project, context)
       .map { project, context -> Bool in
-        project.isPledgeOverTimeAllowed == true
-          && featurePledgeOverTimeEnabled()
-          && context.isAny(of: .pledge, .editPledgeOverTime)
+        project.isPledgeOverTimeAllowed == true && context.isAny(of: .pledge, .editPledgeOverTime)
       }
 
     self.buildPaymentPlanInputs = Signal.combineLatest(

@@ -39,10 +39,6 @@ public func featurePledgedProjectsOverviewV4Enabled() -> Bool {
   featureEnabled(feature: .pledgedProjectsOverviewV4Enabled)
 }
 
-public func featurePledgeOverTimeEnabled() -> Bool {
-  featureEnabled(feature: .pledgeOverTime)
-}
-
 public func featureRewardShipmentTrackingEnabled() -> Bool {
   featureEnabled(feature: .rewardShipmentTracking)
 }
