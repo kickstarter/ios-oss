@@ -19,10 +19,6 @@ public func featureBypassPledgeManagerDecisionPolicyEnabled() -> Bool {
   return featureEnabled(feature: .bypassPledgeManagerDecisionPolicy)
 }
 
-public func featureEditPledgeOverTimeEnabled() -> Bool {
-  return featureEnabled(feature: .editPledgeOverTimeEnabled)
-}
-
 public func featureUseKeychainForOAuthTokenEnabled() -> Bool {
   featureEnabled(feature: .useKeychainForOAuthToken)
 }
