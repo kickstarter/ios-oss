@@ -4611,12 +4611,7 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testShowPledgeOverTimeUI_False() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: false
-    ]
-
-    withEnvironment(remoteConfigClient: mockConfigClient) {
+    withEnvironment {
       let project = Project.template
         |> Project.lens.isPledgeOverTimeAllowed .~ false
       let reward = Reward.template
@@ -4642,18 +4637,13 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testPledgeOverTime_PledgeInFullSelected() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
     let mockQuery: GraphAPI.BuildPaymentPlanQuery
       .Data = try! testGraphObject(
         jsonString: buildPaymentPlanQueryJson(eligible: true)
       )
     let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
 
-    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: mockService) {
       let project = Project.template
         |> Project.lens.isPledgeOverTimeAllowed .~ true
       let reward = Reward.template
@@ -4680,18 +4670,13 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testPledgeOverTime_PledgeOverTimeSelected() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
     let mockQuery: GraphAPI.BuildPaymentPlanQuery
       .Data = try! testGraphObject(
         jsonString: buildPaymentPlanQueryJson(eligible: true)
       )
     let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
 
-    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: mockService) {
       let project = Project.template
         |> Project.lens.isPledgeOverTimeAllowed .~ true
       let reward = Reward.template
@@ -4718,18 +4703,13 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testPledgeOverTimeConfigData_LoadsAfterBuildPledgeQuery() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
     let mockQuery: GraphAPI.BuildPaymentPlanQuery
       .Data = try! testGraphObject(
         jsonString: buildPaymentPlanQueryJson(eligible: true)
       )
     let mockService = MockService(buildPaymentPlanResult: .success(mockQuery))
 
-    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: mockService) {
       let project = Project.template
         |> Project.lens.isPledgeOverTimeAllowed .~ true
       let reward = Reward.template
@@ -4766,14 +4746,9 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testShowPledgeOverTimeUI_IsFalseWhenBuildPaymentPlanQueryFails() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
     let mockService = MockService(buildPaymentPlanResult: .failure(.couldNotParseJSON))
 
-    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: mockService) {
       let project = Project.template
         |> Project.lens.isPledgeOverTimeAllowed .~ true
       let reward = Reward.template
@@ -4804,12 +4779,7 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testPledgeIsDisabled_whenShowPledgeOverUIIsTrue_andPledgeOverTimeIsLoading() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
-    withEnvironment(remoteConfigClient: mockConfigClient) {
+    withEnvironment {
       let project = Project.template
         |> Project.lens.isPledgeOverTimeAllowed .~ true
       let reward = Reward.template
@@ -4843,11 +4813,6 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testCreateBacking_projectEligibleForPledgeOverTime_Success() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
         id: "Q2hlY2tvdXQtMQ==",
@@ -4866,7 +4831,7 @@ final class PledgeViewModelTests: TestCase {
       createBackingResult: Result.success(CreateBackingEnvelope(createBacking: createBacking))
     )
 
-    withEnvironment(apiService: mockService, currentUser: .template, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: mockService, currentUser: .template) {
       let shippingRule = ShippingRule.template
 
       let reward = Reward.template

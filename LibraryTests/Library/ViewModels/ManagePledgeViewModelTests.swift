@@ -566,7 +566,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true,
       RemoteConfigFeature.editPledgeOverTimeEnabled.rawValue: true
     ]
 
@@ -607,7 +606,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true,
       RemoteConfigFeature.editPledgeOverTimeEnabled.rawValue: false
     ]
 
@@ -649,7 +647,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockConfigClient = MockRemoteConfigClient()
     mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true,
       RemoteConfigFeature.editPledgeOverTimeEnabled.rawValue: true
     ]
 

@@ -301,18 +301,12 @@ final class PledgeViewControllerTests: TestCase {
       |> Project.lens.isPledgeOverTimeAllowed .~ true
     let reward = Reward.template
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
     orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
           apiService: mockService,
           currentUser: User.template,
-          language: language,
-          remoteConfigClient: mockConfigClient
+          language: language
         ) {
           let controller = PledgeViewController.instantiate()
           let data = PledgeViewData(
@@ -356,18 +350,12 @@ final class PledgeViewControllerTests: TestCase {
       |> Project.lens.isPledgeOverTimeAllowed .~ true
     let reward = Reward.template
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
     orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
           apiService: mockService,
           currentUser: User.template,
-          language: language,
-          remoteConfigClient: mockConfigClient
+          language: language
         ) {
           let controller = PledgeViewController.instantiate()
           let data = PledgeViewData(
@@ -411,18 +399,12 @@ final class PledgeViewControllerTests: TestCase {
       |> Project.lens.isPledgeOverTimeAllowed .~ true
     let reward = Reward.template
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
     orthogonalCombos([Language.en], [Device.phone4_7inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
           apiService: mockService,
           currentUser: User.template,
-          language: language,
-          remoteConfigClient: mockConfigClient
+          language: language
         ) {
           let controller = PledgeViewController.instantiate()
           let data = PledgeViewData(

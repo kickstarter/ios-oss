@@ -506,17 +506,11 @@ final class ManagePledgeViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success([reward])
     )
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         currentUser: user,
-        language: language,
-        remoteConfigClient: mockConfigClient
+        language: language
       ) {
         let controller = ManagePledgeViewController.instantiate()
         controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
@@ -571,11 +565,6 @@ final class ManagePledgeViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success([reward])
     )
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
 
       let locale = Locale(
@@ -588,8 +577,7 @@ final class ManagePledgeViewControllerTests: TestCase {
         apiService: mockService,
         currentUser: user,
         language: language,
-        locale: locale,
-        remoteConfigClient: mockConfigClient
+        locale: locale
       ) {
         let controller = ManagePledgeViewController.instantiate()
         controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
