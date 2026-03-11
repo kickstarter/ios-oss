@@ -53,7 +53,6 @@ fragment RichTextItemFragment on RichTextItem {
 
     iframeUrl
     originalUrl
-    photoUrl
 
     thumbnailHeight
     thumbnailUrl

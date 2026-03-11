@@ -395,6 +395,7 @@
 		A7D1F9551C850B7C000D41D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppEnvironmentTests.swift; sourceTree = "<group>"; };
 		AA0F32452F57BF1F0024E906 /* RichTextFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = RichTextFragment.graphql; sourceTree = "<group>"; };
+		AA2137F42F61EEF5000BA745 /* RichTextExampleProjectsQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = RichTextExampleProjectsQuery.graphql; sourceTree = "<group>"; };
 		AAC413552F215CE000DAD7C6 /* Kickstarter.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Kickstarter.xctestplan; sourceTree = "<group>"; };
 		AAC4135C2F218F3200DAD7C6 /* KsApi.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = KsApi.xctestplan; path = KsApi/KsApi.xctestplan; sourceTree = "<group>"; };
 		AAD997442F3D2C510027D211 /* ServerDrivenUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ServerDrivenUI; sourceTree = "<group>"; };
@@ -1333,6 +1334,7 @@
 				E190EB672E29944E006A6DB6 /* FetchUserSetup.graphql */,
 				E190EB682E29944E006A6DB6 /* FetchUserStoredCards.graphql */,
 				E190EB692E29944E006A6DB6 /* LocationsByTermQuery.graphql */,
+				AA2137F42F61EEF5000BA745 /* RichTextExampleProjectsQuery.graphql */,
 				E1D529FC2ED4D21A00923AA9 /* ShippableLocationsForProjectQuery.graphql */,
 				E190EB6A2E29944E006A6DB6 /* SearchQuery.graphql */,
 				E190EB6B2E29944E006A6DB6 /* SimilarProjectQuery.graphql */,
