@@ -47,7 +47,7 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
     self.saveButtonView.setTitle(title: Strings.Save())
     self.saveButtonView.addTarget(self, action: #selector(SelectCurrencyViewController.saveButtonTapped(_:)))
 
-    let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
+    let navigationBarButton = LoadingBarButtonItemView.uiBarButtonItem(for: self.saveButtonView)
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
 
     self.viewModel.inputs.viewDidLoad()

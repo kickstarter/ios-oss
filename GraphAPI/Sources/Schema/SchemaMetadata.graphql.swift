@@ -106,18 +106,19 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "PostConnection": return GraphAPI.Objects.PostConnection
     case "VideoSources": return GraphAPI.Objects.VideoSources
     case "VideoSourceInfo": return GraphAPI.Objects.VideoSourceInfo
-    case "ProjectsConnectionWithTotalCount": return GraphAPI.Objects.ProjectsConnectionWithTotalCount
+    case "RewardConnection": return GraphAPI.Objects.RewardConnection
     case "PageInfo": return GraphAPI.Objects.PageInfo
+    case "RewardItemsConnection": return GraphAPI.Objects.RewardItemsConnection
+    case "RewardItemEdge": return GraphAPI.Objects.RewardItemEdge
+    case "ResourceAudience": return GraphAPI.Objects.ResourceAudience
+    case "SimpleShippingRule": return GraphAPI.Objects.SimpleShippingRule
+    case "ProjectsConnectionWithTotalCount": return GraphAPI.Objects.ProjectsConnectionWithTotalCount
     case "UserBackingsConnection": return GraphAPI.Objects.UserBackingsConnection
     case "NewsletterSubscriptions": return GraphAPI.Objects.NewsletterSubscriptions
     case "Notification": return GraphAPI.Objects.Notification
     case "UserSavedProjectsConnection": return GraphAPI.Objects.UserSavedProjectsConnection
     case "SurveyResponsesConnection": return GraphAPI.Objects.SurveyResponsesConnection
     case "RewardTotalCountConnection": return GraphAPI.Objects.RewardTotalCountConnection
-    case "RewardConnection": return GraphAPI.Objects.RewardConnection
-    case "RewardItemsConnection": return GraphAPI.Objects.RewardItemsConnection
-    case "RewardItemEdge": return GraphAPI.Objects.RewardItemEdge
-    case "ResourceAudience": return GraphAPI.Objects.ResourceAudience
     case "PaymentIncrement": return GraphAPI.Objects.PaymentIncrement
     case "PaymentIncrementAmount": return GraphAPI.Objects.PaymentIncrementAmount
     case "CategorySubcategoriesConnection": return GraphAPI.Objects.CategorySubcategoriesConnection
@@ -126,7 +127,6 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "CommentEdge": return GraphAPI.Objects.CommentEdge
     case "PaymentIncrementBadge": return GraphAPI.Objects.PaymentIncrementBadge
     case "LocationsConnection": return GraphAPI.Objects.LocationsConnection
-    case "SimpleShippingRule": return GraphAPI.Objects.SimpleShippingRule
     case "RewardShippingRulesConnection": return GraphAPI.Objects.RewardShippingRulesConnection
     case "PledgeProjectsOverview": return GraphAPI.Objects.PledgeProjectsOverview
     case "PledgedProjectsOverviewPledgesConnection": return GraphAPI.Objects.PledgedProjectsOverviewPledgesConnection

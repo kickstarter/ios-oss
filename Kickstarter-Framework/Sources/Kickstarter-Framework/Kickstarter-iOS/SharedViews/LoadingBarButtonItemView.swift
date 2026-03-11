@@ -3,33 +3,72 @@ import Library
 import Prelude
 import UIKit
 
-final class LoadingBarButtonItemView: UIView, NibLoading {
-  @IBOutlet fileprivate var activityIndicator: UIActivityIndicatorView!
-  @IBOutlet fileprivate var titleButton: UIButton!
+final class LoadingBarButtonItemView: UIView {
+  private lazy var activityIndicator: UIActivityIndicatorView = { UIActivityIndicatorView() }()
+  private lazy var titleButton: UIButton = { UIButton() }()
 
   private let viewModel: LoadingBarButtonItemViewModelType = LoadingBarButtonItemViewModel()
 
-  public static func instantiate() -> LoadingBarButtonItemView {
-    guard let saveButtonView = LoadingBarButtonItemView.fromNib(nib: Nib.LoadingBarButtonItemView) else {
-      fatalError("failed to load LoadingBarButtonItemView from Nib")
+  // Helper function for creating a UIBarButtonItem for the LoadingBarButtonItemView with liquid
+  // glass animation off. The liquid glass animation is added directly to the UIButton instead,
+  // which is necessary in order for it to respect the UIButton state.
+  public static func uiBarButtonItem(for loadingBarButtonItemView: LoadingBarButtonItemView)
+    -> UIBarButtonItem {
+    let barButtonItem = UIBarButtonItem(customView: loadingBarButtonItemView)
+    if #available(iOS 26.0, *) {
+      barButtonItem.hidesSharedBackground = true
     }
+    return barButtonItem
+  }
 
+  public static func instantiate() -> LoadingBarButtonItemView {
+    let saveButtonView = LoadingBarButtonItemView.init()
     saveButtonView.translatesAutoresizingMaskIntoConstraints = false
-
     return saveButtonView
   }
 
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
+  required init() {
+    super.init(frame: .zero)
+
+    self.setupView()
+    self.bindViewModel()
+  }
+
+  @available(*, unavailable)
+  required init?(coder _: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  private func setupView() {
+    self.titleButton.translatesAutoresizingMaskIntoConstraints = false
+    self.titleButton.isEnabled = false
+    self.addSubview(self.titleButton)
+
+    if #available(iOS 26.0, *) {
+      self.titleButton.configuration = .glass()
+    } else {
+      self.titleButton.setTitleColor(LegacyColors.ksr_create_700.uiColor(), for: .normal)
+      self.titleButton.setTitleColor(LegacyColors.ksr_support_300.uiColor(), for: .disabled)
+    }
+    self.titleButton.titleLabel?.font = UIFont.ksr_body()
+
+    self.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+    self.addSubview(self.activityIndicator)
+
+    NSLayoutConstraint.activate([
+      self.titleButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+      self.titleButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+      self.titleButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
+      self.titleButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
+
+      self.activityIndicator.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
+      self.activityIndicator.centerYAnchor.constraint(equalTo: self.titleButton.centerYAnchor),
+      self.heightAnchor.constraint(greaterThanOrEqualTo: self.activityIndicator.heightAnchor, multiplier: 1)
+    ])
   }
 
   override func bindStyles() {
     super.bindStyles()
-
-    _ = self.titleButton
-      |> UIButton.lens.titleLabel.font .~ UIFont.ksr_body()
-      |> UIButton.lens.titleColor(for: .normal) .~ LegacyColors.ksr_create_700.uiColor()
-      |> UIButton.lens.titleColor(for: .disabled) .~ LegacyColors.ksr_support_300.uiColor()
 
     _ = self.activityIndicator
       |> baseActivityIndicatorStyle

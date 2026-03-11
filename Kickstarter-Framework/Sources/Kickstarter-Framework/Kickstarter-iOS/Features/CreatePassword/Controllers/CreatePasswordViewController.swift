@@ -31,8 +31,8 @@ final class CreatePasswordViewController: UIViewController, MessageBannerViewCon
     _ = self
       |> \.title %~ { _ in Strings.Create_password() }
 
-    _ = self.navigationItem
-      |> \.rightBarButtonItem .~ UIBarButtonItem(customView: self.saveButtonView)
+    let navigationBarButton = LoadingBarButtonItemView.uiBarButtonItem(for: self.saveButtonView)
+    self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
 
     if let childView = self.createPasswordTableViewController.tableView {
       self.addChild(self.createPasswordTableViewController)

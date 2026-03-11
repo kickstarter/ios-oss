@@ -34,7 +34,7 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
     self.saveButtonView.setTitle(title: Strings.Save())
     self.saveButtonView.addTarget(self, action: #selector(self.saveButtonTapped(_:)))
 
-    let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
+    let navigationBarButton = LoadingBarButtonItemView.uiBarButtonItem(for: self.saveButtonView)
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
   }
 

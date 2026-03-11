@@ -36,12 +36,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
   }
 
   func testUseCase_callsBuildPaymentPlanQuery_withCorrectSlugAndPledgeTotal() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
-    withEnvironment(remoteConfigClient: mockConfigClient) {
+    withEnvironment {
       self.buildPaymentPlanInputs.assertDidNotEmitValue()
 
       let project = Project.template
@@ -60,12 +55,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
   }
 
   func testUseCase_callsBuildPaymentPlanQuery_SkipsRepeats() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
-    withEnvironment(remoteConfigClient: mockConfigClient) {
+    withEnvironment {
       self.buildPaymentPlanInputs.assertDidNotEmitValue()
 
       let project = Project.template
@@ -123,12 +113,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
       )
     let mockApiService = MockService(buildPaymentPlanResult: .success(queryData))
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
-    withEnvironment(apiService: mockApiService, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: mockApiService) {
       let project = Project.template
         |> Project.lens.slug .~ "some-slug"
         |> Project.lens.isPledgeOverTimeAllowed .~ true
@@ -149,12 +134,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
       )
     let mockApiService = MockService(buildPaymentPlanResult: .success(queryData))
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: false
-    ]
-
-    withEnvironment(apiService: mockApiService, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: mockApiService) {
       let project = Project.template
         |> Project.lens.slug .~ "some-slug"
         |> Project.lens.isPledgeOverTimeAllowed .~ false
@@ -171,12 +151,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
   func testUseCase_hidesUIAndStopsLoading_whenBuildPaymentPlanQueryFails() {
     let mockApiService = MockService(buildPaymentPlanResult: .failure(.couldNotParseJSON))
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
-    withEnvironment(apiService: mockApiService, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: mockApiService) {
       let project = Project.template
         |> Project.lens.slug .~ "some-slug"
         |> Project.lens.isPledgeOverTimeAllowed .~ true
@@ -192,12 +167,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
   }
 
   func testUseCase_emitsNilPaymentPlan_andHidesUI_ifPledgeOverTimeIsDisabled() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
-    withEnvironment(remoteConfigClient: mockConfigClient) {
+    withEnvironment {
       self.buildPaymentPlanInputs.assertDidNotEmitValue()
 
       let project = Project.template
@@ -214,13 +184,9 @@ final class PledgeOverTimeUseCaseTests: TestCase {
   }
 
   func testUseCase_emitsNilPaymentPlan_andHidesUI_ifPledgeOverQueryReturnsAnError() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
     let mockService = MockService(buildPaymentPlanResult: .failure(.couldNotParseJSON))
 
-    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: mockService) {
       self.buildPaymentPlanInputs.assertDidNotEmitValue()
 
       let project = Project.template
@@ -238,18 +204,13 @@ final class PledgeOverTimeUseCaseTests: TestCase {
   }
 
   func testUseCase_paymentPlanSelected_changesSelectedPaymentPlan() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
     let result: GraphAPI.BuildPaymentPlanQuery
       .Data = try! testGraphObject(
         jsonString: buildPaymentPlanQueryJson(eligible: true)
       )
     let mockService = MockService(buildPaymentPlanResult: .success(result))
 
-    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: mockService) {
       self.buildPaymentPlanInputs.assertDidNotEmitValue()
 
       let project = Project.template
@@ -279,12 +240,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
       )
     let mockApiService = MockService(buildPaymentPlanResult: .success(queryData))
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
-    withEnvironment(apiService: mockApiService, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: mockApiService) {
       let project = Project.template
         |> Project.lens.slug .~ "some-slug"
         |> Project.lens.isPledgeOverTimeAllowed .~ true
@@ -307,12 +263,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
       )
     let mockApiService = MockService(buildPaymentPlanResult: .success(queryData))
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
-    withEnvironment(apiService: mockApiService, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: mockApiService) {
       let project = Project.template
         |> Project.lens.slug .~ "some-slug"
         |> Project.lens.isPledgeOverTimeAllowed .~ true
@@ -329,12 +280,7 @@ final class PledgeOverTimeUseCaseTests: TestCase {
   }
 
   func testUseCase_showsOrHidesUI_basedOnPledgeViewContext() {
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.pledgeOverTime.rawValue: true
-    ]
-
-    withEnvironment(remoteConfigClient: mockConfigClient) {
+    withEnvironment {
       self.buildPaymentPlanInputs.assertDidNotEmitValue()
 
       let project = Project.template

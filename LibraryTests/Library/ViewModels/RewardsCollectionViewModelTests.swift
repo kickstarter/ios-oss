@@ -30,17 +30,72 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
   }
 
-  func testRewardsOrdered() {
+  func testRewardsOrderedAndFiltered() {
     let availableReward = Reward.template
       |> Reward.lens.isAvailable .~ true
+
     let notAvailableReward = Reward.template
       |> Reward.lens.isAvailable .~ false
+
+    let notStartedYetReward = Reward.template
+      |> Reward.lens.startsAt .~ NSDate.distantFuture.timeIntervalSince1970
+
+    let usaShippingRule = ShippingRule(
+      cost: 10,
+      id: 1,
+      location: Location.usa,
+      estimatedMin: nil,
+      estimatedMax: nil
+    )
+
+    let onlyShipsToUSAReward = Reward.template
+      |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.shippingRulesExpanded .~ [usaShippingRule]
+      |> Reward.lens.shipping .~ Reward.Shipping(
+        enabled: true,
+        location: nil,
+        preference: .restricted,
+        summary: "Restricted shipping",
+        type: .singleLocation
+      )
+
+    let digitalReward = Reward.template
+      |> Reward.lens.id .~ 1
+      |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.shippingRulesExpanded .~ []
+      |> Reward.lens.shipping .~ Reward.Shipping(
+        enabled: false,
+        location: nil,
+        preference: Reward.Shipping.Preference.none,
+        summary: "Digital reward",
+        type: .noShipping
+      )
+
+    let localShippingReward = Reward.template
+      |> Reward.lens.id .~ 2
+      |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.shippingRulesExpanded .~ []
+      |> Reward.lens.shipping .~ Reward.Shipping(
+        enabled: false,
+        location: Reward.Shipping.Location(
+          id: 1,
+          localizedName: "Pickup your stuff"
+        ),
+        preference: Reward.Shipping.Preference.local,
+        summary: "Digital reward",
+        type: .noShipping
+      )
+      |> Reward.lens.localPickup .~ Location.template
 
     let rewards = [
       availableReward,
       Reward.noReward,
       notAvailableReward,
-      Reward.secretRewardTemplate
+      Reward.secretRewardTemplate,
+      notStartedYetReward,
+      onlyShipsToUSAReward,
+      digitalReward,
+      localShippingReward
     ]
 
     let testProject = Project.template
@@ -50,14 +105,35 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.shippingLocationSelected(nil)
     self.vm.viewDidLoad()
 
-    let rewardsOrdered = [
+    self.reloadDataWithValues.assertLastValue([
       Reward.noReward,
       Reward.secretRewardTemplate,
       availableReward,
+      digitalReward,
+      localShippingReward,
       notAvailableReward
-    ]
+    ])
 
-    self.reloadDataWithValues.assertValues([rewardsOrdered])
+    self.vm.shippingLocationSelected(Location.australia)
+    self.reloadDataWithValues.assertLastValue([
+      Reward.noReward,
+      Reward.secretRewardTemplate,
+      availableReward,
+      digitalReward,
+      localShippingReward,
+      notAvailableReward
+    ])
+
+    self.vm.shippingLocationSelected(Location.usa)
+    self.reloadDataWithValues.assertLastValue([
+      Reward.noReward,
+      Reward.secretRewardTemplate,
+      availableReward,
+      onlyShipsToUSAReward,
+      digitalReward,
+      localShippingReward,
+      notAvailableReward
+    ])
   }
 
   func test_scrollsToFirstSecretReward_whenSecretRewardTokenIsProvided() {
@@ -255,7 +331,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       |> Reward.lens.isAvailable .~ true
       |> Reward.lens.shippingRulesExpanded .~ []
       |> Reward.lens.shipping .~ Reward.Shipping(
-        enabled: true,
+        enabled: false,
         location: nil,
         preference: Reward.Shipping.Preference.none,
         summary: "Digital reward",
@@ -283,7 +359,6 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.inputs.shippingLocationSelected(Location.usa)
 
     self.vm.inputs.rewardSelected(with: digitalReward.id)
-
     self.goToCustomizeYourReward.assertDidEmitValue()
 
     if let pledgeData = self.goToCustomizeYourReward.lastValue {
@@ -302,7 +377,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       |> Reward.lens.isAvailable .~ true
       |> Reward.lens.shippingRulesExpanded .~ []
       |> Reward.lens.shipping .~ Reward.Shipping(
-        enabled: true,
+        enabled: false,
         location: nil,
         preference: Reward.Shipping.Preference.none,
         summary: "Digital reward",
@@ -314,7 +389,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       |> Reward.lens.isAvailable .~ true
       |> Reward.lens.shippingRulesExpanded .~ []
       |> Reward.lens.shipping .~ Reward.Shipping(
-        enabled: true,
+        enabled: false,
         location: Reward.Shipping.Location(
           id: 1,
           localizedName: "Pickup your stuff"
@@ -323,6 +398,7 @@ final class RewardsCollectionViewModelTests: TestCase {
         summary: "Digital reward",
         type: .noShipping
       )
+      |> Reward.lens.localPickup .~ Location.template
 
     let rewards = [
       noReward,

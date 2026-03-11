@@ -1,0 +1,11 @@
+query FetchSortedProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!, $location: CountryCode) {
+  project(pid: $projectId) {
+    ...NoRewardRewardFragment
+    rewards(location: $location, sort: ELIGIBILITY) {
+      nodes {
+        ...RewardFragment
+        ...SimpleShippingRulesExpandedFragment
+      }
+    }
+  }
+}

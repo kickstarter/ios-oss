@@ -1,0 +1,131 @@
+{
+  "data": {
+    "project": {
+      "__typename": "Project",
+      "rewards": {
+        "__typename": "ProjectRewardConnection",
+        "nodes": [
+          {
+            "__typename": "Reward",
+            "simpleShippingRulesExpanded": [
+              {
+                "__typename": "SimpleShippingRule",
+                "cost": "0.0",
+                "estimatedMin": "5",
+                "estimatedMax": "7",
+                "currency": "CHF",
+                "locationId": "TG9jYXRpb24tMjM0MjQ4Mjk=",
+                "locationName": "Deutschland",
+                "country": "DE"
+              }
+            ],
+            "amount": {
+              "__typename": "Money",
+              "amount": "1.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "backersCount": 0,
+            "convertedAmount": {
+              "__typename": "Money",
+              "amount": "1.0",
+              "currency": "CHF",
+              "symbol": "Fr "
+            },
+            "allowedAddons": {
+              "__typename": "RewardConnection",
+              "pageInfo": {
+                "__typename": "PageInfo",
+                "startCursor": "MQ=="
+              }
+            },
+            "description": "This reward ships only to Germany, and it's not featured.",
+            "displayName": "Germany reward (not featured) (1 $)",
+            "endsAt": null,
+            "estimatedDeliveryOn": "2030-11-01",
+            "id": "UmV3YXJkLTEwNDAzMjY3",
+            "isMaxPledge": false,
+            "available": true,
+            "featured": false,
+            "items": {
+              "__typename": "RewardItemsConnection",
+              "edges": [
+                {
+                  "__typename": "RewardItemEdge",
+                  "quantity": 1,
+                  "node": {
+                    "__typename": "RewardItem",
+                    "id": "UmV3YXJkSXRlbS0yOTA1MTc0",
+                    "name": "T-Shirt 2"
+                  }
+                }
+              ]
+            },
+            "limit": null,
+            "limitPerBacker": 1,
+            "localReceiptLocation": null,
+            "name": "Germany reward (not featured)",
+            "pledgeAmount": {
+              "__typename": "Money",
+              "amount": "1.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "latePledgeAmount": {
+              "__typename": "Money",
+              "amount": "0.0",
+              "currency": "USD",
+              "symbol": "$"
+            },
+            "postCampaignPledgingEnabled": false,
+            "project": {
+              "__typename": "Project",
+              "id": "UHJvamVjdC0xNDgwOTk4MjAw"
+            },
+            "remainingQuantity": null,
+            "shippingPreference": "restricted",
+            "shippingSummary": "Nur in folgende Länder: Deutschland",
+            "shippingRules": [
+              {
+                "__typename": "ShippingRule",
+                "cost": {
+                  "__typename": "Money",
+                  "amount": "0.0",
+                  "currency": "USD",
+                  "symbol": "$"
+                },
+                "id": "U2hpcHBpbmdSdWxlLTE2NDQwMzc1",
+                "location": {
+                  "__typename": "Location",
+                  "country": "DE",
+                  "countryName": "Deutschland",
+                  "displayableName": "Deutschland",
+                  "id": "TG9jYXRpb24tMjM0MjQ4Mjk=",
+                  "name": "Deutschland"
+                },
+                "estimatedMin": {
+                  "__typename": "Money",
+                  "amount": "5",
+                  "currency": "USD"
+                },
+                "estimatedMax": {
+                  "__typename": "Money",
+                  "amount": "7",
+                  "currency": "USD"
+                }
+              }
+            ],
+            "startsAt": null,
+            "image": null,
+            "audienceData": {
+              "__typename": "ResourceAudience",
+              "secret": false
+            }
+          },
+        ]
+      },
+      "minPledge": 1,
+      "fxRate": 0.780313
+    }
+  }
+}

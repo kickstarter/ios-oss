@@ -56,6 +56,8 @@ test_job: &test_job
         no_output_timeout: "20m" # 20 minutes
     - store_artifacts:
         path: /tmp/failed-snapshots
+    - store_test_results:
+        path: /tmp/test_results.xml
 
 test_spm_job: &test_spm_job
   steps:
@@ -68,6 +70,9 @@ test_spm_job: &test_spm_job
         no_output_timeout: "20m" # 20 minutes
     - store_artifacts:
         path: /tmp/failed-snapshots
+    - store_test_results:
+        path: /tmp/test_results.xml
+
 
 distribute_job: &distribute_job
   steps:
