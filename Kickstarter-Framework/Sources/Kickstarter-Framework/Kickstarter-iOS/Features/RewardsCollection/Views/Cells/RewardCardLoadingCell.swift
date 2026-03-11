@@ -86,7 +86,6 @@ final class RewardCardLoadingCell: UICollectionViewCell, ValueCell {
     self.descriptionLabel.rounded(with: Spacing.unit_01)
 
     self.pledgeButton.applyStyleConfiguration(KSRButtonStyle.green)
-    self.pledgeButton.setTitle(Strings.Select(), for: .normal)
     self.pledgeButton.accessibilityLabel = Strings.Loading()
     self.pledgeButton.rounded(with: Spacing.unit_01)
 
