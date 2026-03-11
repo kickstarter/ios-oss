@@ -917,6 +917,7 @@ final class RewardCardViewModelTests: TestCase {
         .template
           |> Reward.Shipping.lens.enabled .~ true
           |> Reward.Shipping.lens.summary .~ "Ships worldwide"
+          |> Reward.Shipping.lens.preference .~ .unrestricted
       )
 
     self.vm.inputs.configure(with: RewardCardViewData(
@@ -964,6 +965,7 @@ final class RewardCardViewModelTests: TestCase {
           |> Reward.Shipping.lens.enabled .~ true
           |> Reward.Shipping.lens.type .~ .singleLocation
           |> Reward.Shipping.lens.summary .~ "United States only"
+          |> Reward.Shipping.lens.preference .~ .restricted
       )
 
     self.vm.inputs.configure(with: RewardCardViewData(
@@ -1010,6 +1012,7 @@ final class RewardCardViewModelTests: TestCase {
         .template
           |> Reward.Shipping.lens.enabled .~ true
           |> Reward.Shipping.lens.summary .~ "Limited shipping"
+          |> Reward.Shipping.lens.preference .~ .restricted
       )
 
     self.vm.inputs.configure(with: RewardCardViewData(
@@ -1056,6 +1059,7 @@ final class RewardCardViewModelTests: TestCase {
         .template
           |> Reward.Shipping.lens.enabled .~ true
           |> Reward.Shipping.lens.summary .~ "Ships worldwide"
+          |> Reward.Shipping.lens.preference .~ .unrestricted
       )
 
     let project = Project.template
@@ -1105,6 +1109,7 @@ final class RewardCardViewModelTests: TestCase {
         .template
           |> Reward.Shipping.lens.enabled .~ true
           |> Reward.Shipping.lens.summary .~ "Ships worldwide"
+          |> Reward.Shipping.lens.preference .~ .unrestricted
       )
 
     let project = Project.template
@@ -1152,6 +1157,7 @@ final class RewardCardViewModelTests: TestCase {
         .template
           |> Reward.Shipping.lens.enabled .~ true
           |> Reward.Shipping.lens.type .~ .anywhere
+          |> Reward.Shipping.lens.preference .~ .unrestricted
       )
 
     self.vm.inputs.configure(with: RewardCardViewData(

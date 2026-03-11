@@ -101,7 +101,12 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700.0
         )
 
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(data: RewardCardViewData(
+        project: project,
+        reward: reward,
+        context: .pledge,
+        currentShippingLocation: nil
+      ))
 
       let emissionCount = index + 1
 
@@ -157,7 +162,12 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700.0
         )
 
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(data: RewardCardViewData(
+        project: project,
+        reward: reward,
+        context: .pledge,
+        currentShippingLocation: nil
+      ))
 
       let emissionCount = index + 1
 
@@ -206,7 +216,12 @@ final class RewardCardContainerViewModelTests: TestCase {
           |> Project.lens.state .~ .live
           |> Project.lens.personalization.isBacking .~ false
 
-        self.vm.inputs.configureWith(project: project, reward: reward)
+        self.vm.inputs.configureWith(data: RewardCardViewData(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          currentShippingLocation: nil
+        ))
 
         let emissionCount = index + 1
 
@@ -256,7 +271,12 @@ final class RewardCardContainerViewModelTests: TestCase {
           |> Project.lens.personalization.isBacking .~ nil
           |> Project.lens.personalization.backing .~ nil
 
-        self.vm.inputs.configureWith(project: project, reward: reward)
+        self.vm.inputs.configureWith(data: RewardCardViewData(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          currentShippingLocation: nil
+        ))
 
         let emissionCount = index + 1
 
@@ -311,7 +331,12 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700.0
         )
 
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(data: RewardCardViewData(
+        project: project,
+        reward: reward,
+        context: .pledge,
+        currentShippingLocation: nil
+      ))
 
       let emissionCount = index + 1
 
@@ -367,7 +392,12 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700.0
         )
 
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(data: RewardCardViewData(
+        project: project,
+        reward: reward,
+        context: .pledge,
+        currentShippingLocation: nil
+      ))
 
       let emissionCount = index + 1
 
@@ -403,7 +433,12 @@ final class RewardCardContainerViewModelTests: TestCase {
         |> Project.lens.state .~ .successful
         |> Project.lens.personalization.isBacking .~ false
 
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(data: RewardCardViewData(
+        project: project,
+        reward: reward,
+        context: .pledge,
+        currentShippingLocation: nil
+      ))
 
       let emissionCount = index + 1
 
@@ -460,7 +495,12 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.status .~ .errored
         )
 
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(data: RewardCardViewData(
+        project: project,
+        reward: reward,
+        context: .pledge,
+        currentShippingLocation: nil
+      ))
 
       let emissionCount = index + 1
 
@@ -502,7 +542,12 @@ final class RewardCardContainerViewModelTests: TestCase {
           |> Project.lens.state .~ .live
           |> Project.lens.personalization.isBacking .~ false
 
-        self.vm.inputs.configureWith(project: project, reward: reward)
+        self.vm.inputs.configureWith(data: RewardCardViewData(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          currentShippingLocation: nil
+        ))
 
         let emissionCount = index + 1
 
@@ -546,7 +591,12 @@ final class RewardCardContainerViewModelTests: TestCase {
           |> Project.lens.state .~ .successful
           |> Project.lens.personalization.isBacking .~ false
 
-        self.vm.inputs.configureWith(project: project, reward: reward)
+        self.vm.inputs.configureWith(data: RewardCardViewData(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          currentShippingLocation: nil
+        ))
 
         let emissionCount = index + 1
 
@@ -576,8 +626,109 @@ final class RewardCardContainerViewModelTests: TestCase {
     }
   }
 
+  func testPledgeButtonTitle_RestrictedShipping_validLocation() {
+    let shipsToUSAReward = Reward.shipsToUSAReward
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [shipsToUSAReward]
+      |> Project.lens.rewardData.addOns .~ nil
+
+    let data = RewardCardViewData(
+      project: project,
+      reward: shipsToUSAReward,
+      context: .pledge,
+      currentShippingLocation: .usa
+    )
+
+    self.vm.inputs.configureWith(data: data)
+
+    self.pledgeButtonEnabled.assertLastValue(true)
+    self.pledgeButtonTitleText.assertLastValue("Select")
+  }
+
+  func testPledgeButtonTitle_RestrictedShipping_invalidLocation() {
+    let shipsToUSAReward = Reward.shipsToUSAReward
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [shipsToUSAReward]
+      |> Project.lens.rewardData.addOns .~ nil
+
+    let data = RewardCardViewData(
+      project: project,
+      reward: shipsToUSAReward,
+      context: .pledge,
+      currentShippingLocation: .australia
+    )
+
+    self.vm.inputs.configureWith(data: data)
+
+    self.pledgeButtonEnabled.assertLastValue(false)
+    self.pledgeButtonTitleText.assertLastValue("Not available in selected country")
+  }
+
+  func testPledgeButtonTitle_DigitalReward_noLocation() {
+    let digitalReward = Reward.digitalReward
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [digitalReward]
+      |> Project.lens.rewardData.addOns .~ nil
+
+    let data = RewardCardViewData(
+      project: project,
+      reward: digitalReward,
+      context: .pledge,
+      currentShippingLocation: nil
+    )
+
+    self.vm.inputs.configureWith(data: data)
+
+    self.pledgeButtonEnabled.assertLastValue(true)
+    self.pledgeButtonTitleText.assertLastValue("Select")
+  }
+
+  func testPledgeButtonTitle_RestrictedShipping_BackedReward_invalidLocation() {
+    let shipsToUSAReward = Reward.shipsToUSAReward
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+      |> Reward.lens.isAvailable .~ true
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [shipsToUSAReward]
+      |> Project.lens.rewardData.addOns .~ nil
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ shipsToUSAReward
+          |> Backing.lens.rewardId .~ shipsToUSAReward.id
+      )
+
+    let data = RewardCardViewData(
+      project: project,
+      reward: shipsToUSAReward,
+      context: .pledge,
+      currentShippingLocation: .australia
+    )
+
+    self.vm.inputs.configureWith(data: data)
+
+    self.pledgeButtonEnabled.assertLastValue(
+      true,
+      "If a reward is backed, you should always be able to select and edit that reward (to edit your add-ons and bonus), even if it is unavailable"
+    )
+    self.pledgeButtonTitleText.assertLastValue(
+      "Continue",
+      "If a reward is backed, you should always be able to select and edit that reward (to edit your add-ons and bonus), even if it is unavailable"
+    )
+  }
+
   func testPledgeButtonTapped() {
-    self.vm.inputs.configureWith(project: Project.template, reward: Reward.template)
+    self.vm.inputs.configureWith(data: RewardCardViewData(
+      project: Project.template,
+      reward: Reward.template,
+      context: .pledge,
+      currentShippingLocation: nil
+    ))
 
     self.vm.inputs.pledgeButtonTapped()
 

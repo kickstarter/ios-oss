@@ -40,52 +40,13 @@ final class RewardsCollectionViewModelTests: TestCase {
     let notStartedYetReward = Reward.template
       |> Reward.lens.startsAt .~ NSDate.distantFuture.timeIntervalSince1970
 
-    let usaShippingRule = ShippingRule(
-      cost: 10,
-      id: 1,
-      location: Location.usa,
-      estimatedMin: nil,
-      estimatedMax: nil
-    )
+    let onlyShipsToUSAReward = Reward.shipsToUSAReward
 
-    let onlyShipsToUSAReward = Reward.template
-      |> Reward.lens.isAvailable .~ true
-      |> Reward.lens.shippingRulesExpanded .~ [usaShippingRule]
-      |> Reward.lens.shipping .~ Reward.Shipping(
-        enabled: true,
-        location: nil,
-        preference: .restricted,
-        summary: "Restricted shipping",
-        type: .singleLocation
-      )
-
-    let digitalReward = Reward.template
+    let digitalReward = Reward.digitalReward
       |> Reward.lens.id .~ 1
-      |> Reward.lens.isAvailable .~ true
-      |> Reward.lens.shippingRulesExpanded .~ []
-      |> Reward.lens.shipping .~ Reward.Shipping(
-        enabled: false,
-        location: nil,
-        preference: Reward.Shipping.Preference.none,
-        summary: "Digital reward",
-        type: .noShipping
-      )
 
-    let localShippingReward = Reward.template
+    let localShippingReward = Reward.localShippingReward
       |> Reward.lens.id .~ 2
-      |> Reward.lens.isAvailable .~ true
-      |> Reward.lens.shippingRulesExpanded .~ []
-      |> Reward.lens.shipping .~ Reward.Shipping(
-        enabled: false,
-        location: Reward.Shipping.Location(
-          id: 1,
-          localizedName: "Pickup your stuff"
-        ),
-        preference: Reward.Shipping.Preference.local,
-        summary: "Digital reward",
-        type: .noShipping
-      )
-      |> Reward.lens.localPickup .~ Location.template
 
     let rewards = [
       availableReward,
@@ -325,18 +286,8 @@ final class RewardsCollectionViewModelTests: TestCase {
         type: .singleLocation
       )
 
-    let digitalReward = Reward.template
-      |> Reward.lens.title .~ "Digital Reward"
+    let digitalReward = Reward.digitalReward
       |> Reward.lens.id .~ 2
-      |> Reward.lens.isAvailable .~ true
-      |> Reward.lens.shippingRulesExpanded .~ []
-      |> Reward.lens.shipping .~ Reward.Shipping(
-        enabled: false,
-        location: nil,
-        preference: Reward.Shipping.Preference.none,
-        summary: "Digital reward",
-        type: .noShipping
-      )
 
     let rewards = [
       physicalReward,
@@ -372,33 +323,10 @@ final class RewardsCollectionViewModelTests: TestCase {
 
   func test_selectLocation_outputsNilShippingRule_forProjectWithNoShippableRewards() {
     let noReward = Reward.noReward
-    let digitalReward = Reward.template
-      |> Reward.lens.id .~ 1
-      |> Reward.lens.isAvailable .~ true
-      |> Reward.lens.shippingRulesExpanded .~ []
-      |> Reward.lens.shipping .~ Reward.Shipping(
-        enabled: false,
-        location: nil,
-        preference: Reward.Shipping.Preference.none,
-        summary: "Digital reward",
-        type: .noShipping
-      )
+    let digitalReward = Reward.digitalReward
 
-    let localShippingReward = Reward.template
+    let localShippingReward = Reward.localShippingReward
       |> Reward.lens.id .~ 2
-      |> Reward.lens.isAvailable .~ true
-      |> Reward.lens.shippingRulesExpanded .~ []
-      |> Reward.lens.shipping .~ Reward.Shipping(
-        enabled: false,
-        location: Reward.Shipping.Location(
-          id: 1,
-          localizedName: "Pickup your stuff"
-        ),
-        preference: Reward.Shipping.Preference.local,
-        summary: "Digital reward",
-        type: .noShipping
-      )
-      |> Reward.lens.localPickup .~ Location.template
 
     let rewards = [
       noReward,

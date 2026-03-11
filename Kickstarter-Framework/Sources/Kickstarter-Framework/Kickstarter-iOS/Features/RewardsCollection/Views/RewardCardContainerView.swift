@@ -102,7 +102,7 @@ public final class RewardCardContainerView: UIView {
   }
 
   internal func configure(with data: RewardCardViewData) {
-    self.viewModel.inputs.configureWith(project: data.project, reward: data.reward)
+    self.viewModel.inputs.configureWith(data: data)
     self.rewardCardView.configure(with: data)
     self.adjustTopMarginForRewardCard(data)
   }

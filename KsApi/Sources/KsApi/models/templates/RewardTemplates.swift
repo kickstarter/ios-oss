@@ -128,7 +128,82 @@ extension Reward {
     }
 
   public static let secretRewardTemplate = Reward.template
+    |> Reward.lens.title .~ "Super secret reward"
     |> Reward.lens.id .~ 9_876
     |> Reward.lens.isAvailable .~ true
     |> Reward.lens.audienceData .~ Reward.AudienceData(isSecretReward: true)
+
+  internal static let shipsToUSAReward: Reward = Reward.template
+    |> Reward.lens.title .~ "Ships only to the USA"
+    |> Reward.lens.shipping .~ Reward.Shipping(
+      enabled: true,
+      location: nil,
+      preference: .restricted,
+      summary: "Ships to USA",
+      type: nil
+    )
+    |> Reward.lens.shippingRulesExpanded .~ [
+      ShippingRule(
+        cost: 10,
+        id: 0,
+        location: Location.usa,
+        estimatedMin: nil,
+        estimatedMax: nil
+      )
+    ]
+    |> Reward.lens.limit .~ 5
+    |> Reward.lens.remaining .~ 5
+    |> Reward.lens.isAvailable .~ true
+
+  internal static let shipsToAustraliaReward = Reward.template
+    |> Reward.lens.title .~ "Ships only to Australia"
+    |> Reward.lens.shipping .~ Reward.Shipping(
+      enabled: true,
+      location: nil,
+      preference: .restricted,
+      summary: "Ships to Australia",
+      type: nil
+    )
+    |> Reward.lens.shippingRulesExpanded .~ [
+      ShippingRule(
+        cost: 10,
+        id: 0,
+        location: Location.australia,
+        estimatedMin: nil,
+        estimatedMax: nil
+      )
+    ]
+    |> Reward.lens.limit .~ 5
+    |> Reward.lens.remaining .~ 5
+    |> Reward.lens.isAvailable .~ true
+
+  internal static let digitalReward = Reward.template
+    |> Reward.lens.title .~ "Digital item"
+    |> Reward.lens.shipping .~ Reward.Shipping(
+      enabled: false,
+      location: nil,
+      preference: Reward.Shipping.Preference.none,
+      summary: "Digital thing",
+      type: .noShipping
+    )
+    |> Reward.lens.limit .~ 5
+    |> Reward.lens.remaining .~ 5
+    |> Reward.lens.isAvailable .~ true
+
+  internal static let localShippingReward = Reward.template
+    |> Reward.lens.title .~ "Ships locally"
+    |> Reward.lens.shipping .~ Reward.Shipping(
+      enabled: false,
+      location: Reward.Shipping.Location(
+        id: 0,
+        localizedName: "My house"
+      ),
+      preference: Reward.Shipping.Preference.local,
+      summary: "Pick up at my hosue",
+      type: nil
+    )
+    |> Reward.lens.localPickup .~ Location.usa
+    |> Reward.lens.limit .~ 5
+    |> Reward.lens.remaining .~ 5
+    |> Reward.lens.isAvailable .~ true
 }
