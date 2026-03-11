@@ -5,7 +5,7 @@
 
 public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment RichTextItemFragment on RichTextItem { __typename ... on RichText { text link styles } ... on RichTextHeader { text link styles } ... on RichTextListItem { text link styles } ... on RichTextListOpen { _present } ... on RichTextListClose { _present } ... on RichTextPhoto { altText asset { __typename id } caption url } ... on RichTextAudio { altText asset { __typename id } caption url } ... on RichTextVideo { altText asset { __typename id } caption url } ... on RichTextOembed { authorName authorUrl height html iframeUrl originalUrl photoUrl providerName providerUrl thumbnailHeight thumbnailUrl thumbnailWidth title type version width } }"#
+    #"fragment RichTextItemFragment on RichTextItem { __typename ... on RichText { text link styles } ... on RichTextHeader { text link styles } ... on RichTextListItem { text link styles } ... on RichTextListOpen { _present } ... on RichTextListClose { _present } ... on RichTextPhoto { altText asset { __typename id } caption url } ... on RichTextAudio { altText asset { __typename id } caption url } ... on RichTextVideo { altText asset { __typename id } caption url } ... on RichTextOembed { width height version title type iframeUrl originalUrl photoUrl thumbnailHeight thumbnailUrl thumbnailWidth } }"#
   }
 
   public let __data: DataDict
@@ -458,94 +458,69 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
     public typealias RootEntityType = RichTextItemFragment
     public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextOembed }
     public static var __selections: [ApolloAPI.Selection] { [
-      .field("authorName", String.self),
-      .field("authorUrl", String.self),
+      .field("width", Int.self),
       .field("height", Int.self),
-      .field("html", String.self),
+      .field("version", String.self),
+      .field("title", String.self),
+      .field("type", String.self),
       .field("iframeUrl", String.self),
       .field("originalUrl", String.self),
       .field("photoUrl", String.self),
-      .field("providerName", String.self),
-      .field("providerUrl", String.self),
       .field("thumbnailHeight", Int.self),
       .field("thumbnailUrl", String.self),
       .field("thumbnailWidth", Int.self),
-      .field("title", String.self),
-      .field("type", String.self),
-      .field("version", String.self),
-      .field("width", Int.self),
     ] }
 
-    /// ex: Bryson Lovett
-    public var authorName: String { __data["authorName"] }
-    /// ex: https://www.youtube.com/user/brysonlovett
-    public var authorUrl: String { __data["authorUrl"] }
+    /// ex: 480
+    public var width: Int { __data["width"] }
     /// ex: 270
     public var height: Int { __data["height"] }
-    /// ex: <iframe width="560" height="315" src="https://www.youtube.com/embed/ijeaVn8znJ8?feature=oembed" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    public var html: String { __data["html"] }
+    /// always "1.0"
+    public var version: String { __data["version"] }
+    /// ex: Bird Photo Booth bird feeder kickstarter preview 2
+    public var title: String { __data["title"] }
+    /// one of: photo, video, link, rich
+    public var type: String { __data["type"] }
     /// ex: https://www.youtube.com/embed/ijeaVn8znJ8?feature=oembed
     public var iframeUrl: String { __data["iframeUrl"] }
     /// ex: https://youtu.be/ijeaVn8znJ8
     public var originalUrl: String { __data["originalUrl"] }
     /// only for photo
     public var photoUrl: String { __data["photoUrl"] }
-    /// Ex: Embedly, Flickr, Kickstarter, Kickstarter Live, Scribd, SoundCloud, Spotify, Sketchfab, Twitter, Vimeo, YouTube
-    public var providerName: String { __data["providerName"] }
-    /// ex: https://www.youtube.com/
-    public var providerUrl: String { __data["providerUrl"] }
     /// ex: 360
     public var thumbnailHeight: Int { __data["thumbnailHeight"] }
     /// ex: https://i.ytimg.com/vi/ijeaVn8znJ8/hqdefault.jpg
     public var thumbnailUrl: String { __data["thumbnailUrl"] }
     /// ex: 480
     public var thumbnailWidth: Int { __data["thumbnailWidth"] }
-    /// ex: Bird Photo Booth bird feeder kickstarter preview 2
-    public var title: String { __data["title"] }
-    /// one of: photo, video, link, rich
-    public var type: String { __data["type"] }
-    /// always "1.0"
-    public var version: String { __data["version"] }
-    /// ex: 480
-    public var width: Int { __data["width"] }
 
     public init(
-      authorName: String,
-      authorUrl: String,
+      width: Int,
       height: Int,
-      html: String,
+      version: String,
+      title: String,
+      type: String,
       iframeUrl: String,
       originalUrl: String,
       photoUrl: String,
-      providerName: String,
-      providerUrl: String,
       thumbnailHeight: Int,
       thumbnailUrl: String,
-      thumbnailWidth: Int,
-      title: String,
-      type: String,
-      version: String,
-      width: Int
+      thumbnailWidth: Int
     ) {
       self.init(_dataDict: DataDict(
         data: [
           "__typename": GraphAPI.Objects.RichTextOembed.typename,
-          "authorName": authorName,
-          "authorUrl": authorUrl,
+          "width": width,
           "height": height,
-          "html": html,
+          "version": version,
+          "title": title,
+          "type": type,
           "iframeUrl": iframeUrl,
           "originalUrl": originalUrl,
           "photoUrl": photoUrl,
-          "providerName": providerName,
-          "providerUrl": providerUrl,
           "thumbnailHeight": thumbnailHeight,
           "thumbnailUrl": thumbnailUrl,
           "thumbnailWidth": thumbnailWidth,
-          "title": title,
-          "type": type,
-          "version": version,
-          "width": width,
         ],
         fulfilledFragments: [
           ObjectIdentifier(RichTextItemFragment.self),

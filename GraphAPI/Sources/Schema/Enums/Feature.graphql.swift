@@ -90,6 +90,7 @@ public enum Feature: String, EnumType {
   case paymentsStripeLinkOnCheckout = "payments_stripe_link_on_checkout"
   case addressCollection2024 = "address_collection_2024"
   case backerReportUpdate2024 = "backer_report_update_2024"
+  case selfServeBackerRemoval = "self_serve_backer_removal"
   case delayBackerTrustModule2024 = "delay_backer_trust_module_2024"
   case resetBackerSurvey2024 = "reset_backer_survey_2024"
   case pledgeProjectsOverview2024 = "pledge_projects_overview_2024"
