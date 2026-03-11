@@ -280,6 +280,15 @@
       }
     },
     {
+      "identity" : "statsig-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/statsig-io/statsig-kit.git",
+      "state" : {
+        "revision" : "e2c93f410f5107bf5438ea6bb0f609494e60dd6b",
+        "version" : "1.60.3"
+      }
+    },
+    {
       "identity" : "stripe-ios-spm",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/stripe/stripe-ios-spm",
