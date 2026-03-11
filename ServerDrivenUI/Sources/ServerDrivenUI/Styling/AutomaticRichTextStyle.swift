@@ -2,10 +2,7 @@ import KDS
 import SwiftUI
 import UIKit
 
-/// Compositional style that holds `LightRichTextStyle` and `DarkRichTextStyle` and delegates
-/// all `RichTextStyle` properties to the appropriate one based on the current trait collection.
 /// Use as the default environment style so block views adapt to light/dark automatically.
-/// When the app’s color scheme changes, SwiftUI re-renders views that read this style.
 public struct AutomaticRichTextStyle: RichTextStyle, Sendable {
   public init() {}
 
