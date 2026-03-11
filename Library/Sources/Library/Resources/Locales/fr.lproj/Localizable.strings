@@ -274,7 +274,7 @@
 "Failed_to_retrieve_live_stream_event_details" = "Impossible de récupérer les détails de la diffusion en direct";
 "Failed_to_update_subscription" = "Mise à jour de l'abonnement impossible";
 "Faq" = "FAQ";
-"Featured" = "Featured";
+"Featured" = "En vedette";
 "Filter" = "Filtre";
 "Filter_by_all_projects" = "Filtrer : tous les projets";
 "Filter_by_category_name" = "Filtrer par catégorie : %{category_name}";
@@ -496,6 +496,7 @@
 "No_saved_projects" = "Pas de projets enregistrés";
 "No_unread_messages" = "Pas de messages non lus";
 "Not_available" = "Indisponible";
+"Not_available_in_selected_country" = "Non disponible dans le pays sélectionné";
 "Not_delivered" = "Non distribué";
 "Not_followed" = "Non abonné";
 "Not_now" = "Pas maintenant";
