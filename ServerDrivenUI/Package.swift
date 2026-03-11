@@ -13,12 +13,17 @@ let package = Package(
     .library(
       name: "ServerDrivenUI",
       targets: ["ServerDrivenUI"],
+    ),
+    .library(
+      name: "ServerDrivenUITestHelpers",
+      targets: ["ServerDrivenUITestHelpers"],
     )
   ],
   dependencies: [
     .package(name: "KDS", path: "../KDS"),
     .package(name: "GraphAPI", path: "../GraphAPI"),
-    .package(name: "KsApi", path: "../KsApi")
+    .package(name: "KsApi", path: "../KsApi"),
+    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.18.6")
   ],
   targets: [
     .target(
@@ -29,9 +34,20 @@ let package = Package(
         .byName(name: "GraphAPI")
       ]
     ),
+    .target(
+      name: "ServerDrivenUITestHelpers",
+      dependencies: [
+        .byName(name: "KDS"),
+        .byName(name: "ServerDrivenUI")
+      ]
+    ),
     .testTarget(
       name: "ServerDrivenUITests",
-      dependencies: ["ServerDrivenUI"]
+      dependencies: [
+        "ServerDrivenUI",
+        "ServerDrivenUITestHelpers",
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+      ]
     )
   ]
 )
