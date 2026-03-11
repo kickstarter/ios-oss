@@ -364,8 +364,54 @@ public func selectedRewardQuantities(in backing: Backing) -> SelectedRewardQuant
   return quantities
 }
 
-public func rewardsCarouselCanNavigateToReward(_ reward: Reward, in project: Project) -> Bool {
+private func rewardAvailableInAllLocations(_ reward: Reward) -> Bool {
+  let isRewardLocalOrDigital = isRewardDigital(reward) || isRewardLocalPickup(reward)
+  let isUnrestrictedShippingReward = reward.isUnRestrictedShippingPreference
+  let isRestrictedShippingReward = reward.isRestrictedShippingPreference
+  let isNoRewardReward = reward.isNoReward
+
+  // Return all rewards that are no reward, digital, local pickup, or ship anywhere in the world.
+  if isNoRewardReward || isRewardLocalOrDigital || isUnrestrictedShippingReward {
+    return true
+  }
+
+  if isRestrictedShippingReward {
+    return false
+  }
+
+  assert(false, "A reward should either be restricted, or unrestricted. Showing in all locations.")
+  return true
+}
+
+public func checkIfReward(
+  _ reward: Reward,
+  shipsToLocation locationId: Int?
+) -> Bool {
+  if rewardAvailableInAllLocations(reward) {
+    return true
+  }
+
+  guard let selectedLocationId = locationId else { return false }
+
+  var shippingLocationIds: [Int] = []
+
+  reward.shippingRulesExpanded?.forEach { rule in
+    shippingLocationIds.append(rule.location.id)
+  }
+
+  return shippingLocationIds.contains(selectedLocationId)
+}
+
+public func rewardsCarouselCanNavigateToReward(
+  _ reward: Reward,
+  in project: Project,
+  selectedLocation: Int?
+) -> Bool {
   guard !currentUserIsCreator(of: project) else { return false }
+
+  guard checkIfReward(reward, shipsToLocation: selectedLocation) else {
+    return false
+  }
 
   let isBacking = userIsBacking(reward: reward, inProject: project)
   let isAvailableForNewBacker = rewardIsAvailable(reward) && !isBacking

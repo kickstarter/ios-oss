@@ -144,7 +144,7 @@ final class SharedFunctionsTests: TestCase {
         |> Project.lens.rewardData.rewards .~ [reward]
         |> Project.lens.rewardData.addOns .~ nil
 
-      XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project))
+      XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project, selectedLocation: nil))
     }
   }
 
@@ -159,7 +159,7 @@ final class SharedFunctionsTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ nil
 
-    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project, selectedLocation: nil))
   }
 
   func testRewardsCarouselCanNavigateToReward_RegularReward_Available_Backed() {
@@ -177,7 +177,7 @@ final class SharedFunctionsTests: TestCase {
       )
 
     withEnvironment {
-      XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
+      XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project, selectedLocation: nil))
     }
   }
 
@@ -195,7 +195,7 @@ final class SharedFunctionsTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
       )
 
-    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project, selectedLocation: nil))
   }
 
   func testRewardsCarouselCanNavigateToReward_RegularReward_Expired_Backed() {
@@ -212,7 +212,7 @@ final class SharedFunctionsTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
       )
 
-    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project, selectedLocation: nil))
   }
 
   func testRewardsCarouselCanNavigateToReward_RegularReward_Unavailable_NotBacked() {
@@ -225,7 +225,7 @@ final class SharedFunctionsTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ nil
 
-    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project, selectedLocation: nil))
   }
 
   func testRewardsCarouselCanNavigateToReward_RegularReward_Expired_NotBacked() {
@@ -238,7 +238,7 @@ final class SharedFunctionsTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ nil
 
-    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project, selectedLocation: nil))
   }
 
   func testRewardsCarouselCanNavigateToReward_Reward_Available_NotBacked_HasAddOns() {
@@ -253,7 +253,7 @@ final class SharedFunctionsTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ [reward]
 
-    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project, selectedLocation: nil))
   }
 
   func testRewardsCarouselCanNavigateToReward_Reward_Unavailable_NotBacked_HasAddOns() {
@@ -267,7 +267,7 @@ final class SharedFunctionsTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ [reward]
 
-    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project, selectedLocation: nil))
   }
 
   func testRewardsCarouselCanNavigateToReward_Reward_Expired_NotBacked_HasAddOns() {
@@ -281,7 +281,7 @@ final class SharedFunctionsTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ [reward]
 
-    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project, selectedLocation: nil))
   }
 
   func testRewardsCarouselCanNavigateToReward_Reward_Unavailable_Backed_HasAddOns() {
@@ -300,7 +300,7 @@ final class SharedFunctionsTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
       )
 
-    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project, selectedLocation: nil))
   }
 
   func testRewardsCarouselCanNavigateToReward_Reward_Expired_Backed_HasAddOns() {
@@ -319,7 +319,7 @@ final class SharedFunctionsTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
       )
 
-    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project, selectedLocation: nil))
   }
 
   func testIsStartDateBeforeToday_Reward_StartsAt_Nil() {

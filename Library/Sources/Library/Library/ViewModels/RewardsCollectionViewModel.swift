@@ -167,8 +167,8 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       selectedShippingRule
     )
     .takeWhen(self.rewardSelectedWithRewardIdProperty.signal)
-    .filter { project, reward, _, _ in
-      rewardsCarouselCanNavigateToReward(reward, in: project)
+    .filter { project, reward, _, shippingRule in
+      rewardsCarouselCanNavigateToReward(reward, in: project, selectedLocation: shippingRule?.location.id)
     }
     .map { project, reward, refTag, selectedShippingRule -> (PledgeViewData, Bool) in
       let pledgeContext =

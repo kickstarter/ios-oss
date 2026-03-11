@@ -134,8 +134,12 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
       .takeWhen(self.rewardCardTappedProperty.signal)
       .map { $0.id }
 
-    self.cardUserInteractionIsEnabled = projectAndReward.map { project, reward in
-      rewardsCarouselCanNavigateToReward(reward, in: project)
+    self.cardUserInteractionIsEnabled = configData.map { data in
+      rewardsCarouselCanNavigateToReward(
+        data.reward,
+        in: data.project,
+        selectedLocation: data.currentShippingLocation?.id
+      )
     }
 
     self.estimatedDeliveryStackViewHidden = context.combineLatest(with: reward)

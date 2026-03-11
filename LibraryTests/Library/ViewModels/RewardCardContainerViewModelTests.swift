@@ -101,7 +101,12 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700.0
         )
 
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(data: RewardCardViewData(
+        project: project,
+        reward: reward,
+        context: .pledge,
+        currentShippingLocation: nil
+      ))
 
       let emissionCount = index + 1
 
@@ -157,7 +162,12 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700.0
         )
 
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(data: RewardCardViewData(
+        project: project,
+        reward: reward,
+        context: .pledge,
+        currentShippingLocation: nil
+      ))
 
       let emissionCount = index + 1
 
@@ -206,7 +216,12 @@ final class RewardCardContainerViewModelTests: TestCase {
           |> Project.lens.state .~ .live
           |> Project.lens.personalization.isBacking .~ false
 
-        self.vm.inputs.configureWith(project: project, reward: reward)
+        self.vm.inputs.configureWith(data: RewardCardViewData(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          currentShippingLocation: nil
+        ))
 
         let emissionCount = index + 1
 
@@ -256,7 +271,12 @@ final class RewardCardContainerViewModelTests: TestCase {
           |> Project.lens.personalization.isBacking .~ nil
           |> Project.lens.personalization.backing .~ nil
 
-        self.vm.inputs.configureWith(project: project, reward: reward)
+        self.vm.inputs.configureWith(data: RewardCardViewData(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          currentShippingLocation: nil
+        ))
 
         let emissionCount = index + 1
 
@@ -311,7 +331,12 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700.0
         )
 
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(data: RewardCardViewData(
+        project: project,
+        reward: reward,
+        context: .pledge,
+        currentShippingLocation: nil
+      ))
 
       let emissionCount = index + 1
 
@@ -367,7 +392,12 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700.0
         )
 
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(data: RewardCardViewData(
+        project: project,
+        reward: reward,
+        context: .pledge,
+        currentShippingLocation: nil
+      ))
 
       let emissionCount = index + 1
 
@@ -403,7 +433,12 @@ final class RewardCardContainerViewModelTests: TestCase {
         |> Project.lens.state .~ .successful
         |> Project.lens.personalization.isBacking .~ false
 
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(data: RewardCardViewData(
+        project: project,
+        reward: reward,
+        context: .pledge,
+        currentShippingLocation: nil
+      ))
 
       let emissionCount = index + 1
 
@@ -460,7 +495,12 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.status .~ .errored
         )
 
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(data: RewardCardViewData(
+        project: project,
+        reward: reward,
+        context: .pledge,
+        currentShippingLocation: nil
+      ))
 
       let emissionCount = index + 1
 
@@ -502,7 +542,12 @@ final class RewardCardContainerViewModelTests: TestCase {
           |> Project.lens.state .~ .live
           |> Project.lens.personalization.isBacking .~ false
 
-        self.vm.inputs.configureWith(project: project, reward: reward)
+        self.vm.inputs.configureWith(data: RewardCardViewData(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          currentShippingLocation: nil
+        ))
 
         let emissionCount = index + 1
 
@@ -546,7 +591,12 @@ final class RewardCardContainerViewModelTests: TestCase {
           |> Project.lens.state .~ .successful
           |> Project.lens.personalization.isBacking .~ false
 
-        self.vm.inputs.configureWith(project: project, reward: reward)
+        self.vm.inputs.configureWith(data: RewardCardViewData(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          currentShippingLocation: nil
+        ))
 
         let emissionCount = index + 1
 
@@ -577,7 +627,12 @@ final class RewardCardContainerViewModelTests: TestCase {
   }
 
   func testPledgeButtonTapped() {
-    self.vm.inputs.configureWith(project: Project.template, reward: Reward.template)
+    self.vm.inputs.configureWith(data: RewardCardViewData(
+      project: Project.template,
+      reward: Reward.template,
+      context: .pledge,
+      currentShippingLocation: nil
+    ))
 
     self.vm.inputs.pledgeButtonTapped()
 
