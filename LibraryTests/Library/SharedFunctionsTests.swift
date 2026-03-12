@@ -233,6 +233,65 @@ final class SharedFunctionsTests: TestCase {
     XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project, selectedShippingLocation: nil))
   }
 
+  func testRewardsCarouselCanNavigateToReward_RegularReward_Available_NotBacked_Restricted() {
+    let shipsToUSAReward = Reward.template
+      |> Reward.lens.shipping .~ Reward.Shipping(
+        enabled: true,
+        location: nil,
+        preference: .restricted,
+        summary: "Ships to USA",
+        type: nil
+      )
+      |> Reward.lens.shippingRulesExpanded .~ [
+        ShippingRule(
+          cost: 10,
+          id: 0,
+          location: Location.usa,
+          estimatedMin: nil,
+          estimatedMax: nil
+        )
+      ]
+      |> Reward.lens.limit .~ 5
+      |> Reward.lens.remaining .~ 5
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+      |> Reward.lens.isAvailable .~ true
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [shipsToUSAReward]
+      |> Project.lens.rewardData.addOns .~ nil
+
+    XCTAssertTrue(rewardsCarouselCanNavigateToReward(
+      shipsToUSAReward,
+      in: project,
+      selectedShippingLocation: .usa
+    ))
+    XCTAssertFalse(rewardsCarouselCanNavigateToReward(
+      shipsToUSAReward,
+      in: project,
+      selectedShippingLocation: .australia
+    ))
+    XCTAssertFalse(rewardsCarouselCanNavigateToReward(
+      shipsToUSAReward,
+      in: project,
+      selectedShippingLocation: nil
+    ))
+  }
+
+  func testRewardsCarouselCanNavigateToReward_RegularReward_Available_NotBacked_RestrictedShipping_InvalidLocation(
+  ) {
+    let reward = Reward.template
+      |> Reward.lens.limit .~ 5
+      |> Reward.lens.remaining .~ 5
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+      |> Reward.lens.isAvailable .~ true
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+      |> Project.lens.rewardData.addOns .~ nil
+
+    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project, selectedShippingLocation: nil))
+  }
+
   func testRewardsCarouselCanNavigateToReward_RegularReward_Available_Backed() {
     let reward = Reward.template
       |> Reward.lens.limit .~ 5
