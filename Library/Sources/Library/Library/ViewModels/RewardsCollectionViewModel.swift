@@ -176,7 +176,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
       /// Differentiating between updating a reward for a regular pledge and updating a Pledge Over Time pledge.
       let isPledgeOverTime = project.isPledgeOverTimeAllowed == true
-      let updatePledgeContext = isPledgeOverTime && featureEditPledgeOverTimeEnabled()
+      let updatePledgeContext = isPledgeOverTime
         ? PledgeViewContext.editPledgeOverTime
         : PledgeViewContext.updateReward
 

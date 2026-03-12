@@ -2,7 +2,6 @@ import Foundation
 
 public enum RemoteConfigFeature: String, CaseIterable {
   case bypassPledgeManagerDecisionPolicy = "bypass_pledge_manager_decision_policy"
-  case editPledgeOverTimeEnabled = "edit_pledge_over_time"
   case useKeychainForOAuthToken = "use_keychain_for_oauth_token"
   case floatingTabBar = "floating_tab_bar"
   case pledgedProjectsOverviewV2Enabled = "pledged_projects_overview_v2"
@@ -15,7 +14,6 @@ extension RemoteConfigFeature: CustomStringConvertible {
   public var description: String {
     switch self {
     case .bypassPledgeManagerDecisionPolicy: return "Bypass Pledge Manager Decision Policy"
-    case .editPledgeOverTimeEnabled: return "Edit Pledge Over Time"
     case .useKeychainForOAuthToken: return "Use Keychain for OAuth token"
     case .floatingTabBar: return "Floating Tab Bar"
     case .pledgedProjectsOverviewV2Enabled: return "Pledged Projects Overview V2"
