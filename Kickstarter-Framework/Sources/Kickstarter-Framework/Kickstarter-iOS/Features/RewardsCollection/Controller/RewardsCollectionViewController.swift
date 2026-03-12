@@ -127,6 +127,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     let itemSize = self.calculateItemSize(from: layout, using: self.collectionView)
 
     if itemSize != layout.itemSize {
+      layout.itemSize = itemSize
       layout.invalidateLayout()
     } else {
       self.viewModel.inputs.viewDidLayoutSubviews()

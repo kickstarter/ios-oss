@@ -11,7 +11,7 @@ import XCTest
 
 final class RewardCardContainerViewTests: TestCase {
   func testLive_BackedProject_BackedReward() {
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -86,7 +86,7 @@ final class RewardCardContainerViewTests: TestCase {
   func testLive_BackedProject_BackedReward_LoggedIn() {
     let user = User.template
 
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(currentUser: user, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -120,7 +120,7 @@ final class RewardCardContainerViewTests: TestCase {
   }
 
   func testLive_BackedProject_NonBackedReward() {
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -157,7 +157,7 @@ final class RewardCardContainerViewTests: TestCase {
     let nonCreator = User.template
       |> User.lens.id .~ 5
 
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(currentUser: nonCreator, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -185,7 +185,7 @@ final class RewardCardContainerViewTests: TestCase {
   }
 
   func testLive_NonBackedProject_LoggedOut() {
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(currentUser: nil, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -213,7 +213,7 @@ final class RewardCardContainerViewTests: TestCase {
   }
 
   func testNonLive_BackedProject_BackedReward() {
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -247,7 +247,7 @@ final class RewardCardContainerViewTests: TestCase {
   }
 
   func testNonLive_BackedProject_NonBackedReward() {
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -281,7 +281,7 @@ final class RewardCardContainerViewTests: TestCase {
   }
 
   func testNonLive_NonBackedProject() {
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -309,7 +309,7 @@ final class RewardCardContainerViewTests: TestCase {
 
   func testLive_BackedProject_BackedReward_Errored() {
     // Filter these out because they aren't states we can get to
-    let filteredRewards = allRewards
+    let filteredRewards = Reward.allRewards
       .filter { name, _ -> Bool in
         !name.lowercased().contains("unavailable")
       }
@@ -350,7 +350,7 @@ final class RewardCardContainerViewTests: TestCase {
 
   func testNonLive_BackedProject_BackedReward_Errored() {
     // Filter these out because they aren't states we can get to
-    let filteredRewards = allRewards
+    let filteredRewards = Reward.allRewards
       .filter { name, _ -> Bool in
         !name.lowercased().contains("unavailable")
       }
@@ -398,7 +398,7 @@ final class RewardCardContainerViewTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.personalization.backing .~ nil
 
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(currentUser: user, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -429,7 +429,7 @@ final class RewardCardContainerViewTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.personalization.backing .~ nil
 
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(currentUser: user, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -510,87 +510,101 @@ private extension RewardCardContainerViewTests {
   }
 }
 
-let allRewards: [(String, Reward)] = {
-  let availableAddOnsReward = Reward.postcards
-    |> Reward.lens.hasAddOns .~ true
-    |> Reward.lens.limit .~ nil
-    |> Reward.lens.remaining .~ nil
-    |> Reward.lens.isAvailable .~ true
-  let availableLimitedReward = Reward.postcards
-    |> Reward.lens.limit .~ 100
-    |> Reward.lens.remaining .~ 25
-    |> Reward.lens.convertedMinimum .~ 7.0
-    |> Reward.lens.isAvailable .~ true
-  let availableTimebasedReward = Reward.postcards
-    |> Reward.lens.limit .~ nil
-    |> Reward.lens.remaining .~ nil
-    |> Reward.lens.convertedMinimum .~ 7.0
-    |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
-    |> Reward.lens.isAvailable .~ true
-  let availableLimitedTimebasedReward = Reward.postcards
-    |> Reward.lens.limit .~ 100
-    |> Reward.lens.remaining .~ 25
-    |> Reward.lens.convertedMinimum .~ 7.0
-    |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
-    |> Reward.lens.isAvailable .~ true
-  let availableNonLimitedReward = Reward.postcards
-    |> Reward.lens.limit .~ nil
-    |> Reward.lens.remaining .~ nil
-    |> Reward.lens.endsAt .~ nil
-    |> Reward.lens.convertedMinimum .~ 7.0
-    |> Reward.lens.isAvailable .~ true
-  let availableShippingEnabledReward = Reward.postcards
-    |> Reward.lens.limit .~ 100
-    |> Reward.lens.remaining .~ 25
-    |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
-    |> Reward.lens.isAvailable .~ true
-    |> Reward.lens.convertedMinimum .~ 7.0
-    |> Reward.lens.shipping .~ (
-      .template
-        |> Reward.Shipping.lens.enabled .~ true
-        |> Reward.Shipping.lens.type .~ .anywhere
-        |> Reward.Shipping.lens.summary .~ "Ships worldwide"
-    )
-  let unavailableLimitedReward = Reward.postcards
-    |> Reward.lens.limit .~ 100
-    |> Reward.lens.remaining .~ 0
-    |> Reward.lens.convertedMinimum .~ 7.0
-  let unavailableTimebasedReward = Reward.postcards
-    |> Reward.lens.limit .~ nil
-    |> Reward.lens.remaining .~ nil
-    |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
-    |> Reward.lens.convertedMinimum .~ 7.0
-  let unavailableLimitedTimebasedReward = Reward.postcards
-    |> Reward.lens.limit .~ 100
-    |> Reward.lens.remaining .~ 0
-    |> Reward.lens.convertedMinimum .~ 7.0
-    |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
-  let unavailableShippingEnabledReward = Reward.postcards
-    |> Reward.lens.limit .~ 100
-    |> Reward.lens.remaining .~ 0
-    |> Reward.lens.convertedMinimum .~ 7.0
+internal extension Reward {
+  static var allRewards: [(String, Reward)] {
+    let availableAddOnsReward = Reward.postcards
+      |> Reward.lens.id .~ 1
+      |> Reward.lens.hasAddOns .~ true
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.isAvailable .~ true
+    let availableLimitedReward = Reward.postcards
+      |> Reward.lens.id .~ 2
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 25
+      |> Reward.lens.convertedMinimum .~ 7.0
+      |> Reward.lens.isAvailable .~ true
+    let availableTimebasedReward = Reward.postcards
+      |> Reward.lens.id .~ 3
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.convertedMinimum .~ 7.0
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+      |> Reward.lens.isAvailable .~ true
+    let availableLimitedTimebasedReward = Reward.postcards
+      |> Reward.lens.id .~ 4
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 25
+      |> Reward.lens.convertedMinimum .~ 7.0
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+      |> Reward.lens.isAvailable .~ true
+    let availableNonLimitedReward = Reward.postcards
+      |> Reward.lens.id .~ 5
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.endsAt .~ nil
+      |> Reward.lens.convertedMinimum .~ 7.0
+      |> Reward.lens.isAvailable .~ true
+    let availableShippingEnabledReward = Reward.postcards
+      |> Reward.lens.id .~ 6
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 25
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+      |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.convertedMinimum .~ 7.0
+      |> Reward.lens.shipping .~ (
+        .template
+          |> Reward.Shipping.lens.enabled .~ true
+          |> Reward.Shipping.lens.type .~ .anywhere
+          |> Reward.Shipping.lens.summary .~ "Ships worldwide"
+          |> Reward.Shipping.lens.preference .~ .unrestricted
+      )
+    let unavailableLimitedReward = Reward.postcards
+      |> Reward.lens.id .~ 7
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.convertedMinimum .~ 7.0
+    let unavailableTimebasedReward = Reward.postcards
+      |> Reward.lens.id .~ 8
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
+      |> Reward.lens.convertedMinimum .~ 7.0
+    let unavailableLimitedTimebasedReward = Reward.postcards
+      |> Reward.lens.id .~ 9
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.convertedMinimum .~ 7.0
+      |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
+    let unavailableShippingEnabledReward = Reward.postcards
+      |> Reward.lens.id .~ 10
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.convertedMinimum .~ 7.0
 
-    |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
-    |> Reward.lens.shipping .~ (
-      .template
-        |> Reward.Shipping.lens.enabled .~ true
-        |> Reward.Shipping.lens.type .~ .anywhere
-        |> Reward.Shipping.lens.summary .~ "Ships worldwide"
-    )
-  let noReward = Reward.noReward
-    |> Reward.lens.convertedMinimum .~ 1
+      |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
+      |> Reward.lens.shipping .~ (
+        .template
+          |> Reward.Shipping.lens.enabled .~ true
+          |> Reward.Shipping.lens.type .~ .anywhere
+          |> Reward.Shipping.lens.summary .~ "Ships worldwide"
+          |> Reward.Shipping.lens.preference .~ .unrestricted
+      )
+    let noReward = Reward.noReward
+      |> Reward.lens.convertedMinimum .~ 1
 
-  return [
-    ("AvailableAddOnsReward", availableAddOnsReward),
-    ("AvailableLimitedReward", availableLimitedReward),
-    ("AvailableTimebasedReward", availableTimebasedReward),
-    ("AvailableLimitedTimebasedReward", availableLimitedTimebasedReward),
-    ("AvailableNonLimitedReward", availableNonLimitedReward),
-    ("AvailableShippingEnabledReward", availableShippingEnabledReward),
-    ("UnavailableLimitedReward", unavailableLimitedReward),
-    ("UnavailableTimebasedReward", unavailableTimebasedReward),
-    ("UnavailableLimitedTimebasedReward", unavailableLimitedTimebasedReward),
-    ("UnavailableShippingEnabledReward", unavailableShippingEnabledReward),
-    ("NoReward", noReward)
-  ]
-}()
+    return [
+      ("AvailableAddOnsReward", availableAddOnsReward),
+      ("AvailableLimitedReward", availableLimitedReward),
+      ("AvailableTimebasedReward", availableTimebasedReward),
+      ("AvailableLimitedTimebasedReward", availableLimitedTimebasedReward),
+      ("AvailableNonLimitedReward", availableNonLimitedReward),
+      ("AvailableShippingEnabledReward", availableShippingEnabledReward),
+      ("UnavailableLimitedReward", unavailableLimitedReward),
+      ("UnavailableTimebasedReward", unavailableTimebasedReward),
+      ("UnavailableLimitedTimebasedReward", unavailableLimitedTimebasedReward),
+      ("UnavailableShippingEnabledReward", unavailableShippingEnabledReward),
+      ("NoReward", noReward)
+    ]
+  }
+}
