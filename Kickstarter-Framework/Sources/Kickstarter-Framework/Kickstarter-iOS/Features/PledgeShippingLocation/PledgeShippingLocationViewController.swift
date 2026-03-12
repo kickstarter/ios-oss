@@ -10,10 +10,6 @@ protocol PledgeShippingLocationViewControllerDelegate: AnyObject {
     _ viewController: PledgeShippingLocationViewController,
     didSelect location: Location
   )
-  func pledgeShippingLocationViewControllerLayoutDidUpdate(
-    _ viewController: PledgeShippingLocationViewController,
-    _ shimmerLoadingViewIsHidden: Bool
-  )
   func pledgeShippingLocationViewControllerFailedToLoad(
     _ viewController: PledgeShippingLocationViewController
   )
@@ -107,22 +103,6 @@ final class PledgeShippingLocationViewController: UIViewController {
     self.shimmerLoadingView.rac.hidden = self.viewModel.outputs.shimmerLoadingViewIsHidden
     self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocationButtonTitle
 
-    /**
-     When any layout updates occur we need to notify the delegate. This is only necessary when
-     this view is contained within a view that is not fully supported by Auto Layout,
-     e.g. a `UITableView` header.
-     */
-    Signal.combineLatest(
-      self.viewModel.outputs.adaptableStackViewIsHidden,
-      self.viewModel.outputs.shimmerLoadingViewIsHidden,
-      self.viewModel.outputs.shippingLocationButtonTitle
-    )
-    .observeForUI()
-    .observeValues { [weak self] _, shimmerLoadingViewIsHidden, _ in
-      guard let self = self else { return }
-      self.delegate?.pledgeShippingLocationViewControllerLayoutDidUpdate(self, shimmerLoadingViewIsHidden)
-    }
-
     self.viewModel.outputs.notifyDelegateOfSelectedShippingLocation
       .observeForUI()
       .observeValues { [weak self] location in
@@ -152,6 +132,12 @@ final class PledgeShippingLocationViewController: UIViewController {
 
         self.delegate?.pledgeShippingLocationViewControllerFailedToLoad(self)
       }
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.shimmerLoadingView.layoutSubviews()
   }
 
   // MARK: - Configuration

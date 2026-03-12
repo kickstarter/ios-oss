@@ -16,7 +16,6 @@ public protocol RewardsCollectionViewModelInputs {
     secretRewardToken: String?
   )
   func confirmedEditReward()
-  func pledgeShippingLocationViewControllerDidUpdate(_ shimmerLoadingViewIsHidden: Bool)
   func rewardCellShouldShowDividerLine(_ show: Bool)
   func rewardSelected(with rewardId: Int)
   func shippingLocationViewDidFailToLoad()
@@ -36,7 +35,7 @@ public protocol RewardsCollectionViewModelOutputs {
   var goToCustomizeYourReward: Signal<PledgeViewData, Never> { get }
   var navigationBarShadowImageHidden: Signal<Bool, Never> { get }
   var reloadDataWithValues: Signal<[RewardCardViewData], Never> { get }
-  var rewardsCollectionViewIsHidden: Signal<Bool, Never> { get }
+  var showPlaceholderRewardCards: Signal<Int, Never> { get }
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
   var scrollToRewardIndexPath: Signal<IndexPath, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
@@ -55,11 +54,9 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   RewardsCollectionViewModelInputs,
   RewardsCollectionViewModelOutputs {
   public init() {
-    let configData = Signal.combineLatest(
-      self.configDataProperty.signal.skipNil(),
-      self.viewDidLoadProperty.signal
-    )
-    .map(first)
+    let configData = self.configDataProperty.signal
+      .skipNil()
+      .takeWhen(self.viewDidLoadProperty.signal)
 
     let project = configData
       .map { $0.0 }
@@ -69,6 +66,14 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         secretRewardToken
       }
 
+    self.title = configData
+      .map { project, _, context, _ in (context, project) }
+      .takeWhen(self.viewDidLoadProperty.signal)
+      .map(titleForContext)
+
+    // The actual selected shipping location
+    // May be nil if there are no shippable rewards,
+    // or if the backer hasn't selected a location yet.
     let shippingLocation = Signal.merge(
       configData.mapConst(nil), // Default selected shipping location to nil
       self.shippingLocationSelectedSignal
@@ -80,12 +85,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         let sorted = allowableSortedProjectRewards(project.rewards)
         return filteredRewards(sorted, location: location)
       }
-
-    self.title = configData
-      .map { project, _, context, _ in (context, project) }
-      .combineLatest(with: self.viewDidLoadProperty.signal.ignoreValues())
-      .map(first)
-      .map(titleForContext)
 
     self.scrollToRewardIndexPath = Signal.combineLatest(
       project,
@@ -109,11 +108,35 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         shippingRule(forReward: reward, selectedLocation: location)
       }
 
+    let requiresShippingLocation = self.configDataProperty.signal
+      .skipNil()
+      .map { project, _, _, _ in
+        projectRequiresShippingLocation(project)
+      }
+
+    // The rewards should be hidden until a location is selected.
+    // If the project has only rewards which don't require a shipping location,
+    // show the rewards immediately (and don't show a loading state).
+
+    let shippingIsLoading = Signal.merge(
+      requiresShippingLocation,
+      // A valid location was selected
+      self.shippingLocationSelectedSignal.skipNil().mapConst(false)
+    )
+
+    let showRewards = shippingIsLoading.negate()
+
+    self.showPlaceholderRewardCards = project
+      .filterWhenLatestFrom(showRewards, satisfies: isFalse)
+      .map { $0.rewards.count } // Show placeholders for all rewards, including no-reward.
+
     self.reloadDataWithValues = Signal.combineLatest(
       project,
       rewards,
-      self.shippingLocationSelectedSignal.signal
+      self.shippingLocationSelectedSignal,
     )
+    // Don't show rewards until the shipping has loaded.
+    .filterWhenLatestFrom(showRewards, satisfies: isTrue)
     .map { project, rewards, location in
       rewards.map { reward in
         (project, reward, .pledge, location)
@@ -127,14 +150,14 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
     // MARK: Shipping Location
 
-    let hasShippableRewards = project.map(projectHasShippableRewards)
-
-    self.shippingLocationViewHidden = hasShippableRewards.map(negate)
+    self.shippingLocationViewHidden = requiresShippingLocation
+      .negate()
+      .takeWhen(self.viewDidLoadProperty.signal)
 
     // Only shown for regular non-add-ons based rewards
     self.configureShippingLocationViewWithData = Signal.combineLatest(
       project,
-      hasShippableRewards.filter(isTrue)
+      requiresShippingLocation.filter(isTrue)
     )
     .map { project, _ in
       PledgeShippingLocationViewData(
@@ -243,17 +266,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       goToPledgeBackedConfirmed
     )
 
-    /// Temporary loading state solution. Proper designs will be explored in this ticket [mbl-1678](https://kickstarter.atlassian.net/browse/MBL-1678)
-    let locationShimmerHidden = self.pledgeShippingLocationViewControllerDidUpdateProperty.signal
-      .map { $0 }
-
-    // Rewards collection view should only be hidden while the location shimmer is showing.
-    // If the project doesn't have shippable rewards, show immediately.
-    self.rewardsCollectionViewIsHidden = Signal.merge(
-      locationShimmerHidden.negate(),
-      hasShippableRewards.filter(isFalse).mapConst(false)
-    )
-
     self.rewardsCollectionViewFooterIsHidden = self.traitCollectionChangedProperty.signal
       .skipNil()
       .map { isFalse($0.verticalSizeClass == .regular) }
@@ -270,9 +282,9 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     Signal.combineLatest(
       project,
       refTag,
-      self.viewDidLoadProperty.signal.ignoreValues()
     )
-    .observeValues { project, refTag, _ in
+    .takeWhen(self.viewDidLoadProperty.signal)
+    .observeValues { project, refTag in
       // This event is fired before a base reward is selected
       let reward = Reward.noReward
       let (backing, shippingTotal) = backingAndShippingTotal(for: project, and: reward)
@@ -386,11 +398,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.confirmedEditRewardProperty.value = ()
   }
 
-  private let pledgeShippingLocationViewControllerDidUpdateProperty = MutableProperty<Bool>(false)
-  public func pledgeShippingLocationViewControllerDidUpdate(_ shimmerLoadingViewIsHidden: Bool) {
-    self.pledgeShippingLocationViewControllerDidUpdateProperty.value = shimmerLoadingViewIsHidden
-  }
-
   private let rewardCellShouldShowDividerLineProperty = MutableProperty<Bool>(false)
   public func rewardCellShouldShowDividerLine(_ show: Bool) {
     self.rewardCellShouldShowDividerLineProperty.value = show
@@ -444,7 +451,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public let goToCustomizeYourReward: Signal<PledgeViewData, Never>
   public let navigationBarShadowImageHidden: Signal<Bool, Never>
   public let reloadDataWithValues: Signal<[RewardCardViewData], Never>
-  public let rewardsCollectionViewIsHidden: Signal<Bool, Never>
+  public let showPlaceholderRewardCards: Signal<Int, Never>
   public let rewardsCollectionViewFooterIsHidden: Signal<Bool, Never>
   public let scrollToRewardIndexPath: Signal<IndexPath, Never>
   public var shippingLocationViewHidden: Signal<Bool, Never>
@@ -462,7 +469,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
 // MARK: - Functions
 
-private func projectHasShippableRewards(_ project: Project) -> Bool {
+private func projectRequiresShippingLocation(_ project: Project) -> Bool {
   project.rewards
     .contains(where: { $0.isUnRestrictedShippingPreference || $0.isRestrictedShippingPreference })
 }
