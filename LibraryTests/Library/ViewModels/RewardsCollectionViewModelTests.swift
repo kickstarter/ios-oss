@@ -14,7 +14,7 @@ final class RewardsCollectionViewModelTests: TestCase {
   private let scrollToRewardIndex = TestObserver<Int, Never>()
   private let goToCustomizeYourReward = TestObserver<PledgeViewData, Never>()
   private let shippingLocationViewHidden = TestObserver<Bool, Never>()
-  private let showLoadingRewards = TestObserver<Int, Never>()
+  private let showPlaceholderRewardCards = TestObserver<Int, Never>()
 
   private let vm = RewardsCollectionViewModel()
 
@@ -30,7 +30,7 @@ final class RewardsCollectionViewModelTests: TestCase {
 
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
 
-    self.vm.outputs.showLoadingRewards.observe(self.showLoadingRewards.observer)
+    self.vm.outputs.showPlaceholderRewardCards.observe(self.showPlaceholderRewardCards.observer)
   }
 
   func testRewardsOrderedAndFiltered() {
@@ -466,7 +466,7 @@ final class RewardsCollectionViewModelTests: TestCase {
 
     self.shippingLocationViewHidden.assertValues([false], "Shipping location view should be hidden")
     self.reloadDataWithValues.assertDidNotEmitValue()
-    self.showLoadingRewards.assertValues(
+    self.showPlaceholderRewardCards.assertValues(
       [2],
       "Should show loading placeholder rewards until location is selected"
     )
@@ -474,11 +474,11 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.shippingLocationSelected(.usa)
 
     self.reloadDataWithValues.assertLastValue(rewards)
-    self.showLoadingRewards.assertValues([2])
+    self.showPlaceholderRewardCards.assertValues([2])
 
     self.vm.shippingLocationSelected(.australia)
     self.reloadDataWithValues.assertLastValue([Reward.noReward])
-    self.showLoadingRewards.assertValues([2])
+    self.showPlaceholderRewardCards.assertValues([2])
   }
 
   func test_projectWithNoShippableRewards_doesNotShowLoadingState() {
@@ -510,7 +510,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       rewards,
       "Rewards should display immediately if there are no rewards that require a shipping location"
     )
-    self.showLoadingRewards.assertDidNotEmitValue()
+    self.showPlaceholderRewardCards.assertDidNotEmitValue()
     self.shippingLocationViewHidden.assertValues([true])
   }
 }

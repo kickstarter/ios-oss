@@ -198,7 +198,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
         self.goToAddOnSelection(data: data)
       }
 
-    self.viewModel.outputs.showLoadingRewards
+    self.viewModel.outputs.showPlaceholderRewardCards
       .observeForUI()
       .observeValues { [weak self] rewardsCount in
         guard let self else { return }

@@ -35,7 +35,7 @@ public protocol RewardsCollectionViewModelOutputs {
   var goToCustomizeYourReward: Signal<PledgeViewData, Never> { get }
   var navigationBarShadowImageHidden: Signal<Bool, Never> { get }
   var reloadDataWithValues: Signal<[RewardCardViewData], Never> { get }
-  var showLoadingRewards: Signal<Int, Never> { get }
+  var showPlaceholderRewardCards: Signal<Int, Never> { get }
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
   var scrollToRewardIndexPath: Signal<IndexPath, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
@@ -126,7 +126,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
     let showRewards = shippingIsLoading.negate()
 
-    self.showLoadingRewards = project
+    self.showPlaceholderRewardCards = project
       .filterWhenLatestFrom(showRewards, satisfies: isFalse)
       .map { $0.rewards.count } // Show placeholders for all rewards, including no-reward.
 
@@ -454,7 +454,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public let goToCustomizeYourReward: Signal<PledgeViewData, Never>
   public let navigationBarShadowImageHidden: Signal<Bool, Never>
   public let reloadDataWithValues: Signal<[RewardCardViewData], Never>
-  public let showLoadingRewards: Signal<Int, Never>
+  public let showPlaceholderRewardCards: Signal<Int, Never>
   public let rewardsCollectionViewFooterIsHidden: Signal<Bool, Never>
   public let scrollToRewardIndexPath: Signal<IndexPath, Never>
   public var shippingLocationViewHidden: Signal<Bool, Never>
