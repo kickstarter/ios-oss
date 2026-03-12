@@ -284,8 +284,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/statsig-io/statsig-kit.git",
       "state" : {
-        "revision" : "e2c93f410f5107bf5438ea6bb0f609494e60dd6b",
-        "version" : "1.60.3"
+        "revision" : "8c28267e3fecb07ea5dba9893bbbf001483203d4",
+        "version" : "1.61.0"
       }
     },
     {

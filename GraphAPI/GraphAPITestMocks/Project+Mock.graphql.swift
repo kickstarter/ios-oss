@@ -74,6 +74,7 @@ public class Project: MockObject {
     @Field<GraphQLEnum<GraphAPI.ProjectState>>("state") public var state
     @Field<GraphAPI.DateTime>("stateChangedAt") public var stateChangedAt
     @Field<GraphAPI.HTML>("story") public var story
+    @Field<RichTextComponent>("storyRichText") public var storyRichText
     @Field<[Tag?]>("tags") public var tags
     @Field<String>("url") public var url
     @Field<Double>("usdExchangeRate") public var usdExchangeRate
@@ -148,6 +149,7 @@ public extension Mock where O == Project {
     state: GraphQLEnum<GraphAPI.ProjectState>? = nil,
     stateChangedAt: GraphAPI.DateTime? = nil,
     story: GraphAPI.HTML? = nil,
+    storyRichText: Mock<RichTextComponent>? = nil,
     tags: [Mock<Tag>?]? = nil,
     url: String? = nil,
     usdExchangeRate: Double? = nil,
@@ -219,6 +221,7 @@ public extension Mock where O == Project {
     _setScalar(state, for: \.state)
     _setScalar(stateChangedAt, for: \.stateChangedAt)
     _setScalar(story, for: \.story)
+    _setEntity(storyRichText, for: \.storyRichText)
     _setList(tags, for: \.tags)
     _setScalar(url, for: \.url)
     _setScalar(usdExchangeRate, for: \.usdExchangeRate)

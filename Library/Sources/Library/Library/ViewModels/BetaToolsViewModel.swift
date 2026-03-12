@@ -12,6 +12,7 @@ public enum BetaToolsRow: Int, CaseIterable {
   case designSystem
   case colors
   case paginatedScrollView
+  case richTextExample
   case changeEnvironment
   case changeLanguage
 
@@ -37,6 +38,7 @@ public enum BetaToolsRow: Int, CaseIterable {
     case .designSystem: return "Design System"
     case .colors: return "Semantic Colors"
     case .paginatedScrollView: return "Paginated Scroll View"
+    case .richTextExample: return "Rich Text Example"
     case .changeEnvironment: return "Change Environment"
     case .changeLanguage: return "Change Language"
     }
@@ -45,7 +47,8 @@ public enum BetaToolsRow: Int, CaseIterable {
   public var rightIconImageName: String? {
     switch self {
     case .debugConfigFeatureFlags, .debugRemoteConfigFeatureFlags,
-         .debugPushNotifications, .paginatedScrollView, .designSystem, .colors: return "chevron-right"
+         .debugPushNotifications, .paginatedScrollView, .richTextExample, .designSystem,
+         .colors: return "chevron-right"
     default: return nil
     }
   }
@@ -76,6 +79,7 @@ public protocol BetaToolsViewModelOutputs {
   var goToRemoteConfigFeatureFlagTools: Signal<(), Never> { get }
   var goToPushNotificationTools: Signal<(), Never> { get }
   var goToPaginatedScrollView: Signal<(), Never> { get }
+  var goToRichTextExample: Signal<(), Never> { get }
   var goToDesignSystem: Signal<(), Never> { get }
   var goToColors: Signal<(), Never> { get }
   var logoutWithParams: Signal<DiscoveryParams, Never> { get }
@@ -163,6 +167,11 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
       .filter { $0 == BetaToolsRow.paginatedScrollView }
       .ignoreValues()
 
+    self.goToRichTextExample = self.didSelectBetaToolsRowProperty.signal
+      .skipNil()
+      .filter { $0 == BetaToolsRow.richTextExample }
+      .ignoreValues()
+
     self.goToDesignSystem = self.didSelectBetaToolsRowProperty.signal
       .skipNil()
       .filter { $0 == BetaToolsRow.designSystem }
@@ -227,6 +236,7 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
   public let goToRemoteConfigFeatureFlagTools: Signal<(), Never>
   public let goToPushNotificationTools: Signal<(), Never>
   public let goToPaginatedScrollView: Signal<(), Never>
+  public let goToRichTextExample: Signal<(), Never>
   public let goToDesignSystem: Signal<(), Never>
   public let goToColors: Signal<(), Never>
   public let updateLanguage: Signal<Language, Never>

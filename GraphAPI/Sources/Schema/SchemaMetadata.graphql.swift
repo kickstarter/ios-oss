@@ -121,6 +121,16 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "RewardTotalCountConnection": return GraphAPI.Objects.RewardTotalCountConnection
     case "PaymentIncrement": return GraphAPI.Objects.PaymentIncrement
     case "PaymentIncrementAmount": return GraphAPI.Objects.PaymentIncrementAmount
+    case "RichTextComponent": return GraphAPI.Objects.RichTextComponent
+    case "RichText": return GraphAPI.Objects.RichText
+    case "RichTextHeader": return GraphAPI.Objects.RichTextHeader
+    case "RichTextListItem": return GraphAPI.Objects.RichTextListItem
+    case "RichTextListOpen": return GraphAPI.Objects.RichTextListOpen
+    case "RichTextListClose": return GraphAPI.Objects.RichTextListClose
+    case "RichTextPhoto": return GraphAPI.Objects.RichTextPhoto
+    case "RichTextAudio": return GraphAPI.Objects.RichTextAudio
+    case "RichTextVideo": return GraphAPI.Objects.RichTextVideo
+    case "RichTextOembed": return GraphAPI.Objects.RichTextOembed
     case "CategorySubcategoriesConnection": return GraphAPI.Objects.CategorySubcategoriesConnection
     case "PaymentPlan": return GraphAPI.Objects.PaymentPlan
     case "Validation": return GraphAPI.Objects.Validation
@@ -133,16 +143,6 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "PledgeProjectOverviewItemEdge": return GraphAPI.Objects.PledgeProjectOverviewItemEdge
     case "PledgeProjectOverviewItem": return GraphAPI.Objects.PledgeProjectOverviewItem
     case "PledgedProjectsOverviewPledgeFlags": return GraphAPI.Objects.PledgedProjectsOverviewPledgeFlags
-    case "RichText": return GraphAPI.Objects.RichText
-    case "RichTextHeader": return GraphAPI.Objects.RichTextHeader
-    case "RichTextListItem": return GraphAPI.Objects.RichTextListItem
-    case "RichTextListOpen": return GraphAPI.Objects.RichTextListOpen
-    case "RichTextListClose": return GraphAPI.Objects.RichTextListClose
-    case "RichTextPhoto": return GraphAPI.Objects.RichTextPhoto
-    case "RichTextAudio": return GraphAPI.Objects.RichTextAudio
-    case "RichTextVideo": return GraphAPI.Objects.RichTextVideo
-    case "RichTextOembed": return GraphAPI.Objects.RichTextOembed
-    case "RichTextComponent": return GraphAPI.Objects.RichTextComponent
     default: return nil
     }
   }

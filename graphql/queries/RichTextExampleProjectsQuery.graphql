@@ -1,0 +1,11 @@
+query RichTextExampleProjectsQuery{
+  projects(recommended: true, first: 20) {
+    nodes{
+      id
+      name
+      storyRichText {
+        ...RichTextComponentFragment
+      }
+    }
+  }
+}

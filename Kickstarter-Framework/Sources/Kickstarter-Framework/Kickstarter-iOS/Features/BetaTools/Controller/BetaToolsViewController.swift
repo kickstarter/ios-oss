@@ -84,6 +84,12 @@ internal final class BetaToolsViewController: UITableViewController {
         self?.goToPaginatedScrollView()
       }
 
+    self.viewModel.outputs.goToRichTextExample
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToRichTextExample()
+      }
+
     self.viewModel.outputs.goToDesignSystem
       .observeForControllerAction()
       .observeValues { [weak self] in
@@ -194,6 +200,16 @@ internal final class BetaToolsViewController: UITableViewController {
   private func goToPaginatedScrollView() {
     let viewController = UIHostingController(rootView: PaginationExampleView())
 
+    self.navigationController?.pushViewController(viewController, animated: true)
+  }
+
+  private func goToRichTextExample() {
+    let viewController = UIHostingController(
+      rootView: RichTextExampleProjectsView(onSelectProject: { [weak self] project in
+        let detail = UIHostingController(rootView: Text(project.name))
+        self?.navigationController?.pushViewController(detail, animated: true)
+      })
+    )
     self.navigationController?.pushViewController(viewController, animated: true)
   }
 
