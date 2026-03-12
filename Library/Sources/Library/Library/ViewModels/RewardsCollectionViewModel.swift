@@ -116,7 +116,12 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     )
     .map { project, rewards, location in
       rewards.map { reward in
-        (project, reward, .pledge, location)
+        RewardCardViewData(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          currentShippingLocation: location
+        )
       }
     }
 

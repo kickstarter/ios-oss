@@ -21,8 +21,8 @@ public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewM
   public init() {
     self.scrollScrollViewToTop = self.prepareForReuseProperty.signal
     self.backerLabelHidden = self.configDataProperty.signal.skipNil()
-      .map { project, reward, _, _ in
-        userIsBacking(reward: reward, inProject: project)
+      .map { data in
+        userIsBacking(reward: data.reward, inProject: data.project)
       }
       .negate()
   }
