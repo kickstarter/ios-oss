@@ -92,30 +92,29 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
 private func pledgeButtonTitle(data: RewardCardViewData) -> String? {
   if currentUserIsCreator(of: data.project) { return nil }
 
-  if !rewardCanShip(data.reward, toLocation: data.currentShippingLocation) {
-    return Strings.Not_available_in_selected_country()
-  }
-
   let projectBackingState = RewardCellProjectBackingStateType.state(with: data.project)
   let isBackingThisReward = userIsBacking(reward: data.reward, inProject: data.project)
   let isRewardAvailable = rewardIsAvailable(data.reward)
+  let rewardShipsToLocation = rewardCanShip(data.reward, toLocation: data.currentShippingLocation)
 
-  switch (projectBackingState, isBackingThisReward, isRewardAvailable) {
-  case (.backed(.live), false, true):
+  switch (projectBackingState, isBackingThisReward, isRewardAvailable, rewardShipsToLocation) {
+  case (.backed(.live), false, true, _):
     return Strings.Select()
-  case (.backed(.live), true, _):
+  case (.backed(.live), true, _, _):
     return Strings.Continue()
-  case (.backed(.nonLive), true, _):
+  case (.backed(.nonLive), true, _, _):
     return Strings.Selected()
-  case (.nonBacked(.live), _, true):
+  case (.nonBacked(.live), _, true, true):
     return Strings.Select()
-  case (.backed(.nonLive), false, _),
-       (.backed(.inPostCampaignPledgingPhase), _, _),
-       (.nonBacked(.nonLive), _, _):
+  case (.nonBacked(.live), _, true, false):
+    return Strings.Not_available_in_selected_country()
+  case (.backed(.nonLive), false, _, _),
+       (.backed(.inPostCampaignPledgingPhase), _, _, _),
+       (.nonBacked(.nonLive), _, _, _):
     return nil
-  case (_, _, false):
+  case (_, _, false, _):
     return Strings.No_longer_available()
-  case (.nonBacked(.inPostCampaignPledgingPhase), _, true):
+  case (.nonBacked(.inPostCampaignPledgingPhase), _, true, _):
     return Strings.Select()
   }
 }

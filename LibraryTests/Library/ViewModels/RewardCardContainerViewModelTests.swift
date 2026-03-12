@@ -626,11 +626,13 @@ final class RewardCardContainerViewModelTests: TestCase {
     }
   }
 
-  func testRestrictedShipping_validLocation() {}
+  func testPledgeButtonTitle_RestrictedShipping_validLocation() {}
 
-  func testRestrictedShipping_invalidLocation() {}
+  func testPledgeButtonTitle_RestrictedShipping_invalidLocation() {}
 
-  func testDigitalReward_noLocation() {}
+  func testPledgeButtonTitle_DigitalReward_noLocation() {}
+
+  func testPledgeButtonTitle_RestrictedShipping_BackedReward_invalidLocation() {}
 
   func testPledgeButtonTapped() {
     self.vm.inputs.configureWith(data: RewardCardViewData(
