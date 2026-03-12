@@ -413,12 +413,9 @@ public func rewardsCarouselCanNavigateToReward(
 ) -> Bool {
   guard !currentUserIsCreator(of: project) else { return false }
 
-  guard rewardCanShip(reward, toLocation: location) else {
-    return false
-  }
-
+  let rewardCanShipToSelectedLocation = rewardCanShip(reward, toLocation: location)
   let isBacking = userIsBacking(reward: reward, inProject: project)
-  let isAvailableForNewBacker = rewardIsAvailable(reward) && !isBacking
+  let isAvailableForNewBacker = rewardIsAvailable(reward) && rewardCanShipToSelectedLocation && !isBacking
   /// Backers should always be able to edit the currently backed reward. It's the only path to update the pledge/bonus amount.
   let isAvailableForExistingBackerToEdit = isBacking
 
