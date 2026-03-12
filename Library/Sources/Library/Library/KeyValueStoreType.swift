@@ -16,6 +16,7 @@ public enum AppKeys: String {
   case remoteConfigFeatureFlags = "com.kickstarter.KeyValueStoreType.remoteConfigFeatureFlags"
   case seenAppRating = "com.kickstarter.KeyValueStoreType.hasSeenAppRating"
   case seenGamesNewsletter = "com.kickstarter.KeyValueStoreType.hasSeenGamesNewsletter"
+  case statsigFeatureFlags = "com.kickstarter.KeyValueStoreType.statsigFeatureFlags"
   // swiftformat:enable wrap
 }
 
@@ -47,6 +48,7 @@ public protocol KeyValueStoreType: AnyObject {
   var lastSeenActivitySampleId: Int { get set }
   var onboardingCategories: Data? { get set }
   var remoteConfigFeatureFlags: [String: Bool] { get set }
+  var statsigFeatureFlags: [String: Bool] { get set }
 }
 
 extension KeyValueStoreType {
@@ -175,6 +177,16 @@ extension KeyValueStoreType {
     }
     set {
       self.set(newValue, forKey: AppKeys.remoteConfigFeatureFlags.rawValue)
+    }
+  }
+
+  public var statsigFeatureFlags: [String: Bool] {
+    get {
+      return self
+        .object(forKey: AppKeys.statsigFeatureFlags.rawValue) as? [String: Bool] ?? [:]
+    }
+    set {
+      self.set(newValue, forKey: AppKeys.statsigFeatureFlags.rawValue)
     }
   }
 }
