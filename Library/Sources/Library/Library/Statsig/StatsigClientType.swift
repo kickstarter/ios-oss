@@ -7,3 +7,15 @@ public protocol StatsigClientType: AnyObject {
   /// Returns whether a feature gate is enabled for the current user.
   func checkGate(for feature: StatsigFeature) -> Bool
 }
+
+extension StatsigClientType {
+  /* Returns all features the app knows about */
+
+  public func allFeatures() -> [StatsigFeature] {
+    return StatsigFeature.allCases
+  }
+
+  public func isFeatureEnabled(featureKey _: StatsigFeature) -> Bool {
+    AppEnvironment.current.statsigClient?.checkGate(for: .videoFeed) == true
+  }
+}
