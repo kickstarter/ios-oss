@@ -584,7 +584,7 @@ private func shouldShowReward(
     return false
   }
 
-  if !checkIfReward(reward, shipsToLocation: location) {
+  if !rewardCanShip(reward, toLocation: location) {
     return false
   }
 

@@ -383,9 +383,9 @@ private func rewardAvailableInAllLocations(_ reward: Reward) -> Bool {
   return true
 }
 
-public func checkIfReward(
+public func rewardCanShip(
   _ reward: Reward,
-  shipsToLocation location: Location?
+  toLocation location: Location?
 ) -> Bool {
   if rewardAvailableInAllLocations(reward) {
     return true
@@ -413,7 +413,7 @@ public func rewardsCarouselCanNavigateToReward(
 ) -> Bool {
   guard !currentUserIsCreator(of: project) else { return false }
 
-  guard checkIfReward(reward, shipsToLocation: location) else {
+  guard rewardCanShip(reward, toLocation: location) else {
     return false
   }
 

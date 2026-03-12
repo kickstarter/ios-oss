@@ -92,7 +92,7 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
 private func pledgeButtonTitle(data: RewardCardViewData) -> String? {
   if currentUserIsCreator(of: data.project) { return nil }
 
-  if !checkIfReward(data.reward, shipsToLocation: data.currentShippingLocation) {
+  if !rewardCanShip(data.reward, toLocation: data.currentShippingLocation) {
     return Strings.Not_available_in_selected_country()
   }
 
