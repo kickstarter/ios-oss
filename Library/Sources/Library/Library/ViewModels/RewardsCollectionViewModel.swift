@@ -69,17 +69,11 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         secretRewardToken
       }
 
-    let shippingLocation = Signal.merge(
-      configData.mapConst(nil), // Default selected shipping location to nil
-      self.shippingLocationSelectedSignal
-    )
-
     let rewards = project
-      .takePairWhen(shippingLocation)
-      .map { project, location in
-        let sorted = allowableSortedProjectRewards(project.rewards)
-        return filteredRewards(sorted, location: location)
-      }
+      .map(allowableSortedProjectRewards)
+
+    let filteredByLocationRewards = Signal.combineLatest(rewards, self.shippingLocationSelectedSignal)
+      .map(filteredRewardsByLocation)
 
     self.title = configData
       .map { project, _, context, _ in (context, project) }
@@ -90,18 +84,24 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.scrollToRewardIndexPath = Signal.combineLatest(
       project,
       rewards,
+      filteredByLocationRewards,
       secretRewardToken
     )
     .takeWhen(self.viewDidLayoutSubviewsProperty.signal.ignoreValues())
-    .map { project, rewards, secretRewardToken in
+    .map { project, rewards, filteredRewardsByLocation, secretRewardToken in
       rewardToScrollIndexPath(
         project,
-        rewards: rewards,
+        rewards: filteredRewardsByLocation.isEmpty ? rewards : filteredRewardsByLocation,
         secretRewardToken: secretRewardToken
       )
     }
     .skipNil()
     .take(first: 1)
+
+    let shippingLocation = Signal.merge(
+      configData.mapConst(nil), // Default selected shipping location to nil
+      self.shippingLocationSelectedSignal
+    )
 
     let selectedShippingRule: Signal<ShippingRule?, Never> = shippingLocation
       .takePairWhen(self.selectedRewardProperty.signal.skipNil())
@@ -112,14 +112,18 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.reloadDataWithValues = Signal.combineLatest(
       project,
       rewards,
+      filteredByLocationRewards,
       self.shippingLocationSelectedSignal.signal
     )
-    .map { project, rewards, location in
-      let context = userIsBackingProject(project) ?
-        RewardCardViewContext.manage : RewardCardViewContext.pledge
-
-      return rewards.map { reward in
-        (project, reward, context, location)
+    .map { project, rewards, filteredByLocationRewards, location in
+      if !filteredByLocationRewards.isEmpty {
+        filteredByLocationRewards
+          .filter { reward in isStartDateBeforeToday(for: reward) }
+          .map { reward in (project, reward, .pledge, location) }
+      } else {
+        rewards
+          .filter { reward in isStartDateBeforeToday(for: reward) }
+          .map { reward in (project, reward, .pledge, nil) }
       }
     }
 
@@ -533,13 +537,13 @@ private func backingAndShippingTotal(for project: Project, and reward: Reward) -
   return (backing, shippingTotal)
 }
 
-private func allowableSortedProjectRewards(_ rewards: [Reward]) -> [Reward] {
+private func allowableSortedProjectRewards(from project: Project) -> [Reward] {
   var notReward: [Reward] = []
   var unavailableRewards: [Reward] = []
   var secretRewards: [Reward] = []
   var availableRewards: [Reward] = []
 
-  for reward in rewards {
+  for reward in project.rewards {
     if reward.isNoReward {
       notReward.append(reward)
       continue
@@ -561,55 +565,28 @@ private func allowableSortedProjectRewards(_ rewards: [Reward]) -> [Reward] {
   return notReward + secretRewards + availableRewards + unavailableRewards
 }
 
-private func filteredRewards(
+private func filteredRewardsByLocation(
   _ rewards: [Reward],
   location: Location?
 ) -> [Reward] {
-  return rewards.filter { shouldShowReward($0, forLocation: location) }
-}
+  return rewards.filter { reward in
+    var shouldDisplayReward = false
 
-private func shouldShowReward(
-  _ reward: Reward,
-  forLocation location: Location?
-) -> Bool {
-  // Check if the reward isn't available yet.
-  // These are usually filtered out by the backend, but may be visible if you're the project creator.
-  if !isStartDateBeforeToday(for: reward) {
-    return false
+    let isRewardLocalOrDigital = isRewardDigital(reward) || isRewardLocalPickup(reward)
+    let isUnrestrictedShippingReward = reward.isUnRestrictedShippingPreference
+    let isRestrictedShippingReward = reward.isRestrictedShippingPreference
+
+    // Return all rewards that are no reward, digital, local pickup, or ship anywhere in the world.
+    if rewards.first?.id == reward.id || isRewardLocalOrDigital || isUnrestrictedShippingReward {
+      shouldDisplayReward = true
+
+      // If restricted shipping, compare against selected shipping location.
+    } else if isRestrictedShippingReward {
+      shouldDisplayReward = rewardShipsTo(selectedLocation: location?.id, reward)
+    }
+
+    return shouldDisplayReward
   }
-
-  // If the reward is No Reward, digital, local, or ships anywhere, it doesn't matter
-  // what location you selected.
-  if rewardAvailableInAllLocations(reward) {
-    return true
-  }
-
-  guard let location else {
-    // This is a restricted reward, but the user hasn't selected a shipping location yet.
-    // Filter it out until a location is set.
-    return false
-  }
-
-  return rewardShipsTo(selectedLocation: location.id, reward)
-}
-
-private func rewardAvailableInAllLocations(_ reward: Reward) -> Bool {
-  let isRewardLocalOrDigital = isRewardDigital(reward) || isRewardLocalPickup(reward)
-  let isUnrestrictedShippingReward = reward.isUnRestrictedShippingPreference
-  let isRestrictedShippingReward = reward.isRestrictedShippingPreference
-  let isNoRewardReward = reward.isNoReward
-
-  // Return all rewards that are no reward, digital, local pickup, or ship anywhere in the world.
-  if isNoRewardReward || isRewardLocalOrDigital || isUnrestrictedShippingReward {
-    return true
-  }
-
-  if isRestrictedShippingReward {
-    return false
-  }
-
-  assert(false, "A reward should either be restricted, or unrestricted. Showing in all locations.")
-  return true
 }
 
 /// Returns true if a given selection location matches the countries the given reward is available to ship to.
