@@ -112,6 +112,8 @@ public struct Environment {
   /// `QueueScheduler.mainQueueScheduler`.
   public let scheduler: DateScheduler
 
+  public let statsigClient: StatsigClientType?
+
   /// A ubiquitous key-value store. Default value is `NSUbiquitousKeyValueStore.default`.
   public let ubiquitousStore: KeyValueStoreType
 
@@ -154,6 +156,7 @@ public struct Environment {
     reachability: SignalProducer<Reachability, Never> = Reachability.signalProducer,
     remoteConfigClient: RemoteConfigClientType? = nil,
     scheduler: DateScheduler = QueueScheduler.main,
+    statsigClient: StatsigClientType? = nil,
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default,
     userDefaults: KeyValueStoreType = UserDefaults.standard,
     uuidType: UUIDType.Type = UUID.self
@@ -190,6 +193,7 @@ public struct Environment {
     self.reachability = reachability
     self.remoteConfigClient = remoteConfigClient
     self.scheduler = scheduler
+    self.statsigClient = statsigClient
     self.ubiquitousStore = ubiquitousStore
     self.userDefaults = userDefaults
     self.uuidType = uuidType

@@ -88,6 +88,14 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
+  // MARK: - Statsig
+
+  public static func updateStatsigClient(_ statsigClient: StatsigClientType?) {
+    self.replaceCurrentEnvironment(
+      statsigClient: statsigClient
+    )
+  }
+
   public static func updateConfig(_ config: Config) {
     let debugConfigOrConfig = self.current.debugData?.config ?? config
 
@@ -216,6 +224,7 @@ public struct AppEnvironment: AppEnvironmentType {
     reachability: SignalProducer<Reachability, Never> = AppEnvironment.current.reachability,
     remoteConfigClient: RemoteConfigClientType? = AppEnvironment.current.remoteConfigClient,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
+    statsigClient: StatsigClientType? = AppEnvironment.current.statsigClient,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
     uuidType: UUIDType.Type = AppEnvironment.current.uuidType
@@ -250,6 +259,7 @@ public struct AppEnvironment: AppEnvironmentType {
         reachability: reachability,
         remoteConfigClient: remoteConfigClient,
         scheduler: scheduler,
+        statsigClient: statsigClient,
         ubiquitousStore: ubiquitousStore,
         userDefaults: userDefaults,
         uuidType: uuidType
@@ -291,6 +301,7 @@ public struct AppEnvironment: AppEnvironmentType {
     reachability: SignalProducer<Reachability, Never> = AppEnvironment.current.reachability,
     remoteConfigClient: RemoteConfigClientType? = AppEnvironment.current.remoteConfigClient,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
+    statsigClient: StatsigClientType? = AppEnvironment.current.statsigClient,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
     uuidType: UUIDType.Type = AppEnvironment.current.uuidType
@@ -328,6 +339,7 @@ public struct AppEnvironment: AppEnvironmentType {
         reachability: reachability,
         remoteConfigClient: remoteConfigClient,
         scheduler: scheduler,
+        statsigClient: statsigClient,
         ubiquitousStore: ubiquitousStore,
         userDefaults: userDefaults,
         uuidType: uuidType

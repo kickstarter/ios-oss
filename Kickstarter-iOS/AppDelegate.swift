@@ -16,6 +16,7 @@ import ReactiveSwift
 import SafariServices
 import Segment
 import SegmentBrazeUI
+import Statsig
 import SwiftUI
 import UIKit
 import UserNotifications
@@ -218,6 +219,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           strongSelf.configureRemoteConfig()
         }
     #endif
+
+    self.viewModel.outputs.configureStatsig
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.configureStatsig()
+      }
 
     self.disposables.append(
       self.viewModel.outputs.trackingAuthorizationStatus
@@ -456,6 +463,13 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           "🔴 Remote Config SDK Config Update Listener Failure: \(realtimeUpdateError.localizedDescription)"
         )
       }
+  }
+
+  private func configureStatsig() {
+    let client = StatsigClient(sdkKey: Secrets.Statsig.staging)
+    AppEnvironment.updateStatsigClient(client)
+
+    client.initialize(userID: AppEnvironment.current.currentUser?.id.toString())
   }
 
   private func fetchAndActivateRemoteConfig() {
