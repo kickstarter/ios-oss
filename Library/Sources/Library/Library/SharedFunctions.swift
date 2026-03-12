@@ -393,13 +393,17 @@ public func checkIfReward(
 
   guard let selectedLocationId = location?.id else { return false }
 
-  var shippingLocationIds: [Int] = []
-
-  reward.shippingRulesExpanded?.forEach { rule in
-    shippingLocationIds.append(rule.location.id)
+  guard let rules = reward.shippingRulesExpanded, rules.count > 0 else {
+    assert(
+      false,
+      "Checking a restricted reward for valid shipping locations, but it is missing expanded shipping rules."
+    )
+    return false
   }
 
-  return shippingLocationIds.contains(selectedLocationId)
+  return rules.contains(where: { rule in
+    rule.location.id == selectedLocationId
+  })
 }
 
 public func rewardsCarouselCanNavigateToReward(

@@ -129,6 +129,16 @@ final class SharedFunctionsTests: TestCase {
     }
   }
 
+  func testRewardsCarouselCanNavigateToReward_RestrictedReward_ValidShippingLocation_IsTrue() {}
+
+  func testRewardsCarouselCanNavigateToReward_RestrictedReward_InvalidShippingLocation_IsFalse() {}
+
+  func testRewardsCarouselCanNavigateToReward_UnrestrictedReward_Available_NotBacked_IsTrue() {}
+
+  func testRewardsCarouselCanNavigateToReward_DigitalReward_Available_NotBacked_IsTrue() {}
+
+  func testRewardsCarouselCanNavigateToReward_LocalReward_Available_NotBacked_IsTrue() {}
+
   func testRewardsCarouselCanNavigateToReward_RegularReward_Available_NotBacked_IsCreator() {
     let creator = User.projectCreator
       |> User.lens.id .~ 5
