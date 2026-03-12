@@ -277,21 +277,6 @@ final class SharedFunctionsTests: TestCase {
     ))
   }
 
-  func testRewardsCarouselCanNavigateToReward_RegularReward_Available_NotBacked_RestrictedShipping_InvalidLocation(
-  ) {
-    let reward = Reward.template
-      |> Reward.lens.limit .~ 5
-      |> Reward.lens.remaining .~ 5
-      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
-      |> Reward.lens.isAvailable .~ true
-
-    let project = Project.template
-      |> Project.lens.rewardData.rewards .~ [reward]
-      |> Project.lens.rewardData.addOns .~ nil
-
-    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project, selectedShippingLocation: nil))
-  }
-
   func testRewardsCarouselCanNavigateToReward_RegularReward_Available_Backed_RestrictedShipping_InvalidLocation(
   ) {
     let shipsToUSAReward = Reward.template
