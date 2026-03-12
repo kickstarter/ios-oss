@@ -364,11 +364,58 @@ public func selectedRewardQuantities(in backing: Backing) -> SelectedRewardQuant
   return quantities
 }
 
-public func rewardsCarouselCanNavigateToReward(_ reward: Reward, in project: Project) -> Bool {
+private func rewardAvailableInAllLocations(_ reward: Reward) -> Bool {
+  let isRewardLocalOrDigital = isRewardDigital(reward) || isRewardLocalPickup(reward)
+  let isUnrestrictedShippingReward = reward.isUnRestrictedShippingPreference
+  let isRestrictedShippingReward = reward.isRestrictedShippingPreference
+  let isNoRewardReward = reward.isNoReward
+
+  // Return all rewards that are no reward, digital, local pickup, or ship anywhere in the world.
+  if isNoRewardReward || isRewardLocalOrDigital || isUnrestrictedShippingReward {
+    return true
+  }
+
+  if isRestrictedShippingReward {
+    return false
+  }
+
+  assert(false, "A reward should either be restricted, or unrestricted. Showing in all locations.")
+  return true
+}
+
+public func rewardCanShip(
+  _ reward: Reward,
+  toLocation location: Location?
+) -> Bool {
+  if rewardAvailableInAllLocations(reward) {
+    return true
+  }
+
+  guard let selectedLocationId = location?.id else { return false }
+
+  guard let rules = reward.shippingRulesExpanded, rules.count > 0 else {
+    assert(
+      false,
+      "Checking a restricted reward for valid shipping locations, but it is missing expanded shipping rules."
+    )
+    return false
+  }
+
+  return rules.contains(where: { rule in
+    rule.location.id == selectedLocationId
+  })
+}
+
+public func rewardsCarouselCanNavigateToReward(
+  _ reward: Reward,
+  in project: Project,
+  selectedShippingLocation location: Location?
+) -> Bool {
   guard !currentUserIsCreator(of: project) else { return false }
 
+  let rewardCanShipToSelectedLocation = rewardCanShip(reward, toLocation: location)
   let isBacking = userIsBacking(reward: reward, inProject: project)
-  let isAvailableForNewBacker = rewardIsAvailable(reward) && !isBacking
+  let isAvailableForNewBacker = rewardIsAvailable(reward) && rewardCanShipToSelectedLocation && !isBacking
   /// Backers should always be able to edit the currently backed reward. It's the only path to update the pledge/bonus amount.
   let isAvailableForExistingBackerToEdit = isBacking
 
