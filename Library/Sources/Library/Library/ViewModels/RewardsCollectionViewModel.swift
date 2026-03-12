@@ -115,11 +115,8 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       self.shippingLocationSelectedSignal.signal
     )
     .map { project, rewards, location in
-      let context = userIsBackingProject(project) ?
-        RewardCardViewContext.manage : RewardCardViewContext.pledge
-
-      return rewards.map { reward in
-        (project, reward, context, location)
+      rewards.map { reward in
+        (project, reward, .pledge, location)
       }
     }
 
