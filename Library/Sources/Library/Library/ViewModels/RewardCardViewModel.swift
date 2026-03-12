@@ -138,7 +138,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
       rewardsCarouselCanNavigateToReward(
         data.reward,
         in: data.project,
-        selectedLocation: data.currentShippingLocation?.id
+        selectedShippingLocation: data.currentShippingLocation
       )
     }
 

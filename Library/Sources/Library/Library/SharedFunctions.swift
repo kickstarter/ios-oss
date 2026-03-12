@@ -385,13 +385,13 @@ private func rewardAvailableInAllLocations(_ reward: Reward) -> Bool {
 
 public func checkIfReward(
   _ reward: Reward,
-  shipsToLocation locationId: Int?
+  shipsToLocation location: Location?
 ) -> Bool {
   if rewardAvailableInAllLocations(reward) {
     return true
   }
 
-  guard let selectedLocationId = locationId else { return false }
+  guard let selectedLocationId = location?.id else { return false }
 
   var shippingLocationIds: [Int] = []
 
@@ -405,11 +405,11 @@ public func checkIfReward(
 public func rewardsCarouselCanNavigateToReward(
   _ reward: Reward,
   in project: Project,
-  selectedLocation: Int?
+  selectedShippingLocation location: Location?
 ) -> Bool {
   guard !currentUserIsCreator(of: project) else { return false }
 
-  guard checkIfReward(reward, shipsToLocation: selectedLocation) else {
+  guard checkIfReward(reward, shipsToLocation: location) else {
     return false
   }
 

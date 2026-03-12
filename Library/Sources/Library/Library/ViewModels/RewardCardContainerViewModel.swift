@@ -51,7 +51,7 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
         rewardsCarouselCanNavigateToReward(
           data.reward,
           in: data.project,
-          selectedLocation: data.currentShippingLocation?.id
+          selectedShippingLocation: data.currentShippingLocation
         )
       }
 
@@ -92,7 +92,7 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
 private func pledgeButtonTitle(data: RewardCardViewData) -> String? {
   if currentUserIsCreator(of: data.project) { return nil }
 
-  if !checkIfReward(data.reward, shipsToLocation: data.currentShippingLocation?.id) {
+  if !checkIfReward(data.reward, shipsToLocation: data.currentShippingLocation) {
     return Strings.Not_available_in_selected_country()
   }
 
