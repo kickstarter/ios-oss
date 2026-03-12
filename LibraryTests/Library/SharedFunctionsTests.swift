@@ -129,15 +129,76 @@ final class SharedFunctionsTests: TestCase {
     }
   }
 
-  func testRewardsCarouselCanNavigateToReward_RestrictedReward_ValidShippingLocation_IsTrue() {}
+  func testRewardCanShipToLocation_respectsLocation() {
+    let shipsToUSAReward = Reward.template
+      |> Reward.lens.shipping .~ Reward.Shipping(
+        enabled: true,
+        location: nil,
+        preference: .restricted,
+        summary: "Ships to USA",
+        type: nil
+      )
+      |> Reward.lens.shippingRulesExpanded .~ [
+        ShippingRule(
+          cost: 10,
+          id: 0,
+          location: Location.usa,
+          estimatedMin: nil,
+          estimatedMax: nil
+        )
+      ]
 
-  func testRewardsCarouselCanNavigateToReward_RestrictedReward_InvalidShippingLocation_IsFalse() {}
+    let shipsAnywhereReward = Reward.template
+      |> Reward.lens.shipping .~ Reward.Shipping(
+        enabled: true,
+        location: nil,
+        preference: .unrestricted,
+        summary: "Ships Anywhere",
+        type: nil
+      )
 
-  func testRewardsCarouselCanNavigateToReward_UnrestrictedReward_Available_NotBacked_IsTrue() {}
+    let digitalReward = Reward.template
+      |> Reward.lens.shipping .~ Reward.Shipping(
+        enabled: false,
+        location: nil,
+        preference: Reward.Shipping.Preference.none,
+        summary: "Digital",
+        type: nil
+      )
 
-  func testRewardsCarouselCanNavigateToReward_DigitalReward_Available_NotBacked_IsTrue() {}
+    let localReward = Reward.template
+      |> Reward.lens.shipping .~ Reward.Shipping(
+        enabled: false,
+        location: Reward.Shipping.Location(
+          id: 0,
+          localizedName: "My house"
+        ),
+        preference: Reward.Shipping.Preference.local,
+        summary: "Digital",
+        type: nil
+      )
+      |> Reward.lens.localPickup .~ Location.usa
 
-  func testRewardsCarouselCanNavigateToReward_LocalReward_Available_NotBacked_IsTrue() {}
+    // Restricted reward
+    XCTAssertTrue(rewardCanShip(shipsToUSAReward, toLocation: .usa))
+    XCTAssertFalse(rewardCanShip(shipsToUSAReward, toLocation: .australia))
+    XCTAssertFalse(rewardCanShip(shipsToUSAReward, toLocation: nil))
+
+    // Unrestricted reward
+    XCTAssertTrue(rewardCanShip(shipsAnywhereReward, toLocation: .usa))
+    XCTAssertTrue(rewardCanShip(shipsAnywhereReward, toLocation: .australia))
+    XCTAssertTrue(rewardCanShip(shipsAnywhereReward, toLocation: nil))
+
+    // Digital reward
+    XCTAssertTrue(rewardCanShip(digitalReward, toLocation: .usa))
+    XCTAssertTrue(rewardCanShip(digitalReward, toLocation: .australia))
+    XCTAssertTrue(rewardCanShip(digitalReward, toLocation: nil))
+
+    // Local reward
+    XCTAssertTrue(rewardCanShip(localReward, toLocation: .usa))
+    XCTAssertTrue(rewardCanShip(localReward, toLocation: .australia))
+    XCTAssertTrue(rewardCanShip(localReward, toLocation: nil))
+  }
 
   func testRewardsCarouselCanNavigateToReward_RegularReward_Available_NotBacked_IsCreator() {
     let creator = User.projectCreator
