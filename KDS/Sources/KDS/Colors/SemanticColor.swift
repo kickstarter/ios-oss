@@ -1,7 +1,7 @@
 import SwiftUI
 import UIKit
 
-public protocol AdaptiveColor {
+public protocol AdaptiveColor: Sendable {
   /// Returns a dynamically-provided `UIColor`, which responds to light/dark mode.
   var dynamicColor: UIColor { get }
 }
@@ -30,7 +30,7 @@ public extension AdaptiveColor {
 
 /// A semantic color from the Kickstarter design system, like "surface/primary".
 /// Includes a light and dark mode color pair, as well as an identifying title.
-public struct SemanticColor: AdaptiveColor {
+public struct SemanticColor: AdaptiveColor, Sendable {
   public let dynamicColor: UIColor
 
   public let name: String
@@ -62,7 +62,7 @@ public struct SemanticColor: AdaptiveColor {
 }
 
 /// Used for old design system colors which can't be mapped directly to the Kickstarter color palette.
-public struct LegacyColor: AdaptiveColor {
+public struct LegacyColor: AdaptiveColor, Sendable {
   public let name: String
   public let dynamicColor: UIColor
 
