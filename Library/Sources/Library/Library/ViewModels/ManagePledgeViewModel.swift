@@ -92,12 +92,7 @@ public final class ManagePledgeViewModel:
         AppEnvironment.current.apiService.fetchProject(param: param)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .switchMap { project in
-            // Only fetch pledge over time data if the feature flag is enabled
-            if featureEditPledgeOverTimeEnabled() {
-              return fetchProjectRewardsAndPledgeOverTimeData(project: project)
-            }
-
-            return fetchProjectRewards(project: project)
+            fetchProjectRewardsAndPledgeOverTimeData(project: project)
           }
           .materialize()
       }
@@ -569,11 +564,7 @@ private func actionSheetMenuOptionsFor(
   /// Enable the 'Edit pledge' option for all PLOT-enabled projects.
   if isPledgeOverTime(with: backing) || project.isPledgeOverTimeAllowed == true {
     actions = actions.filter { $0 != .chooseAnotherReward }
-
-    /// If the Edit Pledge Over Time feature flag is `true`, replace 'Edit reward" with 'Edit pledge'.
-    if featureEditPledgeOverTimeEnabled() == true {
-      actions.insert(.editPledgeOverTimePledge, at: 1)
-    }
+    actions.insert(.editPledgeOverTimePledge, at: 1)
   }
 
   return actions
