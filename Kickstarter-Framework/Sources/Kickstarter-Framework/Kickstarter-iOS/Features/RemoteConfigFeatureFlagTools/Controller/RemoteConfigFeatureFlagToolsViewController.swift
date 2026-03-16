@@ -22,7 +22,7 @@ final class RemoteConfigFeatureFlagToolsViewController: UITableViewController {
     super.viewDidLoad()
 
     _ = self
-      |> \.title .~ "Remote Config Feature flags"
+      |> \.title .~ "Remote Config & Statsig Feature flags"
 
     _ = self.tableView
       |> \.tableFooterView .~ UIView(frame: .zero)
