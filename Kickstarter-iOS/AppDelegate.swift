@@ -218,6 +218,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
           strongSelf.configureRemoteConfig()
         }
+
     #endif
 
     self.viewModel.outputs.configureStatsig
