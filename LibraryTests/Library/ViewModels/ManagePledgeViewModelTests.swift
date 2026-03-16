@@ -78,7 +78,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(.template),
-      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(self.rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService) {
@@ -668,6 +668,10 @@ internal final class ManagePledgeViewModelTests: TestCase {
       fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
+    let errorBannerMessage = Strings
+      .We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours(
+      )
+
     withEnvironment(apiService: mockService) {
       self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
@@ -681,11 +685,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.vm.inputs.menuOptionSelected(with: .cancelPledge)
 
       self.goToCancelPledge.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertValues([
-        Strings
-          .We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours(
-          )
-      ])
+      self.showErrorBannerWithMessage.assertValues([errorBannerMessage])
     }
   }
 
@@ -1788,7 +1788,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
-  func testPlotPaymentScheduleView_IsVisibleWhenFeatureFlagIsEnabled() {
+  func testPlotPaymentScheduleView_IsVisible() {
     let user = User.projectCreator
 
     let project = Project.cosmicSurgery
