@@ -35,10 +35,10 @@ final class RewardsCollectionViewControllerTests: TestCase {
         self.scheduler.run()
 
         let deviceSize = type.device.deviceSize(in: type.orientation)
-        let size = CGSizeMake(
+        let size = CGSize(
           // Make it wide enough to show all cards
-          CGFloat(rewards.count) * (CheckoutConstants.RewardCard.Layout.width + 40.0) + 100.0,
-          deviceSize.height
+          width: CGFloat(rewards.count) * (CheckoutConstants.RewardCard.Layout.width + 40.0) + 100.0,
+          height: deviceSize.height
         )
 
         assertSnapshot(
@@ -85,10 +85,10 @@ final class RewardsCollectionViewControllerTests: TestCase {
         self.scheduler.run()
 
         let deviceSize = type.device.deviceSize(in: type.orientation)
-        let size = CGSizeMake(
+        let size = CGSize(
           // Make it wide enough to show all cards
-          CGFloat(rewards.count) * (CheckoutConstants.RewardCard.Layout.width + 40.0) + 100.0,
-          deviceSize.height
+          width: CGFloat(rewards.count) * (CheckoutConstants.RewardCard.Layout.width + 40.0) + 100.0,
+          height: deviceSize.height
         )
 
         assertSnapshot(
