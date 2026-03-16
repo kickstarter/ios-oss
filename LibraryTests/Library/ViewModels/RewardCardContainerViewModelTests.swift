@@ -668,6 +668,29 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonTitleText.assertLastValue("Not available in selected country")
   }
 
+  func testPledgeButtonTitle_RestrictedShipping_invalidLocation_postCampaignPledging() {
+    let shipsToUSAReward = Reward.shipsToUSAReward
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+
+    let project = Project.template
+      |> Project.lens.state .~ .successful
+      |> Project.lens.isInPostCampaignPledgingPhase .~ true
+      |> Project.lens.rewardData.rewards .~ [shipsToUSAReward]
+      |> Project.lens.rewardData.addOns .~ nil
+
+    let data = RewardCardViewData(
+      project: project,
+      reward: shipsToUSAReward,
+      context: .pledge,
+      currentShippingLocation: .australia
+    )
+
+    self.vm.inputs.configureWith(data: data)
+
+    self.pledgeButtonEnabled.assertLastValue(false)
+    self.pledgeButtonTitleText.assertLastValue("Not available in selected country")
+  }
+
   func testPledgeButtonTitle_DigitalReward_noLocation() {
     let digitalReward = Reward.digitalReward
       |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
