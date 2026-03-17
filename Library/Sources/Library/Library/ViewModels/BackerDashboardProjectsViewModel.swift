@@ -5,8 +5,8 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol BackerDashboardProjectsViewModelInputs {
-  /// Call to configure with the ProfileProjectsType to display and the default sort.
-  func configureWith(projectsType: ProfileProjectsType, sort: DiscoveryParams.Sort)
+  /// Call to configure with the ProfileProjectsType to display.
+  func configureWith(projectsType: ProfileProjectsType)
 
   /// Call when the user has updated.
   func currentUserUpdated()
@@ -52,8 +52,7 @@ public protocol BackerDashboardProjectsViewModelType {
 public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsViewModelType,
   BackerDashboardProjectsViewModelInputs, BackerDashboardProjectsViewModelOutputs {
   public init() {
-    let projectsTypeAndSort = self.configureWithProjectsTypeAndSortProperty.signal.skipNil()
-    let projectsType = projectsTypeAndSort.map(first)
+    let projectsType = self.configureWithProjectsTypeAndSortProperty.signal.skipNil()
 
     let userUpdated = Signal.merge(
       self.viewDidAppearProperty.signal.ignoreValues(),
@@ -159,9 +158,9 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
   }
 
   private let configureWithProjectsTypeAndSortProperty =
-    MutableProperty<(ProfileProjectsType, DiscoveryParams.Sort)?>(nil)
-  public func configureWith(projectsType: ProfileProjectsType, sort: DiscoveryParams.Sort) {
-    self.configureWithProjectsTypeAndSortProperty.value = (projectsType, sort)
+    MutableProperty<ProfileProjectsType?>(nil)
+  public func configureWith(projectsType: ProfileProjectsType) {
+    self.configureWithProjectsTypeAndSortProperty.value = projectsType
   }
 
   private let currentUserUpdatedProperty = MutableProperty(())

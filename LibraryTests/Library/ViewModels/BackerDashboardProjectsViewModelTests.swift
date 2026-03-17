@@ -49,7 +49,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(fetchBackerBackedProjectsResponse: env), currentUser: .template) {
-      self.vm.inputs.configureWith(projectsType: .backed, sort: .endingSoon)
+      self.vm.inputs.configureWith(projectsType: .backed)
       self.vm.inputs.viewDidAppear(false)
       self.vm.inputs.currentUserUpdated()
 
@@ -122,7 +122,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     let env = FetchProjectsEnvelope(type: .saved, projects: [], hasNextPage: false, totalCount: 0)
 
     withEnvironment(apiService: MockService(fetchBackerSavedProjectsResponse: env), currentUser: .template) {
-      self.vm.inputs.configureWith(projectsType: .saved, sort: .endingSoon)
+      self.vm.inputs.configureWith(projectsType: .saved)
       self.vm.inputs.viewDidAppear(false)
 
       self.projects.assertValueCount(0)
@@ -155,7 +155,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     let env = FetchProjectsEnvelope(type: .backed, projects: projects, hasNextPage: false, totalCount: 3)
 
     withEnvironment(apiService: MockService(fetchBackerBackedProjectsResponse: env), currentUser: .template) {
-      self.vm.inputs.configureWith(projectsType: .backed, sort: .endingSoon)
+      self.vm.inputs.configureWith(projectsType: .backed)
       self.vm.inputs.viewDidAppear(false)
 
       self.scheduler.advance()
@@ -188,7 +188,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     let user = User.template
 
     withEnvironment(apiService: MockService(fetchBackerBackedProjectsResponse: env), currentUser: user) {
-      self.vm.inputs.configureWith(projectsType: .backed, sort: .endingSoon)
+      self.vm.inputs.configureWith(projectsType: .backed)
       self.vm.inputs.viewDidAppear(false)
       self.vm.inputs.currentUserUpdated()
 
@@ -234,7 +234,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     let user = User.template
 
     withEnvironment(apiService: MockService(fetchBackerBackedProjectsResponse: env), currentUser: user) {
-      self.vm.inputs.configureWith(projectsType: .backed, sort: .endingSoon)
+      self.vm.inputs.configureWith(projectsType: .backed)
       self.vm.inputs.viewDidAppear(false)
       self.vm.inputs.currentUserUpdated()
 

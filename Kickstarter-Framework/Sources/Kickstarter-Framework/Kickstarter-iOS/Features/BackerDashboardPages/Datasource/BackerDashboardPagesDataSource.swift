@@ -5,15 +5,13 @@ import UIKit
 internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControllerDataSource {
   private let viewControllers: [UIViewController]
 
-  internal init(delegate _: UIViewController, sort: DiscoveryParams.Sort) {
+  internal init(delegate _: UIViewController) {
     let backedController = BackerDashboardProjectsViewController.configuredWith(
-      projectsType: .backed,
-      sort: sort
+      projectsType: .backed
     )
 
     let savedController = BackerDashboardProjectsViewController.configuredWith(
-      projectsType: .saved,
-      sort: sort
+      projectsType: .saved
     )
 
     self.viewControllers = BackerDashboardTab.allTabs.map { tab in
