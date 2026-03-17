@@ -28,7 +28,8 @@ let package = Package(
     .package(url: "https://github.com/onevcat/Kingfisher", from: "8.5.0"),
     .package(url: "https://github.com/stripe/stripe-ios-spm", from: "23.32.0"),
     .package(url: "https://github.com/yeatse/KingfisherWebP.git", from: "1.6.0"),
-    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.18.6")
+    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.18.6"),
+    .package(url: "https://github.com/statsig-io/statsig-kit.git", from: "1.61.0")
   ],
   targets: [
     .target(
@@ -49,7 +50,8 @@ let package = Package(
         .product(name: "Stripe", package: "stripe-ios-spm"),
         .product(name: "StripePaymentSheet", package: "stripe-ios-spm"),
         .product(name: "KingfisherWebP", package: "KingfisherWebP"),
-        .product(name: "SegmentBrazeUI", package: "braze-segment-swift")
+        .product(name: "SegmentBrazeUI", package: "braze-segment-swift"),
+        .product(name: "Statsig", package: "statsig-kit")
       ],
       resources: [
         .process("Resources")

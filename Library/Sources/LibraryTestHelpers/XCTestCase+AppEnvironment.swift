@@ -42,6 +42,7 @@ extension XCTestCase {
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
     remoteConfigClient: RemoteConfigClientType? = AppEnvironment.current.remoteConfigClient,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
+    statsigClient: StatsigClientType? = AppEnvironment.current.statsigClient,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
     uuidType: UUIDType.Type = AppEnvironment.current.uuidType,
@@ -77,6 +78,7 @@ extension XCTestCase {
         pushRegistrationType: pushRegistrationType,
         remoteConfigClient: remoteConfigClient,
         scheduler: scheduler,
+        statsigClient: statsigClient,
         ubiquitousStore: ubiquitousStore,
         userDefaults: userDefaults,
         uuidType: uuidType
@@ -124,6 +126,7 @@ extension XCTestCase {
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
     remoteConfigClient: RemoteConfigClientType? = AppEnvironment.current.remoteConfigClient,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
+    statsigClient: StatsigClientType? = AppEnvironment.current.statsigClient,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
     uuidType: UUIDType.Type = AppEnvironment.current.uuidType,
@@ -159,6 +162,7 @@ extension XCTestCase {
         pushRegistrationType: pushRegistrationType,
         remoteConfigClient: remoteConfigClient,
         scheduler: scheduler,
+        statsigClient: statsigClient,
         ubiquitousStore: ubiquitousStore,
         userDefaults: userDefaults,
         uuidType: uuidType
