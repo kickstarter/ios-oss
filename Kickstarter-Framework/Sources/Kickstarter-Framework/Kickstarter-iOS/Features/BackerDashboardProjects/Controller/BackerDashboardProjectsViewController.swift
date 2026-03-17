@@ -1,3 +1,4 @@
+import KDS
 import KsApi
 import Library
 import Prelude
@@ -7,6 +8,8 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
   private var userUpdatedObserver: Any?
   fileprivate let viewModel: BackerDashboardProjectsViewModelType = BackerDashboardProjectsViewModel()
   fileprivate let dataSource = BackerDashboardProjectsDataSource()
+
+  private let nextPageLoadingIndicator = UIActivityIndicatorView()
 
   internal static func configuredWith(projectsType: ProfileProjectsType, sort: DiscoveryParams.Sort)
     -> BackerDashboardProjectsViewController {
@@ -23,6 +26,13 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
     let refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
     self.refreshControl = refreshControl
+
+    self.nextPageLoadingIndicator.hidesWhenStopped = true
+    // The large style looks almost like the UIRefreshControl spinner.
+    self.nextPageLoadingIndicator.style = .large
+    self.nextPageLoadingIndicator.color = Colors.Icon.primary.uiColor()
+    // Set the height of the loading indicator view to include padding.
+    self.nextPageLoadingIndicator.frame = CGRect(x: 0, y: 0, width: 0, height: Spacing.unit_20)
 
     self.tableView.register(nib: .BackerDashboardEmptyStateCell)
     self.tableView.register(nib: .BackerDashboardProjectCell)
@@ -68,6 +78,19 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
           self?.refreshControl?.beginRefreshing()
         } else {
           self?.refreshControl?.endRefreshing()
+        }
+      }
+
+    self.viewModel.outputs.isLoadingNextPage
+      .observeForUI()
+      .observeValues { [weak self] isLoading in
+        guard let self else { return }
+        if isLoading {
+          self.nextPageLoadingIndicator.startAnimating()
+          self.tableView.tableFooterView = self.nextPageLoadingIndicator
+        } else {
+          self.nextPageLoadingIndicator.stopAnimating()
+          self.tableView.tableFooterView = nil
         }
       }
 
