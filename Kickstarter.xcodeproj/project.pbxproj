@@ -731,9 +731,9 @@
 		E1D529FC2ED4D21A00923AA9 /* ShippableLocationsForProjectQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ShippableLocationsForProjectQuery.graphql; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		6008DF842F6353BF00A393E6 /* Statsig */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Statsig; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
+/* Begin PBXGroup section */
+  6008DF842F6353BF00A393E6 /* Statsig */ = {isa = PBXGroup; path = Statsig; sourceTree = "<group>"; };
+/* End PBXGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		A7D1F9421C850B7C000D41D5 /* Frameworks */ = {
