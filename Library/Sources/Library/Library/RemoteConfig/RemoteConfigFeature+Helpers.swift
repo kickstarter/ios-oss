@@ -34,7 +34,3 @@ public func featurePledgedProjectsOverviewV2Enabled() -> Bool {
 public func featurePledgedProjectsOverviewV4Enabled() -> Bool {
   featureEnabled(feature: .pledgedProjectsOverviewV4Enabled)
 }
-
-public func featureSimilarProjectsCarouselEnabled() -> Bool {
-  featureEnabled(feature: .similarProjectsCarousel)
-}
