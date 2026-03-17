@@ -26,7 +26,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     self.vm.outputs.isRefreshing.observe(self.isRefreshing.observer)
     self.vm.outputs.isLoadingNextPage.observe(self.isLoadingNextPage.observer)
     self.vm.outputs.goToProject.map(first).observe(self.goToProject.observer)
-    self.vm.outputs.goToProject.map(third).observe(self.goToProjectRefTag.observer)
+    self.vm.outputs.goToProject.map(second).observe(self.goToProjectRefTag.observer)
     self.vm.outputs.projects.observe(self.projects.observer)
   }
 
