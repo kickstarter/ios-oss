@@ -3,7 +3,7 @@ import Prelude
 import ReactiveSwift
 
 public protocol RewardCardContainerViewModelInputs {
-  func configureWith(project: Project, reward: Reward)
+  func configureWith(data: RewardCardViewData)
   func pledgeButtonTapped()
 }
 
@@ -24,25 +24,35 @@ public protocol RewardCardContainerViewModelType {
 public final class RewardCardContainerViewModel: RewardCardContainerViewModelType,
   RewardCardContainerViewModelInputs, RewardCardContainerViewModelOutputs {
   public init() {
-    let projectAndReward: Signal<(Project, Reward), Never> =
-      self.projectAndRewardProperty.signal.skipNil()
+    let data = self.configDataProperty
+      .signal
+      .skipNil()
 
-    let reward: Signal<Reward, Never> = projectAndReward
-      .map(second)
+    let reward: Signal<Reward, Never> =
+      data
+        .map { $0.reward }
 
     self.currentRewardProperty <~ reward
 
-    let pledgeButtonTitleText = projectAndReward
-      .map(pledgeButtonTitle(project:reward:))
+    let pledgeButtonTitleText = data
+      .map { data in
+        pledgeButtonTitle(data: data)
+      }
 
     self.pledgeButtonTitleText = pledgeButtonTitleText
 
-    self.pledgeButtonStyleType = projectAndReward
-      .map(buttonStyleType(project:reward:))
+    self.pledgeButtonStyleType = data
+      .map { data in
+        buttonStyleType(data: data)
+      }
 
-    self.pledgeButtonEnabled = projectAndReward
-      .map { project, reward in
-        rewardsCarouselCanNavigateToReward(reward, in: project)
+    self.pledgeButtonEnabled = data
+      .map { data in
+        rewardsCarouselCanNavigateToReward(
+          data.reward,
+          in: data.project,
+          selectedShippingLocation: data.currentShippingLocation
+        )
       }
 
     self.pledgeButtonHidden = pledgeButtonTitleText.map(isNil)
@@ -52,9 +62,9 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
       .map { $0.id }
   }
 
-  private let projectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
-  public func configureWith(project: Project, reward: Reward) {
-    self.projectAndRewardProperty.value = (project, reward)
+  private let configDataProperty = MutableProperty<RewardCardViewData?>(nil)
+  public func configureWith(data: RewardCardViewData) {
+    self.configDataProperty.value = data
   }
 
   private let pledgeButtonTappedProperty = MutableProperty(())
@@ -79,12 +89,18 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
 
 // MARK: - Functions
 
-private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
-  if currentUserIsCreator(of: project) { return nil }
+private func pledgeButtonTitle(data: RewardCardViewData) -> String? {
+  if currentUserIsCreator(of: data.project) { return nil }
 
-  let projectBackingState = RewardCellProjectBackingStateType.state(with: project)
-  let isBackingThisReward = userIsBacking(reward: reward, inProject: project)
-  let isRewardAvailable = rewardIsAvailable(reward)
+  let projectBackingState = RewardCellProjectBackingStateType.state(with: data.project)
+  let isBackingThisReward = userIsBacking(reward: data.reward, inProject: data.project)
+  let isRewardAvailable = rewardIsAvailable(data.reward)
+  let rewardShipsToLocation = rewardCanShip(data.reward, toLocation: data.currentShippingLocation)
+
+  // If you're creating a new backing but the reward doesn't ship there, show the 'not available' string.
+  if !rewardShipsToLocation, projectBackingState.canCreateNewPledge {
+    return Strings.Not_available_in_selected_country()
+  }
 
   switch (projectBackingState, isBackingThisReward, isRewardAvailable) {
   case (.backed(.live), false, true):
@@ -106,11 +122,11 @@ private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
   }
 }
 
-private func buttonStyleType(project: Project, reward: Reward) -> ButtonStyleType {
-  if currentUserIsCreator(of: project) { return .none }
+private func buttonStyleType(data: RewardCardViewData) -> ButtonStyleType {
+  if currentUserIsCreator(of: data.project) { return .none }
 
-  let projectBackingState = RewardCellProjectBackingStateType.state(with: project)
-  let isBackingThisReward = userIsBacking(reward: reward, inProject: project)
+  let projectBackingState = RewardCellProjectBackingStateType.state(with: data.project)
+  let isBackingThisReward = userIsBacking(reward: data.reward, inProject: data.project)
 
   switch projectBackingState {
   case .backed(.live):

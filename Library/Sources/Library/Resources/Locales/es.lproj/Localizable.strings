@@ -274,7 +274,7 @@
 "Failed_to_retrieve_live_stream_event_details" = "No se pudo cargar la información acerca del evento en vivo";
 "Failed_to_update_subscription" = "No se pudo actualizar la suscripción";
 "Faq" = "Preguntas frecuentes";
-"Featured" = "Featured";
+"Featured" = "Destacados";
 "Filter" = "Filtro";
 "Filter_by_all_projects" = "Filtro: Todos los proyectos";
 "Filter_by_category_name" = "Filtro: %{category_name}";
@@ -496,6 +496,7 @@
 "No_saved_projects" = "No hay proyectos guardados";
 "No_unread_messages" = "No hay mensajes no leídos";
 "Not_available" = "No disponible";
+"Not_available_in_selected_country" = "No disponible en el país seleccionado";
 "Not_delivered" = "No entregado";
 "Not_followed" = "No siguiendo";
 "Not_now" = "Ahora no";

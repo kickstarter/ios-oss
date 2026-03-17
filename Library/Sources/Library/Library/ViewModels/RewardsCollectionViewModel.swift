@@ -190,8 +190,12 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       selectedShippingRule
     )
     .takeWhen(self.rewardSelectedWithRewardIdProperty.signal)
-    .filter { project, reward, _, _ in
-      rewardsCarouselCanNavigateToReward(reward, in: project)
+    .filter { project, reward, _, shippingRule in
+      rewardsCarouselCanNavigateToReward(
+        reward,
+        in: project,
+        selectedShippingLocation: shippingRule?.location
+      )
     }
     .map { project, reward, refTag, selectedShippingRule -> (PledgeViewData, Bool) in
       let pledgeContext =
@@ -587,54 +591,11 @@ private func shouldShowReward(
     return false
   }
 
-  // If the reward is No Reward, digital, local, or ships anywhere, it doesn't matter
-  // what location you selected.
-  if rewardAvailableInAllLocations(reward) {
-    return true
-  }
-
-  guard let location else {
-    // This is a restricted reward, but the user hasn't selected a shipping location yet.
-    // Filter it out until a location is set.
+  if !rewardCanShip(reward, toLocation: location) {
     return false
   }
 
-  return rewardShipsTo(selectedLocation: location.id, reward)
-}
-
-private func rewardAvailableInAllLocations(_ reward: Reward) -> Bool {
-  let isRewardLocalOrDigital = isRewardDigital(reward) || isRewardLocalPickup(reward)
-  let isUnrestrictedShippingReward = reward.isUnRestrictedShippingPreference
-  let isRestrictedShippingReward = reward.isRestrictedShippingPreference
-  let isNoRewardReward = reward.isNoReward
-
-  // Return all rewards that are no reward, digital, local pickup, or ship anywhere in the world.
-  if isNoRewardReward || isRewardLocalOrDigital || isUnrestrictedShippingReward {
-    return true
-  }
-
-  if isRestrictedShippingReward {
-    return false
-  }
-
-  assert(false, "A reward should either be restricted, or unrestricted. Showing in all locations.")
   return true
-}
-
-/// Returns true if a given selection location matches the countries the given reward is available to ship to.
-private func rewardShipsTo(
-  selectedLocation locationId: Int?,
-  _ reward: Reward
-) -> Bool {
-  guard let selectedLocationId = locationId else { return false }
-
-  var shippingLocationIds: [Int] = []
-
-  reward.shippingRulesExpanded?.forEach { rule in
-    shippingLocationIds.append(rule.location.id)
-  }
-
-  return shippingLocationIds.contains(selectedLocationId)
 }
 
 private func shippingRule(forReward reward: Reward, selectedLocation location: Location?) -> ShippingRule? {

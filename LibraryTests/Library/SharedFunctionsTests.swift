@@ -129,6 +129,43 @@ final class SharedFunctionsTests: TestCase {
     }
   }
 
+  func testRewardCanShipToLocation_respectsLocation() {
+    let shipsToUSAReward = Reward.shipsToUSAReward
+
+    let shipsAnywhereReward = Reward.template
+      |> Reward.lens.shipping .~ Reward.Shipping(
+        enabled: true,
+        location: nil,
+        preference: .unrestricted,
+        summary: "Ships Anywhere",
+        type: nil
+      )
+
+    let digitalReward = Reward.digitalReward
+
+    let localReward = Reward.localShippingReward
+
+    // Restricted reward
+    XCTAssertTrue(rewardCanShip(shipsToUSAReward, toLocation: .usa))
+    XCTAssertFalse(rewardCanShip(shipsToUSAReward, toLocation: .australia))
+    XCTAssertFalse(rewardCanShip(shipsToUSAReward, toLocation: nil))
+
+    // Unrestricted reward
+    XCTAssertTrue(rewardCanShip(shipsAnywhereReward, toLocation: .usa))
+    XCTAssertTrue(rewardCanShip(shipsAnywhereReward, toLocation: .australia))
+    XCTAssertTrue(rewardCanShip(shipsAnywhereReward, toLocation: nil))
+
+    // Digital reward
+    XCTAssertTrue(rewardCanShip(digitalReward, toLocation: .usa))
+    XCTAssertTrue(rewardCanShip(digitalReward, toLocation: .australia))
+    XCTAssertTrue(rewardCanShip(digitalReward, toLocation: nil))
+
+    // Local reward
+    XCTAssertTrue(rewardCanShip(localReward, toLocation: .usa))
+    XCTAssertTrue(rewardCanShip(localReward, toLocation: .australia))
+    XCTAssertTrue(rewardCanShip(localReward, toLocation: nil))
+  }
+
   func testRewardsCarouselCanNavigateToReward_RegularReward_Available_NotBacked_IsCreator() {
     let creator = User.projectCreator
       |> User.lens.id .~ 5
@@ -144,7 +181,7 @@ final class SharedFunctionsTests: TestCase {
         |> Project.lens.rewardData.rewards .~ [reward]
         |> Project.lens.rewardData.addOns .~ nil
 
-      XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project))
+      XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project, selectedShippingLocation: nil))
     }
   }
 
@@ -159,7 +196,53 @@ final class SharedFunctionsTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ nil
 
-    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project, selectedShippingLocation: nil))
+  }
+
+  func testRewardsCarouselCanNavigateToReward_RegularReward_Available_NotBacked_Restricted() {
+    let shipsToUSAReward = Reward.shipsToUSAReward
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [shipsToUSAReward]
+      |> Project.lens.rewardData.addOns .~ nil
+
+    XCTAssertTrue(rewardsCarouselCanNavigateToReward(
+      shipsToUSAReward,
+      in: project,
+      selectedShippingLocation: .usa
+    ))
+    XCTAssertFalse(rewardsCarouselCanNavigateToReward(
+      shipsToUSAReward,
+      in: project,
+      selectedShippingLocation: .australia
+    ))
+    XCTAssertFalse(rewardsCarouselCanNavigateToReward(
+      shipsToUSAReward,
+      in: project,
+      selectedShippingLocation: nil
+    ))
+  }
+
+  func testRewardsCarouselCanNavigateToReward_RegularReward_Available_Backed_RestrictedShipping_InvalidLocation(
+  ) {
+    let shipsToUSAReward = Reward.shipsToUSAReward
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+      |> Reward.lens.isAvailable .~ true
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [shipsToUSAReward]
+      |> Project.lens.rewardData.addOns .~ nil
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ shipsToUSAReward
+          |> Backing.lens.rewardId .~ shipsToUSAReward.id
+      )
+
+    XCTAssertTrue(
+      rewardsCarouselCanNavigateToReward(shipsToUSAReward, in: project, selectedShippingLocation: nil),
+      "The backer should always be able to edit their selected reward, even if it's no longer available for shipping to their location."
+    )
   }
 
   func testRewardsCarouselCanNavigateToReward_RegularReward_Available_Backed() {
@@ -177,7 +260,7 @@ final class SharedFunctionsTests: TestCase {
       )
 
     withEnvironment {
-      XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
+      XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project, selectedShippingLocation: nil))
     }
   }
 
@@ -195,7 +278,7 @@ final class SharedFunctionsTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
       )
 
-    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project, selectedShippingLocation: nil))
   }
 
   func testRewardsCarouselCanNavigateToReward_RegularReward_Expired_Backed() {
@@ -212,7 +295,7 @@ final class SharedFunctionsTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
       )
 
-    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project, selectedShippingLocation: nil))
   }
 
   func testRewardsCarouselCanNavigateToReward_RegularReward_Unavailable_NotBacked() {
@@ -225,7 +308,7 @@ final class SharedFunctionsTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ nil
 
-    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project, selectedShippingLocation: nil))
   }
 
   func testRewardsCarouselCanNavigateToReward_RegularReward_Expired_NotBacked() {
@@ -238,7 +321,7 @@ final class SharedFunctionsTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ nil
 
-    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project, selectedShippingLocation: nil))
   }
 
   func testRewardsCarouselCanNavigateToReward_Reward_Available_NotBacked_HasAddOns() {
@@ -253,7 +336,7 @@ final class SharedFunctionsTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ [reward]
 
-    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project, selectedShippingLocation: nil))
   }
 
   func testRewardsCarouselCanNavigateToReward_Reward_Unavailable_NotBacked_HasAddOns() {
@@ -267,7 +350,7 @@ final class SharedFunctionsTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ [reward]
 
-    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project, selectedShippingLocation: nil))
   }
 
   func testRewardsCarouselCanNavigateToReward_Reward_Expired_NotBacked_HasAddOns() {
@@ -281,7 +364,7 @@ final class SharedFunctionsTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ [reward]
 
-    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertFalse(rewardsCarouselCanNavigateToReward(reward, in: project, selectedShippingLocation: nil))
   }
 
   func testRewardsCarouselCanNavigateToReward_Reward_Unavailable_Backed_HasAddOns() {
@@ -300,7 +383,7 @@ final class SharedFunctionsTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
       )
 
-    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project, selectedShippingLocation: nil))
   }
 
   func testRewardsCarouselCanNavigateToReward_Reward_Expired_Backed_HasAddOns() {
@@ -319,7 +402,7 @@ final class SharedFunctionsTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
       )
 
-    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
+    XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project, selectedShippingLocation: nil))
   }
 
   func testIsStartDateBeforeToday_Reward_StartsAt_Nil() {
