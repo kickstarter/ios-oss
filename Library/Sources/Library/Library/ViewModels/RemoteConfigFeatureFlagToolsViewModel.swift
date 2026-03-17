@@ -67,7 +67,7 @@ public final class RemoteConfigFeatureFlagToolsViewModel: RemoteConfigFeatureFla
       .map { _ in StatsigFeature.allCases }
       .map { features in
         features.map { feature -> (StatsigFeature, Bool) in
-          (feature, isStatsigFeatureEnabled(feature))
+          (feature, statsigFeatureEnabled(feature: feature))
         }
       }
 
@@ -134,15 +134,7 @@ private func setValueInUserDefaults(for feature: RemoteConfigFeature, and value:
 
 // MARK: - Private Helpers (Statsig)
 
-private func isStatsigFeatureEnabled(_ feature: StatsigFeature) -> Bool {
-  if let valueFromDefaults = AppEnvironment.current.userDefaults
-    .remoteConfigFeatureFlags[feature.rawValue] {
-    return valueFromDefaults
-  }
-  return AppEnvironment.current.statsigClient?.checkGate(for: feature) == true
-}
-
 private func setStatsigValueInUserDefaults(for feature: StatsigFeature, and value: Bool) {
   AppEnvironment.current.userDefaults
-    .remoteConfigFeatureFlags[feature.rawValue] = value
+    .statsigFeatureFlags[feature.rawValue] = value
 }
