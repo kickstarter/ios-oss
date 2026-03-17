@@ -1,7 +1,7 @@
 import KsApi
 
 /// Returns the value for a given Statsig feature flag. User defaults are checked first and,
-/// if a value is found, it is returned immediately as an "override" (e.g. via beta tools) without.
+/// if a value is found, it is returned immediately as an "override" (e.g. via beta tools).
 /// Otherwise, the value from the Statsig client is used, falling back to
 /// `false` if neither place has a value.
 private func featureEnabled(feature: StatsigFeature) -> Bool {

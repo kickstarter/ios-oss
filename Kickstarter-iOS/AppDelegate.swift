@@ -218,7 +218,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
           strongSelf.configureRemoteConfig()
         }
+    #endif
 
+    #if INTERNAL_BUILD
       self.viewModel.outputs.configureStatsig
         .observeForUI()
         .observeValues { [weak self] in
