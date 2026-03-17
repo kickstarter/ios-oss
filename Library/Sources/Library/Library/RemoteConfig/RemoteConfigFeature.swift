@@ -6,7 +6,6 @@ public enum RemoteConfigFeature: String, CaseIterable {
   case floatingTabBar = "floating_tab_bar"
   case pledgedProjectsOverviewV2Enabled = "pledged_projects_overview_v2"
   case pledgedProjectsOverviewV4Enabled = "pledged_projects_overview_v4"
-  case rewardShipmentTracking = "reward_shipment_tracking"
   case similarProjectsCarousel = "similar_projects_carousel"
 }
 
@@ -18,7 +17,6 @@ extension RemoteConfigFeature: CustomStringConvertible {
     case .floatingTabBar: return "Floating Tab Bar"
     case .pledgedProjectsOverviewV2Enabled: return "Pledged Projects Overview V2"
     case .pledgedProjectsOverviewV4Enabled: return "Pledged Projects Overview V3, V4"
-    case .rewardShipmentTracking: return "Reward Shipment Tracking"
     case .similarProjectsCarousel: return "Similar Projects Carousel"
     }
   }
