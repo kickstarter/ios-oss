@@ -15,7 +15,7 @@ extension StatsigClientType {
     return StatsigFeature.allCases
   }
 
-  public func isFeatureEnabled(featureKey _: StatsigFeature) -> Bool {
-    AppEnvironment.current.statsigClient?.checkGate(for: .videoFeed) == true
+  public func isFeatureEnabled(featureKey key: StatsigFeature) -> Bool {
+    AppEnvironment.current.statsigClient?.checkGate(for: key) == true
   }
 }

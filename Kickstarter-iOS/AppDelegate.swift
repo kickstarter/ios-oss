@@ -219,13 +219,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           strongSelf.configureRemoteConfig()
         }
 
+      self.viewModel.outputs.configureStatsig
+        .observeForUI()
+        .observeValues { [weak self] in
+          self?.configureStatsig()
+        }
     #endif
-
-    self.viewModel.outputs.configureStatsig
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.configureStatsig()
-      }
 
     self.disposables.append(
       self.viewModel.outputs.trackingAuthorizationStatus

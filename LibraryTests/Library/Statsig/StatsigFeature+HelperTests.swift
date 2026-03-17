@@ -26,4 +26,18 @@ final class StatsigFeatureHelpersTests: TestCase {
       XCTAssertTrue(checkFeatureFlag())
     }
   }
+
+  func testVideoFeed_isFalse_whenStatsigFeatureOff() {
+    self.assert(
+      featureFlagIsFalse: { featureVideoFeedEnabled() },
+      whenStatsigFeatureIsFalse: .videoFeed
+    )
+  }
+
+  func testVideoFeed_isTrue_whenStatsigFeatureOn() {
+    self.assert(
+      featureFlagIsTrue: { featureVideoFeedEnabled() },
+      whenStatsigFeatureIsTrue: .videoFeed
+    )
+  }
 }

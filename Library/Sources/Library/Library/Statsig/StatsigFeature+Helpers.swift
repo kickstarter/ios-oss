@@ -1,9 +1,12 @@
 import KsApi
 
-/// Return statsig values either a value from the cloud, if it found one, or an override value from user defaults.
+/// Returns the value for a given Statsig feature flag. User defaults are checked first and,
+/// if a value is found, it is returned immediately as an "override" (e.g. via beta tools) without.
+/// Otherwise, the value from the Statsig client is used, falling back to
+/// `false` if neither place has a value.
 private func featureEnabled(feature: StatsigFeature) -> Bool {
   if let valueFromDefaults = AppEnvironment.current.userDefaults
-    .remoteConfigFeatureFlags[feature.rawValue] {
+    .statsigFeatureFlags[feature.rawValue] {
     return valueFromDefaults
   }
 
