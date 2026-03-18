@@ -28,7 +28,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -64,7 +65,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = CGSize(
@@ -103,7 +105,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -137,7 +140,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -168,7 +172,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -196,7 +201,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -230,7 +236,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -264,7 +271,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -291,7 +299,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -332,7 +341,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -373,7 +383,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -404,7 +415,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -435,7 +447,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -485,7 +498,9 @@ final class RewardCardContainerViewTests: TestCase {
 }
 
 private func rewardCardInViewController(
-  project: Project, reward: Reward, selectedShippingLocation: Location? = nil
+  project: Project,
+  reward: Reward,
+  selectedShippingLocation: Location?
 ) -> UIViewController {
   let view = RewardCardContainerView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false

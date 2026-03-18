@@ -364,22 +364,21 @@ public func selectedRewardQuantities(in backing: Backing) -> SelectedRewardQuant
   return quantities
 }
 
-private func rewardAvailableInAllLocations(_ reward: Reward) -> Bool {
-  let isRewardLocalOrDigital = isRewardDigital(reward) || isRewardLocalPickup(reward)
-  let isUnrestrictedShippingReward = reward.isUnRestrictedShippingPreference
-  let isRestrictedShippingReward = reward.isRestrictedShippingPreference
+private func rewardRequiresShippingLocation(_ reward: Reward) -> Bool {
+  let isRewardDigital = isRewardDigital(reward)
+  let isRewardLocal = isRewardLocalPickup(reward)
   let isNoRewardReward = reward.isNoReward
 
-  // Return all rewards that are no reward, digital, local pickup, or ship anywhere in the world.
-  if isNoRewardReward || isRewardLocalOrDigital || isUnrestrictedShippingReward {
-    return true
-  }
-
-  if isRestrictedShippingReward {
+  // Return all rewards that are no reward, digital, local pickup.
+  if isNoRewardReward || isRewardDigital || isRewardLocal {
     return false
   }
 
-  assert(false, "A reward should either be restricted, or unrestricted. Showing in all locations.")
+  assert(
+    reward.isUnRestrictedShippingPreference || reward.isRestrictedShippingPreference,
+    "A reward should be unrestricted, restricted, digital, local, or no reward."
+  )
+
   return true
 }
 
@@ -387,11 +386,30 @@ public func rewardCanShip(
   _ reward: Reward,
   toLocation location: Location?
 ) -> Bool {
-  if rewardAvailableInAllLocations(reward) {
+  // If the reward is digital, local, or no reward, return true.
+  // We don't need to check if it is available for a particular location because it's available anywhere.
+  // If a project has only digital or local rewards, we won't show the location picker,
+  // so the selected location will always be nil.
+  if !rewardRequiresShippingLocation(reward) {
     return true
   }
 
-  guard let selectedLocationId = location?.id else { return false }
+  // Otherwise, the reward requires a shipping location.
+  // This makes a `nil` selected location invalid.
+  guard let selectedLocationId = location?.id else {
+    return false
+  }
+
+  // An unrestricted shipping reward can ship to any selected location.
+  // We don't need to check its shipping rules.
+  if reward.isUnRestrictedShippingPreference {
+    return true
+  }
+
+  assert(
+    reward.isRestrictedShippingPreference,
+    "A reward should be unrestricted, restricted, digital, local, or no reward."
+  )
 
   guard let rules = reward.shippingRulesExpanded, rules.count > 0 else {
     assert(

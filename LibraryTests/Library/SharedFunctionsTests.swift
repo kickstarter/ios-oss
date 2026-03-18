@@ -153,7 +153,7 @@ final class SharedFunctionsTests: TestCase {
     // Unrestricted reward
     XCTAssertTrue(rewardCanShip(shipsAnywhereReward, toLocation: .usa))
     XCTAssertTrue(rewardCanShip(shipsAnywhereReward, toLocation: .australia))
-    XCTAssertTrue(rewardCanShip(shipsAnywhereReward, toLocation: nil))
+    XCTAssertFalse(rewardCanShip(shipsAnywhereReward, toLocation: nil))
 
     // Digital reward
     XCTAssertTrue(rewardCanShip(digitalReward, toLocation: .usa))
