@@ -4,6 +4,18 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
+public enum ProfileProjectsType: Decodable {
+  case backed
+  case saved
+
+  var trackingString: String {
+    switch self {
+    case .backed: return "backed"
+    case .saved: return "saved"
+    }
+  }
+}
+
 public protocol BackerDashboardProjectsViewModelInputs {
   /// Call to configure with the ProfileProjectsType to display.
   func configureWith(projectsType: ProfileProjectsType)
