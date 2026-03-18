@@ -12,7 +12,7 @@ import XCTest
 
 final class RewardsCollectionViewControllerTests: TestCase {
   func testLive_NotBacked() {
-    let rewards = Reward.allRewards.map { $1 }
+    let rewards = Reward.allRewards
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ rewards
@@ -35,10 +35,10 @@ final class RewardsCollectionViewControllerTests: TestCase {
         self.scheduler.run()
 
         let deviceSize = type.device.deviceSize(in: type.orientation)
-        let size = CGSizeMake(
+        let size = CGSize(
           // Make it wide enough to show all cards
-          CGFloat(rewards.count) * (CheckoutConstants.RewardCard.Layout.width + 40.0) + 100.0,
-          deviceSize.height
+          width: CGFloat(rewards.count) * (CheckoutConstants.RewardCard.Layout.width + 40.0) + 100.0,
+          height: deviceSize.height
         )
 
         assertSnapshot(
@@ -55,7 +55,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
   func testLive_Backed() {
     let user = User.template
 
-    let rewards = Reward.allRewards.map { $1 }
+    let rewards = Reward.allRewards
 
     let backing = Backing.template
       |> Backing.lens.backer .~ user
@@ -85,10 +85,10 @@ final class RewardsCollectionViewControllerTests: TestCase {
         self.scheduler.run()
 
         let deviceSize = type.device.deviceSize(in: type.orientation)
-        let size = CGSizeMake(
+        let size = CGSize(
           // Make it wide enough to show all cards
-          CGFloat(rewards.count) * (CheckoutConstants.RewardCard.Layout.width + 40.0) + 100.0,
-          deviceSize.height
+          width: CGFloat(rewards.count) * (CheckoutConstants.RewardCard.Layout.width + 40.0) + 100.0,
+          height: deviceSize.height
         )
 
         assertSnapshot(
@@ -133,3 +133,93 @@ private let shippingLocationsData = GraphAPI.ShippableLocationsForProjectQuery.D
     ]
   )
 )
+
+private extension Reward {
+  static var allRewards: [Reward] {
+    let futureDate = (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+    let pastDate = MockDate().date.timeIntervalSince1970 - 1
+
+    let availableAddOnsReward = Reward.template
+      |> Reward.lens.title .~ "Available"
+      |> Reward.lens.id .~ 1
+      |> Reward.lens.hasAddOns .~ true
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.endsAt .~ futureDate
+      |> Reward.lens.rewardsItems .~ [
+        RewardsItem.template
+          |> RewardsItem.lens.quantity .~ 1
+          |> RewardsItem.lens.item .~ (
+            .template
+              |> Item.lens.name .~ "Reward item"
+          )
+      ]
+    let shipsWorldwideReward = Reward.template
+      |> Reward.lens.title .~ "Ships worldwide"
+      |> Reward.lens.id .~ 2
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 25
+      |> Reward.lens.endsAt .~ futureDate
+      |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.convertedMinimum .~ 7.0
+      |> Reward.lens.shipping .~ (
+        .template
+          |> Reward.Shipping.lens.enabled .~ true
+          |> Reward.Shipping.lens.type .~ .anywhere
+          |> Reward.Shipping.lens.summary .~ "Ships worldwide"
+          |> Reward.Shipping.lens.preference .~ .unrestricted
+      )
+    let soldOutReward = Reward.template
+      |> Reward.lens.title .~ "Sold out"
+      |> Reward.lens.id .~ 3
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.convertedMinimum .~ 7.0
+      |> Reward.lens.endsAt .~ futureDate
+
+    let endedReward = Reward.postcards
+      |> Reward.lens.title .~ "Already ended"
+      |> Reward.lens.id .~ 4
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.endsAt .~ pastDate
+      |> Reward.lens.convertedMinimum .~ 7.0
+
+    let noReward = Reward.noReward
+      |> Reward.lens.convertedMinimum .~ 1
+
+    let usaReward = Reward.shipsToUSAReward
+      |> Reward.lens.endsAt .~ futureDate
+      |> Reward.lens.id .~ 5
+
+    let australiaReward = Reward.shipsToAustraliaReward
+      |> Reward.lens.endsAt .~ futureDate
+      |> Reward.lens.id .~ 6
+
+    let localReward = Reward.localShippingReward
+      |> Reward.lens.endsAt .~ futureDate
+      |> Reward.lens.id .~ 7
+
+    let digitalReward = Reward.digitalReward
+      |> Reward.lens.endsAt .~ futureDate
+      |> Reward.lens.id .~ 8
+
+    let secretReward = Reward.secretRewardTemplate
+      |> Reward.lens.endsAt .~ futureDate
+      |> Reward.lens.id .~ 9
+
+    return [
+      noReward,
+      secretReward,
+      availableAddOnsReward,
+      shipsWorldwideReward,
+      soldOutReward,
+      endedReward,
+      usaReward,
+      australiaReward,
+      localReward,
+      digitalReward
+    ]
+  }
+}

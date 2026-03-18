@@ -27,6 +27,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.remaining .~ 49
       |> Reward.lens.localPickup .~ nil
 
@@ -87,6 +88,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.localPickup .~ nil
 
     let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
@@ -156,6 +158,8 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
+
       |> Reward.lens.localPickup .~ nil
 
     let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
@@ -225,6 +229,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.localPickup .~ nil
 
     let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
@@ -350,6 +355,8 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
+
       |> Reward.lens.remaining .~ 49
       |> Reward.lens.localPickup .~ nil
 
@@ -421,6 +428,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.remaining .~ 49
       |> Reward.lens.localPickup .~ nil
 
@@ -557,6 +565,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.remaining .~ 49
       |> Reward.lens.localPickup .~ nil
 
@@ -622,6 +631,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.remaining .~ 49
       |> Reward.lens.localPickup .~ nil
 
@@ -699,6 +709,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.remaining .~ 49
       |> Reward.lens.localPickup .~ nil
       |> Reward.lens.image .~ Reward.Image(altText: "The image", url: "https://ksr.com/image.jpg")

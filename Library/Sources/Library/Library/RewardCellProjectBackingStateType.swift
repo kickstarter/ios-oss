@@ -27,4 +27,18 @@ public enum RewardCellProjectBackingStateType: Equatable {
       return .backed(live: .nonLive)
     }
   }
+
+  var canCreateNewPledge: Bool {
+    switch self {
+    case .nonBacked(live: .live):
+      return true
+    case .nonBacked(live: .inPostCampaignPledgingPhase):
+      return true
+    case .nonBacked(live: .nonLive):
+      return false
+
+    case .backed:
+      return false
+    }
+  }
 }
