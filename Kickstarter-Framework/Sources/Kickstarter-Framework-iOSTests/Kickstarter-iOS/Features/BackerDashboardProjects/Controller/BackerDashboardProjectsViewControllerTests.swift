@@ -69,7 +69,7 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
         language: language
       ) {
         let controller = BackerDashboardProjectsViewController
-          .configuredWith(projectsType: .backed, sort: .endingSoon)
+          .configuredWith(projectsType: .backed)
         controller.overrideUserInterfaceStyle = style
         let (parent, _) = traitControllers(
           device: device,
@@ -99,7 +99,7 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
         language: language
       ) {
         let controller = BackerDashboardProjectsViewController
-          .configuredWith(projectsType: .backed, sort: .endingSoon)
+          .configuredWith(projectsType: .backed)
         let (parent, _) = traitControllers(
           device: device,
           orientation: .portrait,
@@ -122,7 +122,7 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
         language: language
       ) {
         let controller = BackerDashboardProjectsViewController
-          .configuredWith(projectsType: .saved, sort: .endingSoon)
+          .configuredWith(projectsType: .saved)
         let (parent, _) = traitControllers(
           device: device,
           orientation: .portrait,

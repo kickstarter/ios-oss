@@ -11,10 +11,10 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
 
   private let nextPageLoadingIndicator = UIActivityIndicatorView()
 
-  internal static func configuredWith(projectsType: ProfileProjectsType, sort: DiscoveryParams.Sort)
+  internal static func configuredWith(projectsType: ProfileProjectsType)
     -> BackerDashboardProjectsViewController {
     let vc = BackerDashboardProjectsViewController()
-    vc.viewModel.inputs.configureWith(projectsType: projectsType, sort: sort)
+    vc.viewModel.inputs.configureWith(projectsType: projectsType)
     return vc
   }
 
@@ -110,8 +110,8 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
-      .observeValues { [weak self] project, projects, reftag in
-        self?.goTo(project: project, initialPlaylist: projects, refTag: reftag)
+      .observeValues { [weak self] project, reftag in
+        self?.goTo(project: project, refTag: reftag)
       }
   }
 
@@ -141,7 +141,7 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
     self.viewModel.inputs.projectTapped(project)
   }
 
-  private func goTo(project: Project, initialPlaylist _: [Project], refTag: RefTag) {
+  private func goTo(project: Project, refTag: RefTag) {
     let projectParam = Either<Project, any ProjectPageParam>(left: project)
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,

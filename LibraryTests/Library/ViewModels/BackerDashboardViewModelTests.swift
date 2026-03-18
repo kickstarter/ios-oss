@@ -14,7 +14,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
   private let backedButtonTitleText = TestObserver<String, Never>()
   private let backerNameText = TestObserver<String, Never>()
   private let configurePagesDataSourceTab = TestObserver<BackerDashboardTab, Never>()
-  private let configurePagesDataSourceSort = TestObserver<DiscoveryParams.Sort, Never>()
   private let goToMessages = TestObserver<(), Never>()
   private let goToProject = TestObserver<Project, Never>()
   private let goToSettings = TestObserver<(), Never>()
@@ -32,8 +31,7 @@ internal final class BackerDashboardViewModelTests: TestCase {
     self.vm.outputs.avatarURL.map { $0?.absoluteString ?? "" }.observe(self.avatarURL.observer)
     self.vm.outputs.backedButtonTitleText.observe(self.backedButtonTitleText.observer)
     self.vm.outputs.backerNameText.observe(self.backerNameText.observer)
-    self.vm.outputs.configurePagesDataSource.map(first).observe(self.configurePagesDataSourceTab.observer)
-    self.vm.outputs.configurePagesDataSource.map(second).observe(self.configurePagesDataSourceSort.observer)
+    self.vm.outputs.configurePagesDataSource.observe(self.configurePagesDataSourceTab.observer)
     self.vm.outputs.goToMessages.observe(self.goToMessages.observer)
     self.vm.outputs.goToSettings.observe(self.goToSettings.observer)
     self.vm.outputs.navigateToTab.observe(self.navigateToTab.observer)
@@ -101,12 +99,10 @@ internal final class BackerDashboardViewModelTests: TestCase {
 
   func testConfigurePagesData() {
     self.configurePagesDataSourceTab.assertValueCount(0)
-    self.configurePagesDataSourceSort.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
 
     self.configurePagesDataSourceTab.assertValues([.backed])
-    self.configurePagesDataSourceSort.assertValues([.endingSoon])
   }
 
   func testTabNavigation() {

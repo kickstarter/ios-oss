@@ -5,8 +5,8 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol BackerDashboardProjectsViewModelInputs {
-  /// Call to configure with the ProfileProjectsType to display and the default sort.
-  func configureWith(projectsType: ProfileProjectsType, sort: DiscoveryParams.Sort)
+  /// Call to configure with the ProfileProjectsType to display.
+  func configureWith(projectsType: ProfileProjectsType)
 
   /// Call when the user has updated.
   func currentUserUpdated()
@@ -32,7 +32,7 @@ public protocol BackerDashboardProjectsViewModelOutputs {
   var emptyStateIsVisible: Signal<(Bool, ProfileProjectsType), Never> { get }
 
   /// Emits the project, projects, and ref tag when should go to project page.
-  var goToProject: Signal<(Project, [Project], RefTag), Never> { get }
+  var goToProject: Signal<(Project, RefTag), Never> { get }
 
   /// Emits when the pull-to-refresh control is refreshing or not.
   var isRefreshing: Signal<Bool, Never> { get }
@@ -52,8 +52,7 @@ public protocol BackerDashboardProjectsViewModelType {
 public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsViewModelType,
   BackerDashboardProjectsViewModelInputs, BackerDashboardProjectsViewModelOutputs {
   public init() {
-    let projectsTypeAndSort = self.configureWithProjectsTypeAndSortProperty.signal.skipNil()
-    let projectsType = projectsTypeAndSort.map(first)
+    let projectsType = self.configureWithProjectsTypeAndSortProperty.signal.skipNil()
 
     let userUpdated = Signal.merge(
       self.viewDidAppearProperty.signal.ignoreValues(),
@@ -134,12 +133,11 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
         (projects.isEmpty, type)
       }
 
-    self.goToProject = Signal.combineLatest(projectsType, self.projects)
+    self.goToProject = projectsType
       .takePairWhen(self.projectTappedProperty.signal.skipNil())
-      .map(unpack)
-      .map { projectsType, projects, project in
+      .map { projectsType, project in
         let ref = (projectsType == .backed) ? RefTag.profileBacked : RefTag.profileSaved
-        return (project, projects, ref)
+        return (project, ref)
       }
 
     // Tracking
@@ -160,9 +158,9 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
   }
 
   private let configureWithProjectsTypeAndSortProperty =
-    MutableProperty<(ProfileProjectsType, DiscoveryParams.Sort)?>(nil)
-  public func configureWith(projectsType: ProfileProjectsType, sort: DiscoveryParams.Sort) {
-    self.configureWithProjectsTypeAndSortProperty.value = (projectsType, sort)
+    MutableProperty<ProfileProjectsType?>(nil)
+  public func configureWith(projectsType: ProfileProjectsType) {
+    self.configureWithProjectsTypeAndSortProperty.value = projectsType
   }
 
   private let currentUserUpdatedProperty = MutableProperty(())
@@ -196,7 +194,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
   }
 
   public let emptyStateIsVisible: Signal<(Bool, ProfileProjectsType), Never>
-  public let goToProject: Signal<(Project, [Project], RefTag), Never>
+  public let goToProject: Signal<(Project, RefTag), Never>
   public let isRefreshing: Signal<Bool, Never>
   public let isLoadingNextPage: Signal<Bool, Never>
   public let projects: Signal<[Project], Never>
