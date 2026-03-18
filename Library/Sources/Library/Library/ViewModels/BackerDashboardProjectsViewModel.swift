@@ -25,7 +25,7 @@ public protocol BackerDashboardProjectsViewModelInputs {
   func currentUserUpdated()
 
   /// Call when a project cell is tapped.
-  func projectTapped(_ project: Project)
+  func projectTapped(_ project: ProjectCardProperties)
 
   /// Call when pull-to-refresh is invoked.
   func refresh()
@@ -45,7 +45,7 @@ public protocol BackerDashboardProjectsViewModelOutputs {
   var emptyStateIsVisible: Signal<(Bool, ProfileProjectsType), Never> { get }
 
   /// Emits the project, projects, and ref tag when should go to project page.
-  var goToProject: Signal<(Project, RefTag), Never> { get }
+  var goToProject: Signal<(ProjectCardProperties, RefTag), Never> { get }
 
   /// Emits when the pull-to-refresh control is refreshing or not.
   var isRefreshing: Signal<Bool, Never> { get }
@@ -213,7 +213,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
 
         AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
           page: .profile,
-          project: project,
+          project: project.projectAnalytics,
           location: .accountMenu,
           section: sectionContext
         )
@@ -231,8 +231,8 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     self.currentUserUpdatedProperty.value = ()
   }
 
-  private let projectTappedProperty = MutableProperty<Project?>(nil)
-  public func projectTapped(_ project: Project) {
+  private let projectTappedProperty = MutableProperty<ProjectCardProperties?>(nil)
+  public func projectTapped(_ project: ProjectCardProperties) {
     self.projectTappedProperty.value = project
   }
 
@@ -257,7 +257,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
   }
 
   public let emptyStateIsVisible: Signal<(Bool, ProfileProjectsType), Never>
-  public let goToProject: Signal<(Project, RefTag), Never>
+  public let goToProject: Signal<(ProjectCardProperties, RefTag), Never>
   public let isRefreshing: Signal<Bool, Never>
   public let isLoadingNextPage: Signal<Bool, Never>
   public let projects: Signal<[ProjectCardProperties], Never>

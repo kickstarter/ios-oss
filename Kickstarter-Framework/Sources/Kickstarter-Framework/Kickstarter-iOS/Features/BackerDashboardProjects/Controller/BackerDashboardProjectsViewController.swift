@@ -134,15 +134,15 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
   }
 
   internal override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard let project = self.dataSource[indexPath] as? Project else {
+    guard let projectCellModel = self.dataSource[indexPath] as? ProjectCardPropertiesProjectCellModel else {
       return
     }
 
-    self.viewModel.inputs.projectTapped(project)
+    self.viewModel.inputs.projectTapped(projectCellModel.properties)
   }
 
-  private func goTo(project: Project, refTag: RefTag) {
-    let projectParam = Either<Project, any ProjectPageParam>(left: project)
+  private func goTo(project: ProjectCardProperties, refTag: RefTag) {
+    let projectParam = Either<Project, any ProjectPageParam>(right: project.projectPageParam)
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,
       refInfo: RefInfo(refTag)
