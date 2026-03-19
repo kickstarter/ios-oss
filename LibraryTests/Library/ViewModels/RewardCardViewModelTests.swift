@@ -29,6 +29,7 @@ final class RewardCardViewModelTests: TestCase {
   private let rewardTitleLabelAttributedText = TestObserver<NSAttributedString, Never>()
   private let rewardLocationPickupLabelText = TestObserver<String, Never>()
   private let rewardLocationStackViewHidden = TestObserver<Bool, Never>()
+  private let rewardBadge = TestObserver<RewardCardBadgeData?, Never>()
 
   override func setUp() {
     super.setUp()
@@ -49,6 +50,7 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.outputs.rewardTitleLabelAttributedText.observe(self.rewardTitleLabelAttributedText.observer)
     self.vm.outputs.rewardLocationStackViewHidden.observe(self.rewardLocationStackViewHidden.observer)
     self.vm.outputs.rewardLocationPickupLabelText.observe(self.rewardLocationPickupLabelText.observer)
+    self.vm.outputs.rewardBadge.observe(self.rewardBadge.observer)
   }
 
   // MARK: - Reward Title
@@ -1411,5 +1413,48 @@ final class RewardCardViewModelTests: TestCase {
 
     self.rewardLocationStackViewHidden.assertValues([false])
     self.rewardLocationPickupLabelText.assertValue("Los Angeles, CA")
+  }
+
+  func testSecretReward_showsBadge() {
+    let reward = Reward.secretRewardTemplate
+    let project = Project.template
+
+    self.vm.inputs.configure(with: RewardCardViewData(
+      project: project,
+      reward: reward,
+      context: .manage,
+      currentShippingLocation: nil
+    ))
+
+    self.rewardBadge.assertDidEmitValue()
+
+    guard let badge = self.rewardBadge.lastValue else {
+      XCTFail("Expected badge")
+      return
+    }
+
+    XCTAssertEqual(badge?.text, "Secret reward")
+  }
+
+  func testNotASecretReward_doesNotShowBadge() {
+    let reward = Reward.postcards
+
+    let project = Project.template
+
+    self.vm.inputs.configure(with: RewardCardViewData(
+      project: project,
+      reward: reward,
+      context: .manage,
+      currentShippingLocation: nil
+    ))
+
+    self.rewardBadge.assertDidEmitValue()
+
+    guard let badge = self.rewardBadge.lastValue else {
+      XCTFail("Expected badge")
+      return
+    }
+
+    XCTAssertNil(badge)
   }
 }

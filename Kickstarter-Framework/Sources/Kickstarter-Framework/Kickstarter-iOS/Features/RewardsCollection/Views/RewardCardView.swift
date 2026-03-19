@@ -138,17 +138,6 @@ public final class RewardCardView: UIView {
     applyMinimumPriceConversionLabelStyle(self.minimumPriceConversionLabel)
     applyPillsViewStyle(self.pillsView)
     applyRewardImageViewStyle(self.rewardImageView)
-
-    let badgeStyle = BadgeStyle.custom(
-      foregroundColor: Colors.Text.Accent.Green.bolder.uiColor(),
-      backgroundColor: Colors.Background.Accent.Green.subtle.uiColor()
-    )
-
-    self.rewardBadgeView.configure(
-      with: Strings.Secret_reward(),
-      image: Library.image(named: "Locked"),
-      style: badgeStyle
-    )
   }
 
   public override func bindViewModel() {
@@ -214,7 +203,21 @@ public final class RewardCardView: UIView {
         rewardImageView?.ksr_setImageWithURL(imageURL)
       }
 
-    self.rewardBadgeView.rac.hidden = self.viewModel.outputs.secretRewardBadgeHidden
+    self.viewModel.outputs.rewardBadge
+      .observeForUI()
+      .observeValues { [weak rewardBadgeView] data in
+        guard let data else {
+          rewardBadgeView?.isHidden = true
+          return
+        }
+
+        rewardBadgeView?.configure(
+          with: data.text,
+          image: data.image,
+          style: data.badgeStyle
+        )
+        rewardBadgeView?.isHidden = false
+      }
   }
 
   // MARK: - Private Helpers
