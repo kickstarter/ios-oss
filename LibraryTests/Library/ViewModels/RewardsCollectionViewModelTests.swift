@@ -70,7 +70,7 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.reloadDataWithValues
         .assertDidNotEmitValue(
-          "Shouldn't load rewards until a filter location and shipping location are selected "
+          "Shouldn't load rewards until a shipping location is selected "
         )
 
       self.vm.shippingLocationSelected(Location.australia)
@@ -418,7 +418,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       self.scheduler.advance()
       self.reloadDataWithValues.assertValueCount(
         1,
-        "Selecting shipping location should reload cards with new shipping location"
+        "Selecting shipping location should fetch and load cards, with new shipping location"
       )
       self.showPlaceholderRewardCards.assertValueCount(1)
 
@@ -427,13 +427,16 @@ final class RewardsCollectionViewModelTests: TestCase {
       self.vm.shippingLocationSelected(Location.australia)
       self.showPlaceholderRewardCards.assertValueCount(
         2,
-        "Changing filter country should cause loading screen to appear again"
+        "Changing selected shipping location should cause loading screen to appear again"
       )
       self.reloadDataWithValues.assertValueCount(1)
 
       // Wait for a fetch to load the new rewards
       self.scheduler.advance()
-      self.reloadDataWithValues.assertValueCount(2, "Changing shipping filter country should reload cards")
+      self.reloadDataWithValues.assertValueCount(
+        2,
+        "Changing selected shipping location should re-fetch new cards"
+      )
       self.showPlaceholderRewardCards.assertValueCount(2, "Done loading")
     }
   }
