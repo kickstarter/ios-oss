@@ -5,6 +5,8 @@ import Foundation
 import ReactiveSwift
 
 class MockGraphQLClient: ApolloClientType {
+  var apolloClient: any ApolloClientProtocol { fatalError() }
+
   // MARK: - Base Properties
 
   var client: ApolloClient {

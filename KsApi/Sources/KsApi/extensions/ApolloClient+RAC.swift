@@ -139,4 +139,8 @@ extension ApolloClient: ApolloClientType {
 
     return fetchPublisher
   }
+
+  public var apolloClient: any Apollo.ApolloClientProtocol {
+    self
+  }
 }
