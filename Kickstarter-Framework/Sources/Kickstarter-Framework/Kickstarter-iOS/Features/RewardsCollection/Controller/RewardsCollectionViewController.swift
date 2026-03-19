@@ -63,6 +63,9 @@ final class RewardsCollectionViewController: UICollectionViewController {
       secretRewardToken: secretRewardToken
     )
 
+    let shippingData = PledgeShippingLocationViewData(withProject: project)
+    rewardsCollectionVC.pledgeShippingLocationViewController.configureWith(value: shippingData)
+
     return rewardsCollectionVC
   }
 
@@ -106,8 +109,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
     )
 
     self.setupConstraints()
-    self.viewModel.inputs.shippingLocationSelected(nil)
-
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -239,17 +240,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
       .observeForControllerAction()
       .observeValues { [weak self] title, message in
         self?.showEditRewardConfirmationPrompt(title: title, message: message)
-      }
-
-    // MARK: - Shipping Location Outputs
-
-    self.pledgeShippingLocationViewController.view.rac.hidden = self.viewModel.outputs
-      .shippingLocationViewHidden
-
-    self.viewModel.outputs.configureShippingLocationViewWithData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.pledgeShippingLocationViewController.configureWith(value: data)
       }
   }
 
@@ -387,7 +377,7 @@ extension RewardsCollectionViewController: RewardCellDelegate {
 extension RewardsCollectionViewController: PledgeShippingLocationViewControllerDelegate {
   func pledgeShippingLocationViewController(
     _: PledgeShippingLocationViewController,
-    didSelect location: Location
+    didSelect location: Location?
   ) {
     self.viewModel.inputs.shippingLocationSelected(location)
   }

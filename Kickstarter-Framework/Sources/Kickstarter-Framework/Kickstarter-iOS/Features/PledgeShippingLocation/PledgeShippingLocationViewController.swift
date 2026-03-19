@@ -8,7 +8,7 @@ import UIKit
 protocol PledgeShippingLocationViewControllerDelegate: AnyObject {
   func pledgeShippingLocationViewController(
     _ viewController: PledgeShippingLocationViewController,
-    didSelect location: Location
+    didSelect location: Location?
   )
   func pledgeShippingLocationViewControllerFailedToLoad(
     _ viewController: PledgeShippingLocationViewController
@@ -98,6 +98,8 @@ final class PledgeShippingLocationViewController: UIViewController {
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.view.rac.hidden = self.viewModel.outputs.shippingLocationViewHidden
 
     self.adaptableStackView.rac.hidden = self.viewModel.outputs.adaptableStackViewIsHidden
     self.shimmerLoadingView.rac.hidden = self.viewModel.outputs.shimmerLoadingViewIsHidden

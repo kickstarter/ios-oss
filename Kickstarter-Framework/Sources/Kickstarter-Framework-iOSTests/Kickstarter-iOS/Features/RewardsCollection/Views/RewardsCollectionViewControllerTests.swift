@@ -20,9 +20,12 @@ final class RewardsCollectionViewControllerTests: TestCase {
     var calendar = Calendar(identifier: .gregorian)
     calendar.timeZone = TimeZone(identifier: "GMT")!
 
-    let mockService = MockService(fetchGraphQLResponses: [
-      (ShippableLocationsForProjectQuery.self, shippingLocationsData)
-    ])
+    let mockService = MockService(
+      fetchGraphQLResponses: [
+        (ShippableLocationsForProjectQuery.self, shippingLocationsData)
+      ],
+      fetchProjectRewardsResult: .success(rewards)
+    )
 
     withEnvironment(apiService: mockService) {
       forEachScreenshotType { type in
@@ -70,9 +73,12 @@ final class RewardsCollectionViewControllerTests: TestCase {
     var calendar = Calendar(identifier: .gregorian)
     calendar.timeZone = TimeZone(identifier: "GMT")!
 
-    let mockService = MockService(fetchGraphQLResponses: [
-      (ShippableLocationsForProjectQuery.self, shippingLocationsData)
-    ])
+    let mockService = MockService(
+      fetchGraphQLResponses: [
+        (ShippableLocationsForProjectQuery.self, shippingLocationsData)
+      ],
+      fetchProjectRewardsResult: .success(rewards)
+    )
 
     withEnvironment(apiService: mockService) {
       forEachScreenshotType { type in
@@ -214,12 +220,12 @@ private extension Reward {
       secretReward,
       availableAddOnsReward,
       shipsWorldwideReward,
-      soldOutReward,
-      endedReward,
       usaReward,
-      australiaReward,
       localReward,
-      digitalReward
+      digitalReward,
+      australiaReward,
+      soldOutReward,
+      endedReward
     ]
   }
 }
