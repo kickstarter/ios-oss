@@ -17,10 +17,6 @@ final class SimilarProjectsUseCaseTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    let remoteConfig = MockRemoteConfigClient()
-    remoteConfig.features["similar_projects_carousel"] = true
-    AppEnvironment.pushEnvironment(remoteConfigClient: remoteConfig)
-
     // Create mock data for similar projects
     let mockProjectNodes: [GraphAPI.FetchSimilarProjectsQuery.Data.Projects.Node?] = [
       self.createMockProjectNode(id: 1, name: "Project 1"),
