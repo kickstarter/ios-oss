@@ -1,4 +1,4 @@
-  import ApolloAPI
+import ApolloAPI
 import ReactiveSwift
 
 public protocol ApolloClientType {
