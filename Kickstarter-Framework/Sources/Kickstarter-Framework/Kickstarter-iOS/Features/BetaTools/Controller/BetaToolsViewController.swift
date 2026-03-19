@@ -204,12 +204,11 @@ internal final class BetaToolsViewController: UITableViewController {
   }
 
   private func goToRichTextExample() {
-    let viewController = UIHostingController(
-      rootView: RichTextExampleProjectsView(onSelectProject: { [weak self] project in
-        let detail = UIHostingController(rootView: Text(project.name))
-        self?.navigationController?.pushViewController(detail, animated: true)
-      })
-    )
+    let view = RichTextExampleProjectsView(onSelectProject: { [weak self] project in
+      let detail = UIHostingController(rootView: Text(project.name))
+      self?.navigationController?.pushViewController(detail, animated: true)
+    })
+    let viewController = UIHostingController(rootView: view)
     self.navigationController?.pushViewController(viewController, animated: true)
   }
 
