@@ -56,8 +56,8 @@ public protocol BackerDashboardViewModelOutputs {
   /// Emits a string for the backer name label.
   var backerNameText: Signal<String, Never> { get }
 
-  /// Emits the initial BackerDashboardTab and a default Sort to configure the page view controller.
-  var configurePagesDataSource: Signal<(BackerDashboardTab, DiscoveryParams.Sort), Never> { get }
+  /// Emits the initial BackerDashboardTab to configure the page view controller.
+  var configurePagesDataSource: Signal<BackerDashboardTab, Never> { get }
 
   /// The currently selected tab.
   var currentSelectedTab: BackerDashboardTab { get }
@@ -99,7 +99,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
   BackerDashboardViewModelOutputs {
   public init() {
     self.configurePagesDataSource = self.viewDidLoadProperty.signal
-      .map { (.backed, DiscoveryParams.Sort.endingSoon) }
+      .map { .backed }
 
     let fetchedUserEvent = Signal.merge(
       self.projectSavedProperty.signal.ignoreValues()
@@ -269,7 +269,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
   public let avatarURL: Signal<URL?, Never>
   public let backedButtonTitleText: Signal<String, Never>
   public let backerNameText: Signal<String, Never>
-  public let configurePagesDataSource: Signal<(BackerDashboardTab, DiscoveryParams.Sort), Never>
+  public let configurePagesDataSource: Signal<BackerDashboardTab, Never>
   public let goToMessages: Signal<(), Never>
   public let goToSettings: Signal<(), Never>
   public let navigateToTab: Signal<BackerDashboardTab, Never>

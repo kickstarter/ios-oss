@@ -19,10 +19,6 @@ public func featureBypassPledgeManagerDecisionPolicyEnabled() -> Bool {
   return featureEnabled(feature: .bypassPledgeManagerDecisionPolicy)
 }
 
-public func featureEditPledgeOverTimeEnabled() -> Bool {
-  return featureEnabled(feature: .editPledgeOverTimeEnabled)
-}
-
 public func featureUseKeychainForOAuthTokenEnabled() -> Bool {
   featureEnabled(feature: .useKeychainForOAuthToken)
 }
@@ -37,12 +33,4 @@ public func featurePledgedProjectsOverviewV2Enabled() -> Bool {
 
 public func featurePledgedProjectsOverviewV4Enabled() -> Bool {
   featureEnabled(feature: .pledgedProjectsOverviewV4Enabled)
-}
-
-public func featureRewardShipmentTrackingEnabled() -> Bool {
-  featureEnabled(feature: .rewardShipmentTracking)
-}
-
-public func featureSimilarProjectsCarouselEnabled() -> Bool {
-  featureEnabled(feature: .similarProjectsCarousel)
 }

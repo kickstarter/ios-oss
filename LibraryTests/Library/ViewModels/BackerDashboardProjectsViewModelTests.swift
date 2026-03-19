@@ -13,6 +13,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
   private let emptyStateIsVisible = TestObserver<Bool, Never>()
   private let emptyStateProjectsType = TestObserver<ProfileProjectsType, Never>()
   private let isRefreshing = TestObserver<Bool, Never>()
+  private let isLoadingNextPage = TestObserver<Bool, Never>()
   private let goToProject = TestObserver<Project, Never>()
   private let goToProjectRefTag = TestObserver<RefTag, Never>()
   private let projects = TestObserver<[Project], Never>()
@@ -23,8 +24,9 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     self.vm.outputs.emptyStateIsVisible.map(first).observe(self.emptyStateIsVisible.observer)
     self.vm.outputs.emptyStateIsVisible.map(second).observe(self.emptyStateProjectsType.observer)
     self.vm.outputs.isRefreshing.observe(self.isRefreshing.observer)
+    self.vm.outputs.isLoadingNextPage.observe(self.isLoadingNextPage.observer)
     self.vm.outputs.goToProject.map(first).observe(self.goToProject.observer)
-    self.vm.outputs.goToProject.map(third).observe(self.goToProjectRefTag.observer)
+    self.vm.outputs.goToProject.map(second).observe(self.goToProjectRefTag.observer)
     self.vm.outputs.projects.observe(self.projects.observer)
   }
 
@@ -47,13 +49,14 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(fetchBackerBackedProjectsResponse: env), currentUser: .template) {
-      self.vm.inputs.configureWith(projectsType: .backed, sort: .endingSoon)
+      self.vm.inputs.configureWith(projectsType: .backed)
       self.vm.inputs.viewDidAppear(false)
       self.vm.inputs.currentUserUpdated()
 
       self.projects.assertValueCount(0)
       self.emptyStateIsVisible.assertValueCount(0)
       self.isRefreshing.assertValues([true])
+      self.isLoadingNextPage.assertLastValue(false)
 
       XCTAssertEqual([], self.segmentTrackingClient.events)
       XCTAssertEqual([], self.segmentTrackingClient.properties(forKey: "type", as: String.self))
@@ -85,12 +88,14 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
         self.vm.inputs.viewDidAppear(false)
 
         self.isRefreshing.assertValues([true, false, true])
+        self.isLoadingNextPage.assertLastValue(false)
 
         self.scheduler.advance()
 
         self.projects.assertValues([projects, projectsWithNewProject])
         self.emptyStateIsVisible.assertValues([false, false])
         self.isRefreshing.assertValues([true, false, true, false])
+        self.isLoadingNextPage.assertLastValue(false)
       }
 
       // Refresh.
@@ -101,12 +106,14 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
         self.vm.inputs.refresh()
 
         self.isRefreshing.assertValues([true, false, true, false, true])
+        self.isLoadingNextPage.assertLastValue(false)
 
         self.scheduler.advance()
 
         self.projects.assertValues([projects, projectsWithNewProject, projectsWithNewestProject])
         self.emptyStateIsVisible.assertValues([false, false, false])
         self.isRefreshing.assertValues([true, false, true, false, true, false])
+        self.isLoadingNextPage.assertLastValue(false)
       }
     }
   }
@@ -115,11 +122,12 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     let env = FetchProjectsEnvelope(type: .saved, projects: [], hasNextPage: false, totalCount: 0)
 
     withEnvironment(apiService: MockService(fetchBackerSavedProjectsResponse: env), currentUser: .template) {
-      self.vm.inputs.configureWith(projectsType: .saved, sort: .endingSoon)
+      self.vm.inputs.configureWith(projectsType: .saved)
       self.vm.inputs.viewDidAppear(false)
 
       self.projects.assertValueCount(0)
       self.emptyStateIsVisible.assertValueCount(0)
+      self.isLoadingNextPage.assertValues([false])
       self.isRefreshing.assertValues([true])
 
       self.scheduler.advance()
@@ -147,7 +155,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     let env = FetchProjectsEnvelope(type: .backed, projects: projects, hasNextPage: false, totalCount: 3)
 
     withEnvironment(apiService: MockService(fetchBackerBackedProjectsResponse: env), currentUser: .template) {
-      self.vm.inputs.configureWith(projectsType: .backed, sort: .endingSoon)
+      self.vm.inputs.configureWith(projectsType: .backed)
       self.vm.inputs.viewDidAppear(false)
 
       self.scheduler.advance()
@@ -180,15 +188,17 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     let user = User.template
 
     withEnvironment(apiService: MockService(fetchBackerBackedProjectsResponse: env), currentUser: user) {
-      self.vm.inputs.configureWith(projectsType: .backed, sort: .endingSoon)
+      self.vm.inputs.configureWith(projectsType: .backed)
       self.vm.inputs.viewDidAppear(false)
       self.vm.inputs.currentUserUpdated()
 
       self.isRefreshing.assertLastValue(true)
+      self.isLoadingNextPage.assertLastValue(false)
 
       // Load all projects to end refreshing.
       self.scheduler.advance()
       self.isRefreshing.assertLastValue(false)
+      self.isLoadingNextPage.assertLastValue(false)
 
       // Test that updating the saved projects count doesn't trigger re-fetching backed projects.
       let userSavedCountChanged = user |> \.stats.starredProjectsCount .~ 3
@@ -198,6 +208,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       ) {
         self.vm.inputs.viewDidAppear(true)
         self.isRefreshing.assertLastValue(false)
+        self.isLoadingNextPage.assertLastValue(false)
       }
 
       // Test that updating the backed projects count triggers re-fetching backed projects.
@@ -208,10 +219,43 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       ) {
         self.vm.inputs.viewDidAppear(true)
         self.isRefreshing.assertLastValue(true)
+        self.isLoadingNextPage.assertLastValue(false)
 
         self.scheduler.advance()
         self.isRefreshing.assertLastValue(false)
+        self.isLoadingNextPage.assertLastValue(false)
       }
+    }
+  }
+
+  func testLoadNextPage() {
+    let projects = (1...3).map { .template |> Project.lens.id .~ $0 }
+    let env = FetchProjectsEnvelope(type: .backed, projects: projects, hasNextPage: true, totalCount: 5)
+    let user = User.template
+
+    withEnvironment(apiService: MockService(fetchBackerBackedProjectsResponse: env), currentUser: user) {
+      self.vm.inputs.configureWith(projectsType: .backed)
+      self.vm.inputs.viewDidAppear(false)
+      self.vm.inputs.currentUserUpdated()
+
+      self.isRefreshing.assertLastValue(true)
+      self.isLoadingNextPage.assertLastValue(false)
+
+      // Finish loading.
+      self.scheduler.advance()
+      self.isRefreshing.assertLastValue(false)
+      self.isLoadingNextPage.assertLastValue(false)
+
+      // Trigger next page fetch.
+      self.vm.inputs.willDisplayRow(10, outOf: 10)
+
+      self.isRefreshing.assertLastValue(false)
+      self.isLoadingNextPage.assertLastValue(true)
+
+      // Finish loading.
+      self.scheduler.advance()
+      self.isRefreshing.assertLastValue(false)
+      self.isLoadingNextPage.assertLastValue(false)
     }
   }
 }

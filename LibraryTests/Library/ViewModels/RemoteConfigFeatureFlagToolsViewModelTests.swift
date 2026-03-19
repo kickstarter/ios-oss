@@ -83,7 +83,7 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
   }
 
   func testUpdateUserDefaultsWithFeatures_ReloadWithData_UserDefaultsIsUpdated() {
-    let feature = RemoteConfigFeature.editPledgeOverTimeEnabled
+    let feature = RemoteConfigFeature.floatingTabBar
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
         feature.rawValue: false

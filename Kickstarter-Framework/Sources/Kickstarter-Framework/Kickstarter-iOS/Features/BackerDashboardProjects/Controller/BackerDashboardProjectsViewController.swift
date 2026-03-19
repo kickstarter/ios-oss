@@ -1,3 +1,4 @@
+import KDS
 import KsApi
 import Library
 import Prelude
@@ -8,10 +9,12 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
   fileprivate let viewModel: BackerDashboardProjectsViewModelType = BackerDashboardProjectsViewModel()
   fileprivate let dataSource = BackerDashboardProjectsDataSource()
 
-  internal static func configuredWith(projectsType: ProfileProjectsType, sort: DiscoveryParams.Sort)
+  private let nextPageLoadingIndicator = UIActivityIndicatorView()
+
+  internal static func configuredWith(projectsType: ProfileProjectsType)
     -> BackerDashboardProjectsViewController {
     let vc = BackerDashboardProjectsViewController()
-    vc.viewModel.inputs.configureWith(projectsType: projectsType, sort: sort)
+    vc.viewModel.inputs.configureWith(projectsType: projectsType)
     return vc
   }
 
@@ -23,6 +26,13 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
     let refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
     self.refreshControl = refreshControl
+
+    self.nextPageLoadingIndicator.hidesWhenStopped = true
+    // The large style looks almost like the UIRefreshControl spinner.
+    self.nextPageLoadingIndicator.style = .large
+    self.nextPageLoadingIndicator.color = Colors.Icon.primary.uiColor()
+    // Set the height of the loading indicator view to include padding.
+    self.nextPageLoadingIndicator.frame = CGRect(x: 0, y: 0, width: 0, height: Spacing.unit_20)
 
     self.tableView.register(nib: .BackerDashboardEmptyStateCell)
     self.tableView.register(nib: .BackerDashboardProjectCell)
@@ -71,6 +81,19 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
         }
       }
 
+    self.viewModel.outputs.isLoadingNextPage
+      .observeForUI()
+      .observeValues { [weak self] isLoading in
+        guard let self else { return }
+        if isLoading {
+          self.nextPageLoadingIndicator.startAnimating()
+          self.tableView.tableFooterView = self.nextPageLoadingIndicator
+        } else {
+          self.nextPageLoadingIndicator.stopAnimating()
+          self.tableView.tableFooterView = nil
+        }
+      }
+
     self.viewModel.outputs.emptyStateIsVisible
       .observeForUI()
       .observeValues { [weak self] isVisible, type in
@@ -87,8 +110,8 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
-      .observeValues { [weak self] project, projects, reftag in
-        self?.goTo(project: project, initialPlaylist: projects, refTag: reftag)
+      .observeValues { [weak self] project, reftag in
+        self?.goTo(project: project, refTag: reftag)
       }
   }
 
@@ -118,7 +141,7 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
     self.viewModel.inputs.projectTapped(project)
   }
 
-  private func goTo(project: Project, initialPlaylist _: [Project], refTag: RefTag) {
+  private func goTo(project: Project, refTag: RefTag) {
     let projectParam = Either<Project, any ProjectPageParam>(left: project)
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,

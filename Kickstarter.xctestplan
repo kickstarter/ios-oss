@@ -32,9 +32,9 @@
   "testTargets" : [
     {
       "target" : {
-        "containerPath" : "container:KDS",
-        "identifier" : "KDSTests",
-        "name" : "KDSTests"
+        "containerPath" : "container:KsApi",
+        "identifier" : "KsApiTests",
+        "name" : "KsApiTests"
       }
     },
     {
@@ -46,16 +46,9 @@
     },
     {
       "target" : {
-        "containerPath" : "container:KsApi",
-        "identifier" : "KsApiTests",
-        "name" : "KsApiTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:Kickstarter.xcodeproj",
-        "identifier" : "E113BD802B7D255000D3A809",
-        "name" : "Library-Keychain-iOSTests"
+        "containerPath" : "container:KDS",
+        "identifier" : "KDSTests",
+        "name" : "KDSTests"
       }
     },
     {
@@ -63,6 +56,20 @@
         "containerPath" : "container:Kickstarter.xcodeproj",
         "identifier" : "AAF3BB562F1845A200DAE921",
         "name" : "LibraryTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:ServerDrivenUI",
+        "identifier" : "ServerDrivenUITests",
+        "name" : "ServerDrivenUITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Kickstarter.xcodeproj",
+        "identifier" : "E113BD802B7D255000D3A809",
+        "name" : "Library-Keychain-iOSTests"
       }
     }
   ],

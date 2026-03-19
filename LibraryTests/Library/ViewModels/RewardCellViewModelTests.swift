@@ -49,7 +49,12 @@ final class RewardCellViewModelTests: TestCase {
           |> Backing.lens.amount .~ 700.0
       )
 
-    self.vm.inputs.configure(with: (project, reward, .manage, nil))
+    self.vm.inputs.configure(with: RewardCardViewData(
+      project: project,
+      reward: reward,
+      context: .manage,
+      currentShippingLocation: nil
+    ))
 
     self.backerLabelHidden.assertValues([false])
   }
@@ -70,7 +75,12 @@ final class RewardCellViewModelTests: TestCase {
           |> Backing.lens.amount .~ 700.0
       )
 
-    self.vm.inputs.configure(with: (project, reward, .manage, nil))
+    self.vm.inputs.configure(with: RewardCardViewData(
+      project: project,
+      reward: reward,
+      context: .manage,
+      currentShippingLocation: nil
+    ))
 
     self.backerLabelHidden.assertValues([true])
   }
