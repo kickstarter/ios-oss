@@ -73,7 +73,6 @@ final class RewardsCollectionViewModelTests: TestCase {
           "Shouldn't load rewards until a filter location and shipping location are selected "
         )
 
-      self.vm.rewardsFilterCountryCodeSelected("AU")
       self.vm.shippingLocationSelected(Location.australia)
 
       self.scheduler.advance()
@@ -111,7 +110,6 @@ final class RewardsCollectionViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.vm.configure(with: testProject, refTag: nil, context: .createPledge, secretRewardToken: "34342")
       self.vm.shippingLocationSelected(nil)
-      self.vm.rewardsFilterCountryCodeSelected("US")
 
       self.vm.viewDidLoad()
       self.vm.viewDidLayoutSubviews()
@@ -156,7 +154,6 @@ final class RewardsCollectionViewModelTests: TestCase {
       self.vm.configure(with: testProject, refTag: nil, context: .createPledge, secretRewardToken: nil)
 
       self.vm.shippingLocationSelected(nil)
-      self.vm.rewardsFilterCountryCodeSelected("US")
 
       self.vm.viewDidLoad()
       self.vm.viewDidLayoutSubviews()
@@ -193,7 +190,6 @@ final class RewardsCollectionViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.vm.configure(with: testProject, refTag: nil, context: .createPledge, secretRewardToken: nil)
       self.vm.shippingLocationSelected(nil)
-      self.vm.rewardsFilterCountryCodeSelected("US")
 
       self.vm.viewDidLoad()
       self.vm.viewDidLayoutSubviews()
@@ -259,7 +255,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.vm.configure(with: testProject, refTag: nil, context: .createPledge, secretRewardToken: nil)
       self.vm.inputs.shippingLocationSelected(nil)
-      self.vm.inputs.rewardsFilterCountryCodeSelected("US")
+
       self.vm.viewDidLoad()
       self.vm.viewDidLayoutSubviews()
 
@@ -322,7 +318,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.vm.configure(with: testProject, refTag: nil, context: .createPledge, secretRewardToken: nil)
       self.vm.inputs.shippingLocationSelected(nil)
-      self.vm.inputs.rewardsFilterCountryCodeSelected("US")
+
       self.vm.viewDidLoad()
       self.vm.viewDidLayoutSubviews()
 
@@ -367,7 +363,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       // If there are no shippable rewards, the location element will be hidden.
       // The shipping location view will output `nil` immediately if there are no shippable rewards.
       self.vm.inputs.shippingLocationSelected(nil)
-      self.vm.inputs.rewardsFilterCountryCodeSelected("US")
+
       self.vm.viewDidLoad()
       self.vm.viewDidLayoutSubviews()
 
@@ -413,49 +409,36 @@ final class RewardsCollectionViewModelTests: TestCase {
       )
       self.showPlaceholderRewardCards.assertLastValue(2, "Should show 2 loading cards")
 
-      // PledgeShippingLocationViewModel outputs a default shipping location of `nil` when it starts,
-      // before it's loaded the shippable countries.
-      self.vm.shippingLocationSelected(nil)
-      self.reloadDataWithValues.assertDidNotEmitValue("Should still be loading")
-      self.showPlaceholderRewardCards.assertValueCount(1, "Should still be loading")
-
-      // PledgeShippingLocationViewModel outputs an (initial) reward filter country
-      self.vm.rewardsFilterCountryCodeSelected("US")
-      self.reloadDataWithValues.assertDidNotEmitValue("Should still be loading")
-      self.showPlaceholderRewardCards.assertValueCount(1, "Should still be loading")
-
-      // Wait for a network fetch to load the rewards
-      self.scheduler.advance()
-      self.reloadDataWithValues.assertValueCount(1, "Should have fetched rewards")
-      self.showPlaceholderRewardCards.assertValueCount(1, "Should no longer be loading")
-
       // PledgeShippingLocationViewModel finishes loading and outputs the actual selected shipping location
       self.vm.shippingLocationSelected(.usa)
+      self.reloadDataWithValues.assertDidNotEmitValue("Should still be loading")
+      self.showPlaceholderRewardCards.assertValueCount(1, "Should still be loading")
+
+      // Wait for the network fetch
+      self.scheduler.advance()
       self.reloadDataWithValues.assertValueCount(
-        2,
+        1,
         "Selecting shipping location should reload cards with new shipping location"
       )
       self.showPlaceholderRewardCards.assertValueCount(1)
 
       // The user picks a new shipping location from the dropdown.
-      // PledgeShippingLocationViewModel outputs the new filter country _and_ new selected shipping location.
-      self.vm.rewardsFilterCountryCodeSelected("AU")
+      // PledgeShippingLocationViewModel outputs the new selected shipping location.
       self.vm.shippingLocationSelected(Location.australia)
       self.showPlaceholderRewardCards.assertValueCount(
         2,
         "Changing filter country should cause loading screen to appear again"
       )
-      self.reloadDataWithValues.assertValueCount(2)
+      self.reloadDataWithValues.assertValueCount(1)
 
       // Wait for a fetch to load the new rewards
       self.scheduler.advance()
-
-      self.reloadDataWithValues.assertValueCount(3, "Changing shipping filter country should reload cards")
-      self.showPlaceholderRewardCards.assertValueCount(2)
+      self.reloadDataWithValues.assertValueCount(2, "Changing shipping filter country should reload cards")
+      self.showPlaceholderRewardCards.assertValueCount(2, "Done loading")
     }
   }
 
-  func test_projectWithNoShippableRewards_doesNotShowLoadingState() {
+  func test_projectWithNoShippableRewards_showsLoadingState_andFetchesRewards() {
     let digitalReward = Reward.digitalReward
 
     let rewards = [
@@ -479,14 +462,8 @@ final class RewardsCollectionViewModelTests: TestCase {
       )
       self.showPlaceholderRewardCards.assertLastValue(2, "Should show 2 loading cards")
 
-      // PledgeShippingLocationViewModel outputs a default shipping location of `nil` when it starts,
-      // before it's loaded the shippable countries.
-      self.vm.shippingLocationSelected(nil)
-      self.reloadDataWithValues.assertDidNotEmitValue("Should still be loading")
-      self.showPlaceholderRewardCards.assertValueCount(1, "Should still be loading")
-
-      // PledgeShippingLocationViewModel outputs an (initial) reward filter country
-      self.vm.rewardsFilterCountryCodeSelected("US")
+      // PledgeShippingLocationViewModel outputs a nil selected location
+      self.vm.inputs.shippingLocationSelected(nil)
       self.reloadDataWithValues.assertDidNotEmitValue("Should still be loading")
       self.showPlaceholderRewardCards.assertValueCount(1, "Should still be loading")
 

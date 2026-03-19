@@ -20,7 +20,6 @@ public protocol RewardsCollectionViewModelInputs {
   func rewardSelected(with rewardId: Int)
   func shippingLocationViewDidFailToLoad()
   func shippingLocationSelected(_ location: Location?)
-  func rewardsFilterCountryCodeSelected(_ countryCode: String)
   func traitCollectionDidChange(_ traitCollection: UITraitCollection)
   func viewDidAppear()
   func viewDidLayoutSubviews()
@@ -69,12 +68,15 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       .takeWhen(self.viewDidLoadProperty.signal)
       .map(titleForContext)
 
-    // The actual selected shipping location
-    let selectedShippingLocation = self.shippingLocationSelectedSignal
+    // The actual selected shipping location.
+    // Can be nil if the project has no shippable rewards.
+    let selectedShippingLocation: Signal<Location?, Never> = self.shippingLocationSelectedSignal
 
     // The country to which we should filter the rewards.
-    let filterCountry = self.rewardsFilterCountryCodeProperty
+    // TODO: If we passed in ShippableCountries to the location selector, we could call this faster.
+    let filterCountry: Signal<String?, Never> = self.shippingLocationSelectedSignal
       .signal
+      .map { $0?.country }
       .skipRepeats()
 
     let isLoadingProperty = MutableProperty(true)
@@ -434,11 +436,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   private let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
-  }
-
-  private let rewardsFilterCountryCodeProperty = MutableProperty<String?>(nil)
-  public func rewardsFilterCountryCodeSelected(_ countryCode: String) {
-    self.rewardsFilterCountryCodeProperty.value = countryCode
   }
 
   public let configureRewardsCollectionViewFooterWithCount: Signal<Int, Never>

@@ -10,10 +10,6 @@ protocol PledgeShippingLocationViewControllerDelegate: AnyObject {
     _ viewController: PledgeShippingLocationViewController,
     didSelect location: Location?
   )
-  func pledgeShippingLocationViewController(
-    _ viewController: PledgeShippingLocationViewController,
-    didFilterRewardsToCountryCode: String
-  )
   func pledgeShippingLocationViewControllerFailedToLoad(
     _ viewController: PledgeShippingLocationViewController
   )
@@ -115,17 +111,6 @@ final class PledgeShippingLocationViewController: UIViewController {
         guard let self = self else { return }
 
         self.delegate?.pledgeShippingLocationViewController(self, didSelect: location)
-      }
-
-    self.viewModel.outputs.notifyDelegateOfRewardFilterLocation
-      .observeForUI()
-      .observeValues { [weak self] countryCode in
-        guard let self = self else { return }
-
-        self.delegate?.pledgeShippingLocationViewController(
-          self,
-          didFilterRewardsToCountryCode: countryCode
-        )
       }
 
     self.viewModel.outputs.presentShippingLocations

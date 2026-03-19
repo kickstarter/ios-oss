@@ -382,13 +382,6 @@ extension RewardsCollectionViewController: PledgeShippingLocationViewControllerD
     self.viewModel.inputs.shippingLocationSelected(location)
   }
 
-  func pledgeShippingLocationViewController(
-    _: PledgeShippingLocationViewController,
-    didFilterRewardsToCountryCode countryCode: String
-  ) {
-    self.viewModel.inputs.rewardsFilterCountryCodeSelected(countryCode)
-  }
-
   func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {
     self.viewModel.inputs.shippingLocationViewDidFailToLoad()
   }

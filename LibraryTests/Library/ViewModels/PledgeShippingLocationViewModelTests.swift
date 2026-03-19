@@ -18,7 +18,6 @@ final class PledgeShippingLocationViewModelTests: TestCase {
   private let presentShippingLocationsAllLocations = TestObserver<[Location], Never>()
   private let presentShippingLocationsSelectedLocation = TestObserver<Location, Never>()
   private let notifyDelegateOfSelectedShippingLocation = TestObserver<Location?, Never>()
-  private let notifyDelegateOfRewardFilterLocation = TestObserver<String, Never>()
   private let shimmerLoadingViewIsHidden = TestObserver<Bool, Never>()
   private let shippingLocationButtonTitle = TestObserver<String, Never>()
   private let shippingRulesError = TestObserver<String, Never>()
@@ -36,8 +35,6 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       .observe(self.presentShippingLocationsSelectedLocation.observer)
     self.vm.outputs.notifyDelegateOfSelectedShippingLocation
       .observe(self.notifyDelegateOfSelectedShippingLocation.observer)
-    self.vm.outputs.notifyDelegateOfRewardFilterLocation
-      .observe(self.notifyDelegateOfRewardFilterLocation.observer)
     self.vm.outputs.shippingLocationButtonTitle.observe(self.shippingLocationButtonTitle.observer)
     self.vm.outputs.shippingRulesError.observe(self.shippingRulesError.observer)
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
@@ -61,7 +58,6 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.shimmerLoadingViewIsHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
       self.notifyDelegateOfSelectedShippingLocation.assertDidNotEmitValue()
-      self.notifyDelegateOfRewardFilterLocation.assertValues(["US"])
       self.shippingLocationButtonTitle.assertValues([])
 
       self.scheduler.advance()
@@ -73,7 +69,6 @@ final class PledgeShippingLocationViewModelTests: TestCase {
         [Location.usa],
         "Because the user has an environment with a US country code, their default location should be the USA."
       )
-      self.notifyDelegateOfRewardFilterLocation.assertValues(["US"])
       self.shippingLocationButtonTitle.assertValues(["United States"])
       self.shippingRulesError.assertDidNotEmitValue()
     }
@@ -102,7 +97,6 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.shimmerLoadingViewIsHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
       self.notifyDelegateOfSelectedShippingLocation.assertDidNotEmitValue()
-      self.notifyDelegateOfRewardFilterLocation.assertValues(["US"])
       self.shippingLocationButtonTitle.assertValues([])
 
       self.scheduler.advance()
@@ -114,7 +108,6 @@ final class PledgeShippingLocationViewModelTests: TestCase {
         [Location.usa],
         "Because the user has an environment with a US country code, their default location should be the USA."
       )
-      self.notifyDelegateOfRewardFilterLocation.assertValues(["US"])
       self.shippingLocationButtonTitle.assertValues(["United States"])
       self.shippingRulesError.assertDidNotEmitValue()
     }
@@ -143,7 +136,6 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.shimmerLoadingViewIsHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
       self.notifyDelegateOfSelectedShippingLocation.assertDidNotEmitValue()
-      self.notifyDelegateOfRewardFilterLocation.assertValues(["AU"])
       self.shippingLocationButtonTitle.assertValues([])
 
       self.scheduler.advance()
@@ -155,23 +147,20 @@ final class PledgeShippingLocationViewModelTests: TestCase {
         [Location.australia],
         "Because the project has a backing in Australia, the selected shipping location should be Australia."
       )
-      self.notifyDelegateOfRewardFilterLocation.assertValues(["AU"])
       self.shippingLocationButtonTitle.assertValues(["Australia"])
       self.shippingRulesError.assertDidNotEmitValue()
     }
   }
 
   func testDefaultShippingRule_ProjectHasNoShippableRewards_DefaultsToNil() {
-    let mockService = MockService(fetchGraphQLResponses: [
-      (ShippableLocationsForProjectQuery.self, noShippableCountries)
-    ])
-
     let reward = Reward.digitalReward
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
 
-    withEnvironment(apiService: mockService, countryCode: "US") {
+    // Note that this test has no mockService.
+    // We shouldn't hit the network if the project has no shippable rewards.
+    withEnvironment(countryCode: "US") {
       self.vm.inputs.configureWith(data: PledgeShippingLocationViewData(withProject: project))
       self.vm.inputs.viewDidLoad()
 
@@ -182,7 +171,6 @@ final class PledgeShippingLocationViewModelTests: TestCase {
         "Shipping location view should be hidden if project has no shippable rewards"
       )
       self.notifyDelegateOfSelectedShippingLocation.assertDidNotEmitValue()
-      self.notifyDelegateOfRewardFilterLocation.assertValues(["US"])
       self.shippingLocationButtonTitle.assertValues([])
 
       self.scheduler.advance()
@@ -197,7 +185,6 @@ final class PledgeShippingLocationViewModelTests: TestCase {
         [nil],
         "Because the project has no shippable rewards, the default shipping location should be nil."
       )
-      self.notifyDelegateOfRewardFilterLocation.assertValues(["US"])
       self.shippingLocationButtonTitle.assertDidNotEmitValue()
       self.shippingRulesError.assertDidNotEmitValue()
     }
@@ -217,12 +204,10 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.notifyDelegateOfSelectedShippingLocation.assertDidNotEmitValue()
-      self.notifyDelegateOfRewardFilterLocation.assertValues(["US"])
 
       self.scheduler.advance()
 
       self.notifyDelegateOfSelectedShippingLocation.assertValues([Location.usa])
-      self.notifyDelegateOfRewardFilterLocation.assertValues(["US"])
 
       self.vm.inputs.shippingLocationButtonTapped()
 
@@ -243,7 +228,6 @@ final class PledgeShippingLocationViewModelTests: TestCase {
         Location.usa,
         Location.australia
       ])
-      self.notifyDelegateOfRewardFilterLocation.assertValues(["US", "AU"])
     }
   }
 
@@ -450,11 +434,5 @@ private let threeShippableCountries = GraphAPI.ShippableLocationsForProjectQuery
         name: "United States"
       )
     ]
-  )
-)
-
-private let noShippableCountries = GraphAPI.ShippableLocationsForProjectQuery.Data(
-  project: GraphAPI.ShippableLocationsForProjectQuery.Data.Project(
-    shippableCountriesExpanded: []
   )
 )

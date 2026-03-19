@@ -12,8 +12,6 @@ public struct PledgeShippingLocationViewData {
   let selectedLocationId: Int?
   /// Whether or not the project has any rewards that require shipping.
   let hasShippableRewards: Bool
-  /// Initial set of shippable locations. This won't be displayed to backers, but is used to guess at a default shipping filter country.
-  let rawShippableLocations: [Location]?
 
   public init(withProject project: Project) {
     self.pid = project.id
@@ -26,27 +24,12 @@ public struct PledgeShippingLocationViewData {
       )
 
       self.hasShippableRewards = true
-      self.rawShippableLocations = nil
       return
     }
 
     // TODO: Clean up when a Project field for this is added (MBL-3150)
     self.hasShippableRewards = project.rewards
       .contains(where: { $0.shipping.enabled })
-
-    // TODO: It would make more sense to just add `shippableCountriesExpanded` to the Project fragment.
-    // For now, get a raw, un-deduplicated list of countries from the rewards, since we already have that
-    // data plumbed in.
-    var locations: [Location] = []
-    for reward in project.rewards {
-      if let rules = reward.shippingRulesExpanded {
-        for rule in rules {
-          locations.append(rule.location)
-        }
-      }
-    }
-
-    self.rawShippableLocations = locations.sorted(by: { a, b in a.localizedName < b.localizedName })
   }
 }
 
@@ -63,7 +46,6 @@ public protocol PledgeShippingLocationViewModelOutputs {
   var dismissShippingLocations: Signal<Void, Never> { get }
   var presentShippingLocations: Signal<([Location], Location), Never> { get }
   var notifyDelegateOfSelectedShippingLocation: Signal<Location?, Never> { get }
-  var notifyDelegateOfRewardFilterLocation: Signal<String, Never> { get }
   var shimmerLoadingViewIsHidden: Signal<Bool, Never> { get }
   var shippingLocationButtonTitle: Signal<String, Never> { get }
   var shippingRulesError: Signal<String, Never> { get }
@@ -85,8 +67,6 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
     )
     .map(first)
 
-    let pid = configData
-      .map { $0.pid }
     let selectedLocationId = configData
       .map { $0.selectedLocationId }
 
@@ -97,12 +77,15 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
 
     let isLoading = MutableProperty(false)
 
-    let locationsQuery = pid
+    // TODO: It would make this page a bit faster if we fetched shippableLocationsExpanded earlier.
+    // This could be fetched as part of the Project Page fetch, or part of ProjectFragment.
+    let locationsQuery = configData
       .on(value: { _ in
         isLoading.value = true
       })
-      .switchMap { pid in
-        shippableLocations(forProject: pid).materialize()
+      .switchMap { data in
+        shippableLocations(data: data).materialize()
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .on(completed: {
             isLoading.value = false
           })
@@ -129,14 +112,6 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
     )
 
     self.notifyDelegateOfSelectedShippingLocation = selectedShippingLocation
-
-    let initialFilterLocation = configData
-      .map { defaultFilterCountry(fromData: $0) }
-
-    self.notifyDelegateOfRewardFilterLocation = Signal.merge(
-      initialFilterLocation,
-      selectedShippingLocation.skipNil().map { $0.country }
-    ).skipRepeats()
 
     self.presentShippingLocations = Signal.combineLatest(
       loadedLocations,
@@ -187,7 +162,6 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
   public let dismissShippingLocations: Signal<Void, Never>
   public let presentShippingLocations: Signal<([Location], Location), Never>
   public let notifyDelegateOfSelectedShippingLocation: Signal<Location?, Never>
-  public let notifyDelegateOfRewardFilterLocation: Signal<String, Never>
   public let shimmerLoadingViewIsHidden: Signal<Bool, Never>
   public let shippingLocationButtonTitle: Signal<String, Never>
   public let shippingRulesError: Signal<String, Never>
@@ -211,40 +185,17 @@ private func determineShippingLocation(
   return defaultShippingLocation(fromLocations: locations)
 }
 
-private func shippableLocations(forProject pid: Int) -> SignalProducer<[Location], ErrorEnvelope> {
-  let query = GraphAPI.ShippableLocationsForProjectQuery(id: pid)
+private func shippableLocations(data: PledgeShippingLocationViewData)
+  -> SignalProducer<[Location], ErrorEnvelope> {
+  if !data.hasShippableRewards {
+    return SignalProducer(value: [])
+  }
+
+  let query = GraphAPI.ShippableLocationsForProjectQuery(id: data.pid)
   let producer = AppEnvironment.current.apiService.fetch(query: query)
     .map { data in
       let locations = Location.locations(from: data)
       return locations
     }
-    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-
   return producer
-}
-
-// This is a hack to get rewards displaying a tiny bit faster.
-// The official list of shippable countries for the project comes from the query shippableLocations.
-// We use that list to select a default shipping location, and use that location to
-// power the rewards fetch in `RewardsCollectionViewModel`.
-// But since we're passing in a full Project to this VM, we can also poke through its rewards
-// and use that to make an ersatz, duplicate-filled list of shippable countries for that project.
-// We won't show that to users, but we can use it to emit a default filter country before we're done fetching shippableLocations.
-
-// It would make more sense for us to just query `shippableLocations` as part of the Project fragment,
-// pass that in to this VM, and eliminate the query in this VM entirely. Cleaning that up is a bigger fix.
-private func defaultFilterCountry(fromData data: PledgeShippingLocationViewData) -> String {
-  if !data.hasShippableRewards {
-    return AppEnvironment.current.countryCode
-  }
-
-  if let allLocations = data.rawShippableLocations,
-     let initialLocation = determineShippingLocation(
-       locations: allLocations,
-       selectedLocationId: data.selectedLocationId
-     ) {
-    return initialLocation.country
-  }
-
-  return AppEnvironment.current.countryCode
 }
