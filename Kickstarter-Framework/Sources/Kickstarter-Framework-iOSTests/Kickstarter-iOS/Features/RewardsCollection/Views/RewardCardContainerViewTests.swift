@@ -534,6 +534,38 @@ final class RewardCardContainerViewTests: TestCase {
       }
     }
   }
+
+  // This is intentionally not part of the allRewards helper, to maintain stability
+  // for the existing screenshot tests.
+  func testLive_FeaturedReward() {
+    let user = User.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.personalization.backing .~ nil
+
+    let reward = Reward.featuredReward
+
+    forEachScreenshotType(languages: [.en]) { type in
+      withSnapshotEnvironment(currentUser: user, language: type.language) {
+        let vc = rewardCardInViewController(
+          project: project,
+          reward: reward,
+          selectedShippingLocation: nil
+        )
+
+        let size = type.device.deviceSize(in: type.orientation)
+
+        assertSnapshot(
+          forView: vc.view,
+          withType: type,
+          size: size,
+          perceptualPrecision: 0.98,
+          testName: "testLive_FeaturedReward"
+        )
+      }
+    }
+  }
 }
 
 private func rewardCardInViewController(

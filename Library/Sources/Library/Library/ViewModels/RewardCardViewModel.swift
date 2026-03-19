@@ -406,5 +406,25 @@ private func badgeData(forReward reward: Reward) -> RewardCardBadgeData? {
     )
   }
 
+  // It's technically possible for a reward to be both Featured and Secret.
+  // In that case, we just display the Secret badge.
+  if reward.featured {
+    let foreground = Colors.Text.Accent.Purple.bolder.uiColor()
+    let background = Colors.Background.Accent.Purple.subtle.uiColor()
+
+    let badgeStyle = BadgeStyle.custom(
+      foregroundColor: foreground,
+      backgroundColor: background
+    )
+
+    let icon = Library.image(named: "icon-star-open-new")?.withTintColor(foreground)
+
+    return RewardCardBadgeData(
+      text: Strings.Featured(),
+      badgeStyle: badgeStyle,
+      image: icon
+    )
+  }
+
   return nil
 }

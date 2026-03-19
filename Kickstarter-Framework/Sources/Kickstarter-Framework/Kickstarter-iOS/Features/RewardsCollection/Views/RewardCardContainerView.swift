@@ -112,7 +112,7 @@ public final class RewardCardContainerView: UIView {
   /// in order to prevent visual overlap and ensure proper layout spacing.
   /// If `requiresTopMarginInset` is false, no additional top margin is applied.
   private func adjustTopMarginForRewardCard(_ data: RewardCardViewData) {
-    let requiresTopMarginInset = data.reward.isSecretReward
+    let requiresTopMarginInset = data.reward.isSecretReward || data.reward.featured
       && data.reward.image == nil
       && userIsBacking(reward: data.reward, inProject: data.project)
 

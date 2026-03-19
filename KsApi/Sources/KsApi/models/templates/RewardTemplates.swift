@@ -133,6 +133,15 @@ extension Reward {
     |> Reward.lens.isAvailable .~ true
     |> Reward.lens.audienceData .~ Reward.AudienceData(isSecretReward: true)
 
+  public static let featuredReward = {
+    var reward = Reward.template
+      |> Reward.lens.title .~ "Featured reward"
+      |> Reward.lens.isAvailable .~ true
+
+    reward.featured = true
+    return reward
+  }()
+
   internal static let shipsToUSAReward: Reward = Reward.template
     |> Reward.lens.title .~ "Ships only to the USA"
     |> Reward.lens.shipping .~ Reward.Shipping(

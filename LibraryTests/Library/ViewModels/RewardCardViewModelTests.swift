@@ -1436,7 +1436,29 @@ final class RewardCardViewModelTests: TestCase {
     XCTAssertEqual(badge?.text, "Secret reward")
   }
 
-  func testNotASecretReward_doesNotShowBadge() {
+  func testFeaturedReward_showsBadge() {
+    let reward = Reward.featuredReward
+
+    let project = Project.template
+
+    self.vm.inputs.configure(with: RewardCardViewData(
+      project: project,
+      reward: reward,
+      context: .manage,
+      currentShippingLocation: nil
+    ))
+
+    self.rewardBadge.assertDidEmitValue()
+
+    guard let badge = self.rewardBadge.lastValue else {
+      XCTFail("Expected badge")
+      return
+    }
+
+    XCTAssertEqual(badge?.text, "Featured")
+  }
+
+  func testNotASecretReward_andNotAFeaturedReward_doesNotShowBadge() {
     let reward = Reward.postcards
 
     let project = Project.template

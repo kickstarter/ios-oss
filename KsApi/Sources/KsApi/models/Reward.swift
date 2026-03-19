@@ -7,7 +7,7 @@ public struct Reward {
   public let description: String
   public let endsAt: TimeInterval?
   public let estimatedDeliveryOn: TimeInterval?
-  public let featured: Bool
+  public internal(set) var featured: Bool
   public let hasAddOns: Bool
   public let id: Int
   public let latePledgeAmount: Double

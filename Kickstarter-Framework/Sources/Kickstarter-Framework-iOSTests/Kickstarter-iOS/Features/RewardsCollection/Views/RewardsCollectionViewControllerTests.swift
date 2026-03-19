@@ -215,9 +215,14 @@ private extension Reward {
       |> Reward.lens.endsAt .~ futureDate
       |> Reward.lens.id .~ 9
 
+    let featuredReard = Reward.featuredReward
+      |> Reward.lens.endsAt .~ futureDate
+      |> Reward.lens.id .~ 10
+
     return [
       noReward,
       secretReward,
+      featuredReward,
       availableAddOnsReward,
       shipsWorldwideReward,
       usaReward,
