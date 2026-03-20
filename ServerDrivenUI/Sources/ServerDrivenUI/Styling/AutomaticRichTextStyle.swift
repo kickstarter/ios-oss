@@ -53,7 +53,7 @@ public struct AutomaticRichTextStyle: RichTextStyle, Sendable {
   }
 
   public var listIndentation: CGFloat {
-    Spacing.unit_06
+    Spacing.unit_04
   }
 
   public var contentHorizontalPadding: CGFloat {

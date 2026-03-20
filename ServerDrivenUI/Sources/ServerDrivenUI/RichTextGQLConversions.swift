@@ -1,6 +1,27 @@
 import Foundation
 import GraphAPI
 
+extension RichTextComponentFragment {
+  public func asRichTextElements() -> [RichTextElement] {
+    self.items.map { $0.asRichTextElement() }
+  }
+}
+
+extension RichTextComponentFragment.Item {
+  func asRichTextElement() -> RichTextElement {
+    if let x = asRichText { return x.asRichTextElement }
+    if let x = asRichTextHeader { return x.asRichTextElement }
+    if let x = asRichTextListItem { return x.asRichTextElement }
+    if let x = asRichTextListOpen { return x.asRichTextElement }
+    if let x = asRichTextListClose { return x.asRichTextElement }
+    if let x = asRichTextPhoto { return x.asRichTextElement }
+    if let x = asRichTextAudio { return x.asRichTextElement }
+    if let x = asRichTextVideo { return x.asRichTextElement }
+    if let x = asRichTextOembed { return x.asRichTextElement }
+    return .text(makeText(text: nil, link: nil, styles: nil, children: []), nil)
+  }
+}
+
 extension RichTextComponentFragment.Item.AsRichText.Child {
   func asRichTextElement() -> RichTextElement {
     if let x = asRichText { return x.asRichTextElement }
@@ -61,7 +82,7 @@ extension RichTextComponentFragment.Item.AsRichText.Child.AsRichText {
 
 extension RichTextComponentFragment.Item.AsRichText.Child.AsRichTextHeader {
   var asRichTextElement: RichTextElement {
-    .text(makeText(text: text, link: link, styles: styles, children: []), nil)
+    .text(makeText(text: text, link: link, styles: styles, children: []), .init(styles))
   }
 }
 
@@ -74,7 +95,7 @@ extension RichTextComponentFragment.Item.AsRichText.Child.AsRichTextListItem {
 extension RichTextComponentFragment.Item.AsRichTextHeader {
   var asRichTextElement: RichTextElement {
     let children = (children ?? []).map { $0.asRichTextElement() }
-    return .text(makeText(text: text, link: link, styles: styles, children: children), nil)
+    return .text(makeText(text: text, link: link, styles: styles, children: children), .init(styles))
   }
 }
 
@@ -86,7 +107,7 @@ extension RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichText {
 
 extension RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextHeader {
   var asRichTextElement: RichTextElement {
-    .text(makeText(text: text, link: link, styles: styles, children: []), nil)
+    .text(makeText(text: text, link: link, styles: styles, children: []), .init(styles))
   }
 }
 
@@ -111,7 +132,7 @@ extension RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichText {
 
 extension RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextHeader {
   var asRichTextElement: RichTextElement {
-    .text(makeText(text: text, link: link, styles: styles, children: []), nil)
+    .text(makeText(text: text, link: link, styles: styles, children: []), .init(styles))
   }
 }
 
@@ -311,7 +332,6 @@ extension RichTextComponentFragment.Item.AsRichTextOembed {
       type: type,
       iframeUrl: iframeUrl,
       originalUrl: originalUrl,
-      photoUrl: photoUrl,
       thumbnailUrl: thumbnailUrl,
       thumbnailWidth: thumbnailWidth,
       thumbnailHeight: thumbnailHeight
@@ -329,7 +349,6 @@ extension RichTextComponentFragment.Item.AsRichText.Child.AsRichTextOembed {
       type: type,
       iframeUrl: iframeUrl,
       originalUrl: originalUrl,
-      photoUrl: photoUrl,
       thumbnailUrl: thumbnailUrl,
       thumbnailWidth: thumbnailWidth,
       thumbnailHeight: thumbnailHeight
@@ -347,7 +366,6 @@ extension RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextOembed
       type: type,
       iframeUrl: iframeUrl,
       originalUrl: originalUrl,
-      photoUrl: photoUrl,
       thumbnailUrl: thumbnailUrl,
       thumbnailWidth: thumbnailWidth,
       thumbnailHeight: thumbnailHeight
@@ -365,7 +383,6 @@ extension RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextOemb
       type: type,
       iframeUrl: iframeUrl,
       originalUrl: originalUrl,
-      photoUrl: photoUrl,
       thumbnailUrl: thumbnailUrl,
       thumbnailWidth: thumbnailWidth,
       thumbnailHeight: thumbnailHeight
@@ -373,10 +390,10 @@ extension RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextOemb
   }
 }
 
-private func makeText(
+private func makeTextElement(
   text: String?,
   link: String?,
-  styles: [String]?,
+  styles: [RichTextElement.Text.Style]?,
   children: [RichTextElement]
 ) -> RichTextElement.Text {
   RichTextElement.Text(
@@ -387,3 +404,16 @@ private func makeText(
   )
 }
 
+private func makeText(
+  text: String?,
+  link: String?,
+  styles: [String]?,
+  children: [RichTextElement]
+) -> RichTextElement.Text {
+  makeTextElement(
+    text: text,
+    link: link,
+    styles: styles?.compactMap(RichTextElement.Text.Style.init(rawValue:)),
+    children: children
+  )
+}
