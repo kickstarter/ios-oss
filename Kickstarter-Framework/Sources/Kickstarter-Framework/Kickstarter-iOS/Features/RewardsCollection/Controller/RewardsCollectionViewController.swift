@@ -63,6 +63,9 @@ final class RewardsCollectionViewController: UICollectionViewController {
       secretRewardToken: secretRewardToken
     )
 
+    let shippingData = PledgeShippingLocationViewData(withProject: project)
+    rewardsCollectionVC.pledgeShippingLocationViewController.configureWith(value: shippingData)
+
     return rewardsCollectionVC
   }
 
@@ -82,7 +85,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource
-      |> \.isHidden .~ true
 
     _ = (self.headerView, self.view)
       |> ksr_addSubviewToParent()
@@ -98,6 +100,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> ksr_addSubviewToParent()
 
     self.collectionView.register(RewardCell.self)
+    self.collectionView.register(RewardCardLoadingCell.self)
 
     self.collectionView.register(
       RewardsCollectionViewHeaderView.self,
@@ -106,8 +109,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
     )
 
     self.setupConstraints()
-    self.viewModel.inputs.shippingLocationSelected(nil)
-
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -127,6 +128,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     let itemSize = self.calculateItemSize(from: layout, using: self.collectionView)
 
     if itemSize != layout.itemSize {
+      layout.itemSize = itemSize
       layout.invalidateLayout()
     } else {
       self.viewModel.inputs.viewDidLayoutSubviews()
@@ -197,12 +199,12 @@ final class RewardsCollectionViewController: UICollectionViewController {
         self.goToAddOnSelection(data: data)
       }
 
-    self.viewModel.outputs.rewardsCollectionViewIsHidden
+    self.viewModel.outputs.showPlaceholderRewardCards
       .observeForUI()
-      .observeValues { [weak self] rewardsCollectionViewIsHidden in
+      .observeValues { [weak self] rewardsCount in
         guard let self else { return }
-
-        self.collectionView.isHidden = rewardsCollectionViewIsHidden
+        self.dataSource.isLoading(rewardsCount: rewardsCount)
+        self.collectionView.reloadData()
       }
 
     self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
@@ -238,17 +240,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
       .observeForControllerAction()
       .observeValues { [weak self] title, message in
         self?.showEditRewardConfirmationPrompt(title: title, message: message)
-      }
-
-    // MARK: - Shipping Location Outputs
-
-    self.pledgeShippingLocationViewController.view.rac.hidden = self.viewModel.outputs
-      .shippingLocationViewHidden
-
-    self.viewModel.outputs.configureShippingLocationViewWithData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.pledgeShippingLocationViewController.configureWith(value: data)
       }
   }
 
@@ -386,16 +377,9 @@ extension RewardsCollectionViewController: RewardCellDelegate {
 extension RewardsCollectionViewController: PledgeShippingLocationViewControllerDelegate {
   func pledgeShippingLocationViewController(
     _: PledgeShippingLocationViewController,
-    didSelect location: Location
+    didSelect location: Location?
   ) {
     self.viewModel.inputs.shippingLocationSelected(location)
-  }
-
-  func pledgeShippingLocationViewControllerLayoutDidUpdate(
-    _: PledgeShippingLocationViewController,
-    _ shimmerLoadingViewIsHidden: Bool
-  ) {
-    self.viewModel.inputs.pledgeShippingLocationViewControllerDidUpdate(shimmerLoadingViewIsHidden)
   }
 
   func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {

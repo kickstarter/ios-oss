@@ -27,6 +27,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.remaining .~ 49
       |> Reward.lens.localPickup .~ nil
 
@@ -41,10 +42,19 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let project = Project.cosmicSurgery
 
+    let envelope = RewardsAndPledgeOverTimeEnvelope(
+      rewards: [reward],
+      isPledgeOverTimeAllowed: false,
+      pledgeOverTimeCollectionPlanChargeExplanation: nil,
+      pledgeOverTimeCollectionPlanChargedAsNPayments: nil,
+      pledgeOverTimeCollectionPlanShortPitch: nil,
+      pledgeOverTimeMinimumExplanation: nil
+    )
+
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(envelope)
     )
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
@@ -78,6 +88,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.localPickup .~ nil
 
     let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
@@ -97,10 +108,19 @@ final class ManagePledgeViewControllerTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.creator.id .~ user.id
 
+    let envelope = RewardsAndPledgeOverTimeEnvelope(
+      rewards: [reward],
+      isPledgeOverTimeAllowed: false,
+      pledgeOverTimeCollectionPlanChargeExplanation: nil,
+      pledgeOverTimeCollectionPlanChargedAsNPayments: nil,
+      pledgeOverTimeCollectionPlanShortPitch: nil,
+      pledgeOverTimeMinimumExplanation: nil
+    )
+
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(envelope)
     )
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
@@ -138,6 +158,8 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
+
       |> Reward.lens.localPickup .~ nil
 
     let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
@@ -154,10 +176,19 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let project = Project.cosmicSurgery
 
+    let envelope = RewardsAndPledgeOverTimeEnvelope(
+      rewards: [reward],
+      isPledgeOverTimeAllowed: false,
+      pledgeOverTimeCollectionPlanChargeExplanation: nil,
+      pledgeOverTimeCollectionPlanChargedAsNPayments: nil,
+      pledgeOverTimeCollectionPlanShortPitch: nil,
+      pledgeOverTimeMinimumExplanation: nil
+    )
+
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(envelope)
     )
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
@@ -198,6 +229,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.localPickup .~ nil
 
     let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
@@ -214,10 +246,19 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let project = Project.cosmicSurgery
 
+    let envelope = RewardsAndPledgeOverTimeEnvelope(
+      rewards: [reward],
+      isPledgeOverTimeAllowed: false,
+      pledgeOverTimeCollectionPlanChargeExplanation: nil,
+      pledgeOverTimeCollectionPlanChargedAsNPayments: nil,
+      pledgeOverTimeCollectionPlanShortPitch: nil,
+      pledgeOverTimeMinimumExplanation: nil
+    )
+
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(envelope)
     )
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
@@ -264,10 +305,19 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let project = Project.cosmicSurgery
 
+    let envelope = RewardsAndPledgeOverTimeEnvelope(
+      rewards: [reward],
+      isPledgeOverTimeAllowed: false,
+      pledgeOverTimeCollectionPlanChargeExplanation: nil,
+      pledgeOverTimeCollectionPlanChargedAsNPayments: nil,
+      pledgeOverTimeCollectionPlanShortPitch: nil,
+      pledgeOverTimeMinimumExplanation: nil
+    )
+
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(envelope)
     )
 
     orthogonalCombos(Language.allLanguages, [Device.phone5_8inch, Device.phone4_7inch, Device.pad]).forEach {
@@ -305,6 +355,8 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
+
       |> Reward.lens.remaining .~ 49
       |> Reward.lens.localPickup .~ nil
 
@@ -320,10 +372,19 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let project = Project.cosmicSurgery
 
+    let envelope = RewardsAndPledgeOverTimeEnvelope(
+      rewards: [reward],
+      isPledgeOverTimeAllowed: false,
+      pledgeOverTimeCollectionPlanChargeExplanation: nil,
+      pledgeOverTimeCollectionPlanChargedAsNPayments: nil,
+      pledgeOverTimeCollectionPlanShortPitch: nil,
+      pledgeOverTimeMinimumExplanation: nil
+    )
+
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(envelope)
     )
 
     orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -367,6 +428,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.remaining .~ 49
       |> Reward.lens.localPickup .~ nil
 
@@ -382,10 +444,19 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let project = Project.cosmicSurgery
 
+    let envelope = RewardsAndPledgeOverTimeEnvelope(
+      rewards: [reward],
+      isPledgeOverTimeAllowed: false,
+      pledgeOverTimeCollectionPlanChargeExplanation: nil,
+      pledgeOverTimeCollectionPlanChargedAsNPayments: nil,
+      pledgeOverTimeCollectionPlanShortPitch: nil,
+      pledgeOverTimeMinimumExplanation: nil
+    )
+
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(envelope)
     )
 
     orthogonalCombos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -448,10 +519,19 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let project = Project.cosmicSurgery
 
+    let envelope = RewardsAndPledgeOverTimeEnvelope(
+      rewards: [reward],
+      isPledgeOverTimeAllowed: false,
+      pledgeOverTimeCollectionPlanChargeExplanation: nil,
+      pledgeOverTimeCollectionPlanChargedAsNPayments: nil,
+      pledgeOverTimeCollectionPlanShortPitch: nil,
+      pledgeOverTimeMinimumExplanation: nil
+    )
+
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(envelope)
     )
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
@@ -485,6 +565,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.remaining .~ 49
       |> Reward.lens.localPickup .~ nil
 
@@ -500,10 +581,19 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let project = Project.cosmicSurgery
 
+    let envelope = RewardsAndPledgeOverTimeEnvelope(
+      rewards: [reward],
+      isPledgeOverTimeAllowed: true,
+      pledgeOverTimeCollectionPlanChargeExplanation: nil,
+      pledgeOverTimeCollectionPlanChargedAsNPayments: nil,
+      pledgeOverTimeCollectionPlanShortPitch: nil,
+      pledgeOverTimeMinimumExplanation: nil
+    )
+
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(envelope)
     )
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
@@ -541,6 +631,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.remaining .~ 49
       |> Reward.lens.localPickup .~ nil
 
@@ -555,14 +646,22 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Backing.lens.paymentIncrements .~ mockPaymentIncrementsForManagingBacking()
 
     let project = Project.cosmicSurgery
-
       |> Project.lens.country .~ .us
       |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
+
+    let envelope = RewardsAndPledgeOverTimeEnvelope(
+      rewards: [reward],
+      isPledgeOverTimeAllowed: true,
+      pledgeOverTimeCollectionPlanChargeExplanation: nil,
+      pledgeOverTimeCollectionPlanChargedAsNPayments: nil,
+      pledgeOverTimeCollectionPlanShortPitch: nil,
+      pledgeOverTimeMinimumExplanation: nil
+    )
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(envelope)
     )
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
@@ -610,6 +709,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.remaining .~ 49
       |> Reward.lens.localPickup .~ nil
       |> Reward.lens.image .~ Reward.Image(altText: "The image", url: "https://ksr.com/image.jpg")
@@ -625,10 +725,19 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let project = Project.cosmicSurgery
 
+    let envelope = RewardsAndPledgeOverTimeEnvelope(
+      rewards: [reward],
+      isPledgeOverTimeAllowed: false,
+      pledgeOverTimeCollectionPlanChargeExplanation: nil,
+      pledgeOverTimeCollectionPlanChargedAsNPayments: nil,
+      pledgeOverTimeCollectionPlanShortPitch: nil,
+      pledgeOverTimeMinimumExplanation: nil
+    )
+
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(envelope)
     )
 
     orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in

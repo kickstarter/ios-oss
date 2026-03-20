@@ -92,12 +92,7 @@ public final class ManagePledgeViewModel:
         AppEnvironment.current.apiService.fetchProject(param: param)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .switchMap { project in
-            // Only fetch pledge over time data if the feature flag is enabled
-            if featureEditPledgeOverTimeEnabled() {
-              return fetchProjectRewardsAndPledgeOverTimeData(project: project)
-            }
-
-            return fetchProjectRewards(project: project)
+            fetchProjectRewardsAndPledgeOverTimeData(project: project)
           }
           .materialize()
       }
@@ -478,6 +473,12 @@ public final class ManagePledgeViewModel:
 
 // MARK: - Functions
 
+// TODO: Clean up rewards fetch.
+// We now fetch the rewards directly in the RewardsCollectionViewController.
+// However, other parts of the pledge flow use the rewards attached to the Project to handle other logic -
+// like checking to see if the project has rewards that require shipping, or picking the correct shipping rule.
+// If we can clean up and decouple that behavior from the rest of the pledge flow, we can eliminate this fetch,
+// making the Manage page load substantially faster.
 private func fetchProjectRewards(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
   return AppEnvironment.current.apiService
     .fetchProjectRewards(projectId: project.id)
@@ -569,11 +570,7 @@ private func actionSheetMenuOptionsFor(
   /// Enable the 'Edit pledge' option for all PLOT-enabled projects.
   if isPledgeOverTime(with: backing) || project.isPledgeOverTimeAllowed == true {
     actions = actions.filter { $0 != .chooseAnotherReward }
-
-    /// If the Edit Pledge Over Time feature flag is `true`, replace 'Edit reward" with 'Edit pledge'.
-    if featureEditPledgeOverTimeEnabled() == true {
-      actions.insert(.editPledgeOverTimePledge, at: 1)
-    }
+    actions.insert(.editPledgeOverTimePledge, at: 1)
   }
 
   return actions

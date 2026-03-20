@@ -78,7 +78,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(.template),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(self.rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService) {
@@ -102,7 +102,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(Backing.template),
       fetchProjectResult: .success(finishedProject),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(self.rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService) {
@@ -123,7 +123,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(Backing.template),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(self.rewardsAndPledgeOverTimeEnvelope())
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
@@ -157,7 +157,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
@@ -192,7 +192,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
@@ -228,7 +228,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(
+        rewardsAndPledgeOverTimeEnvelope(isPledgeOverTimeAllowed: true)
+      )
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
@@ -263,7 +265,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(
+        rewardsAndPledgeOverTimeEnvelope(isPledgeOverTimeAllowed: true)
+      )
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
@@ -306,7 +310,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     let pledgeViewSummaryData = ManagePledgeSummaryViewData(
@@ -367,7 +371,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService) {
@@ -389,7 +393,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService) {
@@ -420,7 +424,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService) {
@@ -453,7 +457,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -477,7 +481,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService) {
@@ -503,7 +507,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService) {
@@ -531,7 +535,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -564,12 +568,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       )
     )
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.editPledgeOverTimeEnabled.rawValue: true
-    ]
-
-    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: mockService) {
       self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
 
@@ -583,45 +582,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
         [
           ManagePledgeAlertAction.changePaymentMethod,
           ManagePledgeAlertAction.editPledgeOverTimePledge,
-          ManagePledgeAlertAction.contactCreator,
-          ManagePledgeAlertAction.cancelPledge
-        ]
-      ])
-    }
-  }
-
-  func testMenuButtonTapped_WhenProject_IsPledgeOverTime_doesNotInclude_chooseAnotherReward_Or_editPledge_WhenEditPledgeOverTimeFeatureFlag_isFalse(
-  ) {
-    let project = Project.template
-      |> Project.lens.state .~ .live
-      |> Project.lens.isPledgeOverTimeAllowed .~ true
-
-    let backing = Backing.templateManagePledgeWithPlot
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(backing),
-      fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
-    )
-
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.editPledgeOverTimeEnabled.rawValue: false
-    ]
-
-    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
-      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
-
-      self.vm.inputs.menuButtonTapped()
-
-      self.showActionSheetMenuWithOptions.assertValues([
-        [
-          ManagePledgeAlertAction.changePaymentMethod,
           ManagePledgeAlertAction.contactCreator,
           ManagePledgeAlertAction.cancelPledge
         ]
@@ -645,12 +605,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       )
     )
 
-    let mockConfigClient = MockRemoteConfigClient()
-    mockConfigClient.features = [
-      RemoteConfigFeature.editPledgeOverTimeEnabled.rawValue: true
-    ]
-
-    withEnvironment(apiService: mockService, remoteConfigClient: mockConfigClient) {
+    withEnvironment(apiService: mockService) {
       self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
 
@@ -682,7 +637,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService) {
@@ -710,8 +665,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(.template),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
+
+    let errorBannerMessage = Strings
+      .We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours(
+      )
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
@@ -726,9 +685,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.vm.inputs.menuOptionSelected(with: .cancelPledge)
 
       self.goToCancelPledge.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertValues([
-        "We don’t allow cancelations that will cause a project to fall short of its goal within the last 24 hours."
-      ])
+      self.showErrorBannerWithMessage.assertValues([errorBannerMessage])
     }
   }
 
@@ -744,7 +701,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(
+        rewardsAndPledgeOverTimeEnvelope(rewards: [reward])
+      )
     )
 
     withEnvironment(apiService: mockService) {
@@ -779,7 +738,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService) {
@@ -803,7 +762,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(.template),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService) {
@@ -830,7 +789,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(
+        rewardsAndPledgeOverTimeEnvelope(rewards: [reward])
+      )
     )
 
     withEnvironment(apiService: mockService) {
@@ -857,7 +818,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(.template),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService) {
@@ -879,7 +840,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(.template),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService) {
@@ -999,7 +960,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService1 = MockService(
       fetchManagePledgeViewBackingResult: .success(initialBacking),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(self.rewardsAndPledgeOverTimeEnvelope())
     )
 
     let expectedRewardReceivedData = ManageViewPledgeRewardReceivedViewData(
@@ -1035,7 +996,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService2 = MockService(
       fetchManagePledgeViewBackingResult: .success(updatedBackingEnvelope),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(self.rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService2) {
@@ -1069,7 +1030,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService) {
@@ -1089,7 +1050,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   func testRefreshing_ProjectErrorThenSuccess() {
     let mockService = MockService(
       fetchProjectResult: .failure(.couldNotParseJSON),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService) {
@@ -1133,7 +1094,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
       let successMockService = MockService(
         fetchManagePledgeViewBackingResult: .success(backing),
         fetchProjectResult: .success(project),
-        fetchProjectRewardsResult: .success([reward])
+        fetchProjectRewardsAndPledgeOverTimeDataResult: .success(
+          rewardsAndPledgeOverTimeEnvelope(rewards: [reward])
+        )
       )
 
       withEnvironment(apiService: successMockService) {
@@ -1180,7 +1143,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .failure(.couldNotParseJSON),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(
+        rewardsAndPledgeOverTimeEnvelope(rewards: [reward])
+      )
     )
 
     withEnvironment(apiService: mockService) {
@@ -1231,7 +1196,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
       let successMockService = MockService(
         fetchManagePledgeViewBackingResult: .success(backing),
         fetchProjectResult: .success(project),
-        fetchProjectRewardsResult: .success([reward])
+        fetchProjectRewardsAndPledgeOverTimeDataResult: .success(
+          rewardsAndPledgeOverTimeEnvelope(rewards: [reward])
+        )
       )
 
       withEnvironment(apiService: successMockService) {
@@ -1281,7 +1248,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(
+        rewardsAndPledgeOverTimeEnvelope(rewards: [reward])
+      )
     )
 
     withEnvironment(apiService: mockService) {
@@ -1395,7 +1364,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
       let failureMockService = MockService(
         fetchManagePledgeViewBackingResult: .failure(.couldNotParseJSON),
         fetchProjectResult: .success(project),
-        fetchProjectRewardsResult: .success([reward])
+        fetchProjectRewardsAndPledgeOverTimeDataResult: .success(
+          rewardsAndPledgeOverTimeEnvelope(rewards: [reward])
+        )
       )
 
       withEnvironment(apiService: failureMockService) {
@@ -1458,7 +1429,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(
+        rewardsAndPledgeOverTimeEnvelope(rewards: [reward])
+      )
     )
 
     withEnvironment(apiService: mockService) {
@@ -1530,7 +1503,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([reward])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(
+        rewardsAndPledgeOverTimeEnvelope(rewards: [reward])
+      )
     )
 
     withEnvironment(apiService: mockService) {
@@ -1567,7 +1542,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -1593,7 +1568,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -1618,7 +1593,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService) {
@@ -1642,7 +1617,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -1668,7 +1643,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -1718,7 +1693,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -1763,7 +1738,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template |> Reward.lens.estimatedDeliveryOn .~ nil])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(
+        rewardsAndPledgeOverTimeEnvelope(rewards: [.template |> Reward.lens.estimatedDeliveryOn .~ nil])
+      )
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -1792,7 +1769,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(rewardsAndPledgeOverTimeEnvelope())
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -1811,7 +1788,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
-  func testPlotPaymentScheduleView_IsVisibleWhenFeatureFlagIsEnabled() {
+  func testPlotPaymentScheduleView_IsVisible() {
     let user = User.projectCreator
 
     let project = Project.cosmicSurgery
@@ -1822,7 +1799,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(backing),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsAndPledgeOverTimeDataResult: .success(
+        rewardsAndPledgeOverTimeEnvelope(isPledgeOverTimeAllowed: true)
+      )
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -1834,5 +1813,22 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.plotPaymentScheduleViewHidden.assertValue(false)
       self.configurePlotPaymentScheduleView.assertDidEmitValue()
     }
+  }
+
+  // MARK: - Helpers
+
+  private func rewardsAndPledgeOverTimeEnvelope(
+    rewards: [Reward] = [.template],
+    isPledgeOverTimeAllowed: Bool = false
+  )
+    -> RewardsAndPledgeOverTimeEnvelope {
+    RewardsAndPledgeOverTimeEnvelope(
+      rewards: rewards,
+      isPledgeOverTimeAllowed: isPledgeOverTimeAllowed,
+      pledgeOverTimeCollectionPlanChargeExplanation: nil,
+      pledgeOverTimeCollectionPlanChargedAsNPayments: nil,
+      pledgeOverTimeCollectionPlanShortPitch: nil,
+      pledgeOverTimeMinimumExplanation: nil
+    )
   }
 }

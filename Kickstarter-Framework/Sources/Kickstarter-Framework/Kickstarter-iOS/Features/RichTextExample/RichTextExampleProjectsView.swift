@@ -1,8 +1,12 @@
 import SwiftUI
 
 internal struct RichTextExampleProjectsView: View {
-  @StateObject private var viewModel = RichTextExampleProjectsViewModel()
-  var onSelectProject: (RichTextExampleProjectsViewModel.ProjectItem) -> Void = { _ in }
+  private var viewModel = RichTextExampleProjectsViewModel()
+  private var onSelectProject: (RichTextExampleProjectsViewModel.ProjectItem) -> Void
+
+  init(onSelectProject: @escaping (RichTextExampleProjectsViewModel.ProjectItem) -> Void) {
+    self.onSelectProject = onSelectProject
+  }
 
   var body: some View {
     Group {
@@ -22,8 +26,8 @@ internal struct RichTextExampleProjectsView: View {
       }
     }
     .navigationTitle("Rich Text Example")
-    .onAppear {
-      self.viewModel.loadProjects()
+    .task {
+      await self.viewModel.loadProjects()
     }
   }
 }

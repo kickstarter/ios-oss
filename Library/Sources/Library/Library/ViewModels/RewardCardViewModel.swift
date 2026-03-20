@@ -15,12 +15,24 @@ public enum RewardCardViewContext {
   case manage
 }
 
-public typealias RewardCardViewData = (
-  project: Project,
-  reward: Reward,
-  context: RewardCardViewContext,
-  currentShippingLocation: Location?
-)
+public struct RewardCardViewData {
+  public let project: Project
+  public let reward: Reward
+  public let context: RewardCardViewContext
+  public let currentShippingLocation: Location?
+
+  public init(
+    project: Project,
+    reward: Reward,
+    context: RewardCardViewContext,
+    currentShippingLocation: Location?
+  ) {
+    self.project = project
+    self.reward = reward
+    self.context = context
+    self.currentShippingLocation = currentShippingLocation
+  }
+}
 
 public protocol RewardCardViewModelInputs {
   func configure(with data: RewardCardViewData)
@@ -122,8 +134,12 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
       .takeWhen(self.rewardCardTappedProperty.signal)
       .map { $0.id }
 
-    self.cardUserInteractionIsEnabled = projectAndReward.map { project, reward in
-      rewardsCarouselCanNavigateToReward(reward, in: project)
+    self.cardUserInteractionIsEnabled = configData.map { data in
+      rewardsCarouselCanNavigateToReward(
+        data.reward,
+        in: data.project,
+        selectedShippingLocation: data.currentShippingLocation
+      )
     }
 
     self.estimatedDeliveryStackViewHidden = context.combineLatest(with: reward)

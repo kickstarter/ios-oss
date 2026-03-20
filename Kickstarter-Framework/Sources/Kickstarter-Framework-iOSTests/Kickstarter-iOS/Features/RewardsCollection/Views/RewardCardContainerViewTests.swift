@@ -11,7 +11,7 @@ import XCTest
 
 final class RewardCardContainerViewTests: TestCase {
   func testLive_BackedProject_BackedReward() {
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -28,7 +28,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -38,7 +39,7 @@ final class RewardCardContainerViewTests: TestCase {
           withType: type,
           size: size,
           perceptualPrecision: 0.98,
-          testName: "testLive_BackedProject_BackedReward_\(rewardDescription)"
+          testName: "testLive_BackedProject_BackedReward_\(rewardDescription)",
         )
       }
     }
@@ -64,7 +65,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = CGSize(
@@ -86,7 +88,7 @@ final class RewardCardContainerViewTests: TestCase {
   func testLive_BackedProject_BackedReward_LoggedIn() {
     let user = User.template
 
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(currentUser: user, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -103,7 +105,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -120,7 +123,7 @@ final class RewardCardContainerViewTests: TestCase {
   }
 
   func testLive_BackedProject_NonBackedReward() {
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -137,7 +140,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -157,7 +161,7 @@ final class RewardCardContainerViewTests: TestCase {
     let nonCreator = User.template
       |> User.lens.id .~ 5
 
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(currentUser: nonCreator, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -168,7 +172,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -185,7 +190,7 @@ final class RewardCardContainerViewTests: TestCase {
   }
 
   func testLive_NonBackedProject_LoggedOut() {
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(currentUser: nil, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -196,7 +201,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -213,7 +219,7 @@ final class RewardCardContainerViewTests: TestCase {
   }
 
   func testNonLive_BackedProject_BackedReward() {
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -230,7 +236,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -247,7 +254,7 @@ final class RewardCardContainerViewTests: TestCase {
   }
 
   func testNonLive_BackedProject_NonBackedReward() {
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -264,7 +271,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -281,7 +289,7 @@ final class RewardCardContainerViewTests: TestCase {
   }
 
   func testNonLive_NonBackedProject() {
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -291,7 +299,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -309,7 +318,7 @@ final class RewardCardContainerViewTests: TestCase {
 
   func testLive_BackedProject_BackedReward_Errored() {
     // Filter these out because they aren't states we can get to
-    let filteredRewards = allRewards
+    let filteredRewards = Reward.allRewards
       .filter { name, _ -> Bool in
         !name.lowercased().contains("unavailable")
       }
@@ -332,7 +341,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -350,7 +360,7 @@ final class RewardCardContainerViewTests: TestCase {
 
   func testNonLive_BackedProject_BackedReward_Errored() {
     // Filter these out because they aren't states we can get to
-    let filteredRewards = allRewards
+    let filteredRewards = Reward.allRewards
       .filter { name, _ -> Bool in
         !name.lowercased().contains("unavailable")
       }
@@ -373,7 +383,8 @@ final class RewardCardContainerViewTests: TestCase {
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -398,13 +409,14 @@ final class RewardCardContainerViewTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.personalization.backing .~ nil
 
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(currentUser: user, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -429,13 +441,14 @@ final class RewardCardContainerViewTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.personalization.backing .~ nil
 
-    forEachScreenshotType(withData: allRewards, languages: [.en]) { type, rewardTuple in
+    forEachScreenshotType(withData: Reward.allRewards, languages: [.en]) { type, rewardTuple in
       withSnapshotEnvironment(currentUser: user, language: type.language) {
         let (rewardDescription, reward) = rewardTuple
 
         let vc = rewardCardInViewController(
           project: project,
-          reward: reward
+          reward: reward,
+          selectedShippingLocation: Location.usa
         )
 
         let size = type.device.deviceSize(in: type.orientation)
@@ -450,10 +463,44 @@ final class RewardCardContainerViewTests: TestCase {
       }
     }
   }
+
+  // This is intentionally not part of the allRewards helper, to maintain stability
+  // for the existing screenshot tests.
+  func testLive_ShipsOnlyToAustralia_SelectedShippingIsUSA() {
+    let user = User.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.personalization.backing .~ nil
+
+    let reward = Reward.shipsToAustraliaReward
+
+    forEachScreenshotType(languages: [.en]) { type in
+      withSnapshotEnvironment(currentUser: user, language: type.language) {
+        let vc = rewardCardInViewController(
+          project: project,
+          reward: reward,
+          selectedShippingLocation: Location.usa
+        )
+
+        let size = type.device.deviceSize(in: type.orientation)
+
+        assertSnapshot(
+          forView: vc.view,
+          withType: type,
+          size: size,
+          perceptualPrecision: 0.98,
+          testName: "testLive_ShipsOnlyToAustralia_SelectedShippingIsUSA"
+        )
+      }
+    }
+  }
 }
 
 private func rewardCardInViewController(
-  project: Project, reward: Reward
+  project: Project,
+  reward: Reward,
+  selectedShippingLocation: Location?
 ) -> UIViewController {
   let view = RewardCardContainerView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -477,7 +524,7 @@ private func rewardCardInViewController(
     project: safeProject,
     reward: reward,
     context: .pledge,
-    currentShippingLocation: nil
+    currentShippingLocation: selectedShippingLocation
   ))
 
   return controller
@@ -510,87 +557,101 @@ private extension RewardCardContainerViewTests {
   }
 }
 
-let allRewards: [(String, Reward)] = {
-  let availableAddOnsReward = Reward.postcards
-    |> Reward.lens.hasAddOns .~ true
-    |> Reward.lens.limit .~ nil
-    |> Reward.lens.remaining .~ nil
-    |> Reward.lens.isAvailable .~ true
-  let availableLimitedReward = Reward.postcards
-    |> Reward.lens.limit .~ 100
-    |> Reward.lens.remaining .~ 25
-    |> Reward.lens.convertedMinimum .~ 7.0
-    |> Reward.lens.isAvailable .~ true
-  let availableTimebasedReward = Reward.postcards
-    |> Reward.lens.limit .~ nil
-    |> Reward.lens.remaining .~ nil
-    |> Reward.lens.convertedMinimum .~ 7.0
-    |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
-    |> Reward.lens.isAvailable .~ true
-  let availableLimitedTimebasedReward = Reward.postcards
-    |> Reward.lens.limit .~ 100
-    |> Reward.lens.remaining .~ 25
-    |> Reward.lens.convertedMinimum .~ 7.0
-    |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
-    |> Reward.lens.isAvailable .~ true
-  let availableNonLimitedReward = Reward.postcards
-    |> Reward.lens.limit .~ nil
-    |> Reward.lens.remaining .~ nil
-    |> Reward.lens.endsAt .~ nil
-    |> Reward.lens.convertedMinimum .~ 7.0
-    |> Reward.lens.isAvailable .~ true
-  let availableShippingEnabledReward = Reward.postcards
-    |> Reward.lens.limit .~ 100
-    |> Reward.lens.remaining .~ 25
-    |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
-    |> Reward.lens.isAvailable .~ true
-    |> Reward.lens.convertedMinimum .~ 7.0
-    |> Reward.lens.shipping .~ (
-      .template
-        |> Reward.Shipping.lens.enabled .~ true
-        |> Reward.Shipping.lens.type .~ .anywhere
-        |> Reward.Shipping.lens.summary .~ "Ships worldwide"
-    )
-  let unavailableLimitedReward = Reward.postcards
-    |> Reward.lens.limit .~ 100
-    |> Reward.lens.remaining .~ 0
-    |> Reward.lens.convertedMinimum .~ 7.0
-  let unavailableTimebasedReward = Reward.postcards
-    |> Reward.lens.limit .~ nil
-    |> Reward.lens.remaining .~ nil
-    |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
-    |> Reward.lens.convertedMinimum .~ 7.0
-  let unavailableLimitedTimebasedReward = Reward.postcards
-    |> Reward.lens.limit .~ 100
-    |> Reward.lens.remaining .~ 0
-    |> Reward.lens.convertedMinimum .~ 7.0
-    |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
-  let unavailableShippingEnabledReward = Reward.postcards
-    |> Reward.lens.limit .~ 100
-    |> Reward.lens.remaining .~ 0
-    |> Reward.lens.convertedMinimum .~ 7.0
+private extension Reward {
+  static var allRewards: [(String, Reward)] {
+    let availableAddOnsReward = Reward.postcards
+      |> Reward.lens.id .~ 1
+      |> Reward.lens.hasAddOns .~ true
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.isAvailable .~ true
+    let availableLimitedReward = Reward.postcards
+      |> Reward.lens.id .~ 2
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 25
+      |> Reward.lens.convertedMinimum .~ 7.0
+      |> Reward.lens.isAvailable .~ true
+    let availableTimebasedReward = Reward.postcards
+      |> Reward.lens.id .~ 3
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.convertedMinimum .~ 7.0
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+      |> Reward.lens.isAvailable .~ true
+    let availableLimitedTimebasedReward = Reward.postcards
+      |> Reward.lens.id .~ 4
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 25
+      |> Reward.lens.convertedMinimum .~ 7.0
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+      |> Reward.lens.isAvailable .~ true
+    let availableNonLimitedReward = Reward.postcards
+      |> Reward.lens.id .~ 5
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.endsAt .~ nil
+      |> Reward.lens.convertedMinimum .~ 7.0
+      |> Reward.lens.isAvailable .~ true
+    let availableShippingEnabledReward = Reward.postcards
+      |> Reward.lens.id .~ 6
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 25
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+      |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.convertedMinimum .~ 7.0
+      |> Reward.lens.shipping .~ (
+        .template
+          |> Reward.Shipping.lens.enabled .~ true
+          |> Reward.Shipping.lens.type .~ .anywhere
+          |> Reward.Shipping.lens.summary .~ "Ships worldwide"
+          |> Reward.Shipping.lens.preference .~ .unrestricted
+      )
+    let unavailableLimitedReward = Reward.postcards
+      |> Reward.lens.id .~ 7
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.convertedMinimum .~ 7.0
+    let unavailableTimebasedReward = Reward.postcards
+      |> Reward.lens.id .~ 8
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
+      |> Reward.lens.convertedMinimum .~ 7.0
+    let unavailableLimitedTimebasedReward = Reward.postcards
+      |> Reward.lens.id .~ 9
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.convertedMinimum .~ 7.0
+      |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
+    let unavailableShippingEnabledReward = Reward.postcards
+      |> Reward.lens.id .~ 10
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.convertedMinimum .~ 7.0
 
-    |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
-    |> Reward.lens.shipping .~ (
-      .template
-        |> Reward.Shipping.lens.enabled .~ true
-        |> Reward.Shipping.lens.type .~ .anywhere
-        |> Reward.Shipping.lens.summary .~ "Ships worldwide"
-    )
-  let noReward = Reward.noReward
-    |> Reward.lens.convertedMinimum .~ 1
+      |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
+      |> Reward.lens.shipping .~ (
+        .template
+          |> Reward.Shipping.lens.enabled .~ true
+          |> Reward.Shipping.lens.type .~ .anywhere
+          |> Reward.Shipping.lens.summary .~ "Ships worldwide"
+          |> Reward.Shipping.lens.preference .~ .unrestricted
+      )
+    let noReward = Reward.noReward
+      |> Reward.lens.convertedMinimum .~ 1
 
-  return [
-    ("AvailableAddOnsReward", availableAddOnsReward),
-    ("AvailableLimitedReward", availableLimitedReward),
-    ("AvailableTimebasedReward", availableTimebasedReward),
-    ("AvailableLimitedTimebasedReward", availableLimitedTimebasedReward),
-    ("AvailableNonLimitedReward", availableNonLimitedReward),
-    ("AvailableShippingEnabledReward", availableShippingEnabledReward),
-    ("UnavailableLimitedReward", unavailableLimitedReward),
-    ("UnavailableTimebasedReward", unavailableTimebasedReward),
-    ("UnavailableLimitedTimebasedReward", unavailableLimitedTimebasedReward),
-    ("UnavailableShippingEnabledReward", unavailableShippingEnabledReward),
-    ("NoReward", noReward)
-  ]
-}()
+    return [
+      ("AvailableAddOnsReward", availableAddOnsReward),
+      ("AvailableLimitedReward", availableLimitedReward),
+      ("AvailableTimebasedReward", availableTimebasedReward),
+      ("AvailableLimitedTimebasedReward", availableLimitedTimebasedReward),
+      ("AvailableNonLimitedReward", availableNonLimitedReward),
+      ("AvailableShippingEnabledReward", availableShippingEnabledReward),
+      ("UnavailableLimitedReward", unavailableLimitedReward),
+      ("UnavailableTimebasedReward", unavailableTimebasedReward),
+      ("UnavailableLimitedTimebasedReward", unavailableLimitedTimebasedReward),
+      ("UnavailableShippingEnabledReward", unavailableShippingEnabledReward),
+      ("NoReward", noReward)
+    ]
+  }
+}

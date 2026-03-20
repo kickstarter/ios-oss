@@ -90,8 +90,7 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
   }
 
   private func rewardTrackingActivitiyData(from activity: Activity) -> RewardTrackingActivitiesCellData? {
-    guard featureRewardShipmentTrackingEnabled() == true,
-          let project = activity.project,
+    guard let project = activity.project,
           let trackingNumber = activity.trackingNumber
     else {
       return nil

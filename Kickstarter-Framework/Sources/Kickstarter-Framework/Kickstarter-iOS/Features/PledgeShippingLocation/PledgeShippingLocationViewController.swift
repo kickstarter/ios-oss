@@ -8,11 +8,7 @@ import UIKit
 protocol PledgeShippingLocationViewControllerDelegate: AnyObject {
   func pledgeShippingLocationViewController(
     _ viewController: PledgeShippingLocationViewController,
-    didSelect location: Location
-  )
-  func pledgeShippingLocationViewControllerLayoutDidUpdate(
-    _ viewController: PledgeShippingLocationViewController,
-    _ shimmerLoadingViewIsHidden: Bool
+    didSelect location: Location?
   )
   func pledgeShippingLocationViewControllerFailedToLoad(
     _ viewController: PledgeShippingLocationViewController
@@ -103,25 +99,11 @@ final class PledgeShippingLocationViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.view.rac.hidden = self.viewModel.outputs.shippingLocationViewHidden
+
     self.adaptableStackView.rac.hidden = self.viewModel.outputs.adaptableStackViewIsHidden
     self.shimmerLoadingView.rac.hidden = self.viewModel.outputs.shimmerLoadingViewIsHidden
     self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocationButtonTitle
-
-    /**
-     When any layout updates occur we need to notify the delegate. This is only necessary when
-     this view is contained within a view that is not fully supported by Auto Layout,
-     e.g. a `UITableView` header.
-     */
-    Signal.combineLatest(
-      self.viewModel.outputs.adaptableStackViewIsHidden,
-      self.viewModel.outputs.shimmerLoadingViewIsHidden,
-      self.viewModel.outputs.shippingLocationButtonTitle
-    )
-    .observeForUI()
-    .observeValues { [weak self] _, shimmerLoadingViewIsHidden, _ in
-      guard let self = self else { return }
-      self.delegate?.pledgeShippingLocationViewControllerLayoutDidUpdate(self, shimmerLoadingViewIsHidden)
-    }
 
     self.viewModel.outputs.notifyDelegateOfSelectedShippingLocation
       .observeForUI()
@@ -152,6 +134,12 @@ final class PledgeShippingLocationViewController: UIViewController {
 
         self.delegate?.pledgeShippingLocationViewControllerFailedToLoad(self)
       }
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.shimmerLoadingView.layoutSubviews()
   }
 
   // MARK: - Configuration
