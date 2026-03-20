@@ -43,6 +43,9 @@ public protocol ServiceType {
   /// Fetches a GraphQL query and returns the data.
   func fetch<Q: GraphQLQuery>(query: Q) -> SignalProducer<Q.Data, ErrorEnvelope>
 
+  /// Fetches a GraphQL query with async/await and returns the data.
+  func fetch<Q: GraphQLQuery>(query: Q) async throws -> Q.Data?
+
   /// Returns a new service with the oauth token replaced.
   func login(_ oauthToken: OauthTokenAuthType) -> Self
 

@@ -5,7 +5,7 @@
 
 public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment RichTextItemFragment on RichTextItem { __typename ... on RichText { text link styles } ... on RichTextHeader { text link styles } ... on RichTextListItem { text link styles } ... on RichTextListOpen { _present } ... on RichTextListClose { _present } ... on RichTextPhoto { altText asset { __typename id } caption url } ... on RichTextAudio { altText asset { __typename id } caption url } ... on RichTextVideo { altText asset { __typename id } caption url } ... on RichTextOembed { width height version title type iframeUrl originalUrl photoUrl thumbnailHeight thumbnailUrl thumbnailWidth } }"#
+    #"fragment RichTextItemFragment on RichTextItem { __typename ... on RichText { text link styles } ... on RichTextHeader { text link styles } ... on RichTextListItem { text link styles } ... on RichTextListOpen { _present } ... on RichTextListClose { _present } ... on RichTextPhoto { altText asset { __typename id } caption url } ... on RichTextAudio { altText asset { __typename id } caption url } ... on RichTextVideo { altText asset { __typename id } caption url } ... on RichTextOembed { width height version title type iframeUrl originalUrl thumbnailHeight thumbnailUrl thumbnailWidth } }"#
   }
 
   public let __data: DataDict
@@ -465,7 +465,6 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
       .field("type", String.self),
       .field("iframeUrl", String.self),
       .field("originalUrl", String.self),
-      .field("photoUrl", String.self),
       .field("thumbnailHeight", Int.self),
       .field("thumbnailUrl", String.self),
       .field("thumbnailWidth", Int.self),
@@ -485,8 +484,6 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
     public var iframeUrl: String { __data["iframeUrl"] }
     /// ex: https://youtu.be/ijeaVn8znJ8
     public var originalUrl: String { __data["originalUrl"] }
-    /// only for photo
-    public var photoUrl: String { __data["photoUrl"] }
     /// ex: 360
     public var thumbnailHeight: Int { __data["thumbnailHeight"] }
     /// ex: https://i.ytimg.com/vi/ijeaVn8znJ8/hqdefault.jpg
@@ -502,7 +499,6 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
       type: String,
       iframeUrl: String,
       originalUrl: String,
-      photoUrl: String,
       thumbnailHeight: Int,
       thumbnailUrl: String,
       thumbnailWidth: Int
@@ -517,7 +513,6 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
           "type": type,
           "iframeUrl": iframeUrl,
           "originalUrl": originalUrl,
-          "photoUrl": photoUrl,
           "thumbnailHeight": thumbnailHeight,
           "thumbnailUrl": thumbnailUrl,
           "thumbnailWidth": thumbnailWidth,

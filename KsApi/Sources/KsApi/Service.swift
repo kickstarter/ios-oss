@@ -90,6 +90,11 @@ public struct Service: ServiceType {
     GraphQL.shared.client.fetch(query: query)
   }
 
+  public func fetch<Q: GraphQLQuery>(query: Q) async throws -> Q.Data? {
+    let client = AsyncApolloClient(client: GraphQL.shared.client)
+    return try await client.fetch(query).data
+  }
+
   public func addNewCreditCard(input: CreatePaymentSourceInput)
     -> SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client

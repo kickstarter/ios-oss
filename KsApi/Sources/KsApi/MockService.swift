@@ -960,6 +960,15 @@
       return SignalProducer(error: ErrorEnvelope.graphError("Unimplemented mock"))
     }
 
+    internal func fetch<Q: GraphQLQuery>(query _: Q) async throws -> Q.Data? {
+      for (queryType, result) in self.fetchGraphQLResponses ?? [] {
+        if queryType == Q.self, let response = result as? Q.Data {
+          return response
+        }
+      }
+      throw ErrorEnvelope.graphError("Unimplemented mock")
+    }
+
     internal func fetchGraphCategories()
       -> SignalProducer<RootCategoriesEnvelope, ErrorEnvelope> {
       guard let client = self.apolloClient else {
