@@ -108,11 +108,14 @@ public final class RewardCardContainerView: UIView {
   }
 
   /// Adjusts the top margin of the reward card view depending on whether additional spacing is needed.
-  /// This margin (38.0 pts) is applied when both the "Your selection" and "Secret reward" badges are shown simultaneously,
+  /// This margin (38.0 pts) is applied when both the "Your selection" and "Secret reward" or "Featured" badges are shown simultaneously,
   /// in order to prevent visual overlap and ensure proper layout spacing.
   /// If `requiresTopMarginInset` is false, no additional top margin is applied.
   private func adjustTopMarginForRewardCard(_ data: RewardCardViewData) {
-    let requiresTopMarginInset = data.reward.isSecretReward || data.reward.featured
+    let badgeData = RewardCardBadgeData.forReward(data.reward)
+    let hasBadge = badgeData.isSome
+
+    let requiresTopMarginInset = hasBadge
       && data.reward.image == nil
       && userIsBacking(reward: data.reward, inProject: data.project)
 
