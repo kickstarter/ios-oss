@@ -25,9 +25,9 @@ internal final class VideoFeedBannerView: UIView {
     static let thumbnailWidth: CGFloat = 110
     static let thumbnailHeight: CGFloat = 100
 
-    // Text colors
+    // Title colors
     static let titleColor = Colors.Text.constantPrimary
-    static let subtitleColor = Colors.Text.secondary
+    static let subtitleColor = Colors.Text.constantPrimary
 
     // Subtitle label
     static let subtitleMaxLines: Int = 2
@@ -43,8 +43,6 @@ internal final class VideoFeedBannerView: UIView {
     static let ctaTextColor = Colors.Text.constantPrimary
     static let ctaBackgroundColor = UIColor.white
   }
-
-  // MARK: - Subviews
 
   private let cardView = UIView()
   private let titleLabel = UILabel()
@@ -67,8 +65,6 @@ internal final class VideoFeedBannerView: UIView {
     self.setupView()
   }
 
-  // MARK: - Public
-
   internal func configure() {
     self.titleLabel.text = Constants.title
     self.subtitleLabel.text = Constants.subtitle
@@ -83,7 +79,7 @@ internal final class VideoFeedBannerView: UIView {
 
     self.setupCard()
     self.setupContent()
-    self.configure(titleLabel: self.titleLabel, subtitleLabel: self.subtitleLabel)
+    self.configureTitles(titleLabel: self.titleLabel, subtitleLabel: self.subtitleLabel)
     self.configureCTAButton(self.ctaButton)
     self.configureThumbnail(self.thumbnailView)
 
@@ -143,7 +139,7 @@ internal final class VideoFeedBannerView: UIView {
     ])
   }
 
-  private func configure(titleLabel: UILabel, subtitleLabel: UILabel) {
+  private func configureTitles(titleLabel: UILabel, subtitleLabel: UILabel) {
     titleLabel.numberOfLines = 1
     titleLabel.lineBreakMode = .byTruncatingTail
     titleLabel.font = UIFont.ksr_headingLG()
