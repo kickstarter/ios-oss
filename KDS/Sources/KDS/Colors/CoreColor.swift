@@ -66,6 +66,7 @@ public enum CoreColor: Int {
 
   case purple_01 = 0xFDFBFE
   case purple_02 = 0xF8F3FC
+  case purple_02_1 = 0xEDE3F8
   case purple_03 = 0xEADBF5
   case purple_04 = 0xDCC3EF
   case purple_05 = 0xCBA6E7
