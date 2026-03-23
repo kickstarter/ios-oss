@@ -215,7 +215,7 @@ private extension Reward {
       |> Reward.lens.endsAt .~ futureDate
       |> Reward.lens.id .~ 9
 
-    let featuredReard = Reward.featuredReward
+    let featuredReward = Reward.featuredReward
       |> Reward.lens.endsAt .~ futureDate
       |> Reward.lens.id .~ 10
 
