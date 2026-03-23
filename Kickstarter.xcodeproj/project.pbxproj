@@ -38,6 +38,8 @@
 		339ED5602CE41015004B301D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		3959A62F2B69BC6D00FE8055 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		3976B36E2E57DC7F00D2DD50 /* SegmentBrazeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 3976B36D2E57DC7F00D2DD50 /* SegmentBrazeUI */; };
+		39AE634E2F6C581800481A76 /* GraphAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 39AE634D2F6C581800481A76 /* GraphAPI */; };
+		39AE63502F6C581D00481A76 /* GraphAPITestMocks in Frameworks */ = {isa = PBXBuildFile; productRef = 39AE634F2F6C581D00481A76 /* GraphAPITestMocks */; };
 		600944E42E5CB3A7004A089F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 600944E22E5CB3A7004A089F /* InfoPlist.strings */; };
 		6069CC542F5F66160029A67F /* Statsig in Frameworks */ = {isa = PBXBuildFile; productRef = 6069CC532F5F66160029A67F /* Statsig */; };
 		60A80F532BD7F9A00052A829 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */; };
@@ -732,10 +734,6 @@
 		E1D529FC2ED4D21A00923AA9 /* ShippableLocationsForProjectQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ShippableLocationsForProjectQuery.graphql; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXGroup section */
-  6008DF842F6353BF00A393E6 /* Statsig */ = {isa = PBXGroup; path = Statsig; sourceTree = "<group>"; };
-/* End PBXGroup section */
-
 /* Begin PBXFrameworksBuildPhase section */
 		A7D1F9421C850B7C000D41D5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -753,7 +751,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39AE634E2F6C581800481A76 /* GraphAPI in Frameworks */,
 				AAFCED082F20399B00EAC2FE /* SnapshotTesting in Frameworks */,
+				39AE63502F6C581D00481A76 /* GraphAPITestMocks in Frameworks */,
 				AAFCECF72F20353A00EAC2FE /* FirebaseRemoteConfig in Frameworks */,
 				AAFCED002F2038F200EAC2FE /* Library in Frameworks */,
 				AAFCED022F2038F200EAC2FE /* LibraryTestHelpers in Frameworks */,
@@ -786,6 +786,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		39AE634C2F6C581800481A76 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6008DF842F6353BF00A393E6 /* Statsig */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Statsig;
+			sourceTree = "<group>";
+		};
 		802800561C88F62500141235 /* Configs */ = {
 			isa = PBXGroup;
 			children = (
@@ -833,6 +847,7 @@
 				E113BD822B7D255000D3A809 /* Library-Keychain-iOSTests */,
 				E10BE8CE2B02975C00F73DC9 /* RichPushNotifications */,
 				E190EB6F2E29944E006A6DB6 /* graphql */,
+				39AE634C2F6C581800481A76 /* Frameworks */,
 				A7E06C7A1C5A6EB300EBDCC2 /* Products */,
 			);
 			indentWidth = 2;
@@ -1419,6 +1434,8 @@
 				AAFCED052F2038FC00EAC2FE /* ReactiveExtensions-TestHelpers */,
 				AAFCED072F20399B00EAC2FE /* SnapshotTesting */,
 				AA7B64932F20420F00602E54 /* Stripe */,
+				39AE634D2F6C581800481A76 /* GraphAPI */,
+				39AE634F2F6C581D00481A76 /* GraphAPITestMocks */,
 			);
 			productName = LibraryTests;
 			productReference = AAF3BB572F1845A200DAE921 /* LibraryTests.xctest */;
@@ -3033,6 +3050,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3976B3682E57AEC200D2DD50 /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
 			productName = SegmentBrazeUI;
+		};
+		39AE634D2F6C581800481A76 /* GraphAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GraphAPI;
+		};
+		39AE634F2F6C581D00481A76 /* GraphAPITestMocks */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GraphAPITestMocks;
 		};
 		6069CC532F5F66160029A67F /* Statsig */ = {
 			isa = XCSwiftPackageProductDependency;
