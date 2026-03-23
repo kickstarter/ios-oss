@@ -432,27 +432,3 @@ private func refTag(query: String, projects: [SearchResult], project: SearchResu
     return RefTag.search
   }
 }
-
-private struct ProjectCardPropertiesProjectCellModel: BackerDashboardProjectCellViewModel.ProjectCellModel {
-  private let properties: ProjectCardProperties
-  init(_ properties: ProjectCardProperties) {
-    self.properties = properties
-  }
-
-  var name: String { self.properties.name }
-  var state: KsApi.Project.State { self.properties.state }
-  var imageURL: String? { self.properties.image.url?.absoluteString }
-  var fundingProgress: Float { Float(self.properties.percentFunded) / 100 }
-  var percentFunded: Int { self.properties.percentFunded }
-  var displayPrelaunch: Bool? { self.properties.shouldDisplayPrelaunch }
-  var prelaunchActivated: Bool? { self.properties.isPrelaunchActivated }
-  var launchedAt: TimeInterval? { self.properties.launchedAt?.timeIntervalSince1970 }
-  var deadline: TimeInterval? { self.properties.deadlineAt?.timeIntervalSince1970 }
-  var isStarred: Bool? { self.properties.isStarred }
-}
-
-extension ProjectCardProperties: BackerDashboardProjectCellViewModel.HasProjectCellModel {
-  public var projectCellModel: any BackerDashboardProjectCellViewModel.ProjectCellModel {
-    ProjectCardPropertiesProjectCellModel(self)
-  }
-}
