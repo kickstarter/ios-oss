@@ -257,6 +257,34 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
       }
   }
 
+  func testView_VideoFeedBanner() {
+    let mockStatsigClient = MockStatsigClient()
+    mockStatsigClient.features = ["video_feed": true]
+
+    // TODO: Update to all languages once translations are in [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
+    orthogonalCombos(
+      [Language.en],
+      [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
+    ).forEach {
+      language, device in
+
+      withEnvironment(currentUser: nil, language: language, statsigClient: mockStatsigClient) {
+        let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 210
+
+        controller.change(filter: self.magicParams)
+        self.scheduler.run()
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
   func testView_Onboarding() {
     orthogonalCombos(
       Language.allLanguages,

@@ -7,7 +7,7 @@ internal final class VideoFeedBannerView: UIView {
   // MARK: - Constants
 
   private enum Constants {
-    // TODO: Update with Video Feed Translations [mbl=3158](https://kickstarter.atlassian.net/browse/MBL-3158)
+    // TODO: Update with Video Feed Translations [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
     static let title = "Try our new discovery mode"
     static let subtitle = "Swipe through a video feed, tuning your recommendations along the way."
     static let ctaTitle = "Try it now"
@@ -25,12 +25,10 @@ internal final class VideoFeedBannerView: UIView {
     static let thumbnailWidth: CGFloat = 110
     static let thumbnailHeight: CGFloat = 100
 
-    // Title colors
+    // Titles
     static let titleColor = Colors.Text.constantPrimary
     static let subtitleColor = Colors.Text.constantPrimary
-
-    // Subtitle label
-    static let subtitleMaxLines: Int = 2
+    static let titleMaxLines: Int = 3
 
     // CTA Button
     static let ctaCornerRadius: CGFloat = Spacing.unit_04
@@ -140,12 +138,12 @@ internal final class VideoFeedBannerView: UIView {
   }
 
   private func configureTitles(titleLabel: UILabel, subtitleLabel: UILabel) {
-    titleLabel.numberOfLines = 1
+    titleLabel.numberOfLines = Constants.titleMaxLines
     titleLabel.lineBreakMode = .byTruncatingTail
     titleLabel.font = UIFont.ksr_headingLG()
     titleLabel.textColor = Constants.titleColor.uiColor()
 
-    subtitleLabel.numberOfLines = Constants.subtitleMaxLines
+    subtitleLabel.numberOfLines = Constants.titleMaxLines
     subtitleLabel.lineBreakMode = .byTruncatingTail
     subtitleLabel.font = UIFont.ksr_bodySM()
     subtitleLabel.textColor = Constants.subtitleColor.uiColor()

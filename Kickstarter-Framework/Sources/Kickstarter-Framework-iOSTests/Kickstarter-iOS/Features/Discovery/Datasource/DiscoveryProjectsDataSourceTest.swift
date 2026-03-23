@@ -28,12 +28,26 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
 
     self.dataSource.showPersonalization(true)
 
-    XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
 
     self.dataSource.showPersonalization(false)
 
-    XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
+  }
+
+  func testVideoFeedBanner() {
+    let section = DiscoveryProjectsDataSource.Section.videoFeedBanner.rawValue
+
+    self.dataSource.showVideoFeedBanner(true)
+
+    XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
+
+    self.dataSource.showVideoFeedBanner(false)
+
+    XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
   }
 
