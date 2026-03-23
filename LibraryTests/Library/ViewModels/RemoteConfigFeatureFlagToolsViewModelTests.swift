@@ -17,8 +17,9 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.reloadWithData.observe(self.reloadWithData.observer)
-    self.vm.outputs.updateUserDefaultsWithFeatures.observe(self.updateUserDefaultsWithFeatures.observer)
+    self.vm.outputs.reloadWithRemoteConfigData.observe(self.reloadWithData.observer)
+    self.vm.outputs.updateUserDefaultsWithRemoteConfigFeatures
+      .observe(self.updateUserDefaultsWithFeatures.observer)
   }
 
   func testReloadWithData_AllFeaturesEnabled() {

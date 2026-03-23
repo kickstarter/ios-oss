@@ -33,7 +33,7 @@ public enum BetaToolsRow: Int, CaseIterable {
   public var titleText: String {
     switch self {
     case .debugConfigFeatureFlags: return "Config Feature Flags"
-    case .debugRemoteConfigFeatureFlags: return "Remote Config Feature Flags"
+    case .debugRemoteConfigFeatureFlags: return "Remote Config and Statsig Feature Flags"
     case .debugPushNotifications: return "Debug Push Notifications"
     case .designSystem: return "Design System"
     case .colors: return "Semantic Colors"
