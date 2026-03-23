@@ -44,9 +44,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.tableView.dataSource = self.dataSource
 
-    /// Show the video feed banner as the first row in the table if feature flag is enabled
-    self.dataSource.showVideoFeedBanner(featureVideoFeedEnabled() == true)
-
     let refreshControl = UIRefreshControl()
     refreshControl.addTarget(
       self,
@@ -216,6 +213,14 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] shouldShow in
         self?.dataSource.showPersonalization(shouldShow)
+
+        self?.tableView.reloadData()
+      }
+
+    self.viewModel.outputs.showVideoFeedBanner
+      .observeForUI()
+      .observeValues { [weak self] shouldShow in
+        self?.dataSource.showVideoFeedBanner(shouldShow)
 
         self?.tableView.reloadData()
       }

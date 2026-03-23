@@ -8,9 +8,9 @@ internal final class VideoFeedBannerView: UIView {
 
   private enum Constants {
     // TODO: Update with Video Feed Translations [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
-    static let title = "Try our new discovery mode"
-    static let subtitle = "Swipe through a video feed, tuning your recommendations along the way."
-    static let ctaTitle = "Try it now"
+    static let title = "FPO: Try our new discovery mode"
+    static let subtitle = "FPO: Swipe through a video feed, tuning your recommendations along the way."
+    static let ctaTitle = "FPO: Try it now"
 
     // Card
     static let cardCornerRadius: CGFloat = Spacing.unit_02
@@ -139,12 +139,12 @@ internal final class VideoFeedBannerView: UIView {
 
   private func configureTitles(titleLabel: UILabel, subtitleLabel: UILabel) {
     titleLabel.numberOfLines = Constants.titleMaxLines
-    titleLabel.lineBreakMode = .byTruncatingTail
+    titleLabel.lineBreakMode = .byWordWrapping
     titleLabel.font = UIFont.ksr_headingLG()
     titleLabel.textColor = Constants.titleColor.uiColor()
 
     subtitleLabel.numberOfLines = Constants.titleMaxLines
-    subtitleLabel.lineBreakMode = .byTruncatingTail
+    subtitleLabel.lineBreakMode = .byWordWrapping
     subtitleLabel.font = UIFont.ksr_bodySM()
     subtitleLabel.textColor = Constants.subtitleColor.uiColor()
   }
