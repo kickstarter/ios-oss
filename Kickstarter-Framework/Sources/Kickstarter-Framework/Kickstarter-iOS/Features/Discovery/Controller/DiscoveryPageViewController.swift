@@ -40,8 +40,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.tableView.register(nib: Nib.DiscoveryPostcardCell)
     self.tableView.registerCellClass(PersonalizationCell.self)
     self.tableView.registerCellClass(DiscoveryProjectCardCell.self)
+    self.tableView.registerCellClass(VideoFeedBannerCell.self)
 
     self.tableView.dataSource = self.dataSource
+
+    /// Show the video feed banner as the first row in the table if feature flag is enabled
+    self.dataSource.showVideoFeedBanner(featureVideoFeedEnabled() == true)
 
     let refreshControl = UIRefreshControl()
     refreshControl.addTarget(
@@ -303,7 +307,9 @@ internal final class DiscoveryPageViewController: UITableViewController {
     willDisplay cell: UITableViewCell,
     forRowAt indexPath: IndexPath
   ) {
-    if let cell = cell as? DiscoveryPostcardCell {
+    if let cell = cell as? VideoFeedBannerCell {
+      cell.delegate = self
+    } else if let cell = cell as? DiscoveryPostcardCell {
       cell.delegate = self
     } else if let cell = cell as? ActivitySampleBackingCell, cell.delegate == nil {
       cell.delegate = self
@@ -411,6 +417,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
   override func scrollViewDidScroll(_ scrollView: UIScrollView) {
     self.viewModel.inputs.scrollViewDidScroll(toContentOffset: scrollView.contentOffset)
+  }
+}
+
+extension DiscoveryPageViewController: VideoFeedBannerCellDelegate {
+  func videoFeedBannerCellDidTapTryItNow(_: VideoFeedBannerCell) {
+    // TODO: present VideoFeedController
   }
 }
 

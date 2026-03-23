@@ -4,10 +4,19 @@ import UIKit
 
 internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
   internal enum Section: Int {
+    case videoFeedBanner
     case onboarding
     case personalization
     case activitySample
     case projects
+  }
+
+  func showVideoFeedBanner(_ show: Bool) {
+    self.set(
+      values: show ? [()] : [],
+      cellClass: VideoFeedBannerCell.self,
+      inSection: Section.videoFeedBanner.rawValue
+    )
   }
 
   func load(activities: [Activity]) {
@@ -76,6 +85,8 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
+    case let (cell as VideoFeedBannerCell, value as Void):
+      cell.configureWith(value: value)
     case let (cell as ActivitySampleBackingCell, value as Activity):
       cell.configureWith(value: value)
     case let (cell as ActivitySampleFollowCell, value as Activity):
