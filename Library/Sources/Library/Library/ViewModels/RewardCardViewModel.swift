@@ -4,6 +4,12 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
+public struct RewardCardBadgeData {
+  public let text: String
+  public let badgeStyle: BadgeStyle
+  public let image: UIImage?
+}
+
 public struct RewardCardPillData: Equatable {
   public let backgroundColor: UIColor
   public let text: String
@@ -60,7 +66,7 @@ public protocol RewardCardViewModelOutputs {
   var rewardTitleLabelAttributedText: Signal<NSAttributedString, Never> { get }
   var rewardImage: Signal<Reward.Image, Never> { get }
   var rewardImageHidden: Signal<Bool, Never> { get }
-  var secretRewardBadgeHidden: Signal<Bool, Never> { get }
+  var rewardBadge: Signal<RewardCardBadgeData?, Never> { get }
 }
 
 public protocol RewardCardViewModelType {
@@ -170,7 +176,8 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
 
     self.rewardImage = reward.map { $0.image }.skipNil()
     self.rewardImageHidden = reward.map { $0.image == nil }
-    self.secretRewardBadgeHidden = reward.map { !$0.isSecretReward }
+
+    self.rewardBadge = reward.map { RewardCardBadgeData.forReward($0) }
   }
 
   private let configDataProperty = MutableProperty<RewardCardViewData?>(nil)
@@ -203,7 +210,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let rewardTitleLabelAttributedText: Signal<NSAttributedString, Never>
   public let rewardImage: Signal<Reward.Image, Never>
   public let rewardImageHidden: Signal<Bool, Never>
-  public let secretRewardBadgeHidden: Signal<Bool, Never>
+  public let rewardBadge: Signal<RewardCardBadgeData?, Never>
 
   public var inputs: RewardCardViewModelInputs { return self }
   public var outputs: RewardCardViewModelOutputs { return self }
@@ -382,5 +389,44 @@ private func estimatedDeliveryDateText(with reward: Reward) -> String? {
       template: DateFormatter.monthYear,
       timeZone: UTCTimeZone
     )
+  }
+}
+
+public extension RewardCardBadgeData {
+  static func forReward(_ reward: Reward) -> RewardCardBadgeData? {
+    if reward.isSecretReward {
+      let badgeStyle = BadgeStyle.custom(
+        foregroundColor: Colors.Text.Accent.Green.bolder.uiColor(),
+        backgroundColor: Colors.Background.Accent.Green.subtle.uiColor()
+      )
+
+      return RewardCardBadgeData(
+        text: Strings.Secret_reward(),
+        badgeStyle: badgeStyle,
+        image: Library.image(named: "Locked")
+      )
+    }
+
+    // It's technically possible for a reward to be both Featured and Secret.
+    // In that case, we just display the Secret badge.
+    if reward.featured {
+      let foreground = Colors.Text.Accent.Purple.bolder.uiColor()
+      let background = Colors.Background.Accent.Purple.subtle.uiColor()
+
+      let badgeStyle = BadgeStyle.custom(
+        foregroundColor: foreground,
+        backgroundColor: background
+      )
+
+      let icon = Library.image(named: "icon-star-open-new")?.withTintColor(foreground)
+
+      return RewardCardBadgeData(
+        text: Strings.Featured(),
+        badgeStyle: badgeStyle,
+        image: icon
+      )
+    }
+
+    return nil
   }
 }

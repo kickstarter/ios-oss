@@ -133,6 +133,42 @@ extension Reward {
     |> Reward.lens.isAvailable .~ true
     |> Reward.lens.audienceData .~ Reward.AudienceData(isSecretReward: true)
 
+  public static let featuredReward = Reward(
+    backersCount: 50,
+    convertedMinimum: 10.00,
+    description: "A cool thing",
+    endsAt: nil,
+    estimatedDeliveryOn: Date(
+      timeIntervalSince1970: 1_475_361_315
+    ).timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 365.0,
+    featured: true,
+    hasAddOns: false,
+    id: 1,
+    latePledgeAmount: 10.00,
+    limit: 100,
+    limitPerBacker: nil,
+    minimum: 10.00,
+    pledgeAmount: 10.00,
+    postCampaignPledgingEnabled: false,
+    remaining: 50,
+    rewardsItems: [RewardsItem.template],
+    shipping: Reward.Shipping(
+      enabled: false,
+      location: nil,
+      preference: Reward.Shipping.Preference.none,
+      summary: nil,
+      type: nil
+    ),
+    shippingRules: nil,
+    shippingRulesExpanded: nil,
+    startsAt: nil,
+    title: "Featured reward",
+    localPickup: nil,
+    isAvailable: true,
+    image: nil,
+    audienceData: AudienceData(isSecretReward: false)
+  )
+
   internal static let shipsToUSAReward: Reward = Reward.template
     |> Reward.lens.title .~ "Ships only to the USA"
     |> Reward.lens.shipping .~ Reward.Shipping(

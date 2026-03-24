@@ -19,7 +19,7 @@ public final class RewardCardView: UIView {
   private let detailsStackView: UIStackView = UIStackView(frame: .zero)
 
   private let rewardImageView = UIImageView(frame: .zero)
-  private let secretRewardBadgeView = BadgeView(frame: .zero)
+  private let rewardBadgeView = BadgeView(frame: .zero)
   private let descriptionLabel = UILabel(frame: .zero)
   private let descriptionStackView = UIStackView(frame: .zero)
   private let estimatedDeliveryStackView = UIStackView(frame: .zero)
@@ -138,17 +138,6 @@ public final class RewardCardView: UIView {
     applyMinimumPriceConversionLabelStyle(self.minimumPriceConversionLabel)
     applyPillsViewStyle(self.pillsView)
     applyRewardImageViewStyle(self.rewardImageView)
-
-    let badgeStyle = BadgeStyle.custom(
-      foregroundColor: Colors.Text.Accent.Green.bolder.uiColor(),
-      backgroundColor: Colors.Background.Accent.Green.subtle.uiColor()
-    )
-
-    self.secretRewardBadgeView.configure(
-      with: Strings.Secret_reward(),
-      image: Library.image(named: "Locked"),
-      style: badgeStyle
-    )
   }
 
   public override func bindViewModel() {
@@ -214,7 +203,21 @@ public final class RewardCardView: UIView {
         rewardImageView?.ksr_setImageWithURL(imageURL)
       }
 
-    self.secretRewardBadgeView.rac.hidden = self.viewModel.outputs.secretRewardBadgeHidden
+    self.viewModel.outputs.rewardBadge
+      .observeForUI()
+      .observeValues { [weak rewardBadgeView] data in
+        guard let data else {
+          rewardBadgeView?.isHidden = true
+          return
+        }
+
+        rewardBadgeView?.configure(
+          with: data.text,
+          image: data.image,
+          style: data.badgeStyle
+        )
+        rewardBadgeView?.isHidden = false
+      }
   }
 
   // MARK: - Private Helpers
@@ -224,7 +227,7 @@ public final class RewardCardView: UIView {
     self.rootStackView.constrainViewToEdges(in: self)
     self.rootStackView.addArrangedSubviews(self.rewardImageView, self.detailsStackView)
 
-    self.addSubview(self.secretRewardBadgeView)
+    self.addSubview(self.rewardBadgeView)
 
     self.rewardImageView.isHidden = true
 
@@ -284,14 +287,14 @@ public final class RewardCardView: UIView {
     constratint.priority = UILayoutPriority(rawValue: 999)
     constratint.isActive = true
 
-    self.secretRewardBadgeView.translatesAutoresizingMaskIntoConstraints = false
+    self.rewardBadgeView.translatesAutoresizingMaskIntoConstraints = false
 
     NSLayoutConstraint.activate([
-      self.secretRewardBadgeView.bottomAnchor.constraint(
+      self.rewardBadgeView.bottomAnchor.constraint(
         equalTo: self.detailsStackView.topAnchor,
         constant: Styles.grid(2)
       ),
-      self.secretRewardBadgeView.leadingAnchor.constraint(
+      self.rewardBadgeView.leadingAnchor.constraint(
         equalTo: self.leadingAnchor,
         constant: Styles.grid(3)
       )
