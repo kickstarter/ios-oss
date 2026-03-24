@@ -120,6 +120,9 @@ public protocol DiscoveryPageViewModelOutputs {
 
   /// Emits to show the personalization section
   var showPersonalization: Signal<Bool, Never> { get }
+
+  /// Emits to show the video feed banner
+  var showVideoFeedBanner: Signal<Bool, Never> { get }
 }
 
 public protocol DiscoveryPageViewModelType {
@@ -334,6 +337,10 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     .ignoreValues()
     .map(shouldShowPersonalization)
 
+    self.showVideoFeedBanner = self.viewWillAppearProperty.signal
+      .map { featureVideoFeedEnabled() }
+      .skipRepeats()
+
     self.goToCuratedProjects = self.personalizationCellTappedProperty.signal
       .map(cachedCategories)
       .skipNil()
@@ -484,6 +491,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let showEmptyState: Signal<EmptyState, Never>
   public let showOnboarding: Signal<Bool, Never>
   public let showPersonalization: Signal<Bool, Never>
+  public let showVideoFeedBanner: Signal<Bool, Never>
 
   public var inputs: DiscoveryPageViewModelInputs { return self }
   public var outputs: DiscoveryPageViewModelOutputs { return self }

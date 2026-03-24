@@ -34,6 +34,12 @@ public struct Colors {
       darkMode: .gray_500
     )
 
+    public static let constantPrimary = SemanticColor(
+      "text/primary",
+      lightMode: .gray_1000,
+      darkMode: .gray_1000
+    )
+
     public struct Accent {
       public static let gray = SemanticColor(
         "text/accent/gray",
@@ -224,6 +230,12 @@ public struct Colors {
           "background/accent/purple/subtle",
           lightMode: .purple_02,
           darkMode: .purple_08
+        )
+
+        public static let banner = SemanticColor(
+          "background/accent/purple/banner",
+          lightMode: .purple_03,
+          darkMode: .purple_03
         )
       }
 

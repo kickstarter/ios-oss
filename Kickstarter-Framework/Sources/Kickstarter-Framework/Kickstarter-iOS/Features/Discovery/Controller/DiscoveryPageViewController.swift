@@ -40,6 +40,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.tableView.register(nib: Nib.DiscoveryPostcardCell)
     self.tableView.registerCellClass(PersonalizationCell.self)
     self.tableView.registerCellClass(DiscoveryProjectCardCell.self)
+    self.tableView.registerCellClass(VideoFeedBannerCell.self)
 
     self.tableView.dataSource = self.dataSource
 
@@ -216,6 +217,14 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
+    self.viewModel.outputs.showVideoFeedBanner
+      .observeForUI()
+      .observeValues { [weak self] shouldShow in
+        self?.dataSource.showVideoFeedBanner(shouldShow)
+
+        self?.tableView.reloadData()
+      }
+
     self.viewModel.outputs.dismissPersonalizationCell
       .observeForUI()
       .observeValues { [weak self] _ in
@@ -303,7 +312,10 @@ internal final class DiscoveryPageViewController: UITableViewController {
     willDisplay cell: UITableViewCell,
     forRowAt indexPath: IndexPath
   ) {
-    if let cell = cell as? DiscoveryPostcardCell {
+    if let cell = cell as? VideoFeedBannerCell {
+      cell.delegate = self
+      cell.addHostingControllerToParent(self)
+    } else if let cell = cell as? DiscoveryPostcardCell {
       cell.delegate = self
     } else if let cell = cell as? ActivitySampleBackingCell, cell.delegate == nil {
       cell.delegate = self
@@ -411,6 +423,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
   override func scrollViewDidScroll(_ scrollView: UIScrollView) {
     self.viewModel.inputs.scrollViewDidScroll(toContentOffset: scrollView.contentOffset)
+  }
+}
+
+extension DiscoveryPageViewController: VideoFeedBannerCellDelegate {
+  func videoFeedBannerCellDidTapTryItNow(_: VideoFeedBannerCell) {
+    // TODO: present VideoFeedController
   }
 }
 
