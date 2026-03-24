@@ -16,9 +16,9 @@ internal final class BackerDashboardProjectsDataSource: ValueCellDataSource {
     )
   }
 
-  internal func load(projects: [Project]) {
+  internal func load(projects: [ProjectCardProperties]) {
     self.set(
-      values: projects,
+      values: projects.map { $0.projectCellModel },
       cellClass: BackerDashboardProjectCell.self,
       inSection: Section.projects.rawValue
     )
@@ -32,7 +32,10 @@ internal final class BackerDashboardProjectsDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as BackerDashboardEmptyStateCell, value as ProfileProjectsType):
       cell.configureWith(value: value)
-    case let (cell as BackerDashboardProjectCell, value as Project):
+    case let (
+      cell as BackerDashboardProjectCell,
+      value as BackerDashboardProjectCellViewModel.ProjectCellModel
+    ):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")

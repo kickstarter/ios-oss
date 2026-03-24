@@ -731,7 +731,7 @@ public struct Service: ServiceType {
   public func fetchBackedProjects(
     cursor: String? = nil,
     limit: Int? = nil
-  ) -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
+  ) -> SignalProducer<FetchMyBackedProjectsQuery.Data, ErrorEnvelope> {
     let query = GraphAPI.FetchMyBackedProjectsQuery(
       first: GraphQLNullable.someOrNil(limit),
       after: GraphQLNullable.someOrNil(cursor)
@@ -739,13 +739,12 @@ public struct Service: ServiceType {
 
     return GraphQL.shared.client
       .fetch(query: query)
-      .flatMap(FetchProjectsEnvelope.fetchProjectsEnvelope(from:))
   }
 
   public func fetchSavedProjects(
     cursor: String? = nil,
     limit: Int? = nil
-  ) -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
+  ) -> SignalProducer<FetchMySavedProjectsQuery.Data, ErrorEnvelope> {
     let query = GraphAPI.FetchMySavedProjectsQuery(
       first: GraphQLNullable.someOrNil(limit),
       after: GraphQLNullable.someOrNil(cursor)
@@ -753,7 +752,6 @@ public struct Service: ServiceType {
 
     return GraphQL.shared.client
       .fetch(query: query)
-      .flatMap(FetchProjectsEnvelope.fetchProjectsEnvelope(from:))
   }
 
   public func fetchRewardShippingRules(projectId: Int, rewardId: Int)

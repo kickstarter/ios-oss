@@ -1,3 +1,6 @@
+import ApolloTestSupport
+import GraphAPI
+import GraphAPITestMocks
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import KsApiTestHelpers
@@ -19,43 +22,30 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
   }
 
   func testProjects() {
-    let deadline = self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 14.0
-    let deadline2 = self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 2.0
+    let deadline = Int(self.dateType.init().timeIntervalSince1970) + 60 * 60 * 24 * 14
+    let deadlineSaved = Int(self.dateType.init().timeIntervalSince1970) + 60 * 60 * 2
 
-    let liveProject = Project.cosmicSurgery
-      |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
-      |> Project.lens.dates.deadline .~ deadline
-      |> Project.lens.stats.fundingProgress .~ 0.5
+    let mock = GraphAPI.ProjectCardFragment.mockProjectsConnectionQuery(numberOfProjects: 4)
 
-    let deadProject = Project.anomalisa
-      |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
-      |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970
-      |> Project.lens.state .~ .successful
+    mock.projects?.nodes?[0]?.name = "A Saved Project, Very Nice Isn't It?"
+    mock.projects?.nodes?[0]?.deadlineAt = "\(deadlineSaved)"
+    mock.projects?.nodes?[0]?.percentFunded = 80
+    mock.projects?.nodes?[0]?.isWatched = true
 
-    let failed = Project.cosmicSurgery
-      |> Project.lens.name .~ "A Failed Project about Mittens and Let's Just Go to the Next Line Shall We"
-      |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
-      |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970
-      |> Project.lens.stats.fundingProgress .~ 0.45
-      |> Project.lens.state .~ .failed
+    mock.projects?.nodes?[1]?.name = "Cosmic Surgery"
+    mock.projects?.nodes?[1]?.percentFunded = 50
+    mock.projects?.nodes?[1]?.deadlineAt = "\(deadline)"
 
-    let saved = Project.cosmicSurgery
-      |> Project.lens.name .~ "A Saved Project, Very Nice Isn't It?"
-      |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
-      |> Project.lens.dates.deadline .~ deadline2
-      |> Project.lens.stats.fundingProgress .~ 0.8
-      |> Project.lens.personalization.isStarred .~ true
+    mock.projects?.nodes?[2]?.name = "Charlie Kaufman's Anomalisa"
+    mock.projects?.nodes?[2]?.percentFunded = 202
+    mock.projects?.nodes?[2]?.state = .case(.successful)
 
-    let env = FetchProjectsEnvelope(
-      type: .backed,
-      projects: [saved, liveProject, deadProject, failed],
-      hasNextPage: true,
-      totalCount: 5
-    )
+    mock.projects?.nodes?[3]?
+      .name = "A Failed Project about Mittens and Let's Just Go to the Next Line Shall We"
+    mock.projects?.nodes?[3]?.percentFunded = 45
+    mock.projects?.nodes?[3]?.state = .case(.failed)
+
+    let response = GraphAPI.FetchMyBackedProjectsQuery.Data.from(mock)
 
     orthogonalCombos(
       Language.allLanguages,
@@ -64,7 +54,7 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
     ).forEach {
       language, device, style in
       withEnvironment(
-        apiService: MockService(fetchBackerBackedProjectsResponse: env),
+        apiService: MockService(fetchBackerBackedProjectsResponse: response),
         currentUser: User.template,
         language: language
       ) {
@@ -90,11 +80,13 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
   }
 
   func testEmpty_BackedProjects() {
-    let env = FetchProjectsEnvelope(type: .backed, projects: [], hasNextPage: false, totalCount: 0)
+    let mock = GraphAPI.ProjectCardFragment.mockProjectsConnectionQuery(numberOfProjects: 0)
+    let response = GraphAPI.FetchMyBackedProjectsQuery.Data.from(mock)
+
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(
-        apiService: MockService(fetchBackerBackedProjectsResponse: env),
+        apiService: MockService(fetchBackerBackedProjectsResponse: response),
         currentUser: User.template,
         language: language
       ) {
@@ -113,11 +105,13 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
   }
 
   func testEmpty_SavedProjects() {
-    let env = FetchProjectsEnvelope(type: .saved, projects: [], hasNextPage: false, totalCount: 0)
+    let mock = GraphAPI.ProjectCardFragment.mockProjectsConnectionQuery(numberOfProjects: 0)
+    let response = GraphAPI.FetchMySavedProjectsQuery.Data.from(mock)
+
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(
-        apiService: MockService(fetchBackerSavedProjectsResponse: env),
+        apiService: MockService(fetchBackerSavedProjectsResponse: response),
         currentUser: User.template,
         language: language
       ) {

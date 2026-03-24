@@ -1,3 +1,6 @@
+import ApolloTestSupport
+import GraphAPI
+import GraphAPITestMocks
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import KsApiTestHelpers
@@ -12,7 +15,10 @@ final class BackerDashboardProjectsDataSourceTests: XCTestCase {
   let sectionProjects = BackerDashboardProjectsDataSource.Section.projects.rawValue
 
   func testProjects() {
-    self.dataSource.load(projects: [.template])
+    let mockProject = GraphAPI.ProjectCardFragment.mockProject()
+    let projectCardFragment = GraphAPI.ProjectCardFragment.from(mockProject)
+    let projectCardProperties = ProjectCardProperties(projectCardFragment)!
+    self.dataSource.load(projects: [projectCardProperties])
 
     XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
 
