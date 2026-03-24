@@ -39,7 +39,9 @@ internal struct VideoFeedBannerView: View {
           .font(Font(UIFont.ksr_bodySM()))
           .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
 
-        Button(action: { self.onTryItNowTapped?() }) {
+        Button {
+          self.onTryItNowTapped?()
+        } label: {
           Text(Constants.ctaTitle)
             .font(Font(UIFont.ksr_bodyMD()))
             .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
@@ -47,15 +49,19 @@ internal struct VideoFeedBannerView: View {
             .background(Color.white)
             .cornerRadius(Constants.ctaCornerRadius)
         }
+        .accessibilityLabel(Constants.ctaTitle)
       }
 
       Image("video-feed-banner-thumbnail")
         .resizable()
         .scaledToFit()
         .frame(width: Constants.thumbnailWidth, height: Constants.thumbnailHeight)
+        .accessibilityHidden(true)
     }
     .padding(Constants.cardPadding)
     .background(Color(Colors.Background.Accent.Purple.banner.uiColor()))
     .cornerRadius(Constants.cardCornerRadius)
+    .accessibilityElement(children: .combine)
+    .accessibilityLabel("\(Constants.title). \(Constants.subtitle)")
   }
 }
