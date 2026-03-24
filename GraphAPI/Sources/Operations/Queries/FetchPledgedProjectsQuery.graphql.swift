@@ -8,7 +8,7 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FetchPledgedProjects($first: Int = null, $after: String = null, $tierTypes: [PledgeProjectsOverviewSort!]) { pledgeProjectsOverview(tierTypes: $tierTypes) { __typename pledges(first: $first, after: $after) { __typename totalCount edges { __typename cursor node { __typename ...PPOCardFragment } } pageInfo { __typename hasNextPage endCursor hasPreviousPage startCursor } } } }"#,
-      fragments: [MoneyFragment.self, PPOBackingFragment.self, PPOCardFragment.self, PPOProjectFragment.self, ProjectAnalyticsFragment.self]
+      fragments: [MoneyFragment.self, PPOBackingFragment.self, PPOCardFragment.self, PPOProjectFragment.self, ProjectAnalyticsFragment.self, ProjectCardFragment.self, ProjectPamphletMainCellPropertiesFragment.self]
     ))
 
   public var first: GraphQLNullable<Int>
@@ -393,6 +393,22 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                 public var posts: Posts { __data["posts"] }
                 /// The minimum amount to raise for the project to be successful.
                 public var goal: Goal? { __data["goal"] }
+                /// The project has launched
+                public var isLaunched: Bool { __data["isLaunched"] }
+                /// Whether a project has activated prelaunch (can return true if project has been launched)
+                public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
+                /// A URL to the project's page.
+                public var url: String { __data["url"] }
+                /// A short description of the project.
+                public var projectDescription: String { __data["projectDescription"] }
+                /// The last time a project's state changed, time since epoch
+                public var stateChangedAt: GraphAPI.DateTime { __data["stateChangedAt"] }
+                /// Exchange rate to US Dollars (USD) for the project's currency
+                public var projectUsdExchangeRate: Double { __data["projectUsdExchangeRate"] }
+                /// Where the project is based.
+                public var location: Location? { __data["location"] }
+                /// Potential hurdles to project completion.
+                public var risks: String { __data["risks"] }
 
                 public struct Fragments: FragmentContainer {
                   public let __data: DataDict
@@ -400,6 +416,8 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
 
                   public var pPOProjectFragment: PPOProjectFragment { _toFragment() }
                   public var projectAnalyticsFragment: ProjectAnalyticsFragment { _toFragment() }
+                  public var projectCardFragment: ProjectCardFragment { _toFragment() }
+                  public var projectPamphletMainCellPropertiesFragment: ProjectPamphletMainCellPropertiesFragment { _toFragment() }
                 }
 
                 public init(
@@ -430,7 +448,15 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                   fxRate: Double,
                   usdExchangeRate: Double? = nil,
                   posts: Posts,
-                  goal: Goal? = nil
+                  goal: Goal? = nil,
+                  isLaunched: Bool,
+                  prelaunchActivated: Bool,
+                  url: String,
+                  projectDescription: String,
+                  stateChangedAt: GraphAPI.DateTime,
+                  projectUsdExchangeRate: Double,
+                  location: Location? = nil,
+                  risks: String
                 ) {
                   self.init(_dataDict: DataDict(
                     data: [
@@ -463,12 +489,22 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                       "usdExchangeRate": usdExchangeRate,
                       "posts": posts._fieldData,
                       "goal": goal._fieldData,
+                      "isLaunched": isLaunched,
+                      "prelaunchActivated": prelaunchActivated,
+                      "url": url,
+                      "projectDescription": projectDescription,
+                      "stateChangedAt": stateChangedAt,
+                      "projectUsdExchangeRate": projectUsdExchangeRate,
+                      "location": location._fieldData,
+                      "risks": risks,
                     ],
                     fulfilledFragments: [
                       ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.self),
                       ObjectIdentifier(PPOBackingFragment.Project.self),
                       ObjectIdentifier(PPOProjectFragment.self),
-                      ObjectIdentifier(ProjectAnalyticsFragment.self)
+                      ObjectIdentifier(ProjectAnalyticsFragment.self),
+                      ObjectIdentifier(ProjectCardFragment.self),
+                      ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.self)
                     ]
                   ))
                 }
@@ -489,12 +525,18 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                   public var name: String { __data["name"] }
                   /// Projects a user has created.
                   public var createdProjects: CreatedProjects? { __data["createdProjects"] }
+                  /// Is user blocked by current user
+                  public var isBlocked: Bool? { __data["isBlocked"] }
+                  /// The user's avatar.
+                  public var imageUrl: String { __data["imageUrl"] }
 
                   public init(
                     email: String? = nil,
                     id: GraphAPI.ID,
                     name: String,
-                    createdProjects: CreatedProjects? = nil
+                    createdProjects: CreatedProjects? = nil,
+                    isBlocked: Bool? = nil,
+                    imageUrl: String
                   ) {
                     self.init(_dataDict: DataDict(
                       data: [
@@ -503,11 +545,14 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                         "id": id,
                         "name": name,
                         "createdProjects": createdProjects._fieldData,
+                        "isBlocked": isBlocked,
+                        "imageUrl": imageUrl,
                       ],
                       fulfilledFragments: [
                         ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Creator.self),
                         ObjectIdentifier(PPOProjectFragment.Creator.self),
-                        ObjectIdentifier(ProjectAnalyticsFragment.Creator.self)
+                        ObjectIdentifier(ProjectAnalyticsFragment.Creator.self),
+                        ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Creator.self)
                       ]
                     ))
                   }
@@ -515,27 +560,274 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                   public typealias CreatedProjects = ProjectAnalyticsFragment.Creator.CreatedProjects
                 }
 
-                public typealias Image = PPOProjectFragment.Image
+                /// PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Image
+                ///
+                /// Parent Type: `Photo`
+                public struct Image: GraphAPI.SelectionSet {
+                  public let __data: DataDict
+                  public init(_dataDict: DataDict) { __data = _dataDict }
+
+                  public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Photo }
+
+                  public var id: GraphAPI.ID { __data["id"] }
+                  /// URL of the photo
+                  public var url: String { __data["url"] }
+
+                  public init(
+                    id: GraphAPI.ID,
+                    url: String
+                  ) {
+                    self.init(_dataDict: DataDict(
+                      data: [
+                        "__typename": GraphAPI.Objects.Photo.typename,
+                        "id": id,
+                        "url": url,
+                      ],
+                      fulfilledFragments: [
+                        ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Image.self),
+                        ObjectIdentifier(PPOProjectFragment.Image.self),
+                        ObjectIdentifier(ProjectCardFragment.Image.self),
+                        ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Image.self)
+                      ]
+                    ))
+                  }
+                }
 
                 public typealias AddOns = ProjectAnalyticsFragment.AddOns
 
-                public typealias Backing = ProjectAnalyticsFragment.Backing
+                /// PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Backing
+                ///
+                /// Parent Type: `Backing`
+                public struct Backing: GraphAPI.SelectionSet {
+                  public let __data: DataDict
+                  public init(_dataDict: DataDict) { __data = _dataDict }
 
-                public typealias Category = ProjectAnalyticsFragment.Category
+                  public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Backing }
 
-                public typealias Country = ProjectAnalyticsFragment.Country
+                  public var id: GraphAPI.ID { __data["id"] }
+
+                  public init(
+                    id: GraphAPI.ID
+                  ) {
+                    self.init(_dataDict: DataDict(
+                      data: [
+                        "__typename": GraphAPI.Objects.Backing.typename,
+                        "id": id,
+                      ],
+                      fulfilledFragments: [
+                        ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Backing.self),
+                        ObjectIdentifier(ProjectAnalyticsFragment.Backing.self),
+                        ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Backing.self)
+                      ]
+                    ))
+                  }
+                }
+
+                /// PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Category
+                ///
+                /// Parent Type: `Category`
+                public struct Category: GraphAPI.SelectionSet {
+                  public let __data: DataDict
+                  public init(_dataDict: DataDict) { __data = _dataDict }
+
+                  public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Category }
+
+                  /// Category name in English for analytics use.
+                  public var analyticsName: String { __data["analyticsName"] }
+                  /// Category parent
+                  public var parentCategory: ParentCategory? { __data["parentCategory"] }
+                  /// Category name.
+                  public var name: String { __data["name"] }
+
+                  public init(
+                    analyticsName: String,
+                    parentCategory: ParentCategory? = nil,
+                    name: String
+                  ) {
+                    self.init(_dataDict: DataDict(
+                      data: [
+                        "__typename": GraphAPI.Objects.Category.typename,
+                        "analyticsName": analyticsName,
+                        "parentCategory": parentCategory._fieldData,
+                        "name": name,
+                      ],
+                      fulfilledFragments: [
+                        ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Category.self),
+                        ObjectIdentifier(ProjectAnalyticsFragment.Category.self),
+                        ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Category.self)
+                      ]
+                    ))
+                  }
+
+                  public typealias ParentCategory = ProjectAnalyticsFragment.Category.ParentCategory
+                }
+
+                /// PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Country
+                ///
+                /// Parent Type: `Country`
+                public struct Country: GraphAPI.SelectionSet {
+                  public let __data: DataDict
+                  public init(_dataDict: DataDict) { __data = _dataDict }
+
+                  public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Country }
+
+                  /// ISO ALPHA-2 code.
+                  public var code: GraphQLEnum<GraphAPI.CountryCode> { __data["code"] }
+                  /// Country name.
+                  public var name: String { __data["name"] }
+
+                  public init(
+                    code: GraphQLEnum<GraphAPI.CountryCode>,
+                    name: String
+                  ) {
+                    self.init(_dataDict: DataDict(
+                      data: [
+                        "__typename": GraphAPI.Objects.Country.typename,
+                        "code": code,
+                        "name": name,
+                      ],
+                      fulfilledFragments: [
+                        ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Country.self),
+                        ObjectIdentifier(ProjectAnalyticsFragment.Country.self),
+                        ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Country.self)
+                      ]
+                    ))
+                  }
+                }
 
                 public typealias ProjectTag = ProjectAnalyticsFragment.ProjectTag
 
                 public typealias Rewards = ProjectAnalyticsFragment.Rewards
 
-                public typealias Video = ProjectAnalyticsFragment.Video
+                /// PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Video
+                ///
+                /// Parent Type: `Video`
+                public struct Video: GraphAPI.SelectionSet {
+                  public let __data: DataDict
+                  public init(_dataDict: DataDict) { __data = _dataDict }
 
-                public typealias Pledged = ProjectAnalyticsFragment.Pledged
+                  public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Video }
+
+                  public var id: GraphAPI.ID { __data["id"] }
+                  /// A video's sources (hls, high, base)
+                  public var videoSources: VideoSources? { __data["videoSources"] }
+
+                  public init(
+                    id: GraphAPI.ID,
+                    videoSources: VideoSources? = nil
+                  ) {
+                    self.init(_dataDict: DataDict(
+                      data: [
+                        "__typename": GraphAPI.Objects.Video.typename,
+                        "id": id,
+                        "videoSources": videoSources._fieldData,
+                      ],
+                      fulfilledFragments: [
+                        ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Video.self),
+                        ObjectIdentifier(ProjectAnalyticsFragment.Video.self),
+                        ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Video.self)
+                      ]
+                    ))
+                  }
+
+                  public typealias VideoSources = ProjectPamphletMainCellPropertiesFragment.Video.VideoSources
+                }
+
+                /// PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Pledged
+                ///
+                /// Parent Type: `Money`
+                public struct Pledged: GraphAPI.SelectionSet {
+                  public let __data: DataDict
+                  public init(_dataDict: DataDict) { __data = _dataDict }
+
+                  public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Money }
+
+                  /// Floating-point numeric value of monetary amount represented as a string
+                  public var amount: String? { __data["amount"] }
+                  /// Currency of the monetary amount
+                  public var currency: GraphQLEnum<GraphAPI.CurrencyCode>? { __data["currency"] }
+                  /// Symbol of the currency in which the monetary amount appears
+                  public var symbol: String? { __data["symbol"] }
+
+                  public struct Fragments: FragmentContainer {
+                    public let __data: DataDict
+                    public init(_dataDict: DataDict) { __data = _dataDict }
+
+                    public var moneyFragment: MoneyFragment { _toFragment() }
+                  }
+
+                  public init(
+                    amount: String? = nil,
+                    currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+                    symbol: String? = nil
+                  ) {
+                    self.init(_dataDict: DataDict(
+                      data: [
+                        "__typename": GraphAPI.Objects.Money.typename,
+                        "amount": amount,
+                        "currency": currency,
+                        "symbol": symbol,
+                      ],
+                      fulfilledFragments: [
+                        ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Pledged.self),
+                        ObjectIdentifier(ProjectAnalyticsFragment.Pledged.self),
+                        ObjectIdentifier(ProjectCardFragment.Pledged.self),
+                        ObjectIdentifier(MoneyFragment.self),
+                        ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Pledged.self)
+                      ]
+                    ))
+                  }
+                }
 
                 public typealias Posts = ProjectAnalyticsFragment.Posts
 
-                public typealias Goal = ProjectAnalyticsFragment.Goal
+                /// PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Goal
+                ///
+                /// Parent Type: `Money`
+                public struct Goal: GraphAPI.SelectionSet {
+                  public let __data: DataDict
+                  public init(_dataDict: DataDict) { __data = _dataDict }
+
+                  public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Money }
+
+                  /// Floating-point numeric value of monetary amount represented as a string
+                  public var amount: String? { __data["amount"] }
+                  /// Currency of the monetary amount
+                  public var currency: GraphQLEnum<GraphAPI.CurrencyCode>? { __data["currency"] }
+                  /// Symbol of the currency in which the monetary amount appears
+                  public var symbol: String? { __data["symbol"] }
+
+                  public struct Fragments: FragmentContainer {
+                    public let __data: DataDict
+                    public init(_dataDict: DataDict) { __data = _dataDict }
+
+                    public var moneyFragment: MoneyFragment { _toFragment() }
+                  }
+
+                  public init(
+                    amount: String? = nil,
+                    currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+                    symbol: String? = nil
+                  ) {
+                    self.init(_dataDict: DataDict(
+                      data: [
+                        "__typename": GraphAPI.Objects.Money.typename,
+                        "amount": amount,
+                        "currency": currency,
+                        "symbol": symbol,
+                      ],
+                      fulfilledFragments: [
+                        ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Goal.self),
+                        ObjectIdentifier(ProjectAnalyticsFragment.Goal.self),
+                        ObjectIdentifier(ProjectCardFragment.Goal.self),
+                        ObjectIdentifier(MoneyFragment.self),
+                        ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Goal.self)
+                      ]
+                    ))
+                  }
+                }
+
+                public typealias Location = ProjectPamphletMainCellPropertiesFragment.Location
               }
 
               public typealias DeliveryAddress = PPOBackingFragment.DeliveryAddress
