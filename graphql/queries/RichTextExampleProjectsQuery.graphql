@@ -1,5 +1,5 @@
 query RichTextExampleProjectsQuery{
-  projects(recommended: true, first: 20) {
+  projects(recommended: true, first: 10) {
     nodes{
       id
       name

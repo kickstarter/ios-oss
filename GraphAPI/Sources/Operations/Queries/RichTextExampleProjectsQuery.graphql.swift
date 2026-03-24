@@ -7,7 +7,7 @@ public class RichTextExampleProjectsQuery: GraphQLQuery {
   public static let operationName: String = "RichTextExampleProjectsQuery"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query RichTextExampleProjectsQuery { projects(recommended: true, first: 20) { __typename nodes { __typename id name storyRichText { __typename ...RichTextComponentFragment } } } }"#,
+      #"query RichTextExampleProjectsQuery { projects(recommended: true, first: 10) { __typename nodes { __typename id name storyRichText { __typename ...RichTextComponentFragment } } } }"#,
       fragments: [RichTextComponentFragment.self, RichTextItemFragment.self]
     ))
 
@@ -21,7 +21,7 @@ public class RichTextExampleProjectsQuery: GraphQLQuery {
     public static var __selections: [ApolloAPI.Selection] { [
       .field("projects", Projects?.self, arguments: [
         "recommended": true,
-        "first": 20
+        "first": 10
       ]),
     ] }
 
