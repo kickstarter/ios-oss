@@ -314,6 +314,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
   ) {
     if let cell = cell as? VideoFeedBannerCell {
       cell.delegate = self
+      cell.addHostingControllerToParent(self)
     } else if let cell = cell as? DiscoveryPostcardCell {
       cell.delegate = self
     } else if let cell = cell as? ActivitySampleBackingCell, cell.delegate == nil {

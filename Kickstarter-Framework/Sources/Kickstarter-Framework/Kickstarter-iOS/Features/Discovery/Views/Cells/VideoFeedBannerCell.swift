@@ -1,5 +1,6 @@
 import KDS
 import Library
+import SwiftUI
 import UIKit
 
 internal protocol VideoFeedBannerCellDelegate: AnyObject {
@@ -9,63 +10,71 @@ internal protocol VideoFeedBannerCellDelegate: AnyObject {
 internal final class VideoFeedBannerCell: UITableViewCell, ValueCell {
   internal weak var delegate: VideoFeedBannerCellDelegate?
 
-  private let bannerView = VideoFeedBannerView()
-
-  // MARK: - Constants
-
   private enum Constants {
     static let horizontalPadding: CGFloat = Spacing.unit_03
     static let verticalPadding: CGFloat = Spacing.unit_03
   }
 
+  private var hostingController: UIHostingController<VideoFeedBannerView>?
+
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-    self.setUpView()
+    self.setUp()
   }
 
   required init?(coder: NSCoder) {
     super.init(coder: coder)
-
-    self.setUpView()
+    self.setUp()
   }
 
-  internal func configureWith(value _: Void) {
-    self.bannerView.configure()
-  }
+  internal func configureWith(value _: Void) {}
 
-  // MARK: - Setup
-
-  private func setUpView() {
+  private func setUp() {
     self.selectionStyle = .none
     self.backgroundColor = .clear
     self.contentView.backgroundColor = .clear
 
-    self.contentView.addSubview(self.bannerView)
+    var bannerView = VideoFeedBannerView()
+
+    bannerView.onTryItNowTapped = { [weak self] in
+      guard let self else { return }
+
+      self.delegate?.videoFeedBannerCellDidTapTryItNow(self)
+    }
+
+    let host = UIHostingController(rootView: bannerView)
+    host.view.translatesAutoresizingMaskIntoConstraints = false
+    host.view.backgroundColor = .clear
+
+    self.contentView.addSubview(host.view)
 
     NSLayoutConstraint.activate([
-      self.bannerView.leadingAnchor.constraint(
+      host.view.leadingAnchor.constraint(
         equalTo: self.contentView.leadingAnchor,
         constant: Constants.horizontalPadding
       ),
-      self.bannerView.trailingAnchor.constraint(
+      host.view.trailingAnchor.constraint(
         equalTo: self.contentView.trailingAnchor,
         constant: -Constants.horizontalPadding
       ),
-      self.bannerView.topAnchor.constraint(
+      host.view.topAnchor.constraint(
         equalTo: self.contentView.topAnchor,
         constant: Constants.verticalPadding
       ),
-      self.bannerView.bottomAnchor.constraint(
+      host.view.bottomAnchor.constraint(
         equalTo: self.contentView.bottomAnchor,
         constant: -Constants.verticalPadding
       )
     ])
 
-    self.bannerView.onTryItNowTapped = { [weak self] in
-      guard let self else { return }
+    self.hostingController = host
+  }
 
-      self.delegate?.videoFeedBannerCellDidTapTryItNow(self)
-    }
+  func addHostingControllerToParent(_ parent: UIViewController) {
+    guard let host = self.hostingController, host.parent == nil else { return }
+
+    parent.addChild(host)
+
+    host.didMove(toParent: parent)
   }
 }

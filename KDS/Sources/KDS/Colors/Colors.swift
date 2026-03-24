@@ -234,8 +234,8 @@ public struct Colors {
 
         public static let banner = SemanticColor(
           "background/accent/purple/banner",
-          lightMode: .purple_02_1,
-          darkMode: .purple_02_1
+          lightMode: .purple_03,
+          darkMode: .purple_03
         )
       }
 
