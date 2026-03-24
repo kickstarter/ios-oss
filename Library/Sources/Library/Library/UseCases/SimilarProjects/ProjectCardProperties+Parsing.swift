@@ -3,7 +3,7 @@ import GraphAPI
 import Kingfisher
 import KsApi
 
-extension ProjectCardProperties {
+public extension ProjectCardProperties {
   init?(_ fragment: GraphAPI.ProjectCardFragment) {
     guard
       let imageURLString = fragment.image?.url,

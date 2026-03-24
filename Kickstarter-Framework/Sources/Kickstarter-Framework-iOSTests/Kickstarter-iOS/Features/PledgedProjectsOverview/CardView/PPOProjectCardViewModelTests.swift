@@ -51,4 +51,48 @@ final class PPOProjectCardViewModelTests: XCTestCase {
 
     XCTAssertTrue(didSendMessage)
   }
+
+  func testProjectDetailsTapped_noProjectPageParam() {
+    var cancellables: [AnyCancellable] = []
+    let viewModel = PPOProjectCardViewModel(
+      card: PPOProjectCardModel.authenticateCardTemplate
+    )
+
+    let expectation = expectation(description: "Waiting for open project details")
+    var didOpenProjectDetails = false
+    viewModel.handleEvent
+      .sink { event in
+        let expectedParam = Param.id(viewModel.card.projectId)
+        didOpenProjectDetails = event == .viewProjectDetails(param: expectedParam)
+        expectation.fulfill()
+      }
+      .store(in: &cancellables)
+
+    viewModel.projectDetailsTapped()
+    waitForExpectations(timeout: 0.1)
+
+    XCTAssertTrue(didOpenProjectDetails)
+  }
+
+  func testProjectDetailsTapped_withProjectPageParam() {
+    var cancellables: [AnyCancellable] = []
+    let viewModel = PPOProjectCardViewModel(
+      card: PPOProjectCardModel.noRewardPledgeCollected
+    )
+
+    let expectation = expectation(description: "Waiting for open project details")
+    var didOpenProjectDetails = false
+    viewModel.handleEvent
+      .sink { event in
+        let expectedParam = viewModel.card.projectPageParam!
+        didOpenProjectDetails = event == .viewProjectDetails(param: expectedParam)
+        expectation.fulfill()
+      }
+      .store(in: &cancellables)
+
+    viewModel.projectDetailsTapped()
+    waitForExpectations(timeout: 0.1)
+
+    XCTAssertTrue(didOpenProjectDetails)
+  }
 }

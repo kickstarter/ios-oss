@@ -336,11 +336,12 @@ class PPOViewModelTests: XCTestCase {
   }
 
   func testEventViewProjectDetails() {
-    let template = PPOProjectCardModel.fixPaymentTemplate
+    let template = PPOProjectCardModel.noRewardPledgeCollected
+    let param = template.projectPageParam!
     self.verifyPreparedEvent(
       // This could be tested with any template. All cards allow the user to view project details.
-      { self.viewModel.handleCardEvent(.viewProjectDetails, from: template) },
-      event: .projectDetails(projectId: template.projectId)
+      { self.viewModel.handleCardEvent(.viewProjectDetails(param: param), from: template) },
+      event: .projectDetails(param: param)
     )
   }
 
