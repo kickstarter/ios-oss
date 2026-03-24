@@ -25,7 +25,7 @@ final class AlertBanner: UIView {
   }
 
   private func configureViews() {
-    self.backgroundColor = Colors.Background.Danger.subtle.uiColor()
+    self.backgroundColor = Colors.Background.Accent.Red.subtle.uiColor()
     self.layer.cornerRadius = Dimension.CornerRadius.small
     self.layer.masksToBounds = true
     self.translatesAutoresizingMaskIntoConstraints = false
