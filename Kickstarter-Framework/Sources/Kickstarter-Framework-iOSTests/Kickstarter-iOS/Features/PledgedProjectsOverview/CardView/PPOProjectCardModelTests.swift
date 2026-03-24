@@ -127,11 +127,13 @@ final class PPOProjectCardModelTests: XCTestCase {
                     "category": {
                       "__typename": "Category",
                       "analyticsName": "Art",
+                      "name": "Art",
                       "parentCategory": null
                     },
                     "commentsCount": 0,
                     "country": {
                       "__typename": "Country",
+                      "name": "United States",
                       "code": "US"
                     },
                     "creator": {
@@ -142,7 +144,9 @@ final class PPOProjectCardModelTests: XCTestCase {
                         "totalCount": 4
                       },
                       "email": null,
-                      "name": "Santiago Sosa"
+                      "name": "Santiago Sosa",
+                      "isBlocked": false,
+                      "imageUrl": "www.fake.com"
                     },
                     "currency": "USD",
                     "deadlineAt": 1785369600,
@@ -175,6 +179,17 @@ final class PPOProjectCardModelTests: XCTestCase {
                       "__typename": "Money",
                       "amount": "1000.0"
                     },
+                    "isLaunched": true,
+                    "prelaunchActivated": false,
+                    "url": "https://www.kickstarter.com/projects/161513292/test-project",
+                    "projectDescription": "A project that is fake and shouldn't be backed",
+                    "stateChangedAt": 1742914857,
+                    "projectUsdExchangeRate": 1.28198554,
+                    "location": {
+                      "__typename": "Location",
+                      "displayableName": "London, UK"
+                    },
+                    "risks": "none",
                     "image": {
                       "__typename": "Photo",
                       "id": "UGhvdG8tNDU5MDY3MzU=",
