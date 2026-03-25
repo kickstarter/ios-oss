@@ -8,6 +8,7 @@ internal final class SearchDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case projects
     case noResults
+    case videoFeedBanner
   }
 
   internal func load(data: SearchEmptyStateSearchData, visible: Bool) {
@@ -97,6 +98,14 @@ internal final class SearchDataSource: ValueCellDataSource {
       return indexPath.row
     }
   }
+  
+  func showVideoFeedBanner(_ show: Bool) {
+    self.set(
+      values: show ? [()] : [],
+      cellClass: VideoFeedBannerCell.self,
+      inSection: Section.videoFeedBanner.rawValue
+    )
+  }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
@@ -115,6 +124,8 @@ internal final class SearchDataSource: ValueCellDataSource {
     case let (cell as SearchEmptyStateCell, value as SearchEmptyStateSearchData):
       cell.configureWith(value: value)
     case let (cell as SearchResultsCountCell, value as Int):
+      cell.configureWith(value: value)
+    case let (cell as VideoFeedBannerCell, value as Void):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")

@@ -58,11 +58,12 @@ public protocol SearchViewModelInputs {
 }
 
 public protocol SearchViewModelOutputs {
-  /// Emits a project ID  and ref tag when the project page should be opened.
+  /// Emits a project ID and ref tag when the project page should be opened.
   var goToProject: Signal<(ProjectPageParam, RefTag), Never> { get }
 
-  /// Used to power the datasource. Emits projects, whether or not to show the "Popular" title, and the results count. May emit an array of empty projects if the page was cleared and new results are loading.
-  var searchResults: Signal<SearchResults, Never> { get }
+  /// Used to power the datasource. Emits search results and whether to show the video feed banner
+  /// together so they are always applied atomically to the data source.
+  var searchResultsAndBanner: Signal<(SearchResults, Bool), Never> { get }
 
   /// Emits when loading indicator should be hidden.
   var searchLoaderIndicatorIsAnimating: Signal<Bool, Never> { get }
@@ -90,8 +91,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     )
 
     self.locationsUseCase = FetchLocationsUseCase(
-      initialSignal:
-      self.viewDidLoadProperty.signal
+      initialSignal: self.viewDidLoadProperty.signal
     )
 
     self.searchFiltersUseCase = SearchFiltersUseCase(
@@ -339,7 +339,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         )
       )
 
-    self.searchResults = Signal.combineLatest(
+    let allSearchResults = Signal.combineLatest(
       isProjectsTitleVisible,
       stats,
       self.projects
@@ -350,6 +350,13 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         projects: projects.map { $0.projectCellModel }
       )
     }.merge(with: emptyResultsOnFirstAppearance)
+
+
+    let showVideoFeedBanner = self.viewWillAppearAnimatedProperty.signal.ignoreValues()
+      .map { featureVideoFeedEnabled() }
+      .skipRepeats()
+
+    self.searchResultsAndBanner = Signal.combineLatest(allSearchResults, showVideoFeedBanner)
   }
 
   fileprivate let searchTextChangedProperty = MutableProperty("")
@@ -397,7 +404,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let projects: Signal<[SearchResultCard], Never>
   public let searchLoaderIndicatorIsAnimating: Signal<Bool, Never>
   public let showEmptyState: Signal<(DiscoveryParams, Bool), Never>
-  public let searchResults: Signal<SearchResults, Never>
+  public let searchResultsAndBanner: Signal<(SearchResults, Bool), Never>
 
   public var showFilters: Signal<SearchFilterModalType, Never> {
     return self.searchFiltersUseCase.showFilters

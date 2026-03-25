@@ -69,9 +69,10 @@ internal final class SearchViewController: UITableViewController {
   }
 
   internal override func bindViewModel() {
-    self.viewModel.outputs.searchResults
+    self.viewModel.outputs.searchResultsAndBanner
       .observeForUI()
-      .observeValues { [weak self] results in
+      .observeValues { [weak self] results, showBanner in
+        self?.dataSource.showVideoFeedBanner(showBanner)
         self?.dataSource.load(results: results)
         self?.tableView.reloadData()
       }
@@ -136,6 +137,7 @@ internal final class SearchViewController: UITableViewController {
     self.tableView.register(nib: .BackerDashboardProjectCell)
     self.tableView.registerCellClass(SearchResultsCountCell.self)
     self.tableView.registerCellClass(SearchEmptyStateCell.self)
+    self.tableView.registerCellClass(VideoFeedBannerCell.self)
 
     self.viewModel.inputs.viewDidLoad()
 
@@ -147,8 +149,8 @@ internal final class SearchViewController: UITableViewController {
     )
 
     let sortAndFilterHeader = UIHostingController(rootView: pillView)
+    sortAndFilterHeader.view.backgroundColor = .clear
     self.addChild(sortAndFilterHeader)
-    sortAndFilterHeader.view.backgroundColor = Colors.Background.Surface.primary.uiColor()
 
     self.sortAndFilterHeader = sortAndFilterHeader
 
@@ -254,6 +256,11 @@ internal final class SearchViewController: UITableViewController {
       self.dataSource.itemIndexAt(indexPath),
       outOf: self.dataSource.numberOfItems()
     )
+
+    if let cell = cell as? VideoFeedBannerCell {
+      cell.delegate = self
+      cell.addHostingControllerToParent(self)
+    }
   }
 
   override func tableView(_: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -288,5 +295,13 @@ extension SearchViewController: SearchEmptyStateCellDelegate {
     _: SearchEmptyStateCell
   ) {
     self.viewModel.inputs.resetFilters(for: .allFilters)
+  }
+}
+
+// MARK: - VideoFeedBannerCellDelegate
+
+extension SearchViewController: VideoFeedBannerCellDelegate {
+  func videoFeedBannerCellDidTapTryItNow(_: VideoFeedBannerCell) {
+    // TODO: present VideoFeedController
   }
 }
