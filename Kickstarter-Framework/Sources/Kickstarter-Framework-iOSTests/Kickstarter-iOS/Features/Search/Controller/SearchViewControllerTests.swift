@@ -61,12 +61,10 @@ internal final class SearchViewContollerTests: TestCase {
         self.scheduler.run()
       }
 
-      guard let numProjects = GraphAPI.SearchQuery.Data.activeResults.projects?.nodes?.count else {
-        XCTFail("Missing projects data")
-        return
-      }
-
-      let lastIndex = IndexPath(row: numProjects, section: 0)
+      let lastIndex = IndexPath(
+        row: controller.dataSource.numberOfItems(in: SearchDataSource.Section.projects.rawValue) - 1,
+        section: SearchDataSource.Section.projects.rawValue
+      )
 
       // For some reason the scrolling is finicky on iPad, not sure why.
       let scrollPosition: UITableView.ScrollPosition = device == .pad ? .bottom : .top

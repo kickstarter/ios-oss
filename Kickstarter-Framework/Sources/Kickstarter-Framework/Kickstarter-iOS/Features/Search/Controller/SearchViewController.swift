@@ -15,7 +15,7 @@ private enum Constants {
 
 internal final class SearchViewController: UITableViewController {
   internal let viewModel: SearchViewModelType = SearchViewModel()
-  fileprivate let dataSource = SearchDataSource()
+  internal let dataSource = SearchDataSource()
 
   @IBOutlet fileprivate var searchBarContainerView: UIView!
 
@@ -73,6 +73,13 @@ internal final class SearchViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] results in
         self?.dataSource.load(results: results)
+        self?.tableView.reloadData()
+      }
+
+    self.viewModel.outputs.showVideoFeedBanner
+      .observeForUI()
+      .observeValues { [weak self] shouldShow in
+        self?.dataSource.showVideoFeedBanner(shouldShow)
         self?.tableView.reloadData()
       }
 
@@ -136,6 +143,7 @@ internal final class SearchViewController: UITableViewController {
     self.tableView.register(nib: .BackerDashboardProjectCell)
     self.tableView.registerCellClass(SearchResultsCountCell.self)
     self.tableView.registerCellClass(SearchEmptyStateCell.self)
+    self.tableView.registerCellClass(VideoFeedBannerCell.self)
 
     self.viewModel.inputs.viewDidLoad()
 
@@ -250,6 +258,11 @@ internal final class SearchViewController: UITableViewController {
       cell.delegate = self
     }
 
+    if let cell = cell as? VideoFeedBannerCell {
+      cell.delegate = self
+      cell.addHostingControllerToParent(self)
+    }
+
     self.viewModel.inputs.willDisplayRow(
       self.dataSource.itemIndexAt(indexPath),
       outOf: self.dataSource.numberOfItems()
@@ -288,5 +301,13 @@ extension SearchViewController: SearchEmptyStateCellDelegate {
     _: SearchEmptyStateCell
   ) {
     self.viewModel.inputs.resetFilters(for: .allFilters)
+  }
+}
+
+// MARK: - VideoFeedBannerCellDelegate
+
+extension SearchViewController: VideoFeedBannerCellDelegate {
+  func videoFeedBannerCellDidTapTryItNow(_: VideoFeedBannerCell) {
+    // TODO: present VideoFeedController
   }
 }

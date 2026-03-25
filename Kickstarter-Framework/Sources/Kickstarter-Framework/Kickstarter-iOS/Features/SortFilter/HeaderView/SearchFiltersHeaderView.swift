@@ -21,68 +21,59 @@ struct SearchFiltersHeaderView: View {
   @SwiftUICore.Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
   var body: some View {
-    VStack(spacing: 12) {
-      ScrollView(.horizontal) {
-        HStack {
-          ForEach(self.pills) { pill in
-            switch pill.buttonType {
-            case let .image(image):
-              ImagePillButton(
-                action: {
-                  self.didTapPill(pill)
-                },
-                image: image,
-                isHighlighted: pill.isHighlighted,
-                count: pill.count
-              )
-            case let .dropdown(title):
-              DropdownPillButton(
-                action: {
-                  self.didTapPill(pill)
-                },
-                title: title,
-                isHighlighted: pill.isHighlighted,
-                count: pill.count
-              )
-            case let .toggle(title):
-              TogglePillButton(
-                action: {
-                  self.didTapPill(pill)
-                },
-                title: title,
-                isHighlighted: pill.isHighlighted,
-                image: nil
-              )
-            case let .toggleWithImage(title, image):
-              TogglePillButton(
-                action: {
-                  self.didTapPill(pill)
-                },
-                title: title,
-                isHighlighted: pill.isHighlighted,
-                image: image
-              )
-            }
+    ScrollView(.horizontal) {
+      HStack {
+        ForEach(self.pills) { pill in
+          switch pill.buttonType {
+          case let .image(image):
+            ImagePillButton(
+              action: {
+                self.didTapPill(pill)
+              },
+              image: image,
+              isHighlighted: pill.isHighlighted,
+              count: pill.count
+            )
+          case let .dropdown(title):
+            DropdownPillButton(
+              action: {
+                self.didTapPill(pill)
+              },
+              title: title,
+              isHighlighted: pill.isHighlighted,
+              count: pill.count
+            )
+          case let .toggle(title):
+            TogglePillButton(
+              action: {
+                self.didTapPill(pill)
+              },
+              title: title,
+              isHighlighted: pill.isHighlighted,
+              image: nil
+            )
+          case let .toggleWithImage(title, image):
+            TogglePillButton(
+              action: {
+                self.didTapPill(pill)
+              },
+              title: title,
+              isHighlighted: pill.isHighlighted,
+              image: image
+            )
           }
         }
-        .padding(EdgeInsets(
-          top: Styles.grid(3),
-          leading: self.horizontalSizeClass == .compact ?
-            Constants.pillLeftInsetForIPhone : Constants.pillLeftInsetForIPad,
-          bottom: Styles.grid(1),
-          trailing: Styles.grid(1)
-        ))
       }
-      .scrollIndicators(.never)
-      .background(Colors.Background.Surface.primary.swiftUIColor())
-
-      if featureVideoFeedEnabled() == true {
-        VideoFeedBannerView()
-          .frame(maxWidth: .infinity)
-      }
+      .padding(EdgeInsets(
+        top: Styles.grid(3),
+        leading: self.horizontalSizeClass == .compact ?
+          Constants.pillLeftInsetForIPhone : Constants.pillLeftInsetForIPad,
+        bottom: Styles.grid(1),
+        trailing: Styles.grid(1)
+      ))
     }
+    .scrollIndicators(.never)
     .background(Colors.Background.Surface.primary.swiftUIColor())
-    .padding(.bottom, featureVideoFeedEnabled() ? Spacing.unit_03 : 0)
   }
 }
 
