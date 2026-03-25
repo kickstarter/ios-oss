@@ -242,6 +242,41 @@ internal final class SearchViewContollerTests: TestCase {
       }
   }
 
+  func testView_VideoFeedBanner() {
+    let searchResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.activeResults
+    )]
+
+    let mockStatsigClient = MockStatsigClient()
+    mockStatsigClient.features = ["video_feed": true]
+
+    // TODO: Update to all languages once translations are in [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
+    orthogonalCombos([Language.en], [Device.phone5_8inch, Device.pad])
+      .forEach { language, device in
+        withEnvironment(
+          apiService: MockService(fetchGraphQLResponses: searchResponse), language: language,
+          statsigClient: mockStatsigClient
+        ) {
+          let controller = Storyboard.Search.instantiate(SearchViewController.self)
+          _ = controller.view
+          controller.viewWillAppear(true)
+
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+          controller.viewModel.inputs.searchTextChanged("abcdefgh")
+
+          self.scheduler.run()
+
+          assertSnapshot(
+            matching: parent.view,
+            as: .image(perceptualPrecision: 0.98),
+            named: "lang_\(language)_device_\(device)"
+          )
+        }
+      }
+  }
+
   func testScrollToTop() {
     let controller = ActivitiesViewController.instantiate()
 
