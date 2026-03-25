@@ -81,6 +81,8 @@ struct SearchFiltersHeaderView: View {
           .frame(maxWidth: .infinity)
       }
     }
+    .background(Colors.Background.Surface.primary.swiftUIColor())
+    .padding(.bottom, featureVideoFeedEnabled() ? Spacing.unit_03 : 0)
   }
 }
 

@@ -1,3 +1,4 @@
+import KDS
 import KsApi
 import Library
 import Prelude
@@ -130,6 +131,7 @@ internal final class SearchViewController: UITableViewController {
 
   private func configureSubviews() {
     self.tableView.dataSource = self.dataSource
+    self.tableView.backgroundColor = Colors.Background.Surface.primary.uiColor()
 
     self.tableView.register(nib: .BackerDashboardProjectCell)
     self.tableView.registerCellClass(SearchResultsCountCell.self)
@@ -146,6 +148,7 @@ internal final class SearchViewController: UITableViewController {
 
     let sortAndFilterHeader = UIHostingController(rootView: pillView)
     self.addChild(sortAndFilterHeader)
+    sortAndFilterHeader.view.backgroundColor = Colors.Background.Surface.primary.uiColor()
 
     self.sortAndFilterHeader = sortAndFilterHeader
 
