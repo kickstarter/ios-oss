@@ -9,9 +9,7 @@ extension GraphAPI.FetchPledgedProjectsQuery {
     cursors: ClosedRange<Int>? = 1...3,
     hasNextPage: Bool = false
   ) throws -> GraphAPI.FetchPledgedProjectsQuery.Data {
-    let edges = cursors?.map {
-      self.mockPledgeProjectOverViewItem(cursor: $0)
-    }
+    let edges = cursors?.map { self.mockEdge(cursor: $0) }
 
     let pageInfo = Mock<PageInfo>()
     pageInfo.hasNextPage = hasNextPage
@@ -33,8 +31,9 @@ extension GraphAPI.FetchPledgedProjectsQuery {
     return GraphAPI.FetchPledgedProjectsQuery.Data.from(query)
   }
 
-  private static func mockPledgeProjectOverViewItem(
-    cursor: Int,
+  public static func mockEdge(
+    cursor: Int = 1,
+    addressMock: Mock<GraphAPITestMocks.Address>? = nil,
     projectName: String = UUID().uuidString
   ) -> Mock<GraphAPITestMocks.PledgeProjectOverviewItemEdge> {
     let amount = Mock<GraphAPITestMocks.Money>()
@@ -54,10 +53,11 @@ extension GraphAPI.FetchPledgedProjectsQuery {
     backing.backingDetailsPageRoute = "fake-backings-route"
     backing.backerCompleted = false
     backing.amount = amount
+    backing.deliveryAddress = addressMock
 
     let pledgeProjectOverviewItem = Mock<GraphAPITestMocks.PledgeProjectOverviewItem>()
     pledgeProjectOverviewItem.tierType = "Tier1PaymentFailed"
-    pledgeProjectOverviewItem.showShippingAddress = false
+    pledgeProjectOverviewItem.showShippingAddress = addressMock.isSome
     pledgeProjectOverviewItem.showEditAddressAction = false
     pledgeProjectOverviewItem.showRewardReceivedToggle = false
     pledgeProjectOverviewItem.flags = []
