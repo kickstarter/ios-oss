@@ -308,6 +308,9 @@ extension SearchViewController: SearchEmptyStateCellDelegate {
 
 extension SearchViewController: VideoFeedBannerCellDelegate {
   func videoFeedBannerCellDidTapTryItNow(_: VideoFeedBannerCell) {
-    // TODO: present VideoFeedController
+    let nav = UINavigationController(rootViewController: VideoFeedViewController())
+    nav.modalPresentationStyle = .fullScreen
+
+    self.present(nav, animated: true)
   }
 }
