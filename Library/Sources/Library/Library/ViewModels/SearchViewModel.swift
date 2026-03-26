@@ -73,6 +73,9 @@ public protocol SearchViewModelOutputs {
   /// Sends a model object which can be used to display all filter options, and a type describing which filters to display.
   var showFilters: Signal<SearchFilterModalType, Never> { get }
 
+  /// Emits to show the video feed banner
+  var showVideoFeedBanner: Signal<Bool, Never> { get }
+
   /// An @ObservableObject model which SwiftUI can use to display the search filters modals and header.
   /// Owned and automatically updated by the `SearchFiltersUseCase`.
   var searchFilters: SearchFilters { get }
@@ -238,6 +241,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.showEmptyState = requestFirstPageWith
       .takePairWhen(shouldShowEmptyState)
 
+    self.showVideoFeedBanner = self.viewWillAppearAnimatedProperty.signal.ignoreValues()
+      .map { featureVideoFeedEnabled() }
+      .skipRepeats()
+
     self.goToProject = Signal.combineLatest(searchResults, queryText)
       .takePairWhen(self.tappedProjectIndexSignal)
       .map { ($0.0, $0.1, $1) } // ((a, b) c) -> (a, b, c)
@@ -397,6 +404,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let projects: Signal<[SearchResultCard], Never>
   public let searchLoaderIndicatorIsAnimating: Signal<Bool, Never>
   public let showEmptyState: Signal<(DiscoveryParams, Bool), Never>
+  public let showVideoFeedBanner: Signal<Bool, Never>
   public let searchResults: Signal<SearchResults, Never>
 
   public var showFilters: Signal<SearchFilterModalType, Never> {
