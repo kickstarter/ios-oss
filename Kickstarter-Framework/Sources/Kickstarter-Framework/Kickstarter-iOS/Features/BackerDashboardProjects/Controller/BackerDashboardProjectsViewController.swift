@@ -35,7 +35,7 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
     self.nextPageLoadingIndicator.frame = CGRect(x: 0, y: 0, width: 0, height: Spacing.unit_20)
 
     self.tableView.register(nib: .BackerDashboardEmptyStateCell)
-    self.tableView.register(nib: .BackerDashboardProjectCell)
+    self.tableView.registerCellClass(BackerDashboardProjectCell.self)
 
     self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(2)))
 
