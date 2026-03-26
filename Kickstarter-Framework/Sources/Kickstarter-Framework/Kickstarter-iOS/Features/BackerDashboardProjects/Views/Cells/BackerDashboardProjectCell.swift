@@ -109,11 +109,11 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
 
       self.savedIconImageView.topAnchor.constraint(
         equalTo: self.projectImageView.topAnchor,
-        constant: 7
+        constant: Spacing.unit_02
       ),
       self.savedIconImageView.trailingAnchor.constraint(
         equalTo: self.projectImageView.trailingAnchor,
-        constant: -7
+        constant: -Spacing.unit_02
       ),
       self.savedIconImageView.heightAnchor.constraint(equalToConstant: 17),
       self.savedIconImageView.widthAnchor.constraint(equalToConstant: 17)
@@ -124,7 +124,7 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
     let metadataStackView = UIStackView()
     metadataStackView.translatesAutoresizingMaskIntoConstraints = false
     metadataStackView.addArrangedSubviews(self.metadataIconImageView, self.metadataLabel)
-    metadataStackView.spacing = 6
+    metadataStackView.spacing = Spacing.unit_02
     metadataStackView.alignment = .center
     metadataStackView.isLayoutMarginsRelativeArrangement = true
     metadataStackView.layoutMargins = UIEdgeInsets(leftRight: Spacing.unit_01)
@@ -138,11 +138,11 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
     NSLayoutConstraint.activate([
       self.metadataBackgroundView.leadingAnchor.constraint(
         equalTo: self.cardView.leadingAnchor,
-        constant: 6
+        constant: Spacing.unit_02
       ),
       self.metadataBackgroundView.bottomAnchor.constraint(
         equalTo: self.cardView.bottomAnchor,
-        constant: -6
+        constant: -Spacing.unit_02
       ),
       self.metadataBackgroundView.trailingAnchor
         .constraint(lessThanOrEqualTo: self.projectImageView.trailingAnchor),
@@ -169,11 +169,11 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
     NSLayoutConstraint.activate([
       self.mainContentContainerView.leadingAnchor.constraint(
         equalTo: self.projectImageView.trailingAnchor,
-        constant: 11
+        constant: Spacing.unit_03
       ),
       self.mainContentContainerView.topAnchor.constraint(
         equalTo: self.cardView.topAnchor,
-        constant: 9
+        constant: Spacing.unit_02
       ),
       self.mainContentContainerView.trailingAnchor.constraint(
         equalTo: self.cardView.trailingAnchor,
@@ -181,7 +181,7 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
       ),
       self.mainContentContainerView.bottomAnchor.constraint(
         equalTo: self.cardView.bottomAnchor,
-        constant: -6
+        constant: -Spacing.unit_02
       ),
 
       self.projectNameLabel.leadingAnchor.constraint(equalTo: self.mainContentContainerView.leadingAnchor),
@@ -243,14 +243,6 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
 
     _ = self.cardView
       |> cardStyle()
-
-    _ = self.mainContentContainerView
-      |> UIView.lens.layoutMargins .~ .init(
-        top: Styles.gridHalf(3),
-        left: Styles.grid(2),
-        bottom: Styles.grid(1),
-        right: Styles.grid(2)
-      )
 
     _ = self.metadataBackgroundView
       |> UIView.lens.layer.borderColor .~ LegacyColors.ksr_white.uiColor().cgColor
