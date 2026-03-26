@@ -23,9 +23,16 @@ public struct RichTextView: View {
       ForEach(Array(self.element.enumerated()), id: \.offset) { _, element in
         switch element {
         case let .text(text, header):
-          self.unimplemented("Text")
-        case let .listItem(listItem):
-          self.unimplemented("ListItem")
+          TextBlock(text: text, header: header)
+        case let .listItem(text):
+          HStack(spacing: 0) {
+            Text("•")
+              .lineLimit(nil)
+              .font(self.style.bodyFont)
+              .foregroundStyle(self.style.bodyColor.swiftUIColor())
+              .frame(maxWidth: self.style.listIndentation, maxHeight: .infinity, alignment: .topLeading)
+            TextBlock(text: text, header: nil)
+          }
         case .audio:
           self.unimplemented("Audio")
         case .photo:
