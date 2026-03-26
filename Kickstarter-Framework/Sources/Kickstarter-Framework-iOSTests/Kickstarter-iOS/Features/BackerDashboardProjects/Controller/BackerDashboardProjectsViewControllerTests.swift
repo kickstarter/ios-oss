@@ -47,34 +47,16 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
 
     let response = GraphAPI.FetchMyBackedProjectsQuery.Data.from(mock)
 
-    orthogonalCombos(
-      Language.allLanguages,
-      [Device.phone4_7inch, Device.phone5_8inch, Device.pad],
-      [UIUserInterfaceStyle.light, UIUserInterfaceStyle.dark]
-    ).forEach {
-      language, device, style in
+    forEachScreenshotType { type in
       withEnvironment(
         apiService: MockService(fetchBackerBackedProjectsResponse: response),
-        currentUser: User.template,
-        language: language
+        currentUser: User.template
       ) {
         let controller = BackerDashboardProjectsViewController
           .configuredWith(projectsType: .backed)
-        controller.overrideUserInterfaceStyle = style
-        let (parent, _) = traitControllers(
-          device: device,
-          orientation: .portrait,
-          child: controller
-        )
         self.scheduler.run()
 
-        let styleDescription = style == .light ? "light" : "dark"
-
-        assertSnapshot(
-          matching: parent.view,
-          as: .image,
-          named: "lang_\(language)_device_\(device)_\(styleDescription)"
-        )
+        assertSnapshot(forController: controller, withType: type)
       }
     }
   }
@@ -83,23 +65,16 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
     let mock = GraphAPI.ProjectCardFragment.mockProjectsConnectionQuery(numberOfProjects: 0)
     let response = GraphAPI.FetchMyBackedProjectsQuery.Data.from(mock)
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
-      language, device in
+    forEachScreenshotType { type in
       withEnvironment(
         apiService: MockService(fetchBackerBackedProjectsResponse: response),
-        currentUser: User.template,
-        language: language
+        currentUser: User.template
       ) {
         let controller = BackerDashboardProjectsViewController
           .configuredWith(projectsType: .backed)
-        let (parent, _) = traitControllers(
-          device: device,
-          orientation: .portrait,
-          child: controller
-        )
         self.scheduler.run()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(forController: controller, withType: type)
       }
     }
   }
@@ -108,23 +83,16 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
     let mock = GraphAPI.ProjectCardFragment.mockProjectsConnectionQuery(numberOfProjects: 0)
     let response = GraphAPI.FetchMySavedProjectsQuery.Data.from(mock)
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
-      language, device in
+    forEachScreenshotType { type in
       withEnvironment(
         apiService: MockService(fetchBackerSavedProjectsResponse: response),
-        currentUser: User.template,
-        language: language
+        currentUser: User.template
       ) {
         let controller = BackerDashboardProjectsViewController
           .configuredWith(projectsType: .saved)
-        let (parent, _) = traitControllers(
-          device: device,
-          orientation: .portrait,
-          child: controller
-        )
         self.scheduler.run()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(forController: controller, withType: type)
       }
     }
   }

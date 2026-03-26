@@ -162,7 +162,8 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
     self.mainContentContainerView.addSubview(self.progressStaticView)
     self.mainContentContainerView.addSubview(self.progressBarView)
 
-    self.projectNameLabel.numberOfLines = 2
+    self.projectNameLabel.numberOfLines =
+      self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? 3 : 2
 
     self.percentFundedLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
