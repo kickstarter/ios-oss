@@ -1,3 +1,4 @@
+import KDS
 import Library
 import SwiftUI
 import UIKit
@@ -23,12 +24,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   }
 
   private func setUpView() {
-    contentView.backgroundColor = .init(
-      hue: .random(in: 0...1),
-      saturation: 0.6,
-      brightness: 0.8,
-      alpha: 1
-    )
+    contentView.backgroundColor = Colors.Background.Accent.Gray.subtle.uiColor()
   }
 
   /// Configures the cell with a feed item and adds the VideoFeedOverlayView

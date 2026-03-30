@@ -9,9 +9,6 @@ public struct VideoFeedItem {
   /// Creator name shown in the bottom overlay.
   let creator: String
 
-  /// Creator avatar URL used in the right rail.
-  let creatorImageURL: URL?
-
   /// Stats text shown below the title
   let statsText: String
 

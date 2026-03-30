@@ -12,7 +12,12 @@ final class VideoFeedViewModel {
     self.items = (0..<20).map { i in
       VideoFeedItem(
         id: "Project-\(i)",
-        title: "Campaign Video \(i)"
+        title: "Ringo Move - The Ultimate Workout Bottle",
+        creator: "Creator Name",
+        statsText: "$50,134 pledged · Join 431 backers",
+        categoryPillText: "Project We Love",
+        secondaryPillText: "3 days left",
+        ctaTitle: "Back this project"
       )
     }
   }
