@@ -25,18 +25,18 @@ enum PPOStyles {
   )
 
   static let infoColor = (
-    foreground: LegacyColors.Tags.Success.foreground.uiColor(),
-    background: LegacyColors.Tags.Success.background.uiColor()
+    foreground: Colors.Text.Accent.Green.bolder.uiColor(),
+    background: Colors.Background.Accent.Green.subtle.uiColor()
   )
 
   static let warningColor = (
-    foreground: LegacyColors.Tags.Warn.foreground.uiColor(),
-    background: LegacyColors.Tags.Warn.background.uiColor()
+    foreground: Colors.Text.secondary.uiColor(),
+    background: Colors.Background.Warning.subtle.uiColor()
   )
 
   static let alertColor = (
-    foreground: LegacyColors.Tags.Error.foreground.uiColor(),
-    background: LegacyColors.Tags.Error.background.uiColor()
+    foreground: Colors.Text.Accent.Red.bolder.uiColor(),
+    background: Colors.Background.Accent.Red.subtle.uiColor()
   )
 
   static let title = (
