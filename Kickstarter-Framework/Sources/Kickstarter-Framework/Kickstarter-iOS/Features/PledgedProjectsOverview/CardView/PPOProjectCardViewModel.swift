@@ -7,7 +7,7 @@ public enum PPOCardEvent: Equatable {
   case editAddress(url: String)
   case sendMessage
   case updateRewardReceived(rewardReceived: Bool)
-  case viewProjectDetails
+  case viewProjectDetails(param: ProjectPageParam)
   case confirmAddress(address: String, addressId: String)
   case completeSurvey(url: String)
   case openPledgeManager(url: String)
@@ -18,12 +18,13 @@ public enum PPOCardEvent: Equatable {
   public static func == (lhs: PPOCardEvent, rhs: PPOCardEvent) -> Bool {
     switch (lhs, rhs) {
     case (.sendMessage, .sendMessage): return true
-    case (.viewProjectDetails, .viewProjectDetails): return true
     case (.fixPayment, .fixPayment): return true
     case (.manageLivePledge, .manageLivePledge): return true
     case let (.editAddress(lhsUrl), .editAddress(rhsUrl)): return lhsUrl == rhsUrl
     case let (.completeSurvey(lhsUrl), .completeSurvey(rhsUrl)): return lhsUrl == rhsUrl
     case let (.openPledgeManager(lhsUrl), .openPledgeManager(rhsUrl)): return lhsUrl == rhsUrl
+    case let (.viewProjectDetails(lhsParam), .viewProjectDetails(rhsParam)):
+      return lhsParam.param == rhsParam.param
     case let (
       .confirmAddress(address: lhsAddress, addressId: lhsId),
       .confirmAddress(address: rhsAddress, addressId: rhsId)
@@ -49,6 +50,8 @@ protocol PPOProjectCardViewModelInputs {
   func performAction(_: PPOProjectCardModel.ButtonAction)
   // React to toggle being flipped.
   func rewardToggleTapped(toggleOn: Bool)
+  // React to project details being tapped
+  func projectDetailsTapped()
 }
 
 protocol PPOProjectCardViewModelOutputs {
@@ -127,6 +130,11 @@ final class PPOProjectCardViewModel: PPOProjectCardViewModelType {
 
   func rewardToggleTapped(toggleOn: Bool) {
     self.rewardToggleTappedSubject.send(toggleOn)
+  }
+
+  func projectDetailsTapped() {
+    let param = self.card.projectPageParam ?? Param.id(self.card.projectId)
+    self.handleEventSubject.send(.viewProjectDetails(param: param))
   }
 
   // MARK: - Outputs

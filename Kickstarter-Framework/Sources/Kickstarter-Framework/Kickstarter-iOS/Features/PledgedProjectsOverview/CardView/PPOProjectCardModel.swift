@@ -25,6 +25,7 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   public let backingId: Int
   public let backingGraphId: String
   public let projectAnalytics: GraphAPI.ProjectAnalyticsFragment
+  public let projectPageParam: ProjectPageParam?
 
   public func hash(into hasher: inout Hasher) {
     hasher.combine(self.isUnread)
@@ -45,6 +46,25 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
   // If any other fields change, the card should be considered the same card, just modified.
   public var id: String {
     "\(self.projectId)-\(self.tierType)-\(self.action?.id ?? "")"
+  }
+
+  // MARK: - Equatable
+
+  // Consider two card models to be equal if the core properties are equal.
+  // The project page param is not `Equatable` and prevents this function from being synthesized.
+  public static func == (lhs: PPOProjectCardModel, rhs: PPOProjectCardModel) -> Bool {
+    lhs.isUnread == rhs.isUnread &&
+      lhs.alerts == rhs.alerts &&
+      lhs.image == rhs.image &&
+      lhs.projectName == rhs.projectName &&
+      lhs.projectId == rhs.projectId &&
+      lhs.pledge == rhs.pledge &&
+      lhs.creatorName == rhs.creatorName &&
+      lhs.address == rhs.address &&
+      lhs.rewardReceivedToggleState == rhs.rewardReceivedToggleState &&
+      lhs.action == rhs.action &&
+      lhs.tierType == rhs.tierType &&
+      lhs.backingId == rhs.backingId
   }
 
   public enum DisplayAddress: Equatable, Hashable {
