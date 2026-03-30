@@ -1,4 +1,5 @@
 import Library
+import SwiftUI
 import UIKit
 
 /// Right now this is just static full screen color blocks with a centered title label.
@@ -6,7 +7,7 @@ import UIKit
 final class VideoFeedCell: UICollectionViewCell, ValueCell {
   static let reuseIdentifier = "VideoFeedCell"
 
-  private let titleLabel = UILabel()
+  private var overlayHostingController: UIHostingController<VideoFeedOverlayView>?
 
   // MARK: - Lifecycle
 
@@ -16,15 +17,10 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.setUpView()
   }
 
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
+  @available(*, unavailable)
+  required init?(coder _: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
-
-  func configureWith(value: VideoFeedItem) {
-    self.titleLabel.text = value.title
-  }
-
-  // MARK: - Setup
 
   private func setUpView() {
     contentView.backgroundColor = .init(
@@ -33,18 +29,23 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
       brightness: 0.8,
       alpha: 1
     )
+  }
 
-    self.titleLabel.font = .ksr_title1()
-    self.titleLabel.textColor = .white
-    self.titleLabel.textAlignment = .center
-    self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
-    self.contentView.addSubview(self.titleLabel)
+  /// Configures the cell with a feed item and adds the VideoFeedOverlayView
+  func configureWith(value: VideoFeedItem) {
+    let hc = UIHostingController(rootView: VideoFeedOverlayView(item: value))
+    hc.view.backgroundColor = .clear
+    hc.view.translatesAutoresizingMaskIntoConstraints = false
+
+    self.contentView.addSubview(hc.view)
 
     NSLayoutConstraint.activate([
-      self.titleLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
-      self.titleLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-      self.titleLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 24),
-      self.titleLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -24)
+      hc.view.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+      hc.view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+      hc.view.topAnchor.constraint(equalTo: self.contentView.topAnchor),
+      hc.view.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
     ])
+
+    self.overlayHostingController = hc
   }
 }
