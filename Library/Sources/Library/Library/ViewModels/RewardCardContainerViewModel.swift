@@ -98,7 +98,7 @@ private func pledgeButtonTitle(data: RewardCardViewData) -> String? {
   let rewardShipsToLocation = rewardCanShip(data.reward, toLocation: data.currentShippingLocation)
 
   // If you're creating a new backing but the reward doesn't ship there, show the 'not available' string.
-  if !rewardShipsToLocation, projectBackingState.canCreateNewPledge {
+  if !rewardShipsToLocation, !isBackingThisReward {
     return Strings.Not_available_in_selected_country()
   }
 
