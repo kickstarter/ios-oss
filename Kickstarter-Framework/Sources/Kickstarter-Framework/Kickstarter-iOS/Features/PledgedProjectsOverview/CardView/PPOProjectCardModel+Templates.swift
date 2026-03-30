@@ -1,6 +1,6 @@
 import Foundation
 import GraphAPI
-@testable import KsApi
+import KsApi
 import Library
 
 #if targetEnvironment(simulator)
@@ -49,7 +49,7 @@ import Library
       projectAnalytics: Self.projectAnalyticsFragmentTemplate,
       projectPageParam: ProjectPageParamBox(
         param: Param.id(12_345),
-        initialProject: Project.template
+        initialProject: nil
       )
     )
 
