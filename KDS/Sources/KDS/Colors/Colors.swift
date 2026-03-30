@@ -40,6 +40,12 @@ public struct Colors {
       darkMode: .gray_1000
     )
 
+    public static let light = SemanticColor(
+      "text/light",
+      lightMode: .white,
+      darkMode: .white
+    )
+
     public struct Accent {
       public static let gray = SemanticColor(
         "text/accent/gray",
@@ -188,6 +194,14 @@ public struct Colors {
           "background/accent/gray/subtle",
           lightMode: .gray_200,
           darkMode: .gray_800
+        )
+
+        public static let frosted = SemanticColor(
+          "background/accent/gray/frosted",
+          lightMode: .gray_550,
+          lightModeAlpha: 0.24,
+          darkMode: .gray_550,
+          darkModeAlpha: 0.25
         )
       }
 
