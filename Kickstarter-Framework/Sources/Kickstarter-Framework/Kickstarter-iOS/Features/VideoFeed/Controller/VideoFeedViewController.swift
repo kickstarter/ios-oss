@@ -1,6 +1,4 @@
 import KDS
-import KsApi
-import ReactiveSwift
 import UIKit
 
 /// Full-screen swipeable video feed
@@ -11,7 +9,7 @@ final class VideoFeedViewController: UIViewController {
     static let backgroundColor = KDS.Colors.Background.Surface.secondary.uiColor()
   }
 
-  private let viewModel: VideoFeedViewModelType = VideoFeedViewModel()
+  private let viewModel = VideoFeedViewModel()
   private let dataSource = VideoFeedDataSource()
 
   private lazy var collectionView: UICollectionView = UICollectionView(
@@ -29,7 +27,7 @@ final class VideoFeedViewController: UIViewController {
     self.setupCollectionView()
     self.bindViewModel()
 
-    self.viewModel.inputs.viewDidLoad()
+    self.viewModel.viewDidLoad()
   }
 
   // MARK: - Layout
@@ -39,7 +37,6 @@ final class VideoFeedViewController: UIViewController {
     layout.scrollDirection = .vertical
     layout.itemSize = UIScreen.main.bounds.size
     layout.minimumLineSpacing = 0
-
     return layout
   }
 
@@ -47,7 +44,6 @@ final class VideoFeedViewController: UIViewController {
 
   private func setupCollectionView() {
     self.collectionView.dataSource = self.dataSource
-
     self.collectionView.translatesAutoresizingMaskIntoConstraints = false
     self.collectionView.backgroundColor = Constants.backgroundColor
     self.collectionView.isPagingEnabled = true
@@ -69,14 +65,16 @@ final class VideoFeedViewController: UIViewController {
     ])
   }
 
-  public override func bindViewModel() {
-    self.viewModel.outputs.items
-      .observeForUI()
-      .observeValues { [weak self] items in
-        guard let self else { return }
+  // MARK: - Binding
 
+  public override func bindViewModel() {
+    self.viewModel.onItemsChanged = { [weak self] items in
+      guard let self else { return }
+
+      DispatchQueue.main.async {
         self.dataSource.load(items)
         self.collectionView.reloadData()
       }
+    }
   }
 }

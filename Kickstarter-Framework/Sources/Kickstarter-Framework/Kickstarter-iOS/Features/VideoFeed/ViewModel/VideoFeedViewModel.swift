@@ -1,44 +1,27 @@
 import Foundation
-import ReactiveSwift
 
-protocol VideoFeedViewModelInputs {
-  func viewDidLoad()
-}
+@Observable
+final class VideoFeedViewModel {
+  // MARK: - Outputs
 
-protocol VideoFeedViewModelOutputs {
-  var items: Signal<[VideoFeedItem], Never> { get }
-}
-
-protocol VideoFeedViewModelType {
-  var inputs: VideoFeedViewModelInputs { get }
-  var outputs: VideoFeedViewModelOutputs { get }
-}
-
-final class VideoFeedViewModel: VideoFeedViewModelType, VideoFeedViewModelInputs,
-  VideoFeedViewModelOutputs {
-  init() {
-    self.items = self.viewDidLoadProperty.signal
-      .map {
-        (0..<20).map { i in
-          VideoFeedItem(
-            id: "Project-\(i)",
-            title: "Campaign Video \(i)"
-          )
-        }
-      }
+  private(set) var items: [VideoFeedItem] = [] {
+    didSet {
+      self.onItemsChanged?(self.items)
+    }
   }
+
+  // MARK: - Callbacks
+
+  var onItemsChanged: (([VideoFeedItem]) -> Void)?
 
   // MARK: - Inputs
 
-  private let viewDidLoadProperty = MutableProperty(())
   func viewDidLoad() {
-    self.viewDidLoadProperty.value = ()
+    self.items = (0..<20).map { i in
+      VideoFeedItem(
+        id: "Project-\(i)",
+        title: "Campaign Video \(i)"
+      )
+    }
   }
-
-  // MARK: - Outputs
-
-  let items: Signal<[VideoFeedItem], Never>
-
-  var inputs: VideoFeedViewModelInputs { self }
-  var outputs: VideoFeedViewModelOutputs { self }
 }
