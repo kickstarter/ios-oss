@@ -42,10 +42,9 @@ public struct PPOProjectCardModel: Identifiable, Equatable, Hashable {
 
   // MARK: - Identifiable
 
-  // Create the card's id from the project id, tier type, and actions.
-  // If any other fields change, the card should be considered the same card, just modified.
+  // Create the card's id from the project id. There will be at most one PPO card per project.
   public var id: String {
-    "\(self.projectId)-\(self.tierType)-\(self.action?.id ?? "")"
+    "\(self.projectId)"
   }
 
   // MARK: - Equatable
