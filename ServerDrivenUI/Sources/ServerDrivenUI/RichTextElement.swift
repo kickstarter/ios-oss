@@ -1,5 +1,4 @@
 import Foundation
-import GraphAPI
 
 /// Represents a single block-level element in a RichText list. Used to make implementing
 /// the different views in SwiftUI more easily and with a consistent interface.
@@ -14,10 +13,10 @@ public indirect enum RichTextElement {
   case oembed(Oembed)
 
   public struct Text {
-    let text: String
-    let link: URL?
-    let styles: [Style]
-    let children: [RichTextElement]
+    public let text: String
+    public let link: URL?
+    public let styles: [Style]
+    public let children: [RichTextElement]
 
     public enum Style: String {
       case strong = "STRONG"
@@ -26,26 +25,6 @@ public indirect enum RichTextElement {
       case heading2 = "HEADING_2"
       case heading3 = "HEADING_3"
       case heading4 = "HEADING_4"
-
-      public init?(rawValue: String) {
-        switch rawValue {
-        case "STRONG":
-          self = .strong
-        case "EMPHASIS":
-          self = .emphasis
-        case "HEADING_1":
-          self = .heading1
-        case "HEADING_2":
-          self = .heading2
-        case "HEADING_3":
-          self = .heading3
-        case "HEADING_4":
-          self = .heading4
-        default:
-          assertionFailure("unknown style type: \(rawValue)")
-          return nil
-        }
-      }
     }
   }
 
@@ -55,9 +34,11 @@ public indirect enum RichTextElement {
     case three = "HEADING_3"
     case four = "HEADING_4"
 
-    init?(_ rawValues: [String]?) {
-      for rawValue in rawValues ?? [] {
-        if let level = HeaderLevel(rawValue: rawValue) {
+    /// Create a HeaderLevel from an array of style strings from GraphQL, if
+    /// one is present
+    internal init?(styles: [String]?) {
+      for style in styles ?? [] {
+        if let level = HeaderLevel(rawValue: style) {
           self = level
           return
         }
@@ -67,38 +48,38 @@ public indirect enum RichTextElement {
   }
 
   public struct Audio {
-    let altText: String?
-    let assetID: String?
-    let caption: String?
-    let url: String?
+    public let altText: String?
+    public let assetID: String?
+    public let caption: String?
+    public let url: String?
   }
 
   public struct Photo {
-    let altText: String?
-    let assetID: String?
-    let caption: String?
-    let url: String?
+    public let altText: String?
+    public let assetID: String?
+    public let caption: String?
+    public let url: String?
   }
 
   public struct Video {
-    let altText: String?
-    let assetID: String?
-    let caption: String?
-    let url: String?
+    public let altText: String?
+    public let assetID: String?
+    public let caption: String?
+    public let url: String?
   }
 
   public struct Oembed {
-    let width: Int
-    let height: Int
-    let version: String
-    let title: String
-    let type: String
+    public let width: Int
+    public let height: Int
+    public let version: String
+    public let title: String
+    public let type: String
 
-    let iframeUrl: String?
-    let originalUrl: String?
+    public let iframeUrl: String?
+    public let originalUrl: String?
 
-    let thumbnailUrl: String?
-    let thumbnailWidth: Int?
-    let thumbnailHeight: Int?
+    public let thumbnailUrl: String?
+    public let thumbnailWidth: Int?
+    public let thumbnailHeight: Int?
   }
 }

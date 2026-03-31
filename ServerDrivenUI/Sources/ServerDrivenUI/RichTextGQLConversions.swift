@@ -82,7 +82,7 @@ extension RichTextComponentFragment.Item.AsRichText.Child.AsRichText {
 
 extension RichTextComponentFragment.Item.AsRichText.Child.AsRichTextHeader {
   var asRichTextElement: RichTextElement {
-    .text(makeText(text: text, link: link, styles: styles, children: []), .init(styles))
+    .text(makeText(text: text, link: link, styles: styles, children: []), .init(styles: styles))
   }
 }
 
@@ -95,7 +95,7 @@ extension RichTextComponentFragment.Item.AsRichText.Child.AsRichTextListItem {
 extension RichTextComponentFragment.Item.AsRichTextHeader {
   var asRichTextElement: RichTextElement {
     let children = (children ?? []).map { $0.asRichTextElement() }
-    return .text(makeText(text: text, link: link, styles: styles, children: children), .init(styles))
+    return .text(makeText(text: text, link: link, styles: styles, children: children), .init(styles: styles))
   }
 }
 
@@ -107,7 +107,7 @@ extension RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichText {
 
 extension RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextHeader {
   var asRichTextElement: RichTextElement {
-    .text(makeText(text: text, link: link, styles: styles, children: []), .init(styles))
+    .text(makeText(text: text, link: link, styles: styles, children: []), .init(styles: styles))
   }
 }
 
@@ -132,7 +132,7 @@ extension RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichText {
 
 extension RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextHeader {
   var asRichTextElement: RichTextElement {
-    .text(makeText(text: text, link: link, styles: styles, children: []), .init(styles))
+    .text(makeText(text: text, link: link, styles: styles, children: []), .init(styles: styles))
   }
 }
 
