@@ -60,11 +60,14 @@ public final class PaymentMethodsUseCase: PaymentMethodsUseCaseType, PaymentMeth
       )
     }
 
+    // This should really be bumped out elsewhere
     self.paymentMethodsViewHidden = self.state.signal
       .skipNil()
       .map { $0.isPaymentMethodViewHidden }
       .skipRepeats()
 
+    // This isn't quite right with regards to logging in/logging out but
+    // it works in practice (since you can only log in once without destroying the screen)
     self.configurePaymentMethodsViewControllerWithValue = self.state.signal
       .map { $0?.configurePaymentMethodsViewControllerValue }
       .skipNil()
