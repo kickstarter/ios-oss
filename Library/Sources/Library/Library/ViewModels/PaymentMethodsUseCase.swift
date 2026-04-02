@@ -39,61 +39,44 @@ public protocol PaymentMethodsUseCaseDataOutputs {
   * `selectedPaymentSource` - The currently selected credit card, or `nil` if no card is selected. Sent at least once after   `initialData` is sent.
   * `paymentMethodChangedAndValid` - Whether or not the payment method is valid for the current pledge type. Sends an event after `initialData` and potentially more after `creditCardSelected(with:)` has happened.
   */
+
 public final class PaymentMethodsUseCase: PaymentMethodsUseCaseType, PaymentMethodsUseCaseUIInputs,
   PaymentMethodsUseCaseUIOutputs, PaymentMethodsUseCaseDataOutputs {
+  private var state: MutableProperty<PaymentMethodsUseCaseState?>
+
   init(initialData: Signal<PledgeViewData, Never>, isLoggedIn isLoggedInChanged: Signal<Bool, Never>) {
-    let project = initialData.map(\.project)
-    let baseReward = initialData.map(\.rewards).map(\.first).skipNil()
-    let refTag = initialData.map(\.refTag)
-    let context = initialData.map(\.context)
+    self.state = MutableProperty(nil)
 
-    let initialDataUnpacked = Signal.zip(project, baseReward, refTag, context)
-    let initialLoggedIn = initialData.map { _ in AppEnvironment.current.currentUser != nil }
-
-    let isLoggedIn = Signal.merge(
-      initialLoggedIn,
-      isLoggedInChanged
-    ).skipRepeats()
-
-    let configurePaymentMethodsViewController = Signal.merge(
-      initialDataUnpacked,
-      initialDataUnpacked.takeWhen(isLoggedIn.filter { $0 == true })
+    self.state <~ Signal.combineLatest(
+      initialData,
+      Signal.merge(initialData.map { _ in AppEnvironment.current.currentUser != nil }, isLoggedInChanged),
+      Signal.merge(initialData.mapConst(nil), self.paymentSourceProperty.signal)
     )
-
-    self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsViewController
-      .filter { !$3.paymentMethodsViewHidden }
-      .compactMap { project, reward, refTag, context -> PledgePaymentMethodsValue? in
-        guard let user = AppEnvironment.current.currentUser else { return nil }
-        return (user, project, "", reward, context, refTag)
-      }
-
-    self.paymentMethodsViewHidden = Signal.combineLatest(isLoggedIn, context)
-      .map { !$0 || $1.paymentMethodsViewHidden }
-
-    self.selectedPaymentSource = Signal.merge(
-      initialData.mapConst(nil),
-      self.creditCardSelectedSignal.wrapInOptional()
-    )
-
-    let notChangingPaymentMethod = context.map { context in
-      if context.isUpdating {
-        return context == .updateReward || context == .editPledgeOverTime
-      }
-
-      return false
+    .map { data, loggedIn, paymentSource in
+      PaymentMethodsUseCaseState(
+        data: data,
+        isLoggedIn: loggedIn,
+        paymentSourceSelected: paymentSource
+      )
     }
 
-    /// The `paymentMethodChangedAndValid` compares  against the existing backing payment source id.
-    self.paymentMethodChangedAndValid = Signal.merge(
-      notChangingPaymentMethod,
-      Signal.combineLatest(
-        project,
-        baseReward,
-        self.creditCardSelectedSignal,
-        context
-      )
-      .map(paymentMethodValid)
-    )
+    self.paymentMethodsViewHidden = self.state.signal
+      .skipNil()
+      .map { $0.isPaymentMethodViewHidden }
+      .skipRepeats()
+
+    self.configurePaymentMethodsViewControllerWithValue = self.state.signal
+      .map { $0?.configurePaymentMethodsViewControllerValue }
+      .skipNil()
+      .take(first: 1)
+
+    self.selectedPaymentSource = self.state.signal
+      .map { $0?.paymentSourceSelected }
+      .skipRepeats()
+
+    self.paymentMethodChangedAndValid = self.state.signal
+      .map { $0?.paymentMethodChangedAndValid }
+      .skipNil()
   }
 
   public let paymentMethodsViewHidden: Signal<Bool, Never>
@@ -101,10 +84,9 @@ public final class PaymentMethodsUseCase: PaymentMethodsUseCaseType, PaymentMeth
   public let selectedPaymentSource: Signal<PaymentSourceSelected?, Never>
   public let paymentMethodChangedAndValid: Signal<Bool, Never>
 
-  private let (creditCardSelectedSignal, creditCardSelectedObserver) = Signal<PaymentSourceSelected, Never>
-    .pipe()
+  private let paymentSourceProperty = MutableProperty<PaymentSourceSelected?>(nil)
   public func creditCardSelected(with paymentSourceData: PaymentSourceSelected) {
-    self.creditCardSelectedObserver.send(value: paymentSourceData)
+    self.paymentSourceProperty.value = paymentSourceData
   }
 
   public var uiInputs: PaymentMethodsUseCaseUIInputs { return self }
@@ -112,25 +94,79 @@ public final class PaymentMethodsUseCase: PaymentMethodsUseCaseType, PaymentMeth
   public var dataOutputs: PaymentMethodsUseCaseDataOutputs { return self }
 }
 
-private func paymentMethodValid(
-  project: Project,
-  reward: Reward,
-  paymentSource: PaymentSourceSelected,
-  context: PledgeViewContext
-) -> Bool {
-  guard
-    let backedPaymentSourceId = project.personalization.backing?.paymentSource?.id,
-    context.isUpdating,
-    userIsBacking(reward: reward, inProject: project)
-  else {
-    return true
+private struct PaymentMethodsUseCaseState {
+  let data: PledgeViewData
+  var isLoggedIn: Bool
+  var paymentSourceSelected: PaymentSourceSelected?
+
+  var isPaymentMethodViewHidden: Bool {
+    if !self.isLoggedIn {
+      return true
+    }
+
+    return self.data.context.paymentMethodsViewHidden
   }
 
-  if project.personalization.backing?.status == .errored {
-    return true
-  } else if backedPaymentSourceId != paymentSource.savedCreditCardId {
-    return true
+  var baseReward: Reward? {
+    return self.data.rewards.first
   }
 
-  return false
+  var configurePaymentMethodsViewControllerValue: PledgePaymentMethodsValue? {
+    if !self.isLoggedIn || self.isPaymentMethodViewHidden {
+      return nil
+    }
+
+    guard let user = AppEnvironment.current.currentUser,
+          let reward = self.baseReward else {
+      return nil
+    }
+
+    return (user, self.data.project, "", reward, self.data.context, self.data.refTag)
+  }
+
+  var notChangingPaymentMethod: Bool {
+    let context = self.data.context
+
+    if context.isUpdating {
+      return context == .updateReward || context == .editPledgeOverTime
+    }
+
+    return false
+  }
+
+  /// The `paymentMethodChangedAndValid` compares  against the existing backing payment source id.
+  var paymentMethodChangedAndValid: Bool {
+    guard let reward = self.baseReward,
+          let source = self.paymentSourceSelected else { return self.notChangingPaymentMethod }
+
+    return self.paymentMethodValid(
+      project: self.data.project,
+      reward: reward,
+      paymentSource: source,
+      context: self.data.context
+    )
+  }
+
+  private func paymentMethodValid(
+    project: Project,
+    reward: Reward,
+    paymentSource: PaymentSourceSelected,
+    context: PledgeViewContext
+  ) -> Bool {
+    guard
+      let backedPaymentSourceId = project.personalization.backing?.paymentSource?.id,
+      context.isUpdating,
+      userIsBacking(reward: reward, inProject: project)
+    else {
+      return true
+    }
+
+    if project.personalization.backing?.status == .errored {
+      return true
+    } else if backedPaymentSourceId != paymentSource.savedCreditCardId {
+      return true
+    }
+
+    return false
+  }
 }
