@@ -34,11 +34,21 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.contentView.backgroundColor = Colors.Background.Accent.Gray.subtle.uiColor()
   }
 
-  /// Configures the cell with a feed item and adds the VideoFeedOverlayView
+  // MARK: - Config
+
   func configureWith(value: VideoFeedItem) {
+    guard self.overlayHostingController == nil else {
+      self.overlayHostingController?.rootView = VideoFeedOverlayView(item: value)
+      return
+    }
+
     let hc = UIHostingController(rootView: VideoFeedOverlayView(item: value))
     hc.view.backgroundColor = .clear
     hc.view.translatesAutoresizingMaskIntoConstraints = false
+    /// Since the cell embeds the hosting view directly without `addChild`, UIKit
+    /// can propagate the device's safe area insets incorrectly.
+    /// Clearing `safeAreaRegions`prevents that and keeps the overlay content positioned correctly.
+    hc.safeAreaRegions = []
 
     self.contentView.addSubview(hc.view)
 
