@@ -45,9 +45,8 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     let hc = UIHostingController(rootView: VideoFeedOverlayView(item: value))
     hc.view.backgroundColor = .clear
     hc.view.translatesAutoresizingMaskIntoConstraints = false
-    /// Since the cell embeds the hosting view directly without `addChild`, UIKit
-    /// can propagate the device's safe area insets incorrectly.
-    /// Clearing `safeAreaRegions`prevents that and keeps the overlay content positioned correctly.
+    /// Since the cell embeds the hosting view directly without `addChild`, UIKit can propagate the device's safe area insets incorrectly.
+    /// Clearing `safeAreaRegions` keeps the overlay content positioned correctly.
     hc.safeAreaRegions = []
 
     self.contentView.addSubview(hc.view)

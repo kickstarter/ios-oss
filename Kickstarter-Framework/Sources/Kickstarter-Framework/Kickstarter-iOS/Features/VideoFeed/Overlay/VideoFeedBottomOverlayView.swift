@@ -33,6 +33,8 @@ struct VideoFeedBottomOverlayView: View {
       FeedPillView(icon: "video-feed-category-icon", text: self.item.categoryPillText)
       FeedPillView(icon: "video-feed-clock-icon", text: self.item.secondaryPillText)
     }
+    .accessibilityElement(children: .combine)
+    .accessibilityLabel("\(self.item.categoryPillText), \(self.item.secondaryPillText)")
   }
 
   private var titleText: some View {
@@ -40,18 +42,24 @@ struct VideoFeedBottomOverlayView: View {
       .font(Font(UIFont.ksr_headingLG()))
       .foregroundColor(Color(Colors.Text.light.uiColor()))
       .lineLimit(2)
+      .accessibilityLabel(self.item.title)
+      .accessibilityAddTraits(.isHeader)
   }
 
   private var statsText: some View {
     Text(self.item.statsText)
       .font(Font(UIFont.ksr_caption1()))
       .foregroundColor(Color(Colors.Text.light.uiColor()))
+      .accessibilityLabel(self.item.statsText)
   }
 
   private var ctaButton: some View {
     Button(self.item.ctaTitle, action: {})
       .buttonStyle(CTAButtonStyle())
       .padding(.top, Constants.ctaTopPadding)
+      .accessibilityLabel(self.item.ctaTitle)
+      .accessibilityAddTraits(.isButton)
+      .accessibilityHint(self.item.ctaTitle)
   }
 
   private var progressBar: some View {
@@ -62,7 +70,7 @@ struct VideoFeedBottomOverlayView: View {
   }
 }
 
-/// category and "days left" badges
+/// Category and "days left" badges.
 private struct FeedPillView: View {
   private enum Constants {
     static let iconSize: CGFloat = 16
@@ -98,7 +106,7 @@ private struct FeedPillView: View {
   }
 }
 
-/// Custom frosted glass backgroud view
+/// Custom frosted glass background view.
 private struct FrostedGlassBackground: UIViewRepresentable {
   private enum Constants {
     static let blurRadius: CGFloat = 6.05

@@ -8,7 +8,6 @@ struct VideoFeedOverlayView: View {
     /// Gradient Overlay
     static let topGradientOverlayOpacity: Double = 0.2
     static let topGradientOverlayHeight: CGFloat = 120
-    static let bottomGradientOverlayHeight: CGFloat = 300
     static let bottomGradientOverlayOpacity: Double = 0.55
     static let bottomGradientOverlayStartLocation: CGFloat = 0.1652
     static let bottomGradientOverlayEndLocation: CGFloat = 0.6957
@@ -22,26 +21,29 @@ struct VideoFeedOverlayView: View {
   let item: VideoFeedItem
 
   var body: some View {
-    ZStack {
-      self.gradientOverlay.ignoresSafeArea()
+    ZStack(alignment: .bottom) {
+      self.topGradient
+        .ignoresSafeArea()
+        /// Hidden so VoiceOver jumps straight to the interactive overlay.
+        .accessibilityHidden(true)
 
-      VStack {
-        Spacer()
-
-        HStack(alignment: .bottom) {
-          VideoFeedBottomOverlayView(item: self.item)
-        }
-        .padding(.horizontal, Constants.horizontalPadding)
-        .padding(.bottom, Constants.bottomPadding)
+      HStack(alignment: .bottom) {
+        VideoFeedBottomOverlayView(item: self.item)
       }
-      .safeAreaPadding(.top)
+      .padding(.horizontal, Constants.horizontalPadding)
+      .padding(.bottom, Constants.bottomPadding)
       .safeAreaPadding(.bottom)
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .background(alignment: .bottom) {
+        self.bottomGradient
+          .ignoresSafeArea()
+          .accessibilityHidden(true)
+      }
     }
+    .safeAreaPadding(.top)
   }
 
-  // MARK: - Sections
-
-  private var gradientOverlay: some View {
+  private var topGradient: some View {
     VStack(spacing: 0) {
       LinearGradient(
         colors: [.black.opacity(Constants.topGradientOverlayOpacity), .clear],
@@ -51,20 +53,20 @@ struct VideoFeedOverlayView: View {
       .frame(height: Constants.topGradientOverlayHeight)
 
       Spacer()
-
-      /// Stop positions match design spec: transparent at 16.52%, full opacity at 69.57%.
-      LinearGradient(
-        stops: [
-          .init(color: .clear, location: Constants.bottomGradientOverlayStartLocation),
-          .init(
-            color: .black.opacity(Constants.bottomGradientOverlayOpacity),
-            location: Constants.bottomGradientOverlayEndLocation
-          )
-        ],
-        startPoint: .top,
-        endPoint: .bottom
-      )
-      .frame(height: Constants.bottomGradientOverlayHeight)
     }
+  }
+
+  private var bottomGradient: some View {
+    LinearGradient(
+      stops: [
+        .init(color: .clear, location: Constants.bottomGradientOverlayStartLocation),
+        .init(
+          color: .black.opacity(Constants.bottomGradientOverlayOpacity),
+          location: Constants.bottomGradientOverlayEndLocation
+        )
+      ],
+      startPoint: .top,
+      endPoint: .bottom
+    )
   }
 }
