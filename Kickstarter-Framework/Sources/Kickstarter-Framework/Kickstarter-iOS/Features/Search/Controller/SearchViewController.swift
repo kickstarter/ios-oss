@@ -140,7 +140,7 @@ internal final class SearchViewController: UITableViewController {
     self.tableView.dataSource = self.dataSource
     self.tableView.backgroundColor = Colors.Background.Surface.primary.uiColor()
 
-    self.tableView.register(nib: .BackerDashboardProjectCell)
+    self.tableView.registerCellClass(BackerDashboardProjectCell.self)
     self.tableView.registerCellClass(SearchResultsCountCell.self)
     self.tableView.registerCellClass(SearchEmptyStateCell.self)
     self.tableView.registerCellClass(VideoFeedBannerCell.self)
