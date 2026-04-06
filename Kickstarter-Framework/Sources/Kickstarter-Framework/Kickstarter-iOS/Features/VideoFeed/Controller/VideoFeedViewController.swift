@@ -68,12 +68,12 @@ final class VideoFeedViewController: UIViewController {
   // MARK: - Binding
 
   public override func bindViewModel() {
-    self.viewModel.onItemsChanged = { [weak self] items in
-      guard let self else { return }
-
-      DispatchQueue.main.async {
-        self.dataSource.load(items)
-        self.collectionView.reloadData()
+    withObservationTracking {
+      self.dataSource.load(self.viewModel.items)
+      self.collectionView.reloadData()
+    } onChange: { [weak self] in
+      DispatchQueue.main.async { [weak self] in
+        self?.bindViewModel()
       }
     }
   }
