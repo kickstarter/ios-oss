@@ -7,7 +7,7 @@ struct VideoFeedOverlayView: View {
   private enum Constants {
     /// Gradient Overlay
     static let topGradientOverlayOpacity: Double = 0.2
-    static let topGradientOverlayHeight: CGFloat = 120
+    static let topGradientOverlayHeight: CGFloat = 300
     static let bottomGradientOverlayOpacity: Double = 0.55
     static let bottomGradientOverlayStartLocation: CGFloat = 0.1652
     static let bottomGradientOverlayEndLocation: CGFloat = 0.6957
