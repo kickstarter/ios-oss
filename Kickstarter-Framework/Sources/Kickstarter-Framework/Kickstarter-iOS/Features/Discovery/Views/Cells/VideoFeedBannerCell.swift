@@ -19,12 +19,12 @@ internal final class VideoFeedBannerCell: UITableViewCell, ValueCell {
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
+
     self.setUp()
   }
 
   required init?(coder: NSCoder) {
     super.init(coder: coder)
-    self.setUp()
   }
 
   internal func configureWith(value _: Void) {}
