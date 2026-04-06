@@ -4,15 +4,7 @@ import Foundation
 final class VideoFeedViewModel {
   // MARK: - Outputs
 
-  private(set) var items: [VideoFeedItem] = [] {
-    didSet {
-      self.onItemsChanged?(self.items)
-    }
-  }
-
-  // MARK: - Callbacks
-
-  var onItemsChanged: (([VideoFeedItem]) -> Void)?
+  private(set) var items: [VideoFeedItem] = []
 
   // MARK: - Inputs
 
