@@ -30,7 +30,7 @@ final class VideoFeedViewControllerTests: TestCase {
           width: device.deviceSize.width,
           height: device.deviceSize.height
         ))
-        
+
         cell.configureWith(value: .init(
           id: "0",
           title: "Ringo Move - The Ultimate Workout Bottle",

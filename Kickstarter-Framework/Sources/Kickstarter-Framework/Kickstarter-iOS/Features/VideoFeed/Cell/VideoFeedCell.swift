@@ -23,8 +23,15 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     fatalError("init(coder:) has not been implemented")
   }
 
+  override func prepareForReuse() {
+    super.prepareForReuse()
+
+    self.overlayHostingController?.view.removeFromSuperview()
+    self.overlayHostingController = nil
+  }
+
   private func setUpView() {
-    contentView.backgroundColor = Colors.Background.Accent.Gray.subtle.uiColor()
+    self.contentView.backgroundColor = Colors.Background.Accent.Gray.subtle.uiColor()
   }
 
   /// Configures the cell with a feed item and adds the VideoFeedOverlayView
