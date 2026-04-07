@@ -199,7 +199,7 @@ public struct Colors {
         public static let frosted = SemanticColor(
           "background/accent/gray/frosted",
           lightMode: .gray_550,
-          lightModeAlpha: 0.24,
+          lightModeAlpha: 0.25,
           darkMode: .gray_550,
           darkModeAlpha: 0.25
         )

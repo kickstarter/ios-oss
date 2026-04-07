@@ -31,7 +31,7 @@ final class VideoFeedViewControllerTests: TestCase {
           height: device.deviceSize.height
         ))
 
-        cell.configureWith(value: .init(
+        cell.configureWith(value: VideoFeedItem(
           id: "0",
           title: "Ringo Move - The Ultimate Workout Bottle",
           creator: "Creator Name",
@@ -43,8 +43,7 @@ final class VideoFeedViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: cell,
-          as: .image(perceptualPrecision: 0.98),
-          named: "lang_\(language)_device_\(device)"
+          as: .image(perceptualPrecision: 0.99)
         )
       }
     }

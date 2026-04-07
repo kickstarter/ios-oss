@@ -6,16 +6,18 @@ import UIKit
 ///   - Plain data source driven by VideoFeedViewModel
 final class VideoFeedViewController: UIViewController {
   private enum Constants {
-    static let backgroundColor = KDS.Colors.Background.Surface.secondary.uiColor()
+    static let backgroundColor = KDS.Colors.Text.secondary.uiColor()
   }
 
   private let viewModel = VideoFeedViewModel()
   private let dataSource = VideoFeedDataSource()
 
-  private lazy var collectionView: UICollectionView = UICollectionView(
-    frame: .zero,
-    collectionViewLayout: VideoFeedViewController.setupCollectionViewLayout()
-  )
+  private lazy var collectionView: UICollectionView = {
+    let layout = UICollectionViewFlowLayout()
+    layout.scrollDirection = .vertical
+    layout.minimumLineSpacing = 0
+    return UICollectionView(frame: .zero, collectionViewLayout: layout)
+  }()
 
   // MARK: - Lifecycle
 
@@ -23,6 +25,7 @@ final class VideoFeedViewController: UIViewController {
     super.viewDidLoad()
 
     self.view.backgroundColor = Constants.backgroundColor
+    self.navigationController?.navigationBar.isHidden = true
 
     self.setupCollectionView()
     self.bindViewModel()
@@ -30,20 +33,11 @@ final class VideoFeedViewController: UIViewController {
     self.viewModel.viewDidLoad()
   }
 
-  // MARK: - Layout
-
-  private static func setupCollectionViewLayout() -> UICollectionViewFlowLayout {
-    let layout = UICollectionViewFlowLayout()
-    layout.scrollDirection = .vertical
-    layout.itemSize = UIScreen.main.bounds.size
-    layout.minimumLineSpacing = 0
-    return layout
-  }
-
   // MARK: - CollectionView
 
   private func setupCollectionView() {
     self.collectionView.dataSource = self.dataSource
+    self.collectionView.delegate = self
     self.collectionView.translatesAutoresizingMaskIntoConstraints = false
     self.collectionView.backgroundColor = Constants.backgroundColor
     self.collectionView.isPagingEnabled = true
@@ -76,5 +70,15 @@ final class VideoFeedViewController: UIViewController {
         self?.bindViewModel()
       }
     }
+  }
+}
+
+extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout _: UICollectionViewLayout,
+    sizeForItemAt _: IndexPath
+  ) -> CGSize {
+    collectionView.bounds.size
   }
 }
