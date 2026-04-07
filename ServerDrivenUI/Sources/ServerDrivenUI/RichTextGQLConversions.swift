@@ -3,12 +3,12 @@ import GraphAPI
 
 extension RichTextComponentFragment {
   public func asRichTextElements() -> [RichTextElement] {
-    self.items.map { $0.asRichTextElement() }
+    self.items.map { $0.asRichTextElement }
   }
 }
 
 extension RichTextComponentFragment.Item {
-  func asRichTextElement() -> RichTextElement {
+  var asRichTextElement: RichTextElement {
     if let x = asRichText { return x.asRichTextElement }
     if let x = asRichTextHeader { return x.asRichTextElement }
     if let x = asRichTextListItem { return x.asRichTextElement }
@@ -18,12 +18,13 @@ extension RichTextComponentFragment.Item {
     if let x = asRichTextAudio { return x.asRichTextElement }
     if let x = asRichTextVideo { return x.asRichTextElement }
     if let x = asRichTextOembed { return x.asRichTextElement }
-    return .text(makeText(text: nil, link: nil, styles: nil, children: []), nil)
+    assertionFailure("Could not detect a usable rich text element")
+    return RichTextElement.unknown
   }
 }
 
 extension RichTextComponentFragment.Item.AsRichText.Child {
-  func asRichTextElement() -> RichTextElement {
+  var asRichTextElement: RichTextElement {
     if let x = asRichText { return x.asRichTextElement }
     if let x = asRichTextHeader { return x.asRichTextElement }
     if let x = asRichTextListItem { return x.asRichTextElement }
@@ -33,12 +34,13 @@ extension RichTextComponentFragment.Item.AsRichText.Child {
     if let x = asRichTextAudio { return x.asRichTextElement }
     if let x = asRichTextVideo { return x.asRichTextElement }
     if let x = asRichTextOembed { return x.asRichTextElement }
-    return .text(makeText(text: nil, link: nil, styles: nil, children: []), nil)
+    assertionFailure("Could not detect a usable rich text element")
+    return RichTextElement.unknown
   }
 }
 
 extension RichTextComponentFragment.Item.AsRichTextHeader.Child {
-  func asRichTextElement() -> RichTextElement {
+  var asRichTextElement: RichTextElement {
     if let x = asRichText { return x.asRichTextElement }
     if let x = asRichTextHeader { return x.asRichTextElement }
     if let x = asRichTextListItem { return x.asRichTextElement }
@@ -48,12 +50,13 @@ extension RichTextComponentFragment.Item.AsRichTextHeader.Child {
     if let x = asRichTextAudio { return x.asRichTextElement }
     if let x = asRichTextVideo { return x.asRichTextElement }
     if let x = asRichTextOembed { return x.asRichTextElement }
-    return .text(makeText(text: nil, link: nil, styles: nil, children: []), nil)
+    assertionFailure("Could not detect a usable rich text element")
+    return RichTextElement.unknown
   }
 }
 
 extension RichTextComponentFragment.Item.AsRichTextListItem.Child {
-  func asRichTextElement() -> RichTextElement {
+  var asRichTextElement: RichTextElement {
     if let x = asRichText { return x.asRichTextElement }
     if let x = asRichTextHeader { return x.asRichTextElement }
     if let x = asRichTextListItem { return x.asRichTextElement }
@@ -63,13 +66,14 @@ extension RichTextComponentFragment.Item.AsRichTextListItem.Child {
     if let x = asRichTextAudio { return x.asRichTextElement }
     if let x = asRichTextVideo { return x.asRichTextElement }
     if let x = asRichTextOembed { return x.asRichTextElement }
-    return .text(makeText(text: nil, link: nil, styles: nil, children: []), nil)
+    assertionFailure("Could not detect a usable rich text element")
+    return RichTextElement.unknown
   }
 }
 
 extension RichTextComponentFragment.Item.AsRichText {
   var asRichTextElement: RichTextElement {
-    let children = (children ?? []).map { $0.asRichTextElement() }
+    let children = (children ?? []).map { $0.asRichTextElement }
     return .text(makeText(text: text, link: link, styles: styles, children: children), nil)
   }
 }
@@ -94,7 +98,7 @@ extension RichTextComponentFragment.Item.AsRichText.Child.AsRichTextListItem {
 
 extension RichTextComponentFragment.Item.AsRichTextHeader {
   var asRichTextElement: RichTextElement {
-    let children = (children ?? []).map { $0.asRichTextElement() }
+    let children = (children ?? []).map { $0.asRichTextElement }
     return .text(makeText(text: text, link: link, styles: styles, children: children), .init(styles: styles))
   }
 }
@@ -119,7 +123,7 @@ extension RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextListIt
 
 extension RichTextComponentFragment.Item.AsRichTextListItem {
   var asRichTextElement: RichTextElement {
-    let children = (children ?? []).map { $0.asRichTextElement() }
+    let children = (children ?? []).map { $0.asRichTextElement }
     return .listItem(makeText(text: text, link: link, styles: styles, children: children))
   }
 }

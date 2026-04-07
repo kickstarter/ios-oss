@@ -11,6 +11,7 @@ public indirect enum RichTextElement {
   case photo(Photo)
   case video(Video)
   case oembed(Oembed)
+  case unknown
 
   public struct Text {
     public let text: String
