@@ -33,6 +33,7 @@ struct VideoFeedBottomOverlayView: View {
       FeedPillView(icon: "video-feed-category-icon", text: self.item.categoryPillText)
       FeedPillView(icon: "video-feed-clock-icon", text: self.item.secondaryPillText)
     }
+    /// .combined so VoiceOver reads both pills as one element e.g. "Film, 23 days left".
     .accessibilityElement(children: .combine)
     .accessibilityLabel("\(self.item.categoryPillText), \(self.item.secondaryPillText)")
   }
