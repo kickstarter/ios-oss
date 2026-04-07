@@ -1,4 +1,5 @@
 import KDS
+import Library
 import SwiftUI
 
 /// Bottom overlay content for the video feed cell.
@@ -88,9 +89,11 @@ private struct FeedPillView: View {
 
   var body: some View {
     HStack(spacing: Constants.iconSpacing) {
-      Image(self.icon)
-        .resizable()
-        .frame(width: Constants.iconSize, height: Constants.iconSize)
+      if let icon = Library.image(named: self.icon, inBundle: Bundle.main) {
+        Image(uiImage: icon)
+          .resizable()
+          .frame(width: Constants.iconSize, height: Constants.iconSize)
+      }
 
       Text(self.text)
         .font(Font(UIFont.ksr_caption2()).bold())
@@ -133,7 +136,7 @@ private struct FrostedGlassBackground: UIViewRepresentable {
   func updateUIView(_: UIVisualEffectView, context _: Context) {}
 }
 
-private struct CTAButtonStyle: ButtonStyle {
+private struct CTAButtonStyle: SwiftUI.ButtonStyle {
   private enum Constants {
     static let horizontalPadding: CGFloat = 16
     static let verticalPadding: CGFloat = 12
