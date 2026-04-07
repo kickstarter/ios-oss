@@ -433,10 +433,10 @@ public protocol ServiceType {
     SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope>
 
   func fetchSavedProjects(cursor: String?, limit: Int?)
-    -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope>
+    -> SignalProducer<GraphAPI.FetchMySavedProjectsQuery.Data, ErrorEnvelope>
 
   func fetchBackedProjects(cursor: String?, limit: Int?)
-    -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope>
+    -> SignalProducer<GraphAPI.FetchMyBackedProjectsQuery.Data, ErrorEnvelope>
 
   func blockUser(input: BlockUserInput) -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 

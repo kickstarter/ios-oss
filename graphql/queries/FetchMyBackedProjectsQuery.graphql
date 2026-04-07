@@ -1,7 +1,7 @@
 query FetchMyBackedProjects($first: Int = null, $after: String = null) {
   projects(first: $first, after: $after, backed: true, sort: END_DATE) {
     nodes {
-      ...ProjectFragment
+      ...ProjectCardFragment
     }
     pageInfo {
       hasNextPage

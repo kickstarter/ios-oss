@@ -1,6 +1,7 @@
 import Foundation
 import GraphAPI
 import KsApi
+import Library
 
 #if targetEnvironment(simulator)
   extension PPOProjectCardModel {
@@ -45,7 +46,11 @@ import KsApi
       tierType: .pledgeCollected,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: ProjectPageParamBox(
+        param: Param.id(12_345),
+        initialProject: nil
+      )
     )
 
     internal static let surveySubmittedTemplate = PPOProjectCardModel(
@@ -72,7 +77,8 @@ import KsApi
       tierType: .surveySubmitted,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
 
     internal static let addressConfirmedTemplate = PPOProjectCardModel(
@@ -99,7 +105,8 @@ import KsApi
       tierType: .addressConfirmed,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
 
     internal static let digitalRewardReceivedTemplate = PPOProjectCardModel(
@@ -118,7 +125,8 @@ import KsApi
       tierType: .rewardReceived,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
 
     internal static let awaitingShippableRewardTemplate = PPOProjectCardModel(
@@ -142,7 +150,8 @@ import KsApi
       tierType: .awaitingReward,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
 
     // MARK: Live projects
@@ -170,7 +179,8 @@ import KsApi
       tierType: .campaignLive,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
 
     internal static let campaignFundedTemplate = PPOProjectCardModel(
@@ -190,7 +200,8 @@ import KsApi
       tierType: .campaignFunded,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
 
     internal static let campaignEndedTemplate = PPOProjectCardModel(
@@ -209,7 +220,8 @@ import KsApi
       tierType: .campaignEnded,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
 
     // MARK: Failed/canceled pledges
@@ -236,7 +248,8 @@ import KsApi
       tierType: .campaignFailed,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
 
     internal static let pledgeDroppedTemplate = PPOProjectCardModel(
@@ -255,7 +268,8 @@ import KsApi
       tierType: .pledgeDropped,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
 
     internal static let pledgeCanceledTemplate = PPOProjectCardModel(
@@ -274,7 +288,8 @@ import KsApi
       tierType: .pledgeCanceled,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
 
     // MARK: Project alerts
@@ -310,7 +325,8 @@ import KsApi
       tierType: .confirmAddress,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
 
     internal static let addressLockTemplate = PPOProjectCardModel(
@@ -330,7 +346,8 @@ import KsApi
       tierType: .openSurvey,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
 
     internal static let fixPaymentTemplate = PPOProjectCardModel(
@@ -354,7 +371,8 @@ import KsApi
       tierType: .fixPayment,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
 
     internal static let authenticateCardTemplate = PPOProjectCardModel(
@@ -378,7 +396,8 @@ import KsApi
       tierType: .authenticateCard,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
 
     internal static let completeSurveyTemplate = PPOProjectCardModel(
@@ -397,7 +416,8 @@ import KsApi
       tierType: .openSurvey,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
 
     internal static let openPledgeManagerTemplate = PPOProjectCardModel(
@@ -416,7 +436,8 @@ import KsApi
       tierType: .pledgeManagement,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
 
     internal static let projectAnalyticsFragmentTemplate = GraphAPI.ProjectAnalyticsFragment(
@@ -471,7 +492,8 @@ import KsApi
       tierType: .openSurvey,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
 
     internal static let lotsOfFlagsTemplate = PPOProjectCardModel(
@@ -504,7 +526,8 @@ import KsApi
       tierType: .openSurvey,
       backingId: 47,
       backingGraphId: "backing-fake-id",
-      projectAnalytics: Self.projectAnalyticsFragmentTemplate
+      projectAnalytics: Self.projectAnalyticsFragmentTemplate,
+      projectPageParam: nil
     )
   }
 #endif

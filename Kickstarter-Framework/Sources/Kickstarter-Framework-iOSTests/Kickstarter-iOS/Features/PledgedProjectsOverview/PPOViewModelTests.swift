@@ -36,7 +36,7 @@ class PPOViewModelTests: XCTestCase {
       .store(in: &self.cancellables)
 
     withEnvironment(apiService: MockService(
-      fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData())
+      fetchPledgedProjectsResult: Result.success(try GraphAPI.FetchPledgedProjectsQuery.fakeData())
     )) {
       self.viewModel.viewDidAppear()
     }
@@ -67,7 +67,7 @@ class PPOViewModelTests: XCTestCase {
       .store(in: &self.cancellables)
 
     withEnvironment(apiService: MockService(
-      fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData())
+      fetchPledgedProjectsResult: Result.success(try GraphAPI.FetchPledgedProjectsQuery.fakeData())
     )) {
       self.viewModel.viewDidAppear()
       self.viewModel.viewDidAppear() // This should not trigger another load
@@ -104,7 +104,8 @@ class PPOViewModelTests: XCTestCase {
       .store(in: &self.cancellables)
 
     withEnvironment(apiService: MockService(
-      fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...3))
+      fetchPledgedProjectsResult: Result
+        .success(try GraphAPI.FetchPledgedProjectsQuery.fakeData(cursors: 1...3))
     )) {
       self.viewModel.viewDidAppear() // Initial load
     }
@@ -112,7 +113,8 @@ class PPOViewModelTests: XCTestCase {
     await fulfillment(of: [initialLoadExpectation], timeout: 0.1)
 
     await withEnvironment(apiService: MockService(
-      fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...2))
+      fetchPledgedProjectsResult: Result
+        .success(try GraphAPI.FetchPledgedProjectsQuery.fakeData(cursors: 1...2))
     )) { () async in
       await self.viewModel.refresh()
     }
@@ -156,7 +158,8 @@ class PPOViewModelTests: XCTestCase {
       .store(in: &self.cancellables)
 
     withEnvironment(apiService: MockService(
-      fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...3))
+      fetchPledgedProjectsResult: Result
+        .success(try GraphAPI.FetchPledgedProjectsQuery.fakeData(cursors: 1...3))
     )) {
       self.viewModel.viewDidAppear() // Initial load
     }
@@ -164,13 +167,15 @@ class PPOViewModelTests: XCTestCase {
     await fulfillment(of: [initialLoadExpectation], timeout: 0.1)
 
     await withEnvironment(apiService: MockService(
-      fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...2))
+      fetchPledgedProjectsResult: Result
+        .success(try GraphAPI.FetchPledgedProjectsQuery.fakeData(cursors: 1...2))
     )) { () async in
       await self.viewModel.refresh() // Refresh
     }
 
     await withEnvironment(apiService: MockService(
-      fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...16))
+      fetchPledgedProjectsResult: Result
+        .success(try GraphAPI.FetchPledgedProjectsQuery.fakeData(cursors: 1...16))
     )) { () async in
       await self.viewModel.refresh() // Refresh a second time
     }
@@ -222,7 +227,7 @@ class PPOViewModelTests: XCTestCase {
       .store(in: &self.cancellables)
 
     withEnvironment(apiService: MockService(
-      fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(
+      fetchPledgedProjectsResult: Result.success(try GraphAPI.FetchPledgedProjectsQuery.fakeData(
         cursors: 1...4,
         hasNextPage: true
       ))
@@ -233,7 +238,8 @@ class PPOViewModelTests: XCTestCase {
     await fulfillment(of: [initialLoadExpectation], timeout: 0.1)
 
     await withEnvironment(apiService: MockService(
-      fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 5...7))
+      fetchPledgedProjectsResult: Result
+        .success(try GraphAPI.FetchPledgedProjectsQuery.fakeData(cursors: 5...7))
     )) { () async in
       await self.viewModel.loadMore() // Load next page
     }
@@ -330,11 +336,12 @@ class PPOViewModelTests: XCTestCase {
   }
 
   func testEventViewProjectDetails() {
-    let template = PPOProjectCardModel.fixPaymentTemplate
+    let template = PPOProjectCardModel.noRewardPledgeCollected
+    let param = template.projectPageParam!
     self.verifyPreparedEvent(
       // This could be tested with any template. All cards allow the user to view project details.
-      { self.viewModel.handleCardEvent(.viewProjectDetails, from: template) },
-      event: .projectDetails(projectId: template.projectId)
+      { self.viewModel.handleCardEvent(.viewProjectDetails(param: param), from: template) },
+      event: .projectDetails(param: param)
     )
   }
 
@@ -351,11 +358,13 @@ class PPOViewModelTests: XCTestCase {
     )
 
     let mockService = MockService(
-      fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 1...3))
+      fetchPledgedProjectsResult: Result
+        .success(try GraphAPI.FetchPledgedProjectsQuery.fakeData(cursors: 1...3))
     )
 
     let reloadedMockService = MockService(
-      fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(cursors: 4...6))
+      fetchPledgedProjectsResult: Result
+        .success(try GraphAPI.FetchPledgedProjectsQuery.fakeData(cursors: 4...6))
     )
 
     let initialLoadExpectation = XCTestExpectation(description: "Initial load")
@@ -418,7 +427,7 @@ class PPOViewModelTests: XCTestCase {
       .store(in: &self.cancellables)
 
     withEnvironment(apiService: MockService(
-      fetchPledgedProjectsResult: Result.success(try self.pledgedProjectsData(
+      fetchPledgedProjectsResult: Result.success(try GraphAPI.FetchPledgedProjectsQuery.fakeData(
         cursors: nil,
         hasNextPage: false
       ))
@@ -466,168 +475,5 @@ class PPOViewModelTests: XCTestCase {
     }
 
     XCTAssertEqual(beforeResults, afterResults)
-  }
-
-  private func pledgedProjectsData(
-    cursors: ClosedRange<Int>? = 1...3,
-    hasNextPage: Bool = false
-  ) throws -> GraphAPI.FetchPledgedProjectsQuery.Data {
-    let edges = cursors?.map { index in self.projectEdgeJSON(cursor: "\(index)") } ?? []
-    let edgesJson = "[\(edges.joined(separator: ", "))]"
-    let result: GraphAPI.FetchPledgedProjectsQuery.Data = try testGraphObject(jsonString: """
-    {
-      "pledgeProjectsOverview": {
-        "__typename": "PledgeProjectsOverview",
-        "pledges": {
-          "__typename": "PledgedProjectsOverviewPledgesConnection",
-          "totalCount": \(edges.count),
-          "edges": \(edgesJson),
-          "pageInfo": {
-            "__typename": "PageInfo",
-            "hasNextPage": \(String(hasNextPage)),
-            "endCursor": \(hasNextPage ? "\"\(cursors?.upperBound ?? 0)\"" : "null"),
-            "hasPreviousPage": false,
-            "startCursor": "1"
-          }
-        }
-      }
-    }
-    """)
-
-    return result
-  }
-
-  private func projectEdgeJSON(
-    cursor: String,
-    projectName: String = UUID().uuidString
-  ) -> String {
-    """
-    {
-      "__typename": "PledgeProjectOverviewItemEdge",
-      "cursor": "\(cursor)",
-      "node": \(self.projectNodeJSON(projectName: projectName))
-    }
-    """
-  }
-
-  private func projectNodeJSON(
-    projectName: String = UUID().uuidString
-  ) -> String {
-    """
-    {
-      "__typename": "PledgeProjectOverviewItem",
-      "backing": {
-        "__typename": "Backing",
-        "id": "\(encodeToBase64("Backing-43"))",
-        "amount": {
-          "__typename": "Money",
-          "amount": "1.0",
-          "currency": "USD",
-          "symbol": "$"
-        },
-        "deliveryAddress": null,
-        "clientSecret": null,
-        "backerCompleted": false,
-        "backingDetailsPageRoute": "fake-backings-route",
-        "project": {
-          "__typename": "Project",
-          "creator": {
-            "__typename": "User",
-            "email": null,
-            "id": "\(UUID().uuidString)",
-            "name": "\(UUID().uuidString)",
-            "createdProjects": {
-              "__typename": "UserCreatedProjectsConnection",
-              "totalCount": 1
-            }
-          },
-          "image": {
-            "__typename": "Photo",
-            "id": "\(UUID().uuidString)",
-            "url": "https://i-dev.kickstarter.com/assets/x"
-          },
-          "name": "\(projectName)",
-          "pid": 999498397,
-          "slug": "2071399561/ppo-failed-payment-0",
-
-          "addOns": {
-            "__typename": "ProjectRewardConnection",
-            "totalCount": 0
-          },
-          "backersCount": 0,
-          "backing": {
-            "__typename": "Backing",
-            "id": "\(UUID().uuidString)"
-          },
-          "category": {
-            "__typename": "Category",
-            "analyticsName": "\(UUID().uuidString)",
-            "parentCategory": null
-          },
-          "commentsCount": 0,
-          "country": {
-            "__typename": "Country",
-            "code": "us"
-          },
-
-          "currency": "USD",
-
-          "deadlineAt": "2024-11-16T03:44:39+0000",
-
-          "fxRate": 1.0,
-          "goal": {
-            "__typename": "Money",
-            "amount": 42
-          },
-
-          "isInPostCampaignPledgingPhase": false,
-          "isWatched": false,
-          "isPrelaunchActivated": false,
-
-          "launchedAt": "2024-10-16T03:44:39+0000",
-
-          "percentFunded": 1,
-
-          "pledged": {
-            "__typename": "Money",
-            "amount": 0
-          },
-          "posts": {
-            "__typename": "PostConnection",
-            "totalCount": 0
-          },
-          "postCampaignPledgingEnabled": false,
-          "projectTags": [],
-          "rewards": {
-            "__typename": "ProjectRewardConnection",
-            "totalCount": 0
-          },
-          "state": "finished",
-          "usdExchangeRate": 1.0,
-          "video": null
-        }
-      },
-      "flags": [
-        {
-          "__typename": "PledgedProjectsOverviewPledgeFlags",
-          "icon": "alert",
-          "message": "Payment failed",
-          "type": "alert"
-        },
-        {
-          "__typename": "PledgedProjectsOverviewPledgeFlags",
-          "icon": "time",
-          "message": "Pledge will be dropped in 0 days",
-          "type": "alert"
-        }
-      ],
-
-      "tierType": "Tier1PaymentFailed",
-      "webviewUrl": null,
-      "showShippingAddress": false,
-      "showEditAddressAction": false,
-      "showRewardReceivedToggle": false
-    }
-    """
   }
 }

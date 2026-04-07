@@ -110,8 +110,8 @@
 
     fileprivate let publishUpdateError: ErrorEnvelope?
 
-    fileprivate let fetchBackerSavedProjectsResponse: FetchProjectsEnvelope?
-    fileprivate let fetchBackerBackedProjectsResponse: FetchProjectsEnvelope?
+    fileprivate let fetchBackerSavedProjectsResponse: GraphAPI.FetchMySavedProjectsQuery.Data?
+    fileprivate let fetchBackerBackedProjectsResponse: GraphAPI.FetchMyBackedProjectsQuery.Data?
 
     fileprivate let fetchProjectAndBackingResult:
       Result<ProjectAndBackingEnvelope, ErrorEnvelope>?
@@ -280,8 +280,8 @@
       fetchActivitiesError: ErrorEnvelope? = nil,
       fetchBackingResponse: Backing = .template,
       backingUpdate: Backing = .template,
-      fetchBackerSavedProjectsResponse: FetchProjectsEnvelope? = nil,
-      fetchBackerBackedProjectsResponse: FetchProjectsEnvelope? = nil,
+      fetchBackerSavedProjectsResponse: GraphAPI.FetchMySavedProjectsQuery.Data? = nil,
+      fetchBackerBackedProjectsResponse: GraphAPI.FetchMyBackedProjectsQuery.Data? = nil,
       fetchGraphCategoryResult: Result<CategoryEnvelope, ErrorEnvelope>? = nil,
       fetchGraphCategoriesResult: Result<RootCategoriesEnvelope, ErrorEnvelope>? = nil,
       fetchCommentsResponse _: [ActivityComment]? = nil,
@@ -1280,7 +1280,7 @@
     public func fetchSavedProjects(
       cursor _: String? = nil,
       limit _: Int? = nil
-    ) -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
+    ) -> SignalProducer<GraphAPI.FetchMySavedProjectsQuery.Data, ErrorEnvelope> {
       guard let result = self.fetchBackerSavedProjectsResponse else {
         return .empty
       }
@@ -1291,7 +1291,7 @@
       cursor _: String? = nil,
       limit _: Int? = nil
     ) -> SignalProducer<
-      FetchProjectsEnvelope,
+      GraphAPI.FetchMyBackedProjectsQuery.Data,
       ErrorEnvelope
     > {
       guard let result = self.fetchBackerBackedProjectsResponse else {

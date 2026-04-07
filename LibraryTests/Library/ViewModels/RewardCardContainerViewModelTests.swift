@@ -691,6 +691,65 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonTitleText.assertLastValue("Not available in selected country")
   }
 
+  func testPledgeButtonTitle_RestrictedShipping_invalidLocation_backingThisReward() {
+    let shipsToUSAReward = Reward.shipsToUSAReward
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+
+    let backing = Backing.template
+      |> Backing.lens.rewardId .~ shipsToUSAReward.id
+      |> Backing.lens.reward .~ shipsToUSAReward
+
+    let project = Project.template
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.rewardData.rewards .~ [shipsToUSAReward]
+      |> Project.lens.rewardData.addOns .~ nil
+
+    let data = RewardCardViewData(
+      project: project,
+      reward: shipsToUSAReward,
+      context: .pledge,
+      currentShippingLocation: .australia
+    )
+
+    self.vm.inputs.configureWith(data: data)
+
+    self.pledgeButtonEnabled.assertLastValue(true)
+    self.pledgeButtonTitleText.assertLastValue("Continue")
+  }
+
+  func testPledgeButtonTitle_RestrictedShipping_invalidLocation_backingAnotherReward() {
+    let anotherReward = Reward.template
+      |> Reward.lens.id .~ 1
+    let shipsToUSAReward = Reward.shipsToUSAReward
+      |> Reward.lens.id .~ 2
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+
+    let backing = Backing.template
+      |> Backing.lens.rewardId .~ anotherReward.id
+      |> Backing.lens.reward .~ anotherReward
+
+    let project = Project.template
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.rewardData.rewards .~ [shipsToUSAReward, anotherReward]
+      |> Project.lens.rewardData.addOns .~ nil
+
+    let data = RewardCardViewData(
+      project: project,
+      reward: shipsToUSAReward,
+      context: .pledge,
+      currentShippingLocation: .australia
+    )
+
+    self.vm.inputs.configureWith(data: data)
+
+    self.pledgeButtonEnabled.assertLastValue(false)
+    self.pledgeButtonTitleText.assertLastValue("Not available in selected country")
+  }
+
   func testPledgeButtonTitle_DigitalReward_noLocation() {
     let digitalReward = Reward.digitalReward
       |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)

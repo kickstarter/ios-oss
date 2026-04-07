@@ -1,8 +1,21 @@
 import Foundation
+import GraphAPI
 import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+
+public enum ProfileProjectsType: Decodable {
+  case backed
+  case saved
+
+  var trackingString: String {
+    switch self {
+    case .backed: return "backed"
+    case .saved: return "saved"
+    }
+  }
+}
 
 public protocol BackerDashboardProjectsViewModelInputs {
   /// Call to configure with the ProfileProjectsType to display.
@@ -12,7 +25,7 @@ public protocol BackerDashboardProjectsViewModelInputs {
   func currentUserUpdated()
 
   /// Call when a project cell is tapped.
-  func projectTapped(_ project: Project)
+  func projectTapped(_ project: ProjectCardProperties)
 
   /// Call when pull-to-refresh is invoked.
   func refresh()
@@ -32,7 +45,7 @@ public protocol BackerDashboardProjectsViewModelOutputs {
   var emptyStateIsVisible: Signal<(Bool, ProfileProjectsType), Never> { get }
 
   /// Emits the project, projects, and ref tag when should go to project page.
-  var goToProject: Signal<(Project, RefTag), Never> { get }
+  var goToProject: Signal<(ProjectCardProperties, RefTag), Never> { get }
 
   /// Emits when the pull-to-refresh control is refreshing or not.
   var isRefreshing: Signal<Bool, Never> { get }
@@ -41,7 +54,7 @@ public protocol BackerDashboardProjectsViewModelOutputs {
   var isLoadingNextPage: Signal<Bool, Never> { get }
 
   /// Emits a list of projects for the tableview datasource.
-  var projects: Signal<[Project], Never> { get }
+  var projects: Signal<[ProjectCardProperties], Never> { get }
 }
 
 public protocol BackerDashboardProjectsViewModelType {
@@ -80,35 +93,85 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
       .map { row, total in total > 5 && row >= total - 3 }
       .skipRepeats()
       .filter(isTrue)
+
+    let isCloseToBottomWith = projectsType.takeWhen(isCloseToBottom)
+
+    // MARK: Paginate backed projects
+
+    let requestFirstPageBackedProjects = requestFirstPageWith
+      .filter { $0 == .backed }
+
+    let backedProjectsIsCloseToBottom = isCloseToBottomWith
+      .filter { $0 == .backed }
       .ignoreValues()
 
-    let isLoading: Signal<Bool, Never>
-    (self.projects, isLoading, _, _) = paginate(
-      requestFirstPageWith: requestFirstPageWith,
-      requestNextPageWhen: isCloseToBottom,
+    let isLoadingBackedProjects: Signal<Bool, Never>
+    let backedProjectFragments: Signal<[ProjectCardFragment], Never>
+    (backedProjectFragments, isLoadingBackedProjects, _, _) = paginate(
+      requestFirstPageWith: requestFirstPageBackedProjects,
+      requestNextPageWhen: backedProjectsIsCloseToBottom,
       clearOnNewRequest: false,
       skipRepeats: false,
-      valuesFromEnvelope: { (envelope: FetchProjectsEnvelope) -> [Project] in
-        envelope.projects
+      valuesFromEnvelope: { (data: GraphAPI.FetchMyBackedProjectsQuery.Data) -> [ProjectCardFragment] in
+        data.projects?.nodes?.compactMap { $0?.fragments.projectCardFragment } ?? []
       },
-      cursorFromEnvelope: { (envelope: FetchProjectsEnvelope) -> (ProfileProjectsType, String?) in
-        (envelope.type, envelope.cursor)
-      },
-      requestFromParams: { projectType in
-        if projectType == .backed {
-          return AppEnvironment.current.apiService.fetchBackedProjects(cursor: nil, limit: 20)
-        } else {
-          return AppEnvironment.current.apiService.fetchSavedProjects(cursor: nil, limit: 20)
+      cursorFromEnvelope: { (data: GraphAPI.FetchMyBackedProjectsQuery.Data) -> String? in
+        if let pageInfo = data.projects?.pageInfo, pageInfo.hasNextPage {
+          return pageInfo.endCursor
         }
+        return nil
       },
-      requestFromCursor: { projectType, cursor in
-        if projectType == .backed {
-          return AppEnvironment.current.apiService.fetchBackedProjects(cursor: cursor, limit: 20)
-        } else {
-          return AppEnvironment.current.apiService.fetchSavedProjects(cursor: cursor, limit: 20)
-        }
+      requestFromParams: { _ in
+        AppEnvironment.current.apiService.fetchBackedProjects(cursor: nil, limit: 20)
+      },
+      requestFromCursor: { cursor in
+        AppEnvironment.current.apiService.fetchBackedProjects(cursor: cursor, limit: 20)
       }
     )
+
+    // MARK: Paginate saved projects
+
+    let requestFirstPageSavedProjects = requestFirstPageWith
+      .filter { $0 == .saved }
+
+    let savedProjectsIsCloseToBottom = isCloseToBottomWith
+      .filter { $0 == .saved }
+      .ignoreValues()
+
+    let isLoadingSavedProjects: Signal<Bool, Never>
+    let savedProjectFragments: Signal<[ProjectCardFragment], Never>
+    (savedProjectFragments, isLoadingSavedProjects, _, _) = paginate(
+      requestFirstPageWith: requestFirstPageSavedProjects,
+      requestNextPageWhen: savedProjectsIsCloseToBottom,
+      clearOnNewRequest: false,
+      skipRepeats: false,
+      valuesFromEnvelope: { (data: GraphAPI.FetchMySavedProjectsQuery.Data) -> [ProjectCardFragment] in
+        data.projects?.nodes?.compactMap { $0?.fragments.projectCardFragment } ?? []
+      },
+      cursorFromEnvelope: { (data: GraphAPI.FetchMySavedProjectsQuery.Data) -> String? in
+        if let pageInfo = data.projects?.pageInfo, pageInfo.hasNextPage {
+          return pageInfo.endCursor
+        }
+        return nil
+      },
+      requestFromParams: { _ in
+        AppEnvironment.current.apiService.fetchSavedProjects(cursor: nil, limit: 20)
+      },
+      requestFromCursor: { cursor in
+        AppEnvironment.current.apiService.fetchSavedProjects(cursor: cursor, limit: 20)
+      }
+    )
+
+    // MARK: Recombine backed and saved projects
+
+    let isLoading = Signal.merge(isLoadingSavedProjects, isLoadingBackedProjects)
+
+    self.projects = Signal.merge(backedProjectFragments, savedProjectFragments)
+      .map { fragments in
+        fragments.compactMap { fragment in
+          ProjectCardProperties(fragment)
+        }
+      }
 
     let latestLoadingWasRefresh = Signal.merge(
       userUpdatedProjectCount.mapConst(true),
@@ -150,7 +213,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
 
         AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
           page: .profile,
-          project: project,
+          project: project.projectAnalytics,
           location: .accountMenu,
           section: sectionContext
         )
@@ -168,8 +231,8 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     self.currentUserUpdatedProperty.value = ()
   }
 
-  private let projectTappedProperty = MutableProperty<Project?>(nil)
-  public func projectTapped(_ project: Project) {
+  private let projectTappedProperty = MutableProperty<ProjectCardProperties?>(nil)
+  public func projectTapped(_ project: ProjectCardProperties) {
     self.projectTappedProperty.value = project
   }
 
@@ -194,10 +257,10 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
   }
 
   public let emptyStateIsVisible: Signal<(Bool, ProfileProjectsType), Never>
-  public let goToProject: Signal<(Project, RefTag), Never>
+  public let goToProject: Signal<(ProjectCardProperties, RefTag), Never>
   public let isRefreshing: Signal<Bool, Never>
   public let isLoadingNextPage: Signal<Bool, Never>
-  public let projects: Signal<[Project], Never>
+  public let projects: Signal<[ProjectCardProperties], Never>
 
   public var inputs: BackerDashboardProjectsViewModelInputs { return self }
   public var outputs: BackerDashboardProjectsViewModelOutputs { return self }

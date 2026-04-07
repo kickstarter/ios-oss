@@ -8,6 +8,7 @@ fragment PPOBackingFragment on Backing {
   project {
     ...PPOProjectFragment
     ...ProjectAnalyticsFragment
+    ...ProjectCardFragment
   }
   
   backerCompleted

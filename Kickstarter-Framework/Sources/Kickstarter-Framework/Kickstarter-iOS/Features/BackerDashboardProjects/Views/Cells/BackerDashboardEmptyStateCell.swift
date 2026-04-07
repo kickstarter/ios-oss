@@ -43,6 +43,7 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
       )
       self.animateToFilledHeart()
     }
+    self.titleLabel.numberOfLines = 0
   }
 
   @objc internal func animateToFilledHeart() {

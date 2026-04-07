@@ -114,8 +114,6 @@ public struct ColorsView: View {
     LegacyColors.Tags.Success.foreground,
     LegacyColors.Tags.Warn.background,
     LegacyColors.Tags.Warn.foreground,
-    LegacyColors.Tags.Error.background,
-    LegacyColors.Tags.Error.foreground,
     LegacyColors.Background.search,
     LegacyColors.Buttons.blue
   ]

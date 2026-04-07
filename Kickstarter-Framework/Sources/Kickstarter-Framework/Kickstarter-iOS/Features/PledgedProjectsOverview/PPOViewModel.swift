@@ -33,7 +33,7 @@ enum PPOPreparedEvent: Equatable {
   case fix3DSChallenge(clientSecret: String, onProgress: (PPOActionState) -> Void)
   case survey(url: String)
   case openPledgeManager(url: String)
-  case projectDetails(projectId: Int)
+  case projectDetails(param: ProjectPageParam)
   case editAddress(url: String)
   case confirmAddress(
     backingId: String,
@@ -52,8 +52,8 @@ enum PPOPreparedEvent: Equatable {
       return lhsUrl == rhsUrl
     case let (.openPledgeManager(lhsUrl), .openPledgeManager(rhsUrl)):
       return lhsUrl == rhsUrl
-    case let (.projectDetails(lhsId), .projectDetails(rhsId)):
-      return lhsId == rhsId
+    case let (.projectDetails(lhsParam), .projectDetails(rhsParam)):
+      return lhsParam.param == rhsParam.param
     case let (.editAddress(lhsUrl), .editAddress(rhsUrl)):
       return lhsUrl == rhsUrl
     case let (.contactCreator(lhsSubject), .contactCreator(rhsSubject)):
@@ -269,8 +269,8 @@ final class PPOViewModel: ObservableObject, PPOViewModelInputs, PPOViewModelOutp
     switch event {
     case let .editAddress(url):
       return PPOPreparedEvent.editAddress(url: url)
-    case .viewProjectDetails:
-      return PPOPreparedEvent.projectDetails(projectId: cardModel.projectId)
+    case let .viewProjectDetails(projectPageParam):
+      return PPOPreparedEvent.projectDetails(param: projectPageParam)
     case .sendMessage:
       let messageSubject = MessageSubject.project(
         id: cardModel.projectId,
