@@ -1,3 +1,4 @@
+@testable import ServerDrivenUI
 import Testing
 
 @Suite("RichTextElement.HeaderLevel parsing")
