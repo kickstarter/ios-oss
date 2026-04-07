@@ -36,6 +36,8 @@ public struct RichTextView: View {
           self.unimplemented("Oembed")
         case .listItemOpen, .listItemClose:
           Group {}
+        case .unknown:
+          EmptyView()
         }
       }
     }
