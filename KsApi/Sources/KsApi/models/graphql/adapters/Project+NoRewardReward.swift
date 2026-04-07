@@ -4,6 +4,7 @@ import Prelude
 extension Reward {
   /**
    This is a consequence of the no-reward reward being returned on v1 but not in GQL. We have to create and insert the reward ourself to get the same behavior.
+   See PR #1616 for the original commentary.
    */
   public static func noRewardReward(from fragment: GraphAPI.NoRewardRewardFragment) -> Reward {
     let projectMinimumPledgeAmount: Int = fragment.minPledge
