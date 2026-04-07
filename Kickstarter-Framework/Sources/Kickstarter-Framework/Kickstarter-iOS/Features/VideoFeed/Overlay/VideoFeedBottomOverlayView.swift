@@ -3,7 +3,7 @@ import Library
 import SwiftUI
 
 /// Bottom overlay content for the video feed cell.
-/// Contains the pill badges, title, stats text, CTA button, and progress bar.
+/// Contains the pill badges, title, stats text, CTA button, video progress bar, and percent funded circle.
 /// Used in `VideoFeedOverlayView`.
 struct VideoFeedBottomOverlayView: View {
   private enum Constants {
@@ -20,8 +20,18 @@ struct VideoFeedBottomOverlayView: View {
   var body: some View {
     VStack(alignment: .leading, spacing: Constants.contentSpacing) {
       self.pills
-      self.titleText
-      self.statsText
+
+      HStack(alignment: .top, spacing: Constants.contentSpacing) {
+        VStack(alignment: .leading, spacing: Constants.contentSpacing) {
+          self.titleText
+          self.statsText
+        }
+
+        Spacer()
+
+        // TODO: Use the percentFunded value retreieved from the backend.
+        FundedPercentageCircleView(fundedPercent: 1.0)
+      }
       self.ctaButton
       self.progressBar
     }
