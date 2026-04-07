@@ -4,6 +4,7 @@ import Library
 import MessageUI
 import Prelude
 import SafariServices
+import ServerDrivenUI
 import SwiftUI
 import UIKit
 
@@ -203,12 +204,24 @@ internal final class BetaToolsViewController: UITableViewController {
     self.navigationController?.pushViewController(viewController, animated: true)
   }
 
+  @ViewBuilder private func richTextView(
+    for project: RichTextExampleProjectsViewModel
+      .ProjectItem
+  ) -> some View {
+    ScrollView {
+      RichTextView(element: project.richText.asRichTextElements())
+    }
+    .navigationTitle(project.name)
+  }
+
   private func goToRichTextExample() {
-    let view = RichTextExampleProjectsView(onSelectProject: { [weak self] project in
-      let detail = UIHostingController(rootView: Text(project.name))
-      self?.navigationController?.pushViewController(detail, animated: true)
-    })
-    let viewController = UIHostingController(rootView: view)
+    let viewController = UIHostingController(
+      rootView: RichTextExampleProjectsView(onSelectProject: { [weak self] project in
+        guard let self else { return }
+        let detail = UIHostingController(rootView: self.richTextView(for: project))
+        self.navigationController?.pushViewController(detail, animated: true)
+      })
+    )
     self.navigationController?.pushViewController(viewController, animated: true)
   }
 
