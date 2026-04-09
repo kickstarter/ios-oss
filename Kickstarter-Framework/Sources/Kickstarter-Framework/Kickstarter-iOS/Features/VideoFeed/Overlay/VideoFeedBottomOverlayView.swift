@@ -89,7 +89,7 @@ private struct FeedPillView: View {
 
   var body: some View {
     HStack(spacing: Constants.iconSpacing) {
-      if let icon = Library.image(named: self.icon, inBundle: Bundle.main) {
+      if let icon = Library.image(named: self.icon) {
         Image(uiImage: icon)
           .resizable()
           .frame(width: Constants.iconSize, height: Constants.iconSize)

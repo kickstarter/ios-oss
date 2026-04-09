@@ -23,7 +23,12 @@ final class VideoFeedViewControllerTests: TestCase {
     ).forEach {
       language, device in
 
-      withEnvironment(language: language) {
+      let appBundle = Bundle(identifier: KickstarterBundleIdentifier.debug.rawValue) ?? Bundle.main
+
+      withEnvironment(
+        language: language,
+        mainBundle: MockBundle(bundleIdentifier: appBundle.bundleIdentifier)
+      ) {
         let cell = VideoFeedCell(frame: CGRect(
           x: 0,
           y: 0,
