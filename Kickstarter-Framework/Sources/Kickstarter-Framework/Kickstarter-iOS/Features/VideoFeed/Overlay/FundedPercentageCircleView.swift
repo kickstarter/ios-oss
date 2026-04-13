@@ -79,7 +79,6 @@ struct FundedPercentageCircleView: View {
         .font(Font(UIFont.ksr_caption2()).bold())
         .foregroundColor(Color(Colors.Text.light.uiColor()))
         .monospacedDigit()
-        .minimumScaleFactor(0.5)
         .lineLimit(1)
     }
   }
