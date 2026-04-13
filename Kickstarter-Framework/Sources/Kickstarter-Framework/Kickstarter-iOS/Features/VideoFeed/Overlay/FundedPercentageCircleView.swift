@@ -69,7 +69,7 @@ struct FundedPercentageCircleView: View {
     let fundedAmount = Int((self.fundedPercent * 100).rounded())
 
     if fundedAmount >= 100 {
-      if let icon = Library.image(named: Constants.checkmarkIcon, inBundle: Bundle.main) {
+      if let icon = Library.image(named: Constants.checkmarkIcon) {
         Image(uiImage: icon.withRenderingMode(.alwaysTemplate))
           .font(.system(size: Constants.checkmarkIconSize, weight: .semibold))
           .foregroundColor(Color(Colors.Icon.light.uiColor()))
