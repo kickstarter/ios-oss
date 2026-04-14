@@ -3,7 +3,7 @@ import Library
 import SwiftUI
 
 /// Bottom overlay content for the video feed cell.
-/// Contains the pill badges, title, stats text, CTA button, and progress bar.
+/// Contains the pill badges, title, stats text, CTA button, video progress bar, and percent funded circle.
 /// Used in `VideoFeedOverlayView`.
 struct VideoFeedBottomOverlayView: View {
   private enum Constants {
@@ -20,8 +20,18 @@ struct VideoFeedBottomOverlayView: View {
   var body: some View {
     VStack(alignment: .leading, spacing: Constants.contentSpacing) {
       self.pills
-      self.titleText
-      self.statsText
+
+      HStack(alignment: .top, spacing: Constants.contentSpacing) {
+        VStack(alignment: .leading, spacing: Constants.contentSpacing) {
+          self.titleText
+          self.statsText
+        }
+
+        Spacer()
+
+        // TODO: Use the percentFunded value retreieved from the backend.
+        FundedPercentageCircleView(fundedPercent: 1.0)
+      }
       self.ctaButton
       self.progressBar
     }
@@ -101,39 +111,13 @@ private struct FeedPillView: View {
     }
     .padding(.horizontal, Constants.horizontalPadding)
     .padding(.vertical, Constants.verticalPadding)
-    .background(FrostedGlassBackground().opacity(Constants.opacity))
+    .background(FrostedGlassBackgroundView().opacity(Constants.opacity))
     .overlay(
       RoundedRectangle(cornerRadius: Constants.cornerRadius)
         .strokeBorder(Color.white.opacity(Constants.opacity), lineWidth: Constants.borderWidth)
     )
     .clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius))
   }
-}
-
-/// Custom frosted glass background view.
-private struct FrostedGlassBackground: UIViewRepresentable {
-  private enum Constants {
-    static let blurRadius: CGFloat = 6.05
-    static let overlayRed: CGFloat = 132 / 255
-    static let overlayGreen: CGFloat = 132 / 255
-    static let overlayBlue: CGFloat = 132 / 255
-    static let overlayAlpha: CGFloat = 0.24
-  }
-
-  func makeUIView(context _: Context) -> UIVisualEffectView {
-    let blur = UIBlurEffect(style: .systemUltraThinMaterial)
-    let view = UIVisualEffectView(effect: blur)
-
-    view.backgroundColor = UIColor(
-      red: Constants.overlayRed,
-      green: Constants.overlayGreen,
-      blue: Constants.overlayBlue,
-      alpha: Constants.overlayAlpha
-    )
-    return view
-  }
-
-  func updateUIView(_: UIVisualEffectView, context _: Context) {}
 }
 
 private struct CTAButtonStyle: SwiftUI.ButtonStyle {
