@@ -66,7 +66,7 @@ struct FundedPercentageCircleView: View {
 
   @ViewBuilder
   private var PercentFundedAmount: some View {
-    let fundedAmount = Int((self.fundedPercent * 100).rounded())
+    let fundedAmount = Int(self.fundedPercent * 100)
 
     if fundedAmount >= 100 {
       if let icon = Library.image(named: Constants.checkmarkIcon) {
