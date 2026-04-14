@@ -1,7 +1,7 @@
 import KDS
 import UIKit
 
-/// Full-screen swipeable video feed
+/// Full-screen swipeable video feed.
 ///   - Full-screen paging
 ///   - Plain data source driven by VideoFeedViewModel
 final class VideoFeedViewController: UIViewController {
@@ -80,5 +80,44 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     sizeForItemAt _: IndexPath
   ) -> CGSize {
     collectionView.bounds.size
+  }
+
+  func collectionView(
+    _: UICollectionView,
+    willDisplay cell: UICollectionViewCell,
+    forItemAt indexPath: IndexPath
+  ) {
+    guard let cell = cell as? VideoFeedCell else { return }
+
+    let items = self.viewModel.items
+
+    guard indexPath.item < items.count else { return }
+
+    let item = items[indexPath.item]
+
+    cell.onCreatorTapped = { [weak self] in
+      self?.simpleAlert(title: "Creator")
+    }
+    cell.onSaveTapped = { [weak self] in
+      self?.simpleAlert(title: "Saved")
+    }
+    cell.onShareTapped = { [weak self] in
+      self?.simpleAlert(title: "Share")
+    }
+    cell.onMoreTapped = { [weak self] in
+      self?.simpleAlert(title: "More")
+    }
+
+    /// Re-configure after wiring callbacks so SwiftUI picks up the closures.
+    cell.configureWith(value: item)
+  }
+
+  // MARK: - Helpers
+
+  private func simpleAlert(title: String) {
+    let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
+    alert.addAction(UIAlertAction(title: "OK", style: .default))
+
+    self.present(alert, animated: true)
   }
 }
