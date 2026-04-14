@@ -1,0 +1,111 @@
+import KDS
+import Library
+import SwiftUI
+
+/// Used inside `VideoFeedOverlayView`.
+/// Contains the creator avatar, save, share, and more (…) buttons.
+struct VideoFeedRightRailView: View {
+  private enum Constants {
+    static let railSpacing: CGFloat = 20
+    static let moreButtonSize: CGFloat = 44
+    static let saveCountLabel = "1k" // TODO: Replace with real save count from backend
+    static let shareCountLabel = "50" // TODO: Replace with real share count from backend
+    static let avatarSize: CGFloat = 44
+
+    static let saveSystemImage = "bookmark"
+    static let shareSystemImage = "arrowshape.turn.up.right"
+    static let moreSystemImage = "ellipsis"
+
+    /// Accessibility
+    // TODO: Update with Video Feed Translations [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
+    static let creatorAccessibilityLabel = "FPO: Creator"
+    static let saveAccessibilityLabel = "FPO: Save"
+    static let shareAccessibilityLabel = "FPO: Share"
+    static let moreAccessibilityLabel = "FPO: More"
+  }
+
+  let item: VideoFeedItem
+
+  var onCreatorTapped: (() -> Void)?
+  var onSaveTapped: (() -> Void)?
+  var onShareTapped: (() -> Void)?
+  var onMoreTapped: (() -> Void)?
+
+  var body: some View {
+    VStack(spacing: Constants.railSpacing) {
+      self.creatorAvatar
+      self.saveButton
+      self.shareButton
+      self.moreButton
+    }
+  }
+
+  // MARK: - Buttons
+
+  private var creatorAvatar: some View {
+    Button(action: { self.onCreatorTapped?() }) {
+      // TODO: Replace with actual creator image url from backend
+      self.avatarPlaceholder
+        .frame(width: Constants.avatarSize, height: Constants.avatarSize)
+        .clipShape(Circle())
+    }
+    .accessibilityLabel(Constants.creatorAccessibilityLabel)
+  }
+
+  private var avatarPlaceholder: some View {
+    Color(Colors.Text.placeholder.uiColor())
+  }
+
+  private var saveButton: some View {
+    RailButtonView(systemImage: Constants.saveSystemImage, label: Constants.saveCountLabel) {
+      self.onSaveTapped?()
+    }
+    .accessibilityLabel(Constants.saveAccessibilityLabel)
+  }
+
+  private var shareButton: some View {
+    RailButtonView(systemImage: Constants.shareSystemImage, label: Constants.saveCountLabel) {
+      self.onShareTapped?()
+    }
+    .accessibilityLabel(Constants.shareAccessibilityLabel)
+  }
+
+  private var moreButton: some View {
+    Button(action: { self.onMoreTapped?() }) {
+      Image(systemName: Constants.moreSystemImage)
+        .foregroundColor(.white)
+        .frame(width: Constants.moreButtonSize, height: Constants.moreButtonSize)
+    }
+    .accessibilityLabel(Constants.moreAccessibilityLabel)
+  }
+}
+
+// MARK: - RailButtonView
+
+/// Icon + optional count label stacked vertically.
+private struct RailButtonView: View {
+  private enum Constants {
+    static let buttonSize: CGFloat = 44
+    static let labelSpacing: CGFloat = 4
+  }
+
+  let systemImage: String
+  let label: String
+  let action: () -> Void
+
+  var body: some View {
+    VStack(spacing: Constants.labelSpacing) {
+      Button(action: self.action) {
+        Image(systemName: self.systemImage)
+          .foregroundColor(.white)
+          .frame(width: Constants.buttonSize, height: Constants.buttonSize)
+      }
+
+      if !self.label.isEmpty {
+        Text(self.label)
+          .font(Font(UIFont.ksr_caption1()))
+          .foregroundColor(Color(Colors.Text.light.uiColor()))
+      }
+    }
+  }
+}
