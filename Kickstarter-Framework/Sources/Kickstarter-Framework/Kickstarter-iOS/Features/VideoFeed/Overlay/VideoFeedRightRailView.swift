@@ -12,9 +12,9 @@ struct VideoFeedRightRailView: View {
     static let shareCountLabel = "50" // TODO: Replace with real share count from backend
     static let avatarSize: CGFloat = 44
 
-    static let saveSystemImage = "bookmark"
-    static let shareSystemImage = "arrowshape.turn.up.right"
-    static let moreSystemImage = "ellipsis"
+    static let saveIcon = "video-feed-bookmark-icon"
+    static let shareIcon = "video-feed-share-icon"
+    static let moreIcon = "video-feed-ellipsis-icon"
 
     /// Accessibility
     // TODO: Update with Video Feed Translations [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
@@ -57,14 +57,14 @@ struct VideoFeedRightRailView: View {
   }
 
   private var saveButton: some View {
-    RailButtonView(systemImage: Constants.saveSystemImage, label: Constants.saveCountLabel) {
+    RailButtonView(imageName: Constants.saveIcon, label: Constants.saveCountLabel) {
       self.onSaveTapped?()
     }
     .accessibilityLabel(Constants.saveAccessibilityLabel)
   }
 
   private var shareButton: some View {
-    RailButtonView(systemImage: Constants.shareSystemImage, label: Constants.saveCountLabel) {
+    RailButtonView(imageName: Constants.shareIcon, label: Constants.shareCountLabel) {
       self.onShareTapped?()
     }
     .accessibilityLabel(Constants.shareAccessibilityLabel)
@@ -72,9 +72,11 @@ struct VideoFeedRightRailView: View {
 
   private var moreButton: some View {
     Button(action: { self.onMoreTapped?() }) {
-      Image(systemName: Constants.moreSystemImage)
-        .foregroundColor(.white)
-        .frame(width: Constants.moreButtonSize, height: Constants.moreButtonSize)
+      if let icon = Library.image(named: Constants.moreIcon) {
+        Image(uiImage: icon)
+          .foregroundColor(.white)
+          .frame(width: Constants.moreButtonSize, height: Constants.moreButtonSize)
+      }
     }
     .accessibilityLabel(Constants.moreAccessibilityLabel)
   }
@@ -89,16 +91,18 @@ private struct RailButtonView: View {
     static let labelSpacing: CGFloat = 4
   }
 
-  let systemImage: String
+  let imageName: String
   let label: String
   let action: () -> Void
 
   var body: some View {
     VStack(spacing: Constants.labelSpacing) {
       Button(action: self.action) {
-        Image(systemName: self.systemImage)
-          .foregroundColor(.white)
-          .frame(width: Constants.buttonSize, height: Constants.buttonSize)
+        if let icon = Library.image(named: self.imageName) {
+          Image(uiImage: icon)
+            .foregroundColor(.white)
+            .frame(width: Constants.buttonSize, height: Constants.buttonSize)
+        }
       }
 
       if !self.label.isEmpty {
