@@ -23,6 +23,7 @@ let package = Package(
     .package(name: "KDS", path: "../KDS"),
     .package(name: "GraphAPI", path: "../GraphAPI"),
     .package(name: "KsApi", path: "../KsApi"),
+    .package(name: "Library", path: "../Library"),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.18.6")
   ],
   targets: [
@@ -46,6 +47,7 @@ let package = Package(
       dependencies: [
         "ServerDrivenUI",
         "ServerDrivenUITestHelpers",
+        .product(name: "LibraryTestHelpers", package: "Library"),
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
       ]
     )

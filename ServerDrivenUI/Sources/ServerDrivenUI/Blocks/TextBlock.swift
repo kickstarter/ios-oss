@@ -5,20 +5,22 @@ struct TextBlock: View {
   var text: RichTextElement.Text
   var header: RichTextElement.HeaderLevel?
   @Environment(\.richTextStyle) var style: any RichTextStyle
+  @Environment(\.dynamicTypeSize) var dynamicTypeSize
 
   private func font(for header: RichTextElement.HeaderLevel?) -> Font {
-    switch header {
+    let baseFont = switch header {
     case .none:
-      return self.style.bodyFont
+      self.style.bodyFont
     case .some(.one):
-      return self.style.heading1Font
+      self.style.heading1Font
     case .some(.two):
-      return self.style.heading2Font
+      self.style.heading2Font
     case .some(.three):
-      return self.style.heading3Font
+      self.style.heading3Font
     case .some(.four):
-      return self.style.heading4Font
+      self.style.heading4Font
     }
+    return baseFont.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize)
   }
 
   private func color(for header: RichTextElement.HeaderLevel?) -> any AdaptiveColor {
@@ -31,15 +33,6 @@ struct TextBlock: View {
          .some(.four):
       return self.style.headingColor
     }
-  }
-
-  @ViewBuilder private func unimplemented(_ text: String) -> some View {
-    Text("Unimplemented! \(text)")
-      .font(.footnote)
-      .foregroundStyle(Color.red)
-      .frame(maxWidth: .infinity, alignment: .center)
-      .padding()
-      .backgroundStyle(Color.gray)
   }
 
   func attributedText(
@@ -95,8 +88,10 @@ struct TextBlock: View {
 
     Text(attributedString)
       .lineLimit(nil)
+      .fixedSize(horizontal: false, vertical: true)
+      .background(self.style.backgroundColor.swiftUIColor(opacity: 1))
       .foregroundStyle(self.color(for: header).swiftUIColor())
-      .frame(maxWidth: .infinity, alignment: .leading)
+      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
       .accessibilityAddTraits((header != nil) ? .isHeader : .isStaticText)
       .accessibilityElement()
       .accessibilityHeading(accessiblityHeading)
