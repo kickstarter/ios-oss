@@ -3,7 +3,7 @@ import GraphAPI
 
 /// Represents a single block-level element in a RichText list. Used to make implementing
 /// the different views in SwiftUI more easily and with a consistent interface.
-public indirect enum RichTextElement {
+public indirect enum RichTextElement: Sendable {
   case text(Text, HeaderLevel?)
   case listItemOpen
   case listItemClose
@@ -13,13 +13,20 @@ public indirect enum RichTextElement {
   case video(Video)
   case oembed(Oembed)
 
-  public struct Text {
+  public struct Text: Sendable {
     let text: String
     let link: URL?
     let styles: [Style]
     let children: [RichTextElement]
 
-    public enum Style: String {
+    internal init(text: String, link: URL? = nil, styles: [Style] = [], children: [RichTextElement] = []) {
+      self.text = text
+      self.link = link
+      self.styles = styles
+      self.children = children
+    }
+
+    public enum Style: String, Sendable {
       case strong = "STRONG"
       case emphasis = "EMPHASIS"
       case heading1 = "HEADING_1"
@@ -49,7 +56,7 @@ public indirect enum RichTextElement {
     }
   }
 
-  public enum HeaderLevel: String {
+  public enum HeaderLevel: String, Sendable {
     case one = "HEADING_1"
     case two = "HEADING_2"
     case three = "HEADING_3"
@@ -66,28 +73,28 @@ public indirect enum RichTextElement {
     }
   }
 
-  public struct Audio {
+  public struct Audio: Sendable {
     let altText: String?
     let assetID: String?
     let caption: String?
     let url: String?
   }
 
-  public struct Photo {
+  public struct Photo: Sendable {
     let altText: String?
     let assetID: String?
     let caption: String?
     let url: String?
   }
 
-  public struct Video {
+  public struct Video: Sendable {
     let altText: String?
     let assetID: String?
     let caption: String?
     let url: String?
   }
 
-  public struct Oembed {
+  public struct Oembed: Sendable {
     let width: Int
     let height: Int
     let version: String
