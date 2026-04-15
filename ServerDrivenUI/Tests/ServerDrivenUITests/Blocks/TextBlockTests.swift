@@ -6,7 +6,7 @@ import SwiftUI
 import Testing
 
 @MainActor
-@Suite("TextBlock")
+@Suite("TextBlock", .tags(.serverDrivenUI))
 struct TextBlockTests {
   @Test(
     "Test basic text rendering",
@@ -16,17 +16,17 @@ struct TextBlockTests {
       RichTextElement.Text(text: "Hello world"),
       RichTextElement
         .Text(
-          text: "Swift Testing has a clear and expressive API built using macros, so you can declare complex behaviors with a small amount of code. The #expect API uses Swift expressions and operators, and captures the evaluated values so you can quickly understand what went wrong when a test fails. Parameterized tests help you run the same test over a sequence of values so you can write less code. And all tests integrate seamlessly with Swift Concurrency and run in parallel by default."
+          text: "Swift Testing has a clear and expressive API built using macros, so you can declare complex behaviors with a small amount of code."
         )
     ], orthogonalCombos(
       [ /* Color scheme */
         ColorScheme.dark,
         ColorScheme.light
       ], [ /* Content size */
-        DynamicTypeSize.xSmall,
-        DynamicTypeSize.large,
+        DynamicTypeSize.accessibility5,
         DynamicTypeSize.xxxLarge,
-        DynamicTypeSize.accessibility5
+        DynamicTypeSize.large,
+        DynamicTypeSize.xSmall,
       ]
     )
   )
@@ -41,7 +41,7 @@ struct TextBlockTests {
       .environment(\.colorScheme, colorScheme)
       .environment(\.dynamicTypeSize, typeSize)
 
-    assertSnapshot(of: view, as: .image, named: "\(text.text.prefix(10))-\(colorScheme)")
+    assertSnapshot(of: view, as: .image, named: "\(text.text.prefix(10))-\(colorScheme)-\(typeSize)")
   }
 }
 
