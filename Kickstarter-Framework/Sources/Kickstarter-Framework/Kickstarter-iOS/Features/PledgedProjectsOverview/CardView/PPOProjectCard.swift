@@ -88,7 +88,7 @@ struct PPOProjectCard: View {
   @ViewBuilder
   private func projectDetails(leadingColumnWidth: CGFloat) -> some View {
     Button { [weak viewModel] () in
-      viewModel?.eventTriggered(.viewProjectDetails)
+      viewModel?.projectDetailsTapped()
     } label: {
       PPOProjectDetails(
         image: self.viewModel.card.image,

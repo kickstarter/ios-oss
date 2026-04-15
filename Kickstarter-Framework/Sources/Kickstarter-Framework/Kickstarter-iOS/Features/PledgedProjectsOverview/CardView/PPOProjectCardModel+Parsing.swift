@@ -25,6 +25,11 @@ extension PPOProjectCardModel {
     let formattedPledge = pledgeFragment.flatMap { Format.currency($0) }
     let creatorName = ppoProject?.creator?.name
 
+    let projectCardFragment = backing?.project?.fragments.projectCardFragment
+    let projectPageParam = projectCardFragment.flatMap {
+      ProjectCardProperties($0)?.projectPageParam
+    }
+
     // Card-specific webview url is based on the card tier type.
     // Fall back to backingDetailsPageRoute if needed.
     let webviewUrl = card.webviewUrl ?? backing?.backingDetailsPageRoute
@@ -84,7 +89,8 @@ extension PPOProjectCardModel {
         tierType: action.tierType,
         backingId: backingId,
         backingGraphId: backingGraphId,
-        projectAnalytics: projectAnalyticsFragment
+        projectAnalytics: projectAnalyticsFragment,
+        projectPageParam: projectPageParam
       )
     } else {
       return nil

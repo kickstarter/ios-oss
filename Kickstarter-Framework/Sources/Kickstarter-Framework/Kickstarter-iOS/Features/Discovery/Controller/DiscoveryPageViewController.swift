@@ -428,7 +428,10 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
 extension DiscoveryPageViewController: VideoFeedBannerCellDelegate {
   func videoFeedBannerCellDidTapTryItNow(_: VideoFeedBannerCell) {
-    // TODO: present VideoFeedController
+    let nav = UINavigationController(rootViewController: VideoFeedViewController())
+    nav.modalPresentationStyle = .fullScreen
+
+    self.present(nav, animated: true)
   }
 }
 

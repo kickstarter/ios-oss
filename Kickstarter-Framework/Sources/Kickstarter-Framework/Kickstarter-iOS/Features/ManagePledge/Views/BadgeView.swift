@@ -76,7 +76,12 @@ final class BadgeView: UIView {
     self.style = style
 
     if let image = image {
+      // Allow image and text to be of different heights.
+      self.rootStackView.alignment = .center
       self.imageViewSetup(image)
+    } else {
+      // If there's no image, prevent the stack view from stretching.
+      self.rootStackView.alignment = .fill
     }
 
     self.updateStyle()

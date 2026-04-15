@@ -61,12 +61,10 @@ internal final class SearchViewContollerTests: TestCase {
         self.scheduler.run()
       }
 
-      guard let numProjects = GraphAPI.SearchQuery.Data.activeResults.projects?.nodes?.count else {
-        XCTFail("Missing projects data")
-        return
-      }
-
-      let lastIndex = IndexPath(row: numProjects, section: 0)
+      let lastIndex = IndexPath(
+        row: controller.dataSource.numberOfItems(in: SearchDataSource.Section.projects.rawValue) - 1,
+        section: SearchDataSource.Section.projects.rawValue
+      )
 
       // For some reason the scrolling is finicky on iPad, not sure why.
       let scrollPosition: UITableView.ScrollPosition = device == .pad ? .bottom : .top
@@ -240,6 +238,47 @@ internal final class SearchViewContollerTests: TestCase {
           )
         }
       }
+  }
+
+  func testView_VideoFeedBanner() {
+    let searchResponse = [(
+      GraphAPI.SearchQuery.self,
+      GraphAPI.SearchQuery.Data.activeResults
+    )]
+
+    let mockStatsigClient = MockStatsigClient()
+    mockStatsigClient.features = ["video_feed": true]
+
+    // TODO: Update to all languages once translations are in [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
+    orthogonalCombos(
+      [Language.en],
+      [Device.phone5_8inch, Device.pad],
+      [UIUserInterfaceStyle.light, UIUserInterfaceStyle.dark]
+    )
+    .forEach { language, device, interfaceStyle in
+      withEnvironment(
+        apiService: MockService(fetchGraphQLResponses: searchResponse), language: language,
+        statsigClient: mockStatsigClient
+      ) {
+        let controller = Storyboard.Search.instantiate(SearchViewController.self)
+        _ = controller.view
+        controller.viewWillAppear(true)
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+        controller.viewModel.inputs.searchTextChanged("abcdefgh")
+
+        self.scheduler.run()
+
+        let traits = UITraitCollection.init(userInterfaceStyle: interfaceStyle)
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98, traits: traits),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
   }
 
   func testScrollToTop() {

@@ -145,8 +145,8 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       tabBarController?.switchToProfile()
     case .exploreProjects:
       tabBarController?.switchToDiscovery(params: nil)
-    case let .projectDetails(projectId):
-      self.openProjectPage(projectId)
+    case let .projectDetails(param):
+      self.openProjectPage(param)
     case let .editAddress(url), let .survey(url), let .openPledgeManager(url):
       self.openSurvey(url)
     case let .contactCreator(messageSubject):
@@ -185,8 +185,8 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
     self.navigationController?.present(nav, animated: true)
   }
 
-  private func openProjectPage(_ projectId: Int) {
-    let projectParam = Either<Project, any ProjectPageParam>(right: Param.id(projectId))
+  private func openProjectPage(_ param: ProjectPageParam) {
+    let projectParam = Either<Project, any ProjectPageParam>(right: param)
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,
       refInfo: nil

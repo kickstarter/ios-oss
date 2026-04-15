@@ -130,3 +130,31 @@ private func progressBarColorForProject(
     return LegacyColors.ksr_support_300.uiColor()
   }
 }
+
+// MARK: `ProjectCardProperties` extension
+
+// Public class for easy conversions between `ProjectCardProperties` and
+// `ProjectCellModel` protocol conformance.
+public struct ProjectCardPropertiesProjectCellModel: BackerDashboardProjectCellViewModel.ProjectCellModel {
+  public let properties: ProjectCardProperties
+  init(_ properties: ProjectCardProperties) {
+    self.properties = properties
+  }
+
+  public var name: String { self.properties.name }
+  public var state: KsApi.Project.State { self.properties.state }
+  public var imageURL: String? { self.properties.image.url?.absoluteString }
+  public var fundingProgress: Float { Float(self.properties.percentFunded) / 100 }
+  public var percentFunded: Int { self.properties.percentFunded }
+  public var displayPrelaunch: Bool? { self.properties.shouldDisplayPrelaunch }
+  public var prelaunchActivated: Bool? { self.properties.isPrelaunchActivated }
+  public var launchedAt: TimeInterval? { self.properties.launchedAt?.timeIntervalSince1970 }
+  public var deadline: TimeInterval? { self.properties.deadlineAt?.timeIntervalSince1970 }
+  public var isStarred: Bool? { self.properties.isStarred }
+}
+
+extension ProjectCardProperties: BackerDashboardProjectCellViewModel.HasProjectCellModel {
+  public var projectCellModel: any BackerDashboardProjectCellViewModel.ProjectCellModel {
+    ProjectCardPropertiesProjectCellModel(self)
+  }
+}

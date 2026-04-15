@@ -42,6 +42,7 @@ let package = Package(
       name: "KsApiTestHelpers",
       dependencies: [
         .product(name: "GraphAPI", package: "GraphAPI"),
+        .product(name: "GraphAPITestMocks", package: "GraphAPI"),
         .product(name: "Apollo", package: "apollo-ios"),
         .byName(name: "KsApi")
       ]

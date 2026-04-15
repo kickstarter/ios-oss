@@ -12,6 +12,7 @@ public indirect enum RichTextElement: Sendable {
   case photo(Photo)
   case video(Video)
   case oembed(Oembed)
+  case unknown
 
   public struct Text: Sendable {
     let text: String
@@ -62,9 +63,11 @@ public indirect enum RichTextElement: Sendable {
     case three = "HEADING_3"
     case four = "HEADING_4"
 
-    init?(_ rawValues: [String]?) {
-      for rawValue in rawValues ?? [] {
-        if let level = HeaderLevel(rawValue: rawValue) {
+    /// Create a HeaderLevel from an array of style strings from GraphQL, if
+    /// one is present
+    internal init?(styles: [String]?) {
+      for style in styles ?? [] {
+        if let level = HeaderLevel(rawValue: style) {
           self = level
           return
         }

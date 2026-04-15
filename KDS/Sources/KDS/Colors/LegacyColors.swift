@@ -211,20 +211,6 @@ public struct LegacyColors {
         darkMode: UIColor(coreColor: .black)
       )
     }
-
-    public struct Error {
-      public static let background = LegacyColor(
-        "legacy/tags/error/background",
-        lightMode: UIColor(coreColor: .red_200),
-        darkMode: UIColor(coreColor: .red_200)
-      )
-
-      public static let foreground = LegacyColor(
-        "legacy/tags/error/foreground",
-        lightMode: UIColor(coreColor: .red_800),
-        darkMode: UIColor(coreColor: .black)
-      )
-    }
   }
 
   public struct Project {

@@ -7,8 +7,8 @@ public class FetchMySavedProjectsQuery: GraphQLQuery {
   public static let operationName: String = "FetchMySavedProjects"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchMySavedProjects($first: Int = null, $after: String = null) { projects(first: $first, after: $after, starred: true, sort: END_DATE) { __typename nodes { __typename ...ProjectFragment } pageInfo { __typename hasNextPage endCursor hasPreviousPage startCursor } totalCount } }"#,
-      fragments: [CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self]
+      #"query FetchMySavedProjects($first: Int = null, $after: String = null) { projects(first: $first, after: $after, starred: true, sort: END_DATE) { __typename nodes { __typename ...ProjectCardFragment } pageInfo { __typename hasNextPage endCursor hasPreviousPage startCursor } totalCount } }"#,
+      fragments: [MoneyFragment.self, ProjectAnalyticsFragment.self, ProjectCardFragment.self, ProjectPamphletMainCellPropertiesFragment.self]
     ))
 
   public var first: GraphQLNullable<Int>
@@ -107,17 +107,47 @@ public class FetchMySavedProjectsQuery: GraphQLQuery {
         public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Project }
         public static var __selections: [ApolloAPI.Selection] { [
           .field("__typename", String.self),
-          .fragment(ProjectFragment.self),
+          .fragment(ProjectCardFragment.self),
         ] }
 
-        /// Available card types.
-        public var availableCardTypes: [GraphQLEnum<GraphAPI.CreditCardTypes>] { __data["availableCardTypes"] }
+        /// The project's primary image.
+        public var image: Image? { __data["image"] }
+        /// The project's pid.
+        public var pid: Int { __data["pid"] }
+        /// The project's name.
+        public var name: String { __data["name"] }
+        /// The project's current state in the state machine.
+        public var state: GraphQLEnum<GraphAPI.ProjectState> { __data["state"] }
+        /// The project has launched
+        public var isLaunched: Bool { __data["isLaunched"] }
+        /// When is the project scheduled to end?
+        public var deadlineAt: GraphAPI.DateTime? { __data["deadlineAt"] }
+        /// What percent the project has towards meeting its funding goal.
+        public var percentFunded: Int { __data["percentFunded"] }
+        /// Whether a project has activated prelaunch (can return true if project has been launched)
+        public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
+        /// When the project launched
+        public var launchedAt: GraphAPI.DateTime? { __data["launchedAt"] }
+        /// Is this project currently accepting post-campaign pledges?
+        public var isInPostCampaignPledgingPhase: Bool { __data["isInPostCampaignPledgingPhase"] }
+        /// Is this project configured for post-campaign pledges?
+        public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
+        /// A URL to the project's page.
+        public var url: String { __data["url"] }
+        /// Is the current user watching this project?
+        public var isWatched: Bool { __data["isWatched"] }
+        /// The minimum amount to raise for the project to be successful.
+        public var goal: Goal? { __data["goal"] }
+        /// How much money is pledged to the project.
+        public var pledged: Pledged { __data["pledged"] }
+        /// Backing Add-ons
+        public var addOns: AddOns? { __data["addOns"] }
         /// Total backers for the project
         public var backersCount: Int { __data["backersCount"] }
+        /// The current user's backing of this project.  Does not include inactive backings.
+        public var backing: Backing? { __data["backing"] }
         /// The project's category.
         public var category: Category? { __data["category"] }
-        /// True if the current user can comment (considers restrictions)
-        public var canComment: Bool { __data["canComment"] }
         /// Comment count - defaults to root level comments only
         public var commentsCount: Int { __data["commentsCount"] }
         /// The project's country
@@ -126,438 +156,156 @@ public class FetchMySavedProjectsQuery: GraphQLQuery {
         public var creator: Creator? { __data["creator"] }
         /// The project's currency code.
         public var currency: GraphQLEnum<GraphAPI.CurrencyCode> { __data["currency"] }
-        /// When is the project scheduled to end?
-        public var deadlineAt: GraphAPI.DateTime? { __data["deadlineAt"] }
-        /// A short description of the project.
-        public var description: String { __data["description"] }
-        /// The environmental commitments of the project.
-        public var environmentalCommitments: [EnvironmentalCommitment?]? { __data["environmentalCommitments"] }
-        public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
-        /// List of FAQs of a project
-        public var faqs: Faqs? { __data["faqs"] }
-        /// The date at which pledge collections will end
-        public var finalCollectionDate: GraphAPI.ISO8601DateTime? { __data["finalCollectionDate"] }
-        /// Exchange rate for the current user's currency
-        public var fxRate: Double { __data["fxRate"] }
-        /// The minimum amount to raise for the project to be successful.
-        public var goal: Goal? { __data["goal"] }
-        /// The project's primary image.
-        public var image: Image? { __data["image"] }
-        /// Whether a project is enrolled in plot
-        public var isPledgeOverTimeAllowed: Bool { __data["isPledgeOverTimeAllowed"] }
-        /// Whether or not this is a Kickstarter-featured project.
-        public var isProjectWeLove: Bool { __data["isProjectWeLove"] }
-        /// Whether or not this is a Project of the Day.
-        public var isProjectOfTheDay: Bool? { __data["isProjectOfTheDay"] }
-        /// Is the current user watching this project?
-        public var isWatched: Bool { __data["isWatched"] }
-        /// The project has launched
-        public var isLaunched: Bool { __data["isLaunched"] }
-        /// Is this project currently accepting post-campaign pledges?
-        public var isInPostCampaignPledgingPhase: Bool { __data["isInPostCampaignPledgingPhase"] }
-        /// The last checkout_wave, if there is one
-        public var lastWave: LastWave? { __data["lastWave"] }
-        /// When the project launched
-        public var launchedAt: GraphAPI.DateTime? { __data["launchedAt"] }
-        /// Where the project is based.
-        public var location: Location? { __data["location"] }
-        /// The max pledge amount for a single reward tier.
-        public var maxPledge: Int { __data["maxPledge"] }
-        /// The min pledge amount for a single reward tier.
-        public var minPledge: Int { __data["minPledge"] }
-        /// The project's name.
-        public var name: String { __data["name"] }
-        /// The project's pid.
-        public var pid: Int { __data["pid"] }
-        /// The project's pledge manager
-        public var pledgeManager: PledgeManager? { __data["pledgeManager"] }
-        /// Backer-facing summary of when the incremental charges will occur
-        public var pledgeOverTimeCollectionPlanChargeExplanation: String? { __data["pledgeOverTimeCollectionPlanChargeExplanation"] }
-        /// Quick summary of the amount of increments pledges will be spread over
-        public var pledgeOverTimeCollectionPlanChargedAsNPayments: String? { __data["pledgeOverTimeCollectionPlanChargedAsNPayments"] }
-        /// Backer-facing short summary of this project's number of payment increments to split over
-        public var pledgeOverTimeCollectionPlanShortPitch: String? { __data["pledgeOverTimeCollectionPlanShortPitch"] }
-        /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
-        public var pledgeOverTimeMinimumExplanation: String? { __data["pledgeOverTimeMinimumExplanation"] }
-        /// How much money is pledged to the project.
-        public var pledged: Pledged { __data["pledged"] }
-        /// Is this project configured for post-campaign pledges?
-        public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
-        /// Project updates.
-        public var posts: Posts { __data["posts"] }
         /// Whether a project has activated prelaunch (can return true if project has been launched)
-        public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
-        /// The text of the currently applied project notice, empty if there is no notice
-        public var projectNotice: String? { __data["projectNotice"] }
-        /// URL for redeeming the backing
-        public var redemptionPageUrl: String { __data["redemptionPageUrl"] }
-        /// Potential hurdles to project completion.
-        public var risks: String { __data["risks"] }
-        /// Is this project configured so that events should be triggered for Meta's Conversions API?
-        public var sendMetaCapiEvents: Bool { __data["sendMetaCapiEvents"] }
-        /// The project's unique URL identifier.
-        public var slug: String { __data["slug"] }
-        /// The project's current state in the state machine.
-        public var state: GraphQLEnum<GraphAPI.ProjectState> { __data["state"] }
-        /// The last time a project's state changed, time since epoch
-        public var stateChangedAt: GraphAPI.DateTime { __data["stateChangedAt"] }
-        /// The story behind the project, parsed for presentation.
-        public var story: GraphAPI.HTML { __data["story"] }
+        public var isPrelaunchActivated: Bool { __data["isPrelaunchActivated"] }
         /// Tags project has been tagged with
-        public var tags: [Tag?] { __data["tags"] }
-        /// A URL to the project's page.
-        public var url: String { __data["url"] }
-        /// Exchange rate to US Dollars (USD), null for draft projects.
-        public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
+        public var projectTags: [ProjectTag?] { __data["projectTags"] }
+        /// Project rewards.
+        public var rewards: Rewards? { __data["rewards"] }
         /// A project video.
         public var video: Video? { __data["video"] }
-        /// Number of watchers a project has.
-        public var watchesCount: Int? { __data["watchesCount"] }
+        /// Exchange rate for the current user's currency
+        public var fxRate: Double { __data["fxRate"] }
+        /// Exchange rate to US Dollars (USD), null for draft projects.
+        public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
+        /// Project updates.
+        public var posts: Posts { __data["posts"] }
+        /// A short description of the project.
+        public var projectDescription: String { __data["projectDescription"] }
+        /// The last time a project's state changed, time since epoch
+        public var stateChangedAt: GraphAPI.DateTime { __data["stateChangedAt"] }
+        /// Exchange rate to US Dollars (USD) for the project's currency
+        public var projectUsdExchangeRate: Double { __data["projectUsdExchangeRate"] }
+        /// Where the project is based.
+        public var location: Location? { __data["location"] }
+        /// Potential hurdles to project completion.
+        public var risks: String { __data["risks"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict
           public init(_dataDict: DataDict) { __data = _dataDict }
 
-          public var projectFragment: ProjectFragment { _toFragment() }
-          public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
+          public var projectCardFragment: ProjectCardFragment { _toFragment() }
+          public var projectAnalyticsFragment: ProjectAnalyticsFragment { _toFragment() }
+          public var projectPamphletMainCellPropertiesFragment: ProjectPamphletMainCellPropertiesFragment { _toFragment() }
         }
 
         public init(
-          availableCardTypes: [GraphQLEnum<GraphAPI.CreditCardTypes>],
+          image: Image? = nil,
+          pid: Int,
+          name: String,
+          state: GraphQLEnum<GraphAPI.ProjectState>,
+          isLaunched: Bool,
+          deadlineAt: GraphAPI.DateTime? = nil,
+          percentFunded: Int,
+          prelaunchActivated: Bool,
+          launchedAt: GraphAPI.DateTime? = nil,
+          isInPostCampaignPledgingPhase: Bool,
+          postCampaignPledgingEnabled: Bool,
+          url: String,
+          isWatched: Bool,
+          goal: Goal? = nil,
+          pledged: Pledged,
+          addOns: AddOns? = nil,
           backersCount: Int,
+          backing: Backing? = nil,
           category: Category? = nil,
-          canComment: Bool,
           commentsCount: Int,
           country: Country,
           creator: Creator? = nil,
           currency: GraphQLEnum<GraphAPI.CurrencyCode>,
-          deadlineAt: GraphAPI.DateTime? = nil,
-          description: String,
-          environmentalCommitments: [EnvironmentalCommitment?]? = nil,
-          aiDisclosure: AiDisclosure? = nil,
-          faqs: Faqs? = nil,
-          finalCollectionDate: GraphAPI.ISO8601DateTime? = nil,
-          fxRate: Double,
-          goal: Goal? = nil,
-          image: Image? = nil,
-          isPledgeOverTimeAllowed: Bool,
-          isProjectWeLove: Bool,
-          isProjectOfTheDay: Bool? = nil,
-          isWatched: Bool,
-          isLaunched: Bool,
-          isInPostCampaignPledgingPhase: Bool,
-          lastWave: LastWave? = nil,
-          launchedAt: GraphAPI.DateTime? = nil,
-          location: Location? = nil,
-          maxPledge: Int,
-          minPledge: Int,
-          name: String,
-          pid: Int,
-          pledgeManager: PledgeManager? = nil,
-          pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
-          pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil,
-          pledgeOverTimeCollectionPlanShortPitch: String? = nil,
-          pledgeOverTimeMinimumExplanation: String? = nil,
-          pledged: Pledged,
-          postCampaignPledgingEnabled: Bool,
-          posts: Posts,
-          prelaunchActivated: Bool,
-          projectNotice: String? = nil,
-          redemptionPageUrl: String,
-          risks: String,
-          sendMetaCapiEvents: Bool,
-          slug: String,
-          state: GraphQLEnum<GraphAPI.ProjectState>,
-          stateChangedAt: GraphAPI.DateTime,
-          story: GraphAPI.HTML,
-          tags: [Tag?],
-          url: String,
-          usdExchangeRate: Double? = nil,
+          isPrelaunchActivated: Bool,
+          projectTags: [ProjectTag?],
+          rewards: Rewards? = nil,
           video: Video? = nil,
-          watchesCount: Int? = nil
+          fxRate: Double,
+          usdExchangeRate: Double? = nil,
+          posts: Posts,
+          projectDescription: String,
+          stateChangedAt: GraphAPI.DateTime,
+          projectUsdExchangeRate: Double,
+          location: Location? = nil,
+          risks: String
         ) {
           self.init(_dataDict: DataDict(
             data: [
               "__typename": GraphAPI.Objects.Project.typename,
-              "availableCardTypes": availableCardTypes,
+              "image": image._fieldData,
+              "pid": pid,
+              "name": name,
+              "state": state,
+              "isLaunched": isLaunched,
+              "deadlineAt": deadlineAt,
+              "percentFunded": percentFunded,
+              "prelaunchActivated": prelaunchActivated,
+              "launchedAt": launchedAt,
+              "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
+              "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
+              "url": url,
+              "isWatched": isWatched,
+              "goal": goal._fieldData,
+              "pledged": pledged._fieldData,
+              "addOns": addOns._fieldData,
               "backersCount": backersCount,
+              "backing": backing._fieldData,
               "category": category._fieldData,
-              "canComment": canComment,
               "commentsCount": commentsCount,
               "country": country._fieldData,
               "creator": creator._fieldData,
               "currency": currency,
-              "deadlineAt": deadlineAt,
-              "description": description,
-              "environmentalCommitments": environmentalCommitments._fieldData,
-              "aiDisclosure": aiDisclosure._fieldData,
-              "faqs": faqs._fieldData,
-              "finalCollectionDate": finalCollectionDate,
-              "fxRate": fxRate,
-              "goal": goal._fieldData,
-              "image": image._fieldData,
-              "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed,
-              "isProjectWeLove": isProjectWeLove,
-              "isProjectOfTheDay": isProjectOfTheDay,
-              "isWatched": isWatched,
-              "isLaunched": isLaunched,
-              "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
-              "lastWave": lastWave._fieldData,
-              "launchedAt": launchedAt,
-              "location": location._fieldData,
-              "maxPledge": maxPledge,
-              "minPledge": minPledge,
-              "name": name,
-              "pid": pid,
-              "pledgeManager": pledgeManager._fieldData,
-              "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation,
-              "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments,
-              "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch,
-              "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation,
-              "pledged": pledged._fieldData,
-              "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
-              "posts": posts._fieldData,
-              "prelaunchActivated": prelaunchActivated,
-              "projectNotice": projectNotice,
-              "redemptionPageUrl": redemptionPageUrl,
-              "risks": risks,
-              "sendMetaCapiEvents": sendMetaCapiEvents,
-              "slug": slug,
-              "state": state,
-              "stateChangedAt": stateChangedAt,
-              "story": story,
-              "tags": tags._fieldData,
-              "url": url,
-              "usdExchangeRate": usdExchangeRate,
+              "isPrelaunchActivated": isPrelaunchActivated,
+              "projectTags": projectTags._fieldData,
+              "rewards": rewards._fieldData,
               "video": video._fieldData,
-              "watchesCount": watchesCount,
+              "fxRate": fxRate,
+              "usdExchangeRate": usdExchangeRate,
+              "posts": posts._fieldData,
+              "projectDescription": projectDescription,
+              "stateChangedAt": stateChangedAt,
+              "projectUsdExchangeRate": projectUsdExchangeRate,
+              "location": location._fieldData,
+              "risks": risks,
             ],
             fulfilledFragments: [
               ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.self),
-              ObjectIdentifier(ProjectFragment.self),
-              ObjectIdentifier(NoRewardRewardFragment.self)
+              ObjectIdentifier(ProjectCardFragment.self),
+              ObjectIdentifier(ProjectAnalyticsFragment.self),
+              ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.self)
             ]
           ))
         }
 
-        /// Projects.Node.Category
+        /// Projects.Node.Image
         ///
-        /// Parent Type: `Category`
-        public struct Category: GraphAPI.SelectionSet {
+        /// Parent Type: `Photo`
+        public struct Image: GraphAPI.SelectionSet {
           public let __data: DataDict
           public init(_dataDict: DataDict) { __data = _dataDict }
 
-          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Category }
+          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Photo }
 
           public var id: GraphAPI.ID { __data["id"] }
-          /// Category name.
-          public var name: String { __data["name"] }
-          /// Category name in English for analytics use.
-          public var analyticsName: String { __data["analyticsName"] }
-          /// Category parent
-          public var parentCategory: ParentCategory? { __data["parentCategory"] }
-
-          public struct Fragments: FragmentContainer {
-            public let __data: DataDict
-            public init(_dataDict: DataDict) { __data = _dataDict }
-
-            public var categoryFragment: CategoryFragment { _toFragment() }
-          }
+          /// URL of the photo
+          public var url: String { __data["url"] }
 
           public init(
             id: GraphAPI.ID,
-            name: String,
-            analyticsName: String,
-            parentCategory: ParentCategory? = nil
+            url: String
           ) {
             self.init(_dataDict: DataDict(
               data: [
-                "__typename": GraphAPI.Objects.Category.typename,
+                "__typename": GraphAPI.Objects.Photo.typename,
                 "id": id,
-                "name": name,
-                "analyticsName": analyticsName,
-                "parentCategory": parentCategory._fieldData,
+                "url": url,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.Category.self),
-                ObjectIdentifier(ProjectFragment.Category.self),
-                ObjectIdentifier(CategoryFragment.self)
-              ]
-            ))
-          }
-
-          public typealias ParentCategory = CategoryFragment.ParentCategory
-        }
-
-        /// Projects.Node.Country
-        ///
-        /// Parent Type: `Country`
-        public struct Country: GraphAPI.SelectionSet {
-          public let __data: DataDict
-          public init(_dataDict: DataDict) { __data = _dataDict }
-
-          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Country }
-
-          /// ISO ALPHA-2 code.
-          public var code: GraphQLEnum<GraphAPI.CountryCode> { __data["code"] }
-          /// Country name.
-          public var name: String { __data["name"] }
-
-          public struct Fragments: FragmentContainer {
-            public let __data: DataDict
-            public init(_dataDict: DataDict) { __data = _dataDict }
-
-            public var countryFragment: CountryFragment { _toFragment() }
-          }
-
-          public init(
-            code: GraphQLEnum<GraphAPI.CountryCode>,
-            name: String
-          ) {
-            self.init(_dataDict: DataDict(
-              data: [
-                "__typename": GraphAPI.Objects.Country.typename,
-                "code": code,
-                "name": name,
-              ],
-              fulfilledFragments: [
-                ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.Country.self),
-                ObjectIdentifier(ProjectFragment.Country.self),
-                ObjectIdentifier(CountryFragment.self)
+                ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.Image.self),
+                ObjectIdentifier(ProjectCardFragment.Image.self),
+                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Image.self)
               ]
             ))
           }
         }
-
-        /// Projects.Node.Creator
-        ///
-        /// Parent Type: `User`
-        public struct Creator: GraphAPI.SelectionSet {
-          public let __data: DataDict
-          public init(_dataDict: DataDict) { __data = _dataDict }
-
-          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.User }
-
-          public var id: GraphAPI.ID { __data["id"] }
-          /// The user's avatar.
-          public var imageUrl: String { __data["imageUrl"] }
-          /// Is user blocked by current user
-          public var isBlocked: Bool? { __data["isBlocked"] }
-          /// Whether or not you are following the user.
-          public var isFollowing: Bool { __data["isFollowing"] }
-          /// Where the user is based.
-          public var location: Location? { __data["location"] }
-          /// The user's provided name.
-          public var name: String { __data["name"] }
-          /// Is the user's profile public
-          public var showPublicProfile: Bool? { __data["showPublicProfile"] }
-          /// A user's uid
-          public var uid: String { __data["uid"] }
-          /// Number of backings for this user.
-          public var backingsCount: Int { __data["backingsCount"] }
-          /// Projects a user has created.
-          public var createdProjects: CreatedProjects? { __data["createdProjects"] }
-
-          public struct Fragments: FragmentContainer {
-            public let __data: DataDict
-            public init(_dataDict: DataDict) { __data = _dataDict }
-
-            public var publicUserFragment: PublicUserFragment { _toFragment() }
-          }
-
-          public init(
-            id: GraphAPI.ID,
-            imageUrl: String,
-            isBlocked: Bool? = nil,
-            isFollowing: Bool,
-            location: Location? = nil,
-            name: String,
-            showPublicProfile: Bool? = nil,
-            uid: String,
-            backingsCount: Int,
-            createdProjects: CreatedProjects? = nil
-          ) {
-            self.init(_dataDict: DataDict(
-              data: [
-                "__typename": GraphAPI.Objects.User.typename,
-                "id": id,
-                "imageUrl": imageUrl,
-                "isBlocked": isBlocked,
-                "isFollowing": isFollowing,
-                "location": location._fieldData,
-                "name": name,
-                "showPublicProfile": showPublicProfile,
-                "uid": uid,
-                "backingsCount": backingsCount,
-                "createdProjects": createdProjects._fieldData,
-              ],
-              fulfilledFragments: [
-                ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.Creator.self),
-                ObjectIdentifier(ProjectFragment.Creator.self),
-                ObjectIdentifier(PublicUserFragment.self)
-              ]
-            ))
-          }
-
-          /// Projects.Node.Creator.Location
-          ///
-          /// Parent Type: `Location`
-          public struct Location: GraphAPI.SelectionSet {
-            public let __data: DataDict
-            public init(_dataDict: DataDict) { __data = _dataDict }
-
-            public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Location }
-
-            /// The country code.
-            public var country: String { __data["country"] }
-            /// The localized country name.
-            public var countryName: String? { __data["countryName"] }
-            /// The displayable name. It includes the state code for US cities. ex: 'Seattle, WA'
-            public var displayableName: String { __data["displayableName"] }
-            public var id: GraphAPI.ID { __data["id"] }
-            /// The localized name
-            public var name: String { __data["name"] }
-
-            public struct Fragments: FragmentContainer {
-              public let __data: DataDict
-              public init(_dataDict: DataDict) { __data = _dataDict }
-
-              public var locationFragment: LocationFragment { _toFragment() }
-            }
-
-            public init(
-              country: String,
-              countryName: String? = nil,
-              displayableName: String,
-              id: GraphAPI.ID,
-              name: String
-            ) {
-              self.init(_dataDict: DataDict(
-                data: [
-                  "__typename": GraphAPI.Objects.Location.typename,
-                  "country": country,
-                  "countryName": countryName,
-                  "displayableName": displayableName,
-                  "id": id,
-                  "name": name,
-                ],
-                fulfilledFragments: [
-                  ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.Creator.Location.self),
-                  ObjectIdentifier(PublicUserFragment.Location.self),
-                  ObjectIdentifier(LocationFragment.self)
-                ]
-              ))
-            }
-          }
-
-          public typealias CreatedProjects = PublicUserFragment.CreatedProjects
-        }
-
-        public typealias EnvironmentalCommitment = ProjectFragment.EnvironmentalCommitment
-
-        public typealias AiDisclosure = ProjectFragment.AiDisclosure
-
-        public typealias Faqs = ProjectFragment.Faqs
 
         /// Projects.Node.Goal
         ///
@@ -596,139 +344,10 @@ public class FetchMySavedProjectsQuery: GraphQLQuery {
               ],
               fulfilledFragments: [
                 ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.Goal.self),
-                ObjectIdentifier(ProjectFragment.Goal.self),
-                ObjectIdentifier(MoneyFragment.self)
-              ]
-            ))
-          }
-        }
-
-        public typealias Image = ProjectFragment.Image
-
-        /// Projects.Node.LastWave
-        ///
-        /// Parent Type: `CheckoutWave`
-        public struct LastWave: GraphAPI.SelectionSet {
-          public let __data: DataDict
-          public init(_dataDict: DataDict) { __data = _dataDict }
-
-          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.CheckoutWave }
-
-          public var id: GraphAPI.ID { __data["id"] }
-          /// Whether the wave is currently active
-          public var active: Bool { __data["active"] }
-
-          public struct Fragments: FragmentContainer {
-            public let __data: DataDict
-            public init(_dataDict: DataDict) { __data = _dataDict }
-
-            public var lastWaveFragment: LastWaveFragment { _toFragment() }
-          }
-
-          public init(
-            id: GraphAPI.ID,
-            active: Bool
-          ) {
-            self.init(_dataDict: DataDict(
-              data: [
-                "__typename": GraphAPI.Objects.CheckoutWave.typename,
-                "id": id,
-                "active": active,
-              ],
-              fulfilledFragments: [
-                ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.LastWave.self),
-                ObjectIdentifier(ProjectFragment.LastWave.self),
-                ObjectIdentifier(LastWaveFragment.self)
-              ]
-            ))
-          }
-        }
-
-        /// Projects.Node.Location
-        ///
-        /// Parent Type: `Location`
-        public struct Location: GraphAPI.SelectionSet {
-          public let __data: DataDict
-          public init(_dataDict: DataDict) { __data = _dataDict }
-
-          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Location }
-
-          /// The country code.
-          public var country: String { __data["country"] }
-          /// The localized country name.
-          public var countryName: String? { __data["countryName"] }
-          /// The displayable name. It includes the state code for US cities. ex: 'Seattle, WA'
-          public var displayableName: String { __data["displayableName"] }
-          public var id: GraphAPI.ID { __data["id"] }
-          /// The localized name
-          public var name: String { __data["name"] }
-
-          public struct Fragments: FragmentContainer {
-            public let __data: DataDict
-            public init(_dataDict: DataDict) { __data = _dataDict }
-
-            public var locationFragment: LocationFragment { _toFragment() }
-          }
-
-          public init(
-            country: String,
-            countryName: String? = nil,
-            displayableName: String,
-            id: GraphAPI.ID,
-            name: String
-          ) {
-            self.init(_dataDict: DataDict(
-              data: [
-                "__typename": GraphAPI.Objects.Location.typename,
-                "country": country,
-                "countryName": countryName,
-                "displayableName": displayableName,
-                "id": id,
-                "name": name,
-              ],
-              fulfilledFragments: [
-                ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.Location.self),
-                ObjectIdentifier(ProjectFragment.Location.self),
-                ObjectIdentifier(LocationFragment.self)
-              ]
-            ))
-          }
-        }
-
-        /// Projects.Node.PledgeManager
-        ///
-        /// Parent Type: `PledgeManager`
-        public struct PledgeManager: GraphAPI.SelectionSet {
-          public let __data: DataDict
-          public init(_dataDict: DataDict) { __data = _dataDict }
-
-          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.PledgeManager }
-
-          public var id: GraphAPI.ID { __data["id"] }
-          /// Whether the pledge manager accepts new backers or not
-          public var acceptsNewBackers: Bool { __data["acceptsNewBackers"] }
-
-          public struct Fragments: FragmentContainer {
-            public let __data: DataDict
-            public init(_dataDict: DataDict) { __data = _dataDict }
-
-            public var pledgeManagerFragment: PledgeManagerFragment { _toFragment() }
-          }
-
-          public init(
-            id: GraphAPI.ID,
-            acceptsNewBackers: Bool
-          ) {
-            self.init(_dataDict: DataDict(
-              data: [
-                "__typename": GraphAPI.Objects.PledgeManager.typename,
-                "id": id,
-                "acceptsNewBackers": acceptsNewBackers,
-              ],
-              fulfilledFragments: [
-                ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.PledgeManager.self),
-                ObjectIdentifier(ProjectFragment.PledgeManager.self),
-                ObjectIdentifier(PledgeManagerFragment.self)
+                ObjectIdentifier(ProjectCardFragment.Goal.self),
+                ObjectIdentifier(MoneyFragment.self),
+                ObjectIdentifier(ProjectAnalyticsFragment.Goal.self),
+                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Goal.self)
               ]
             ))
           }
@@ -771,18 +390,204 @@ public class FetchMySavedProjectsQuery: GraphQLQuery {
               ],
               fulfilledFragments: [
                 ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.Pledged.self),
-                ObjectIdentifier(ProjectFragment.Pledged.self),
-                ObjectIdentifier(MoneyFragment.self)
+                ObjectIdentifier(ProjectCardFragment.Pledged.self),
+                ObjectIdentifier(MoneyFragment.self),
+                ObjectIdentifier(ProjectAnalyticsFragment.Pledged.self),
+                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Pledged.self)
               ]
             ))
           }
         }
 
-        public typealias Posts = ProjectFragment.Posts
+        public typealias AddOns = ProjectAnalyticsFragment.AddOns
 
-        public typealias Tag = ProjectFragment.Tag
+        /// Projects.Node.Backing
+        ///
+        /// Parent Type: `Backing`
+        public struct Backing: GraphAPI.SelectionSet {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
 
-        public typealias Video = ProjectFragment.Video
+          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Backing }
+
+          public var id: GraphAPI.ID { __data["id"] }
+
+          public init(
+            id: GraphAPI.ID
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Backing.typename,
+                "id": id,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.Backing.self),
+                ObjectIdentifier(ProjectAnalyticsFragment.Backing.self),
+                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Backing.self)
+              ]
+            ))
+          }
+        }
+
+        /// Projects.Node.Category
+        ///
+        /// Parent Type: `Category`
+        public struct Category: GraphAPI.SelectionSet {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Category }
+
+          /// Category name in English for analytics use.
+          public var analyticsName: String { __data["analyticsName"] }
+          /// Category parent
+          public var parentCategory: ParentCategory? { __data["parentCategory"] }
+          /// Category name.
+          public var name: String { __data["name"] }
+
+          public init(
+            analyticsName: String,
+            parentCategory: ParentCategory? = nil,
+            name: String
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Category.typename,
+                "analyticsName": analyticsName,
+                "parentCategory": parentCategory._fieldData,
+                "name": name,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.Category.self),
+                ObjectIdentifier(ProjectAnalyticsFragment.Category.self),
+                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Category.self)
+              ]
+            ))
+          }
+
+          public typealias ParentCategory = ProjectAnalyticsFragment.Category.ParentCategory
+        }
+
+        /// Projects.Node.Country
+        ///
+        /// Parent Type: `Country`
+        public struct Country: GraphAPI.SelectionSet {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Country }
+
+          /// ISO ALPHA-2 code.
+          public var code: GraphQLEnum<GraphAPI.CountryCode> { __data["code"] }
+          /// Country name.
+          public var name: String { __data["name"] }
+
+          public init(
+            code: GraphQLEnum<GraphAPI.CountryCode>,
+            name: String
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Country.typename,
+                "code": code,
+                "name": name,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.Country.self),
+                ObjectIdentifier(ProjectAnalyticsFragment.Country.self),
+                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Country.self)
+              ]
+            ))
+          }
+        }
+
+        /// Projects.Node.Creator
+        ///
+        /// Parent Type: `User`
+        public struct Creator: GraphAPI.SelectionSet {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.User }
+
+          public var id: GraphAPI.ID { __data["id"] }
+          /// Projects a user has created.
+          public var createdProjects: CreatedProjects? { __data["createdProjects"] }
+          /// The user's provided name.
+          public var name: String { __data["name"] }
+          /// Is user blocked by current user
+          public var isBlocked: Bool? { __data["isBlocked"] }
+          /// The user's avatar.
+          public var imageUrl: String { __data["imageUrl"] }
+
+          public init(
+            id: GraphAPI.ID,
+            createdProjects: CreatedProjects? = nil,
+            name: String,
+            isBlocked: Bool? = nil,
+            imageUrl: String
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.User.typename,
+                "id": id,
+                "createdProjects": createdProjects._fieldData,
+                "name": name,
+                "isBlocked": isBlocked,
+                "imageUrl": imageUrl,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.Creator.self),
+                ObjectIdentifier(ProjectAnalyticsFragment.Creator.self),
+                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Creator.self)
+              ]
+            ))
+          }
+
+          public typealias CreatedProjects = ProjectAnalyticsFragment.Creator.CreatedProjects
+        }
+
+        public typealias ProjectTag = ProjectAnalyticsFragment.ProjectTag
+
+        public typealias Rewards = ProjectAnalyticsFragment.Rewards
+
+        /// Projects.Node.Video
+        ///
+        /// Parent Type: `Video`
+        public struct Video: GraphAPI.SelectionSet {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Video }
+
+          public var id: GraphAPI.ID { __data["id"] }
+          /// A video's sources (hls, high, base)
+          public var videoSources: VideoSources? { __data["videoSources"] }
+
+          public init(
+            id: GraphAPI.ID,
+            videoSources: VideoSources? = nil
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Video.typename,
+                "id": id,
+                "videoSources": videoSources._fieldData,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.Video.self),
+                ObjectIdentifier(ProjectAnalyticsFragment.Video.self),
+                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Video.self)
+              ]
+            ))
+          }
+
+          public typealias VideoSources = ProjectPamphletMainCellPropertiesFragment.Video.VideoSources
+        }
+
+        public typealias Posts = ProjectAnalyticsFragment.Posts
+
+        public typealias Location = ProjectPamphletMainCellPropertiesFragment.Location
       }
 
       /// Projects.PageInfo

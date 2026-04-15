@@ -151,8 +151,10 @@ public enum Feature: String, EnumType {
   case editShippingPmConfigPostLaunch2026 = "edit_shipping_pm_config_post_launch_2026"
   case partnerProgramRefresh = "partner_program_refresh"
   case collaboratorCreatorDashboardAccess = "collaborator_creator_dashboard_access"
-  case polls2026 = "polls_2026"
+  case digitalFiles2026 = "digital_files_2026"
   case backerTypeFilters2026 = "backer_type_filters_2026"
   case backgroundTaskManagement2026 = "background_task_management_2026"
   case improvingRefundOrchestration2026 = "improving_refund_orchestration_2026"
+  case vatFlexibility2026 = "vat_flexibility_2026"
+  case verticalVideoFeed2026 = "vertical_video_feed_2026"
 }
