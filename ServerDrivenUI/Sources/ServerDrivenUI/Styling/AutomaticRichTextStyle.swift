@@ -36,14 +36,6 @@ public struct AutomaticRichTextStyle: RichTextStyle, Sendable {
     Colors.Text.primary
   }
 
-  public var photoCaptionFont: CustomFont {
-    InterFont.caption1
-  }
-
-  public var photoCaptionColor: AdaptiveColor {
-    Colors.Text.secondary
-  }
-
   public var linkColor: AdaptiveColor {
     Colors.Text.Accent.Blue.bolder
   }

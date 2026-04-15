@@ -35,7 +35,7 @@ struct TextBlock: View {
     }
   }
 
-  func attributedText(
+  private func attributedText(
     _ text: RichTextElement.Text,
     header: RichTextElement.HeaderLevel? = nil
   ) -> AttributedString {
@@ -63,9 +63,6 @@ struct TextBlock: View {
       case let .text(childText, childHeaderLevel):
         let childAttributedString = self.attributedText(childText, header: childHeaderLevel)
         baseAttributedString.append(childAttributedString)
-      case .photo:
-        // TODO: MBL-2890
-        break
       default:
         assertionFailure("Unimplemented child element type")
       }
@@ -74,7 +71,7 @@ struct TextBlock: View {
   }
 
   @ViewBuilder
-  func textView(
+  private func textView(
     _ attributedString: AttributedString,
     header: RichTextElement.HeaderLevel? = nil
   ) -> some View {
@@ -87,11 +84,16 @@ struct TextBlock: View {
     }
 
     Text(attributedString)
-      .lineLimit(nil)
-      .fixedSize(horizontal: false, vertical: true)
+      // Styling
       .background(self.style.backgroundColor.swiftUIColor(opacity: 1))
       .foregroundStyle(self.color(for: header).swiftUIColor())
+
+      // Multi-line support
+      .lineLimit(nil)
+      .fixedSize(horizontal: false, vertical: true)
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+
+      // Accessibility
       .accessibilityAddTraits((header != nil) ? .isHeader : .isStaticText)
       .accessibilityElement()
       .accessibilityHeading(accessiblityHeading)

@@ -18,10 +18,6 @@ public protocol RichTextStyle: Sendable {
   var heading4Font: CustomFont { get }
   var headingColor: AdaptiveColor { get }
 
-  /// Font and color for photo captions
-  var photoCaptionFont: CustomFont { get }
-  var photoCaptionColor: AdaptiveColor { get }
-
   /// Link appearance
   var linkColor: AdaptiveColor { get }
   var linkUnderlined: Bool { get }

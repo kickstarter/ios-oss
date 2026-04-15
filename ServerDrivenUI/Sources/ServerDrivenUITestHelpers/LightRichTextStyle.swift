@@ -17,8 +17,6 @@ public struct LightRichTextStyle: RichTextStyle, Sendable {
   public var heading3Font: CustomFont { self.parent.heading3Font }
   public var heading4Font: CustomFont { self.parent.heading4Font }
   public var headingColor: AdaptiveColor { self.parent.headingColor.resolvedForLightMode() }
-  public var photoCaptionFont: CustomFont { self.parent.photoCaptionFont }
-  public var photoCaptionColor: AdaptiveColor { self.parent.photoCaptionColor.resolvedForLightMode() }
   public var linkColor: AdaptiveColor { self.parent.linkColor.resolvedForLightMode() }
   public var linkUnderlined: Bool { self.parent.linkUnderlined }
   public var backgroundColor: AdaptiveColor { self.parent.backgroundColor.resolvedForLightMode() }
