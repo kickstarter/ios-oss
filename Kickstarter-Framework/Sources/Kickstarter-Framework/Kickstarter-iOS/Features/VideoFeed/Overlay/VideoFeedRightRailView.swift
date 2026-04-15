@@ -8,8 +8,8 @@ struct VideoFeedRightRailView: View {
   private enum Constants {
     static let railSpacing: CGFloat = 20
     static let moreButtonSize: CGFloat = 44
-    static let saveCountLabel = "1k" // TODO: Replace with real save count from backend
-    static let shareCountLabel = "50" // TODO: Replace with real share count from backend
+    static let saveCountLabel = "FPO: 1k" // TODO: Replace with real save count from backend
+    static let shareCountLabel = "FPO: 50" // TODO: Replace with real share count from backend
     static let avatarSize: CGFloat = 44
 
     static let saveIcon = "video-feed-bookmark-icon"
