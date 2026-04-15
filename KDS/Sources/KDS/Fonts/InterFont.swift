@@ -10,7 +10,7 @@ public enum InterFont: CustomFont, CaseIterable {
   case buttonLabel
 
   public func font(size: CGFloat? = nil) -> UIFont {
-    return UIFont.customFont(with: self, size: size)
+    return self.font(size: size, traitCollection: .current)
   }
 
   public var defaultSize: CGFloat {

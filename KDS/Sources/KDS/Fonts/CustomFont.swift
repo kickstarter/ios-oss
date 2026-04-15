@@ -7,6 +7,7 @@ public protocol CustomFont {
   var textStyle: UIFont.TextStyle { get }
   func font(size: CGFloat?) -> UIFont
   func swiftUIFont(size: CGFloat?) -> Font
+  func swiftUIFont(size: CGFloat?, dynamicTypeSize: DynamicTypeSize?) -> Font
 }
 
 public protocol CustomFontAccessible {
@@ -45,6 +46,20 @@ extension UIFont {
     return finalFont
   }
 
+  static func customFont(
+    with fontConfig: CustomFont & CustomFontAccessible,
+    size: CGFloat? = nil,
+    dynamicTypeSize: DynamicTypeSize?
+  ) -> UIFont {
+    if let dynamicTypeSize = dynamicTypeSize {
+      let category = dynamicTypeSize.toUIContentSizeCategory()
+      let traits = UITraitCollection(preferredContentSizeCategory: category)
+      return self.customFont(with: fontConfig, size: size, traitCollection: traits)
+    } else {
+      return self.customFont(with: fontConfig, size: size, traitCollection: .current)
+    }
+  }
+
   static func defaultSystemFont(
     with fontConfig: CustomFont,
     size: CGFloat? = nil
@@ -61,12 +76,53 @@ extension UIFont {
   }
 }
 
+extension DynamicTypeSize {
+  fileprivate func toUIContentSizeCategory() -> UIContentSizeCategory {
+    switch self {
+    case .xSmall: return .extraSmall
+    case .small: return .small
+    case .medium: return .medium
+    case .large: return .large
+    case .xLarge: return .extraLarge
+    case .xxLarge: return .extraExtraLarge
+    case .xxxLarge: return .extraExtraExtraLarge
+    case .accessibility1: return .accessibilityMedium
+    case .accessibility2: return .accessibilityLarge
+    case .accessibility3: return .accessibilityExtraLarge
+    case .accessibility4: return .accessibilityExtraExtraLarge
+    case .accessibility5: return .accessibilityExtraExtraExtraLarge
+    @unknown default:
+      return .large
+    }
+  }
+}
+
 extension CustomFont {
   /// Converts the custom font to a SwiftUI `Font`.
   /// - Parameter size: The font size to apply. If `nil`, the default size for the font will be used.
   /// - Returns: A SwiftUI `Font` created from the custom `UIFont`.
   public func swiftUIFont(size: CGFloat? = nil) -> Font {
     return Font(self.font(size: size))
+  }
+
+  public func swiftUIFont(size: CGFloat? = nil, dynamicTypeSize: DynamicTypeSize? = nil) -> Font {
+    // Build a UIFont using the provided dynamic type size when available.
+    // We need `self` to conform to CustomFontAccessible to resolve font names; if not, fall back to system font.
+    if let accessible = self as? (CustomFont & CustomFontAccessible) {
+      let uiFont = UIFont.customFont(with: accessible, size: size, dynamicTypeSize: dynamicTypeSize)
+      return Font(uiFont)
+    } else {
+      // Fallback: scale the system font for the given text style
+      let traits: UITraitCollection
+      if let dts = dynamicTypeSize {
+        let category = dts.toUIContentSizeCategory()
+        traits = UITraitCollection(preferredContentSizeCategory: category)
+      } else {
+        traits = .current
+      }
+      let uiFont = UIFont.defaultSystemFont(with: self, size: size, compatibleWith: traits)
+      return Font(uiFont)
+    }
   }
 }
 
