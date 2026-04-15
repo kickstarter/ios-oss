@@ -26,14 +26,7 @@ public struct RichTextView: View {
         case let .text(text, header):
           TextBlock(text: text, header: header)
         case let .listItem(text):
-          HStack(spacing: 0) {
-            Text("•")
-              .lineLimit(nil)
-              .font(self.style.bodyFont.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize))
-              .foregroundStyle(self.style.bodyColor.swiftUIColor())
-              .frame(maxWidth: self.style.listIndentation, maxHeight: .infinity, alignment: .topLeading)
-            TextBlock(text: text, header: nil)
-          }
+          ListItemBlock(text: text)
         case .audio:
           self.unimplemented("Audio")
         case .photo:
