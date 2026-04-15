@@ -27,7 +27,11 @@ extension UIFont {
     }
   }
 
-  static func customFont(with fontConfig: CustomFont & CustomFontAccessible, size: CGFloat? = nil) -> UIFont {
+  static func customFont(
+    with fontConfig: CustomFont & CustomFontAccessible,
+    size: CGFloat? = nil,
+    traitCollection: UITraitCollection = .current
+  ) -> UIFont {
     let fontName = UIAccessibility.isBoldTextEnabled ? fontConfig.boldFontName : fontConfig.fontName
 
     let fontConfigType = type(of: fontConfig)
@@ -38,11 +42,11 @@ extension UIFont {
         false,
         "Tried to loading custom font \(fontName) but was unable to. Using system default font, instead."
       )
-      return self.defaultSystemFont(with: fontConfig, size: size)
+      return self.defaultSystemFont(with: fontConfig, size: size, compatibleWith: traitCollection)
     }
 
     let metrics = UIFontMetrics(forTextStyle: fontConfig.textStyle)
-    let finalFont = metrics.scaledFont(for: font, compatibleWith: UITraitCollection.current)
+    let finalFont = metrics.scaledFont(for: font, compatibleWith: traitCollection)
     return finalFont
   }
 
@@ -62,11 +66,12 @@ extension UIFont {
 
   static func defaultSystemFont(
     with fontConfig: CustomFont,
-    size: CGFloat? = nil
+    size: CGFloat? = nil,
+    compatibleWith traitCollection: UITraitCollection = .current
   ) -> UIFont {
     let font = UIFont.preferredFont(
       forTextStyle: fontConfig.textStyle,
-      compatibleWith: .current
+      compatibleWith: traitCollection
     )
 
     return UIFont(

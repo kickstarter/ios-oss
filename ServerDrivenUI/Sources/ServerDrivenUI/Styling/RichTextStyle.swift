@@ -8,15 +8,19 @@ public protocol RichTextStyle: Sendable {
   // MARK: - Typography
 
   /// Font and color for body/paragraph text
-  var bodyFont: Font { get }
+  var bodyFont: CustomFont { get }
   var bodyColor: AdaptiveColor { get }
 
   /// Fonts and color for headings
-  var heading1Font: Font { get }
-  var heading2Font: Font { get }
-  var heading3Font: Font { get }
-  var heading4Font: Font { get }
+  var heading1Font: CustomFont { get }
+  var heading2Font: CustomFont { get }
+  var heading3Font: CustomFont { get }
+  var heading4Font: CustomFont { get }
   var headingColor: AdaptiveColor { get }
+
+  /// Font and color for photo captions
+  var photoCaptionFont: CustomFont { get }
+  var photoCaptionColor: AdaptiveColor { get }
 
   /// Link appearance
   var linkColor: AdaptiveColor { get }

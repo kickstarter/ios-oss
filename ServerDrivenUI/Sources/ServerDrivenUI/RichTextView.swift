@@ -3,7 +3,8 @@ import SwiftUI
 
 public struct RichTextView: View {
   public var element: [RichTextElement]
-  @Environment(\.richTextStyle) var style: any RichTextStyle
+  @Environment(\.richTextStyle) var style
+  @Environment(\.dynamicTypeSize) var dynamicTypeSize
 
   public init(element: [RichTextElement]) {
     self.element = element
@@ -28,7 +29,7 @@ public struct RichTextView: View {
           HStack(spacing: 0) {
             Text("•")
               .lineLimit(nil)
-              .font(self.style.bodyFont)
+              .font(self.style.bodyFont.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize))
               .foregroundStyle(self.style.bodyColor.swiftUIColor())
               .frame(maxWidth: self.style.listIndentation, maxHeight: .infinity, alignment: .topLeading)
             TextBlock(text: text, header: nil)

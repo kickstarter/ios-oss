@@ -8,32 +8,40 @@ public struct AutomaticRichTextStyle: RichTextStyle, Sendable {
 
   // MARK: RichTextStyle
 
-  public var bodyFont: Font {
-    InterFont.bodyLG.swiftUIFont(size: nil)
+  public var bodyFont: CustomFont {
+    InterFont.bodyLG
   }
 
   public var bodyColor: AdaptiveColor {
     Colors.Text.primary
   }
 
-  public var heading1Font: Font {
-    InterFont.heading2XL.swiftUIFont(size: nil)
+  public var heading1Font: CustomFont {
+    InterFont.heading2XL
   }
 
-  public var heading2Font: Font {
-    InterFont.headingXL.swiftUIFont(size: nil)
+  public var heading2Font: CustomFont {
+    InterFont.headingXL
   }
 
-  public var heading3Font: Font {
-    InterFont.headingLG.swiftUIFont(size: nil)
+  public var heading3Font: CustomFont {
+    InterFont.headingLG
   }
 
-  public var heading4Font: Font {
-    InterFont.headingMD.swiftUIFont(size: nil)
+  public var heading4Font: CustomFont {
+    InterFont.headingMD
   }
 
   public var headingColor: AdaptiveColor {
     Colors.Text.primary
+  }
+
+  public var photoCaptionFont: CustomFont {
+    InterFont.caption1
+  }
+
+  public var photoCaptionColor: AdaptiveColor {
+    Colors.Text.secondary
   }
 
   public var linkColor: AdaptiveColor {

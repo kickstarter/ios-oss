@@ -6,31 +6,32 @@ import XCTest
 
 struct RichTextStylePreviewView: View {
   @Environment(\.richTextStyle) private var style
+  @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
   var body: some View {
     VStack(alignment: .leading, spacing: self.style.blockSpacing) {
       Text("Body")
-        .font(self.style.bodyFont)
+        .font(self.style.bodyFont.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize))
         .foregroundStyle(self.style.bodyColor.swiftUIColor())
 
       Text("Heading 1")
-        .font(self.style.heading1Font)
+        .font(self.style.heading1Font.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize))
         .foregroundStyle(self.style.headingColor.swiftUIColor())
 
       Text("Heading 2")
-        .font(self.style.heading2Font)
+        .font(self.style.heading2Font.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize))
         .foregroundStyle(self.style.headingColor.swiftUIColor())
 
       Text("Heading 3")
-        .font(self.style.heading3Font)
+        .font(self.style.heading3Font.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize))
         .foregroundStyle(self.style.headingColor.swiftUIColor())
 
       Text("Heading 4")
-        .font(self.style.heading4Font)
+        .font(self.style.heading4Font.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize))
         .foregroundStyle(self.style.headingColor.swiftUIColor())
 
       Text("Link")
-        .font(self.style.bodyFont)
+        .font(self.style.bodyFont.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize))
         .foregroundStyle(self.style.linkColor.swiftUIColor())
         .underline(self.style.linkUnderlined)
 
@@ -40,7 +41,7 @@ struct RichTextStylePreviewView: View {
 
       VStack(alignment: .leading, spacing: 4) {
         Text("listIndentation: \(self.style.listIndentation, specifier: "%.0f")")
-          .font(self.style.bodyFont)
+          .font(self.style.bodyFont.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize))
           .foregroundStyle(self.style.bodyColor.swiftUIColor())
       }
     }
