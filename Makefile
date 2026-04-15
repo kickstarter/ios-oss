@@ -160,6 +160,9 @@ strings:
 
 secrets:
 	-@rm -rf Frameworks/native-secrets
+	-mkdir -p ~/.ssh
+	-touch ~/.ssh/known_hosts
+	-ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 	-@git clone git@github.com:kickstarter/native-secrets Frameworks/native-secrets 2>/dev/null || echo '(Skipping secrets.)'
 	if [ ! -d Frameworks/native-secrets ]; \
 	then \
