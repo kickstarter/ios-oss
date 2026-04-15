@@ -28,7 +28,6 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   override func prepareForReuse() {
     super.prepareForReuse()
-    /// Clear callbacks so a reused cell doesn't fire stale closures.
     self.onCreatorTapped = nil
     self.onSaveTapped = nil
     self.onShareTapped = nil
@@ -41,10 +40,10 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.contentConfiguration = UIHostingConfiguration {
       VideoFeedOverlayView(
         item: value,
-        onCreatorTapped: self.onCreatorTapped,
-        onSaveTapped: self.onSaveTapped,
-        onShareTapped: self.onShareTapped,
-        onMoreTapped: self.onMoreTapped
+        onCreatorTapped: { [weak self] in self?.onCreatorTapped?() },
+        onSaveTapped: { [weak self] in self?.onSaveTapped?() },
+        onShareTapped: { [weak self] in self?.onShareTapped?() },
+        onMoreTapped: { [weak self] in self?.onMoreTapped?() }
       )
     }
     .margins(.all, 0)

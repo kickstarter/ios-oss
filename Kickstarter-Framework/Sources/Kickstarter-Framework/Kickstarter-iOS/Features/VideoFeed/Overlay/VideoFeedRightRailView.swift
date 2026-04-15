@@ -15,6 +15,7 @@ struct VideoFeedRightRailView: View {
     static let saveIcon = "video-feed-bookmark-icon"
     static let shareIcon = "video-feed-share-icon"
     static let moreIcon = "video-feed-ellipsis-icon"
+    static let avatarPlaceholderIcon = "avatar--placeholder"
 
     /// Accessibility
     // TODO: Update with Video Feed Translations [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
@@ -44,7 +45,6 @@ struct VideoFeedRightRailView: View {
 
   private var creatorAvatar: some View {
     Button(action: { self.onCreatorTapped?() }) {
-      // TODO: Replace with actual creator image url from backend
       self.avatarPlaceholder
         .frame(width: Constants.avatarSize, height: Constants.avatarSize)
         .clipShape(Circle())
@@ -52,8 +52,15 @@ struct VideoFeedRightRailView: View {
     .accessibilityLabel(Constants.creatorAccessibilityLabel)
   }
 
+  @ViewBuilder
   private var avatarPlaceholder: some View {
-    Color(Colors.Text.placeholder.uiColor())
+    if let image = Library.image(named: Constants.avatarPlaceholderIcon) {
+      Image(uiImage: image)
+        .resizable()
+        .scaledToFill()
+    } else {
+      Color(Colors.Text.placeholder.uiColor())
+    }
   }
 
   private var saveButton: some View {
