@@ -18,7 +18,32 @@ private enum Layout {
   }
 }
 
-final class ProjectPageNavigationBarView: UIView {
+final class ProjectPageNavigation {
+  var leftBarButtonItem: UIBarButtonItem {
+    guard let icon = Library.image(named: "icon--cross") else {
+      return UIBarButtonItem()
+    }
+
+    return UIBarButtonItem(
+      image: icon.withRenderingMode(.alwaysTemplate),
+      style: .plain,
+      target: self,
+      action: #selector(ProjectPageNavigation.closeButtonTapped)
+    )
+  }
+
+  var rightBarButtonItems: [UIBarButtonItem] {
+    let share = UIBarButtonItem(customView: self.navigationShareButton)
+    let save = UIBarButtonItem(customView: self.navigationSaveButton)
+
+    if #available(iOS 26.0, *) {
+      share.hidesSharedBackground = true
+      save.hidesSharedBackground = true
+    }
+
+    return [share, save]
+  }
+
   // MARK: - Properties
 
   private let shareViewModel: ShareViewModelType = ShareViewModel()
@@ -36,51 +61,20 @@ final class ProjectPageNavigationBarView: UIView {
 
   private lazy var navigationSaveButton: UIButton = { UIButton(type: .custom) }()
 
-  private lazy var rootStackView: UIStackView = {
-    UIStackView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
-  private lazy var spacer: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
   weak var delegate: ProjectPageViewControllerDelegate?
 
   // MARK: - Lifecycle
 
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-
+  init() {
     self.configureSubviews()
-    self.setupConstraints()
+    self.bindStyles()
     self.setupNotifications()
     self.bindViewModel()
   }
 
-  @available(*, unavailable)
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
   // MARK: - Styles
 
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
-
-    _ = self.rootStackView
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.insetsLayoutMarginsFromSafeArea .~ true
-      |> \.spacing .~ Styles.grid(0)
-
-    if #available(iOS 26.0, *) {
-      _ = self.rootStackView
-        |> \.layoutMargins .~ UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
-    }
-
+  func bindStyles() {
     _ = self.navigationShareButton
       |> shareButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
@@ -91,9 +85,7 @@ final class ProjectPageNavigationBarView: UIView {
 
   // MARK: - View Model
 
-  override func bindViewModel() {
-    super.bindViewModel()
-
+  func bindViewModel() {
     self.bindSharingViewModel()
     self.bindWatchViewModel()
   }
@@ -148,46 +140,11 @@ final class ProjectPageNavigationBarView: UIView {
 
   // MARK: Helpers
 
-  private func setupConstraints() {
-    _ = (self.rootStackView, self)
-      |> ksr_addSubviewToParent()
-
-    NSLayoutConstraint.activate([
-      self.rootStackView.topAnchor.constraint(equalTo: self.topAnchor),
-      self.rootStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-      self.rootStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-      self.rootStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-    ])
-
-    _ = (
-      [
-        self.navigationCloseButton,
-        self.spacer,
-        self.navigationShareButton,
-        self.navigationSaveButton
-      ],
-      self.rootStackView
-    )
-      |> ksr_addArrangedSubviewsToStackView()
-
-    NSLayoutConstraint
-      .activate([
-        self.navigationShareButton.widthAnchor
-          .constraint(equalTo: self.navigationShareButton.heightAnchor),
-        self.navigationSaveButton.widthAnchor
-          .constraint(equalTo: self.navigationSaveButton.heightAnchor),
-        self.navigationCloseButton.widthAnchor
-          .constraint(equalToConstant: 44),
-        self.navigationCloseButton.heightAnchor
-          .constraint(equalToConstant: 44)
-      ])
-  }
-
   private func setupNotifications() {
     NotificationCenter.default
       .addObserver(
         self,
-        selector: #selector(ProjectPageNavigationBarView.userSessionStarted),
+        selector: #selector(ProjectPageNavigation.userSessionStarted),
         name: .ksr_sessionStarted,
         object: nil
       )
@@ -195,7 +152,7 @@ final class ProjectPageNavigationBarView: UIView {
     NotificationCenter.default
       .addObserver(
         self,
-        selector: #selector(ProjectPageNavigationBarView.userSessionEnded),
+        selector: #selector(ProjectPageNavigation.userSessionEnded),
         name: .ksr_sessionEnded,
         object: nil
       )
@@ -204,17 +161,17 @@ final class ProjectPageNavigationBarView: UIView {
   private func configureSubviews() {
     self.addTargetAction(
       buttonItem: self.navigationShareButton,
-      targetAction: #selector(ProjectPageNavigationBarView.shareButtonTapped),
+      targetAction: #selector(ProjectPageNavigation.shareButtonTapped),
       event: .touchUpInside
     )
     self.addTargetAction(
       buttonItem: self.navigationSaveButton,
-      targetAction: #selector(ProjectPageNavigationBarView.saveButtonTapped(_:)),
+      targetAction: #selector(ProjectPageNavigation.saveButtonTapped(_:)),
       event: .touchUpInside
     )
     self.addTargetAction(
       buttonItem: self.navigationSaveButton,
-      targetAction: #selector(ProjectPageNavigationBarView.saveButtonPressed),
+      targetAction: #selector(ProjectPageNavigation.saveButtonPressed),
       event: .touchDown
     )
   }
@@ -258,7 +215,7 @@ final class ProjectPageNavigationBarView: UIView {
   }
 }
 
-extension ProjectPageNavigationBarView: ProjectPageNavigationBarViewDelegate {
+extension ProjectPageNavigation: ProjectPageNavigationBarViewDelegate {
   func viewDidLoad() {
     self.watchProjectViewModel.inputs.viewDidLoad()
   }

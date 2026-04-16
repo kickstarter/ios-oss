@@ -35,9 +35,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   private let dataSource = ProjectPageViewControllerDataSource()
   private let viewModel: ProjectPageViewModelType = ProjectPageViewModel()
 
-  private var navigationBarView: ProjectPageNavigationBarView = {
-    ProjectPageNavigationBarView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
+  private var navigation: ProjectPageNavigation = ProjectPageNavigation()
 
   private let pledgeCTAContainerView: PledgeCTAContainerView = {
     PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -141,16 +139,16 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   }
 
   public func configureNavigationView() {
-    guard let defaultNavigationBarView = self.navigationController?.navigationBar else {
-      return
+    self.navigation.delegate = self
+    self.navigationDelegate = self.navigation
+
+    self.navigationItem.rightBarButtonItems = self.navigation.rightBarButtonItems
+
+    // TODO: This is a bit of a bodge, should really be set when we create the first project page in the stack.
+    guard let root = self.navigationController?.viewControllers.first else { return }
+    if self == root {
+      self.navigationItem.leftBarButtonItem = self.navigation.leftBarButtonItem
     }
-
-    _ = (self.navigationBarView, defaultNavigationBarView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    self.navigationBarView.delegate = self
-    self.navigationDelegate = self.navigationBarView
   }
 
   private func configurePledgeCTAContainerView() {
@@ -301,11 +299,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   }
 
   private func bindProjectPageViewModel() {
-    self.navigationBarView.rac.hidden = self.viewModel.outputs.navigationBarIsHidden
-
     self.viewModel.outputs.navigationBarIsHidden
       .observeForUI()
       .observeValues { [weak self] _ in
+        // TODO: can we clean this up as well?
+        // Not sure if this is still getting us anything we want.
         guard let defaultNavigationBarView = self?.navigationController?.navigationBar else {
           return
         }
