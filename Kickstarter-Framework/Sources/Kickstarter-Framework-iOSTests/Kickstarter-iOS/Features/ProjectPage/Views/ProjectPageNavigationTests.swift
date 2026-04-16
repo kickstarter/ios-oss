@@ -7,7 +7,7 @@ import Prelude
 import SnapshotTesting
 import XCTest
 
-internal final class ProjectPageNavBarViewTests: TestCase {
+internal final class ProjectPageNavigationTests: TestCase {
   override func setUp() {
     super.setUp()
     UIView.setAnimationsEnabled(false)
@@ -20,8 +20,7 @@ internal final class ProjectPageNavBarViewTests: TestCase {
 
   func testNavigationBar_Unwatched_Success() {
     combos([Language.en], [Device.phone4inch]).forEach { _, device in
-      let view = ProjectPageNavigationBarView(frame: .zero)
-        |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      let navigation = ProjectPageNavigation()
 
       let project = .template |> Project.lens.personalization.isStarred .~ false
 
@@ -31,13 +30,13 @@ internal final class ProjectPageNavBarViewTests: TestCase {
         discoveryParams: nil
       )
 
-      view.configureWatchProject(with: watchValue)
-      view.viewDidLoad()
+      navigation.configureWatchProject(with: watchValue)
+      navigation.viewDidLoad()
 
       let (parent, _) = traitControllers(
         device: device,
         orientation: .portrait,
-        child: wrappedViewController(subview: view, device: device)
+        child: viewControllerWithNavigation(navigation)
       )
 
       parent.view.frame.size.height = 44
@@ -50,8 +49,7 @@ internal final class ProjectPageNavBarViewTests: TestCase {
 
   func testNavigationBar_Watched_Success() {
     combos([Language.en], [Device.phone4inch]).forEach { _, device in
-      let view = ProjectPageNavigationBarView(frame: .zero)
-        |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      let navigation = ProjectPageNavigation()
 
       let project = .template |> Project.lens.personalization.isStarred .~ true
 
@@ -61,13 +59,13 @@ internal final class ProjectPageNavBarViewTests: TestCase {
         discoveryParams: nil
       )
 
-      view.configureWatchProject(with: watchValue)
-      view.viewDidLoad()
+      navigation.configureWatchProject(with: watchValue)
+      navigation.viewDidLoad()
 
       let (parent, _) = traitControllers(
         device: device,
         orientation: .portrait,
-        child: wrappedViewController(subview: view, device: device)
+        child: viewControllerWithNavigation(navigation)
       )
 
       parent.view.frame.size.height = 44
@@ -78,19 +76,12 @@ internal final class ProjectPageNavBarViewTests: TestCase {
     }
   }
 
-  private func wrappedViewController(subview: UIView, device: Device) -> UIViewController {
-    let controller = UIViewController(nibName: nil, bundle: nil)
-    let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+  private func viewControllerWithNavigation(_ navigation: ProjectPageNavigation) -> UIViewController {
+    let vc = UIViewController()
+    vc.navigationItem.leftBarButtonItem = navigation.closeButton
+    vc.navigationItem.rightBarButtonItems = navigation.rightBarButtonItems
+    vc.navigationItem.standardAppearance = UINavigationBarAppearance.projectPageNavigationBarAppearance
 
-    controller.view.addSubview(subview)
-
-    NSLayoutConstraint.activate([
-      subview.leadingAnchor.constraint(equalTo: controller.view.layoutMarginsGuide.leadingAnchor),
-      subview.topAnchor.constraint(equalTo: controller.view.layoutMarginsGuide.topAnchor),
-      subview.trailingAnchor.constraint(equalTo: controller.view.layoutMarginsGuide.trailingAnchor),
-      subview.bottomAnchor.constraint(equalTo: controller.view.layoutMarginsGuide.bottomAnchor)
-    ])
-
-    return parent
+    return UINavigationController(rootViewController: vc)
   }
 }
