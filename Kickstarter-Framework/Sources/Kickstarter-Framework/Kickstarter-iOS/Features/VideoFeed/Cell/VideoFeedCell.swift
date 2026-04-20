@@ -3,10 +3,17 @@ import Library
 import SwiftUI
 import UIKit
 
-/// Right now this is just static full screen color blocks with a centered title label.
-/// Will update as the video feed is further built out.
+/// Hosts a `VideoFeedOverlayView` via UIHostingConfiguration and passes
+/// right rail callbacks down so the controller can handle navigation.
 final class VideoFeedCell: UICollectionViewCell, ValueCell {
   static let reuseIdentifier = "VideoFeedCell"
+
+  // MARK: - Callbacks (wired by VideoFeedViewController)
+
+  var onCreatorTapped: (() -> Void)?
+  var onSaveTapped: (() -> Void)?
+  var onShareTapped: (() -> Void)?
+  var onMoreTapped: (() -> Void)?
 
   // MARK: - Lifecycle
 
@@ -19,11 +26,25 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     fatalError("init(coder:) has not been implemented")
   }
 
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    self.onCreatorTapped = nil
+    self.onSaveTapped = nil
+    self.onShareTapped = nil
+    self.onMoreTapped = nil
+  }
+
   // MARK: - Configuration
 
   func configureWith(value: VideoFeedItem) {
     self.contentConfiguration = UIHostingConfiguration {
-      VideoFeedOverlayView(item: value)
+      VideoFeedOverlayView(
+        item: value,
+        onCreatorTapped: { [weak self] in self?.onCreatorTapped?() },
+        onSaveTapped: { [weak self] in self?.onSaveTapped?() },
+        onShareTapped: { [weak self] in self?.onShareTapped?() },
+        onMoreTapped: { [weak self] in self?.onMoreTapped?() }
+      )
     }
     .margins(.all, 0)
     .background(Color(Colors.Text.secondary.uiColor()))
