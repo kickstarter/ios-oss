@@ -1,91 +1,77 @@
-import LibraryTestHelpers
+@testable import LibraryTestHelpers
 @testable import ServerDrivenUI
 import ServerDrivenUITestHelpers
 import SnapshotTesting
 import SwiftUI
-import Testing
 
 @MainActor
-@Suite("TextBlock", .tags(.serverDrivenUI))
-struct TextBlockTests {
-  @Test(
-    "Test basic text rendering",
-    .snapshots(record: .failed),
+final class TextBlockTests: TestCase {
+  func testBasicText() throws {
+    let texts: [RichTextElement.Text] = [helloWorldPlain, longTextPlain]
 
-    arguments:
-    [helloWorldPlain, longTextPlain],
-    orthogonalCombos(colorSchemes, contentSizes)
-  )
-  func testBasicText(
-    text: RichTextElement.Text,
-    properties: (ColorScheme, UIContentSizeCategory),
-  ) async throws {
-    let (colorScheme, contentSizeCategory) = properties
-    UITraitCollection(preferredContentSizeCategory: contentSizeCategory).performAsCurrent {
-      let view = TextBlock(text: text)
-        .frame(width: 500)
-        .frame(maxHeight: .infinity)
-        .environment(\.richTextStyle, richTextStyle(colorScheme))
+    for colorScheme in colorSchemes {
+      for contentSizeCategory in contentSizes {
+        for text in texts {
+          UITraitCollection(preferredContentSizeCategory: contentSizeCategory).performAsCurrent {
+            let view = TextBlock(text: text)
+              .frame(width: 500)
+              .frame(maxHeight: .infinity)
+              .environment(\.richTextStyle, richTextStyle(colorScheme))
 
-      assertSnapshot(
-        of: view,
-        as: .image,
-        named: "\(shortName(text))-\(colorScheme)-\(contentSizeCategory.rawValue)"
-      )
+            assertSnapshot(
+              of: view,
+              as: .image,
+              named: "\(shortName(text))-\(colorScheme)-\(contentSizeCategory.rawValue)"
+            )
+          }
+        }
+      }
     }
   }
 
-  @Test(
-    "Test styled text rendering",
-    .snapshots(record: .failed),
+  func testStyles() throws {
+    let texts: [RichTextElement.Text] = [helloWorldStyled, longTextStyled]
 
-    arguments:
-    [helloWorldStyled, longTextStyled],
-    orthogonalCombos(colorSchemes, contentSizes)
-  )
-  func testStyles(
-    text: RichTextElement.Text,
-    properties: (ColorScheme, UIContentSizeCategory),
-  ) async throws {
-    let (colorScheme, contentSizeCategory) = properties
-    UITraitCollection(preferredContentSizeCategory: contentSizeCategory).performAsCurrent {
-      let view = TextBlock(text: text)
-        .frame(width: 500)
-        .frame(maxHeight: .infinity)
-        .environment(\.richTextStyle, richTextStyle(colorScheme))
+    for colorScheme in colorSchemes {
+      for contentSizeCategory in contentSizes {
+        for text in texts {
+          UITraitCollection(preferredContentSizeCategory: contentSizeCategory).performAsCurrent {
+            let view = TextBlock(text: text)
+              .frame(width: 500)
+              .frame(maxHeight: .infinity)
+              .environment(\.richTextStyle, richTextStyle(colorScheme))
 
-      assertSnapshot(
-        of: view,
-        as: .image,
-        named: "\(shortName(text))-\(colorScheme)-\(contentSizeCategory.rawValue)"
-      )
+            assertSnapshot(
+              of: view,
+              as: .image,
+              named: "\(shortName(text))-\(colorScheme)-\(contentSizeCategory.rawValue)"
+            )
+          }
+        }
+      }
     }
   }
 
-  @Test(
-    "Test list item text rendering",
-    .snapshots(record: .failed),
+  func testListItemText() throws {
+    let texts: [RichTextElement.Text] = [helloWorldPlain, longTextStyled]
 
-    arguments:
-    [helloWorldPlain, longTextStyled],
-    orthogonalCombos(colorSchemes, contentSizes)
-  )
-  func testListItemText(
-    text: RichTextElement.Text,
-    properties: (ColorScheme, UIContentSizeCategory),
-  ) async throws {
-    let (colorScheme, contentSizeCategory) = properties
-    UITraitCollection(preferredContentSizeCategory: contentSizeCategory).performAsCurrent {
-      let view = ListItemBlock(text: text)
-        .frame(width: 500)
-        .frame(maxHeight: .infinity)
-        .environment(\.richTextStyle, richTextStyle(colorScheme))
+    for colorScheme in colorSchemes {
+      for contentSizeCategory in contentSizes {
+        for text in texts {
+          UITraitCollection(preferredContentSizeCategory: contentSizeCategory).performAsCurrent {
+            let view = ListItemBlock(text: text)
+              .frame(width: 500)
+              .frame(maxHeight: .infinity)
+              .environment(\.richTextStyle, richTextStyle(colorScheme))
 
-      assertSnapshot(
-        of: view,
-        as: .image,
-        named: "\(shortName(text))-\(colorScheme)-\(contentSizeCategory.rawValue)"
-      )
+            assertSnapshot(
+              of: view,
+              as: .image,
+              named: "\(shortName(text))-\(colorScheme)-\(contentSizeCategory.rawValue)"
+            )
+          }
+        }
+      }
     }
   }
 }
