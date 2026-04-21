@@ -40,6 +40,7 @@ final class VideoFeedViewControllerTests: TestCase {
           id: "0",
           title: "Ringo Move - The Ultimate Workout Bottle",
           creator: "Creator Name",
+          creatorImageURL: nil,
           statsText: "$50,134 pledged · Join 431 backers",
           categoryPillText: "Project We Love",
           secondaryPillText: "3 days left",
