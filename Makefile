@@ -12,6 +12,7 @@ BRANCH ?= main
 DIST_BRANCH = $(RELEASE)-dist
 COMMIT ?= $(CIRCLE_SHA1)
 CURRENT_BRANCH ?= $(CIRCLE_BRANCH)
+RESULT_BUNDLE_PATH ?= $(if $(CIRCLE_ARTIFACTS),$(CIRCLE_ARTIFACTS)/TestResults.xcresult,TestResults.xcresult)
 
 ifeq ($(PLATFORM),iOS)
 	DESTINATION ?= 'platform=iOS Simulator,name=$(IPHONE_NAME),OS=$(IOS_VERSION)'
@@ -22,15 +23,15 @@ ifneq ($(CIRCLE_ARTIFACTS),)
 	XCPRETTY_BUILD += | tee $${CIRCLE_ARTIFACTS}/xcode_raw_$(SCHEME).log
 endif
 ifneq ($(shell type -p xcpretty),)
-	XCPRETTY_BUILD += | xcpretty -c && exit $${PIPESTATUS[0]}
+	XCPRETTY_BUILD += | xcpretty -c; exit $${PIPESTATUS[0]}
 endif
 
 XCPRETTY_TEST :=
 ifneq ($(shell type -p xcpretty),)
 	ifneq ($(CIRCLE_ARTIFACTS),)
-		XCPRETTY_TEST += | tee $${CIRCLE_ARTIFACTS}/xcode_raw_$(SCHEME).log | xcpretty -c --report junit --output $${CIRCLE_ARTIFACTS}/test_results.xml && exit $${PIPESTATUS[0]}
+		XCPRETTY_TEST += | tee $${CIRCLE_ARTIFACTS}/xcode_raw_$(SCHEME).log | xcpretty -c --report junit --output $${CIRCLE_ARTIFACTS}/test_results.xml; exit $${PIPESTATUS[0]}
 	else
-		XCPRETTY_TEST += | xcpretty -c && exit $${PIPESTATUS[0]}
+		XCPRETTY_TEST += | xcpretty -c; exit $${PIPESTATUS[0]}
 	endif
 endif
 
@@ -57,10 +58,10 @@ test-kickstarter-framework:
 	PLATFORM=iOS PACKAGE=Kickstarter-Framework SCHEME=Kickstarter-Framework "$(MAKE)" test-spm
 
 test: bootstrap
-	$(XCODEBUILD) test $(BUILD_FLAGS) $(XCPRETTY_TEST)
+	$(XCODEBUILD) test $(BUILD_FLAGS) -resultBundlePath $(RESULT_BUNDLE_PATH) $(XCPRETTY_TEST)
 
 test-spm: bootstrap
-	(cd $(PACKAGE) && $(XCODEBUILD) test -scheme "$(SCHEME)" -sdk iphonesimulator -destination $(DESTINATION) $(XCPRETTY_TEST))
+	(cd $(PACKAGE) && $(XCODEBUILD) test -scheme "$(SCHEME)" -sdk iphonesimulator -destination $(DESTINATION) -resultBundlePath $(RESULT_BUNDLE_PATH) $(XCPRETTY_TEST))
 
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY_BUILD)
