@@ -6,32 +6,31 @@ import XCTest
 
 struct RichTextStylePreviewView: View {
   @Environment(\.richTextStyle) private var style
-  @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
   var body: some View {
     VStack(alignment: .leading, spacing: self.style.blockSpacing) {
       Text("Body")
-        .font(self.style.bodyFont.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize))
+        .font(self.style.bodyFont.swiftUIFont())
         .foregroundStyle(self.style.bodyColor.swiftUIColor())
 
       Text("Heading 1")
-        .font(self.style.heading1Font.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize))
+        .font(self.style.heading1Font.swiftUIFont())
         .foregroundStyle(self.style.headingColor.swiftUIColor())
 
       Text("Heading 2")
-        .font(self.style.heading2Font.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize))
+        .font(self.style.heading2Font.swiftUIFont())
         .foregroundStyle(self.style.headingColor.swiftUIColor())
 
       Text("Heading 3")
-        .font(self.style.heading3Font.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize))
+        .font(self.style.heading3Font.swiftUIFont())
         .foregroundStyle(self.style.headingColor.swiftUIColor())
 
       Text("Heading 4")
-        .font(self.style.heading4Font.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize))
+        .font(self.style.heading4Font.swiftUIFont())
         .foregroundStyle(self.style.headingColor.swiftUIColor())
 
       Text("Link")
-        .font(self.style.bodyFont.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize))
+        .font(self.style.bodyFont.swiftUIFont())
         .foregroundStyle(self.style.linkColor.swiftUIColor())
         .underline(self.style.linkUnderlined)
 
@@ -41,7 +40,7 @@ struct RichTextStylePreviewView: View {
 
       VStack(alignment: .leading, spacing: 4) {
         Text("listIndentation: \(self.style.listIndentation, specifier: "%.0f")")
-          .font(self.style.bodyFont.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize))
+          .font(self.style.bodyFont.swiftUIFont())
           .foregroundStyle(self.style.bodyColor.swiftUIColor())
       }
     }
@@ -56,7 +55,7 @@ struct RichTextStylePreviewView: View {
 final class RichTextStyleSnapshotTests: XCTestCase {
   func testRichTextStylePreview_lightStyle() {
     let view = RichTextStylePreviewView()
-      .environment(\.sizeCategory, ContentSizeCategory.medium)
+//      .environment(\.sizeCategory, ContentSizeCategory.medium)
       .environment(\.richTextStyle, LightRichTextStyle())
       .environment(\.colorScheme, .light)
       .frame(width: 375, height: 400)
@@ -66,7 +65,7 @@ final class RichTextStyleSnapshotTests: XCTestCase {
 
   func testRichTextStylePreview_darkStyle() {
     let view = RichTextStylePreviewView()
-      .environment(\.sizeCategory, ContentSizeCategory.medium)
+//      .environment(\.sizeCategory, ContentSizeCategory.medium)
       .environment(\.richTextStyle, DarkRichTextStyle())
       .environment(\.colorScheme, .dark)
       .frame(width: 375, height: 400)

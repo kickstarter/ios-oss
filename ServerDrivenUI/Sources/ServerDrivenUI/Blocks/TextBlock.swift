@@ -5,7 +5,6 @@ struct TextBlock: View {
   var text: RichTextElement.Text
   var header: RichTextElement.HeaderLevel?
   @Environment(\.richTextStyle) var style: any RichTextStyle
-  @Environment(\.dynamicTypeSize) var dynamicTypeSize
 
   private func font(for header: RichTextElement.HeaderLevel?) -> Font {
     let baseFont = switch header {
@@ -20,7 +19,7 @@ struct TextBlock: View {
     case .some(.four):
       self.style.heading4Font
     }
-    return baseFont.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize)
+    return baseFont.swiftUIFont()
   }
 
   private func color(for header: RichTextElement.HeaderLevel?) -> any AdaptiveColor {

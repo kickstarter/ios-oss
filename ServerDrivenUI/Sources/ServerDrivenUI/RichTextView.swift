@@ -4,7 +4,6 @@ import SwiftUI
 public struct RichTextView: View {
   public var element: [RichTextElement]
   @Environment(\.richTextStyle) var style
-  @Environment(\.dynamicTypeSize) var dynamicTypeSize
 
   public init(element: [RichTextElement]) {
     self.element = element

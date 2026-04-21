@@ -4,13 +4,12 @@ import SwiftUI
 struct ListItemBlock: View {
   var text: RichTextElement.Text
   @Environment(\.richTextStyle) var style: any RichTextStyle
-  @Environment(\.dynamicTypeSize) var dynamicTypeSize
 
   public var body: some View {
     HStack(spacing: 0) {
       Text("•")
         .lineLimit(nil)
-        .font(self.style.bodyFont.swiftUIFont(size: nil, dynamicTypeSize: self.dynamicTypeSize))
+        .font(self.style.bodyFont.swiftUIFont())
         .foregroundStyle(self.style.bodyColor.swiftUIColor())
         .frame(maxWidth: self.style.listIndentation, maxHeight: .infinity, alignment: .topLeading)
       TextBlock(text: self.text, header: nil)

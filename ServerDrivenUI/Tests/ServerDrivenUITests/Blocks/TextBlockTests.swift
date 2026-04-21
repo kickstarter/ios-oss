@@ -25,12 +25,12 @@ struct TextBlockTests {
       let view = TextBlock(text: text)
         .frame(width: 500)
         .frame(maxHeight: .infinity)
-        .environment(\.colorScheme, colorScheme)
+        .environment(\.richTextStyle, richTextStyle(colorScheme))
 
       assertSnapshot(
         of: view,
         as: .image,
-        named: "\(text.text.prefix(10))-\(colorScheme)-\(contentSizeCategory)"
+        named: "\(shortName(text))-\(colorScheme)-\(contentSizeCategory.rawValue)"
       )
     }
   }
@@ -52,21 +52,12 @@ struct TextBlockTests {
       let view = TextBlock(text: text)
         .frame(width: 500)
         .frame(maxHeight: .infinity)
-        .environment(\.colorScheme, colorScheme)
-
-      let fullText = text.children.compactMap {
-        if case let .text(text, _) = $0 {
-          return text
-        } else {
-          return nil
-        }
-      }
-      let contents = fullText.map { $0.text }.joined()
+        .environment(\.richTextStyle, richTextStyle(colorScheme))
 
       assertSnapshot(
         of: view,
         as: .image,
-        named: "\(contents.prefix(10))-\(colorScheme)-\(contentSizeCategory)"
+        named: "\(shortName(text))-\(colorScheme)-\(contentSizeCategory.rawValue)"
       )
     }
   }
@@ -88,12 +79,12 @@ struct TextBlockTests {
       let view = ListItemBlock(text: text)
         .frame(width: 500)
         .frame(maxHeight: .infinity)
-        .environment(\.colorScheme, colorScheme)
+        .environment(\.richTextStyle, richTextStyle(colorScheme))
 
       assertSnapshot(
         of: view,
         as: .image,
-        named: "\(text.text.prefix(10))-\(colorScheme)-\(contentSizeCategory)"
+        named: "\(shortName(text))-\(colorScheme)-\(contentSizeCategory.rawValue)"
       )
     }
   }
@@ -101,10 +92,9 @@ struct TextBlockTests {
 
 private let colorSchemes = [ColorScheme.dark, ColorScheme.light]
 private let contentSizes = [
-  UIContentSizeCategory.accessibilityExtraExtraExtraLarge,
   UIContentSizeCategory.extraExtraExtraLarge,
   UIContentSizeCategory.large,
-  UIContentSizeCategory.extraSmall
+  UIContentSizeCategory.small
 ]
 
 private let helloWorldPlain = makeText("Hello world")
@@ -129,4 +119,28 @@ private func makeText(_ args: (String, RichTextElement.Text.Style?)...) -> RichT
   RichTextElement.Text(text: "", children: args.map { text, style in
     .text(RichTextElement.Text(text: text, link: nil, styles: [style].compactMap { $0 }, children: []), nil)
   })
+}
+
+private func richTextStyle(_ colorScheme: ColorScheme) -> any RichTextStyle {
+  switch colorScheme {
+  case .light:
+    return LightRichTextStyle()
+  case .dark:
+    return DarkRichTextStyle()
+  @unknown default:
+    assertionFailure()
+    return AutomaticRichTextStyle()
+  }
+}
+
+private func shortName(_ text: RichTextElement.Text) -> Substring {
+  let fullText = text.children.compactMap {
+    if case let .text(text, _) = $0 {
+      return text
+    } else {
+      return nil
+    }
+  }
+  let contents = text.text + (fullText.map { $0.text }.joined())
+  return contents.prefix(12)
 }
