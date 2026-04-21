@@ -9,7 +9,7 @@ struct ListItemBlock: View {
     HStack(spacing: 0) {
       Text("•")
         .lineLimit(nil)
-        .font(self.style.bodyFont.swiftUIFont())
+        .font(self.style.bodyFont)
         .foregroundStyle(self.style.bodyColor.swiftUIColor())
         .frame(maxWidth: self.style.listIndentation, maxHeight: .infinity, alignment: .topLeading)
       TextBlock(text: self.text, header: nil)

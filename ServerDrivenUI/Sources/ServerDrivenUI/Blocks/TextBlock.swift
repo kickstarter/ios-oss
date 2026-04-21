@@ -7,19 +7,18 @@ struct TextBlock: View {
   @Environment(\.richTextStyle) var style: any RichTextStyle
 
   private func font(for header: RichTextElement.HeaderLevel?) -> Font {
-    let baseFont = switch header {
+    switch header {
     case .none:
-      self.style.bodyFont
+      return self.style.bodyFont
     case .some(.one):
-      self.style.heading1Font
+      return self.style.heading1Font
     case .some(.two):
-      self.style.heading2Font
+      return self.style.heading2Font
     case .some(.three):
-      self.style.heading3Font
+      return self.style.heading3Font
     case .some(.four):
-      self.style.heading4Font
+      return self.style.heading4Font
     }
-    return baseFont.swiftUIFont()
   }
 
   private func color(for header: RichTextElement.HeaderLevel?) -> any AdaptiveColor {

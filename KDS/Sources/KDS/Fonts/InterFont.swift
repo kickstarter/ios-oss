@@ -13,10 +13,6 @@ public enum InterFont: CustomFont, CaseIterable {
     return UIFont.customFont(with: self, size: size)
   }
 
-  public func font(size: CGFloat? = nil, traitCollection: UITraitCollection = .current) -> UIFont {
-    return UIFont.customFont(with: self, size: size, traitCollection: traitCollection)
-  }
-
   public var defaultSize: CGFloat {
     switch self {
     // Old Design System

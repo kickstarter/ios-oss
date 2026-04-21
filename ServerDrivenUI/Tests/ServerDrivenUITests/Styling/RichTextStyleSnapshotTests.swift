@@ -10,27 +10,27 @@ struct RichTextStylePreviewView: View {
   var body: some View {
     VStack(alignment: .leading, spacing: self.style.blockSpacing) {
       Text("Body")
-        .font(self.style.bodyFont.swiftUIFont())
+        .font(self.style.bodyFont)
         .foregroundStyle(self.style.bodyColor.swiftUIColor())
 
       Text("Heading 1")
-        .font(self.style.heading1Font.swiftUIFont())
+        .font(self.style.heading1Font)
         .foregroundStyle(self.style.headingColor.swiftUIColor())
 
       Text("Heading 2")
-        .font(self.style.heading2Font.swiftUIFont())
+        .font(self.style.heading2Font)
         .foregroundStyle(self.style.headingColor.swiftUIColor())
 
       Text("Heading 3")
-        .font(self.style.heading3Font.swiftUIFont())
+        .font(self.style.heading3Font)
         .foregroundStyle(self.style.headingColor.swiftUIColor())
 
       Text("Heading 4")
-        .font(self.style.heading4Font.swiftUIFont())
+        .font(self.style.heading4Font)
         .foregroundStyle(self.style.headingColor.swiftUIColor())
 
       Text("Link")
-        .font(self.style.bodyFont.swiftUIFont())
+        .font(self.style.bodyFont)
         .foregroundStyle(self.style.linkColor.swiftUIColor())
         .underline(self.style.linkUnderlined)
 
@@ -40,7 +40,7 @@ struct RichTextStylePreviewView: View {
 
       VStack(alignment: .leading, spacing: 4) {
         Text("listIndentation: \(self.style.listIndentation, specifier: "%.0f")")
-          .font(self.style.bodyFont.swiftUIFont())
+          .font(self.style.bodyFont)
           .foregroundStyle(self.style.bodyColor.swiftUIColor())
       }
     }
