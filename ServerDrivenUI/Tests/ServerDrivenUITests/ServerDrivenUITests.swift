@@ -1,6 +1,7 @@
 @testable import ServerDrivenUI
 import Testing
 
-@Test func example() async throws {
-  #expect(42 == 42)
+extension Tag {
+  @Tag static var serverDrivenUI: Self
+  @Tag static var richText: Self
 }

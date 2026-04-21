@@ -55,7 +55,6 @@ struct RichTextStylePreviewView: View {
 final class RichTextStyleSnapshotTests: XCTestCase {
   func testRichTextStylePreview_lightStyle() {
     let view = RichTextStylePreviewView()
-      .environment(\.sizeCategory, ContentSizeCategory.medium)
       .environment(\.richTextStyle, LightRichTextStyle())
       .environment(\.colorScheme, .light)
       .frame(width: 375, height: 400)
@@ -65,7 +64,6 @@ final class RichTextStyleSnapshotTests: XCTestCase {
 
   func testRichTextStylePreview_darkStyle() {
     let view = RichTextStylePreviewView()
-      .environment(\.sizeCategory, ContentSizeCategory.medium)
       .environment(\.richTextStyle, DarkRichTextStyle())
       .environment(\.colorScheme, .dark)
       .frame(width: 375, height: 400)

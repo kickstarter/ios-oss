@@ -3,7 +3,7 @@ import SwiftUI
 
 public struct RichTextView: View {
   public var element: [RichTextElement]
-  @Environment(\.richTextStyle) var style: any RichTextStyle
+  @Environment(\.richTextStyle) var style
 
   public init(element: [RichTextElement]) {
     self.element = element
@@ -23,9 +23,9 @@ public struct RichTextView: View {
       ForEach(Array(self.element.enumerated()), id: \.offset) { _, element in
         switch element {
         case let .text(text, header):
-          self.unimplemented("Text")
-        case let .listItem(listItem):
-          self.unimplemented("ListItem")
+          TextBlock(text: text, header: header)
+        case let .listItem(text):
+          ListItemBlock(text: text)
         case .audio:
           self.unimplemented("Audio")
         case .photo:
