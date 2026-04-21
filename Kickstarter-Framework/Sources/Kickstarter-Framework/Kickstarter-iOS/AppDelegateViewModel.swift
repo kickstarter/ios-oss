@@ -100,8 +100,8 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the application should configure Segment with an instance of Braze.
   var configureSegmentWithBraze: Signal<String, Never> { get }
 
-  /// Emits when the application should configure Statsig.
-  var configureStatsig: Signal<(), Never> { get }
+  /// Emits when the application should configure Statsig and returns the correct API Key.
+  var configureStatsig: Signal<String, Never> { get }
 
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
@@ -721,6 +721,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.configureFirebase = self.applicationLaunchOptionsProperty.signal.ignoreValues()
 
     self.configureStatsig = self.applicationLaunchOptionsProperty.signal.ignoreValues()
+      .map { _ in
+        AppEnvironment.current.mainBundle.isRelease
+          ? Secrets.Statsig.production
+          : Secrets.Statsig.staging
+      }
 
     self.setApplicationShortcutItems = currentUserEvent
       .values()
@@ -927,7 +932,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureFirebase: Signal<(), Never>
   public let configureSegmentWithBraze: Signal<String, Never>
-  public let configureStatsig: Signal<(), Never>
+  public let configureStatsig: Signal<String, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let emailVerificationCompleted: Signal<(String, Bool), Never>
   public let findRedirectUrl: Signal<URL, Never>

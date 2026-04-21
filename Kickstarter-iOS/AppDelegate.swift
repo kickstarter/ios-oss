@@ -218,13 +218,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
           strongSelf.configureRemoteConfig()
         }
-    #endif
 
-    #if INTERNAL_BUILD
       self.viewModel.outputs.configureStatsig
         .observeForUI()
-        .observeValues { [weak self] in
-          self?.configureStatsig()
+        .observeValues { [weak self] key in
+          self?.configureStatsig(with: key)
         }
     #endif
 
@@ -467,8 +465,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       }
   }
 
-  private func configureStatsig() {
-    let client = StatsigClient(sdkKey: Secrets.Statsig.staging)
+  private func configureStatsig(with key: String) {
+    let client = StatsigClient(sdkKey: key)
     AppEnvironment.updateStatsigClient(client)
 
     client.initialize(userID: AppEnvironment.current.currentUser?.id.toString())
