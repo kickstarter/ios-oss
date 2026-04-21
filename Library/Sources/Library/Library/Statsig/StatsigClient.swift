@@ -18,4 +18,13 @@ public final class StatsigClient: StatsigClientType {
   public func checkGate(for feature: StatsigFeature) -> Bool {
     Statsig.checkGate(feature.rawValue)
   }
+
+  public func boolValue<T: StatsigExperimentProtocol>(
+    forKey key: T.Parameters,
+    inExperiment experiment: T
+  ) -> Bool? {
+    return Statsig
+      .getExperiment(experiment.name.rawValue)
+      .getValue(forKey: key.rawValue)
+  }
 }
