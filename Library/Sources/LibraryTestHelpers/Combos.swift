@@ -36,6 +36,7 @@ public func orthogonalCombos<A, B>(_ xs: [A], _ ys: [B]) -> [(A, B)] {
 
 // Combine three arrays by creating an array where each element is represented at least once.
 // Result consists of `max(A.count, B.count, C.count)` tuples.
+// swiftlint:disable:next large_tuple
 public func orthogonalCombos<A, B, C>(_ xs: [A], _ ys: [B], _ zs: [C]) -> [(A, B, C)] {
   if xs.count >= ys.count, xs.count >= zs.count {
     return xs.enumerated().map { index, x in
