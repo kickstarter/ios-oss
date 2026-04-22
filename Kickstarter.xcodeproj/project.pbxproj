@@ -793,13 +793,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		6008DF842F6353BF00A393E6 /* Statsig */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Statsig;
-			sourceTree = "<group>";
-		};
 		802800561C88F62500141235 /* Configs */ = {
 			isa = PBXGroup;
 			children = (
@@ -1154,7 +1147,6 @@
 				AAF547E22F2445C0001DB5AC /* Extensions */,
 				AAF547F12F2445C0001DB5AC /* PagedContainer */,
 				AAF547F32F2445C0001DB5AC /* RemoteConfig */,
-				6008DF842F6353BF00A393E6 /* Statsig */,
 				AAF547F82F2445C0001DB5AC /* Tracking */,
 				AAF548022F2445C0001DB5AC /* UseCases */,
 				AAF5489B2F2445C0001DB5AC /* ViewModels */,
@@ -1417,9 +1409,6 @@
 			);
 			dependencies = (
 				AAF3BD5C2F19876800DAE921 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				6008DF842F6353BF00A393E6 /* Statsig */,
 			);
 			name = LibraryTests;
 			packageProductDependencies = (
