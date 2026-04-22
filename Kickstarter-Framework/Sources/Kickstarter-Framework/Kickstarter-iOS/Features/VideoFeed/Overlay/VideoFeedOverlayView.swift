@@ -14,10 +14,10 @@ struct VideoFeedOverlayView: View {
     static let horizontalPadding: CGFloat = 14
     static let bottomPadding: CGFloat = 12
     static let railBottomSpacing: CGFloat = 20
-    static let playPauseButtonSize: CGFloat = 62
-    static let playPauseIconSize: CGFloat = 33
+    static let playButtonSize: CGFloat = 62
+    static let playIconSize: CGFloat = 33
     static let playIconOffset: CGFloat = 2
-    static let playPauseButtonOffset: CGFloat = -90
+    static let playButtonOffset: CGFloat = -90
     static let closeButtonSize: CGFloat = 44
   }
 
@@ -71,33 +71,33 @@ struct VideoFeedOverlayView: View {
     }
     .safeAreaPadding(.top)
     .overlay(alignment: .center) {
-      self.playPauseButton
-        .offset(y: Constants.playPauseButtonOffset)
+      self.playButton
+        .offset(y: Constants.playButtonOffset)
     }
   }
 
-  // MARK: - Play/Pause
+  // MARK: - Play Button
 
   @ViewBuilder
-  private var playPauseButton: some View {
-    let icon = Library
-      .image(named: self.playbackState.isPlaying ? "video-feed-clock-icon" : "video-feed-play-icon")
+  private var playButton: some View {
+    let icon = Library.image(named: "video-feed-play-icon")
 
     if let icon {
       Image(uiImage: icon)
         .resizable()
         .scaledToFit()
         .foregroundColor(Color(Colors.Icon.light.uiColor()))
-        .offset(x: self.playbackState.isPlaying ? 0 : Constants.playIconOffset)
-        .frame(width: Constants.playPauseIconSize, height: Constants.playPauseIconSize)
-        /// Second frame is larger to create the frosted glass ring.
-        .frame(width: Constants.playPauseButtonSize, height: Constants.playPauseButtonSize)
+        .offset(x: Constants.playIconOffset)
+        .frame(width: Constants.playIconSize, height: Constants.playIconSize)
+        /// Second, larger,  frame to create the frosted glass ring.
+        .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
         .background(FrostedGlassBackgroundView())
         .clipShape(Circle())
-        .onTapGesture { self.playbackState.togglePlayPause() }
-        .opacity(self.playbackState.isPlayPauseVisible ? 1 : 0)
-        .animation(.easeInOut(duration: 0.15), value: self.playbackState.isPlayPauseVisible)
-        .accessibilityLabel(self.playbackState.isPlaying ? "FPO: Pause" : "FPO: Play")
+        /// Tapping the play button resumes playback and hides the button.
+        .onTapGesture { self.playbackState.resume() }
+        .opacity(self.playbackState.isPlayButtonVisible ? 1 : 0)
+        .animation(.easeInOut(duration: 0.15), value: self.playbackState.isPlayButtonVisible)
+        .accessibilityLabel("FPO: Play")
         .accessibilityAddTraits(.isButton)
     }
   }

@@ -1,33 +1,21 @@
 import Foundation
 
-/// Owns play/pause UI state for a single video feed cell.
+/// Playback UI state for a single video feed cell.
 @Observable
 final class VideoFeedPlaybackState {
-  private enum Constants {
-    static let autoHideDelay: TimeInterval = 2.0
+  /// When false the play button is shown, prompting the user to resume.
+  var isPlaying: Bool = true
+  var isPlayButtonVisible: Bool = false
+
+  /// Pauses playback and shows the play button.
+  func pause() {
+    self.isPlaying = false
+    self.isPlayButtonVisible = true
   }
 
-  var isPlaying: Bool = false
-  var isPlayPauseVisible: Bool = false
-
-  /// Invalidates any pending auto-hide when showPlayPause() is called again before the timer finsihes.
-  private var autoHideToken: UUID = UUID()
-
-  func showPlayPause() {
-    self.isPlayPauseVisible = true
-    let token = UUID()
-
-    self.autoHideToken = token
-
-    DispatchQueue.main.asyncAfter(deadline: .now() + Constants.autoHideDelay) { [weak self] in
-      guard let self, self.autoHideToken == token else { return }
-
-      self.isPlayPauseVisible = false
-    }
-  }
-
-  func togglePlayPause() {
-    self.isPlaying.toggle()
-    self.showPlayPause()
+  /// Resumes playback and hides the play button.
+  func resume() {
+    self.isPlaying = true
+    self.isPlayButtonVisible = false
   }
 }

@@ -36,8 +36,8 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.onSaveTapped = nil
     self.onShareTapped = nil
     self.onMoreTapped = nil
-    self.playbackState.isPlaying = false
-    self.playbackState.isPlayPauseVisible = false
+    self.playbackState.isPlaying = true
+    self.playbackState.isPlayButtonVisible = false
   }
 
   // MARK: - Configuration
@@ -67,10 +67,9 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.addGestureRecognizer(tap)
   }
 
-  /// Tapping anywhere on the cell shows the play/pause button.
-  /// The button handles toggling via its own tap gesture. auto-hide handles dismissal.
+  /// Tapping anywhere on the cell pauses playback and shows the play button.
+  /// Tapping the play button resumes playback and hides it.
   @objc private func cellTapped() {
-    guard !self.playbackState.isPlayPauseVisible else { return }
-    self.playbackState.showPlayPause()
+    self.playbackState.pause()
   }
 }
