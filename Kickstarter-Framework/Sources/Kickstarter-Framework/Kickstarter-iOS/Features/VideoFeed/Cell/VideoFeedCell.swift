@@ -8,6 +8,7 @@ import UIKit
 final class VideoFeedCell: UICollectionViewCell, ValueCell {
   static let reuseIdentifier = "VideoFeedCell"
 
+  var onCloseTapped: (() -> Void)?
   var onCreatorTapped: (() -> Void)?
   var onSaveTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
@@ -30,7 +31,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   override func prepareForReuse() {
     super.prepareForReuse()
-
+    self.onCloseTapped = nil
     self.onCreatorTapped = nil
     self.onSaveTapped = nil
     self.onShareTapped = nil
@@ -46,6 +47,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
       VideoFeedOverlayView(
         item: value,
         playbackState: self.playbackState,
+        onCloseTapped: { [weak self] in self?.onCloseTapped?() },
         onCreatorTapped: { [weak self] in self?.onCreatorTapped?() },
         onSaveTapped: { [weak self] in self?.onSaveTapped?() },
         onShareTapped: { [weak self] in self?.onShareTapped?() },
@@ -69,7 +71,6 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   /// The button handles toggling via its own tap gesture. auto-hide handles dismissal.
   @objc private func cellTapped() {
     guard !self.playbackState.isPlayPauseVisible else { return }
-
     self.playbackState.showPlayPause()
   }
 }

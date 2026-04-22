@@ -18,11 +18,13 @@ struct VideoFeedOverlayView: View {
     static let playPauseIconSize: CGFloat = 33
     static let playIconOffset: CGFloat = 2
     static let playPauseButtonOffset: CGFloat = -90
+    static let closeButtonSize: CGFloat = 44
   }
 
   let item: VideoFeedItem
   let playbackState: VideoFeedPlaybackState
 
+  var onCloseTapped: (() -> Void)?
   var onCreatorTapped: (() -> Void)?
   var onSaveTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
@@ -33,6 +35,18 @@ struct VideoFeedOverlayView: View {
       self.topGradient
         .ignoresSafeArea()
         .accessibilityHidden(true)
+
+      Button(action: { self.onCloseTapped?() }) {
+        if let icon = Library.image(named: "video-feed-close-icon") {
+          Image(uiImage: icon)
+            .foregroundColor(Color(Colors.Icon.light.uiColor()))
+            .frame(width: Constants.closeButtonSize, height: Constants.closeButtonSize)
+        }
+      }
+      .padding(.leading, Constants.horizontalPadding)
+      .safeAreaPadding(.top)
+      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+      .accessibilityLabel("FPO: Close")
 
       VStack(alignment: .trailing, spacing: Constants.railBottomSpacing) {
         VideoFeedRightRailView(
@@ -73,7 +87,7 @@ struct VideoFeedOverlayView: View {
       Image(uiImage: icon)
         .resizable()
         .scaledToFit()
-        .foregroundColor(.white)
+        .foregroundColor(Color(Colors.Icon.light.uiColor()))
         .offset(x: self.playbackState.isPlaying ? 0 : Constants.playIconOffset)
         .frame(width: Constants.playPauseIconSize, height: Constants.playPauseIconSize)
         /// Second frame is larger to create the frosted glass ring.
