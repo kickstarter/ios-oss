@@ -10,4 +10,6 @@ public struct iOSTestExperiment: StatsigExperimentProtocol {
   public var name: StatsigExperimentName {
     return .ios_test_experiment
   }
+
+  public init() {}
 }

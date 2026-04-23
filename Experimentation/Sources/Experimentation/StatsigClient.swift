@@ -1,4 +1,4 @@
-import Statsig
+internal import Statsig
 
 public final class StatsigClient: StatsigClientType {
   private let sdkKey: String

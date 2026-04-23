@@ -8,6 +8,7 @@ import KDS
 #else
   import KsApi
 #endif
+import Experimentation
 import Kickstarter_Framework
 import Library
 import Prelude
@@ -16,7 +17,6 @@ import ReactiveSwift
 import SafariServices
 import Segment
 import SegmentBrazeUI
-import Statsig
 import SwiftUI
 import UIKit
 import UserNotifications

@@ -1,3 +1,4 @@
+import Experimentation
 
 public extension StatsigExperimentProtocol {
   func boolValue(forKey key: Parameters) -> Bool? {
@@ -14,6 +15,16 @@ public extension StatsigExperimentName {
     switch self {
     case .ios_test_experiment:
       return iOSTestExperiment()
+    }
+  }
+}
+
+extension StatsigClientType {
+  // TODO(CHECK-109): It would be nice to add an interface to show all experiments, and allow us to manually override them.
+  // This is a stub/reminder for that.
+  public func allExperiments() -> [any StatsigExperimentProtocol] {
+    return StatsigExperimentName.allCases.map {
+      $0.experimentFromName
     }
   }
 }
