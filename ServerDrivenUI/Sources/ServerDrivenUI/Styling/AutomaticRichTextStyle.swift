@@ -63,4 +63,8 @@ public struct AutomaticRichTextStyle: RichTextStyle, Sendable {
   public var mediaCornerRadius: CGFloat {
     Dimension.CornerRadius.medium
   }
+
+  public var mediaPlaceholderColor: AdaptiveColor {
+    Colors.Background.Surface.secondary
+  }
 }

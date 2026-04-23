@@ -28,8 +28,8 @@ public struct RichTextView: View {
           ListItemBlock(text: text)
         case .audio:
           self.unimplemented("Audio")
-        case .photo:
-          self.unimplemented("Photo")
+        case let .photo(photo):
+          ImageBlock(photo: photo)
         case .video:
           self.unimplemented("Video")
         case .oembed:

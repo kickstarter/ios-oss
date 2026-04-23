@@ -24,4 +24,5 @@ public struct LightRichTextStyle: RichTextStyle, Sendable {
   public var listIndentation: CGFloat { self.parent.listIndentation }
   public var contentHorizontalPadding: CGFloat { self.parent.contentHorizontalPadding }
   public var mediaCornerRadius: CGFloat { self.parent.mediaCornerRadius }
+  public var mediaPlaceholderColor: AdaptiveColor { self.parent.mediaPlaceholderColor.resolvedForLightMode() }
 }
