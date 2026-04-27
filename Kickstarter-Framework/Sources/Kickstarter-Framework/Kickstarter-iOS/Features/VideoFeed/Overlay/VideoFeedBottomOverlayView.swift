@@ -16,6 +16,7 @@ struct VideoFeedBottomOverlayView: View {
   }
 
   let item: VideoFeedItem
+  let videoPlayer: VideoFeedVideoPlayer
 
   var body: some View {
     VStack(alignment: .leading, spacing: Constants.contentSpacing) {
