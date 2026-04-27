@@ -29,7 +29,10 @@ let package = Package(
         .product(name: "Statsig", package: "statsig-kit")
       ]
     ),
-    .target(name: "ExperimentationTestHelpers"),
+    .target(
+      name: "ExperimentationTestHelpers",
+      dependencies: ["Experimentation"]
+    ),
     .testTarget(
       name: "ExperimentationTests",
       dependencies: ["Experimentation"]
