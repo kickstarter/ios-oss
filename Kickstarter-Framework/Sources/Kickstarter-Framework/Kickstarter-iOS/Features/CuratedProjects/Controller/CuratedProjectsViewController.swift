@@ -160,13 +160,10 @@ final class CuratedProjectsViewController: UIViewController {
 
   fileprivate func goToProject(_ project: Project, projects _: [Project], refTag: RefTag) {
     let projectParam = Either<Project, any ProjectPageParam>(left: project)
-    let vc = ProjectPageViewController.configuredWith(
-      projectOrParam: projectParam,
+    let nav = ProjectPageViewController.navigationController(
+      withProjectOrParam: projectParam,
       refInfo: RefInfo(refTag)
     )
-
-    let nav = NavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = self.traitCollection.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
 
     self.present(nav, animated: true, completion: nil)
   }
