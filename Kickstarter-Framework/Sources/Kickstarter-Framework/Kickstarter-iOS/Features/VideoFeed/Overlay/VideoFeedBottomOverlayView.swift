@@ -76,9 +76,7 @@ struct VideoFeedBottomOverlayView: View {
   }
 
   private var progressBar: some View {
-    ProgressView(value: 0.0)
-      .tint(Color(Colors.Icon.light.uiColor()))
-      .frame(height: Constants.progressBarHeight)
+    VideoFeedProgressBarView(player: self.videoPlayer)
       .padding(.top, Constants.progressTopPadding)
   }
 }
