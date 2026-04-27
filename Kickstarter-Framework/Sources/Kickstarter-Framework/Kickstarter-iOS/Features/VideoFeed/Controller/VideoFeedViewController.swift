@@ -90,25 +90,17 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     guard let cell = cell as? VideoFeedCell else { return }
 
     let items = self.viewModel.items
-
     guard indexPath.item < items.count else { return }
-
     let item = items[indexPath.item]
 
-    cell.onCreatorTapped = { [weak self] in
-      self?.simpleAlert(title: "Creator")
-    }
-    cell.onSaveTapped = { [weak self] in
-      self?.simpleAlert(title: "Saved")
-    }
-    cell.onShareTapped = { [weak self] in
-      self?.simpleAlert(title: "Share")
-    }
-    cell.onMoreTapped = { [weak self] in
-      self?.simpleAlert(title: "More")
-    }
+    cell.onCloseTapped = { [weak self] in self?.dismiss(animated: true) }
+    cell.onCreatorTapped = { [weak self] in self?.simpleAlert(title: "Creator") }
+    cell.onSaveTapped = { [weak self] in self?.simpleAlert(title: "Saved") }
+    cell.onShareTapped = { [weak self] in self?.simpleAlert(title: "Share") }
+    cell.onMoreTapped = { [weak self] in self?.simpleAlert(title: "More") }
 
     /// Re-configure after wiring callbacks so SwiftUI picks up the closures.
+    ///
     cell.configureWith(value: item)
   }
 
@@ -117,7 +109,6 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
   private func simpleAlert(title: String) {
     let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
     alert.addAction(UIAlertAction(title: "OK", style: .default))
-
     self.present(alert, animated: true)
   }
 }
