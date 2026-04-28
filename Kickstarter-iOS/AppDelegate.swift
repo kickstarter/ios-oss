@@ -109,7 +109,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { [weak self] in
         self?.rootTabBarController?.dismiss(animated: true, completion: nil)
-        $0.modalPresentationStyle = .pageSheet
         self?.rootTabBarController?.present($0, animated: true, completion: nil)
       }
 
