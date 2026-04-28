@@ -317,6 +317,8 @@
 		E113BD8D2B7D255A00D3A809 /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E113BD772B7D1B7700D3A809 /* KeychainTests.swift */; };
 		E182E5BA2B8CDFDE0008DD69 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */; };
 		E182E5BC2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */; };
+		E18CA28A2F9A864E005C22AE /* StatsigExperiment+HelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18CA2882F9A864E005C22AE /* StatsigExperiment+HelperTests.swift */; };
+		E18CA28B2F9A864E005C22AE /* StatsigFeature+HelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18CA2892F9A864E005C22AE /* StatsigFeature+HelperTests.swift */; };
 		E19D49C72DB7F07A004A74D5 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		E1A310242D270CB00062646C /* (null) in Sources */ = {isa = PBXBuildFile; };
 		E1BAA03E2C1A1CE4004F8B06 /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -650,6 +652,8 @@
 		E137D9AE2F3537F80089183D /* PublicUserFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PublicUserFragment.graphql; sourceTree = "<group>"; };
 		E15E22CD2E54B91B00EE6BB0 /* KDS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = KDS; sourceTree = "<group>"; };
 		E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppEnvironmentTests+OAuthInKeychain.swift"; sourceTree = "<group>"; };
+		E18CA2882F9A864E005C22AE /* StatsigExperiment+HelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsigExperiment+HelperTests.swift"; sourceTree = "<group>"; };
+		E18CA2892F9A864E005C22AE /* StatsigFeature+HelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsigFeature+HelperTests.swift"; sourceTree = "<group>"; };
 		E190EB1B2E29944E006A6DB6 /* BackerDashboardProjectCellFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BackerDashboardProjectCellFragment.graphql; sourceTree = "<group>"; };
 		E190EB1C2E29944E006A6DB6 /* BackingFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BackingFragment.graphql; sourceTree = "<group>"; };
 		E190EB1D2E29944E006A6DB6 /* CategoryFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CategoryFragment.graphql; sourceTree = "<group>"; };
@@ -732,6 +736,7 @@
 		E19C55F02F4CB84D00C768F6 /* NoRewardRewardFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = NoRewardRewardFragment.graphql; sourceTree = "<group>"; };
 		E1B33F502E538157008903BA /* GraphAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = GraphAPI; sourceTree = "<group>"; };
 		E1D529FC2ED4D21A00923AA9 /* ShippableLocationsForProjectQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ShippableLocationsForProjectQuery.graphql; sourceTree = "<group>"; };
+		E1FD854E2F9A7FF50095DBDB /* Experimentation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Experimentation; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -836,6 +841,7 @@
 				AAF3BB4D2F16FD7D00DAE921 /* KsApi */,
 				AAF3BB4E2F16FD7D00DAE921 /* Library */,
 				AAD997442F3D2C510027D211 /* ServerDrivenUI */,
+				E1FD854E2F9A7FF50095DBDB /* Experimentation */,
 				AAF548D62F2445C0001DB5AC /* LibraryTests */,
 				E113BD822B7D255000D3A809 /* Library-Keychain-iOSTests */,
 				E10BE8CE2B02975C00F73DC9 /* RichPushNotifications */,
@@ -1146,6 +1152,7 @@
 				AAF547DF2F2445C0001DB5AC /* DataSource */,
 				AAF547E22F2445C0001DB5AC /* Extensions */,
 				AAF547F12F2445C0001DB5AC /* PagedContainer */,
+				E18CA2872F9A85F5005C22AE /* Statsig */,
 				AAF547F32F2445C0001DB5AC /* RemoteConfig */,
 				AAF547F82F2445C0001DB5AC /* Tracking */,
 				AAF548022F2445C0001DB5AC /* UseCases */,
@@ -1244,6 +1251,15 @@
 				E113BD772B7D1B7700D3A809 /* KeychainTests.swift */,
 			);
 			path = "Library-Keychain-iOSTests";
+			sourceTree = "<group>";
+		};
+		E18CA2872F9A85F5005C22AE /* Statsig */ = {
+			isa = PBXGroup;
+			children = (
+				E18CA2882F9A864E005C22AE /* StatsigExperiment+HelperTests.swift */,
+				E18CA2892F9A864E005C22AE /* StatsigFeature+HelperTests.swift */,
+			);
+			path = Statsig;
 			sourceTree = "<group>";
 		};
 		E190EB3A2E29944E006A6DB6 /* fragments */ = {
@@ -1768,6 +1784,8 @@
 				AAF549422F2445C0001DB5AC /* PledgeShippingLocationViewModelTests.swift in Sources */,
 				AAF549432F2445C0001DB5AC /* PledgeShippingSummaryViewModelTests.swift in Sources */,
 				AAF549442F2445C0001DB5AC /* PledgeStatusLabelViewModelTests.swift in Sources */,
+				E18CA28A2F9A864E005C22AE /* StatsigExperiment+HelperTests.swift in Sources */,
+				E18CA28B2F9A864E005C22AE /* StatsigFeature+HelperTests.swift in Sources */,
 				AAF549452F2445C0001DB5AC /* PledgeSummaryViewModelTests.swift in Sources */,
 				AAF549462F2445C0001DB5AC /* PledgeViewCTAContainerViewModelTests.swift in Sources */,
 				AAF549472F2445C0001DB5AC /* PledgeViewModelTests.swift in Sources */,

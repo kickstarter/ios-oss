@@ -1,4 +1,4 @@
-import Statsig
+internal import Statsig
 
 public final class StatsigClient: StatsigClientType {
   private let sdkKey: String
@@ -17,5 +17,14 @@ public final class StatsigClient: StatsigClientType {
   /// Returns `true` if the named gate is enabled for the current user.
   public func checkGate(for feature: StatsigFeature) -> Bool {
     Statsig.checkGate(feature.rawValue)
+  }
+
+  public func boolValue<T: StatsigExperimentProtocol>(
+    forKey key: T.Parameters,
+    inExperiment experiment: T
+  ) -> Bool? {
+    return Statsig
+      .getExperiment(experiment.name.rawValue)
+      .getValue(forKey: key.rawValue)
   }
 }

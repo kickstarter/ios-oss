@@ -1,5 +1,6 @@
 import AVFoundation
 import CoreTelephony
+import Experimentation
 import FacebookCore
 import Foundation
 import KsApi
