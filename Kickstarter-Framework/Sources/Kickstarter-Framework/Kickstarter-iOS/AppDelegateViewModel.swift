@@ -1152,7 +1152,12 @@ private func updateUserNotificationSetting(navigation: Navigation) -> SignalProd
     .demoteErrors()
 }
 
+/// A utility for handling all of the `.project` deep links.
+/// These deep links can make stacks of view controllers - like Project > Comment > Thread.
+/// I pulled these out of `AppDelegateViewModel.init` to them easier to reason about.
 private struct ProjectDeepLink {
+  /// TODO: This could be cleaned up to be more imperative. It's basically mapping a project deep link and its subpages
+  /// into an array of `UIViewController`s.
   static func projectViewControllers(fromDeepLink deepLink: Signal<Navigation, Never>)
     -> Signal<UINavigationController, Never> {
     let projectLinkValues = deepLink
