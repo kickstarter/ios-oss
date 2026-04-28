@@ -466,6 +466,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           .map { params |> DiscoveryParams.lens.category .~ $0 }
       }
 
+    let fixErroredPledgeLinkAndNeedsToLogIn = deepLink
+      .filter { link in
+        guard case let .project(_, subpage, _, _) = link else { return false }
+        guard case .pledge(.manage) = subpage else { return false }
+
+        return AppEnvironment.current.currentUser == nil
+      }
+
     self.goToActivity = deepLink
       .filter { $0 == .tab(.activity) }
       .ignoreValues()
@@ -477,14 +485,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let goToLogin = deepLink
       .filter { $0 == .tab(.login) }
       .ignoreValues()
-
-    let fixErroredPledgeLinkAndNeedsToLogIn = deepLink
-      .filter { link in
-        guard case let .project(_, subpage, _, _) = link else { return false }
-        guard case .pledge(.manage) = subpage else { return false }
-
-        return AppEnvironment.current.currentUser == nil
-      }
 
     self.goToLoginWithIntent = Signal.merge(
       fixErroredPledgeLinkAndNeedsToLogIn.mapConst(.erroredPledge),
