@@ -22,4 +22,6 @@ public enum PaymentIncrementState: String, EnumType {
   case collectedAdjusted = "COLLECTED_ADJUSTED"
   /// Payment increment amount has been adjusted due to refund and is cancelled
   case cancelledAdjusted = "CANCELLED_ADJUSTED"
+  /// Payment increment amount has been adjusted due to refund and is errored
+  case erroredAdjusted = "ERRORED_ADJUSTED"
 }

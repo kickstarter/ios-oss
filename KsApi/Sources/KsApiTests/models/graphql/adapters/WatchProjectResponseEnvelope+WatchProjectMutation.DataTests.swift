@@ -8,7 +8,7 @@ import XCTest
 final class WatchProjectResponseEnvelope_WatchProjectMutationTests: XCTestCase {
   func test_envelopeFrom() {
     let mock = Mock<GraphAPITestMocks.Mutation>()
-    mock.watchProject = Mock<GraphAPITestMocks.UnwatchProjectPayload>()
+    mock.watchProject = Mock<GraphAPITestMocks.UnWatchProjectPayload>()
     mock.watchProject?.project = Mock<GraphAPITestMocks.Project>()
     mock.watchProject?.project?.id = "id"
     mock.watchProject?.project?.isWatched = true

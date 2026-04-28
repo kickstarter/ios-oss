@@ -18,7 +18,7 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     .field("backersCount", Int?.self),
     .field("convertedAmount", ConvertedAmount.self),
     .field("allowedAddons", AllowedAddons.self),
-    .field("description", String.self),
+    .field("description", String?.self),
     .field("displayName", String.self),
     .field("endsAt", GraphAPI.DateTime?.self),
     .field("estimatedDeliveryOn", GraphAPI.Date?.self),
@@ -56,7 +56,7 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
   ///
   public var allowedAddons: AllowedAddons { __data["allowedAddons"] }
   /// A reward description.
-  public var description: String { __data["description"] }
+  public var description: String? { __data["description"] }
   /// A reward's title plus the amount, or a default title (the reward amount) if it doesn't have a title.
   public var displayName: String { __data["displayName"] }
   /// When the reward is scheduled to end in seconds
@@ -108,7 +108,7 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     backersCount: Int? = nil,
     convertedAmount: ConvertedAmount,
     allowedAddons: AllowedAddons,
-    description: String,
+    description: String? = nil,
     displayName: String,
     endsAt: GraphAPI.DateTime? = nil,
     estimatedDeliveryOn: GraphAPI.Date? = nil,
