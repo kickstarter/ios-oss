@@ -1339,6 +1339,7 @@ private struct ProjectDeepLink {
         updateCommentThreadLink
       )
       .map { ProjectPageViewController.navigationController(withViewControllers: $0) }
+      // This one is already in its own nav controller, `RewardPledgeNavigationController`
       .merge(with: fixErroredPledgeLink.map { $0 as UINavigationController })
   }
 }
