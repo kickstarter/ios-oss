@@ -44,7 +44,9 @@ final class VideoFeedViewControllerTests: TestCase {
           statsText: "$50,134 pledged · Join 431 backers",
           categoryPillText: "Project We Love",
           secondaryPillText: "3 days left",
-          ctaTitle: "Back this project"
+          ctaTitle: "Back this project",
+          videoURL: nil,
+          videoPreviewImageURL: nil
         ))
 
         assertSnapshot(

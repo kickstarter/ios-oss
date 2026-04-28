@@ -1,28 +1,31 @@
 import Foundation
 
 public struct VideoFeedItem: Hashable {
-  let id: String
+  public let id: String
 
   /// Main title shown in the bottom overlay.
-  let title: String
+  public let title: String
 
   /// Creator name shown in the bottom overlay.
-  let creator: String
+  public let creator: String
 
   /// Creator avatar URL — used in the right rail's circular avatar button.
-  let creatorImageURL: URL?
+  public let creatorImageURL: URL?
 
   /// Stats text shown below the title.
-  let statsText: String
+  public let statsText: String
 
   /// Left pill label.
-  let categoryPillText: String
+  public let categoryPillText: String
 
   /// Right pill label.
-  let secondaryPillText: String
+  public let secondaryPillText: String
 
-  /// CTA button label.
-  let ctaTitle: String
+  /// HLS video stream URL.
+  public let videoURL: URL?
+
+  /// Video thumbnail/preview image URL.
+  public let videoPreviewImageURL: URL?
 
   public func hash(into hasher: inout Hasher) {
     hasher.combine(self.id)
