@@ -65,11 +65,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   static func navigationController(withViewControllers viewControllers: [UIViewController])
     -> UINavigationController {
     let nav = NavigationController()
-    nav
-      .modalPresentationStyle =
-      .fullScreen // AppEnvironment.current.device.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
-
     nav.viewControllers = viewControllers
+
+    nav.modalPresentationStyle =
+      AppEnvironment.current.device.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
 
     return nav
   }
