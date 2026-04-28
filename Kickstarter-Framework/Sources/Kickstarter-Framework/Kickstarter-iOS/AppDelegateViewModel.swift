@@ -541,7 +541,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .observeForUI()
       .map { url -> UINavigationController in
         let pm = PledgeManagerWebViewController.configuredWith(url: url)
-        return UINavigationController(rootViewController: pm)
+        let nav = UINavigationController(rootViewController: pm)
+        nav.modalPresentationStyle = .pageSheet
+        return nav
       }
 
     let projectLinks = ProjectDeepLink.projectViewControllers(fromDeepLink: deepLink)
@@ -1204,6 +1206,7 @@ private struct ProjectDeepLink {
       .map { vcs -> RewardPledgeNavigationController in
         let nav = RewardPledgeNavigationController(nibName: nil, bundle: nil)
         nav.viewControllers = vcs
+        nav.modalPresentationStyle = .pageSheet
         return nav
       }
 
@@ -1328,7 +1331,7 @@ private struct ProjectDeepLink {
         updateCommentsLink,
         updateCommentThreadLink
       )
-      .map { UINavigationController() |> UINavigationController.lens.viewControllers .~ $0 }
+      .map { ProjectPageViewController.navigationController(withViewControllers: $0) }
       .merge(with: fixErroredPledgeLink.map { $0 as UINavigationController })
   }
 }

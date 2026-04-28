@@ -62,6 +62,18 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   private var pinchToZoomData: PinchToZoomData?
   internal var overlayView: OverlayView? = OverlayView(frame: .zero)
 
+  static func navigationController(withViewControllers viewControllers: [UIViewController])
+    -> UINavigationController {
+    let nav = NavigationController()
+    nav
+      .modalPresentationStyle =
+      .fullScreen // AppEnvironment.current.device.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
+
+    nav.viewControllers = viewControllers
+
+    return nav
+  }
+
   public static func navigationController(
     withProjectOrParam projectOrParam: Either<Project, any ProjectPageParam>,
     refInfo: RefInfo?,
@@ -73,12 +85,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       secretRewardToken: secretRewardToken
     )
 
-    let nav = NavigationController(rootViewController: vc)
-    nav
-      .modalPresentationStyle =
-      .fullScreen // AppEnvironment.current.device.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
-
-    return nav
+    return ProjectPageViewController.navigationController(withViewControllers: [vc])
   }
 
   public static func configuredWith(
