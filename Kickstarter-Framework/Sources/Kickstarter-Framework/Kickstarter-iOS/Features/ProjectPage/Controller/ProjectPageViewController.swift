@@ -52,6 +52,31 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   private var pinchToZoomData: PinchToZoomData?
   internal var overlayView: OverlayView? = OverlayView(frame: .zero)
 
+  static func navigationController(withViewControllers viewControllers: [UIViewController])
+    -> UINavigationController {
+    let nav = NavigationController()
+    nav.viewControllers = viewControllers
+
+    nav.modalPresentationStyle =
+      AppEnvironment.current.device.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
+
+    return nav
+  }
+
+  public static func navigationController(
+    withProjectOrParam projectOrParam: Either<Project, any ProjectPageParam>,
+    refInfo: RefInfo?,
+    secretRewardToken: String? = nil
+  ) -> UINavigationController {
+    let vc = ProjectPageViewController.configuredWith(
+      projectOrParam: projectOrParam,
+      refInfo: refInfo,
+      secretRewardToken: secretRewardToken
+    )
+
+    return ProjectPageViewController.navigationController(withViewControllers: [vc])
+  }
+
   public static func configuredWith(
     projectOrParam: Either<Project, any ProjectPageParam>,
     refInfo: RefInfo?,
@@ -575,10 +600,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeForUI()
       .observeValues { [weak self] project in
         guard let self else { return }
-        let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: Either<Project, any ProjectPageParam>.right(project.projectPageParam),
+        let vc = ProjectPageViewController.navigationController(
+          withProjectOrParam: .right(project.projectPageParam),
           refInfo: RefInfo(.similarProjects)
         )
+
         if let nav = self.navigationController {
           nav.pushViewController(vc, animated: true)
         } else {
