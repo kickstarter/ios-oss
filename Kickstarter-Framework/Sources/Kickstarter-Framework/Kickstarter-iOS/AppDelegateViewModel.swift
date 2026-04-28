@@ -542,6 +542,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .map { url -> UINavigationController in
         let pm = PledgeManagerWebViewController.configuredWith(url: url)
         let nav = UINavigationController(rootViewController: pm)
+        // See PR #2650 for additional context. This used to be added in the view controller.
         nav.modalPresentationStyle = .pageSheet
         return nav
       }
@@ -1211,6 +1212,7 @@ private struct ProjectDeepLink {
       .map { vcs -> RewardPledgeNavigationController in
         let nav = RewardPledgeNavigationController(nibName: nil, bundle: nil)
         nav.viewControllers = vcs
+        // See PR #2650 for additional context. This used to be added in the view controller.
         nav.modalPresentationStyle = .pageSheet
         return nav
       }
