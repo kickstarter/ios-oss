@@ -16,6 +16,7 @@ struct VideoFeedBottomOverlayView: View {
   }
 
   let item: VideoFeedItem
+  let videoPlayer: VideoFeedVideoPlayer
 
   var body: some View {
     VStack(alignment: .leading, spacing: Constants.contentSpacing) {
@@ -75,9 +76,7 @@ struct VideoFeedBottomOverlayView: View {
   }
 
   private var progressBar: some View {
-    ProgressView(value: 0.0)
-      .tint(Color(Colors.Icon.light.uiColor()))
-      .frame(height: Constants.progressBarHeight)
+    VideoFeedProgressBarView(player: self.videoPlayer)
       .padding(.top, Constants.progressTopPadding)
   }
 }

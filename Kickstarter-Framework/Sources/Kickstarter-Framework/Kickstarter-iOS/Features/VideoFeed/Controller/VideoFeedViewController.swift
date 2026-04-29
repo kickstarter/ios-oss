@@ -100,7 +100,6 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     cell.onMoreTapped = { [weak self] in self?.simpleAlert(title: "More") }
 
     /// Re-configure after wiring callbacks so SwiftUI picks up the closures.
-    ///
     cell.configureWith(value: item)
   }
 

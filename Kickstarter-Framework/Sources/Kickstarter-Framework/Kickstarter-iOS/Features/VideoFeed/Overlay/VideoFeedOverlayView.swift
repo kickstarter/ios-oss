@@ -23,6 +23,7 @@ struct VideoFeedOverlayView: View {
 
   let item: VideoFeedItem
   let playbackState: VideoFeedPlaybackState
+  let videoPlayer: VideoFeedVideoPlayer
 
   var onCloseTapped: (() -> Void)?
   var onCreatorTapped: (() -> Void)?
@@ -57,7 +58,7 @@ struct VideoFeedOverlayView: View {
           onMoreTapped: self.onMoreTapped
         )
 
-        VideoFeedBottomOverlayView(item: self.item)
+        VideoFeedBottomOverlayView(item: self.item, videoPlayer: self.videoPlayer)
           .frame(maxWidth: .infinity, alignment: .leading)
       }
       .padding(.horizontal, Constants.horizontalPadding)
@@ -112,7 +113,6 @@ struct VideoFeedOverlayView: View {
         endPoint: .bottom
       )
       .frame(height: Constants.topGradientOverlayHeight)
-
       Spacer()
     }
   }

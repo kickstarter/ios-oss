@@ -15,12 +15,13 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   var onMoreTapped: (() -> Void)?
 
   private let playbackState = VideoFeedPlaybackState()
+  private let videoPlayer = VideoFeedVideoPlayer()
 
   // MARK: - Lifecycle
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-
+    self.playbackState.videoPlayer = self.videoPlayer
     self.setUpTapGesture()
   }
 
@@ -47,6 +48,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
       VideoFeedOverlayView(
         item: value,
         playbackState: self.playbackState,
+        videoPlayer: self.videoPlayer,
         onCloseTapped: { [weak self] in self?.onCloseTapped?() },
         onCreatorTapped: { [weak self] in self?.onCreatorTapped?() },
         onSaveTapped: { [weak self] in self?.onSaveTapped?() },
@@ -63,7 +65,6 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   private func setUpTapGesture() {
     let tap = UITapGestureRecognizer(target: self, action: #selector(self.cellTapped))
     tap.cancelsTouchesInView = false
-
     self.addGestureRecognizer(tap)
   }
 
