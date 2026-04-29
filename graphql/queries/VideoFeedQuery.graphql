@@ -13,33 +13,7 @@ query VideoFeed($first: Int!, $after: String, $categoryId: String) {
         icon
       }
       project {
-        id
-        pid
-        name
-        slug
-        percentFunded
-        deadlineAt
-        launchedAt
-        backersCount
-        pledged {
-          amount
-        }
-        creator {
-          name
-          imageUrl(blur: false, width: 200)
-        }
-        category {
-          name
-        }
-        lastUploadedVerticalVideo {
-          id
-          previewImageUrl
-          videoSources {
-            hls {
-              src
-            }
-          }
-        }
+        ...ProjectVideoFeedFragment
       }
     }
   }
