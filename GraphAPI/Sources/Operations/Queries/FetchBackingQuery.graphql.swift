@@ -228,7 +228,7 @@ public class FetchBackingQuery: GraphQLQuery {
           ///
           public var allowedAddons: AllowedAddons { __data["allowedAddons"] }
           /// A reward description.
-          public var description: String { __data["description"] }
+          public var description: String? { __data["description"] }
           /// A reward's title plus the amount, or a default title (the reward amount) if it doesn't have a title.
           public var displayName: String { __data["displayName"] }
           /// When the reward is scheduled to end in seconds
@@ -287,7 +287,7 @@ public class FetchBackingQuery: GraphQLQuery {
             backersCount: Int? = nil,
             convertedAmount: ConvertedAmount,
             allowedAddons: AllowedAddons,
-            description: String,
+            description: String? = nil,
             displayName: String,
             endsAt: GraphAPI.DateTime? = nil,
             estimatedDeliveryOn: GraphAPI.Date? = nil,
@@ -1807,7 +1807,7 @@ public class FetchBackingQuery: GraphQLQuery {
         ///
         public var allowedAddons: AllowedAddons { __data["allowedAddons"] }
         /// A reward description.
-        public var description: String { __data["description"] }
+        public var description: String? { __data["description"] }
         /// A reward's title plus the amount, or a default title (the reward amount) if it doesn't have a title.
         public var displayName: String { __data["displayName"] }
         /// When the reward is scheduled to end in seconds
@@ -1866,7 +1866,7 @@ public class FetchBackingQuery: GraphQLQuery {
           backersCount: Int? = nil,
           convertedAmount: ConvertedAmount,
           allowedAddons: AllowedAddons,
-          description: String,
+          description: String? = nil,
           displayName: String,
           endsAt: GraphAPI.DateTime? = nil,
           estimatedDeliveryOn: GraphAPI.Date? = nil,

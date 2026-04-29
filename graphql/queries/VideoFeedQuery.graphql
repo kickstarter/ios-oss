@@ -1,0 +1,20 @@
+query VideoFeed($first: Int!, $after: String, $categoryId: String) {
+  videoFeed(first: $first, after: $after, categoryId: $categoryId) {
+    pageInfo {
+        hasNextPage
+        endCursor
+        hasPreviousPage
+        startCursor
+    }
+    nodes {
+      badges {
+        type
+        text
+        icon
+      }
+      project {
+        ...ProjectVideoFeedFragment
+      }
+    }
+  }
+}

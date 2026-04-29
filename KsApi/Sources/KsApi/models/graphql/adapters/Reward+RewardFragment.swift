@@ -39,7 +39,7 @@ extension Reward {
       backersCount: rewardFragment.backersCount,
       convertedMinimum: rewardFragment.convertedAmount.fragments.moneyFragment.amount
         .flatMap(Double.init) ?? 0,
-      description: rewardFragment.description,
+      description: rewardFragment.description ?? "",
       endsAt: rewardFragment.endsAt.flatMap(TimeInterval.init),
       estimatedDeliveryOn: estimatedDeliveryOn,
       featured: rewardFragment.featured,

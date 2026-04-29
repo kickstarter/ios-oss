@@ -385,7 +385,9 @@
 		600944E62E5CB3D6004A089F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		600944E72E5CB3D7004A089F /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		600944E82E5CB3D8004A089F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		60253C0D2FA0EF59008E30A6 /* VideoFeedQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = VideoFeedQuery.graphql; sourceTree = "<group>"; };
 		60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		60C583812FA2462B00BD43AE /* ProjectVideoFeedFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProjectVideoFeedFragment.graphql; sourceTree = "<group>"; };
 		802800571C88F64D00141235 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Base.xcconfig; path = Configs/Base.xcconfig; sourceTree = "<group>"; };
 		80AB97B61D6281D60051C9D1 /* Debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Debug.entitlements; sourceTree = "<group>"; };
 		8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Configs/GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -1301,6 +1303,7 @@
 				E190EB372E29944E006A6DB6 /* UserFragment.graphql */,
 				E190EB382E29944E006A6DB6 /* UserSettingsFragment.graphql */,
 				E190EB392E29944E006A6DB6 /* UserStoredCardsFragment.graphql */,
+				60C583812FA2462B00BD43AE /* ProjectVideoFeedFragment.graphql */,
 			);
 			path = fragments;
 			sourceTree = "<group>";
@@ -1367,6 +1370,7 @@
 				E190EB6A2E29944E006A6DB6 /* SearchQuery.graphql */,
 				E190EB6B2E29944E006A6DB6 /* SimilarProjectQuery.graphql */,
 				E190EB6C2E29944E006A6DB6 /* ValidateCheckout.graphql */,
+				60253C0D2FA0EF59008E30A6 /* VideoFeedQuery.graphql */,
 			);
 			path = queries;
 			sourceTree = "<group>";
