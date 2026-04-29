@@ -67,12 +67,14 @@ struct VideoFeedBottomOverlayView: View {
   }
 
   private var ctaButton: some View {
-    Button(self.item.ctaTitle, action: {})
+    let ctaTitle = Strings.Back_this_project()
+
+    return Button(ctaTitle, action: {})
       .buttonStyle(CTAButtonStyle())
       .padding(.top, Constants.ctaTopPadding)
-      .accessibilityLabel(self.item.ctaTitle)
+      .accessibilityLabel(ctaTitle)
       .accessibilityAddTraits(.isButton)
-      .accessibilityHint(self.item.ctaTitle)
+      .accessibilityHint(ctaTitle)
   }
 
   private var progressBar: some View {
