@@ -5,6 +5,13 @@ public protocol StatsigClientType: AnyObject {
   /// Initializes Statsig and fetches gates/configs for the given user.
   func initialize(userID: String?)
 
+  /// Reloads Statsig with values the for the given user.
+  /// Switches the user and pulls in their current values.
+  func reload(withUserID userID: String?)
+
+  /// Shows the Statsig debugger.
+  func showDebugger()
+
   /// Returns whether a feature gate is enabled for the current user.
   func checkGate(for feature: StatsigFeature) -> Bool
 
