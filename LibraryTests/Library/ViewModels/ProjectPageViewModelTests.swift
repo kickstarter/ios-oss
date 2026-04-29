@@ -49,7 +49,6 @@ final class ProjectPageViewModelTests: TestCase {
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
   private let goToUpdates = TestObserver<Project, Never>()
   private let goToURL = TestObserver<URL, Never>()
-  private let navigationBarIsHidden = TestObserver<Bool, Never>()
   private let pauseMedia = TestObserver<(), Never>()
   private let popToRootViewController = TestObserver<(), Never>()
   private let presentMessageDialog = TestObserver<Project, Never>()
@@ -120,7 +119,6 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
     self.vm.outputs.goToUpdates.observe(self.goToUpdates.observer)
     self.vm.outputs.goToURL.observe(self.goToURL.observer)
-    self.vm.outputs.navigationBarIsHidden.observe(self.navigationBarIsHidden.observer)
     self.vm.outputs.pauseMedia.observe(self.pauseMedia.observer)
     self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
     self.vm.outputs.presentMessageDialog.observe(self.presentMessageDialog.observer)
@@ -432,7 +430,6 @@ final class ProjectPageViewModelTests: TestCase {
       self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.showNavigationBar(true)
 
       self.configureProjectNavigationSelectorView.assertDidEmitValue()
     }
@@ -451,7 +448,6 @@ final class ProjectPageViewModelTests: TestCase {
       self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.showNavigationBar(true)
 
       self.configureProjectNavigationSelectorView.assertDidEmitValue()
     }
@@ -1274,18 +1270,6 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.inputs.tappedUpdates()
 
     self.goToUpdates.assertValues([.template])
-  }
-
-  func testNavigationBarIsHidden() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
-
-    self.vm.inputs.showNavigationBar(true)
-
-    self.navigationBarIsHidden.assertValues([false])
-
-    self.vm.inputs.showNavigationBar(false)
-
-    self.navigationBarIsHidden.assertValues([false, true])
   }
 
   func testConfigurePledgeCTAView_FetchProjectSuccess() {
