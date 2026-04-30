@@ -15,6 +15,7 @@ struct StatsigDebugView: View {
       } label: {
         HStack {
           Image(systemName: "arrow.clockwise")
+            .accessibilityHidden(true)
           Text("Reload Statsig")
         }
       }
