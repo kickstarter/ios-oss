@@ -1338,12 +1338,7 @@ private struct ProjectDeepLink {
         updateCommentsLink,
         updateCommentThreadLink
       )
-      .map { viewControllers in
-        let navigation = UINavigationController()
-        navigation.modalPresentationStyle = .pageSheet
-        navigation.viewControllers = viewControllers
-        return navigation
-      }
+      .map { ProjectPageViewController.navigationController(withViewControllers: $0) }
       // This one is already in its own nav controller, `RewardPledgeNavigationController`
       .merge(with: fixErroredPledgeLink.map { $0 as UINavigationController })
   }

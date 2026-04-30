@@ -118,11 +118,13 @@ internal final class PledgeManagerWebViewController: WebViewController {
   // MARK: - Deeplinks
 
   fileprivate func goToProject(param: Param, refTag: RefTag?) {
-    let vc = ProjectPageViewController.configuredWith(
-      projectOrParam: .right(param),
+    /// Instead of using the helper `self.presentViewController`, use the project page's preferred navigation wrapper.
+    let nav = ProjectPageViewController.navigationController(
+      withProjectOrParam: .right(param),
       refInfo: RefInfo(refTag)
     )
-    self.presentViewController(vc)
+
+    self.present(nav, animated: true, completion: nil)
   }
 
   fileprivate func goToUpdate(project: Project, update: Update) {
