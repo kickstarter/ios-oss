@@ -205,7 +205,8 @@ internal final class BetaToolsViewController: UITableViewController {
   }
 
   private func showStatsigDebugger() {
-    let viewController = UIHostingController(rootView: StatsigDebugView())
+    let viewController =
+      UIHostingController(rootView: StatsigDebugView(client: AppEnvironment.current.statsigClient))
     viewController.navigationItem.title = "Statsig"
 
     self.navigationController?.pushViewController(viewController, animated: true)
