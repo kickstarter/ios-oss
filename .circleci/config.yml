@@ -60,6 +60,8 @@ test_job: &test_job
         path: /tmp/test_results.xml
 
 test_spm_job: &test_spm_job
+  environment:
+    SNAPSHOT_ARTIFACTS: /tmp/failed-snapshots
   steps:
     - macos/install-rosetta
     - attach_workspace:
