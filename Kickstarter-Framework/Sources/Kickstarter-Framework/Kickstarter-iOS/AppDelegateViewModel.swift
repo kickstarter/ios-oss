@@ -466,58 +466,12 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           .map { params |> DiscoveryParams.lens.category .~ $0 }
       }
 
-    let projectLinkValues = deepLink
-      .map { link -> (Param, Navigation.Project, RefInfo?, secretRewardToken: String?)? in
-        guard case let .project(param, subpage, refInfo, secretRewardToken) = link else { return nil }
-        return (param, subpage, refInfo, secretRewardToken)
-      }
-      .skipNil()
-      .switchMap { param, subpage, refInfo, secretRewardToken in
-        AppEnvironment.current.apiService.fetchProject(param: param)
-          .demoteErrors()
-          .observeForUI()
-          .map { project -> (Project, Navigation.Project, [UIViewController], RefInfo?) in
-            let projectParam = Either<Project, any ProjectPageParam>(left: project)
-            let vc = ProjectPageViewController.configuredWith(
-              projectOrParam: projectParam,
-              refInfo: refInfo,
-              secretRewardToken: secretRewardToken
-            )
+    let fixErroredPledgeLinkAndNeedsToLogIn = deepLink
+      .filter { link in
+        guard case let .project(_, subpage, _, _) = link else { return false }
+        guard case .pledge(.manage) = subpage else { return false }
 
-            return (
-              project, subpage,
-              [vc],
-              refInfo
-            )
-          }
-      }
-
-    let projectLink = projectLinkValues
-      .filter { project, _, _, _ in project.displayPrelaunch != true }
-
-    let projectPreviewLink = projectLinkValues
-      .filter { project, _, _, _ in project.displayPrelaunch == true }
-
-    let fixErroredPledgeLinkAndIsLoggedIn = projectLink
-      .filter { _, subpage, _, _ in subpage == .pledge(.manage) }
-      .map { project, _, vcs, _ in
-        (project, vcs, AppEnvironment.current.currentUser != nil)
-      }
-
-    let fixErroredPledgeLink = fixErroredPledgeLinkAndIsLoggedIn
-      .filter(third >>> isTrue)
-      .map { project, vcs, _ -> [UIViewController]? in
-        guard let backingId = project.personalization.backing?.id else { return nil }
-        let vc = ManagePledgeViewController.instantiate()
-        let params: ManagePledgeViewParamConfigData = (.id(project.id), .id(backingId))
-        vc.configureWith(params: params)
-        return vcs + [vc]
-      }
-      .skipNil()
-      .map { vcs -> RewardPledgeNavigationController in
-        let nav = RewardPledgeNavigationController(nibName: nil, bundle: nil)
-        nav.viewControllers = vcs
-        return nav
+        return AppEnvironment.current.currentUser == nil
       }
 
     self.goToActivity = deepLink
@@ -533,7 +487,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .ignoreValues()
 
     self.goToLoginWithIntent = Signal.merge(
-      fixErroredPledgeLinkAndIsLoggedIn.filter(third >>> isFalse).mapConst(.erroredPledge),
+      fixErroredPledgeLinkAndNeedsToLogIn.mapConst(.erroredPledge),
       goToLogin.mapConst(.generic),
       self.goToLoginSignupProperty.signal.skipNil()
     )
@@ -560,46 +514,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     )
     .filter(shouldOpenUrlInBrowser)
 
-    let projectRootLink = Signal.merge(projectLink, projectPreviewLink)
-      .filter { _, subpage, _, _ in subpage == .root }
-      .map { _, _, vcs, _ in vcs }
-
-    let projectCommentsLink = projectLink
-      .filter { _, subpage, _, _ in subpage == .comments }
-      .map { project, _, vcs, _ in
-        vcs + [commentsViewController(for: project, update: nil)]
-      }
-
-    let projectCommentThreadLink = projectLink
-      .observeForUI()
-      .switchMap { project, subpage, vcs, _ -> SignalProducer<[UIViewController], Never> in
-        guard case let .commentThread(commentId, replyId) = subpage,
-              let commentId = commentId else {
-          return .empty
-        }
-
-        return AppEnvironment.current.apiService
-          .fetchCommentReplies(
-            id: commentId,
-            cursor: nil,
-            limit: CommentRepliesEnvelope.paginationLimit
-          )
-          .demoteErrors()
-          .observeForUI()
-          .map { envelope in
-            vcs + [
-              commentsViewController(for: project, update: nil),
-              CommentRepliesViewController.configuredWith(
-                comment: envelope.comment,
-                project: project,
-                update: nil,
-                inputAreaBecomeFirstResponder: false,
-                replyId: replyId
-              )
-            ]
-          }
-      }
-
     let surveyUrlFromUserLink = deepLink
       .map { link -> Int? in
         if case let .user(_, .survey(surveyResponseId)) = link { return surveyResponseId }
@@ -625,98 +539,20 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let pledgeManagerLink = Signal.merge(surveyUrlFromProjectLink, surveyUrlFromUserLink)
       .observeForUI()
-      .map { url -> [UIViewController] in
-        [PledgeManagerWebViewController.configuredWith(url: url)]
+      .map { url -> UINavigationController in
+        let pm = PledgeManagerWebViewController.configuredWith(url: url)
+        let nav = UINavigationController(rootViewController: pm)
+        // See PR #2650 for additional context. This used to be added in the view controller.
+        nav.modalPresentationStyle = .pageSheet
+        return nav
       }
 
-    let updatesLink = projectLink
-      .filter { _, subpage, _, _ in subpage == .updates }
-      .map { project, _, vcs, _ in vcs + [ProjectUpdatesViewController.configuredWith(project: project)] }
-
-    let updateLink = projectLink
-      .map { project, subpage, vcs, _ -> (Project, Int, Navigation.Project.Update, [UIViewController])? in
-        guard case let .update(id, updateSubpage) = subpage else { return nil }
-        return (project, id, updateSubpage, vcs)
-      }
-      .skipNil()
-      .switchMap { project, id, updateSubpage, vcs in
-        AppEnvironment.current.apiService.fetchUpdate(updateId: id, projectParam: .id(project.id))
-          .demoteErrors()
-          .observeForUI()
-          .map { update -> (Project, Update, Navigation.Project.Update, [UIViewController]) in
-            (
-              project,
-              update,
-              updateSubpage,
-              vcs + [
-                UpdateViewController.configuredWith(
-                  project: project,
-                  update: update,
-                  context: .deepLink
-                )
-              ]
-            )
-          }
-      }
-
-    let updateRootLink = updateLink
-      .filter { _, _, subpage, _ in subpage == .root }
-      .map { _, _, _, vcs in vcs }
-
-    let updateCommentsLink = updateLink
-      .observeForUI()
-      .map { _, update, subpage, vcs -> [UIViewController]? in
-        guard case .comments = subpage else { return nil }
-        return vcs + [commentsViewController(update: update)]
-      }
-      .skipNil()
-
-    let updateCommentThreadLink = updateLink
-      .observeForUI()
-      .switchMap { project, update, subpage, vcs -> SignalProducer<[UIViewController], Never> in
-        guard case let .commentThread(commentId, replyId) = subpage,
-              let commentId = commentId else {
-          return .empty
-        }
-        return AppEnvironment.current.apiService
-          .fetchCommentReplies(
-            id: commentId,
-            cursor: nil,
-            limit: CommentRepliesEnvelope.paginationLimit
-          )
-          .demoteErrors()
-          .observeForUI()
-          .map { envelope in
-            vcs + [
-              commentsViewController(for: nil, update: update),
-              CommentRepliesViewController.configuredWith(
-                comment: envelope.comment,
-                project: project,
-                update: update,
-                inputAreaBecomeFirstResponder: false,
-                replyId: replyId
-              )
-            ]
-          }
-      }
-
-    let viewControllersContainedInNavigationController = Signal
-      .merge(
-        projectRootLink,
-        projectCommentsLink,
-        projectCommentThreadLink,
-        pledgeManagerLink,
-        updatesLink,
-        updateRootLink,
-        updateCommentsLink,
-        updateCommentThreadLink
-      )
-      .map { UINavigationController() |> UINavigationController.lens.viewControllers .~ $0 }
+    let projectLinks = ProjectDeepLink.projectViewControllers(fromDeepLink: deepLink)
 
     self.presentViewController = Signal.merge(
-      viewControllersContainedInNavigationController.map { $0 as UIViewController },
-      fixErroredPledgeLink.map { $0 as UIViewController }
-    )
+      projectLinks,
+      pledgeManagerLink
+    ).map { $0 as UIViewController }
 
     self.configureFirebase = self.applicationLaunchOptionsProperty.signal.ignoreValues()
 
@@ -1315,4 +1151,200 @@ private func updateUserNotificationSetting(navigation: Navigation) -> SignalProd
   return AppEnvironment.current.apiService.updateUserSelf(updatedUser)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     .demoteErrors()
+}
+
+/// A utility for handling all of the `.project` deep links.
+/// These deep links can make stacks of view controllers - like Project > Comment > Thread.
+/// I pulled these out of `AppDelegateViewModel.init` to them easier to reason about.
+private struct ProjectDeepLink {
+  /// TODO: This could be cleaned up to be more imperative. It's basically mapping a project deep link and its subpages
+  /// into an array of `UIViewController`s.
+  static func projectViewControllers(fromDeepLink deepLink: Signal<Navigation, Never>)
+    -> Signal<UINavigationController, Never> {
+    let projectLinkValues = deepLink
+      .map { link -> (Param, Navigation.Project, RefInfo?, secretRewardToken: String?)? in
+        guard case let .project(param, subpage, refInfo, secretRewardToken) = link else { return nil }
+        return (param, subpage, refInfo, secretRewardToken)
+      }
+      .skipNil()
+      .switchMap { param, subpage, refInfo, secretRewardToken in
+        AppEnvironment.current.apiService.fetchProject(param: param)
+          .demoteErrors()
+          .observeForUI()
+          .map { project -> (Project, Navigation.Project, [UIViewController], RefInfo?) in
+            let projectParam = Either<Project, any ProjectPageParam>(left: project)
+            let vc = ProjectPageViewController.configuredWith(
+              projectOrParam: projectParam,
+              refInfo: refInfo,
+              secretRewardToken: secretRewardToken
+            )
+
+            return (
+              project, subpage,
+              [vc],
+              refInfo
+            )
+          }
+      }
+
+    let projectLink = projectLinkValues
+      .filter { project, _, _, _ in project.displayPrelaunch != true }
+
+    let projectPreviewLink = projectLinkValues
+      .filter { project, _, _, _ in project.displayPrelaunch == true }
+
+    let fixErroredPledgeLinkAndIsLoggedIn = projectLink
+      .filter { _, subpage, _, _ in subpage == .pledge(.manage) }
+      .map { project, _, vcs, _ in
+        (project, vcs, AppEnvironment.current.currentUser != nil)
+      }
+
+    let fixErroredPledgeLink = fixErroredPledgeLinkAndIsLoggedIn
+      .filter(third >>> isTrue)
+      .map { project, vcs, _ -> [UIViewController]? in
+        guard let backingId = project.personalization.backing?.id else { return nil }
+        let vc = ManagePledgeViewController.instantiate()
+        let params: ManagePledgeViewParamConfigData = (.id(project.id), .id(backingId))
+        vc.configureWith(params: params)
+        return vcs + [vc]
+      }
+      .skipNil()
+      .map { vcs -> RewardPledgeNavigationController in
+        let nav = RewardPledgeNavigationController(nibName: nil, bundle: nil)
+        nav.viewControllers = vcs
+        // See PR #2650 for additional context. This used to be added in the view controller.
+        nav.modalPresentationStyle = .pageSheet
+        return nav
+      }
+
+    let projectRootLink = Signal.merge(projectLink, projectPreviewLink)
+      .filter { _, subpage, _, _ in subpage == .root }
+      .map { _, _, vcs, _ in vcs }
+
+    let projectCommentsLink = projectLink
+      .filter { _, subpage, _, _ in subpage == .comments }
+      .map { project, _, vcs, _ in
+        vcs + [commentsViewController(for: project, update: nil)]
+      }
+
+    let projectCommentThreadLink = projectLink
+      .observeForUI()
+      .switchMap { project, subpage, vcs, _ -> SignalProducer<[UIViewController], Never> in
+        guard case let .commentThread(commentId, replyId) = subpage,
+              let commentId = commentId else {
+          return .empty
+        }
+
+        return AppEnvironment.current.apiService
+          .fetchCommentReplies(
+            id: commentId,
+            cursor: nil,
+            limit: CommentRepliesEnvelope.paginationLimit
+          )
+          .demoteErrors()
+          .observeForUI()
+          .map { envelope in
+            vcs + [
+              commentsViewController(for: project, update: nil),
+              CommentRepliesViewController.configuredWith(
+                comment: envelope.comment,
+                project: project,
+                update: nil,
+                inputAreaBecomeFirstResponder: false,
+                replyId: replyId
+              )
+            ]
+          }
+      }
+
+    let updatesLink = projectLink
+      .filter { _, subpage, _, _ in subpage == .updates }
+      .map { project, _, vcs, _ in vcs + [ProjectUpdatesViewController.configuredWith(project: project)] }
+
+    let updateLink = projectLink
+      .map { project, subpage, vcs, _ -> (Project, Int, Navigation.Project.Update, [UIViewController])? in
+        guard case let .update(id, updateSubpage) = subpage else { return nil }
+        return (project, id, updateSubpage, vcs)
+      }
+      .skipNil()
+      .switchMap { project, id, updateSubpage, vcs in
+        AppEnvironment.current.apiService.fetchUpdate(updateId: id, projectParam: .id(project.id))
+          .demoteErrors()
+          .observeForUI()
+          .map { update -> (Project, Update, Navigation.Project.Update, [UIViewController]) in
+            (
+              project,
+              update,
+              updateSubpage,
+              vcs + [
+                UpdateViewController.configuredWith(
+                  project: project,
+                  update: update,
+                  context: .deepLink
+                )
+              ]
+            )
+          }
+      }
+
+    let updateRootLink = updateLink
+      .filter { _, _, subpage, _ in subpage == .root }
+      .map { _, _, _, vcs in vcs }
+
+    let updateCommentsLink = updateLink
+      .observeForUI()
+      .map { _, update, subpage, vcs -> [UIViewController]? in
+        guard case .comments = subpage else { return nil }
+        return vcs + [commentsViewController(update: update)]
+      }
+      .skipNil()
+
+    let updateCommentThreadLink = updateLink
+      .observeForUI()
+      .switchMap { project, update, subpage, vcs -> SignalProducer<[UIViewController], Never> in
+        guard case let .commentThread(commentId, replyId) = subpage,
+              let commentId = commentId else {
+          return .empty
+        }
+        return AppEnvironment.current.apiService
+          .fetchCommentReplies(
+            id: commentId,
+            cursor: nil,
+            limit: CommentRepliesEnvelope.paginationLimit
+          )
+          .demoteErrors()
+          .observeForUI()
+          .map { envelope in
+            vcs + [
+              commentsViewController(for: nil, update: update),
+              CommentRepliesViewController.configuredWith(
+                comment: envelope.comment,
+                project: project,
+                update: update,
+                inputAreaBecomeFirstResponder: false,
+                replyId: replyId
+              )
+            ]
+          }
+      }
+
+    return Signal
+      .merge(
+        projectRootLink,
+        projectCommentsLink,
+        projectCommentThreadLink,
+        updatesLink,
+        updateRootLink,
+        updateCommentsLink,
+        updateCommentThreadLink
+      )
+      .map { viewControllers in
+        let navigation = UINavigationController()
+        navigation.modalPresentationStyle = .pageSheet
+        navigation.viewControllers = viewControllers
+        return navigation
+      }
+      // This one is already in its own nav controller, `RewardPledgeNavigationController`
+      .merge(with: fixErroredPledgeLink.map { $0 as UINavigationController })
+  }
 }
