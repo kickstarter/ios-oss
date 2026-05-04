@@ -7,6 +7,9 @@ final class VideoFeedPlaybackState {
   var isPlaying: Bool = true
   var isPlayButtonVisible: Bool = false
 
+  /// True once the video is ready to play. Used to fade out the preview image.
+  var isVideoReady: Bool = false
+
   /// Set via `VideoFeedCell` after the video player is created.
   var videoPlayer: VideoFeedVideoPlayer?
 
@@ -14,7 +17,6 @@ final class VideoFeedPlaybackState {
   func pause() {
     self.isPlaying = false
     self.isPlayButtonVisible = true
-
     self.videoPlayer?.pause()
   }
 
@@ -22,7 +24,12 @@ final class VideoFeedPlaybackState {
   func resume() {
     self.isPlaying = true
     self.isPlayButtonVisible = false
+    self.videoPlayer?.play()
+  }
 
+  /// Called by the video player once it is ready to play.
+  func videoDidBecomeReady() {
+    self.isVideoReady = true
     self.videoPlayer?.play()
   }
 }

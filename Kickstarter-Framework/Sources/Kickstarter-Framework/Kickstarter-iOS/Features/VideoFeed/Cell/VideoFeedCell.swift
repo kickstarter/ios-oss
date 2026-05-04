@@ -14,6 +14,9 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
 
+  /// Called once the video is ready to play. Used to unlock feed scrolling.
+  var onVideoReady: (() -> Void)?
+
   private let playbackState = VideoFeedPlaybackState()
   private let videoPlayer = VideoFeedVideoPlayer()
 
@@ -21,6 +24,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
+
     self.playbackState.videoPlayer = self.videoPlayer
     self.setUpTapGesture()
   }
@@ -37,8 +41,11 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.onSaveTapped = nil
     self.onShareTapped = nil
     self.onMoreTapped = nil
+    self.onVideoReady = nil
     self.playbackState.isPlaying = true
     self.playbackState.isPlayButtonVisible = false
+    self.playbackState.isVideoReady = false
+    self.videoPlayer.stop()
   }
 
   // MARK: - Configuration
@@ -58,6 +65,14 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     }
     .margins(.all, 0)
     .background(Color(Colors.Text.secondary.uiColor()))
+
+    // Simulates video loading time until we implement real videos.
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
+      guard let self else { return }
+
+      self.playbackState.videoDidBecomeReady()
+      self.onVideoReady?()
+    }
   }
 
   // MARK: - Tap gesture
@@ -65,6 +80,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   private func setUpTapGesture() {
     let tap = UITapGestureRecognizer(target: self, action: #selector(self.cellTapped))
     tap.cancelsTouchesInView = false
+
     self.addGestureRecognizer(tap)
   }
 

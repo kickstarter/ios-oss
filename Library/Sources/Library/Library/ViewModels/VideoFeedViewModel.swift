@@ -33,7 +33,13 @@ public final class VideoFeedViewModel {
         query: VideoFeedQuery(first: 20, after: .none, categoryId: .none)
       )
       let nodes = result?.videoFeed?.nodes?.compactMap { $0 } ?? []
-      self.items = nodes.map { VideoFeedItem(node: $0) }
+
+      guard let first = nodes.first else {
+        self.isLoading = false
+        return
+      }
+
+      self.items = Array(repeating: VideoFeedItem(node: first), count: 20)
       self.isLoading = false
     } catch {
       self.isLoading = false

@@ -5,6 +5,7 @@ import UIKit
 /// Full-screen swipeable video feed.
 ///   - Full-screen paging
 ///   - Plain data source driven by VideoFeedViewModel
+///   - Scrolling locked until the first video is ready to play
 final class VideoFeedViewController: UIViewController {
   private enum Constants {
     static let backgroundColor = KDS.Colors.Text.secondary.uiColor()
@@ -42,6 +43,7 @@ final class VideoFeedViewController: UIViewController {
     self.collectionView.translatesAutoresizingMaskIntoConstraints = false
     self.collectionView.backgroundColor = Constants.backgroundColor
     self.collectionView.isPagingEnabled = true
+    self.collectionView.isScrollEnabled = false
     self.collectionView.showsVerticalScrollIndicator = false
     self.collectionView.contentInsetAdjustmentBehavior = .never
 
@@ -72,6 +74,15 @@ final class VideoFeedViewController: UIViewController {
       }
     }
   }
+
+  // MARK: - Scroll locking
+
+  /// Unlocks scrolling once the first video is ready to play.
+  private func unlockScrollingIfNeeded() {
+    guard !self.collectionView.isScrollEnabled else { return }
+
+    self.collectionView.isScrollEnabled = true
+  }
 }
 
 extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
@@ -99,6 +110,7 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     cell.onSaveTapped = { [weak self] in self?.simpleAlert(title: "Saved") }
     cell.onShareTapped = { [weak self] in self?.simpleAlert(title: "Share") }
     cell.onMoreTapped = { [weak self] in self?.simpleAlert(title: "More") }
+    cell.onVideoReady = { [weak self] in self?.unlockScrollingIfNeeded() }
 
     /// Re-configure after wiring callbacks so SwiftUI picks up the closures.
     cell.configureWith(value: item)

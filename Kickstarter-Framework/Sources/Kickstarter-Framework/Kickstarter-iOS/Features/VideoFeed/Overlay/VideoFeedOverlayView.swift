@@ -1,4 +1,5 @@
 import KDS
+import Kingfisher
 import Library
 import SwiftUI
 
@@ -19,6 +20,10 @@ struct VideoFeedOverlayView: View {
     static let playIconOffset: CGFloat = 2
     static let playButtonOffset: CGFloat = -90
     static let closeButtonSize: CGFloat = 44
+    static let previewFadeDuration: Double = 0.3
+    /// Defining safa area values because `UIHostingConfiguration` returns 0 for safe area insets when in a collectionview.
+    static let topSafeAreaPadding: CGFloat = 59
+    static let bottomSafeAreaPadding: CGFloat = 34
   }
 
   let item: VideoFeedItem
@@ -32,49 +37,68 @@ struct VideoFeedOverlayView: View {
   var onMoreTapped: (() -> Void)?
 
   var body: some View {
-    ZStack(alignment: .bottom) {
-      self.topGradient
-        .ignoresSafeArea()
-        .accessibilityHidden(true)
+    GeometryReader { _ in
 
-      Button(action: { self.onCloseTapped?() }) {
-        if let icon = Library.image(named: "video-feed-close-icon") {
-          Image(uiImage: icon)
-            .foregroundColor(Color(Colors.Icon.light.uiColor()))
-            .frame(width: Constants.closeButtonSize, height: Constants.closeButtonSize)
-        }
-      }
-      .padding(.leading, Constants.horizontalPadding)
-      .safeAreaPadding(.top)
-      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-      .accessibilityLabel("FPO: Close")
-
-      VStack(alignment: .trailing, spacing: Constants.railBottomSpacing) {
-        VideoFeedRightRailView(
-          item: self.item,
-          onCreatorTapped: self.onCreatorTapped,
-          onSaveTapped: self.onSaveTapped,
-          onShareTapped: self.onShareTapped,
-          onMoreTapped: self.onMoreTapped
-        )
-
-        VideoFeedBottomOverlayView(item: self.item, videoPlayer: self.videoPlayer)
-          .frame(maxWidth: .infinity, alignment: .leading)
-      }
-      .padding(.horizontal, Constants.horizontalPadding)
-      .padding(.bottom, Constants.bottomPadding)
-      .safeAreaPadding(.bottom)
-      .background(alignment: .bottom) {
-        self.bottomGradient
+      ZStack(alignment: .bottom) {
+        self.topGradient
           .ignoresSafeArea()
           .accessibilityHidden(true)
+
+        Button(action: { self.onCloseTapped?() }) {
+          if let icon = Library.image(named: "video-feed-close-icon") {
+            Image(uiImage: icon)
+              .foregroundColor(Color(Colors.Icon.light.uiColor()))
+              .frame(width: Constants.closeButtonSize, height: Constants.closeButtonSize)
+          }
+        }
+        .padding(.leading, Constants.horizontalPadding)
+        .padding(.top, Constants.topSafeAreaPadding)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .accessibilityLabel("FPO: Close")
+
+        VStack(alignment: .trailing, spacing: Constants.railBottomSpacing) {
+          VideoFeedRightRailView(
+            item: self.item,
+            onCreatorTapped: self.onCreatorTapped,
+            onSaveTapped: self.onSaveTapped,
+            onShareTapped: self.onShareTapped,
+            onMoreTapped: self.onMoreTapped
+          )
+
+          VideoFeedBottomOverlayView(item: self.item, videoPlayer: self.videoPlayer)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.horizontal, Constants.horizontalPadding)
+        .padding(.bottom, Constants.bottomPadding + Constants.bottomSafeAreaPadding)
+        .background(alignment: .bottom) {
+          self.bottomGradient
+            .ignoresSafeArea()
+            .accessibilityHidden(true)
+        }
+      }
+      .overlay(alignment: .center) {
+        self.playButton
+          .offset(y: Constants.playButtonOffset)
+      }
+      .background {
+        /// Preview image shown while the video loads.
+        /// Fades out once `isVideoReady` becomes true.
+        if let previewURL = self.item.videoPreviewImageURL {
+          KFImage(previewURL)
+            .placeholder { Color(Colors.Text.secondary.uiColor()) }
+            .resizable()
+            .scaledToFill()
+            .ignoresSafeArea()
+            .opacity(self.playbackState.isVideoReady ? 0 : 1)
+            .animation(
+              .easeInOut(duration: Constants.previewFadeDuration),
+              value: self.playbackState.isVideoReady
+            )
+            .accessibilityHidden(true)
+        }
       }
     }
-    .safeAreaPadding(.top)
-    .overlay(alignment: .center) {
-      self.playButton
-        .offset(y: Constants.playButtonOffset)
-    }
+    .ignoresSafeArea()
   }
 
   // MARK: - Play Button
@@ -90,7 +114,7 @@ struct VideoFeedOverlayView: View {
         .foregroundColor(Color(Colors.Icon.light.uiColor()))
         .offset(x: Constants.playIconOffset)
         .frame(width: Constants.playIconSize, height: Constants.playIconSize)
-        /// Second, larger,  frame to create the frosted glass ring.
+        /// Second, larger, frame to create the frosted glass ring.
         .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
         .background(FrostedGlassBackgroundView())
         .clipShape(Circle())
