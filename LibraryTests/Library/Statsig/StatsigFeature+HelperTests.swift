@@ -5,7 +5,7 @@ import XCTest
 
 final class StatsigFeatureHelpersTests: TestCase {
   func testFeatureIsFalse_whenStatsigFeatureOff() {
-    let mockStatsigClient = MockStatsigClient()
+    let mockStatsigClient = MockStatsigWrapper()
     mockStatsigClient.features[.videoFeed] = false
 
     withEnvironment(statsigClient: mockStatsigClient) {
@@ -14,7 +14,7 @@ final class StatsigFeatureHelpersTests: TestCase {
   }
 
   func testFeatureIsTrue_whenStatsigFeatureOn() {
-    let mockStatsigClient = MockStatsigClient()
+    let mockStatsigClient = MockStatsigWrapper()
     mockStatsigClient.features[.videoFeed] = true
 
     withEnvironment(statsigClient: mockStatsigClient) {

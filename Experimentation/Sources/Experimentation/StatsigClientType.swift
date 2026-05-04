@@ -2,9 +2,6 @@ import Foundation
 
 /// Abstracts the Statsig SDK so the rest of the app never imports Statsig directly.
 public protocol StatsigClientType: AnyObject {
-  /// Initializes Statsig and fetches gates/configs for the given user.
-  func initialize(userID: String?)
-
   /// Reloads Statsig with values the for the given user.
   /// Switches the user and pulls in their current values.
   func reload(withUserID userID: String?)

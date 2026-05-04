@@ -1,7 +1,7 @@
 import Experimentation
 import Foundation
 
-public final class MockStatsigClient: StatsigClientType {
+public final class MockStatsigWrapper: StatsigClientType {
   public var features: [StatsigFeature: Bool] = [:]
 
   // Set experiments by calling overrideExperiment(_,withMock:)

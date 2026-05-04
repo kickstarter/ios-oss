@@ -14,19 +14,49 @@ public enum StatsigClientSDKKey {
   case production(String)
 }
 
-public final class StatsigClient: StatsigClientType {
-  private let sdkKey: StatsigClientSDKKey
+/// A thin wrapper around the Statsig class `StatsigClient`.
+public final class StatsigWrapper: StatsigClientType {
+  private let client: StatsigClient
 
-  public init(sdkKey: StatsigClientSDKKey) {
-    self.sdkKey = sdkKey
+  public convenience init(sdkKey: StatsigClientSDKKey, userID: String?) {
+    let key: String
+    let tier: StatsigEnvironment.EnvironmentTier
+
+    switch sdkKey {
+    case let .production(prodKey):
+      key = prodKey
+      tier = .Production
+    case let .staging(stagingKey):
+      key = stagingKey
+      tier = .Staging
+    }
+
+    let client = StatsigClient(
+      sdkKey: key,
+      user: StatsigUser(userID: userID),
+      options: StatsigOptions(environment: StatsigEnvironment(tier: tier))
+    ) { error in
+      if let error {
+        debugPrint("Statsig reload error: \(error.localizedDescription)")
+      } else {
+        NotificationCenter.default.post(name: StatsigLoadedNotification, object: nil)
+        debugPrint("Successfully reloaded Statsig")
+      }
+    }
+
+    self.init(client: client)
+  }
+
+  init(client: StatsigClient) {
+    self.client = client
   }
 
   public func showDebugger() {
-    Statsig.openDebugView()
+    self.client.openDebugView()
   }
 
   public func reload(withUserID userID: String?) {
-    Statsig.updateUserWithResult(StatsigUser(userID: userID)) { error in
+    self.client.updateUserWithResult(StatsigUser(userID: userID)) { error in
       if let error {
         debugPrint("Statsig reload error: \(error.localizedDescription)")
       } else {
@@ -36,52 +66,23 @@ public final class StatsigClient: StatsigClientType {
     }
   }
 
-  /// Initializes the SDK with the given user. Call once on app launch.
-  public func initialize(userID: String?) {
-    let key: String
-    let tier: StatsigEnvironment.EnvironmentTier
-
-    switch self.sdkKey {
-    case let .production(prodKey):
-      key = prodKey
-      tier = .Production
-    case let .staging(stagingKey):
-      key = stagingKey
-      tier = .Staging
-    }
-
-    Statsig.initialize(
-      sdkKey: key,
-      user: StatsigUser(userID: userID),
-      options: StatsigOptions(environment: StatsigEnvironment(tier: tier))
-    ) { error in
-      if let error {
-        debugPrint("Statsig initializer error: \(error.localizedDescription)")
-      } else {
-        NotificationCenter.default.post(name: StatsigLoadedNotification, object: nil)
-        debugPrint("Successfully initialized Statsig")
-      }
-    }
-  }
-
-  /// Returns `true` if the named gate is enabled for the current user.
   public func checkGate(for feature: StatsigFeature) -> Bool? {
-    guard Statsig.isInitialized() else {
+    guard self.client.isInitialized() else {
       return nil
     }
 
-    return Statsig.checkGate(feature.rawValue)
+    return self.client.checkGate(feature.rawValue)
   }
 
   public func boolValue<T: StatsigExperimentProtocol>(
     forKey key: T.Parameters,
     inExperiment experiment: T
   ) -> Bool? {
-    guard Statsig.isInitialized() else {
+    guard self.client.isInitialized() else {
       return nil
     }
 
-    return Statsig
+    return self.client
       .getExperiment(experiment.name.rawValue)
       .getValue(forKey: key.rawValue)
   }
