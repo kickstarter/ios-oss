@@ -13,6 +13,10 @@ public final class MockStatsigClient: StatsigClientType {
 
   public func initialize(userID _: String?) {}
 
+  public func reload(withUserID _: String?) {}
+
+  public func showDebugger() {}
+
   public func checkGate(for feature: StatsigFeature) -> Bool {
     self.features[feature] ?? false
   }

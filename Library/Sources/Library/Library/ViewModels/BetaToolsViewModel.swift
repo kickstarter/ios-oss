@@ -9,6 +9,7 @@ public enum BetaToolsRow: Int, CaseIterable {
   case debugConfigFeatureFlags
   case debugRemoteConfigFeatureFlags
   case debugPushNotifications
+  case statsig
   case designSystem
   case colors
   case paginatedScrollView
@@ -18,7 +19,8 @@ public enum BetaToolsRow: Int, CaseIterable {
 
   public var cellStyle: UITableViewCell.CellStyle {
     switch self {
-    case .debugConfigFeatureFlags, .debugRemoteConfigFeatureFlags, .debugPushNotifications: return .default
+    case .debugConfigFeatureFlags, .debugRemoteConfigFeatureFlags, .debugPushNotifications,
+         .statsig: return .default
     default: return .value1
     }
   }
@@ -35,6 +37,7 @@ public enum BetaToolsRow: Int, CaseIterable {
     case .debugConfigFeatureFlags: return "Config Feature Flags"
     case .debugRemoteConfigFeatureFlags: return "Remote Config and Statsig Feature Flags"
     case .debugPushNotifications: return "Debug Push Notifications"
+    case .statsig: return "Statsig Debugger"
     case .designSystem: return "Design System"
     case .colors: return "Semantic Colors"
     case .paginatedScrollView: return "Paginated Scroll View"
@@ -47,7 +50,7 @@ public enum BetaToolsRow: Int, CaseIterable {
   public var rightIconImageName: String? {
     switch self {
     case .debugConfigFeatureFlags, .debugRemoteConfigFeatureFlags,
-         .debugPushNotifications, .paginatedScrollView, .richTextExample, .designSystem,
+         .debugPushNotifications, .statsig, .paginatedScrollView, .richTextExample, .designSystem,
          .colors: return "chevron-right"
     default: return nil
     }
@@ -78,6 +81,7 @@ public protocol BetaToolsViewModelOutputs {
   var goToConfigFeatureFlagTools: Signal<(), Never> { get }
   var goToRemoteConfigFeatureFlagTools: Signal<(), Never> { get }
   var goToPushNotificationTools: Signal<(), Never> { get }
+  var showStatsigDebugger: Signal<(), Never> { get }
   var goToPaginatedScrollView: Signal<(), Never> { get }
   var goToRichTextExample: Signal<(), Never> { get }
   var goToDesignSystem: Signal<(), Never> { get }
@@ -162,6 +166,11 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
       .filter { $0 == BetaToolsRow.debugRemoteConfigFeatureFlags }
       .ignoreValues()
 
+    self.showStatsigDebugger = self.didSelectBetaToolsRowProperty.signal
+      .skipNil()
+      .filter { $0 == BetaToolsRow.statsig }
+      .ignoreValues()
+
     self.goToPaginatedScrollView = self.didSelectBetaToolsRowProperty.signal
       .skipNil()
       .filter { $0 == BetaToolsRow.paginatedScrollView }
@@ -238,6 +247,7 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
   public let goToPaginatedScrollView: Signal<(), Never>
   public let goToRichTextExample: Signal<(), Never>
   public let goToDesignSystem: Signal<(), Never>
+  public let showStatsigDebugger: Signal<(), Never>
   public let goToColors: Signal<(), Never>
   public let updateLanguage: Signal<Language, Never>
   public let updateEnvironment: Signal<EnvironmentType, Never>

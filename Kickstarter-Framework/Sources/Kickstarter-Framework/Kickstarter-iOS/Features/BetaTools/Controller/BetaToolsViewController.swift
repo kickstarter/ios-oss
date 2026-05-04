@@ -79,6 +79,12 @@ internal final class BetaToolsViewController: UITableViewController {
         self?.goToRemoteConfigFeatureFlagTools()
       }
 
+    self.viewModel.outputs.showStatsigDebugger
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.showStatsigDebugger()
+      }
+
     self.viewModel.outputs.goToPaginatedScrollView
       .observeForControllerAction()
       .observeValues { [weak self] in
@@ -194,6 +200,14 @@ internal final class BetaToolsViewController: UITableViewController {
 
   private func goToRemoteConfigFeatureFlagTools() {
     let viewController = RemoteConfigFeatureFlagToolsViewController.instantiate()
+
+    self.navigationController?.pushViewController(viewController, animated: true)
+  }
+
+  private func showStatsigDebugger() {
+    let viewController =
+      UIHostingController(rootView: StatsigDebugView(client: AppEnvironment.current.statsigClient))
+    viewController.navigationItem.title = "Statsig"
 
     self.navigationController?.pushViewController(viewController, animated: true)
   }
