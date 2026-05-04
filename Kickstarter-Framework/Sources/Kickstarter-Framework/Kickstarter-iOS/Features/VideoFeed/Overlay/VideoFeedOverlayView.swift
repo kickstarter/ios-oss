@@ -22,8 +22,8 @@ struct VideoFeedOverlayView: View {
     static let closeButtonSize: CGFloat = 44
     static let previewFadeDuration: Double = 0.3
     /// Defining safa area values because `UIHostingConfiguration` returns 0 for safe area insets when in a collectionview.
-    static let topSafeAreaPadding: CGFloat = 59
-    static let bottomSafeAreaPadding: CGFloat = 34
+    static let topSafeAreaPadding: CGFloat = 60
+    static let bottomSafeAreaPadding: CGFloat = 37
   }
 
   let item: VideoFeedItem
@@ -37,65 +37,62 @@ struct VideoFeedOverlayView: View {
   var onMoreTapped: (() -> Void)?
 
   var body: some View {
-    GeometryReader { _ in
+    ZStack(alignment: .bottom) {
+      self.topGradient
+        .ignoresSafeArea()
+        .accessibilityHidden(true)
 
-      ZStack(alignment: .bottom) {
-        self.topGradient
+      Button(action: { self.onCloseTapped?() }) {
+        if let icon = Library.image(named: "video-feed-close-icon") {
+          Image(uiImage: icon)
+            .foregroundColor(Color(Colors.Icon.light.uiColor()))
+            .frame(width: Constants.closeButtonSize, height: Constants.closeButtonSize)
+        }
+      }
+      .padding(.leading, Constants.horizontalPadding)
+      .padding(.top, Constants.topSafeAreaPadding)
+      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+      .accessibilityLabel("FPO: Close")
+
+      VStack(alignment: .trailing, spacing: Constants.railBottomSpacing) {
+        VideoFeedRightRailView(
+          item: self.item,
+          onCreatorTapped: self.onCreatorTapped,
+          onSaveTapped: self.onSaveTapped,
+          onShareTapped: self.onShareTapped,
+          onMoreTapped: self.onMoreTapped
+        )
+
+        VideoFeedBottomOverlayView(item: self.item, videoPlayer: self.videoPlayer)
+          .frame(maxWidth: .infinity, alignment: .leading)
+      }
+      .padding(.horizontal, Constants.horizontalPadding)
+      .padding(.bottom, Constants.bottomPadding + Constants.bottomSafeAreaPadding)
+      .background(alignment: .bottom) {
+        self.bottomGradient
           .ignoresSafeArea()
           .accessibilityHidden(true)
-
-        Button(action: { self.onCloseTapped?() }) {
-          if let icon = Library.image(named: "video-feed-close-icon") {
-            Image(uiImage: icon)
-              .foregroundColor(Color(Colors.Icon.light.uiColor()))
-              .frame(width: Constants.closeButtonSize, height: Constants.closeButtonSize)
-          }
-        }
-        .padding(.leading, Constants.horizontalPadding)
-        .padding(.top, Constants.topSafeAreaPadding)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .accessibilityLabel("FPO: Close")
-
-        VStack(alignment: .trailing, spacing: Constants.railBottomSpacing) {
-          VideoFeedRightRailView(
-            item: self.item,
-            onCreatorTapped: self.onCreatorTapped,
-            onSaveTapped: self.onSaveTapped,
-            onShareTapped: self.onShareTapped,
-            onMoreTapped: self.onMoreTapped
+      }
+    }
+    .overlay(alignment: .center) {
+      self.playButton
+        .offset(y: Constants.playButtonOffset)
+    }
+    .background {
+      /// Preview image shown while the video loads.
+      /// Fades out once `isVideoReady` becomes true.
+      if let previewURL = self.item.videoPreviewImageURL {
+        KFImage(previewURL)
+          .placeholder { Color(Colors.Text.secondary.uiColor()) }
+          .resizable()
+          .scaledToFill()
+          .ignoresSafeArea()
+          .opacity(self.playbackState.isVideoReady ? 0 : 1)
+          .animation(
+            .easeInOut(duration: Constants.previewFadeDuration),
+            value: self.playbackState.isVideoReady
           )
-
-          VideoFeedBottomOverlayView(item: self.item, videoPlayer: self.videoPlayer)
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding(.horizontal, Constants.horizontalPadding)
-        .padding(.bottom, Constants.bottomPadding + Constants.bottomSafeAreaPadding)
-        .background(alignment: .bottom) {
-          self.bottomGradient
-            .ignoresSafeArea()
-            .accessibilityHidden(true)
-        }
-      }
-      .overlay(alignment: .center) {
-        self.playButton
-          .offset(y: Constants.playButtonOffset)
-      }
-      .background {
-        /// Preview image shown while the video loads.
-        /// Fades out once `isVideoReady` becomes true.
-        if let previewURL = self.item.videoPreviewImageURL {
-          KFImage(previewURL)
-            .placeholder { Color(Colors.Text.secondary.uiColor()) }
-            .resizable()
-            .scaledToFill()
-            .ignoresSafeArea()
-            .opacity(self.playbackState.isVideoReady ? 0 : 1)
-            .animation(
-              .easeInOut(duration: Constants.previewFadeDuration),
-              value: self.playbackState.isVideoReady
-            )
-            .accessibilityHidden(true)
-        }
+          .accessibilityHidden(true)
       }
     }
     .ignoresSafeArea()

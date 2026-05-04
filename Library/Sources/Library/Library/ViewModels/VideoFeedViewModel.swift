@@ -39,6 +39,7 @@ public final class VideoFeedViewModel {
         return
       }
 
+      /// Hardcoded list of 20 video items for testing. will be replaced with real video feed data
       self.items = Array(repeating: VideoFeedItem(node: first), count: 20)
       self.isLoading = false
     } catch {
