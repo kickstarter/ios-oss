@@ -5,7 +5,7 @@
 
 public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment ProjectVideoFeedFragment on Project { __typename id pid name slug percentFunded deadlineAt launchedAt backersCount pledged { __typename amount } creator { __typename name imageUrl(blur: false, width: 200) } category { __typename name } lastUploadedVerticalVideo { __typename id previewImageUrl videoSources { __typename hls { __typename src } } } }"#
+    #"fragment ProjectVideoFeedFragment on Project { __typename id pid name slug percentFunded deadlineAt launchedAt backersCount pledged { __typename amount } creator { __typename name imageUrl(blur: false, width: 200) } category { __typename name } verticalVideo { __typename id previewImageUrl videoSources { __typename hls { __typename src } } } }"#
   }
 
   public let __data: DataDict
@@ -25,7 +25,7 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
     .field("pledged", Pledged.self),
     .field("creator", Creator?.self),
     .field("category", Category?.self),
-    .field("lastUploadedVerticalVideo", LastUploadedVerticalVideo?.self),
+    .field("verticalVideo", VerticalVideo?.self),
   ] }
 
   public var id: GraphAPI.ID { __data["id"] }
@@ -49,8 +49,8 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
   public var creator: Creator? { __data["creator"] }
   /// The project's category.
   public var category: Category? { __data["category"] }
-  /// A project's last uploaded vertical video, if it's processing, or the current vertical video.
-  public var lastUploadedVerticalVideo: LastUploadedVerticalVideo? { __data["lastUploadedVerticalVideo"] }
+  /// A project vertical video.
+  public var verticalVideo: VerticalVideo? { __data["verticalVideo"] }
 
   public init(
     id: GraphAPI.ID,
@@ -64,7 +64,7 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
     pledged: Pledged,
     creator: Creator? = nil,
     category: Category? = nil,
-    lastUploadedVerticalVideo: LastUploadedVerticalVideo? = nil
+    verticalVideo: VerticalVideo? = nil
   ) {
     self.init(_dataDict: DataDict(
       data: [
@@ -80,7 +80,7 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
         "pledged": pledged._fieldData,
         "creator": creator._fieldData,
         "category": category._fieldData,
-        "lastUploadedVerticalVideo": lastUploadedVerticalVideo._fieldData,
+        "verticalVideo": verticalVideo._fieldData,
       ],
       fulfilledFragments: [
         ObjectIdentifier(ProjectVideoFeedFragment.self)
@@ -189,10 +189,10 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
     }
   }
 
-  /// LastUploadedVerticalVideo
+  /// VerticalVideo
   ///
   /// Parent Type: `Video`
-  public struct LastUploadedVerticalVideo: GraphAPI.SelectionSet {
+  public struct VerticalVideo: GraphAPI.SelectionSet {
     public let __data: DataDict
     public init(_dataDict: DataDict) { __data = _dataDict }
 
@@ -223,12 +223,12 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
           "videoSources": videoSources._fieldData,
         ],
         fulfilledFragments: [
-          ObjectIdentifier(ProjectVideoFeedFragment.LastUploadedVerticalVideo.self)
+          ObjectIdentifier(ProjectVideoFeedFragment.VerticalVideo.self)
         ]
       ))
     }
 
-    /// LastUploadedVerticalVideo.VideoSources
+    /// VerticalVideo.VideoSources
     ///
     /// Parent Type: `VideoSources`
     public struct VideoSources: GraphAPI.SelectionSet {
@@ -252,12 +252,12 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
             "hls": hls._fieldData,
           ],
           fulfilledFragments: [
-            ObjectIdentifier(ProjectVideoFeedFragment.LastUploadedVerticalVideo.VideoSources.self)
+            ObjectIdentifier(ProjectVideoFeedFragment.VerticalVideo.VideoSources.self)
           ]
         ))
       }
 
-      /// LastUploadedVerticalVideo.VideoSources.Hls
+      /// VerticalVideo.VideoSources.Hls
       ///
       /// Parent Type: `VideoSourceInfo`
       public struct Hls: GraphAPI.SelectionSet {
@@ -281,7 +281,7 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
               "src": src,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(ProjectVideoFeedFragment.LastUploadedVerticalVideo.VideoSources.Hls.self)
+              ObjectIdentifier(ProjectVideoFeedFragment.VerticalVideo.VideoSources.Hls.self)
             ]
           ))
         }

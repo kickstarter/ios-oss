@@ -39,7 +39,6 @@ public class Project: MockObject {
     @Field<Bool>("isProjectOfTheDay") public var isProjectOfTheDay
     @Field<Bool>("isProjectWeLove") public var isProjectWeLove
     @Field<Bool>("isWatched") public var isWatched
-    @Field<Video>("lastUploadedVerticalVideo") public var lastUploadedVerticalVideo
     @Field<CheckoutWave>("lastWave") public var lastWave
     @Field<GraphAPI.DateTime>("launchedAt") public var launchedAt
     @Field<Location>("location") public var location
@@ -79,6 +78,7 @@ public class Project: MockObject {
     @Field<[Tag?]>("tags") public var tags
     @Field<String>("url") public var url
     @Field<Double>("usdExchangeRate") public var usdExchangeRate
+    @Field<Video>("verticalVideo") public var verticalVideo
     @Field<Video>("video") public var video
     @Field<Int>("watchesCount") public var watchesCount
   }
@@ -115,7 +115,6 @@ public extension Mock where O == Project {
     isProjectOfTheDay: Bool? = nil,
     isProjectWeLove: Bool? = nil,
     isWatched: Bool? = nil,
-    lastUploadedVerticalVideo: Mock<Video>? = nil,
     lastWave: Mock<CheckoutWave>? = nil,
     launchedAt: GraphAPI.DateTime? = nil,
     location: Mock<Location>? = nil,
@@ -155,6 +154,7 @@ public extension Mock where O == Project {
     tags: [Mock<Tag>?]? = nil,
     url: String? = nil,
     usdExchangeRate: Double? = nil,
+    verticalVideo: Mock<Video>? = nil,
     video: Mock<Video>? = nil,
     watchesCount: Int? = nil
   ) {
@@ -188,7 +188,6 @@ public extension Mock where O == Project {
     _setScalar(isProjectOfTheDay, for: \.isProjectOfTheDay)
     _setScalar(isProjectWeLove, for: \.isProjectWeLove)
     _setScalar(isWatched, for: \.isWatched)
-    _setEntity(lastUploadedVerticalVideo, for: \.lastUploadedVerticalVideo)
     _setEntity(lastWave, for: \.lastWave)
     _setScalar(launchedAt, for: \.launchedAt)
     _setEntity(location, for: \.location)
@@ -228,6 +227,7 @@ public extension Mock where O == Project {
     _setList(tags, for: \.tags)
     _setScalar(url, for: \.url)
     _setScalar(usdExchangeRate, for: \.usdExchangeRate)
+    _setEntity(verticalVideo, for: \.verticalVideo)
     _setEntity(video, for: \.video)
     _setScalar(watchesCount, for: \.watchesCount)
   }
