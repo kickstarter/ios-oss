@@ -17,7 +17,7 @@ public final class MockStatsigClient: StatsigClientType {
 
   public func showDebugger() {}
 
-  public func checkGate(for feature: StatsigFeature) -> Bool {
+  public func checkGate(for feature: StatsigFeature) -> Bool? {
     self.features[feature] ?? false
   }
 

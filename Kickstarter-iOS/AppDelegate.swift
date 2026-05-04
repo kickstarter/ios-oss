@@ -464,7 +464,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       }
   }
 
-  private func configureStatsig(with key: String) {
+  private func configureStatsig(with key: StatsigClientSDKKey) {
     let client = StatsigClient(sdkKey: key)
     AppEnvironment.updateStatsigClient(client)
 

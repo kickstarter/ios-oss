@@ -1,3 +1,4 @@
+import Experimentation
 import KDS
 import KsApi
 import Library
@@ -17,16 +18,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
   // MARK: - Properties
 
-  private var configUpdatedObserver: Any?
-  private var currentEnvironmentChangedObserver: Any?
-  private var blockedUserObserver: Any?
+  private var observers: [Any] = []
   fileprivate let dataSource = DiscoveryProjectsDataSource()
   public weak var delegate: DiscoveryPageViewControllerDelegate?
   fileprivate var emptyStatesController: EmptyStatesViewController?
   private lazy var headerLabel = { UILabel(frame: .zero) }()
-  private var onboardingCompletedObserver: Any?
-  private var sessionEndedObserver: Any?
-  private var sessionStartedObserver: Any?
 
   internal static func configuredWith(sort: DiscoveryParams.Sort) -> DiscoveryPageViewController {
     let vc = Storyboard.DiscoveryPage.instantiate(DiscoveryPageViewController.self)
@@ -52,38 +48,32 @@ internal final class DiscoveryPageViewController: UITableViewController {
     )
     self.refreshControl = refreshControl
 
-    self.onboardingCompletedObserver = NotificationCenter.default
-      .addObserver(forName: .ksr_onboardingCompleted, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.onboardingCompleted()
-      }
+    self.subscribe(toNotification: .ksr_onboardingCompleted) { [weak self] _ in
+      self?.viewModel.inputs.onboardingCompleted()
+    }
 
-    self.sessionStartedObserver = NotificationCenter.default
-      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.userSessionStarted()
-      }
+    self.subscribe(toNotification: .ksr_sessionStarted) { [weak self] _ in
+      self?.viewModel.inputs.userSessionStarted()
+    }
 
-    self.sessionEndedObserver = NotificationCenter.default
-      .addObserver(forName: .ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.userSessionEnded()
-      }
+    self.subscribe(toNotification: .ksr_sessionEnded) { [weak self] _ in
+      self?.viewModel.inputs.userSessionEnded()
+    }
 
-    self.currentEnvironmentChangedObserver = NotificationCenter.default
-      .addObserver(forName: .ksr_environmentChanged, object: nil, queue: nil, using: { [weak self] _ in
-        self?.viewModel.inputs.currentEnvironmentChanged(
-          environment:
-          AppEnvironment.current.apiService.serverConfig.environment
-        )
-      })
+    self.subscribe(toNotification: .ksr_environmentChanged) { [weak self] _ in
+      self?.viewModel.inputs.currentEnvironmentChanged(
+        environment:
+        AppEnvironment.current.apiService.serverConfig.environment
+      )
+    }
 
-    self.configUpdatedObserver = NotificationCenter.default
-      .addObserver(forName: .ksr_configUpdated, object: nil, queue: nil, using: { [weak self] _ in
-        self?.viewModel.inputs.configUpdated(config: AppEnvironment.current.config)
-      })
+    self.subscribe(toNotification: StatsigLoadedNotification) { [weak self] _ in
+      self?.viewModel.inputs.configUpdated()
+    }
 
-    self.blockedUserObserver = NotificationCenter.default
-      .addObserver(forName: .ksr_blockedUser, object: nil, queue: nil, using: { [weak self] _ in
-        self?.viewModel.inputs.blockedUser()
-      })
+    self.subscribe(toNotification: .ksr_blockedUser) { [weak self] _ in
+      self?.viewModel.inputs.blockedUser()
+    }
 
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: nil)
     self.emptyStatesController = emptyVC
@@ -100,13 +90,9 @@ internal final class DiscoveryPageViewController: UITableViewController {
   }
 
   deinit {
-    [
-      self.sessionEndedObserver,
-      self.sessionStartedObserver,
-      self.currentEnvironmentChangedObserver,
-      self.configUpdatedObserver,
-      self.onboardingCompletedObserver
-    ].forEach { $0.doIfSome(NotificationCenter.default.removeObserver) }
+    self.observers.forEach {
+      NotificationCenter.default.removeObserver($0)
+    }
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
@@ -131,6 +117,19 @@ internal final class DiscoveryPageViewController: UITableViewController {
     super.viewDidLayoutSubviews()
 
     self.tableView.ksr_sizeHeaderFooterViewsToFit()
+  }
+
+  private func subscribe(
+    toNotification notification: Notification.Name,
+    using action: @escaping @Sendable (Notification) -> Void
+  ) {
+    let observer = NotificationCenter.default.addObserver(
+      forName: notification,
+      object: nil,
+      queue: nil,
+      using: action
+    )
+    self.observers.append(observer)
   }
 
   internal override func bindStyles() {

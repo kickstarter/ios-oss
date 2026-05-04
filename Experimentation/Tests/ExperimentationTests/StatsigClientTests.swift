@@ -12,14 +12,16 @@ final class StatsigClientTests: XCTestCase {
     }
 
     self.wait(for: [expectation])
+  }
 
+  override func tearDown() {
     Statsig.removeAllOverrides()
   }
 
   func testClient_returnsBoolValue_forExperiment() {
     let experiment = iOSTestExperiment()
 
-    let client = StatsigClient(sdkKey: "")
+    let client = StatsigClient(sdkKey: .production(""))
 
     XCTAssertNil(client.boolValue(forKey: .experiment_parameter_one, inExperiment: experiment))
 
@@ -29,12 +31,14 @@ final class StatsigClientTests: XCTestCase {
   }
 
   func testClient_returnsBoolValue_forFeatureGate() {
-    let client = StatsigClient(sdkKey: "")
-
-    XCTAssertFalse(client.checkGate(for: .videoFeed))
+    let client = StatsigClient(sdkKey: .production(""))
 
     Statsig.overrideGate("video_feed", value: true)
 
-    XCTAssertTrue(client.checkGate(for: .videoFeed))
+    XCTAssertEqual(client.checkGate(for: .videoFeed), true)
+
+    Statsig.overrideGate("video_feed", value: false)
+
+    XCTAssertEqual(client.checkGate(for: .videoFeed), false)
   }
 }
