@@ -72,11 +72,9 @@ struct StatsigDebugView: View {
   }
 
   private func reload() {
-    let userId = AppEnvironment.current.currentUser?.id
+    let user = StatsigClientUser.fromCurrentEnvironment()
 
-    self.client?.reload(
-      withUserID: userId?.toString()
-    )
+    self.client?.reload(withUser: user)
   }
 }
 

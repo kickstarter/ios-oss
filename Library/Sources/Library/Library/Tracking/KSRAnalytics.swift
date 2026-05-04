@@ -14,6 +14,9 @@ public final class KSRAnalytics {
   public var logEventCallback: ((String, [String: Any]) -> Void)?
   private let screen: UIScreenType
   private var segmentClient: (TrackingClientType & IdentifyingTrackingClient)?
+  public var anonymousId: String? {
+    return self.segmentClient?.anonymousId
+  }
 
   /// Configures `KSRAnalytics` with a Segment tracking client. Call is idempotent and will only set once.
   public func configureSegmentClient(_ segmentClient: TrackingClientType & IdentifyingTrackingClient) {

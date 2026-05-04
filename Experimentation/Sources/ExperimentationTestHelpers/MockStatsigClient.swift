@@ -11,9 +11,9 @@ public final class MockStatsigWrapper: StatsigClientType {
 
   public init() {}
 
-  public func initialize(userID _: String?) {}
+  public func initialize(withUser _: StatsigClientUser) {}
 
-  public func reload(withUserID _: String?) {}
+  public func reload(withUser _: StatsigClientUser) {}
 
   public func showDebugger() {}
 
