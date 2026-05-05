@@ -14,7 +14,8 @@ public final class KSRAnalytics {
   public var logEventCallback: ((String, [String: Any]) -> Void)?
   private let screen: UIScreenType
   private var segmentClient: (TrackingClientType & IdentifyingTrackingClient)?
-  public var anonymousId: String? {
+
+  var anonymousId: String? {
     return self.segmentClient?.anonymousId
   }
 
@@ -641,7 +642,7 @@ public final class KSRAnalytics {
   }
 
   /// Configure Tracking Client's supporting user identity
-  public func identify(newUser: User?) {
+  func identify(newUser: User?) {
     guard let newUser = newUser else {
       self.segmentClient?.reset()
       return
