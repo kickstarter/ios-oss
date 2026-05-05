@@ -641,7 +641,9 @@ public final class KSRAnalytics {
     self.appTrackingTransparency = appTrackingTransparency
   }
 
-  /// Configure Tracking Client's supporting user identity
+  /// Configure Tracking Client's supporting user identity.
+  /// Instead of calling this directly from client code, you should call `AppEnvironment.current.identify`,
+  /// which wraps multiple identify calls for different vendors in one place.
   func identify(newUser: User?) {
     guard let newUser = newUser else {
       self.segmentClient?.reset()
