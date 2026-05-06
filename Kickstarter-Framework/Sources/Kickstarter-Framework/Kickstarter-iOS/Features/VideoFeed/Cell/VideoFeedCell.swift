@@ -42,9 +42,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.onShareTapped = nil
     self.onMoreTapped = nil
     self.onVideoReady = nil
-    self.playbackState.isPlaying = true
-    self.playbackState.isPlayButtonVisible = false
-    self.playbackState.isVideoReady = false
+    self.playbackState.reset()
     self.videoPlayer.stop()
   }
 
@@ -64,7 +62,6 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
       )
     }
     .margins(.all, 0)
-    .background(Color(Colors.Text.secondary.uiColor()))
 
     // Simulates video loading time until we implement real videos.
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
