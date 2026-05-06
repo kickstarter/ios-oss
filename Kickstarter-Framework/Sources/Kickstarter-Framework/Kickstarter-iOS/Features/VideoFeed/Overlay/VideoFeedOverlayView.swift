@@ -1,4 +1,5 @@
 import KDS
+import Kingfisher
 import Library
 import SwiftUI
 
@@ -19,6 +20,10 @@ struct VideoFeedOverlayView: View {
     static let playIconOffset: CGFloat = 2
     static let playButtonOffset: CGFloat = -90
     static let closeButtonSize: CGFloat = 44
+    static let previewFadeDuration: Double = 0.3
+    /// Defining safa area values because `UIHostingConfiguration` returns 0 for safe area insets when in a collectionview.
+    static let topSafeAreaPadding: CGFloat = 60
+    static let bottomSafeAreaPadding: CGFloat = 37
   }
 
   let item: VideoFeedItem
@@ -45,7 +50,7 @@ struct VideoFeedOverlayView: View {
         }
       }
       .padding(.leading, Constants.horizontalPadding)
-      .safeAreaPadding(.top)
+      .padding(.top, Constants.topSafeAreaPadding)
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
       .accessibilityLabel("FPO: Close")
 
@@ -62,19 +67,48 @@ struct VideoFeedOverlayView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
       }
       .padding(.horizontal, Constants.horizontalPadding)
-      .padding(.bottom, Constants.bottomPadding)
-      .safeAreaPadding(.bottom)
+      .padding(.bottom, Constants.bottomPadding + Constants.bottomSafeAreaPadding)
       .background(alignment: .bottom) {
         self.bottomGradient
           .ignoresSafeArea()
           .accessibilityHidden(true)
       }
     }
-    .safeAreaPadding(.top)
     .overlay(alignment: .center) {
       self.playButton
         .offset(y: Constants.playButtonOffset)
     }
+    .background {
+      /// Preview image shown while the video loads.
+      /// Fades out once `isVideoReady` becomes true.
+      if let previewURL = self.item.videoPreviewImageURL {
+        KFImage(previewURL)
+          /// Loading indicator placeholder unril  the preview image is loads.
+          .placeholder {
+            ZStack {
+              Color.black.ignoresSafeArea()
+
+              ProgressView()
+                .progressViewStyle(.circular)
+                .tint(Color(Colors.Icon.light.uiColor()))
+                .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
+                .background(FrostedGlassBackgroundView())
+                .clipShape(Circle())
+                .offset(y: Constants.playButtonOffset)
+            }
+          }
+          .resizable()
+          .scaledToFill()
+          .ignoresSafeArea()
+          .opacity(self.playbackState.isVideoReady ? 0 : 1)
+          .animation(
+            .easeInOut(duration: Constants.previewFadeDuration),
+            value: self.playbackState.isVideoReady
+          )
+          .accessibilityHidden(true)
+      }
+    }
+    .ignoresSafeArea()
   }
 
   // MARK: - Play Button
@@ -90,7 +124,7 @@ struct VideoFeedOverlayView: View {
         .foregroundColor(Color(Colors.Icon.light.uiColor()))
         .offset(x: Constants.playIconOffset)
         .frame(width: Constants.playIconSize, height: Constants.playIconSize)
-        /// Second, larger,  frame to create the frosted glass ring.
+        /// Second, larger, frame to create the frosted glass ring.
         .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
         .background(FrostedGlassBackgroundView())
         .clipShape(Circle())

@@ -16,7 +16,7 @@ final class VideoFeedViewModelTests: TestCase {
       await self.vm.fetchVideoFeed()
     }
 
-    XCTAssertEqual(self.vm.items.count, 3)
+    XCTAssertEqual(self.vm.items.count, 20)
     XCTAssertFalse(self.vm.isLoading)
     XCTAssertNil(self.vm.errorMessage)
   }

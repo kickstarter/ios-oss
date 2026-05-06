@@ -157,7 +157,10 @@ public enum Feature: String, EnumType {
   case vatFlexibility2026 = "vat_flexibility_2026"
   case verticalVideoFeed2026 = "vertical_video_feed_2026"
   case backerSurveyEdits2026 = "backer_survey_edits_2026"
+  case collaboratorAnalyticsIdsEditPermission = "collaborator_analytics_ids_edit_permission"
   case backerAdditionalAddons2026 = "backer_additional_addons_2026"
   case allowOrderLevelSurchargeForAuBackers = "allow_order_level_surcharge_for_AU_backers"
   case segmentedShippingBacker2026 = "segmented_shipping_backer_2026"
+  case hideItemVariantsPeak2026 = "hide_item_variants_peak_2026"
+  case comboShippingPhase1 = "combo_shipping_phase_1"
 }

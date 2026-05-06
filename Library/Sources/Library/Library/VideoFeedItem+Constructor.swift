@@ -5,7 +5,7 @@ import KsApi
 /// Maps a `VideoFeedQuery` graph node to a `VideoFeedItem` to display in the video feed.
 extension VideoFeedItem {
   init(node: VideoFeedQuery.Data.VideoFeed.Node) {
-    let video = node.project.lastUploadedVerticalVideo
+    let video = node.project.verticalVideo
 
     self.init(
       id: node.project.id,
