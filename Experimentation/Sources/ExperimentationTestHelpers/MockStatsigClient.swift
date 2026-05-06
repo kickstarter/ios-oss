@@ -18,7 +18,7 @@ public final class MockStatsigWrapper: StatsigClientType {
   public func showDebugger() {}
 
   public func checkGate(for feature: StatsigFeature) -> Bool? {
-    self.features[feature] ?? false
+    self.features[feature]
   }
 
   /// Set mock values for an experiment using MockStatsigExperiment.
