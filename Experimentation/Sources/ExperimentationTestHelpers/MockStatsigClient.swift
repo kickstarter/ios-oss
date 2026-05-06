@@ -1,7 +1,7 @@
 import Experimentation
 import Foundation
 
-public final class MockStatsigClient: StatsigClientType {
+public final class MockStatsigWrapper: StatsigClientType {
   public var features: [StatsigFeature: Bool] = [:]
 
   // Set experiments by calling overrideExperiment(_,withMock:)
@@ -17,8 +17,8 @@ public final class MockStatsigClient: StatsigClientType {
 
   public func showDebugger() {}
 
-  public func checkGate(for feature: StatsigFeature) -> Bool {
-    self.features[feature] ?? false
+  public func checkGate(for feature: StatsigFeature) -> Bool? {
+    self.features[feature]
   }
 
   /// Set mock values for an experiment using MockStatsigExperiment.

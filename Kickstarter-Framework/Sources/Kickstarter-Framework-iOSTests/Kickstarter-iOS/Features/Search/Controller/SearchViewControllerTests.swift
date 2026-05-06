@@ -246,7 +246,7 @@ internal final class SearchViewContollerTests: TestCase {
       GraphAPI.SearchQuery.Data.activeResults
     )]
 
-    let mockStatsigClient = MockStatsigClient()
+    let mockStatsigClient = MockStatsigWrapper()
     mockStatsigClient.features = [.videoFeed: true]
 
     // TODO: Update to all languages once translations are in [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)

@@ -81,8 +81,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         AppEnvironment.updateCurrentUser(user)
         // Update user in Braze.
         self?.braze?.changeUser(userId: String(user.id))
+
         // Update user in Segment.
         AppEnvironment.current.ksrAnalytics.identify(newUser: user)
+
         self?.viewModel.inputs.currentUserUpdatedInEnvironment()
       }
 
@@ -464,11 +466,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       }
   }
 
-  private func configureStatsig(with key: String) {
-    let client = StatsigClient(sdkKey: key)
+  private func configureStatsig(with key: StatsigClientSDKKey) {
+    let client = StatsigWrapper(sdkKey: key, userID: AppEnvironment.current.currentUser?.id.toString())
     AppEnvironment.updateStatsigClient(client)
-
-    client.initialize(userID: AppEnvironment.current.currentUser?.id.toString())
   }
 
   private func fetchAndActivateRemoteConfig() {

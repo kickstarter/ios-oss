@@ -6,7 +6,7 @@ import XCTest
 final class StatsigExperimentHelperTests: TestCase {
   func testExperimentValue_IsOverriddenByMockExperimentValues() {
     let experiment = iOSTestExperiment()
-    let mockStatsigClient = MockStatsigClient()
+    let mockStatsigClient = MockStatsigWrapper()
 
     withEnvironment(statsigClient: mockStatsigClient) {
       XCTAssertEqual(experiment.boolValue(forKey: .experiment_parameter_one), nil)
