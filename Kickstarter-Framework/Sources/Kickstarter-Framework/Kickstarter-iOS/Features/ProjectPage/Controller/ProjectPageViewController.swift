@@ -1,5 +1,6 @@
 import AVFoundation
 import Combine
+import Experimentation
 import KDS
 import KsApi
 import Library
@@ -52,13 +53,27 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   private var pinchToZoomData: PinchToZoomData?
   internal var overlayView: OverlayView? = OverlayView(frame: .zero)
 
+  private static var projectPageModalPresentationStyle: UIModalPresentationStyle {
+    // iPad always presents with .fullScreen.
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      return .fullScreen
+    }
+
+    let experiment = FullScreenCheckoutExperiment()
+    guard let isFullScreen = experiment.boolValue(forKey: .fullscreen_project_page) else {
+      // Default to .formSheet if the experiment can't be found
+      return .formSheet
+    }
+
+    return isFullScreen ? .fullScreen : .formSheet
+  }
+
   static func navigationController(withViewControllers viewControllers: [UIViewController])
     -> UINavigationController {
     let nav = NavigationController()
     nav.viewControllers = viewControllers
 
-    nav.modalPresentationStyle =
-      AppEnvironment.current.device.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
+    nav.modalPresentationStyle = ProjectPageViewController.projectPageModalPresentationStyle
 
     return nav
   }
