@@ -85,14 +85,17 @@ struct VideoFeedOverlayView: View {
         KFImage(previewURL)
           /// Loading indicator placeholder unril  the preview image is loads.
           .placeholder {
-            ProgressView()
-              .progressViewStyle(.circular)
-              .tint(Color(Colors.Icon.light.uiColor()))
-              .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
-              .background(FrostedGlassBackgroundView())
-              .clipShape(Circle())
-              .offset(y: Constants.playButtonOffset)
-              .frame(maxWidth: .infinity, maxHeight: .infinity)
+            ZStack {
+              Color.black.ignoresSafeArea()
+
+              ProgressView()
+                .progressViewStyle(.circular)
+                .tint(Color(Colors.Icon.light.uiColor()))
+                .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
+                .background(FrostedGlassBackgroundView())
+                .clipShape(Circle())
+                .offset(y: Constants.playButtonOffset)
+            }
           }
           .resizable()
           .scaledToFill()
