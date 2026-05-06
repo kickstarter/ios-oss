@@ -9,3 +9,14 @@ query RichTextExampleProjectsQuery{
     }
   }
 }
+
+query RichTextExampleProjectBySlugQuery($slug: String!){
+  project(slug: $slug) {
+    id
+    name
+    storyRichText {
+      ...RichTextComponentFragment
+    }
+  }
+}
+
