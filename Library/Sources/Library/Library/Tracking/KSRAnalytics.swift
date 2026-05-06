@@ -15,6 +15,10 @@ public final class KSRAnalytics {
   private let screen: UIScreenType
   private var segmentClient: (TrackingClientType & IdentifyingTrackingClient)?
 
+  var anonymousId: String? {
+    return self.segmentClient?.anonymousId
+  }
+
   /// Configures `KSRAnalytics` with a Segment tracking client. Call is idempotent and will only set once.
   public func configureSegmentClient(_ segmentClient: TrackingClientType & IdentifyingTrackingClient) {
     guard self.segmentClient == nil else { return }
@@ -637,8 +641,10 @@ public final class KSRAnalytics {
     self.appTrackingTransparency = appTrackingTransparency
   }
 
-  /// Configure Tracking Client's supporting user identity
-  public func identify(newUser: User?) {
+  /// Configure Tracking Client's supporting user identity.
+  /// Instead of calling this directly from client code, you should call `AppEnvironment.current.identify`,
+  /// which wraps multiple identify calls for different vendors in one place.
+  func identify(newUser: User?) {
     guard let newUser = newUser else {
       self.segmentClient?.reset()
       return

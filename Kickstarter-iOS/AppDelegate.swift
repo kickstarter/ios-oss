@@ -82,8 +82,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         // Update user in Braze.
         self?.braze?.changeUser(userId: String(user.id))
 
-        // Update user in Segment.
-        AppEnvironment.current.ksrAnalytics.identify(newUser: user)
+        // Update user in Segment and Statsig.
+        AppEnvironment.current.identify(user: user)
 
         self?.viewModel.inputs.currentUserUpdatedInEnvironment()
       }
@@ -219,13 +219,13 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
           strongSelf.configureRemoteConfig()
         }
-
-      self.viewModel.outputs.configureStatsig
-        .observeForUI()
-        .observeValues { [weak self] key in
-          self?.configureStatsig(with: key)
-        }
     #endif
+
+    self.viewModel.outputs.configureStatsig
+      .observeForUI()
+      .observeValues { [weak self] key in
+        self?.configureStatsig(with: key)
+      }
 
     self.disposables.append(
       self.viewModel.outputs.trackingAuthorizationStatus
@@ -288,6 +288,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self.analytics = configuration
 
         AppEnvironment.current.ksrAnalytics.configureSegmentClient(configuration)
+
+        // Once Segment loads, update the Statsig Client with segment's anonymous identifier.
+        AppEnvironment.current.statsigClient?.reload(withUser: AppEnvironment.current.statsigUser())
       }
 
     self.viewModel.outputs.segmentIsEnabled
@@ -467,7 +470,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   private func configureStatsig(with key: StatsigClientSDKKey) {
-    let client = StatsigWrapper(sdkKey: key, userID: AppEnvironment.current.currentUser?.id.toString())
+    let client = StatsigWrapper(sdkKey: key, user: AppEnvironment.current.statsigUser())
     AppEnvironment.updateStatsigClient(client)
   }
 

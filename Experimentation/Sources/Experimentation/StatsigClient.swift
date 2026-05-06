@@ -18,7 +18,7 @@ public enum StatsigClientSDKKey {
 public final class StatsigWrapper: StatsigClientType {
   private let client: StatsigClient
 
-  public convenience init(sdkKey: StatsigClientSDKKey, userID: String?) {
+  public convenience init(sdkKey: StatsigClientSDKKey, user: StatsigClientUser) {
     let key: String
     let tier: StatsigEnvironment.EnvironmentTier
 
@@ -33,7 +33,7 @@ public final class StatsigWrapper: StatsigClientType {
 
     let client = StatsigClient(
       sdkKey: key,
-      user: StatsigUser(userID: userID),
+      user: StatsigUser.from(user),
       options: StatsigOptions(environment: StatsigEnvironment(tier: tier))
     ) { error in
       if let error {
@@ -55,8 +55,9 @@ public final class StatsigWrapper: StatsigClientType {
     self.client.openDebugView()
   }
 
-  public func reload(withUserID userID: String?) {
-    self.client.updateUserWithResult(StatsigUser(userID: userID)) { error in
+  public func reload(withUser user: StatsigClientUser) {
+    let user = StatsigUser.from(user)
+    self.client.updateUserWithResult(user) { error in
       if let error {
         debugPrint("Statsig reload error: \(error.localizedDescription)")
       } else {
@@ -85,5 +86,18 @@ public final class StatsigWrapper: StatsigClientType {
     return self.client
       .getExperiment(experiment.name.rawValue)
       .getValue(forKey: key.rawValue)
+  }
+}
+
+private extension StatsigUser {
+  /// Create a `StatsigUser` (Statsig's model object) from a `StatsigClientUser` (our model object)
+  static func from(_ clientUser: StatsigClientUser) -> StatsigUser {
+    let ksrStringId = clientUser.ksrUserId != nil ? String(clientUser.ksrUserId!) : nil
+
+    if let segmentId = clientUser.segmentAnonymousId {
+      return StatsigUser(userID: ksrStringId, customIDs: ["segmentAnonymousId": segmentId])
+    } else {
+      return StatsigUser(userID: ksrStringId)
+    }
   }
 }

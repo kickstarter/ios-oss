@@ -136,8 +136,9 @@ public struct AppEnvironment: AppEnvironmentType {
     let storage = AppEnvironment.current.cookieStorage
     storage.cookies?.forEach(storage.deleteCookie)
 
-    // Resetting the segment client
-    AppEnvironment.current.ksrAnalytics.identify(newUser: nil)
+    // Resetting the segment client and Statsig client
+    AppEnvironment.current.identify(user: nil)
+
     self.replaceCurrentEnvironment(
       apiService: AppEnvironment.current.apiService.logout(),
       cache: type(of: AppEnvironment.current.cache).init(),

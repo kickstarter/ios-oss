@@ -1,10 +1,21 @@
 import Foundation
 
+/// Abstracts the Statsig user type away from the SDK.
+public struct StatsigClientUser {
+  let ksrUserId: Int?
+  let segmentAnonymousId: String?
+
+  public init(ksrUserId: Int?, segmentAnonymousId: String?) {
+    self.ksrUserId = ksrUserId
+    self.segmentAnonymousId = segmentAnonymousId
+  }
+}
+
 /// Abstracts the Statsig SDK so the rest of the app never imports Statsig directly.
 public protocol StatsigClientType: AnyObject {
   /// Reloads Statsig with values the for the given user.
   /// Switches the user and pulls in their current values.
-  func reload(withUserID userID: String?)
+  func reload(withUser: StatsigClientUser)
 
   /// Shows the Statsig debugger.
   func showDebugger()
