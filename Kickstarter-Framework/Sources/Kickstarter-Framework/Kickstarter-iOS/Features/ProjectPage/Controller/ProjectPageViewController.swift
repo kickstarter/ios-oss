@@ -53,7 +53,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   private var pinchToZoomData: PinchToZoomData?
   internal var overlayView: OverlayView? = OverlayView(frame: .zero)
 
-  private static var projectPageModalPresentationStyle: UIModalPresentationStyle {
+  static var projectPageModalPresentationStyle: UIModalPresentationStyle {
     // iPad always presents with .fullScreen.
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
       return .fullScreen
