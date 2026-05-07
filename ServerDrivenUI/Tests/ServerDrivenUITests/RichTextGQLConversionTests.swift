@@ -297,6 +297,95 @@ struct RichTextGQLConversionTests {
     guard case let .video(v) = el else { Issue.record("expected .video"); return }
     #expect(v.altText == "v")
     #expect(v.url == "https://vid")
+    #expect(v.posterURL == nil)
+    #expect(v.formats.isEmpty)
+  }
+
+  @Test("AsRichTextVideo item with asset -> .video element with assetID and posterURL")
+  func asRichTextVideoItemWithAsset() async throws {
+    let asset = RichTextItemFragment.AsRichTextVideo.Asset(
+      id: "vid-asset-1",
+      poster: "https://example.com/poster.jpg",
+      formats: nil
+    )
+    let gql = RichTextComponentFragment.Item.AsRichTextVideo(
+      altText: "v",
+      asset: asset,
+      caption: "cap",
+      url: "https://vid"
+    )
+    let el = gql.asRichTextElement
+    guard case let .video(v) = el else { Issue.record("expected .video"); return }
+    #expect(v.assetID == "vid-asset-1")
+    #expect(v.posterURL == "https://example.com/poster.jpg")
+    #expect(v.formats.isEmpty)
+  }
+
+  @Test("AsRichTextVideo item with formats -> .video element with all format fields")
+  func asRichTextVideoItemWithFormats() async throws {
+    let hi = RichTextItemFragment.AsRichTextVideo.Asset.Format(
+      encoding: #"video/mp4; codecs="avc1.64001E, mp4a.40.2""#,
+      height: "1080",
+      width: "1920",
+      profile: "high",
+      url: "https://vid/high.mp4"
+    )
+    let lo = RichTextItemFragment.AsRichTextVideo.Asset.Format(
+      encoding: #"video/mp4; codecs="avc1.42E01E, mp4a.40.2""#,
+      height: "720",
+      width: "1280",
+      profile: "baseline",
+      url: "https://vid/baseline.mp4"
+    )
+    let asset = RichTextItemFragment.AsRichTextVideo.Asset(
+      id: "vid-asset-2",
+      poster: nil,
+      formats: [hi, lo]
+    )
+    let gql = RichTextComponentFragment.Item.AsRichTextVideo(
+      altText: "",
+      asset: asset,
+      caption: "",
+      url: "https://vid"
+    )
+    let el = gql.asRichTextElement
+    guard case let .video(v) = el else { Issue.record("expected .video"); return }
+    #expect(v.posterURL == nil)
+    #expect(v.formats.count == 2)
+    let first = try #require(v.formats.first)
+    #expect(first.encoding == #"video/mp4; codecs="avc1.64001E, mp4a.40.2""#)
+    #expect(first.width == "1920")
+    #expect(first.height == "1080")
+    #expect(first.profile == "high")
+    #expect(first.url == "https://vid/high.mp4")
+    let second = try #require(v.formats.last)
+    #expect(second.profile == "baseline")
+    #expect(second.url == "https://vid/baseline.mp4")
+  }
+
+  @Test("AsRichTextVideo item with nil format entries -> nil entries skipped")
+  func asRichTextVideoItemNilFormatEntriesSkipped() async throws {
+    let format = RichTextItemFragment.AsRichTextVideo.Asset.Format(
+      encoding: "video/mp4",
+      height: "720",
+      width: "1280",
+      profile: "main",
+      url: "https://vid/main.mp4"
+    )
+    let asset = RichTextItemFragment.AsRichTextVideo.Asset(
+      id: "vid-asset-3",
+      poster: nil,
+      formats: [format, nil]
+    )
+    let gql = RichTextComponentFragment.Item.AsRichTextVideo(
+      altText: "",
+      asset: asset,
+      caption: "",
+      url: ""
+    )
+    let el = gql.asRichTextElement
+    guard case let .video(v) = el else { Issue.record("expected .video"); return }
+    #expect(v.formats.count == 1)
   }
 
   @Test("Child.AsRichTextVideo -> .video element")
@@ -310,6 +399,36 @@ struct RichTextGQLConversionTests {
     let el = gql.asRichTextElement
     guard case let .video(v) = el else { Issue.record("expected .video"); return }
     #expect(v.altText == "x")
+    #expect(v.posterURL == nil)
+    #expect(v.formats.isEmpty)
+  }
+
+  @Test("Child.AsRichTextVideo with asset -> .video element with posterURL and formats")
+  func asRichTextVideoChildWithAsset() async throws {
+    let format = RichTextItemFragment.AsRichTextVideo.Asset.Format(
+      encoding: "video/mp4",
+      height: "1080",
+      width: "1920",
+      profile: "high",
+      url: "https://vid/high.mp4"
+    )
+    let asset = RichTextItemFragment.AsRichTextVideo.Asset(
+      id: "child-asset",
+      poster: "https://example.com/child-poster.jpg",
+      formats: [format]
+    )
+    let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextVideo(
+      altText: "",
+      asset: asset,
+      caption: "",
+      url: ""
+    )
+    let el = gql.asRichTextElement
+    guard case let .video(v) = el else { Issue.record("expected .video"); return }
+    #expect(v.assetID == "child-asset")
+    #expect(v.posterURL == "https://example.com/child-poster.jpg")
+    #expect(v.formats.count == 1)
+    #expect(v.formats.first?.profile == "high")
   }
 
   @Test(
@@ -416,30 +535,46 @@ struct RichTextGQLConversionTests {
     #expect(p.altText == "lip")
   }
 
-  @Test("Header.Child.AsRichTextVideo -> .video element")
+  @Test("Header.Child.AsRichTextVideo -> .video element with posterURL and formats")
   func asRichTextHeaderChildAsRichTextVideo() async throws {
+    let asset = RichTextItemFragment.AsRichTextVideo.Asset(
+      id: "h-asset",
+      poster: "https://example.com/header-poster.jpg",
+      formats: nil
+    )
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextVideo(
       altText: "hv",
-      asset: nil,
+      asset: asset,
       caption: "",
       url: ""
     )
     let el = gql.asRichTextElement
     guard case let .video(v) = el else { Issue.record("expected .video"); return }
     #expect(v.altText == "hv")
+    #expect(v.assetID == "h-asset")
+    #expect(v.posterURL == "https://example.com/header-poster.jpg")
+    #expect(v.formats.isEmpty)
   }
 
-  @Test("ListItem.Child.AsRichTextVideo -> .video element")
+  @Test("ListItem.Child.AsRichTextVideo -> .video element with posterURL and formats")
   func asRichTextListItemChildAsRichTextVideo() async throws {
+    let asset = RichTextItemFragment.AsRichTextVideo.Asset(
+      id: "li-asset",
+      poster: "https://example.com/li-poster.jpg",
+      formats: nil
+    )
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextVideo(
       altText: "liv",
-      asset: nil,
+      asset: asset,
       caption: "",
       url: ""
     )
     let el = gql.asRichTextElement
     guard case let .video(v) = el else { Issue.record("expected .video"); return }
     #expect(v.altText == "liv")
+    #expect(v.assetID == "li-asset")
+    #expect(v.posterURL == "https://example.com/li-poster.jpg")
+    #expect(v.formats.isEmpty)
   }
 
   @Test("Header.Child.AsRichTextOembed -> .oembed element")
