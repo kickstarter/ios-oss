@@ -34,4 +34,6 @@ public protocol StatsigExperimentProtocol<Parameters> {
 public enum StatsigExperimentName: String, CaseIterable {
   case ios_test_experiment
   case fullscreen_checkout_experience_experiment
+  case logged_in_aa_experiment
+  case logged_out_aa_experiment
 }
