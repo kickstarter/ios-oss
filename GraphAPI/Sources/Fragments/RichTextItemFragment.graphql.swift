@@ -5,7 +5,7 @@
 
 public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment RichTextItemFragment on RichTextItem { __typename ... on RichText { text link styles } ... on RichTextHeader { text link styles } ... on RichTextListItem { text link styles } ... on RichTextListOpen { _present } ... on RichTextListClose { _present } ... on RichTextPhoto { altText asset { __typename id } caption url } ... on RichTextAudio { altText asset { __typename id } caption url } ... on RichTextVideo { altText asset { __typename id } caption url } ... on RichTextOembed { width height version title type iframeUrl originalUrl thumbnailHeight thumbnailUrl thumbnailWidth } }"#
+    #"fragment RichTextItemFragment on RichTextItem { __typename ... on RichText { text link styles } ... on RichTextHeader { text link styles } ... on RichTextListItem { text link styles } ... on RichTextListOpen { _present } ... on RichTextListClose { _present } ... on RichTextPhoto { altText asset { __typename id } caption url } ... on RichTextAudio { altText asset { __typename id } caption url } ... on RichTextVideo { altText asset { __typename id poster formats { __typename encoding height width profile url } } caption url } ... on RichTextOembed { width height version title type iframeUrl originalUrl thumbnailHeight thumbnailUrl thumbnailWidth } }"#
   }
 
   public let __data: DataDict
@@ -428,22 +428,77 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
         .field("id", GraphAPI.ID.self),
+        .field("poster", String?.self),
+        .field("formats", [Format?]?.self),
       ] }
 
       public var id: GraphAPI.ID { __data["id"] }
+      /// Image preview url
+      public var poster: String? { __data["poster"] }
+      public var formats: [Format?]? { __data["formats"] }
 
       public init(
-        id: GraphAPI.ID
+        id: GraphAPI.ID,
+        poster: String? = nil,
+        formats: [Format?]? = nil
       ) {
         self.init(_dataDict: DataDict(
           data: [
             "__typename": GraphAPI.Objects.AttachedVideo.typename,
             "id": id,
+            "poster": poster,
+            "formats": formats._fieldData,
           ],
           fulfilledFragments: [
             ObjectIdentifier(RichTextItemFragment.AsRichTextVideo.Asset.self)
           ]
         ))
+      }
+
+      /// AsRichTextVideo.Asset.Format
+      ///
+      /// Parent Type: `AttachedVideoFormat`
+      public struct Format: GraphAPI.SelectionSet {
+        public let __data: DataDict
+        public init(_dataDict: DataDict) { __data = _dataDict }
+
+        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.AttachedVideoFormat }
+        public static var __selections: [ApolloAPI.Selection] { [
+          .field("__typename", String.self),
+          .field("encoding", String.self),
+          .field("height", String.self),
+          .field("width", String.self),
+          .field("profile", String.self),
+          .field("url", String.self),
+        ] }
+
+        public var encoding: String { __data["encoding"] }
+        public var height: String { __data["height"] }
+        public var width: String { __data["width"] }
+        public var profile: String { __data["profile"] }
+        public var url: String { __data["url"] }
+
+        public init(
+          encoding: String,
+          height: String,
+          width: String,
+          profile: String,
+          url: String
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.AttachedVideoFormat.typename,
+              "encoding": encoding,
+              "height": height,
+              "width": width,
+              "profile": profile,
+              "url": url,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(RichTextItemFragment.AsRichTextVideo.Asset.Format.self)
+            ]
+          ))
+        }
       }
     }
   }

@@ -90,11 +90,21 @@ public indirect enum RichTextElement: Sendable {
     let url: String?
   }
 
+  public struct VideoFormat: Sendable {
+    let encoding: String
+    let height: String
+    let width: String
+    let profile: String
+    let url: String
+  }
+
   public struct Video: Sendable {
     let altText: String?
     let assetID: String?
     let caption: String?
     let url: String?
+    let posterURL: String?
+    let formats: [VideoFormat]
   }
 
   public struct Oembed: Sendable {
