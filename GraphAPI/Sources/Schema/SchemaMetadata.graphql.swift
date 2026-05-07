@@ -134,6 +134,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "RichTextAudio": return GraphAPI.Objects.RichTextAudio
     case "RichTextVideo": return GraphAPI.Objects.RichTextVideo
     case "RichTextOembed": return GraphAPI.Objects.RichTextOembed
+    case "AttachedVideoFormat": return GraphAPI.Objects.AttachedVideoFormat
     case "CategorySubcategoriesConnection": return GraphAPI.Objects.CategorySubcategoriesConnection
     case "PaymentPlan": return GraphAPI.Objects.PaymentPlan
     case "Validation": return GraphAPI.Objects.Validation
