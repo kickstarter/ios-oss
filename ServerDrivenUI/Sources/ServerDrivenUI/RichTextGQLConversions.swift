@@ -288,7 +288,9 @@ extension RichTextComponentFragment.Item.AsRichTextVideo {
       altText: altText,
       assetID: asset?.id,
       caption: caption,
-      url: url
+      url: url,
+      posterURL: asset?.poster,
+      formats: makeVideoFormats(asset?.formats)
     ))
   }
 }
@@ -299,7 +301,9 @@ extension RichTextComponentFragment.Item.AsRichText.Child.AsRichTextVideo {
       altText: altText,
       assetID: asset?.id,
       caption: caption,
-      url: url
+      url: url,
+      posterURL: asset?.poster,
+      formats: makeVideoFormats(asset?.formats)
     ))
   }
 }
@@ -310,7 +314,9 @@ extension RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextVideo 
       altText: altText,
       assetID: asset?.id,
       caption: caption,
-      url: url
+      url: url,
+      posterURL: asset?.poster,
+      formats: makeVideoFormats(asset?.formats)
     ))
   }
 }
@@ -321,7 +327,9 @@ extension RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextVide
       altText: altText,
       assetID: asset?.id,
       caption: caption,
-      url: url
+      url: url,
+      posterURL: asset?.poster,
+      formats: makeVideoFormats(asset?.formats)
     ))
   }
 }
@@ -391,6 +399,21 @@ extension RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextOemb
       thumbnailWidth: thumbnailWidth,
       thumbnailHeight: thumbnailHeight
     ))
+  }
+}
+
+private func makeVideoFormats(
+  _ formats: [RichTextItemFragment.AsRichTextVideo.Asset.Format?]?
+) -> [RichTextElement.VideoFormat] {
+  (formats ?? []).compactMap { format in
+    guard let format else { return nil }
+    return RichTextElement.VideoFormat(
+      encoding: format.encoding,
+      height: format.height,
+      width: format.width,
+      profile: format.profile,
+      url: format.url
+    )
   }
 }
 
