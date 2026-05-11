@@ -95,7 +95,7 @@ private extension StatsigUser {
     let ksrStringId = clientUser.ksrUserId != nil ? String(clientUser.ksrUserId!) : nil
 
     if let segmentId = clientUser.segmentAnonymousId {
-      return StatsigUser(userID: ksrStringId, customIDs: ["segmentAnonymousId": segmentId])
+      return StatsigUser(userID: ksrStringId, customIDs: ["segmentAnonymousID": segmentId])
     } else {
       return StatsigUser(userID: ksrStringId)
     }
