@@ -153,8 +153,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   // We don't actually switch anything on these experiment values, since they're just A/A tests.
   // But I'm saving them to a variable, just to be sure that the Swift compiler won't prune it as dead code.
-  private var nullExperimentValue1: Bool? = nil
-  private var nullExperimentValue2: Bool? = nil
+  private var nullExperimentValue1: Bool?
+  private var nullExperimentValue2: Bool?
 
   private func logNullExperiments() {
     let experiment1 = NullExperimentWithUserID()
