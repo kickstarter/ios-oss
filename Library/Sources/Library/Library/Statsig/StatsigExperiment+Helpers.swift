@@ -18,9 +18,9 @@ public extension StatsigExperimentName {
     case .fullscreen_checkout_experience_experiment:
       return FullScreenCheckoutExperiment()
     case .logged_in_aa_experiment:
-      return NullExperiment(isLoggedIn: true)
+      return NullExperimentWithUserID()
     case .logged_out_aa_experiment:
-      return NullExperiment(isLoggedIn: false)
+      return NullExperimentWithAnonymousID()
     }
   }
 }
