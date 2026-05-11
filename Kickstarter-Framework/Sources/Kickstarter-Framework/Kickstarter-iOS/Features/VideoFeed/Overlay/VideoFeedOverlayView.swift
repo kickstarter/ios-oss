@@ -76,16 +76,6 @@ struct VideoFeedOverlayView: View {
           .accessibilityHidden(true)
       }
     }
-    .overlay(alignment: .center) {
-      Group {
-        if self.playbackState.hasFailed {
-          self.failureLabel
-        } else {
-          self.playButton
-        }
-      }
-      .offset(y: Constants.playButtonOffset)
-    }
     .background {
       /// Preview image shown while the video loads.
       /// Fades out once `isVideoReady` becomes true.
@@ -148,17 +138,6 @@ struct VideoFeedOverlayView: View {
         .accessibilityLabel("FPO: Play")
         .accessibilityAddTraits(.isButton)
     }
-  }
-
-  // MARK: - Failure Label
-
-  // TODO: Update with Video Feed Translations [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
-  /// Shown when the AVPlayer fails to load the video.
-  private var failureLabel: some View {
-    Text("FPO: Couldn't load video")
-      .font(.subheadline)
-      .foregroundColor(Color(Colors.Icon.light.uiColor()))
-      .accessibilityLabel("FPO: Couldn't load video")
   }
 
   // MARK: - Gradients
