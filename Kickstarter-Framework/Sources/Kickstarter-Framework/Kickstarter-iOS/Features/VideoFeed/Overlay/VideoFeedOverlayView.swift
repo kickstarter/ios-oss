@@ -76,6 +76,10 @@ struct VideoFeedOverlayView: View {
           .accessibilityHidden(true)
       }
     }
+    .overlay(alignment: .center) {
+      self.playButton
+        .offset(y: Constants.playButtonOffset)
+    }
     .background {
       /// Preview image shown while the video loads.
       /// Fades out once `isVideoReady` becomes true.

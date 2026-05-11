@@ -14,6 +14,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   var onSaveTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
+
   /// Called once the video is ready to play. Used to unlock feed scrolling.
   var onVideoReady: (() -> Void)?
   /// Called when the video fails to load or play.
@@ -88,6 +89,8 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   }
 
   func resumePlayback() {
+    guard self.playbackState.isPlaying else { return }
+
     self.videoPlayer.play()
   }
 
