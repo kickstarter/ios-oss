@@ -87,8 +87,6 @@ final class VideoFeedViewModelTests: TestCase {
 
       let category = VideoFeedQuery.Data.VideoFeed.Node.Project.Category(name: "Design")
 
-      /// Only constructed when an `hlsSrc` is supplied — otherwise `verticalVideo` stays nil
-      /// so non-video tests still match production "no video" data.
       let verticalVideo: VideoFeedQuery.Data.VideoFeed.Node.Project.VerticalVideo? = hlsSrc.map { src in
         let hls = ProjectVideoFeedFragment.VerticalVideo.VideoSources.Hls(src: src)
         let videoSources = ProjectVideoFeedFragment.VerticalVideo.VideoSources(hls: hls)

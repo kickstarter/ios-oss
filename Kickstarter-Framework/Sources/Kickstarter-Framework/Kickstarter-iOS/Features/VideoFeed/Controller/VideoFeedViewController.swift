@@ -104,7 +104,9 @@ final class VideoFeedViewController: UIViewController {
       try AVAudioSession.sharedInstance().setCategory(.playback, mode: .moviePlayback)
       try AVAudioSession.sharedInstance().setActive(true)
     } catch {
-      print("`VideoFeedViewController`: Failed to configure audio session:", error.localizedDescription)
+      #if DEBUG
+        print("`VideoFeedViewController`: Failed to configure audio session:", error.localizedDescription)
+      #endif
     }
   }
 

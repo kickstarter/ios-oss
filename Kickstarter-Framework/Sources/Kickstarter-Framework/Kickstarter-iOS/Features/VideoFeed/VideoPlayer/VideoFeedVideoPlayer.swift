@@ -23,7 +23,6 @@ final class VideoFeedVideoPlayer {
   private var failedObserver: (any NSObjectProtocol)?
   /// Once `onReady` has fired, flip this so we don't fire it repeatedly.
   private var hasFiredOnReady = false
-  /// Same idea for `onVideoFailed` — only notify once per loaded item.
   private var hasFiredOnFailed = false
 
   // MARK: - Lifecycle
@@ -43,8 +42,6 @@ final class VideoFeedVideoPlayer {
   /// Replaces the current item with the URL's content and starts playback.
   /// Loops on completion via `AVPlayerItemDidPlayToEndTime`.
   func load(url: URL) {
-    print("`VideoFeedVideoPlayer`: Loading", url.absoluteString)
-
     self.hasFiredOnReady = false
     self.hasFiredOnFailed = false
     self.removeItemObservers()
@@ -80,17 +77,9 @@ final class VideoFeedVideoPlayer {
       guard let self, !self.hasFiredOnReady else { return }
 
       if let error = self.player.currentItem?.error {
-        print("`VideoFeedVideoPlayer`: Item error:", error.localizedDescription)
         self.notifyFailed()
       } else if self.player.currentItem?.status == .failed {
         self.notifyFailed()
-      } else {
-        print(
-          "`VideoFeedVideoPlayer`: Not playing after 3s. status:",
-          self.player.currentItem?.status.rawValue ?? -1,
-          "rate:", self.player.rate,
-          "timeControlStatus:", self.player.timeControlStatus.rawValue
-        )
       }
     }
   }
