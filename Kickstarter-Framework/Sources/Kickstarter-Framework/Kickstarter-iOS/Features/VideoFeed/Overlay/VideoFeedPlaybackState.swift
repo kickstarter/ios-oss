@@ -7,13 +7,11 @@ final class VideoFeedPlaybackState {
   var isPlaying: Bool = true
 
   var isPlayButtonVisible: Bool {
-    !self.isPlaying && self.isVideoReady
+    !self.isPlaying && !self.hasFailed
   }
 
-  /// True once the video is ready to play. Used to fade out the preview image.
   var isVideoReady: Bool = false
-
-  /// Set via `VideoFeedCell` after the video player is created.
+  var hasFailed: Bool = false
   var videoPlayer: VideoFeedVideoPlayer?
 
   /// Pauses playback and shows the play button.
@@ -31,11 +29,17 @@ final class VideoFeedPlaybackState {
   func reset() {
     self.isPlaying = true
     self.isVideoReady = false
+    self.hasFailed = false
   }
 
   /// Called by the video player once it is ready to play.
   func videoDidBecomeReady() {
     self.isVideoReady = true
     self.videoPlayer?.play()
+  }
+
+  /// Called by the video player when the current video feed item fails to load or play.
+  func videoDidFail() {
+    self.hasFailed = true
   }
 }
