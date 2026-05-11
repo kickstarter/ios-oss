@@ -10,7 +10,9 @@ final class VideoFeedPlaybackState {
     !self.isPlaying && !self.hasFailed
   }
 
+  /// True once the video is ready to play. Used to fade out the preview image.
   var isVideoReady: Bool = false
+  /// Set via `VideoFeedCell` after the video player is created.
   var hasFailed: Bool = false
   var videoPlayer: VideoFeedVideoPlayer?
 

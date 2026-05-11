@@ -85,7 +85,7 @@ struct VideoFeedOverlayView: View {
       /// Fades out once `isVideoReady` becomes true.
       if let previewURL = self.item.videoPreviewImageURL {
         KFImage(previewURL)
-          /// Loading indicator placeholder unril the preview image is loads.
+          /// Loading indicator placeholder until the preview image is loads.
           .placeholder {
             ProgressView()
               .progressViewStyle(.circular)
@@ -98,7 +98,7 @@ struct VideoFeedOverlayView: View {
           .resizable()
           .scaledToFill()
           .ignoresSafeArea()
-          /// Hidden once the video is ready; dimmed when it has failed so the label reads clearly.
+          /// Dimmed opacity if the video player errors on load. This will be updated when proper error handling UI is implemented
           .opacity(
             self.playbackState.isVideoReady
               ? 0
