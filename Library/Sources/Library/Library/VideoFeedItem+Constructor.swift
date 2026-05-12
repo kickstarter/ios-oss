@@ -9,6 +9,7 @@ extension VideoFeedItem {
 
     self.init(
       id: node.project.id,
+      slug: node.project.slug,
       title: node.project.name,
       creator: node.project.creator?.name ?? "",
       creatorImageURL: node.project.creator.flatMap { URL(string: $0.imageUrl) },

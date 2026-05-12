@@ -1,6 +1,7 @@
 import AVFoundation
 import FirebaseCrashlytics
 import KDS
+import KsApi
 import Library
 import UIKit
 
@@ -148,6 +149,18 @@ final class VideoFeedViewController: UIViewController {
       .compactMap { $0 as? VideoFeedCell }
       .forEach { $0.resumePlayback() }
   }
+
+  // MARK: - Navigation
+
+  private func goToProjectPage(for item: VideoFeedItem) {
+    let vc = ProjectPageViewController.navigationController(
+      withProjectOrParam: .right(Param.slug(item.slug)),
+      refInfo: RefInfo(.videoFeed)
+    )
+    vc.modalPresentationStyle = .fullScreen
+
+    self.present(vc, animated: true)
+  }
 }
 
 extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
@@ -178,6 +191,7 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     cell.onVideoReady = { [weak self] in self?.unlockScrollingIfNeeded() }
     /// Failed videos still need scroll unlocked so the user can swipe past.
     cell.onVideoFailed = { [weak self] in self?.unlockScrollingIfNeeded() }
+    cell.onCTATapped = { [weak self] in self?.goToProjectPage(for: item) }
 
     /// Re-configure after wiring callbacks so SwiftUI picks up the closures.
     cell.configureWith(value: item)
