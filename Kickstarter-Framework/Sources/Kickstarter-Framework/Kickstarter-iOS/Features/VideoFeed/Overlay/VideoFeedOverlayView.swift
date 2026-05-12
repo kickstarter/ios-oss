@@ -18,9 +18,11 @@ struct VideoFeedOverlayView: View {
     static let playButtonSize: CGFloat = 62
     static let playIconSize: CGFloat = 33
     static let playIconOffset: CGFloat = 2
-    static let playButtonOffset: CGFloat = -90
+    static let playButtonOffset: CGFloat = -45
     static let closeButtonSize: CGFloat = 44
     static let previewFadeDuration: Double = 0.3
+    /// Preview image opacity when the video has failed to load — dims the BG to surface the label.
+    static let failedPreviewOpacity: Double = 0.35
     /// Defining safa area values because `UIHostingConfiguration` returns 0 for safe area insets when in a collectionview.
     static let topSafeAreaPadding: CGFloat = 60
     static let bottomSafeAreaPadding: CGFloat = 37
@@ -83,27 +85,32 @@ struct VideoFeedOverlayView: View {
       /// Fades out once `isVideoReady` becomes true.
       if let previewURL = self.item.videoPreviewImageURL {
         KFImage(previewURL)
-          /// Loading indicator placeholder unril  the preview image is loads.
+          /// Loading indicator placeholder until the preview image is loads.
           .placeholder {
-            ZStack {
-              Color.black.ignoresSafeArea()
-
-              ProgressView()
-                .progressViewStyle(.circular)
-                .tint(Color(Colors.Icon.light.uiColor()))
-                .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
-                .background(FrostedGlassBackgroundView())
-                .clipShape(Circle())
-                .offset(y: Constants.playButtonOffset)
-            }
+            ProgressView()
+              .progressViewStyle(.circular)
+              .tint(Color(Colors.Icon.light.uiColor()))
+              .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
+              .background(FrostedGlassBackgroundView())
+              .clipShape(Circle())
+              .offset(y: Constants.playButtonOffset)
           }
           .resizable()
           .scaledToFill()
           .ignoresSafeArea()
-          .opacity(self.playbackState.isVideoReady ? 0 : 1)
+          /// Dimmed opacity if the video player errors on load. This will be updated when proper error handling UI is implemented
+          .opacity(
+            self.playbackState.isVideoReady
+              ? 0
+              : (self.playbackState.hasFailed ? Constants.failedPreviewOpacity : 1)
+          )
           .animation(
             .easeInOut(duration: Constants.previewFadeDuration),
             value: self.playbackState.isVideoReady
+          )
+          .animation(
+            .easeInOut(duration: Constants.previewFadeDuration),
+            value: self.playbackState.hasFailed
           )
           .accessibilityHidden(true)
       }
