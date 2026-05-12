@@ -29,12 +29,15 @@ final class VideoFeedViewControllerTests: TestCase {
         language: language,
         mainBundle: MockBundle(bundleIdentifier: appBundle.bundleIdentifier)
       ) {
-        let cell = VideoFeedCell(frame: CGRect(
-          x: 0,
-          y: 0,
-          width: device.deviceSize.width,
-          height: device.deviceSize.height
-        ))
+        let cell = VideoFeedCell(
+          frame: CGRect(
+            x: 0,
+            y: 0,
+            width: device.deviceSize.width,
+            height: device.deviceSize.height
+          ),
+          videoPlayer: MockVideoFeedVideoPlayer()
+        )
 
         cell.configureWith(value: VideoFeedItem(
           id: "0",
@@ -70,12 +73,15 @@ final class VideoFeedViewControllerTests: TestCase {
         language: language,
         mainBundle: MockBundle(bundleIdentifier: appBundle.bundleIdentifier)
       ) {
-        let cell = VideoFeedCell(frame: CGRect(
-          x: 0,
-          y: 0,
-          width: device.deviceSize.width,
-          height: device.deviceSize.height
-        ))
+        let cell = VideoFeedCell(
+          frame: CGRect(
+            x: 0,
+            y: 0,
+            width: device.deviceSize.width,
+            height: device.deviceSize.height
+          ),
+          videoPlayer: MockVideoFeedVideoPlayer()
+        )
 
         cell.configureWith(value: VideoFeedItem(
           id: "0",
@@ -96,4 +102,13 @@ final class VideoFeedViewControllerTests: TestCase {
       }
     }
   }
+}
+
+final class MockVideoFeedVideoPlayer: VideoFeedVideoPlayer {
+  override var progress: Double { 0.4 }
+  override var isPlaying: Bool { false }
+  override func load(url _: URL) {}
+  override func play() {}
+  override func pause() {}
+  override func stop() {}
 }

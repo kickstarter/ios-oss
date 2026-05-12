@@ -5,7 +5,7 @@ import Foundation
 /// AVPlayer wrapper for a single video feed cell.
 /// Loops by observing `AVPlayerItemDidPlayToEndTime` and seeking back to the start
 @Observable
-final class VideoFeedVideoPlayer {
+class VideoFeedVideoPlayer {
   // MARK: - Outputs
 
   private(set) var progress: Double = 0
