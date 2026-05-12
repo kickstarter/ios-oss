@@ -147,6 +147,21 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     super.viewDidAppear(animated)
 
     self.viewModel.inputs.viewDidAppear(animated: animated)
+
+    self.logNullExperiments()
+  }
+
+  // We don't actually switch anything on these experiment values, since they're just A/A tests.
+  // But I'm saving them to a variable, just to be sure that the Swift compiler won't prune it as dead code.
+  private var nullExperimentValue1: Bool?
+  private var nullExperimentValue2: Bool?
+
+  private func logNullExperiments() {
+    let experiment1 = NullExperimentWithUserID()
+    self.nullExperimentValue1 = experiment1.boolValue(forKey: .test_parameter)
+
+    let experiment2 = NullExperimentWithAnonymousID()
+    self.nullExperimentValue2 = experiment2.boolValue(forKey: .test_parameter)
   }
 
   public override func viewDidDisappear(_ animated: Bool) {
