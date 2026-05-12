@@ -59,8 +59,7 @@ final class VideoFeedVideoPlayer {
         self?.player.play()
       }
     }
-
-    /// Catches mid-playback failures (network drop, decoder error mid-stream).
+    /// Catches mid-playback failures (network drop, decoder errors, etc.).
     self.failedObserver = NotificationCenter.default.addObserver(
       forName: .AVPlayerItemFailedToPlayToEndTime,
       object: item,
@@ -71,14 +70,16 @@ final class VideoFeedVideoPlayer {
 
     self.player.play()
 
-    /// If we haven't started playing after 3s, log diagnostics and — if the item
-    /// outright failed (e.g. unsupported codec) — surface that to the UI.
+    /// Fallback handler:
+    /// if the item hasn't started playing after 3s, check if it failed and notify the UI.
+    /// The `=== item` check guards against the cell being recycled before this fires.
+    /// if it has, `currentItem` will have changed so we'll bail out.
     DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
-      guard let self, !self.hasFiredOnReady else { return }
+      guard let self,
+            self.player.currentItem === item,
+            !self.hasFiredOnReady else { return }
 
-      if let error = self.player.currentItem?.error {
-        self.notifyFailed()
-      } else if self.player.currentItem?.status == .failed {
+      if self.player.currentItem?.error != nil || self.player.currentItem?.status == .failed {
         self.notifyFailed()
       }
     }
@@ -150,7 +151,8 @@ final class VideoFeedVideoPlayer {
     }
   }
 
-  /// Fires `onVideoFailed` at most once per loaded item.
+  /// Guards against calling `onVideoFailed` more than once per video feed item..
+  /// Both the `AVPlayerItemFailedToPlayToEndTime` notification and the failed to load timeout can observe the same failure.
   private func notifyFailed() {
     guard !self.hasFiredOnFailed else { return }
     self.hasFiredOnFailed = true

@@ -1,4 +1,5 @@
 import AVFoundation
+import FirebaseCrashlytics
 import KDS
 import Library
 import UIKit
@@ -107,6 +108,8 @@ final class VideoFeedViewController: UIViewController {
       #if DEBUG
         print("`VideoFeedViewController`: Failed to configure audio session:", error.localizedDescription)
       #endif
+
+      Crashlytics.crashlytics().record(error: error)
     }
   }
 
@@ -180,7 +183,7 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     cell.configureWith(value: item)
 
     if let url = item.videoURL {
-      cell.startPlayback(url: url)
+      cell.loadVideo(url: url)
     }
   }
 
@@ -190,7 +193,7 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     didEndDisplaying cell: UICollectionViewCell,
     forItemAt _: IndexPath
   ) {
-    (cell as? VideoFeedCell)?.pauseAndReset()
+    (cell as? VideoFeedCell)?.resetVideo()
   }
 
   // MARK: - Helpers

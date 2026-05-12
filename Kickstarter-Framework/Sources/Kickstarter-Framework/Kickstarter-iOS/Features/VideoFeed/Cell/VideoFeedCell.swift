@@ -4,8 +4,17 @@ import Library
 import SwiftUI
 import UIKit
 
-/// Hosts a `VideoFeedOverlayView` via UIHostingConfiguration and passes
-/// right rail callbacks down so the controller can handle navigation.
+/// # Component Structure
+/// - `VideoFeedPlayerView` UIView backed by AVPlayerLayer, sits below the SwiftUI content view
+/// - `VideoFeedVideoPlayer` AVPlayer wrapper, exposes `onVideoReady` / `onVideoFailed` callbacks
+/// - `VideoFeedPlaybackState` observable UI state (isPlaying, isVideoReady, hasFailed)
+/// - `VideoFeedOverlayView` SwiftUI overlay with gradients, right rail components, and bottom campaign info + CTA
+///
+/// # Playback flow
+/// Loads video on `CollectionView.willDisplay`
+/// After the first frame renders, we call `onVideoReady` +`playbackState.videoDidBecomeReady()`
+/// Preview image fades out , video begins playback, and controller unlocks scrolling.
+/// On `didEndDisplaying`, `clearVideo()` fully tears down the item so recycled cells don't keep buffering.
 final class VideoFeedCell: UICollectionViewCell, ValueCell {
   static let reuseIdentifier = "VideoFeedCell"
 
@@ -21,14 +30,24 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   var onVideoFailed: (() -> Void)?
 
   private let playbackState = VideoFeedPlaybackState()
-  private let videoPlayer = VideoFeedVideoPlayer()
+  private let videoPlayer: VideoFeedVideoPlayer
   private let videoPlayerView = VideoFeedPlayerView()
 
   // MARK: - Lifecycle
 
   override init(frame: CGRect) {
+    self.videoPlayer = VideoFeedVideoPlayer()
     super.init(frame: frame)
+    self.commonInit()
+  }
 
+  init(frame: CGRect, videoPlayer: VideoFeedVideoPlayer) {
+    self.videoPlayer = videoPlayer
+    super.init(frame: frame)
+    self.commonInit()
+  }
+
+  private func commonInit() {
     self.playbackState.videoPlayer = self.videoPlayer
     self.setupVideoPlayerView()
     self.setupVideoPlayerCallbacks()
@@ -73,14 +92,12 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   // MARK: - Video Playback
 
-  func startPlayback(url: URL) {
+  func loadVideo(url: URL) {
     self.videoPlayer.load(url: url)
   }
 
-  /// Loops video to start on `didEndDisplaying`
-  func pauseAndReset() {
-    self.videoPlayer.pause()
-    self.videoPlayer.seek(to: 0)
+  func resetVideo() {
+    self.videoPlayer.stop()
     self.playbackState.reset()
   }
 

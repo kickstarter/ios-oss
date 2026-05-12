@@ -7,7 +7,7 @@ final class VideoFeedPlaybackState {
   var isPlaying: Bool = true
 
   var isPlayButtonVisible: Bool {
-    !self.isPlaying && !self.hasFailed
+    self.isVideoReady && !self.isPlaying && !self.hasFailed
   }
 
   /// True once the video is ready to play. Used to fade out the preview image.
