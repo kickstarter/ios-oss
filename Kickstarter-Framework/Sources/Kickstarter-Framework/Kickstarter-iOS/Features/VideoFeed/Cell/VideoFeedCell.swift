@@ -23,6 +23,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   var onSaveTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
+  var onCTATapped: (() -> Void)?
 
   /// Called once the video is ready to play. Used to unlock feed scrolling.
   var onVideoReady: (() -> Void)?
@@ -66,6 +67,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.onSaveTapped = nil
     self.onShareTapped = nil
     self.onMoreTapped = nil
+    self.onCTATapped = nil
     self.onVideoReady = nil
     self.onVideoFailed = nil
     self.playbackState.reset()
@@ -84,10 +86,16 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
         onCreatorTapped: { [weak self] in self?.onCreatorTapped?() },
         onSaveTapped: { [weak self] in self?.onSaveTapped?() },
         onShareTapped: { [weak self] in self?.onShareTapped?() },
-        onMoreTapped: { [weak self] in self?.onMoreTapped?() }
+        onMoreTapped: { [weak self] in self?.onMoreTapped?() },
+        onCTATapped: { [weak self] in self?.ctaTapped() }
       )
     }
     .margins(.all, 0)
+  }
+
+  func ctaTapped() {
+    self.pausePlayback()
+    self.onCTATapped?()
   }
 
   // MARK: - Video Playback

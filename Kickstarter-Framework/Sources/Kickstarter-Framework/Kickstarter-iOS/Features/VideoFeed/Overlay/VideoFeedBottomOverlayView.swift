@@ -17,6 +17,7 @@ struct VideoFeedBottomOverlayView: View {
 
   let item: VideoFeedItem
   let videoPlayer: VideoFeedVideoPlayer
+  var onCTATapped: (() -> Void)?
 
   var body: some View {
     VStack(alignment: .leading, spacing: Constants.contentSpacing) {
@@ -69,7 +70,7 @@ struct VideoFeedBottomOverlayView: View {
   private var ctaButton: some View {
     let ctaTitle = Strings.Back_this_project()
 
-    return Button(ctaTitle, action: {})
+    return Button(ctaTitle, action: { self.onCTATapped?() })
       .buttonStyle(CTAButtonStyle())
       .padding(.top, Constants.ctaTopPadding)
       .accessibilityLabel(ctaTitle)
