@@ -36,9 +36,15 @@ class ThanksViewControllerTests: TestCase {
           |> Project.lens.id .~ 3
 
         let controller = ThanksViewController.configured(with: (project, Reward.template, nil, 1))
-
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        // Wrapping this in a nav view so we can see the close button.
+        let nav = UINavigationController(rootViewController: controller)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: nav)
         parent.view.frame.size.height = 1_000
+
+        // These are't being correctly passed down to the Thanks controller, now that it's wrapped in a nav view.
+        // So calling them manually to force everything to work correctly.
+        controller.beginAppearanceTransition(true, animated: false)
+        controller.endAppearanceTransition()
 
         self.scheduler.run()
 
