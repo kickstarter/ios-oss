@@ -16,10 +16,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="40" sectionHeaderHeight="1" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="K36-s7-mGm">
-                                <rect key="frame" x="0.0" y="20" width="375" height="635"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="627"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="LC4-lC-v0V">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="355"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="347"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uj7-Jz-Wug" userLabel="Woohoo Banner">
@@ -47,13 +47,13 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kb6-LU-AvY">
-                                            <rect key="frame" x="12" y="208" width="351" height="44"/>
+                                            <rect key="frame" x="12" y="200" width="351" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="Afh-a9-DP3"/>
                                             </constraints>
                                         </button>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="DBG-8g-JC1">
-                                            <rect key="frame" x="0.0" y="252" width="375" height="103"/>
+                                            <rect key="frame" x="0.0" y="244" width="375" height="103"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oH7-8O-oQk">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="37"/>
@@ -110,7 +110,7 @@
                         <viewLayoutGuide key="safeArea" id="WMM-y8-QSH"/>
                         <constraints>
                             <constraint firstItem="WMM-y8-QSH" firstAttribute="bottom" secondItem="K36-s7-mGm" secondAttribute="bottom" constant="12" id="0N8-cc-Ig3"/>
-                            <constraint firstItem="K36-s7-mGm" firstAttribute="top" secondItem="WMM-y8-QSH" secondAttribute="top" id="T7f-bX-4fo"/>
+                            <constraint firstItem="K36-s7-mGm" firstAttribute="top" secondItem="WMM-y8-QSH" secondAttribute="top" constant="8" id="T7f-bX-4fo"/>
                             <constraint firstItem="K36-s7-mGm" firstAttribute="leading" secondItem="WMM-y8-QSH" secondAttribute="leading" id="VLd-o4-JOx"/>
                             <constraint firstItem="WMM-y8-QSH" firstAttribute="trailing" secondItem="K36-s7-mGm" secondAttribute="trailing" id="xFn-zh-ST0"/>
                         </constraints>
