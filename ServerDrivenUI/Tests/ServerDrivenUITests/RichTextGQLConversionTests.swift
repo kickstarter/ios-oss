@@ -1,12 +1,12 @@
 import Foundation
 import GraphAPI
+@testable import LibraryTestHelpers
 @testable import ServerDrivenUI
-import Testing
+import XCTest
 
-@Suite("RichText GraphQL parsing")
-struct RichTextGQLConversionTests {
-  @Test("AsRichText item -> .text element with styles, link, no children")
-  func asRichTextItemAsRichText() async throws {
+final class RichTextGQLConversionTests: TestCase {
+  /* AsRichText item -> .text element with styles, link, no children */
+  func testAsRichTextItemAsRichText() throws {
     let gql = RichTextComponentFragment.Item.AsRichText(
       children: nil,
       text: "foo",
@@ -14,50 +14,50 @@ struct RichTextGQLConversionTests {
       styles: ["STRONG"]
     )
     let el = gql.asRichTextElement
-    guard case let .text(t, level) = el else { Issue.record("expected .text"); return }
-    #expect(t.text == "foo")
-    #expect(t.link == URL(string: "https://kickstarter.com/"))
-    #expect(t.styles == [.strong])
-    #expect(t.children.isEmpty)
-    #expect(level == nil)
+    guard case let .text(t, level) = el else { XCTFail("expected .text"); return }
+    XCTAssertEqual(t.text, "foo")
+    XCTAssertEqual(t.link, URL(string: "https://kickstarter.com/"))
+    XCTAssertEqual(t.styles, [.strong])
+    XCTAssertTrue(t.children.isEmpty)
+    XCTAssertNil(level)
   }
 
-  @Test("Child.AsRichText -> .text element, no children")
-  func asRichTextChildAsRichText() async throws {
+  /* Child.AsRichText -> .text element, no children */
+  func testAsRichTextChildAsRichText() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichText(text: "bar", link: nil, styles: [])
     let el = gql.asRichTextElement
-    guard case .text(let t, nil) = el else { Issue.record("expected .text"); return }
-    #expect(t.text == "bar")
-    #expect(t.children.isEmpty)
+    guard case .text(let t, nil) = el else { XCTFail("expected .text"); return }
+    XCTAssertEqual(t.text, "bar")
+    XCTAssertTrue(t.children.isEmpty)
   }
 
-  @Test("Header.Child.AsRichText -> .text element with emphasis style")
-  func asRichTextHeaderChildAsRichText() async throws {
+  /* Header.Child.AsRichText -> .text element with emphasis style */
+  func testAsRichTextHeaderChildAsRichText() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichText(
       text: "h",
       link: nil,
       styles: ["EMPHASIS"]
     )
     let el = gql.asRichTextElement
-    guard case .text(let t, nil) = el else { Issue.record("expected .text"); return }
-    #expect(t.text == "h")
-    #expect(t.styles == [.emphasis])
+    guard case .text(let t, nil) = el else { XCTFail("expected .text"); return }
+    XCTAssertEqual(t.text, "h")
+    XCTAssertEqual(t.styles, [.emphasis])
   }
 
-  @Test("ListItem.Child.AsRichText -> .text element")
-  func asRichTextListItemChildAsRichText() async throws {
+  /* ListItem.Child.AsRichText -> .text element */
+  func testAsRichTextListItemChildAsRichText() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichText(
       text: "li",
       link: nil,
       styles: nil
     )
     let el = gql.asRichTextElement
-    guard case .text(let t, nil) = el else { Issue.record("expected .text"); return }
-    #expect(t.text == "li")
+    guard case .text(let t, nil) = el else { XCTFail("expected .text"); return }
+    XCTAssertEqual(t.text, "li")
   }
 
-  @Test("AsRichTextHeader item -> .text element")
-  func asRichTextHeader() async throws {
+  /* AsRichTextHeader item -> .text element */
+  func testAsRichTextHeader() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader(
       children: nil,
       text: "header",
@@ -65,48 +65,48 @@ struct RichTextGQLConversionTests {
       styles: []
     )
     let el = gql.asRichTextElement
-    guard case .text(let t, nil) = el else { Issue.record("expected .text"); return }
-    #expect(t.text == "header")
+    guard case .text(let t, nil) = el else { XCTFail("expected .text"); return }
+    XCTAssertEqual(t.text, "header")
   }
 
-  @Test("Header.Child.AsRichTextHeader -> .text element")
-  func asRichTextHeaderChildAsRichTextHeader() async throws {
+  /* Header.Child.AsRichTextHeader -> .text element */
+  func testAsRichTextHeaderChildAsRichTextHeader() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextHeader(
       text: "h2",
       link: nil,
       styles: []
     )
     let el = gql.asRichTextElement
-    guard case .text(let t, nil) = el else { Issue.record("expected .text"); return }
-    #expect(t.text == "h2")
+    guard case .text(let t, nil) = el else { XCTFail("expected .text"); return }
+    XCTAssertEqual(t.text, "h2")
   }
 
-  @Test("Child.AsRichTextHeader -> .text element")
-  func asRichTextChildAsRichTextHeader() async throws {
+  /* Child.AsRichTextHeader -> .text element */
+  func testAsRichTextChildAsRichTextHeader() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextHeader(
       text: "x",
       link: nil,
       styles: nil
     )
     let el = gql.asRichTextElement
-    guard case .text(let t, nil) = el else { Issue.record("expected .text"); return }
-    #expect(t.text == "x")
+    guard case .text(let t, nil) = el else { XCTFail("expected .text"); return }
+    XCTAssertEqual(t.text, "x")
   }
 
-  @Test("ListItem.Child.AsRichTextHeader -> .text element")
-  func asRichTextListItemChildAsRichTextHeader() async throws {
+  /* ListItem.Child.AsRichTextHeader -> .text element */
+  func testAsRichTextListItemChildAsRichTextHeader() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextHeader(
       text: "y",
       link: nil,
       styles: nil
     )
     let el = gql.asRichTextElement
-    guard case .text(let t, nil) = el else { Issue.record("expected .text"); return }
-    #expect(t.text == "y")
+    guard case .text(let t, nil) = el else { XCTFail("expected .text"); return }
+    XCTAssertEqual(t.text, "y")
   }
 
-  @Test("AsRichTextListItem item -> .listItem element with no children")
-  func asRichTextListItem() async throws {
+  /* AsRichTextListItem item -> .listItem element with no children */
+  func testAsRichTextListItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem(
       children: nil,
       text: "bullet",
@@ -114,107 +114,105 @@ struct RichTextGQLConversionTests {
       styles: []
     )
     let el = gql.asRichTextElement
-    guard case let .listItem(t) = el else { Issue.record("expected .listItem"); return }
-    #expect(t.text == "bullet")
-    #expect(t.children.isEmpty)
+    guard case let .listItem(t) = el else { XCTFail("expected .listItem"); return }
+    XCTAssertEqual(t.text, "bullet")
+    XCTAssertTrue(t.children.isEmpty)
   }
 
-  @Test(
-    "ListItem.Child.AsRichTextListItem -> .listItem element"
-  )
-  func asRichTextListItemChildAsRichTextListItem() async throws {
+  /* ListItem.Child.AsRichTextListItem -> .listItem element */
+  func testAsRichTextListItemChildAsRichTextListItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextListItem(
       text: "nested",
       link: nil,
       styles: []
     )
     let el = gql.asRichTextElement
-    guard case let .listItem(t) = el else { Issue.record("expected .listItem"); return }
-    #expect(t.text == "nested")
+    guard case let .listItem(t) = el else { XCTFail("expected .listItem"); return }
+    XCTAssertEqual(t.text, "nested")
   }
 
-  @Test("Child.AsRichTextListItem -> .listItem element")
-  func asRichTextChildAsRichTextListItem() async throws {
+  /* Child.AsRichTextListItem -> .listItem element */
+  func testAsRichTextChildAsRichTextListItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextListItem(
       text: "a",
       link: nil,
       styles: nil
     )
     let el = gql.asRichTextElement
-    guard case let .listItem(t) = el else { Issue.record("expected .listItem"); return }
-    #expect(t.text == "a")
+    guard case let .listItem(t) = el else { XCTFail("expected .listItem"); return }
+    XCTAssertEqual(t.text, "a")
   }
 
-  @Test("Header.Child.AsRichTextListItem -> .listItem element")
-  func asRichTextHeaderChildAsRichTextListItem() async throws {
+  /* Header.Child.AsRichTextListItem -> .listItem element */
+  func testAsRichTextHeaderChildAsRichTextListItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextListItem(
       text: "b",
       link: nil,
       styles: nil
     )
     let el = gql.asRichTextElement
-    guard case let .listItem(t) = el else { Issue.record("expected .listItem"); return }
-    #expect(t.text == "b")
+    guard case let .listItem(t) = el else { XCTFail("expected .listItem"); return }
+    XCTAssertEqual(t.text, "b")
   }
 
-  @Test("AsRichTextListOpen item -> .listItemOpen element")
-  func asRichTextListOpenItem() async throws {
+  /* AsRichTextListOpen item -> .listItemOpen element */
+  func testAsRichTextListOpenItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListOpen(_present: true)
     let el = gql.asRichTextElement
-    guard case .listItemOpen = el else { Issue.record("expected .listItemOpen"); return }
+    guard case .listItemOpen = el else { XCTFail("expected .listItemOpen"); return }
   }
 
-  @Test("Child.AsRichTextListOpen -> .listItemOpen element")
-  func asRichTextListOpenChild() async throws {
+  /* Child.AsRichTextListOpen -> .listItemOpen element */
+  func testAsRichTextListOpenChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextListOpen(_present: true)
     let el = gql.asRichTextElement
-    guard case .listItemOpen = el else { Issue.record("expected .listItemOpen"); return }
+    guard case .listItemOpen = el else { XCTFail("expected .listItemOpen"); return }
   }
 
-  @Test("Header.Child.AsRichTextListOpen -> .listItemOpen element")
-  func asRichTextListOpenHeaderChild() async throws {
+  /* Header.Child.AsRichTextListOpen -> .listItemOpen element */
+  func testAsRichTextListOpenHeaderChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextListOpen(_present: true)
     let el = gql.asRichTextElement
-    guard case .listItemOpen = el else { Issue.record("expected .listItemOpen"); return }
+    guard case .listItemOpen = el else { XCTFail("expected .listItemOpen"); return }
   }
 
-  @Test("ListItem.Child.AsRichTextListOpen -> .listItemOpen element")
-  func asRichTextListOpenListItemChild() async throws {
+  /* ListItem.Child.AsRichTextListOpen -> .listItemOpen element */
+  func testAsRichTextListOpenListItemChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextListOpen(_present: true)
     let el = gql.asRichTextElement
-    guard case .listItemOpen = el else { Issue.record("expected .listItemOpen"); return }
+    guard case .listItemOpen = el else { XCTFail("expected .listItemOpen"); return }
   }
 
-  @Test("AsRichTextListClose item -> .listItemClose element")
-  func asRichTextListCloseItem() async throws {
+  /* AsRichTextListClose item -> .listItemClose element */
+  func testAsRichTextListCloseItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListClose(_present: true)
     let el = gql.asRichTextElement
-    guard case .listItemClose = el else { Issue.record("expected .listItemClose"); return }
+    guard case .listItemClose = el else { XCTFail("expected .listItemClose"); return }
   }
 
-  @Test("Child.AsRichTextListClose -> .listItemClose element")
-  func asRichTextListCloseChild() async throws {
+  /* Child.AsRichTextListClose -> .listItemClose element */
+  func testAsRichTextListCloseChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextListClose(_present: true)
     let el = gql.asRichTextElement
-    guard case .listItemClose = el else { Issue.record("expected .listItemClose"); return }
+    guard case .listItemClose = el else { XCTFail("expected .listItemClose"); return }
   }
 
-  @Test("Header.Child.AsRichTextListClose -> .listItemClose element")
-  func asRichTextListCloseHeaderChild() async throws {
+  /* Header.Child.AsRichTextListClose -> .listItemClose element */
+  func testAsRichTextListCloseHeaderChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextListClose(_present: true)
     let el = gql.asRichTextElement
-    guard case .listItemClose = el else { Issue.record("expected .listItemClose"); return }
+    guard case .listItemClose = el else { XCTFail("expected .listItemClose"); return }
   }
 
-  @Test("ListItem.Child.AsRichTextListClose -> .listItemClose element")
-  func asRichTextListCloseListItemChild() async throws {
+  /* ListItem.Child.AsRichTextListClose -> .listItemClose element */
+  func testAsRichTextListCloseListItemChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextListClose(_present: true)
     let el = gql.asRichTextElement
-    guard case .listItemClose = el else { Issue.record("expected .listItemClose"); return }
+    guard case .listItemClose = el else { XCTFail("expected .listItemClose"); return }
   }
 
-  @Test("AsRichTextAudio item -> .audio element with alt, caption, url")
-  func asRichTextAudioItem() async throws {
+  /* AsRichTextAudio item -> .audio element with alt, caption, url */
+  func testAsRichTextAudioItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextAudio(
       altText: "alt",
       asset: nil,
@@ -222,15 +220,15 @@ struct RichTextGQLConversionTests {
       url: "https://audio"
     )
     let el = gql.asRichTextElement
-    guard case let .audio(a) = el else { Issue.record("expected .audio"); return }
-    #expect(a.altText == "alt")
-    #expect(a.assetID == nil)
-    #expect(a.caption == "cap")
-    #expect(a.url == "https://audio")
+    guard case let .audio(a) = el else { XCTFail("expected .audio"); return }
+    XCTAssertEqual(a.altText, "alt")
+    XCTAssertNil(a.assetID)
+    XCTAssertEqual(a.caption, "cap")
+    XCTAssertEqual(a.url, "https://audio")
   }
 
-  @Test("Child.AsRichTextAudio -> .audio element")
-  func asRichTextAudioChild() async throws {
+  /* Child.AsRichTextAudio -> .audio element */
+  func testAsRichTextAudioChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextAudio(
       altText: "a",
       asset: nil,
@@ -238,13 +236,13 @@ struct RichTextGQLConversionTests {
       url: "u"
     )
     let el = gql.asRichTextElement
-    guard case let .audio(a) = el else { Issue.record("expected .audio"); return }
-    #expect(a.altText == "a")
-    #expect(a.url == "u")
+    guard case let .audio(a) = el else { XCTFail("expected .audio"); return }
+    XCTAssertEqual(a.altText, "a")
+    XCTAssertEqual(a.url, "u")
   }
 
-  @Test("AsRichTextAudio with Asset -> .audio element with assetID")
-  func asRichTextAudioWithAsset() async throws {
+  /* AsRichTextAudio with Asset -> .audio element with assetID */
+  func testAsRichTextAudioWithAsset() throws {
     let asset = RichTextItemFragment.AsRichTextAudio.Asset(id: "asset-1")
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextAudio(
       altText: "",
@@ -253,12 +251,12 @@ struct RichTextGQLConversionTests {
       url: ""
     )
     let el = gql.asRichTextElement
-    guard case let .audio(a) = el else { Issue.record("expected .audio"); return }
-    #expect(a.assetID == "asset-1")
+    guard case let .audio(a) = el else { XCTFail("expected .audio"); return }
+    XCTAssertEqual(a.assetID, "asset-1")
   }
 
-  @Test("AsRichTextPhoto item -> .photo element with alt, caption, url")
-  func asRichTextPhotoItem() async throws {
+  /* AsRichTextPhoto item -> .photo element with alt, caption, url */
+  func testAsRichTextPhotoItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextPhoto(
       altText: "photo",
       asset: nil,
@@ -266,14 +264,14 @@ struct RichTextGQLConversionTests {
       url: "https://img"
     )
     let el = gql.asRichTextElement
-    guard case let .photo(p) = el else { Issue.record("expected .photo"); return }
-    #expect(p.altText == "photo")
-    #expect(p.assetID == nil)
-    #expect(p.url == "https://img")
+    guard case let .photo(p) = el else { XCTFail("expected .photo"); return }
+    XCTAssertEqual(p.altText, "photo")
+    XCTAssertNil(p.assetID)
+    XCTAssertEqual(p.url, "https://img")
   }
 
-  @Test("Child.AsRichTextPhoto -> .photo element")
-  func asRichTextPhotoChild() async throws {
+  /* Child.AsRichTextPhoto -> .photo element */
+  func testAsRichTextPhotoChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextPhoto(
       altText: "p",
       asset: nil,
@@ -281,12 +279,12 @@ struct RichTextGQLConversionTests {
       url: "u"
     )
     let el = gql.asRichTextElement
-    guard case let .photo(p) = el else { Issue.record("expected .photo"); return }
-    #expect(p.altText == "p")
+    guard case let .photo(p) = el else { XCTFail("expected .photo"); return }
+    XCTAssertEqual(p.altText, "p")
   }
 
-  @Test("AsRichTextVideo item -> .video element with alt, caption, url")
-  func asRichTextVideoItem() async throws {
+  /* AsRichTextVideo item -> .video element with alt, caption, url */
+  func testAsRichTextVideoItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextVideo(
       altText: "v",
       asset: nil,
@@ -294,15 +292,15 @@ struct RichTextGQLConversionTests {
       url: "https://vid"
     )
     let el = gql.asRichTextElement
-    guard case let .video(v) = el else { Issue.record("expected .video"); return }
-    #expect(v.altText == "v")
-    #expect(v.url == "https://vid")
-    #expect(v.posterURL == nil)
-    #expect(v.formats.isEmpty)
+    guard case let .video(v) = el else { XCTFail("expected .video"); return }
+    XCTAssertEqual(v.altText, "v")
+    XCTAssertEqual(v.url, "https://vid")
+    XCTAssertNil(v.posterURL)
+    XCTAssertTrue(v.formats.isEmpty)
   }
 
-  @Test("AsRichTextVideo item with asset -> .video element with assetID and posterURL")
-  func asRichTextVideoItemWithAsset() async throws {
+  /* AsRichTextVideo item with asset -> .video element with assetID and posterURL */
+  func testAsRichTextVideoItemWithAsset() throws {
     let asset = RichTextItemFragment.AsRichTextVideo.Asset(
       id: "vid-asset-1",
       poster: "https://example.com/poster.jpg",
@@ -315,14 +313,14 @@ struct RichTextGQLConversionTests {
       url: "https://vid"
     )
     let el = gql.asRichTextElement
-    guard case let .video(v) = el else { Issue.record("expected .video"); return }
-    #expect(v.assetID == "vid-asset-1")
-    #expect(v.posterURL == "https://example.com/poster.jpg")
-    #expect(v.formats.isEmpty)
+    guard case let .video(v) = el else { XCTFail("expected .video"); return }
+    XCTAssertEqual(v.assetID, "vid-asset-1")
+    XCTAssertEqual(v.posterURL, "https://example.com/poster.jpg")
+    XCTAssertTrue(v.formats.isEmpty)
   }
 
-  @Test("AsRichTextVideo item with formats -> .video element with all format fields")
-  func asRichTextVideoItemWithFormats() async throws {
+  /* AsRichTextVideo item with formats -> .video element with all format fields */
+  func testAsRichTextVideoItemWithFormats() throws {
     let hi = RichTextItemFragment.AsRichTextVideo.Asset.Format(
       encoding: #"video/mp4; codecs="avc1.64001E, mp4a.40.2""#,
       height: "1080",
@@ -349,22 +347,22 @@ struct RichTextGQLConversionTests {
       url: "https://vid"
     )
     let el = gql.asRichTextElement
-    guard case let .video(v) = el else { Issue.record("expected .video"); return }
-    #expect(v.posterURL == nil)
-    #expect(v.formats.count == 2)
-    let first = try #require(v.formats.first)
-    #expect(first.encoding == #"video/mp4; codecs="avc1.64001E, mp4a.40.2""#)
-    #expect(first.width == "1920")
-    #expect(first.height == "1080")
-    #expect(first.profile == "high")
-    #expect(first.url == "https://vid/high.mp4")
-    let second = try #require(v.formats.last)
-    #expect(second.profile == "baseline")
-    #expect(second.url == "https://vid/baseline.mp4")
+    guard case let .video(v) = el else { XCTFail("expected .video"); return }
+    XCTAssertNil(v.posterURL)
+    XCTAssertEqual(v.formats.count, 2)
+    guard let first = v.formats.first else { return XCTFail("missing first format") }
+    XCTAssertEqual(first.encoding, #"video/mp4; codecs="avc1.64001E, mp4a.40.2""#)
+    XCTAssertEqual(first.width, "1920")
+    XCTAssertEqual(first.height, "1080")
+    XCTAssertEqual(first.profile, "high")
+    XCTAssertEqual(first.url, "https://vid/high.mp4")
+    guard let second = v.formats.last else { return XCTFail("missing second format") }
+    XCTAssertEqual(second.profile, "baseline")
+    XCTAssertEqual(second.url, "https://vid/baseline.mp4")
   }
 
-  @Test("AsRichTextVideo item with nil format entries -> nil entries skipped")
-  func asRichTextVideoItemNilFormatEntriesSkipped() async throws {
+  /* AsRichTextVideo item with nil format entries -> nil entries skipped */
+  func testAsRichTextVideoItemNilFormatEntriesSkipped() throws {
     let format = RichTextItemFragment.AsRichTextVideo.Asset.Format(
       encoding: "video/mp4",
       height: "720",
@@ -384,12 +382,12 @@ struct RichTextGQLConversionTests {
       url: ""
     )
     let el = gql.asRichTextElement
-    guard case let .video(v) = el else { Issue.record("expected .video"); return }
-    #expect(v.formats.count == 1)
+    guard case let .video(v) = el else { XCTFail("expected .video"); return }
+    XCTAssertEqual(v.formats.count, 1)
   }
 
-  @Test("Child.AsRichTextVideo -> .video element")
-  func asRichTextVideoChild() async throws {
+  /* Child.AsRichTextVideo -> .video element */
+  func testAsRichTextVideoChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextVideo(
       altText: "x",
       asset: nil,
@@ -397,14 +395,14 @@ struct RichTextGQLConversionTests {
       url: ""
     )
     let el = gql.asRichTextElement
-    guard case let .video(v) = el else { Issue.record("expected .video"); return }
-    #expect(v.altText == "x")
-    #expect(v.posterURL == nil)
-    #expect(v.formats.isEmpty)
+    guard case let .video(v) = el else { XCTFail("expected .video"); return }
+    XCTAssertEqual(v.altText, "x")
+    XCTAssertNil(v.posterURL)
+    XCTAssertTrue(v.formats.isEmpty)
   }
 
-  @Test("Child.AsRichTextVideo with asset -> .video element with posterURL and formats")
-  func asRichTextVideoChildWithAsset() async throws {
+  /* Child.AsRichTextVideo with asset -> .video element with posterURL and formats */
+  func testAsRichTextVideoChildWithAsset() throws {
     let format = RichTextItemFragment.AsRichTextVideo.Asset.Format(
       encoding: "video/mp4",
       height: "1080",
@@ -424,17 +422,15 @@ struct RichTextGQLConversionTests {
       url: ""
     )
     let el = gql.asRichTextElement
-    guard case let .video(v) = el else { Issue.record("expected .video"); return }
-    #expect(v.assetID == "child-asset")
-    #expect(v.posterURL == "https://example.com/child-poster.jpg")
-    #expect(v.formats.count == 1)
-    #expect(v.formats.first?.profile == "high")
+    guard case let .video(v) = el else { XCTFail("expected .video"); return }
+    XCTAssertEqual(v.assetID, "child-asset")
+    XCTAssertEqual(v.posterURL, "https://example.com/child-poster.jpg")
+    XCTAssertEqual(v.formats.count, 1)
+    XCTAssertEqual(v.formats.first?.profile, "high")
   }
 
-  @Test(
-    "AsRichTextOembed item -> .oembed element with dimensions, urls, and thumbnail"
-  )
-  func asRichTextOembedItem() async throws {
+  /* AsRichTextOembed item -> .oembed element with dimensions, urls, and thumbnail */
+  func testAsRichTextOembedItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextOembed(
       width: 200,
       height: 100,
@@ -448,21 +444,21 @@ struct RichTextGQLConversionTests {
       thumbnailWidth: 60
     )
     let el = gql.asRichTextElement
-    guard case let .oembed(o) = el else { Issue.record("expected .oembed"); return }
-    #expect(o.width == 200)
-    #expect(o.height == 100)
-    #expect(o.title == "Title")
-    #expect(o.type == "video")
-    #expect(o.version == "1.0")
-    #expect(o.iframeUrl == "https://iframe")
-    #expect(o.originalUrl == "https://orig")
-    #expect(o.thumbnailUrl == "https://thumb")
-    #expect(o.thumbnailWidth == 60)
-    #expect(o.thumbnailHeight == 50)
+    guard case let .oembed(o) = el else { XCTFail("expected .oembed"); return }
+    XCTAssertEqual(o.width, 200)
+    XCTAssertEqual(o.height, 100)
+    XCTAssertEqual(o.title, "Title")
+    XCTAssertEqual(o.type, "video")
+    XCTAssertEqual(o.version, "1.0")
+    XCTAssertEqual(o.iframeUrl, "https://iframe")
+    XCTAssertEqual(o.originalUrl, "https://orig")
+    XCTAssertEqual(o.thumbnailUrl, "https://thumb")
+    XCTAssertEqual(o.thumbnailWidth, 60)
+    XCTAssertEqual(o.thumbnailHeight, 50)
   }
 
-  @Test("Child.AsRichTextOembed -> .oembed element")
-  func asRichTextOembedChild() async throws {
+  /* Child.AsRichTextOembed -> .oembed element */
+  func testAsRichTextOembedChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextOembed(
       width: 4,
       height: 1,
@@ -476,15 +472,15 @@ struct RichTextGQLConversionTests {
       thumbnailWidth: 3
     )
     let el = gql.asRichTextElement
-    guard case let .oembed(o) = el else { Issue.record("expected .oembed"); return }
-    #expect(o.width == 4)
-    #expect(o.height == 1)
-    #expect(o.title == "T")
-    #expect(o.type == "rich")
+    guard case let .oembed(o) = el else { XCTFail("expected .oembed"); return }
+    XCTAssertEqual(o.width, 4)
+    XCTAssertEqual(o.height, 1)
+    XCTAssertEqual(o.title, "T")
+    XCTAssertEqual(o.type, "rich")
   }
 
-  @Test("Header.Child.AsRichTextAudio -> .audio element")
-  func asRichTextHeaderChildAsRichTextAudio() async throws {
+  /* Header.Child.AsRichTextAudio -> .audio element */
+  func testAsRichTextHeaderChildAsRichTextAudio() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextAudio(
       altText: "h",
       asset: nil,
@@ -492,12 +488,12 @@ struct RichTextGQLConversionTests {
       url: ""
     )
     let el = gql.asRichTextElement
-    guard case let .audio(a) = el else { Issue.record("expected .audio"); return }
-    #expect(a.altText == "h")
+    guard case let .audio(a) = el else { XCTFail("expected .audio"); return }
+    XCTAssertEqual(a.altText, "h")
   }
 
-  @Test("ListItem.Child.AsRichTextAudio -> .audio element")
-  func asRichTextListItemChildAsRichTextAudio() async throws {
+  /* ListItem.Child.AsRichTextAudio -> .audio element */
+  func testAsRichTextListItemChildAsRichTextAudio() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextAudio(
       altText: "li",
       asset: nil,
@@ -505,12 +501,12 @@ struct RichTextGQLConversionTests {
       url: ""
     )
     let el = gql.asRichTextElement
-    guard case let .audio(a) = el else { Issue.record("expected .audio"); return }
-    #expect(a.altText == "li")
+    guard case let .audio(a) = el else { XCTFail("expected .audio"); return }
+    XCTAssertEqual(a.altText, "li")
   }
 
-  @Test("Header.Child.AsRichTextPhoto -> .photo element")
-  func asRichTextHeaderChildAsRichTextPhoto() async throws {
+  /* Header.Child.AsRichTextPhoto -> .photo element */
+  func testAsRichTextHeaderChildAsRichTextPhoto() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextPhoto(
       altText: "hp",
       asset: nil,
@@ -518,12 +514,12 @@ struct RichTextGQLConversionTests {
       url: ""
     )
     let el = gql.asRichTextElement
-    guard case let .photo(p) = el else { Issue.record("expected .photo"); return }
-    #expect(p.altText == "hp")
+    guard case let .photo(p) = el else { XCTFail("expected .photo"); return }
+    XCTAssertEqual(p.altText, "hp")
   }
 
-  @Test("ListItem.Child.AsRichTextPhoto -> .photo element")
-  func asRichTextListItemChildAsRichTextPhoto() async throws {
+  /* ListItem.Child.AsRichTextPhoto -> .photo element */
+  func testAsRichTextListItemChildAsRichTextPhoto() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextPhoto(
       altText: "lip",
       asset: nil,
@@ -531,12 +527,12 @@ struct RichTextGQLConversionTests {
       url: ""
     )
     let el = gql.asRichTextElement
-    guard case let .photo(p) = el else { Issue.record("expected .photo"); return }
-    #expect(p.altText == "lip")
+    guard case let .photo(p) = el else { XCTFail("expected .photo"); return }
+    XCTAssertEqual(p.altText, "lip")
   }
 
-  @Test("Header.Child.AsRichTextVideo -> .video element with posterURL and formats")
-  func asRichTextHeaderChildAsRichTextVideo() async throws {
+  /* Header.Child.AsRichTextVideo -> .video element with posterURL and formats */
+  func testAsRichTextHeaderChildAsRichTextVideo() throws {
     let asset = RichTextItemFragment.AsRichTextVideo.Asset(
       id: "h-asset",
       poster: "https://example.com/header-poster.jpg",
@@ -549,15 +545,15 @@ struct RichTextGQLConversionTests {
       url: ""
     )
     let el = gql.asRichTextElement
-    guard case let .video(v) = el else { Issue.record("expected .video"); return }
-    #expect(v.altText == "hv")
-    #expect(v.assetID == "h-asset")
-    #expect(v.posterURL == "https://example.com/header-poster.jpg")
-    #expect(v.formats.isEmpty)
+    guard case let .video(v) = el else { XCTFail("expected .video"); return }
+    XCTAssertEqual(v.altText, "hv")
+    XCTAssertEqual(v.assetID, "h-asset")
+    XCTAssertEqual(v.posterURL, "https://example.com/header-poster.jpg")
+    XCTAssertTrue(v.formats.isEmpty)
   }
 
-  @Test("ListItem.Child.AsRichTextVideo -> .video element with posterURL and formats")
-  func asRichTextListItemChildAsRichTextVideo() async throws {
+  /* ListItem.Child.AsRichTextVideo -> .video element with posterURL and formats */
+  func testAsRichTextListItemChildAsRichTextVideo() throws {
     let asset = RichTextItemFragment.AsRichTextVideo.Asset(
       id: "li-asset",
       poster: "https://example.com/li-poster.jpg",
@@ -570,15 +566,15 @@ struct RichTextGQLConversionTests {
       url: ""
     )
     let el = gql.asRichTextElement
-    guard case let .video(v) = el else { Issue.record("expected .video"); return }
-    #expect(v.altText == "liv")
-    #expect(v.assetID == "li-asset")
-    #expect(v.posterURL == "https://example.com/li-poster.jpg")
-    #expect(v.formats.isEmpty)
+    guard case let .video(v) = el else { XCTFail("expected .video"); return }
+    XCTAssertEqual(v.altText, "liv")
+    XCTAssertEqual(v.assetID, "li-asset")
+    XCTAssertEqual(v.posterURL, "https://example.com/li-poster.jpg")
+    XCTAssertTrue(v.formats.isEmpty)
   }
 
-  @Test("Header.Child.AsRichTextOembed -> .oembed element")
-  func asRichTextHeaderChildAsRichTextOembed() async throws {
+  /* Header.Child.AsRichTextOembed -> .oembed element */
+  func testAsRichTextHeaderChildAsRichTextOembed() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextOembed(
       width: 10,
       height: 10,
@@ -592,12 +588,12 @@ struct RichTextGQLConversionTests {
       thumbnailWidth: 10
     )
     let el = gql.asRichTextElement
-    guard case let .oembed(o) = el else { Issue.record("expected .oembed"); return }
-    #expect(o.title == "H")
+    guard case let .oembed(o) = el else { XCTFail("expected .oembed"); return }
+    XCTAssertEqual(o.title, "H")
   }
 
-  @Test("ListItem.Child.AsRichTextOembed -> .oembed element")
-  func asRichTextListItemChildAsRichTextOembed() async throws {
+  /* ListItem.Child.AsRichTextOembed -> .oembed element */
+  func testAsRichTextListItemChildAsRichTextOembed() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextOembed(
       width: 5,
       height: 5,
@@ -611,8 +607,8 @@ struct RichTextGQLConversionTests {
       thumbnailWidth: 5
     )
     let el = gql.asRichTextElement
-    guard case let .oembed(o) = el else { Issue.record("expected .oembed"); return }
-    #expect(o.title == "L")
-    #expect(o.width == 5)
+    guard case let .oembed(o) = el else { XCTFail("expected .oembed"); return }
+    XCTAssertEqual(o.title, "L")
+    XCTAssertEqual(o.width, 5)
   }
 }
