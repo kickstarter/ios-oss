@@ -630,19 +630,36 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeForUI()
       .observeValues { [weak self] project in
         guard let self else { return }
-        let vc = ProjectPageViewController.navigationController(
-          withProjectOrParam: .right(project.projectPageParam),
-          refInfo: RefInfo(.similarProjects)
-        )
-
-        if let nav = self.navigationController {
-          nav.pushViewController(vc, animated: true)
-        } else {
-          assertionFailure("We expect a navigation controller to be here")
-          let nav = UINavigationController(rootViewController: vc)
-          self.present(nav, animated: true)
-        }
+        self.goToSimilarProject(project.projectPageParam)
       }
+  }
+
+  private func shouldPushSPC() -> Bool {
+    let experiment = FullScreenCheckoutExperiment()
+    guard let shouldPush = experiment.boolValue(forKey: .push_spc) else {
+      // The old (default) behavior is that SPC is pushed, not presented.
+      return true
+    }
+
+    return shouldPush
+  }
+
+  private func goToSimilarProject(_ param: any ProjectPageParam) {
+    if self.shouldPushSPC() {
+      let vc = ProjectPageViewController.configuredWith(
+        projectOrParam: .right(param),
+        refInfo: RefInfo(.similarProjects)
+      )
+
+      self.navigationController?.pushViewController(vc, animated: true)
+      return
+    }
+
+    let nav = ProjectPageViewController.navigationController(
+      withProjectOrParam: .right(param),
+      refInfo: RefInfo(.similarProjects)
+    )
+    self.present(nav, animated: true)
   }
 
   private func prepareToPlayAudioVideoURL(
