@@ -634,23 +634,32 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       }
   }
 
+  private func shouldPushSPC() -> Bool {
+    let experiment = FullScreenCheckoutExperiment()
+    guard let shouldPush = experiment.boolValue(forKey: .push_spc) else {
+      // The old (default) behavior is that SPC is pushed, not presented.
+      return true
+    }
+
+    return shouldPush
+  }
+
   private func goToSimilarProject(_ param: any ProjectPageParam) {
-    guard let nav = self.navigationController else {
-      assertionFailure("We expect a navigation controller to be here")
-      let nav = ProjectPageViewController.navigationController(
-        withProjectOrParam: .right(param),
+    if self.shouldPushSPC() {
+      let vc = ProjectPageViewController.configuredWith(
+        projectOrParam: .right(param),
         refInfo: RefInfo(.similarProjects)
       )
-      self.present(nav, animated: true)
+
+      self.navigationController?.pushViewController(vc, animated: true)
       return
     }
 
-    let vc = ProjectPageViewController.configuredWith(
-      projectOrParam: .right(param),
+    let nav = ProjectPageViewController.navigationController(
+      withProjectOrParam: .right(param),
       refInfo: RefInfo(.similarProjects)
     )
-
-    nav.pushViewController(vc, animated: true)
+    self.present(nav, animated: true)
   }
 
   private func prepareToPlayAudioVideoURL(
