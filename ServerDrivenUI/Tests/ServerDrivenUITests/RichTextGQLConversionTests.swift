@@ -5,6 +5,7 @@ import GraphAPI
 import XCTest
 
 final class RichTextGQLConversionTests: TestCase {
+  /* AsRichText item -> .text element with styles, link, no children */
   func testAsRichTextItemAsRichText() throws {
     let gql = RichTextComponentFragment.Item.AsRichText(
       children: nil,
@@ -21,6 +22,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertNil(level)
   }
 
+  /* Child.AsRichText -> .text element, no children */
   func testAsRichTextChildAsRichText() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichText(text: "bar", link: nil, styles: [])
     let el = gql.asRichTextElement
@@ -29,6 +31,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertTrue(t.children.isEmpty)
   }
 
+  /* Header.Child.AsRichText -> .text element with emphasis style */
   func testAsRichTextHeaderChildAsRichText() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichText(
       text: "h",
@@ -41,6 +44,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(t.styles, [.emphasis])
   }
 
+  /* ListItem.Child.AsRichText -> .text element */
   func testAsRichTextListItemChildAsRichText() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichText(
       text: "li",
@@ -52,6 +56,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(t.text, "li")
   }
 
+  /* AsRichTextHeader item -> .text element */
   func testAsRichTextHeader() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader(
       children: nil,
@@ -64,6 +69,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(t.text, "header")
   }
 
+  /* Header.Child.AsRichTextHeader -> .text element */
   func testAsRichTextHeaderChildAsRichTextHeader() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextHeader(
       text: "h2",
@@ -75,6 +81,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(t.text, "h2")
   }
 
+  /* Child.AsRichTextHeader -> .text element */
   func testAsRichTextChildAsRichTextHeader() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextHeader(
       text: "x",
@@ -86,6 +93,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(t.text, "x")
   }
 
+  /* ListItem.Child.AsRichTextHeader -> .text element */
   func testAsRichTextListItemChildAsRichTextHeader() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextHeader(
       text: "y",
@@ -97,6 +105,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(t.text, "y")
   }
 
+  /* AsRichTextListItem item -> .listItem element with no children */
   func testAsRichTextListItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem(
       children: nil,
@@ -110,6 +119,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertTrue(t.children.isEmpty)
   }
 
+  /* ListItem.Child.AsRichTextListItem -> .listItem element */
   func testAsRichTextListItemChildAsRichTextListItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextListItem(
       text: "nested",
@@ -121,6 +131,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(t.text, "nested")
   }
 
+  /* Child.AsRichTextListItem -> .listItem element */
   func testAsRichTextChildAsRichTextListItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextListItem(
       text: "a",
@@ -132,6 +143,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(t.text, "a")
   }
 
+  /* Header.Child.AsRichTextListItem -> .listItem element */
   func testAsRichTextHeaderChildAsRichTextListItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextListItem(
       text: "b",
@@ -143,54 +155,63 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(t.text, "b")
   }
 
+  /* AsRichTextListOpen item -> .listItemOpen element */
   func testAsRichTextListOpenItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListOpen(_present: true)
     let el = gql.asRichTextElement
     guard case .listItemOpen = el else { XCTFail("expected .listItemOpen"); return }
   }
 
+  /* Child.AsRichTextListOpen -> .listItemOpen element */
   func testAsRichTextListOpenChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextListOpen(_present: true)
     let el = gql.asRichTextElement
     guard case .listItemOpen = el else { XCTFail("expected .listItemOpen"); return }
   }
 
+  /* Header.Child.AsRichTextListOpen -> .listItemOpen element */
   func testAsRichTextListOpenHeaderChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextListOpen(_present: true)
     let el = gql.asRichTextElement
     guard case .listItemOpen = el else { XCTFail("expected .listItemOpen"); return }
   }
 
+  /* ListItem.Child.AsRichTextListOpen -> .listItemOpen element */
   func testAsRichTextListOpenListItemChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextListOpen(_present: true)
     let el = gql.asRichTextElement
     guard case .listItemOpen = el else { XCTFail("expected .listItemOpen"); return }
   }
 
+  /* AsRichTextListClose item -> .listItemClose element */
   func testAsRichTextListCloseItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListClose(_present: true)
     let el = gql.asRichTextElement
     guard case .listItemClose = el else { XCTFail("expected .listItemClose"); return }
   }
 
+  /* Child.AsRichTextListClose -> .listItemClose element */
   func testAsRichTextListCloseChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextListClose(_present: true)
     let el = gql.asRichTextElement
     guard case .listItemClose = el else { XCTFail("expected .listItemClose"); return }
   }
 
+  /* Header.Child.AsRichTextListClose -> .listItemClose element */
   func testAsRichTextListCloseHeaderChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextListClose(_present: true)
     let el = gql.asRichTextElement
     guard case .listItemClose = el else { XCTFail("expected .listItemClose"); return }
   }
 
+  /* ListItem.Child.AsRichTextListClose -> .listItemClose element */
   func testAsRichTextListCloseListItemChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextListClose(_present: true)
     let el = gql.asRichTextElement
     guard case .listItemClose = el else { XCTFail("expected .listItemClose"); return }
   }
 
+  /* AsRichTextAudio item -> .audio element with alt, caption, url */
   func testAsRichTextAudioItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextAudio(
       altText: "alt",
@@ -206,6 +227,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(a.url, "https://audio")
   }
 
+  /* Child.AsRichTextAudio -> .audio element */
   func testAsRichTextAudioChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextAudio(
       altText: "a",
@@ -219,6 +241,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(a.url, "u")
   }
 
+  /* AsRichTextAudio with Asset -> .audio element with assetID */
   func testAsRichTextAudioWithAsset() throws {
     let asset = RichTextItemFragment.AsRichTextAudio.Asset(id: "asset-1")
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextAudio(
@@ -232,6 +255,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(a.assetID, "asset-1")
   }
 
+  /* AsRichTextPhoto item -> .photo element with alt, caption, url */
   func testAsRichTextPhotoItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextPhoto(
       altText: "photo",
@@ -246,6 +270,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(p.url, "https://img")
   }
 
+  /* Child.AsRichTextPhoto -> .photo element */
   func testAsRichTextPhotoChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextPhoto(
       altText: "p",
@@ -258,6 +283,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(p.altText, "p")
   }
 
+  /* AsRichTextVideo item -> .video element with alt, caption, url */
   func testAsRichTextVideoItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextVideo(
       altText: "v",
@@ -273,6 +299,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertTrue(v.formats.isEmpty)
   }
 
+  /* AsRichTextVideo item with asset -> .video element with assetID and posterURL */
   func testAsRichTextVideoItemWithAsset() throws {
     let asset = RichTextItemFragment.AsRichTextVideo.Asset(
       id: "vid-asset-1",
@@ -292,6 +319,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertTrue(v.formats.isEmpty)
   }
 
+  /* AsRichTextVideo item with formats -> .video element with all format fields */
   func testAsRichTextVideoItemWithFormats() throws {
     let hi = RichTextItemFragment.AsRichTextVideo.Asset.Format(
       encoding: #"video/mp4; codecs="avc1.64001E, mp4a.40.2""#,
@@ -333,6 +361,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(second.url, "https://vid/baseline.mp4")
   }
 
+  /* AsRichTextVideo item with nil format entries -> nil entries skipped */
   func testAsRichTextVideoItemNilFormatEntriesSkipped() throws {
     let format = RichTextItemFragment.AsRichTextVideo.Asset.Format(
       encoding: "video/mp4",
@@ -357,6 +386,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(v.formats.count, 1)
   }
 
+  /* Child.AsRichTextVideo -> .video element */
   func testAsRichTextVideoChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextVideo(
       altText: "x",
@@ -371,6 +401,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertTrue(v.formats.isEmpty)
   }
 
+  /* Child.AsRichTextVideo with asset -> .video element with posterURL and formats */
   func testAsRichTextVideoChildWithAsset() throws {
     let format = RichTextItemFragment.AsRichTextVideo.Asset.Format(
       encoding: "video/mp4",
@@ -398,6 +429,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(v.formats.first?.profile, "high")
   }
 
+  /* AsRichTextOembed item -> .oembed element with dimensions, urls, and thumbnail */
   func testAsRichTextOembedItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextOembed(
       width: 200,
@@ -425,6 +457,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(o.thumbnailHeight, 50)
   }
 
+  /* Child.AsRichTextOembed -> .oembed element */
   func testAsRichTextOembedChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextOembed(
       width: 4,
@@ -446,6 +479,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(o.type, "rich")
   }
 
+  /* Header.Child.AsRichTextAudio -> .audio element */
   func testAsRichTextHeaderChildAsRichTextAudio() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextAudio(
       altText: "h",
@@ -458,6 +492,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(a.altText, "h")
   }
 
+  /* ListItem.Child.AsRichTextAudio -> .audio element */
   func testAsRichTextListItemChildAsRichTextAudio() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextAudio(
       altText: "li",
@@ -470,6 +505,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(a.altText, "li")
   }
 
+  /* Header.Child.AsRichTextPhoto -> .photo element */
   func testAsRichTextHeaderChildAsRichTextPhoto() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextPhoto(
       altText: "hp",
@@ -482,6 +518,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(p.altText, "hp")
   }
 
+  /* ListItem.Child.AsRichTextPhoto -> .photo element */
   func testAsRichTextListItemChildAsRichTextPhoto() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextPhoto(
       altText: "lip",
@@ -494,6 +531,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(p.altText, "lip")
   }
 
+  /* Header.Child.AsRichTextVideo -> .video element with posterURL and formats */
   func testAsRichTextHeaderChildAsRichTextVideo() throws {
     let asset = RichTextItemFragment.AsRichTextVideo.Asset(
       id: "h-asset",
@@ -514,6 +552,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertTrue(v.formats.isEmpty)
   }
 
+  /* ListItem.Child.AsRichTextVideo -> .video element with posterURL and formats */
   func testAsRichTextListItemChildAsRichTextVideo() throws {
     let asset = RichTextItemFragment.AsRichTextVideo.Asset(
       id: "li-asset",
@@ -534,6 +573,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertTrue(v.formats.isEmpty)
   }
 
+  /* Header.Child.AsRichTextOembed -> .oembed element */
   func testAsRichTextHeaderChildAsRichTextOembed() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextOembed(
       width: 10,
@@ -552,6 +592,7 @@ final class RichTextGQLConversionTests: TestCase {
     XCTAssertEqual(o.title, "H")
   }
 
+  /* ListItem.Child.AsRichTextOembed -> .oembed element */
   func testAsRichTextListItemChildAsRichTextOembed() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextOembed(
       width: 5,
