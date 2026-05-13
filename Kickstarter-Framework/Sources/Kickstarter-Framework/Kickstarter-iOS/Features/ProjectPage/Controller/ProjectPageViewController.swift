@@ -630,19 +630,27 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeForUI()
       .observeValues { [weak self] project in
         guard let self else { return }
-        let vc = ProjectPageViewController.navigationController(
-          withProjectOrParam: .right(project.projectPageParam),
-          refInfo: RefInfo(.similarProjects)
-        )
-
-        if let nav = self.navigationController {
-          nav.pushViewController(vc, animated: true)
-        } else {
-          assertionFailure("We expect a navigation controller to be here")
-          let nav = UINavigationController(rootViewController: vc)
-          self.present(nav, animated: true)
-        }
+        self.goToSimilarProject(project.projectPageParam)
       }
+  }
+
+  private func goToSimilarProject(_ param: any ProjectPageParam) {
+    guard let nav = self.navigationController else {
+      assertionFailure("We expect a navigation controller to be here")
+      let nav = ProjectPageViewController.navigationController(
+        withProjectOrParam: .right(param),
+        refInfo: RefInfo(.similarProjects)
+      )
+      self.present(nav, animated: true)
+      return
+    }
+
+    let vc = ProjectPageViewController.configuredWith(
+      projectOrParam: .right(param),
+      refInfo: RefInfo(.similarProjects)
+    )
+
+    nav.pushViewController(vc, animated: true)
   }
 
   private func prepareToPlayAudioVideoURL(
