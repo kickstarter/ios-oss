@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ILN-vW-QhC">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ILN-vW-QhC">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,10 +16,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="40" sectionHeaderHeight="1" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="K36-s7-mGm">
-                                <rect key="frame" x="0.0" y="80" width="375" height="575"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="627"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="LC4-lC-v0V">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="295"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="347"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uj7-Jz-Wug" userLabel="Woohoo Banner">
@@ -48,13 +47,13 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kb6-LU-AvY">
-                                            <rect key="frame" x="12" y="148" width="351" height="44"/>
+                                            <rect key="frame" x="12" y="200" width="351" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="Afh-a9-DP3"/>
                                             </constraints>
                                         </button>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="DBG-8g-JC1">
-                                            <rect key="frame" x="0.0" y="192" width="375" height="103"/>
+                                            <rect key="frame" x="0.0" y="244" width="375" height="103"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oH7-8O-oQk">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="37"/>
@@ -107,28 +106,17 @@
                                     </constraints>
                                 </view>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I5Z-r3-uNR" userLabel="Close button container">
-                                <rect key="frame" x="0.0" y="20" width="52" height="52"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="52" id="Cte-tU-q44"/>
-                                    <constraint firstAttribute="width" constant="52" id="eFJ-nV-qZP"/>
-                                </constraints>
-                                <state key="normal" image="close-icon"/>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="WMM-y8-QSH"/>
                         <constraints>
                             <constraint firstItem="WMM-y8-QSH" firstAttribute="bottom" secondItem="K36-s7-mGm" secondAttribute="bottom" constant="12" id="0N8-cc-Ig3"/>
-                            <constraint firstItem="K36-s7-mGm" firstAttribute="top" secondItem="I5Z-r3-uNR" secondAttribute="bottom" constant="8" id="T7f-bX-4fo"/>
+                            <constraint firstItem="K36-s7-mGm" firstAttribute="top" secondItem="WMM-y8-QSH" secondAttribute="top" constant="8" id="T7f-bX-4fo"/>
                             <constraint firstItem="K36-s7-mGm" firstAttribute="leading" secondItem="WMM-y8-QSH" secondAttribute="leading" id="VLd-o4-JOx"/>
-                            <constraint firstItem="I5Z-r3-uNR" firstAttribute="leading" secondItem="WMM-y8-QSH" secondAttribute="leading" id="nN6-90-28q"/>
                             <constraint firstItem="WMM-y8-QSH" firstAttribute="trailing" secondItem="K36-s7-mGm" secondAttribute="trailing" id="xFn-zh-ST0"/>
-                            <constraint firstItem="I5Z-r3-uNR" firstAttribute="top" secondItem="WMM-y8-QSH" secondAttribute="top" id="xn6-Gt-Z1T"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="backedLabel" destination="0W0-Br-5Lh" id="w6N-Ob-dK4"/>
-                        <outlet property="closeButtonContainerView" destination="I5Z-r3-uNR" id="2j1-En-Csp"/>
                         <outlet property="headerView" destination="LC4-lC-v0V" id="fZQ-u8-dLf"/>
                         <outlet property="projectsTableView" destination="K36-s7-mGm" id="ISM-6m-3DU"/>
                         <outlet property="recommendationsLabel" destination="3ZZ-Ud-4qC" id="oUA-3v-9RG"/>
@@ -142,7 +130,4 @@
             <point key="canvasLocation" x="1348" y="285.60719640179911"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="close-icon" width="12" height="12"/>
-    </resources>
 </document>
