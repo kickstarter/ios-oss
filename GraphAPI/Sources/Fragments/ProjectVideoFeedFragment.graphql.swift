@@ -5,7 +5,7 @@
 
 public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment ProjectVideoFeedFragment on Project { __typename id pid name slug percentFunded deadlineAt launchedAt backersCount pledged { __typename amount } creator { __typename name imageUrl(blur: false, width: 200) } category { __typename name } verticalVideo { __typename id previewImageUrl videoSources { __typename hls { __typename src } } } }"#
+    #"fragment ProjectVideoFeedFragment on Project { __typename id pid name slug percentFunded deadlineAt launchedAt backersCount isWatched pledged { __typename amount } creator { __typename name imageUrl(blur: false, width: 200) } category { __typename name } verticalVideo { __typename id previewImageUrl videoSources { __typename hls { __typename src } } } }"#
   }
 
   public let __data: DataDict
@@ -22,6 +22,7 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
     .field("deadlineAt", GraphAPI.DateTime?.self),
     .field("launchedAt", GraphAPI.DateTime?.self),
     .field("backersCount", Int.self),
+    .field("isWatched", Bool.self),
     .field("pledged", Pledged.self),
     .field("creator", Creator?.self),
     .field("category", Category?.self),
@@ -43,6 +44,8 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
   public var launchedAt: GraphAPI.DateTime? { __data["launchedAt"] }
   /// Total backers for the project
   public var backersCount: Int { __data["backersCount"] }
+  /// Is the current user watching this project?
+  public var isWatched: Bool { __data["isWatched"] }
   /// How much money is pledged to the project.
   public var pledged: Pledged { __data["pledged"] }
   /// The project's creator.
@@ -61,6 +64,7 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
     deadlineAt: GraphAPI.DateTime? = nil,
     launchedAt: GraphAPI.DateTime? = nil,
     backersCount: Int,
+    isWatched: Bool,
     pledged: Pledged,
     creator: Creator? = nil,
     category: Category? = nil,
@@ -77,6 +81,7 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
         "deadlineAt": deadlineAt,
         "launchedAt": launchedAt,
         "backersCount": backersCount,
+        "isWatched": isWatched,
         "pledged": pledged._fieldData,
         "creator": creator._fieldData,
         "category": category._fieldData,
