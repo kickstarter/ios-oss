@@ -12,7 +12,8 @@ struct VideoFeedRightRailView: View {
     static let shareCountLabel = "FPO: 50" // TODO: Replace with real share count from backend
     static let avatarSize: CGFloat = 44
 
-    static let saveIcon = "video-feed-bookmark-icon"
+    static let saveIconFilled = "video-feed-saved-filled-icon"
+    static let saveIconOutline = "video-feed-saved-icon"
     static let shareIcon = "video-feed-share-icon"
     static let moreIcon = "video-feed-ellipsis-icon"
     static let avatarPlaceholderIcon = "avatar--placeholder"
