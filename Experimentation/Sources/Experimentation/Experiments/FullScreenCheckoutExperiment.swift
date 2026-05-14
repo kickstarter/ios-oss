@@ -4,6 +4,7 @@ public struct FullScreenCheckoutExperiment: StatsigExperimentProtocol {
 
   public enum Parameters: String, CaseIterable {
     case fullscreen_project_page
+    case push_spc
   }
 
   public var name: StatsigExperimentName {
