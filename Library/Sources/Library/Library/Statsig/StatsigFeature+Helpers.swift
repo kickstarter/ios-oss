@@ -1,3 +1,4 @@
+import Experimentation
 import KsApi
 
 /// Returns the value for a given Statsig feature flag. User defaults are checked first and,
@@ -21,4 +22,16 @@ public func statsigFeatureEnabled(feature: StatsigFeature) -> Bool {
 /// Returns whether the video feed feature is enabled for the current user.
 public func featureVideoFeedEnabled() -> Bool {
   statsigFeatureEnabled(feature: .videoFeed)
+}
+
+extension StatsigClientType {
+  /* Returns all features the app knows about */
+
+  public func allFeatures() -> [StatsigFeature] {
+    return StatsigFeature.allCases
+  }
+
+  public func isFeatureEnabled(featureKey key: StatsigFeature) -> Bool {
+    AppEnvironment.current.statsigClient?.checkGate(for: key) == true
+  }
 }

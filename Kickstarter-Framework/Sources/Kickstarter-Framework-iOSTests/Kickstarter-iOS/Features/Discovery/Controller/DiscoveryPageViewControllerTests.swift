@@ -258,8 +258,8 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
   }
 
   func testView_VideoFeedBanner() {
-    let mockStatsigClient = MockStatsigClient()
-    mockStatsigClient.features = ["video_feed": true]
+    let mockStatsigClient = MockStatsigWrapper()
+    mockStatsigClient.features = [.videoFeed: true]
 
     // TODO: Update to all languages once translations are in [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
     orthogonalCombos(

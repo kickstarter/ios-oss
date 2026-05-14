@@ -57,9 +57,6 @@ public protocol ProjectPageViewModelInputs {
   /// Call with the `URL` of the `ImageViewElement` cell selected in the Campaign section of the data source.
   func didSelectCampaignImageLink(url: URL)
 
-  /// Call when the navigation bar should be hidden/shown.
-  func showNavigationBar(_ flag: Bool)
-
   /// Call when the ManagePledgeViewController finished updating/cancelling a pledge with an optional message
   func managePledgeViewControllerFinished(with message: String?)
 
@@ -162,14 +159,11 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits a URL that will be opened by an external Safari browser.
   var goToURL: Signal<URL, Never> { get }
 
-  /// Emits a `Bool` to hide the navigation bar.
-  var navigationBarIsHidden: Signal<Bool, Never> { get }
-
   /// Emits a signal when the app is no longer being actively used to pause any playing media.
   var pauseMedia: Signal<Void, Never> { get }
 
-  /// Emits when the navigation stack should be popped to the root view controller.
-  var popToRootViewController: Signal<(), Never> { get }
+  /// Emits when the Project page should be shown again (popping back in the stack and dismissing any modals).
+  var navigateBackToProjectPage: Signal<(), Never> { get }
 
   /// Emits `Project` when the MessageDialogViewController should be presented
   var presentMessageDialog: Signal<Project, Never> { get }
@@ -231,7 +225,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public init() {
     let isLoading = MutableProperty(false)
 
-    self.popToRootViewController = self.didBackProjectProperty.signal.ignoreValues()
+    self.navigateBackToProjectPage = self.didBackProjectProperty.signal.ignoreValues()
 
     let freshProjectAndRefTagEvent = self.configDataProperty.signal
       .skipNil()
@@ -404,10 +398,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.goToReportProject = project.signal
       .map { ($0.flagging ?? false, "\($0.graphID)", $0.urls.web.project) }
       .takeWhen(self.tappedReportProjectProperty.signal)
-
-    // Hide the custom navigation bar when pushing a new view controller
-    // Unhide the custom navigation bar when viewWillAppear is called
-    self.navigationBarIsHidden = self.showNavigationBarProperty.signal.negate()
 
     self.configureProjectNavigationSelectorView = freshProjectAndRefTag
       .map { projectAndRefTag in
@@ -756,11 +746,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.didSelectCampaignImageLinkProperty.value = url
   }
 
-  fileprivate let showNavigationBarProperty = MutableProperty<Bool>(false)
-  public func showNavigationBar(_ flag: Bool) {
-    self.showNavigationBarProperty.value = flag
-  }
-
   private let managePledgeViewControllerFinishedWithMessageProperty = MutableProperty<String?>(nil)
   public func managePledgeViewControllerFinished(with message: String?) {
     self.managePledgeViewControllerFinishedWithMessageProperty.value = message
@@ -872,9 +857,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let goToUpdates: Signal<Project, Never>
   public let goToReportProject: Signal<(Bool, String, String), Never>
   public let goToURL: Signal<URL, Never>
-  public let navigationBarIsHidden: Signal<Bool, Never>
   public let pauseMedia: Signal<Void, Never>
-  public let popToRootViewController: Signal<(), Never>
+  public let navigateBackToProjectPage: Signal<(), Never>
   public let presentMessageDialog: Signal<Project, Never>
   public let precreateAudioVideoURLs: Signal<(AudioVideoViewElement, IndexPath), Never>
   public let precreateAudioVideoURLsOnFirstLoad: Signal<[AudioVideoViewElement], Never>

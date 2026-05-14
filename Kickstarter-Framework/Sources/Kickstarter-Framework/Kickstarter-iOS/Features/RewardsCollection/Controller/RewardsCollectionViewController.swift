@@ -396,7 +396,21 @@ private var collectionViewStyle: CollectionViewStyle = { collectionView -> UICol
 }
 
 extension RewardsCollectionViewController {
-  public static func controller(
+  public static func rewardsController(
+    with project: Project,
+    refTag: RefTag?,
+    secretRewardToken: String?
+  ) -> UIViewController {
+    return RewardsCollectionViewController
+      .instantiate(
+        with: project,
+        refTag: refTag,
+        context: .createPledge,
+        secretRewardToken: secretRewardToken
+      )
+  }
+
+  public static func navigationController(
     with project: Project,
     refTag: RefTag?,
     secretRewardToken: String?
@@ -416,9 +430,8 @@ extension RewardsCollectionViewController {
       action: #selector(RewardsCollectionViewController.closeButtonTapped)
     )
 
-    _ = closeButton
-      |> \.width .~ Styles.minTouchSize.width
-      |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
+    closeButton.width = Styles.minTouchSize.width
+    closeButton.accessibilityLabel = Strings.Dismiss()
 
     rewardsCollectionViewController.navigationItem.setLeftBarButton(closeButton, animated: false)
 
@@ -427,8 +440,7 @@ extension RewardsCollectionViewController {
     )
 
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-      _ = navigationController
-        |> \.modalPresentationStyle .~ .pageSheet
+      navigationController.modalPresentationStyle = .pageSheet
     }
 
     return navigationController

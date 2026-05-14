@@ -25,9 +25,9 @@ let package = Package(
   dependencies: [
     .package(path: "../KsApi"),
     .package(path: "../KDS"),
+    .package(path: "../Experimentation"),
     .package(url: "https://github.com/kickstarter/Kickstarter-Prelude.git", from: "1.0.0"),
     .package(url: "https://github.com/kickstarter/Kickstarter-ReactiveExtensions", from: "2.0.0"),
-
     .package(url: "https://github.com/Alamofire/AlamofireImage", from: "4.3.0"),
     .package(url: "https://github.com/airbnb/lottie-ios.git", from: "4.5.1"),
     .package(url: "https://github.com/braze-inc/braze-segment-swift", from: "6.0.0"),
@@ -36,9 +36,7 @@ let package = Package(
     .package(url: "https://github.com/onevcat/Kingfisher", from: "8.5.0"),
     .package(url: "https://github.com/stripe/stripe-ios-spm", from: "23.32.0"),
     .package(url: "https://github.com/yeatse/KingfisherWebP.git", from: "1.6.0"),
-    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.18.6"),
-    .package(url: "https://github.com/statsig-io/statsig-kit.git", from: "1.61.0")
-
+    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.18.6")
   ],
   targets: [
     .target(
@@ -46,6 +44,7 @@ let package = Package(
       dependencies: [
         .product(name: "KsApi", package: "KsApi"),
         .product(name: "KDS", package: "KDS"),
+        .product(name: "Experimentation", package: "Experimentation"),
         .product(name: "Prelude_UIKit", package: "Kickstarter-Prelude"),
         .product(name: "AlamofireImage", package: "AlamofireImage"),
         .product(name: "Kingfisher", package: "Kingfisher"),
@@ -60,8 +59,7 @@ let package = Package(
         .product(name: "Prelude", package: "Kickstarter-Prelude"),
         .product(name: "KingfisherWebP", package: "KingfisherWebP"),
         .product(name: "Lottie", package: "lottie-ios"),
-        .product(name: "SegmentBrazeUI", package: "braze-segment-swift"),
-        .product(name: "Statsig", package: "statsig-kit")
+        .product(name: "SegmentBrazeUI", package: "braze-segment-swift")
       ],
       path: "Sources/Library",
       resources: [
@@ -72,7 +70,8 @@ let package = Package(
       name: "LibraryTestHelpers",
       dependencies: [
         .byName(name: "Library"),
-        .product(name: "KsApiTestHelpers", package: "KsApi")
+        .product(name: "KsApiTestHelpers", package: "KsApi"),
+        .product(name: "ExperimentationTestHelpers", package: "Experimentation")
       ],
       path: "Sources/LibraryTestHelpers"
     ),

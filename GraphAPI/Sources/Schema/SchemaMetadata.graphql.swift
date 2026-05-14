@@ -113,6 +113,9 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "ResourceAudience": return GraphAPI.Objects.ResourceAudience
     case "SimpleShippingRule": return GraphAPI.Objects.SimpleShippingRule
     case "ProjectsConnectionWithTotalCount": return GraphAPI.Objects.ProjectsConnectionWithTotalCount
+    case "VideoFeedConnection": return GraphAPI.Objects.VideoFeedConnection
+    case "VideoFeedItem": return GraphAPI.Objects.VideoFeedItem
+    case "Badge": return GraphAPI.Objects.Badge
     case "UserBackingsConnection": return GraphAPI.Objects.UserBackingsConnection
     case "NewsletterSubscriptions": return GraphAPI.Objects.NewsletterSubscriptions
     case "Notification": return GraphAPI.Objects.Notification
@@ -131,6 +134,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "RichTextAudio": return GraphAPI.Objects.RichTextAudio
     case "RichTextVideo": return GraphAPI.Objects.RichTextVideo
     case "RichTextOembed": return GraphAPI.Objects.RichTextOembed
+    case "AttachedVideoFormat": return GraphAPI.Objects.AttachedVideoFormat
     case "CategorySubcategoriesConnection": return GraphAPI.Objects.CategorySubcategoriesConnection
     case "PaymentPlan": return GraphAPI.Objects.PaymentPlan
     case "Validation": return GraphAPI.Objects.Validation

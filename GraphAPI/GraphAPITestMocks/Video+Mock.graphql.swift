@@ -11,6 +11,7 @@ public class Video: MockObject {
 
   public struct MockFields {
     @Field<GraphAPI.ID>("id") public var id
+    @Field<String>("previewImageUrl") public var previewImageUrl
     @Field<VideoSources>("videoSources") public var videoSources
   }
 }
@@ -18,10 +19,12 @@ public class Video: MockObject {
 public extension Mock where O == Video {
   convenience init(
     id: GraphAPI.ID? = nil,
+    previewImageUrl: String? = nil,
     videoSources: Mock<VideoSources>? = nil
   ) {
     self.init()
     _setScalar(id, for: \.id)
+    _setScalar(previewImageUrl, for: \.previewImageUrl)
     _setEntity(videoSources, for: \.videoSources)
   }
 }

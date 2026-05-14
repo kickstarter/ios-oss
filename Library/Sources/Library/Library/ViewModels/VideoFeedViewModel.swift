@@ -1,0 +1,45 @@
+import Foundation
+import GraphAPI
+import KsApi
+
+@Observable
+public final class VideoFeedViewModel {
+  // MARK: - Outputs
+
+  public private(set) var items: [VideoFeedItem] = []
+  public private(set) var isLoading = false
+  public private(set) var errorMessage: String?
+
+  // MARK: - Inputs
+
+  public init() {}
+
+  public func viewDidLoad() {
+    Task {
+      await self.fetchVideoFeed()
+    }
+  }
+
+  // MARK: - Private
+
+  func fetchVideoFeed() async {
+    guard !self.isLoading else { return }
+
+    self.isLoading = true
+    self.errorMessage = nil
+
+    do {
+      let result = try await AppEnvironment.current.apiService.fetch(
+        query: VideoFeedQuery(first: 30, after: .none, categoryId: .none)
+      )
+
+      let nodes = result?.videoFeed?.nodes?.compactMap { $0 } ?? []
+
+      self.items = nodes.map(VideoFeedItem.init)
+      self.isLoading = false
+    } catch {
+      self.isLoading = false
+      self.errorMessage = error.localizedDescription
+    }
+  }
+}

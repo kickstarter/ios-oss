@@ -40,6 +40,14 @@ fragment RichTextItemFragment on RichTextItem {
     altText
     asset {
       id
+      poster
+      formats {
+        encoding
+        height
+        width
+        profile
+        url
+      }
     }
     caption
     url

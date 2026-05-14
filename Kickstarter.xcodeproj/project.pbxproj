@@ -41,6 +41,7 @@
 		39AE634E2F6C581800481A76 /* GraphAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 39AE634D2F6C581800481A76 /* GraphAPI */; };
 		39AE63502F6C581D00481A76 /* GraphAPITestMocks in Frameworks */ = {isa = PBXBuildFile; productRef = 39AE634F2F6C581D00481A76 /* GraphAPITestMocks */; };
 		600944E42E5CB3A7004A089F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 600944E22E5CB3A7004A089F /* InfoPlist.strings */; };
+		60253C0F2FA0F677008E30A6 /* VideoFeedViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60253C0E2FA0F677008E30A6 /* VideoFeedViewModelTests.swift */; };
 		6069CC542F5F66160029A67F /* Statsig in Frameworks */ = {isa = PBXBuildFile; productRef = 6069CC532F5F66160029A67F /* Statsig */; };
 		60A80F532BD7F9A00052A829 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */; };
 		8A65E79E2501AE89006F81CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */; };
@@ -317,6 +318,8 @@
 		E113BD8D2B7D255A00D3A809 /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E113BD772B7D1B7700D3A809 /* KeychainTests.swift */; };
 		E182E5BA2B8CDFDE0008DD69 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */; };
 		E182E5BC2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */; };
+		E18CA28A2F9A864E005C22AE /* StatsigExperiment+HelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18CA2882F9A864E005C22AE /* StatsigExperiment+HelperTests.swift */; };
+		E18CA28B2F9A864E005C22AE /* StatsigFeature+HelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18CA2892F9A864E005C22AE /* StatsigFeature+HelperTests.swift */; };
 		E19D49C72DB7F07A004A74D5 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		E1A310242D270CB00062646C /* (null) in Sources */ = {isa = PBXBuildFile; };
 		E1BAA03E2C1A1CE4004F8B06 /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -383,7 +386,10 @@
 		600944E62E5CB3D6004A089F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		600944E72E5CB3D7004A089F /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		600944E82E5CB3D8004A089F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		60253C0D2FA0EF59008E30A6 /* VideoFeedQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = VideoFeedQuery.graphql; sourceTree = "<group>"; };
+		60253C0E2FA0F677008E30A6 /* VideoFeedViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFeedViewModelTests.swift; sourceTree = "<group>"; };
 		60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		60C583812FA2462B00BD43AE /* ProjectVideoFeedFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProjectVideoFeedFragment.graphql; sourceTree = "<group>"; };
 		802800571C88F64D00141235 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Base.xcconfig; path = Configs/Base.xcconfig; sourceTree = "<group>"; };
 		80AB97B61D6281D60051C9D1 /* Debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Debug.entitlements; sourceTree = "<group>"; };
 		8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Configs/GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -650,6 +656,8 @@
 		E137D9AE2F3537F80089183D /* PublicUserFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PublicUserFragment.graphql; sourceTree = "<group>"; };
 		E15E22CD2E54B91B00EE6BB0 /* KDS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = KDS; sourceTree = "<group>"; };
 		E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppEnvironmentTests+OAuthInKeychain.swift"; sourceTree = "<group>"; };
+		E18CA2882F9A864E005C22AE /* StatsigExperiment+HelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsigExperiment+HelperTests.swift"; sourceTree = "<group>"; };
+		E18CA2892F9A864E005C22AE /* StatsigFeature+HelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsigFeature+HelperTests.swift"; sourceTree = "<group>"; };
 		E190EB1B2E29944E006A6DB6 /* BackerDashboardProjectCellFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BackerDashboardProjectCellFragment.graphql; sourceTree = "<group>"; };
 		E190EB1C2E29944E006A6DB6 /* BackingFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BackingFragment.graphql; sourceTree = "<group>"; };
 		E190EB1D2E29944E006A6DB6 /* CategoryFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CategoryFragment.graphql; sourceTree = "<group>"; };
@@ -732,6 +740,7 @@
 		E19C55F02F4CB84D00C768F6 /* NoRewardRewardFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = NoRewardRewardFragment.graphql; sourceTree = "<group>"; };
 		E1B33F502E538157008903BA /* GraphAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = GraphAPI; sourceTree = "<group>"; };
 		E1D529FC2ED4D21A00923AA9 /* ShippableLocationsForProjectQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ShippableLocationsForProjectQuery.graphql; sourceTree = "<group>"; };
+		E1FD854E2F9A7FF50095DBDB /* Experimentation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Experimentation; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -836,6 +845,7 @@
 				AAF3BB4D2F16FD7D00DAE921 /* KsApi */,
 				AAF3BB4E2F16FD7D00DAE921 /* Library */,
 				AAD997442F3D2C510027D211 /* ServerDrivenUI */,
+				E1FD854E2F9A7FF50095DBDB /* Experimentation */,
 				AAF548D62F2445C0001DB5AC /* LibraryTests */,
 				E113BD822B7D255000D3A809 /* Library-Keychain-iOSTests */,
 				E10BE8CE2B02975C00F73DC9 /* RichPushNotifications */,
@@ -1136,6 +1146,7 @@
 				AAF548982F2445C0001DB5AC /* UpdateDraftViewModelTests.swift */,
 				AAF548992F2445C0001DB5AC /* VideoViewModelTests.swift */,
 				AAF5489A2F2445C0001DB5AC /* WatchProjectViewModelTests.swift */,
+				60253C0E2FA0F677008E30A6 /* VideoFeedViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1146,6 +1157,7 @@
 				AAF547DF2F2445C0001DB5AC /* DataSource */,
 				AAF547E22F2445C0001DB5AC /* Extensions */,
 				AAF547F12F2445C0001DB5AC /* PagedContainer */,
+				E18CA2872F9A85F5005C22AE /* Statsig */,
 				AAF547F32F2445C0001DB5AC /* RemoteConfig */,
 				AAF547F82F2445C0001DB5AC /* Tracking */,
 				AAF548022F2445C0001DB5AC /* UseCases */,
@@ -1246,6 +1258,15 @@
 			path = "Library-Keychain-iOSTests";
 			sourceTree = "<group>";
 		};
+		E18CA2872F9A85F5005C22AE /* Statsig */ = {
+			isa = PBXGroup;
+			children = (
+				E18CA2882F9A864E005C22AE /* StatsigExperiment+HelperTests.swift */,
+				E18CA2892F9A864E005C22AE /* StatsigFeature+HelperTests.swift */,
+			);
+			path = Statsig;
+			sourceTree = "<group>";
+		};
 		E190EB3A2E29944E006A6DB6 /* fragments */ = {
 			isa = PBXGroup;
 			children = (
@@ -1285,6 +1306,7 @@
 				E190EB372E29944E006A6DB6 /* UserFragment.graphql */,
 				E190EB382E29944E006A6DB6 /* UserSettingsFragment.graphql */,
 				E190EB392E29944E006A6DB6 /* UserStoredCardsFragment.graphql */,
+				60C583812FA2462B00BD43AE /* ProjectVideoFeedFragment.graphql */,
 			);
 			path = fragments;
 			sourceTree = "<group>";
@@ -1351,6 +1373,7 @@
 				E190EB6A2E29944E006A6DB6 /* SearchQuery.graphql */,
 				E190EB6B2E29944E006A6DB6 /* SimilarProjectQuery.graphql */,
 				E190EB6C2E29944E006A6DB6 /* ValidateCheckout.graphql */,
+				60253C0D2FA0EF59008E30A6 /* VideoFeedQuery.graphql */,
 			);
 			path = queries;
 			sourceTree = "<group>";
@@ -1768,6 +1791,8 @@
 				AAF549422F2445C0001DB5AC /* PledgeShippingLocationViewModelTests.swift in Sources */,
 				AAF549432F2445C0001DB5AC /* PledgeShippingSummaryViewModelTests.swift in Sources */,
 				AAF549442F2445C0001DB5AC /* PledgeStatusLabelViewModelTests.swift in Sources */,
+				E18CA28A2F9A864E005C22AE /* StatsigExperiment+HelperTests.swift in Sources */,
+				E18CA28B2F9A864E005C22AE /* StatsigFeature+HelperTests.swift in Sources */,
 				AAF549452F2445C0001DB5AC /* PledgeSummaryViewModelTests.swift in Sources */,
 				AAF549462F2445C0001DB5AC /* PledgeViewCTAContainerViewModelTests.swift in Sources */,
 				AAF549472F2445C0001DB5AC /* PledgeViewModelTests.swift in Sources */,
@@ -1829,6 +1854,7 @@
 				AAF5497F2F2445C0001DB5AC /* CircleAvatarImageViewTests.swift in Sources */,
 				AAF549802F2445C0001DB5AC /* CreateBackingConstructorTests.swift in Sources */,
 				AAF549812F2445C0001DB5AC /* CreatePaymentSourceInput+ConstructorTests.swift in Sources */,
+				60253C0F2FA0F677008E30A6 /* VideoFeedViewModelTests.swift in Sources */,
 				AAF549822F2445C0001DB5AC /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift in Sources */,
 				AAF549832F2445C0001DB5AC /* CreditCard+UtilsTests.swift in Sources */,
 				AAF549842F2445C0001DB5AC /* DateFormatterTests.swift in Sources */,

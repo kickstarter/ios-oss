@@ -187,15 +187,12 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
 
   private func openProjectPage(_ param: ProjectPageParam) {
     let projectParam = Either<Project, any ProjectPageParam>(right: param)
-    let vc = ProjectPageViewController.configuredWith(
-      projectOrParam: projectParam,
+    let nav = ProjectPageViewController.navigationController(
+      withProjectOrParam: projectParam,
       refInfo: nil
     )
 
-    let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = .pageSheet
     nav.presentationController?.delegate = self
-
     self.present(nav, animated: true, completion: nil)
   }
 

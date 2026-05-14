@@ -232,13 +232,10 @@ internal final class SearchViewController: UITableViewController {
   }
 
   fileprivate func goTo(project projectParam: ProjectPageParam, refTag: RefTag) {
-    let vc = ProjectPageViewController.configuredWith(
-      projectOrParam: Either.right(projectParam),
+    let nav = ProjectPageViewController.navigationController(
+      withProjectOrParam: Either.right(projectParam),
       refInfo: RefInfo(refTag)
     )
-
-    let nav = NavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = self.traitCollection.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
 
     self.present(nav, animated: true, completion: nil)
   }

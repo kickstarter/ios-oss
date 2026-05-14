@@ -32,9 +32,30 @@
   "testTargets" : [
     {
       "target" : {
+        "containerPath" : "container:KDS",
+        "identifier" : "KDSTests",
+        "name" : "KDSTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:ServerDrivenUI",
+        "identifier" : "ServerDrivenUITests",
+        "name" : "ServerDrivenUITests"
+      }
+    },
+    {
+      "target" : {
         "containerPath" : "container:KsApi",
         "identifier" : "KsApiTests",
         "name" : "KsApiTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Experimentation",
+        "identifier" : "ExperimentationTests",
+        "name" : "ExperimentationTests"
       }
     },
     {
@@ -46,23 +67,9 @@
     },
     {
       "target" : {
-        "containerPath" : "container:KDS",
-        "identifier" : "KDSTests",
-        "name" : "KDSTests"
-      }
-    },
-    {
-      "target" : {
         "containerPath" : "container:Kickstarter.xcodeproj",
         "identifier" : "AAF3BB562F1845A200DAE921",
         "name" : "LibraryTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:ServerDrivenUI",
-        "identifier" : "ServerDrivenUITests",
-        "name" : "ServerDrivenUITests"
       }
     },
     {

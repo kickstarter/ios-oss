@@ -49,9 +49,8 @@ final class ProjectPageViewModelTests: TestCase {
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
   private let goToUpdates = TestObserver<Project, Never>()
   private let goToURL = TestObserver<URL, Never>()
-  private let navigationBarIsHidden = TestObserver<Bool, Never>()
   private let pauseMedia = TestObserver<(), Never>()
-  private let popToRootViewController = TestObserver<(), Never>()
+  private let navigateBackToProjectPage = TestObserver<(), Never>()
   private let presentMessageDialog = TestObserver<Project, Never>()
   private let prefetchImageURLs = TestObserver<([URL], IndexPath), Never>()
   private let prefetchImageURLsFirstLoad = TestObserver<[ImageViewElement], Never>()
@@ -120,9 +119,8 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
     self.vm.outputs.goToUpdates.observe(self.goToUpdates.observer)
     self.vm.outputs.goToURL.observe(self.goToURL.observer)
-    self.vm.outputs.navigationBarIsHidden.observe(self.navigationBarIsHidden.observer)
     self.vm.outputs.pauseMedia.observe(self.pauseMedia.observer)
-    self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
+    self.vm.outputs.navigateBackToProjectPage.observe(self.navigateBackToProjectPage.observer)
     self.vm.outputs.presentMessageDialog.observe(self.presentMessageDialog.observer)
     self.vm.outputs.precreateAudioVideoURLs.observe(self.precreateAudioVideoURLs.observer)
     self.vm.outputs.precreateAudioVideoURLsOnFirstLoad.observe(self.precreateAudioVideoURLsFirstLoad.observer)
@@ -432,7 +430,6 @@ final class ProjectPageViewModelTests: TestCase {
       self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.showNavigationBar(true)
 
       self.configureProjectNavigationSelectorView.assertDidEmitValue()
     }
@@ -451,7 +448,6 @@ final class ProjectPageViewModelTests: TestCase {
       self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.showNavigationBar(true)
 
       self.configureProjectNavigationSelectorView.assertDidEmitValue()
     }
@@ -1276,18 +1272,6 @@ final class ProjectPageViewModelTests: TestCase {
     self.goToUpdates.assertValues([.template])
   }
 
-  func testNavigationBarIsHidden() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
-
-    self.vm.inputs.showNavigationBar(true)
-
-    self.navigationBarIsHidden.assertValues([false])
-
-    self.vm.inputs.showNavigationBar(false)
-
-    self.navigationBarIsHidden.assertValues([false, true])
-  }
-
   func testConfigurePledgeCTAView_FetchProjectSuccess() {
     let project = Project.template
     let projectFull = Project.template
@@ -1714,15 +1698,15 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  func testPopToRootViewController() {
+  func testnavigateBackToProjectPage() {
     self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: nil)
     self.vm.inputs.viewDidLoad()
 
-    self.popToRootViewController.assertDidNotEmitValue()
+    self.navigateBackToProjectPage.assertDidNotEmitValue()
 
     self.vm.inputs.didBackProject()
 
-    self.popToRootViewController.assertValueCount(1)
+    self.navigateBackToProjectPage.assertValueCount(1)
   }
 
   func testOutput_PresentMessageDialog() {

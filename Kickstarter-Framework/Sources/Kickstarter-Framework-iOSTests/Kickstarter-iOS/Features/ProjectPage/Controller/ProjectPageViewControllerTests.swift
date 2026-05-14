@@ -1,3 +1,4 @@
+import Experimentation
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import KsApiTestHelpers
@@ -1321,6 +1322,59 @@ internal final class ProjectPageViewControllerTests: TestCase {
           named: "lang_\(language)_device_\(device)"
         )
       }
+    }
+  }
+
+  func testModalPresentationStyle_isAlwaysFullScreen_forIpad() {
+    let mockStatsig = MockStatsigWrapper()
+    let mockExperimentOff = MockExperiment<FullScreenCheckoutExperiment>([
+      .fullscreen_project_page: false
+    ])
+
+    mockStatsig.overrideExperiment(FullScreenCheckoutExperiment(), withMock: mockExperimentOff)
+
+    let mockDevice = MockDevice.init(userInterfaceIdiom: .pad)
+
+    withEnvironment(device: mockDevice, statsigClient: mockStatsig) {
+      XCTAssertEqual(ProjectPageViewController.projectPageModalPresentationStyle, .fullScreen)
+    }
+
+    let mockExperimentOn = MockExperiment<FullScreenCheckoutExperiment>([
+      .fullscreen_project_page: true
+    ])
+    mockStatsig.overrideExperiment(FullScreenCheckoutExperiment(), withMock: mockExperimentOn)
+
+    withEnvironment(device: mockDevice, statsigClient: mockStatsig) {
+      XCTAssertEqual(ProjectPageViewController.projectPageModalPresentationStyle, .fullScreen)
+    }
+  }
+
+  func testModalPresentationStyle_isFullScreen_onIPhone_whenExperimentIsOn() {
+    let mockStatsig = MockStatsigWrapper()
+    let mockExperimentOn = MockExperiment<FullScreenCheckoutExperiment>([
+      .fullscreen_project_page: true
+    ])
+    mockStatsig.overrideExperiment(FullScreenCheckoutExperiment(), withMock: mockExperimentOn)
+
+    let mockDevice = MockDevice.init(userInterfaceIdiom: .phone)
+
+    withEnvironment(device: mockDevice, statsigClient: mockStatsig) {
+      XCTAssertEqual(ProjectPageViewController.projectPageModalPresentationStyle, .fullScreen)
+    }
+  }
+
+  func testModalPresentationStyle_isFormSheet_onIPhone_whenExperimentIsOff() {
+    let mockStatsig = MockStatsigWrapper()
+    let mockExperimentOff = MockExperiment<FullScreenCheckoutExperiment>([
+      .fullscreen_project_page: false
+    ])
+
+    mockStatsig.overrideExperiment(FullScreenCheckoutExperiment(), withMock: mockExperimentOff)
+
+    let mockDevice = MockDevice.init(userInterfaceIdiom: .phone)
+
+    withEnvironment(device: mockDevice, statsigClient: mockStatsig) {
+      XCTAssertEqual(ProjectPageViewController.projectPageModalPresentationStyle, .formSheet)
     }
   }
 }

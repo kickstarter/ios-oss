@@ -1,5 +1,6 @@
 import AVFoundation
 import Combine
+import Experimentation
 import KDS
 import KsApi
 import Library
@@ -18,13 +19,6 @@ public enum ProjectPageViewControllerStyles {
   }
 }
 
-protocol ProjectPageViewControllerDelegate: AnyObject {
-  func dismissPage(animated: Bool, completion: (() -> Void)?)
-  func goToLogin()
-  func displayProjectStarredPrompt()
-  func showShareSheet(_ controller: UIActivityViewController, sourceView: UIView?)
-}
-
 protocol AudioVideoViewControllerPlaybackDelegate: AnyObject {
   func pauseAudioVideoPlayback()
 }
@@ -35,9 +29,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   private let dataSource = ProjectPageViewControllerDataSource()
   private let viewModel: ProjectPageViewModelType = ProjectPageViewModel()
 
-  private var navigationBarView: ProjectPageNavigationBarView = {
-    ProjectPageNavigationBarView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
+  private var navigation: ProjectPageNavigation = ProjectPageNavigation()
 
   private let pledgeCTAContainerView: PledgeCTAContainerView = {
     PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -56,11 +48,49 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  weak var navigationDelegate: ProjectPageNavigationBarViewDelegate?
   weak var playbackDelegate: AudioVideoViewControllerPlaybackDelegate?
   public var messageBannerViewController: MessageBannerViewController?
   private var pinchToZoomData: PinchToZoomData?
   internal var overlayView: OverlayView? = OverlayView(frame: .zero)
+
+  static var projectPageModalPresentationStyle: UIModalPresentationStyle {
+    // iPad always presents with .fullScreen.
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      return .fullScreen
+    }
+
+    let experiment = FullScreenCheckoutExperiment()
+    guard let isFullScreen = experiment.boolValue(forKey: .fullscreen_project_page) else {
+      // Default to .formSheet if the experiment can't be found
+      return .formSheet
+    }
+
+    return isFullScreen ? .fullScreen : .formSheet
+  }
+
+  static func navigationController(withViewControllers viewControllers: [UIViewController])
+    -> UINavigationController {
+    let nav = NavigationController()
+    nav.viewControllers = viewControllers
+
+    nav.modalPresentationStyle = ProjectPageViewController.projectPageModalPresentationStyle
+
+    return nav
+  }
+
+  public static func navigationController(
+    withProjectOrParam projectOrParam: Either<Project, any ProjectPageParam>,
+    refInfo: RefInfo?,
+    secretRewardToken: String? = nil
+  ) -> UINavigationController {
+    let vc = ProjectPageViewController.configuredWith(
+      projectOrParam: projectOrParam,
+      refInfo: refInfo,
+      secretRewardToken: secretRewardToken
+    )
+
+    return ProjectPageViewController.navigationController(withViewControllers: [vc])
+  }
 
   public static func configuredWith(
     projectOrParam: Either<Project, any ProjectPageParam>,
@@ -81,7 +111,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.configureNavigationView()
+    self.configureNavigation()
     self.configurePledgeCTAContainerView()
     self.configureTableView()
     self.configureNavigationShadowView()
@@ -110,19 +140,28 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.tableView.registerCellClass(ProjectRisksDisclaimerCell.self)
     self.setupNotifications()
     self.viewModel.inputs.viewDidLoad()
-    self.navigationDelegate?.viewDidLoad()
+    self.navigation.viewDidLoad()
   }
 
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
     self.viewModel.inputs.viewDidAppear(animated: animated)
+
+    self.logNullExperiments()
   }
 
-  public override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
+  // We don't actually switch anything on these experiment values, since they're just A/A tests.
+  // But I'm saving them to a variable, just to be sure that the Swift compiler won't prune it as dead code.
+  private var nullExperimentValue1: Bool?
+  private var nullExperimentValue2: Bool?
 
-    self.viewModel.inputs.showNavigationBar(true)
+  private func logNullExperiments() {
+    let experiment1 = NullExperimentWithUserID()
+    self.nullExperimentValue1 = experiment1.boolValue(forKey: .test_parameter)
+
+    let experiment2 = NullExperimentWithAnonymousID()
+    self.nullExperimentValue2 = experiment2.boolValue(forKey: .test_parameter)
   }
 
   public override func viewDidDisappear(_ animated: Bool) {
@@ -140,17 +179,21 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.updateTableViewConstraints()
   }
 
-  public func configureNavigationView() {
-    guard let defaultNavigationBarView = self.navigationController?.navigationBar else {
-      return
+  public func configureNavigation() {
+    self.navigation.delegate = self
+
+    self.navigationItem.rightBarButtonItems = self.navigation.rightBarButtonItems
+
+    let appearance = UINavigationBarAppearance.projectPageNavigationBarAppearance
+    self.navigationItem.standardAppearance = appearance
+    self.navigationItem.scrollEdgeAppearance = appearance
+
+    // TODO(CHECK-84): Once we consolidate all the calls to wrap a ProjectPageViewController in
+    // a navigation controller, we should set the close button there.
+    guard let root = self.navigationController?.viewControllers.first else { return }
+    if self == root {
+      self.navigationItem.leftBarButtonItem = self.navigation.closeButton
     }
-
-    _ = (self.navigationBarView, defaultNavigationBarView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    self.navigationBarView.delegate = self
-    self.navigationDelegate = self.navigationBarView
   }
 
   private func configurePledgeCTAContainerView() {
@@ -301,23 +344,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   }
 
   private func bindProjectPageViewModel() {
-    self.navigationBarView.rac.hidden = self.viewModel.outputs.navigationBarIsHidden
-
-    self.viewModel.outputs.navigationBarIsHidden
-      .observeForUI()
-      .observeValues { [weak self] _ in
-        guard let defaultNavigationBarView = self?.navigationController?.navigationBar else {
-          return
-        }
-
-        defaultNavigationBarView.standardAppearance.shadowColor = LegacyColors.ksr_white.uiColor()
-        defaultNavigationBarView.scrollEdgeAppearance?.shadowColor = LegacyColors.ksr_white.uiColor()
-      }
-
     self.viewModel.outputs.updateWatchProjectWithPrelaunchProjectState
       .observeForUI()
       .observeValues { [weak self] prelaunchState in
-        self?.navigationDelegate?.configureSaveWatchPrelaunchProject(with: prelaunchState)
+        self?.navigation.configureSaveWatchPrelaunchProject(with: prelaunchState)
       }
 
     self.viewModel.outputs.goToRewards
@@ -349,11 +379,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
       .observeValues { [weak self] project, _ in
-        self?.navigationDelegate?.configureSharing(with: .project(project))
+        self?.navigation.configureSharing(with: .project(project))
 
         let watchProjectValue = WatchProjectValue(project, KSRAnalytics.PageContext.project, nil)
 
-        self?.navigationDelegate?.configureWatchProject(with: watchProjectValue)
+        self?.navigation.configureWatchProject(with: watchProjectValue)
       }
 
     self.viewModel.outputs.configureDataSource
@@ -543,10 +573,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.popToRootViewController
+    self.viewModel.outputs.navigateBackToProjectPage
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.navigationController?.popToRootViewController(animated: false)
+        guard let self = self else { return }
+        self.navigateBackToProjectPage()
       }
 
     self.viewModel.outputs.pauseMedia
@@ -600,18 +631,41 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeForUI()
       .observeValues { [weak self] project in
         guard let self else { return }
-        let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: Either<Project, any ProjectPageParam>.right(project.projectPageParam),
-          refInfo: RefInfo(.similarProjects)
-        )
-        if let nav = self.navigationController {
-          nav.pushViewController(vc, animated: true)
-        } else {
-          assertionFailure("We expect a navigation controller to be here")
-          let nav = UINavigationController(rootViewController: vc)
-          self.present(nav, animated: true)
-        }
+        self.goToSimilarProject(project.projectPageParam)
       }
+  }
+
+  private func shouldPushSPC() -> Bool {
+    let experiment = FullScreenCheckoutExperiment()
+    guard let shouldPush = experiment.boolValue(forKey: .push_spc) else {
+      // The old (default) behavior is that SPC is pushed, not presented.
+      return true
+    }
+
+    return shouldPush
+  }
+
+  private func goToSimilarProject(_ param: any ProjectPageParam) {
+    if self.shouldPushSPC() {
+      let vc = ProjectPageViewController.configuredWith(
+        projectOrParam: .right(param),
+        refInfo: RefInfo(.similarProjects)
+      )
+
+      assert(
+        self.navigationController.isSome,
+        "The project page requires a navigation controller to push SPC."
+      )
+
+      self.navigationController?.pushViewController(vc, animated: true)
+      return
+    }
+
+    let nav = ProjectPageViewController.navigationController(
+      withProjectOrParam: .right(param),
+      refInfo: RefInfo(.similarProjects)
+    )
+    self.present(nav, animated: true)
   }
 
   private func prepareToPlayAudioVideoURL(
@@ -669,6 +723,21 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     }
   }
 
+  private func navigateBackToProjectPage() {
+    // If the FullScreenCheckoutExperiment is off, the pledge flow is presented.
+    // To go back to the project page, we need to dismiss the pledge flow as well as pop backwards.
+    if let presented = self.presentedViewController,
+       presented is RewardPledgeNavigationController {
+      self.dismiss(animated: true)
+      self.navigationController?.popToRootViewController(animated: false)
+      return
+    }
+
+    // Otherwise, if the experiment is on, the pledge flow was pushed.
+    // Pop all the way to the bottom of the stack to show the Project page again.
+    self.navigationController?.popToRootViewController(animated: true)
+  }
+
   private func showProjectStarredPrompt() {
     let alert = UIAlertController(
       title: Strings.Project_saved(),
@@ -695,25 +764,50 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.present(nav, animated: true, completion: nil)
   }
 
+  private func shouldPushPledgeFlow() -> Bool {
+    let experiment = FullScreenCheckoutExperiment()
+    guard let shouldPush = experiment.boolValue(forKey: .push_pledge_flow) else {
+      return false
+    }
+
+    return shouldPush
+  }
+
   private func goToRewards(project: Project, refTag: RefTag?, secretRewardToken: String?) {
-    let vc = RewardsCollectionViewController.controller(
+    if self.shouldPushPledgeFlow() {
+      let vc = RewardsCollectionViewController.rewardsController(
+        with: project,
+        refTag: refTag,
+        secretRewardToken: secretRewardToken
+      )
+
+      assert(
+        self.navigationController.isSome,
+        "The project page requires a navigation controller to push the rewards flow."
+      )
+
+      self.navigationController?.pushViewController(vc, animated: true)
+      return
+    }
+
+    let vc = RewardsCollectionViewController.navigationController(
       with: project,
       refTag: refTag,
       secretRewardToken: secretRewardToken
     )
+
     self.present(vc, animated: true)
   }
 
   private func goToManagePledge(params: ManagePledgeViewParamConfigData) {
     let vc = ManagePledgeViewController.instantiate()
-      |> \.delegate .~ self
+    vc.delegate = self
     vc.configureWith(params: params)
 
     let nc = RewardPledgeNavigationController(rootViewController: vc)
 
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-      _ = nc
-        |> \.modalPresentationStyle .~ .pageSheet
+      nc.modalPresentationStyle = .pageSheet
     }
 
     self.present(nc, animated: true)
@@ -738,7 +832,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       nav.modalPresentationStyle = UIModalPresentationStyle.pageSheet
       self.present(nav, animated: true, completion: nil)
     } else {
-      self.viewModel.inputs.showNavigationBar(false)
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }
@@ -751,7 +844,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.viewModel.inputs.viewDidLoad()
       }
     )
-    self.viewModel.inputs.showNavigationBar(false)
     self.navigationController?
       .pushViewController(UIHostingController(rootView: reportProjectInfoView), animated: true)
   }
@@ -777,7 +869,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   private func goToUpdates(project: Project) {
     let vc = ProjectUpdatesViewController.configuredWith(project: project)
-    self.viewModel.inputs.showNavigationBar(false)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
@@ -854,7 +945,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
       self.present(nav, animated: true, completion: nil)
     } else {
-      self.viewModel.inputs.showNavigationBar(false)
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }
@@ -908,7 +998,7 @@ extension ProjectPageViewController: ManagePledgeViewControllerDelegate {
 
 // MARK: - ProjectPageViewControllerDelegate
 
-extension ProjectPageViewController: ProjectPageViewControllerDelegate {
+extension ProjectPageViewController: ProjectPageNavigationDelegate {
   func goToLogin() {
     self.goToLoginTout()
   }

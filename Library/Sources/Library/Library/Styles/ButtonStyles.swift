@@ -1,6 +1,4 @@
 import KDS
-import Prelude
-import Prelude_UIKit
 import UIKit
 
 // See `Kickstarter-iOS/SharedViews/ViewModifiers/ButtonModifiers.swift` for the SwiftUI version of
@@ -16,9 +14,10 @@ import UIKit
 public let applePayButtonStyle: ButtonStyle = { button in
   let cornerRadius: CGFloat = Dimension.CornerRadius.small
 
+  _ = roundedStyle(cornerRadius: cornerRadius)(button)
+  button.isAccessibilityElement = true
+
   return button
-    |> roundedStyle(cornerRadius: cornerRadius)
-    |> \.isAccessibilityElement .~ true
 }
 
 // MARK: - Facebook
@@ -65,8 +64,9 @@ public func styleSaveButton(_ button: UIButton) {
   deprecated,
   message: "This is a button style from our legacy design system. Instead, use KSRButtonStyle."
 )
-public let shareButtonStyle =
-  UIButton.lens.title(for: .normal) .~ nil
-    <> UIButton.lens.image(for: .normal) .~ image(named: "icon--share")
-    <> UIButton.lens.tintColor .~ LegacyColors.ksr_support_700.uiColor()
-    <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
+public func styleShareButton(_ button: UIButton) {
+  button.setTitle(nil, for: .normal)
+  button.setImage(Library.image(named: "icon--share"), for: .normal)
+  button.tintColor = LegacyColors.ksr_support_700.uiColor()
+  button.accessibilityLabel = Strings.dashboard_accessibility_label_share_project()
+}

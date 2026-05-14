@@ -1,0 +1,47 @@
+import Foundation
+
+/// Playback UI state for a single video feed cell.
+@Observable
+final class VideoFeedPlaybackState {
+  /// When false the play button is shown, prompting the user to resume.
+  var isPlaying: Bool = true
+
+  var isPlayButtonVisible: Bool {
+    self.isVideoReady && !self.isPlaying && !self.hasFailed
+  }
+
+  /// True once the video is ready to play. Used to fade out the preview image.
+  var isVideoReady: Bool = false
+  /// Set via `VideoFeedCell` after the video player is created.
+  var hasFailed: Bool = false
+  var videoPlayer: VideoFeedVideoPlayer?
+
+  /// Pauses playback and shows the play button.
+  func pause() {
+    self.isPlaying = false
+    self.videoPlayer?.pause()
+  }
+
+  /// Resumes playback and hides the play button.
+  func resume() {
+    self.isPlaying = true
+    self.videoPlayer?.play()
+  }
+
+  func reset() {
+    self.isPlaying = true
+    self.isVideoReady = false
+    self.hasFailed = false
+  }
+
+  /// Called by the video player once it is ready to play.
+  func videoDidBecomeReady() {
+    self.isVideoReady = true
+    self.videoPlayer?.play()
+  }
+
+  /// Called by the video player when the current video feed item fails to load or play.
+  func videoDidFail() {
+    self.hasFailed = true
+  }
+}

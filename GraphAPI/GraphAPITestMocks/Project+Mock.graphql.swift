@@ -78,6 +78,7 @@ public class Project: MockObject {
     @Field<[Tag?]>("tags") public var tags
     @Field<String>("url") public var url
     @Field<Double>("usdExchangeRate") public var usdExchangeRate
+    @Field<Video>("verticalVideo") public var verticalVideo
     @Field<Video>("video") public var video
     @Field<Int>("watchesCount") public var watchesCount
   }
@@ -153,6 +154,7 @@ public extension Mock where O == Project {
     tags: [Mock<Tag>?]? = nil,
     url: String? = nil,
     usdExchangeRate: Double? = nil,
+    verticalVideo: Mock<Video>? = nil,
     video: Mock<Video>? = nil,
     watchesCount: Int? = nil
   ) {
@@ -225,6 +227,7 @@ public extension Mock where O == Project {
     _setList(tags, for: \.tags)
     _setScalar(url, for: \.url)
     _setScalar(usdExchangeRate, for: \.usdExchangeRate)
+    _setEntity(verticalVideo, for: \.verticalVideo)
     _setEntity(video, for: \.video)
     _setScalar(watchesCount, for: \.watchesCount)
   }

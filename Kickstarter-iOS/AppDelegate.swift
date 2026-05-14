@@ -8,6 +8,7 @@ import KDS
 #else
   import KsApi
 #endif
+import Experimentation
 import Kickstarter_Framework
 import Library
 import Prelude
@@ -16,7 +17,6 @@ import ReactiveSwift
 import SafariServices
 import Segment
 import SegmentBrazeUI
-import Statsig
 import SwiftUI
 import UIKit
 import UserNotifications
@@ -81,8 +81,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         AppEnvironment.updateCurrentUser(user)
         // Update user in Braze.
         self?.braze?.changeUser(userId: String(user.id))
-        // Update user in Segment.
-        AppEnvironment.current.ksrAnalytics.identify(newUser: user)
+
+        // Update user in Segment and Statsig.
+        AppEnvironment.current.identify(user: user)
+
         self?.viewModel.inputs.currentUserUpdatedInEnvironment()
       }
 
@@ -109,7 +111,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { [weak self] in
         self?.rootTabBarController?.dismiss(animated: true, completion: nil)
-        $0.modalPresentationStyle = .pageSheet
         self?.rootTabBarController?.present($0, animated: true, completion: nil)
       }
 
@@ -218,13 +219,13 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
           strongSelf.configureRemoteConfig()
         }
-
-      self.viewModel.outputs.configureStatsig
-        .observeForUI()
-        .observeValues { [weak self] key in
-          self?.configureStatsig(with: key)
-        }
     #endif
+
+    self.viewModel.outputs.configureStatsig
+      .observeForUI()
+      .observeValues { [weak self] key in
+        self?.configureStatsig(with: key)
+      }
 
     self.disposables.append(
       self.viewModel.outputs.trackingAuthorizationStatus
@@ -287,6 +288,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self.analytics = configuration
 
         AppEnvironment.current.ksrAnalytics.configureSegmentClient(configuration)
+
+        // Once Segment loads, update the Statsig Client with segment's anonymous identifier.
+        AppEnvironment.current.statsigClient?.reload(withUser: AppEnvironment.current.statsigUser())
       }
 
     self.viewModel.outputs.segmentIsEnabled
@@ -465,11 +469,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       }
   }
 
-  private func configureStatsig(with key: String) {
-    let client = StatsigClient(sdkKey: key)
+  private func configureStatsig(with key: StatsigClientSDKKey) {
+    let client = StatsigWrapper(sdkKey: key, user: AppEnvironment.current.statsigUser())
     AppEnvironment.updateStatsigClient(client)
-
-    client.initialize(userID: AppEnvironment.current.currentUser?.id.toString())
   }
 
   private func fetchAndActivateRemoteConfig() {

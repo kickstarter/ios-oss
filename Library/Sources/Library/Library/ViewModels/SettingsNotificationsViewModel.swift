@@ -110,7 +110,7 @@ public final class SettingsNotificationsViewModel: SettingsNotificationsViewMode
     // MARK: - Tracking
 
     self.updatedUserProperty.signal.observeValues { user in
-      AppEnvironment.current.ksrAnalytics.identify(newUser: user)
+      AppEnvironment.current.identify(user: user)
     }
   }
 

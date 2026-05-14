@@ -16,7 +16,7 @@ final class ThanksViewModelTests: TestCase {
   private let categoryEnvelope = CategoryEnvelope(node: .template)
 
   private let backedProjectText = TestObserver<String, Never>()
-  private let dismissToRootViewControllerAndPostNotification = TestObserver<Notification.Name, Never>()
+  private let postBackedNotification = TestObserver<Notification.Name, Never>()
   private let goToDiscovery = TestObserver<KsApi.Category, Never>()
   private let goToProject = TestObserver<Project, Never>()
   private let goToProjects = TestObserver<[Project], Never>()
@@ -34,8 +34,8 @@ final class ThanksViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
     self.vm.outputs.backedProjectText.map { $0.string }.observe(self.backedProjectText.observer)
-    self.vm.outputs.dismissToRootViewControllerAndPostNotification.map { $0.name }
-      .observe(self.dismissToRootViewControllerAndPostNotification.observer)
+    self.vm.outputs.postProjectBackedNotification.map { $0.name }
+      .observe(self.postBackedNotification.observer)
     self.vm.outputs.goToDiscovery.map { params in params.category ?? Category.filmAndVideo }
       .observe(self.goToDiscovery.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
@@ -61,14 +61,15 @@ final class ThanksViewModelTests: TestCase {
     return (project, reward, checkoutData, pledgeTotal)
   }
 
-  // FIXME: MBL-2857
-  func testDismissToRootViewController() {
+  func testPostBackedNotification() {
     self.vm.inputs.configure(with: self.thanksPageData())
     self.vm.inputs.viewDidLoad()
 
+    self.postBackedNotification.assertDidNotEmitValue()
+
     self.vm.inputs.closeButtonTapped()
 
-    self.dismissToRootViewControllerAndPostNotification.assertValue(Notification.Name.ksr_projectBacked)
+    self.postBackedNotification.assertValue(Notification.Name.ksr_projectBacked)
   }
 
   // FIXME: MBL-2857

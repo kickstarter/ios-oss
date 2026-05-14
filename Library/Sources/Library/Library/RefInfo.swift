@@ -42,6 +42,7 @@ public enum RefTag {
   case thanks
   case unrecognized(String)
   case update
+  case videoFeed
 
   /**
    Create a RefTag value from a code string. If a ref tag cannot be matched, an `.unrecognized` tag is
@@ -101,6 +102,7 @@ public enum RefTag {
     case "starred_popular": self = .starredWithSort(.popular)
     case "thanks": self = .thanks
     case "update": self = .update
+    case "video_feed": self = .videoFeed
     default: self = .unrecognized(code)
     }
   }
@@ -170,6 +172,8 @@ public enum RefTag {
       return code
     case .update:
       return "update"
+    case .videoFeed:
+      return "video_feed"
     }
   }
 }

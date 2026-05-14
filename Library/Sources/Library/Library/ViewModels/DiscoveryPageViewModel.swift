@@ -6,7 +6,7 @@ import UIKit
 
 public protocol DiscoveryPageViewModelInputs {
   /// Call when the Config has been updated in the AppEnvironment
-  func configUpdated(config: Config?)
+  func configUpdated()
 
   /// Call with the sort provided to the view.
   func configureWith(sort: DiscoveryParams.Sort)
@@ -337,9 +337,13 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     .ignoreValues()
     .map(shouldShowPersonalization)
 
-    self.showVideoFeedBanner = self.viewWillAppearProperty.signal
-      .map { featureVideoFeedEnabled() }
-      .skipRepeats()
+    self.showVideoFeedBanner = Signal.merge(
+      self.viewWillAppearProperty.signal,
+      // Because the Discover page is the first page we see, it might appear before config values load.
+      self.configUpdatedSignal
+    )
+    .map { featureVideoFeedEnabled() }
+    .skipRepeats()
 
     self.goToCuratedProjects = self.personalizationCellTappedProperty.signal
       .map(cachedCategories)
@@ -379,9 +383,9 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       }
   }
 
-  fileprivate let configUpdatedProperty = MutableProperty<Config?>(nil)
-  public func configUpdated(config: Config?) {
-    self.configUpdatedProperty.value = config
+  fileprivate let (configUpdatedSignal, configUpdatedObserver) = Signal<Void, Never>.pipe()
+  public func configUpdated() {
+    self.configUpdatedObserver.send(value: ())
   }
 
   fileprivate let currentEnvironmentChangedProperty = MutableProperty<EnvironmentType?>(nil)

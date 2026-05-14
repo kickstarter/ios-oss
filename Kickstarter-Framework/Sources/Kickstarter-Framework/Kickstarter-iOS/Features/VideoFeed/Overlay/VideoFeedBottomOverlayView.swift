@@ -16,6 +16,8 @@ struct VideoFeedBottomOverlayView: View {
   }
 
   let item: VideoFeedItem
+  let videoPlayer: VideoFeedVideoPlayer
+  var onCTATapped: (() -> Void)?
 
   var body: some View {
     VStack(alignment: .leading, spacing: Constants.contentSpacing) {
@@ -66,18 +68,18 @@ struct VideoFeedBottomOverlayView: View {
   }
 
   private var ctaButton: some View {
-    Button(self.item.ctaTitle, action: {})
+    let ctaTitle = Strings.Back_this_project()
+
+    return Button(ctaTitle, action: { self.onCTATapped?() })
       .buttonStyle(CTAButtonStyle())
       .padding(.top, Constants.ctaTopPadding)
-      .accessibilityLabel(self.item.ctaTitle)
+      .accessibilityLabel(ctaTitle)
       .accessibilityAddTraits(.isButton)
-      .accessibilityHint(self.item.ctaTitle)
+      .accessibilityHint(ctaTitle)
   }
 
   private var progressBar: some View {
-    ProgressView(value: 0.0)
-      .tint(Color(Colors.Icon.light.uiColor()))
-      .frame(height: Constants.progressBarHeight)
+    VideoFeedProgressBarView(player: self.videoPlayer)
       .padding(.top, Constants.progressTopPadding)
   }
 }
