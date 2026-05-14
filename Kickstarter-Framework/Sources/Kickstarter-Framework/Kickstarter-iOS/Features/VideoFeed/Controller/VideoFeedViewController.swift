@@ -19,6 +19,9 @@ final class VideoFeedViewController: UIViewController {
   private let viewModel = VideoFeedViewModel()
   private let dataSource = VideoFeedDataSource()
 
+  /// The feed item count after the last api fetch.
+  /// Used to distinguish general api fetch updates from watch/unwatch mutations.
+  private var fetchedItemCount: Int = 0
   private var lifecycleObservers: [any NSObjectProtocol] = []
 
   private lazy var collectionView: UICollectionView = {
@@ -80,13 +83,33 @@ final class VideoFeedViewController: UIViewController {
 
   public override func bindViewModel() {
     withObservationTracking {
-      self.dataSource.load(self.viewModel.items)
-      self.collectionView.reloadData()
+      /// Explicitly read `items` to register it as an observation dependency.
+      /// `withObservationTracking` only tracks properties accessed inside this closure.
+      /// Actual updates are handled in `updateFeedIfNeeded()`.
+      _ = self.viewModel.items
     } onChange: { [weak self] in
       DispatchQueue.main.async { [weak self] in
+        self?.updateFeedIfNeeded()
         self?.bindViewModel()
       }
     }
+  }
+
+  /// Called whenever `viewModel.items` changes.
+  /// Reloads the collection view only when new items have been fetched
+  private func updateFeedIfNeeded() {
+    let newItems = self.viewModel.items
+
+    if newItems.count != self.fetchedItemCount {
+      self.updateFeedWithFetchedItems(newItems)
+    }
+  }
+
+  /// Reloads the collection view with a fresh set of fetched items.
+  private func updateFeedWithFetchedItems(_ newItems: [VideoFeedItem]) {
+    self.fetchedItemCount = newItems.count
+    self.dataSource.load(newItems)
+    self.collectionView.reloadData()
   }
 
   // MARK: - Scroll locking
@@ -185,7 +208,6 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
 
     cell.onCloseTapped = { [weak self] in self?.dismiss(animated: true) }
     cell.onCreatorTapped = { [weak self] in self?.simpleAlert(title: "Creator") }
-    cell.onSaveTapped = { [weak self] in self?.simpleAlert(title: "Saved") }
     cell.onShareTapped = { [weak self] in self?.simpleAlert(title: "Share") }
     cell.onMoreTapped = { [weak self] in self?.simpleAlert(title: "More") }
     cell.onVideoReady = { [weak self] in self?.unlockScrollingIfNeeded() }
@@ -194,7 +216,7 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     cell.onCTATapped = { [weak self] in self?.goToProjectPage(for: item) }
 
     /// Re-configure after wiring callbacks so SwiftUI picks up the closures.
-    cell.configureWith(value: item)
+    cell.configureWith(value: item, viewModel: self.viewModel)
 
     if let url = item.videoURL {
       cell.loadVideo(url: url)

@@ -23,7 +23,7 @@ struct VideoFeedOverlayView: View {
     static let previewFadeDuration: Double = 0.3
     /// Preview image opacity when the video has failed to load — dims the BG to surface the label.
     static let failedPreviewOpacity: Double = 0.35
-    /// Defining safa area values because `UIHostingConfiguration` returns 0 for safe area insets when in a collectionview.
+    /// Defining safe area values because `UIHostingConfiguration` returns 0 for safe area insets when in a collectionview.
     static let topSafeAreaPadding: CGFloat = 60
     static let bottomSafeAreaPadding: CGFloat = 37
   }
@@ -31,10 +31,10 @@ struct VideoFeedOverlayView: View {
   let item: VideoFeedItem
   let playbackState: VideoFeedPlaybackState
   let videoPlayer: VideoFeedVideoPlayer
+  let viewModel: VideoFeedViewModel
 
   var onCloseTapped: (() -> Void)?
   var onCreatorTapped: (() -> Void)?
-  var onSaveTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
   var onCTATapped: (() -> Void)?
@@ -60,8 +60,8 @@ struct VideoFeedOverlayView: View {
       VStack(alignment: .trailing, spacing: Constants.railBottomSpacing) {
         VideoFeedRightRailView(
           item: self.item,
+          viewModel: self.viewModel,
           onCreatorTapped: self.onCreatorTapped,
-          onSaveTapped: self.onSaveTapped,
           onShareTapped: self.onShareTapped,
           onMoreTapped: self.onMoreTapped
         )
@@ -136,7 +136,7 @@ struct VideoFeedOverlayView: View {
         .foregroundColor(Color(Colors.Icon.light.uiColor()))
         .offset(x: Constants.playIconOffset)
         .frame(width: Constants.playIconSize, height: Constants.playIconSize)
-        /// Second, larger, frame to create the frosted glass ring.
+        /// Second larger frame to create the frosted glass ring.
         .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
         .background(FrostedGlassBackgroundView())
         .clipShape(Circle())
@@ -159,6 +159,7 @@ struct VideoFeedOverlayView: View {
         endPoint: .bottom
       )
       .frame(height: Constants.topGradientOverlayHeight)
+
       Spacer()
     }
   }

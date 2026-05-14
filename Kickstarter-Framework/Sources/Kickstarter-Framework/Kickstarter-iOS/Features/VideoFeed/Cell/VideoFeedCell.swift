@@ -20,7 +20,6 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   var onCloseTapped: (() -> Void)?
   var onCreatorTapped: (() -> Void)?
-  var onSaveTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
   var onCTATapped: (() -> Void)?
@@ -38,18 +37,23 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   override init(frame: CGRect) {
     self.videoPlayer = VideoFeedVideoPlayer()
+
     super.init(frame: frame)
+
     self.commonInit()
   }
 
   init(frame: CGRect, videoPlayer: VideoFeedVideoPlayer) {
     self.videoPlayer = videoPlayer
+
     super.init(frame: frame)
+
     self.commonInit()
   }
 
   private func commonInit() {
     self.playbackState.videoPlayer = self.videoPlayer
+
     self.setupVideoPlayerView()
     self.setupVideoPlayerCallbacks()
     self.setupTapGesture()
@@ -62,9 +66,9 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   override func prepareForReuse() {
     super.prepareForReuse()
+
     self.onCloseTapped = nil
     self.onCreatorTapped = nil
-    self.onSaveTapped = nil
     self.onShareTapped = nil
     self.onMoreTapped = nil
     self.onCTATapped = nil
@@ -76,15 +80,17 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  func configureWith(value: VideoFeedItem) {
+  func configureWith(value _: VideoFeedItem) {}
+
+  func configureWith(value: VideoFeedItem, viewModel: VideoFeedViewModel) {
     self.contentConfiguration = UIHostingConfiguration {
       VideoFeedOverlayView(
         item: value,
         playbackState: self.playbackState,
         videoPlayer: self.videoPlayer,
+        viewModel: viewModel,
         onCloseTapped: { [weak self] in self?.onCloseTapped?() },
         onCreatorTapped: { [weak self] in self?.onCreatorTapped?() },
-        onSaveTapped: { [weak self] in self?.onSaveTapped?() },
         onShareTapped: { [weak self] in self?.onShareTapped?() },
         onMoreTapped: { [weak self] in self?.onMoreTapped?() },
         onCTATapped: { [weak self] in self?.ctaTapped() }

@@ -27,18 +27,22 @@ struct VideoFeedRightRailView: View {
   }
 
   let item: VideoFeedItem
+  let viewModel: VideoFeedViewModel
 
   var onCreatorTapped: (() -> Void)?
-  var onSaveTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
+
+  /// Resolves the current item from the VM so SwiftUI tracks `isSaved` reactively.
+  private var currentItem: VideoFeedItem {
+    self.viewModel.items.first(where: { $0.id == self.item.id }) ?? self.item
+  }
 
   var body: some View {
     VStack(spacing: Constants.railSpacing) {
       self.creatorAvatar
       self.saveButton
       self.shareButton
-      self.moreButton
     }
   }
 
@@ -65,10 +69,14 @@ struct VideoFeedRightRailView: View {
   }
 
   private var saveButton: some View {
-    RailButtonView(imageName: Constants.saveIcon, label: Constants.saveCountLabel) {
-      self.onSaveTapped?()
+    let isSaved = self.currentItem.isSaved
+    let iconName = isSaved ? Constants.saveIconFilled : Constants.saveIconOutline
+
+    return RailButtonView(imageName: iconName, label: Constants.saveCountLabel) {
+      self.viewModel.toggleSaved(for: self.currentItem)
     }
     .accessibilityLabel(Constants.saveAccessibilityLabel)
+    .animation(.easeInOut(duration: 0.15), value: isSaved)
   }
 
   private var shareButton: some View {
@@ -78,6 +86,7 @@ struct VideoFeedRightRailView: View {
     .accessibilityLabel(Constants.shareAccessibilityLabel)
   }
 
+  // Currently hidden. Will be added in VideoFeed V2.
   private var moreButton: some View {
     Button(action: { self.onMoreTapped?() }) {
       if let icon = Library.image(named: Constants.moreIcon) {
