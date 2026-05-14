@@ -27,7 +27,7 @@ struct VideoFeedRightRailView: View {
   }
 
   let item: VideoFeedItem
-  let viewModel: VideoFeedViewModel
+  let viewModel: VideoFeedViewModelType
 
   var onCreatorTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?

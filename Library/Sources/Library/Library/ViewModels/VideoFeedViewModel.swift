@@ -2,8 +2,14 @@ import Foundation
 import GraphAPI
 import KsApi
 
+public protocol VideoFeedViewModelType: AnyObject {
+  var items: [VideoFeedItem] { get }
+  func viewDidLoad()
+  func toggleSaved(for item: VideoFeedItem)
+}
+
 @Observable
-public final class VideoFeedViewModel {
+public final class VideoFeedViewModel: VideoFeedViewModelType {
   // MARK: - Outputs
 
   public private(set) var items: [VideoFeedItem] = []

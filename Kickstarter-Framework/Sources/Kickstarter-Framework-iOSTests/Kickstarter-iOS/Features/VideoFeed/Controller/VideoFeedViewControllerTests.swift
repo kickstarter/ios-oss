@@ -106,6 +106,12 @@ final class VideoFeedViewControllerTests: TestCase {
   }
 }
 
+final class MockVideoFeedViewModel: VideoFeedViewModelType {
+  var items: [VideoFeedItem] = []
+  func viewDidLoad() {}
+  func toggleSaved(for _: VideoFeedItem) {}
+}
+
 final class MockVideoFeedVideoPlayer: VideoFeedVideoPlayer {
   override var progress: Double { 0.4 }
   override var isPlaying: Bool { false }

@@ -82,7 +82,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   func configureWith(value _: VideoFeedItem) {}
 
-  func configureWith(value: VideoFeedItem, viewModel: VideoFeedViewModel) {
+  func configureWith(value: VideoFeedItem, viewModel: VideoFeedViewModelType) {
     self.contentConfiguration = UIHostingConfiguration {
       VideoFeedOverlayView(
         item: value,

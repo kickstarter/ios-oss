@@ -31,7 +31,7 @@ struct VideoFeedOverlayView: View {
   let item: VideoFeedItem
   let playbackState: VideoFeedPlaybackState
   let videoPlayer: VideoFeedVideoPlayer
-  let viewModel: VideoFeedViewModel
+  let viewModel: VideoFeedViewModelType
 
   var onCloseTapped: (() -> Void)?
   var onCreatorTapped: (() -> Void)?
