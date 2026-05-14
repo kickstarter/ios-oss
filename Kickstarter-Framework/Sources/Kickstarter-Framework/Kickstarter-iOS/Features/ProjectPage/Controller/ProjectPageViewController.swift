@@ -780,6 +780,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         refTag: refTag,
         secretRewardToken: secretRewardToken
       )
+
+      assert(
+        self.navigationController.isSome,
+        "The project page requires a navigation controller to push the rewards flow."
+      )
+
       self.navigationController?.pushViewController(vc, animated: true)
       return
     }
