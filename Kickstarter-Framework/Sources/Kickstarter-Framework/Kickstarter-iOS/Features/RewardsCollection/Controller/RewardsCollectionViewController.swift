@@ -80,6 +80,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.configureNavigationBarForPledgeFlow()
+
     _ = self
       |> \.extendedLayoutIncludesOpaqueBars .~ true
 

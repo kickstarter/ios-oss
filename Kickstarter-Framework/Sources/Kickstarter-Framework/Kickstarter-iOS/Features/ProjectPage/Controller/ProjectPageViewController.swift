@@ -111,6 +111,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   public override func viewDidLoad() {
     super.viewDidLoad()
 
+    // Extend the white of the screen behind the (possibly transparent) navigation bar.
+    self.extendedLayoutIncludesOpaqueBars = true
+    self.view.backgroundColor = Colors.Background.Surface.primary.uiColor()
+
     self.configureNavigation()
     self.configurePledgeCTAContainerView()
     self.configureTableView()

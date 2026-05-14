@@ -30,6 +30,8 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.view.backgroundColor = Colors.Background.Surface.primary.uiColor()
+
     self.projectsTableView.register(nib: .DiscoveryPostcardCell)
     self.projectsTableView.register(nib: .ThanksCategoryCell)
     self.projectsTableView.registerCellClass(DiscoveryProjectCardCell.self)
@@ -55,13 +57,14 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
     self.navigationItem.leftBarButtonItem = closeButton
 
-    let appearance = UINavigationBarAppearance()
-    // This makes the navigation bar appear hidden
-    appearance.shadowColor = nil
-    appearance.backgroundColor = Colors.Background.Surface.primary.uiColor()
+    self.configureNavigationBarForPledgeFlow()
 
-    self.navigationItem.standardAppearance = appearance
-    self.navigationItem.scrollEdgeAppearance = appearance
+    // Make the nav bar look seamless until you scroll.
+    // The seamless look matches how this page used to be designed when it didn't use a navigation bar.
+    let scrollEdgeHiddenAppearance = UINavigationBarAppearance()
+    scrollEdgeHiddenAppearance.configureForPledgeFlow()
+    scrollEdgeHiddenAppearance.shadowColor = nil
+    self.navigationItem.scrollEdgeAppearance = scrollEdgeHiddenAppearance
 
     // We don't show a title on this page.
     let emptyTitleView = UIView()

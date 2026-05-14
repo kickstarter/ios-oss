@@ -93,6 +93,8 @@ final class PostCampaignCheckoutViewController: UIViewController,
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.configureNavigationBarForPledgeFlow()
+
     self.navigationItem
       .backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
 
@@ -155,7 +157,7 @@ final class PostCampaignCheckoutViewController: UIViewController,
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.rootScrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+      self.rootScrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
       self.rootScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.rootScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.rootScrollView.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor),
