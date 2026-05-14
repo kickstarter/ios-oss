@@ -651,6 +651,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         refInfo: RefInfo(.similarProjects)
       )
 
+      assert(
+        self.navigationController.isSome,
+        "The project page requires a navigation controller to push SPC."
+      )
+
       self.navigationController?.pushViewController(vc, animated: true)
       return
     }
