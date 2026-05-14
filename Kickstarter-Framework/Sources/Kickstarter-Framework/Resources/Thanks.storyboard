@@ -23,7 +23,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uj7-Jz-Wug" userLabel="Woohoo Banner">
-                                            <rect key="frame" x="12" y="0.0" width="351" height="70"/>
+                                            <rect key="frame" x="12" y="8" width="351" height="70"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FWZ-5u-RHC">
                                                     <rect key="frame" x="8" y="25" width="355" height="20.5"/>
@@ -41,7 +41,7 @@
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0W0-Br-5Lh">
-                                            <rect key="frame" x="12" y="78" width="351" height="20.5"/>
+                                            <rect key="frame" x="12" y="86" width="351" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -90,7 +90,7 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Uj7-Jz-Wug" firstAttribute="top" secondItem="LC4-lC-v0V" secondAttribute="top" id="9NB-8Q-71D"/>
+                                        <constraint firstItem="Uj7-Jz-Wug" firstAttribute="top" secondItem="LC4-lC-v0V" secondAttribute="top" constant="8" id="9NB-8Q-71D"/>
                                         <constraint firstItem="0W0-Br-5Lh" firstAttribute="leading" secondItem="LC4-lC-v0V" secondAttribute="leading" constant="12" id="AYB-w7-KoT"/>
                                         <constraint firstAttribute="trailing" secondItem="kb6-LU-AvY" secondAttribute="trailing" constant="12" id="CiI-u5-9m5"/>
                                         <constraint firstAttribute="trailing" secondItem="DBG-8g-JC1" secondAttribute="trailing" id="FNf-8p-A9J"/>
