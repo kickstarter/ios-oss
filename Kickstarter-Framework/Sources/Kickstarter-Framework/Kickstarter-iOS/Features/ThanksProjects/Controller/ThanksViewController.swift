@@ -8,7 +8,6 @@ import StoreKit
 import UIKit
 
 internal final class ThanksViewController: UIViewController, UITableViewDelegate {
-  @IBOutlet fileprivate var closeButtonContainerView: UIView!
   @IBOutlet fileprivate var shareMoreButton: UIButton!
   @IBOutlet fileprivate var projectsTableView: UITableView!
   @IBOutlet fileprivate var backedLabel: UILabel!
@@ -38,27 +37,35 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     self.projectsTableView.dataSource = self.dataSource
     self.projectsTableView.delegate = self
 
-    self.setupCloseButton()
+    self.setupNavigationItem()
 
     self.viewModel.inputs.viewDidLoad()
   }
 
-  private func setupCloseButton() {
-    let closeButtonView = CloseButtonView { [weak self] in
-      self?.viewModel.inputs.closeButtonTapped()
-    }
-    closeButtonView.translatesAutoresizingMaskIntoConstraints = false
-    self.closeButtonContainerView.addSubview(closeButtonView)
-    NSLayoutConstraint.activate([
-      closeButtonView.centerXAnchor.constraint(
-        equalTo: self.closeButtonContainerView.centerXAnchor,
-        constant: 8
-      ),
-      closeButtonView.centerYAnchor.constraint(
-        equalTo: self.closeButtonContainerView.centerYAnchor,
-        constant: 8
-      )
-    ])
+  private func setupNavigationItem() {
+    let icon = Library.image(named: "icon--cross")?.withRenderingMode(.alwaysOriginal)
+    let closeButton = UIBarButtonItem(
+      image: icon,
+      style: .plain,
+      target: self,
+      action: #selector(self.closeButtonTapped)
+    )
+
+    closeButton.accessibilityLabel = Strings.Dismiss()
+
+    self.navigationItem.leftBarButtonItem = closeButton
+
+    let appearance = UINavigationBarAppearance()
+    // This makes the navigation bar appear hidden
+    appearance.shadowColor = nil
+    appearance.backgroundColor = Colors.Background.Surface.primary.uiColor()
+
+    self.navigationItem.standardAppearance = appearance
+    self.navigationItem.scrollEdgeAppearance = appearance
+
+    // We don't show a title on this page.
+    let emptyTitleView = UIView()
+    self.navigationItem.titleView = emptyTitleView
   }
 
   override func viewDidLayoutSubviews() {
@@ -103,11 +110,6 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.project_accessibility_button_share_label()
       }
-
-    if let navigationController = self.navigationController {
-      _ = navigationController
-        |> UINavigationController.lens.isNavigationBarHidden .~ true
-    }
   }
 
   override func bindViewModel() {
