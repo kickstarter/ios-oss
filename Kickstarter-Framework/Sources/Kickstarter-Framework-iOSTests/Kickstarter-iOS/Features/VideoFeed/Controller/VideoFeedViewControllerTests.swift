@@ -39,18 +39,23 @@ final class VideoFeedViewControllerTests: TestCase {
           videoPlayer: MockVideoFeedVideoPlayer()
         )
 
-        cell.configureWith(value: VideoFeedItem(
-          id: "0",
-          slug: "video_feed",
-          title: "Ringo Move - The Ultimate Workout Bottle",
-          creator: "Creator Name",
-          creatorImageURL: nil,
-          statsText: "$50,134 pledged · Join 431 backers",
-          categoryPillText: "Project We Love",
-          secondaryPillText: "3 days left",
-          videoURL: nil,
-          videoPreviewImageURL: nil
-        ))
+        cell.configureWith(
+          value: VideoFeedItem(
+            id: "0",
+            slug: "video_feed",
+            title: "Ringo Move - The Ultimate Workout Bottle",
+            creator: "Creator Name",
+            creatorImageURL: nil,
+            statsText: "$50,134 pledged · Join 431 backers",
+            categoryPillText: "Project We Love",
+            secondaryPillText: "3 days left",
+            videoURL: nil,
+            videoPreviewImageURL: nil,
+            projectId: "1",
+            isSaved: false
+          ),
+          viewModel: MockVideoFeedViewModel()
+        )
 
         assertSnapshot(
           of: cell,
@@ -84,18 +89,23 @@ final class VideoFeedViewControllerTests: TestCase {
           videoPlayer: MockVideoFeedVideoPlayer()
         )
 
-        cell.configureWith(value: VideoFeedItem(
-          id: "0",
-          slug: "video_feed",
-          title: "Ringo Move - The Ultimate Workout Bottle for People Who Like Long Product Names That Wrap Across Several Lines For People Who Like Long Product Names That Wrap Across Several Lines",
-          creator: "Creator Name",
-          creatorImageURL: nil,
-          statsText: "$50,134 pledged · Join 431 backers",
-          categoryPillText: "Project We Love",
-          secondaryPillText: "3 days left",
-          videoURL: nil,
-          videoPreviewImageURL: nil
-        ))
+        cell.configureWith(
+          value: VideoFeedItem(
+            id: "0",
+            slug: "video_feed",
+            title: "Ringo Move - The Ultimate Workout Bottle for People Who Like Long Product Names That Wrap Across Several Lines For People Who Like Long Product Names That Wrap Across Several Lines",
+            creator: "Creator Name",
+            creatorImageURL: nil,
+            statsText: "$50,134 pledged · Join 431 backers",
+            categoryPillText: "Project We Love",
+            secondaryPillText: "3 days left",
+            videoURL: nil,
+            videoPreviewImageURL: nil,
+            projectId: "1",
+            isSaved: false
+          ),
+          viewModel: MockVideoFeedViewModel()
+        )
 
         assertSnapshot(
           of: cell,
