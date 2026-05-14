@@ -21,6 +21,7 @@ struct ImageBlock: View {
             Color(self.style.mediaPlaceholderColor.swiftUIColor())
               .aspectRatio(16 / 9, contentMode: .fill)
           }
+          .aspectRatio(contentMode: .fit)
           .clipShape(RoundedRectangle(cornerRadius: self.style.mediaCornerRadius))
           .accessibilityLabel(self.photo.altText ?? "")
       } else {

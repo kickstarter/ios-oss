@@ -71,6 +71,60 @@ final class ImageBlockTests: TestCase {
       XCTAssertNoThrow(try view.inspect().find(viewWithAccessibilityLabel: "Styled image"))
     }
   }
+
+  func testImageBlockWithValidURL_usesAspectFit() throws {
+    let photo = makePhoto(
+      altText: "Test image",
+      url: testImageURL().absoluteString
+    )
+
+    let view = imageBlock(photo: photo, colorScheme: .light, width: nil, height: nil)
+    let image = try view.inspect().find(viewWithAccessibilityLabel: "Test image")
+    let aspectRatio = try image.aspectRatio()
+
+    XCTAssertNil(aspectRatio.aspectRatio)
+    XCTAssertEqual(aspectRatio.contentMode, .fit)
+  }
+
+  func testImageBlockWithoutURL_expandsToMaximumWidth() throws {
+    let photo = makePhoto(altText: "Missing image", url: nil)
+
+    let view = imageBlock(photo: photo, colorScheme: .light, width: nil, height: nil)
+    let placeholder = try view.inspect().find(ViewType.Color.self)
+    let frame = try placeholder.flexFrame()
+
+    XCTAssertTrue(frame.maxWidth.isInfinite)
+  }
+
+  func testImageBlockWithEmptyURL_expandsToMaximumWidth() throws {
+    let photo = makePhoto(altText: "Missing image", url: "")
+
+    let view = imageBlock(photo: photo, colorScheme: .light, width: nil, height: nil)
+    let placeholder = try view.inspect().find(ViewType.Color.self)
+    let frame = try placeholder.flexFrame()
+
+    XCTAssertTrue(frame.maxWidth.isInfinite)
+  }
+
+  func testImageBlockWithValidURL_respectsContainerFrame() throws {
+    let photo = makePhoto(
+      altText: "Test image",
+      url: testImageURL().absoluteString
+    )
+    let containerWidth: CGFloat = 300
+    let containerHeight: CGFloat = 200
+
+    let view = imageBlock(
+      photo: photo,
+      colorScheme: .light,
+      width: containerWidth,
+      height: containerHeight
+    )
+    let frame = try view.inspect().fixedFrame()
+
+    XCTAssertEqual(frame.width, containerWidth)
+    XCTAssertEqual(frame.height, containerHeight)
+  }
 }
 
 private func makePhoto(altText: String?, url: String?) -> RichTextElement.Photo {
@@ -90,10 +144,21 @@ private func testImageURL() -> URL {
   return imageURL
 }
 
-private func imageBlock(photo: RichTextElement.Photo, colorScheme: ColorScheme) -> some View {
-  ImageBlock(photo: photo)
-    .frame(width: 300, height: 200)
+@ViewBuilder
+private func imageBlock(
+  photo: RichTextElement.Photo,
+  colorScheme: ColorScheme,
+  width: CGFloat? = 300,
+  height: CGFloat? = 200
+) -> some View {
+  let block = ImageBlock(photo: photo)
     .environment(\.richTextStyle, richTextStyle(colorScheme))
+
+  if let width, let height {
+    block.frame(width: width, height: height)
+  } else {
+    block
+  }
 }
 
 private func richTextStyle(_ colorScheme: ColorScheme) -> any RichTextStyle {
