@@ -573,10 +573,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.popToRootViewController
+    self.viewModel.outputs.navigateBackToProjectPage
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.navigationController?.popToRootViewController(animated: false)
+        guard let self = self else { return }
+        self.navigateBackToProjectPage()
       }
 
     self.viewModel.outputs.pauseMedia
@@ -722,6 +723,21 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     }
   }
 
+  private func navigateBackToProjectPage() {
+    // If the FullScreenCheckoutExperiment is off, the pledge flow is presented.
+    // To go back to the project page, we need to dismiss the pledge flow as well as pop backwards.
+    if let presented = self.presentedViewController,
+       presented is RewardPledgeNavigationController {
+      self.dismiss(animated: true)
+      self.navigationController?.popToRootViewController(animated: false)
+      return
+    }
+
+    // Otherwise, if the experiment is on, the pledge flow was pushed.
+    // Pop all the way to the bottom of the stack to show the Project page again.
+    self.navigationController?.popToRootViewController(animated: true)
+  }
+
   private func showProjectStarredPrompt() {
     let alert = UIAlertController(
       title: Strings.Project_saved(),
@@ -748,25 +764,50 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.present(nav, animated: true, completion: nil)
   }
 
+  private func shouldPushPledgeFlow() -> Bool {
+    let experiment = FullScreenCheckoutExperiment()
+    guard let shouldPush = experiment.boolValue(forKey: .push_pledge_flow) else {
+      return false
+    }
+
+    return shouldPush
+  }
+
   private func goToRewards(project: Project, refTag: RefTag?, secretRewardToken: String?) {
-    let vc = RewardsCollectionViewController.controller(
+    if self.shouldPushPledgeFlow() {
+      let vc = RewardsCollectionViewController.rewardsController(
+        with: project,
+        refTag: refTag,
+        secretRewardToken: secretRewardToken
+      )
+
+      assert(
+        self.navigationController.isSome,
+        "The project page requires a navigation controller to push the rewards flow."
+      )
+
+      self.navigationController?.pushViewController(vc, animated: true)
+      return
+    }
+
+    let vc = RewardsCollectionViewController.navigationController(
       with: project,
       refTag: refTag,
       secretRewardToken: secretRewardToken
     )
+
     self.present(vc, animated: true)
   }
 
   private func goToManagePledge(params: ManagePledgeViewParamConfigData) {
     let vc = ManagePledgeViewController.instantiate()
-      |> \.delegate .~ self
+    vc.delegate = self
     vc.configureWith(params: params)
 
     let nc = RewardPledgeNavigationController(rootViewController: vc)
 
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-      _ = nc
-        |> \.modalPresentationStyle .~ .pageSheet
+      nc.modalPresentationStyle = .pageSheet
     }
 
     self.present(nc, animated: true)
