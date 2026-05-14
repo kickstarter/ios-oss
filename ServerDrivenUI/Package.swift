@@ -25,7 +25,8 @@ let package = Package(
     .package(name: "KsApi", path: "../KsApi"),
     .package(name: "Library", path: "../Library"),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.18.6"),
-    .package(url: "https://github.com/onevcat/Kingfisher", from: "8.5.0")
+    .package(url: "https://github.com/onevcat/Kingfisher", from: "8.5.0"),
+    .package(url: "https://github.com/nalexn/ViewInspector", from: "0.10.3")
   ],
   targets: [
     .target(
@@ -50,7 +51,8 @@ let package = Package(
         "ServerDrivenUI",
         "ServerDrivenUITestHelpers",
         .product(name: "LibraryTestHelpers", package: "Library"),
-        .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+        .product(name: "ViewInspector", package: "ViewInspector")
       ],
       resources: [
         .process("TestFiles")
