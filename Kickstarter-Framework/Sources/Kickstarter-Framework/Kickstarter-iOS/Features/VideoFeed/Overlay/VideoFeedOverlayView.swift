@@ -3,8 +3,8 @@ import Kingfisher
 import Library
 import SwiftUI
 
-/// WIP: Full-screen SwiftUI Video Feed overlay. Currently Static.
-/// Takes a plain VideoFeedItem.
+/// Full-screen SwiftUI Video Feed overlay.
+/// Takes a plain `VideoFeedItem`
 struct VideoFeedOverlayView: View {
   private enum Constants {
     static let topGradientOverlayOpacity: Double = 0.2
@@ -28,15 +28,17 @@ struct VideoFeedOverlayView: View {
     static let bottomSafeAreaPadding: CGFloat = 37
   }
 
+  @Binding var isSaved: Bool
+
   let item: VideoFeedItem
   let playbackState: VideoFeedPlaybackState
   let videoPlayer: VideoFeedVideoPlayer
-  let viewModel: VideoFeedViewModelType
 
   var onCloseTapped: (() -> Void)?
   var onCreatorTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
+  var onSaveTapped: (() -> Void)?
   var onCTATapped: (() -> Void)?
 
   var body: some View {
@@ -60,10 +62,11 @@ struct VideoFeedOverlayView: View {
       VStack(alignment: .trailing, spacing: Constants.railBottomSpacing) {
         VideoFeedRightRailView(
           item: self.item,
-          viewModel: self.viewModel,
+          isSaved: self.$isSaved,
           onCreatorTapped: self.onCreatorTapped,
           onShareTapped: self.onShareTapped,
-          onMoreTapped: self.onMoreTapped
+          onMoreTapped: self.onMoreTapped,
+          onSaveTapped: self.onSaveTapped
         )
 
         VideoFeedBottomOverlayView(
@@ -90,7 +93,6 @@ struct VideoFeedOverlayView: View {
       /// Fades out once `isVideoReady` becomes true.
       if let previewURL = self.item.videoPreviewImageURL {
         KFImage(previewURL)
-          /// Loading indicator placeholder until the preview image is loads.
           .placeholder {
             ProgressView()
               .progressViewStyle(.circular)
@@ -103,7 +105,7 @@ struct VideoFeedOverlayView: View {
           .resizable()
           .scaledToFill()
           .ignoresSafeArea()
-          /// Dimmed opacity if the video player errors on load. This will be updated when proper error handling UI is implemented
+          /// Dimmed opacity if the video player errors on load. This will be updated when proper error handling UI is implemented.
           .opacity(
             self.playbackState.isVideoReady
               ? 0
@@ -159,7 +161,6 @@ struct VideoFeedOverlayView: View {
         endPoint: .bottom
       )
       .frame(height: Constants.topGradientOverlayHeight)
-
       Spacer()
     }
   }

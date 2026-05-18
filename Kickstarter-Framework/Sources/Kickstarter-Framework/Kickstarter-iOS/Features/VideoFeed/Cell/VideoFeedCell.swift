@@ -66,7 +66,6 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   override func prepareForReuse() {
     super.prepareForReuse()
-
     self.onCloseTapped = nil
     self.onCreatorTapped = nil
     self.onShareTapped = nil
@@ -82,17 +81,22 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   func configureWith(value _: VideoFeedItem) {}
 
-  func configureWith(value: VideoFeedItem, viewModel: VideoFeedViewModelType) {
+  func configureWith(
+    value: VideoFeedItem,
+    isSaved: Binding<Bool>,
+    onSaveTapped: @escaping () -> Void
+  ) {
     self.contentConfiguration = UIHostingConfiguration {
       VideoFeedOverlayView(
+        isSaved: isSaved,
         item: value,
         playbackState: self.playbackState,
         videoPlayer: self.videoPlayer,
-        viewModel: viewModel,
         onCloseTapped: { [weak self] in self?.onCloseTapped?() },
         onCreatorTapped: { [weak self] in self?.onCreatorTapped?() },
         onShareTapped: { [weak self] in self?.onShareTapped?() },
         onMoreTapped: { [weak self] in self?.onMoreTapped?() },
+        onSaveTapped: onSaveTapped,
         onCTATapped: { [weak self] in self?.ctaTapped() }
       )
     }

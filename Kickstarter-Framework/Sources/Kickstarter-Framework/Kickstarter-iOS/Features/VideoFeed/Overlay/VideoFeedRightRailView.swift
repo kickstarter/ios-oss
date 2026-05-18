@@ -27,16 +27,12 @@ struct VideoFeedRightRailView: View {
   }
 
   let item: VideoFeedItem
-  let viewModel: VideoFeedViewModelType
+  @Binding var isSaved: Bool
 
   var onCreatorTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
-
-  /// Resolves the current item from the VM so SwiftUI tracks `isSaved` reactively.
-  private var currentItem: VideoFeedItem {
-    self.viewModel.items.first(where: { $0.id == self.item.id }) ?? self.item
-  }
+  var onSaveTapped: (() -> Void)?
 
   var body: some View {
     VStack(spacing: Constants.railSpacing) {
@@ -69,14 +65,13 @@ struct VideoFeedRightRailView: View {
   }
 
   private var saveButton: some View {
-    let isSaved = self.currentItem.isSaved
-    let iconName = isSaved ? Constants.saveIconFilled : Constants.saveIconOutline
+    let iconName = self.isSaved ? Constants.saveIconFilled : Constants.saveIconOutline
 
     return RailButtonView(imageName: iconName, label: Constants.saveCountLabel) {
-      self.viewModel.toggleSaved(for: self.currentItem)
+      self.onSaveTapped?()
     }
     .accessibilityLabel(Constants.saveAccessibilityLabel)
-    .animation(.easeInOut(duration: 0.15), value: isSaved)
+    .animation(.easeInOut(duration: 0.15), value: self.isSaved)
   }
 
   private var shareButton: some View {
