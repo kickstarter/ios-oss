@@ -42,4 +42,7 @@ public protocol RichTextStyle: Sendable {
 
   /// Corner radius for image, audio/video, and oEmbed blocks
   var mediaCornerRadius: CGFloat { get }
+
+  /// Corner radius for image, audio/video, and oEmbed blocks
+  var mediaPlaceholderColor: AdaptiveColor { get }
 }

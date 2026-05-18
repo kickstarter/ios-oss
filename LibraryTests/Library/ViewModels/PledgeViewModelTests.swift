@@ -197,7 +197,7 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      self.title.assertValues(["Back this project"])
+      self.title.assertValues(["Payment"])
 
       self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
       self.configurePledgeRewardsSummaryViewProjectCurrency.assertValues([Project.Country.us.currencyCode])
@@ -242,7 +242,7 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      self.title.assertValues(["Back this project"])
+      self.title.assertValues(["Payment"])
 
       self.configurePledgeRewardsSummaryViewRewards.assertValues([[reward]])
       self.configurePledgeRewardsSummaryViewProjectCurrency.assertValues([Project.Country.us.currencyCode])

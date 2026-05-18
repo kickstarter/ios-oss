@@ -8,7 +8,6 @@ import StoreKit
 import UIKit
 
 internal final class ThanksViewController: UIViewController, UITableViewDelegate {
-  @IBOutlet fileprivate var closeButtonContainerView: UIView!
   @IBOutlet fileprivate var shareMoreButton: UIButton!
   @IBOutlet fileprivate var projectsTableView: UITableView!
   @IBOutlet fileprivate var backedLabel: UILabel!
@@ -31,6 +30,8 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.view.backgroundColor = Colors.Background.Surface.primary.uiColor()
+
     self.projectsTableView.register(nib: .DiscoveryPostcardCell)
     self.projectsTableView.register(nib: .ThanksCategoryCell)
     self.projectsTableView.registerCellClass(DiscoveryProjectCardCell.self)
@@ -38,27 +39,36 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     self.projectsTableView.dataSource = self.dataSource
     self.projectsTableView.delegate = self
 
-    self.setupCloseButton()
+    self.setupNavigationItem()
 
     self.viewModel.inputs.viewDidLoad()
   }
 
-  private func setupCloseButton() {
-    let closeButtonView = CloseButtonView { [weak self] in
-      self?.viewModel.inputs.closeButtonTapped()
-    }
-    closeButtonView.translatesAutoresizingMaskIntoConstraints = false
-    self.closeButtonContainerView.addSubview(closeButtonView)
-    NSLayoutConstraint.activate([
-      closeButtonView.centerXAnchor.constraint(
-        equalTo: self.closeButtonContainerView.centerXAnchor,
-        constant: 8
-      ),
-      closeButtonView.centerYAnchor.constraint(
-        equalTo: self.closeButtonContainerView.centerYAnchor,
-        constant: 8
-      )
-    ])
+  private func setupNavigationItem() {
+    let icon = Library.image(named: "icon--cross")?.withRenderingMode(.alwaysOriginal)
+    let closeButton = UIBarButtonItem(
+      image: icon,
+      style: .plain,
+      target: self,
+      action: #selector(self.closeButtonTapped)
+    )
+
+    closeButton.accessibilityLabel = Strings.Dismiss()
+
+    self.navigationItem.leftBarButtonItem = closeButton
+
+    self.configureNavigationBarForPledgeFlow()
+
+    // Make the nav bar look seamless until you scroll.
+    // The seamless look matches how this page used to be designed when it didn't use a navigation bar.
+    let scrollEdgeHiddenAppearance = UINavigationBarAppearance()
+    scrollEdgeHiddenAppearance.configureForPledgeFlow()
+    scrollEdgeHiddenAppearance.shadowColor = nil
+    self.navigationItem.scrollEdgeAppearance = scrollEdgeHiddenAppearance
+
+    // We don't show a title on this page.
+    let emptyTitleView = UIView()
+    self.navigationItem.titleView = emptyTitleView
   }
 
   override func viewDidLayoutSubviews() {
@@ -103,11 +113,6 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.project_accessibility_button_share_label()
       }
-
-    if let navigationController = self.navigationController {
-      _ = navigationController
-        |> UINavigationController.lens.isNavigationBarHidden .~ true
-    }
   }
 
   override func bindViewModel() {
@@ -115,11 +120,10 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
     self.backedLabel.rac.attributedText = self.viewModel.outputs.backedProjectText
 
-    self.viewModel.outputs.dismissToRootViewControllerAndPostNotification
+    self.viewModel.outputs.postProjectBackedNotification
       .observeForControllerAction()
-      .observeValues { [weak self] in
+      .observeValues {
         NotificationCenter.default.post($0)
-        self?.dismiss(animated: true)
       }
 
     self.viewModel.outputs.goToDiscovery

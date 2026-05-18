@@ -104,7 +104,7 @@ public enum PledgeViewContext {
   var title: String {
     switch self {
     case .fixPaymentMethod: return Strings.Fix_payment_method()
-    case .pledge, .latePledge: return Strings.Back_this_project()
+    case .pledge, .latePledge: return Strings.Pledge_flow_navigation_bar_titles_Payment()
     case .update, .updateReward, .editPledgeOverTime: return Strings.Update_pledge()
     case .changePaymentMethod: return Strings.Change_payment_method()
     }

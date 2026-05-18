@@ -30,17 +30,12 @@ public final class VideoFeedViewModel {
 
     do {
       let result = try await AppEnvironment.current.apiService.fetch(
-        query: VideoFeedQuery(first: 20, after: .none, categoryId: .none)
+        query: VideoFeedQuery(first: 30, after: .none, categoryId: .none)
       )
+
       let nodes = result?.videoFeed?.nodes?.compactMap { $0 } ?? []
 
-      guard let first = nodes.first else {
-        self.isLoading = false
-        return
-      }
-
-      /// Hardcoded list of 20 video items for testing. will be replaced with real video feed data
-      self.items = Array(repeating: VideoFeedItem(node: first), count: 20)
+      self.items = nodes.map(VideoFeedItem.init)
       self.isLoading = false
     } catch {
       self.isLoading = false

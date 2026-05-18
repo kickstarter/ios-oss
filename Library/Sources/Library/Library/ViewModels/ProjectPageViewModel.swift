@@ -162,8 +162,8 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits a signal when the app is no longer being actively used to pause any playing media.
   var pauseMedia: Signal<Void, Never> { get }
 
-  /// Emits when the navigation stack should be popped to the root view controller.
-  var popToRootViewController: Signal<(), Never> { get }
+  /// Emits when the Project page should be shown again (popping back in the stack and dismissing any modals).
+  var navigateBackToProjectPage: Signal<(), Never> { get }
 
   /// Emits `Project` when the MessageDialogViewController should be presented
   var presentMessageDialog: Signal<Project, Never> { get }
@@ -225,7 +225,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public init() {
     let isLoading = MutableProperty(false)
 
-    self.popToRootViewController = self.didBackProjectProperty.signal.ignoreValues()
+    self.navigateBackToProjectPage = self.didBackProjectProperty.signal.ignoreValues()
 
     let freshProjectAndRefTagEvent = self.configDataProperty.signal
       .skipNil()
@@ -858,7 +858,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let goToReportProject: Signal<(Bool, String, String), Never>
   public let goToURL: Signal<URL, Never>
   public let pauseMedia: Signal<Void, Never>
-  public let popToRootViewController: Signal<(), Never>
+  public let navigateBackToProjectPage: Signal<(), Never>
   public let presentMessageDialog: Signal<Project, Never>
   public let precreateAudioVideoURLs: Signal<(AudioVideoViewElement, IndexPath), Never>
   public let precreateAudioVideoURLsOnFirstLoad: Signal<[AudioVideoViewElement], Never>

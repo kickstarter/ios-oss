@@ -3,6 +3,8 @@ import Foundation
 public struct VideoFeedItem: Hashable {
   public let id: String
 
+  public let slug: String
+
   /// Main title shown in the bottom overlay.
   public let title: String
 

@@ -467,10 +467,15 @@ private func titleForContext(_ context: RewardsCollectionViewContext, project: P
   }
 
   guard project.state == .live else {
+    if project.isInPostCampaignPledgingPhase {
+      return Strings.Back_this_project()
+    }
+
     return Strings.View_rewards()
   }
 
-  return context == .createPledge ? Strings.Back_this_project() : Strings.Edit_reward()
+  return context == .createPledge ? Strings.Pledge_flow_navigation_bar_titles_Rewards() : Strings
+    .Edit_reward()
 }
 
 private func shouldTriggerEditRewardPrompt(_ data: PledgeViewData) -> Bool {

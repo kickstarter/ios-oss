@@ -29,15 +29,19 @@ final class VideoFeedViewControllerTests: TestCase {
         language: language,
         mainBundle: MockBundle(bundleIdentifier: appBundle.bundleIdentifier)
       ) {
-        let cell = VideoFeedCell(frame: CGRect(
-          x: 0,
-          y: 0,
-          width: device.deviceSize.width,
-          height: device.deviceSize.height
-        ))
+        let cell = VideoFeedCell(
+          frame: CGRect(
+            x: 0,
+            y: 0,
+            width: device.deviceSize.width,
+            height: device.deviceSize.height
+          ),
+          videoPlayer: MockVideoFeedVideoPlayer()
+        )
 
         cell.configureWith(value: VideoFeedItem(
           id: "0",
+          slug: "video_feed",
           title: "Ringo Move - The Ultimate Workout Bottle",
           creator: "Creator Name",
           creatorImageURL: nil,
@@ -49,10 +53,64 @@ final class VideoFeedViewControllerTests: TestCase {
         ))
 
         assertSnapshot(
-          matching: cell,
+          of: cell,
           as: .image(perceptualPrecision: 0.99)
         )
       }
     }
   }
+
+  func testView_VideoFeedCell_LongTitle() {
+    // TODO: Update to all languages once translations are in [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
+    orthogonalCombos(
+      [Language.en],
+      Device.allCases
+    ).forEach {
+      language, device in
+
+      let appBundle = Bundle(identifier: KickstarterBundleIdentifier.debug.rawValue) ?? Bundle.main
+
+      withEnvironment(
+        language: language,
+        mainBundle: MockBundle(bundleIdentifier: appBundle.bundleIdentifier)
+      ) {
+        let cell = VideoFeedCell(
+          frame: CGRect(
+            x: 0,
+            y: 0,
+            width: device.deviceSize.width,
+            height: device.deviceSize.height
+          ),
+          videoPlayer: MockVideoFeedVideoPlayer()
+        )
+
+        cell.configureWith(value: VideoFeedItem(
+          id: "0",
+          slug: "video_feed",
+          title: "Ringo Move - The Ultimate Workout Bottle for People Who Like Long Product Names That Wrap Across Several Lines For People Who Like Long Product Names That Wrap Across Several Lines",
+          creator: "Creator Name",
+          creatorImageURL: nil,
+          statsText: "$50,134 pledged · Join 431 backers",
+          categoryPillText: "Project We Love",
+          secondaryPillText: "3 days left",
+          videoURL: nil,
+          videoPreviewImageURL: nil
+        ))
+
+        assertSnapshot(
+          of: cell,
+          as: .image(perceptualPrecision: 0.99)
+        )
+      }
+    }
+  }
+}
+
+final class MockVideoFeedVideoPlayer: VideoFeedVideoPlayer {
+  override var progress: Double { 0.4 }
+  override var isPlaying: Bool { false }
+  override func load(url _: URL) {}
+  override func play() {}
+  override func pause() {}
+  override func stop() {}
 }

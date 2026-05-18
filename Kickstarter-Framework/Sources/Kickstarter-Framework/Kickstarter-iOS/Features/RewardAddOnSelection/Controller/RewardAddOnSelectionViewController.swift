@@ -47,6 +47,8 @@ final class RewardAddOnSelectionViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.configureNavigationBarForPledgeFlow()
+
     self.configureViews()
     self.configureHeaderView()
     self.setupConstraints()
@@ -150,6 +152,12 @@ final class RewardAddOnSelectionViewController: UIViewController {
 
     self.headerLabel.rac.text = self.viewModel.outputs.headerTitle
 
+    self.viewModel.outputs.pageTitle
+      .observeForUI()
+      .observeValues { [weak self] title in
+        self?.navigationItem.title = title
+      }
+
     self.viewModel.outputs.configureContinueCTAViewWithData
       .observeForUI()
       .observeValues { [weak self] data in
@@ -215,7 +223,7 @@ final class RewardAddOnSelectionViewController: UIViewController {
   private func goToLatePledge(data: PledgeViewData) {
     let vc = PostCampaignCheckoutViewController.instantiate()
     vc.configure(with: data)
-    vc.title = self.title
+    vc.title = Strings.Pledge_flow_navigation_bar_titles_Payment()
 
     self.navigationController?.pushViewController(vc, animated: true)
   }
