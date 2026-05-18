@@ -194,6 +194,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     if self == root {
       self.navigationItem.leftBarButtonItem = self.navigation.closeButton
     }
+
+    self.navigationItem.title = Strings.Pledge_flow_navigation_bar_titles_Project()
+    // Hide the title, but keep it set for the back button.
+    self.navigationItem.titleView = UIView()
   }
 
   private func configurePledgeCTAContainerView() {
