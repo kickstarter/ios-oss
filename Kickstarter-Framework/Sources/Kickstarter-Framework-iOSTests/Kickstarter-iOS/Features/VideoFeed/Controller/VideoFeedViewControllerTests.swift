@@ -2,6 +2,7 @@
 @testable import Library
 @testable import LibraryTestHelpers
 import SnapshotTesting
+import SwiftUI
 import UIKit
 
 final class VideoFeedViewControllerTests: TestCase {
@@ -54,7 +55,8 @@ final class VideoFeedViewControllerTests: TestCase {
             projectId: "1",
             isSaved: false
           ),
-          viewModel: MockVideoFeedViewModel()
+          isSaved: .constant(false),
+          onSaveTapped: {}
         )
 
         assertSnapshot(
@@ -102,9 +104,10 @@ final class VideoFeedViewControllerTests: TestCase {
             videoURL: nil,
             videoPreviewImageURL: nil,
             projectId: "1",
-            isSaved: false
+            isSaved: true
           ),
-          viewModel: MockVideoFeedViewModel()
+          isSaved: .constant(true),
+          onSaveTapped: {}
         )
 
         assertSnapshot(
@@ -114,12 +117,6 @@ final class VideoFeedViewControllerTests: TestCase {
       }
     }
   }
-}
-
-final class MockVideoFeedViewModel: VideoFeedViewModelType {
-  var items: [VideoFeedItem] = []
-  func viewDidLoad() {}
-  func toggleSaved(for _: VideoFeedItem) {}
 }
 
 final class MockVideoFeedVideoPlayer: VideoFeedVideoPlayer {
