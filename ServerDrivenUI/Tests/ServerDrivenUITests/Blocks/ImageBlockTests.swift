@@ -15,7 +15,10 @@ final class ImageBlockTests: TestCase {
 
     let view = imageBlock(photo: photo, colorScheme: .light)
 
-    XCTAssertNoThrow(try view.inspect().find(viewWithAccessibilityLabel: "Test image"), "Expected ImageBlock to expose accessibility label 'Test image' when URL is valid.")
+    XCTAssertNoThrow(
+      try view.inspect().find(viewWithAccessibilityLabel: "Test image"),
+      "Expected ImageBlock to expose accessibility label 'Test image' when URL is valid."
+    )
   }
 
   func testImageBlockWithValidURL_exposesPhoto() throws {
@@ -27,8 +30,16 @@ final class ImageBlockTests: TestCase {
     let view = imageBlock(photo: photo, colorScheme: .light)
     let imageBlock = try view.inspect().find(ImageBlock.self).actualView()
 
-    XCTAssertEqual(imageBlock.photo.altText, "Test image", "ImageBlock.photo.altText should equal the provided alt text when URL is valid.")
-    XCTAssertEqual(imageBlock.photo.url, photo.url, "ImageBlock.photo.url should equal the provided photo URL.")
+    XCTAssertEqual(
+      imageBlock.photo.altText,
+      "Test image",
+      "ImageBlock.photo.altText should equal the provided alt text when URL is valid."
+    )
+    XCTAssertEqual(
+      imageBlock.photo.url,
+      photo.url,
+      "ImageBlock.photo.url should equal the provided photo URL."
+    )
   }
 
   func testImageBlockWithoutURL_rendersClearPlaceholder() throws {
@@ -36,8 +47,14 @@ final class ImageBlockTests: TestCase {
 
     let view = imageBlock(photo: photo, colorScheme: .light)
 
-    XCTAssertNoThrow(try view.inspect().find(ViewType.Color.self), "Expected a clear Color placeholder when photo URL is nil.")
-    XCTAssertNoThrow(try view.inspect().find(viewWithAccessibilityLabel: "Missing image"), "Expected accessibility label 'Missing image' even when URL is nil.")
+    XCTAssertNoThrow(
+      try view.inspect().find(ViewType.Color.self),
+      "Expected a clear Color placeholder when photo URL is nil."
+    )
+    XCTAssertNoThrow(
+      try view.inspect().find(viewWithAccessibilityLabel: "Missing image"),
+      "Expected accessibility label 'Missing image' even when URL is nil."
+    )
   }
 
   func testImageBlockWithEmptyURL_rendersClearPlaceholder() throws {
@@ -45,8 +62,14 @@ final class ImageBlockTests: TestCase {
 
     let view = imageBlock(photo: photo, colorScheme: .light)
 
-    XCTAssertNoThrow(try view.inspect().find(ViewType.Color.self), "Expected a clear Color placeholder when photo URL is empty.")
-    XCTAssertNoThrow(try view.inspect().find(viewWithAccessibilityLabel: "Missing image"), "Expected accessibility label 'Missing image' even when URL is empty.")
+    XCTAssertNoThrow(
+      try view.inspect().find(ViewType.Color.self),
+      "Expected a clear Color placeholder when photo URL is empty."
+    )
+    XCTAssertNoThrow(
+      try view.inspect().find(viewWithAccessibilityLabel: "Missing image"),
+      "Expected accessibility label 'Missing image' even when URL is empty."
+    )
   }
 
   func testImageBlockWithNilAltText_hasEmptyAccessibilityLabel() throws {
@@ -54,7 +77,10 @@ final class ImageBlockTests: TestCase {
 
     let view = imageBlock(photo: photo, colorScheme: .light)
 
-    XCTAssertNoThrow(try view.inspect().find(viewWithAccessibilityLabel: ""), "Expected empty accessibility label when altText is nil.")
+    XCTAssertNoThrow(
+      try view.inspect().find(viewWithAccessibilityLabel: ""),
+      "Expected empty accessibility label when altText is nil."
+    )
   }
 
   func testImageBlockWithValidURL_lightAndDarkStyles() throws {
@@ -67,8 +93,15 @@ final class ImageBlockTests: TestCase {
       let view = imageBlock(photo: photo, colorScheme: colorScheme)
       let imageBlock = try view.inspect().find(ImageBlock.self).actualView()
 
-      XCTAssertEqual(imageBlock.photo.altText, "Styled image", "ImageBlock.photo.altText should equal 'Styled image' for color scheme \(colorScheme).")
-      XCTAssertNoThrow(try view.inspect().find(viewWithAccessibilityLabel: "Styled image"), "Expected accessibility label 'Styled image' for color scheme \(colorScheme).")
+      XCTAssertEqual(
+        imageBlock.photo.altText,
+        "Styled image",
+        "ImageBlock.photo.altText should equal 'Styled image' for color scheme \(colorScheme)."
+      )
+      XCTAssertNoThrow(
+        try view.inspect().find(viewWithAccessibilityLabel: "Styled image"),
+        "Expected accessibility label 'Styled image' for color scheme \(colorScheme)."
+      )
     }
   }
 
@@ -82,8 +115,15 @@ final class ImageBlockTests: TestCase {
     let image = try view.inspect().find(viewWithAccessibilityLabel: "Test image")
     let aspectRatio = try image.aspectRatio()
 
-    XCTAssertNil(aspectRatio.aspectRatio, "Expected no explicit aspectRatio value when using .fit content mode.")
-    XCTAssertEqual(aspectRatio.contentMode, .fit, "Expected image content mode to be .fit when URL is valid and no container size is provided.")
+    XCTAssertNil(
+      aspectRatio.aspectRatio,
+      "Expected no explicit aspectRatio value when using .fit content mode."
+    )
+    XCTAssertEqual(
+      aspectRatio.contentMode,
+      .fit,
+      "Expected image content mode to be .fit when URL is valid and no container size is provided."
+    )
   }
 
   func testImageBlockWithoutURL_expandsToMaximumWidth() throws {
@@ -93,7 +133,10 @@ final class ImageBlockTests: TestCase {
     let placeholder = try view.inspect().find(ViewType.Color.self)
     let frame = try placeholder.flexFrame()
 
-    XCTAssertTrue(frame.maxWidth.isInfinite, "Expected placeholder to expand to maximum width when URL is nil.")
+    XCTAssertTrue(
+      frame.maxWidth.isInfinite,
+      "Expected placeholder to expand to maximum width when URL is nil."
+    )
   }
 
   func testImageBlockWithEmptyURL_expandsToMaximumWidth() throws {
@@ -103,7 +146,10 @@ final class ImageBlockTests: TestCase {
     let placeholder = try view.inspect().find(ViewType.Color.self)
     let frame = try placeholder.flexFrame()
 
-    XCTAssertTrue(frame.maxWidth.isInfinite, "Expected placeholder to expand to maximum width when URL is empty.")
+    XCTAssertTrue(
+      frame.maxWidth.isInfinite,
+      "Expected placeholder to expand to maximum width when URL is empty."
+    )
   }
 
   func testImageBlockWithValidURL_respectsContainerFrame() throws {
@@ -122,8 +168,16 @@ final class ImageBlockTests: TestCase {
     )
     let frame = try view.inspect().fixedFrame()
 
-    XCTAssertEqual(frame.width, containerWidth, "Expected ImageBlock width to respect the container width \(containerWidth). Actual: \(String(describing: frame.width))")
-    XCTAssertEqual(frame.height, containerHeight, "Expected ImageBlock height to respect the container height \(containerHeight). Actual: \(String(describing: frame.height))")
+    XCTAssertEqual(
+      frame.width,
+      containerWidth,
+      "Expected ImageBlock width to respect the container width \(containerWidth). Actual: \(String(describing: frame.width))"
+    )
+    XCTAssertEqual(
+      frame.height,
+      containerHeight,
+      "Expected ImageBlock height to respect the container height \(containerHeight). Actual: \(String(describing: frame.height))"
+    )
   }
 }
 

@@ -23,6 +23,8 @@ struct ImageBlock: View {
           }
           .aspectRatio(contentMode: .fit)
           .clipShape(RoundedRectangle(cornerRadius: self.style.mediaCornerRadius))
+          .accessibilityElement()
+          .accessibilityAddTraits(.isImage)
           .accessibilityLabel(self.photo.altText ?? "")
       } else {
         Color.clear
