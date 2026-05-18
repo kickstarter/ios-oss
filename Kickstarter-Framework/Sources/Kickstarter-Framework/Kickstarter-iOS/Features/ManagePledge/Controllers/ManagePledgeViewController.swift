@@ -172,9 +172,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     _ = self.tableView
       |> checkoutBackgroundStyle
 
-    _ = self.closeButton
-      |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
-      |> \.width .~ Styles.minTouchSize.width
+    self.closeButton.accessibilityLabel = Strings.Dismiss()
 
     _ = self.menuButton
       |> \.accessibilityLabel %~ { _ in Strings.Menu() }
@@ -614,9 +612,7 @@ extension ManagePledgeViewController {
       action: #selector(ManagePledgeViewController.closeButtonTapped)
     )
 
-    _ = closeButton
-      |> \.width .~ Styles.minTouchSize.width
-      |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
+    closeButton.accessibilityLabel = Strings.Dismiss()
 
     managePledgeViewController.navigationItem.setLeftBarButton(closeButton, animated: false)
 

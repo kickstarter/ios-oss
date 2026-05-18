@@ -47,6 +47,8 @@ final class RewardAddOnSelectionViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.configureNavigationBarForPledgeFlow()
+
     self.configureViews()
     self.configureHeaderView()
     self.setupConstraints()

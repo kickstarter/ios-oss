@@ -232,10 +232,18 @@ private enum Layout {
 extension UINavigationBarAppearance {
   static var projectPageNavigationBarAppearance: UINavigationBarAppearance {
     let appearance = UINavigationBarAppearance()
-    // On iOS 18, if we don't set the color explicitly, it's slight off from the white we want.
-    appearance.backgroundColor = Colors.Background.Surface.primary.uiColor()
+
+    // On iOS 26, we leave the background transparent.
+    // That way, if we transition between the Project page and a page with a transparent Liquid Glass header,
+    // we get nicest possible animated transitions.
+
+    // On iOS 18, we set it to white to get it to match the project page header.
+    if #unavailable(iOS 26) {
+      appearance.backgroundColor = Colors.Background.Surface.primary.uiColor()
+    }
+
     // Hide the nav bar shadow, so it blends in with the project page tabs below.
-    appearance.shadowColor = Colors.Background.Surface.primary.uiColor()
+    appearance.shadowColor = nil
     return appearance
   }
 }

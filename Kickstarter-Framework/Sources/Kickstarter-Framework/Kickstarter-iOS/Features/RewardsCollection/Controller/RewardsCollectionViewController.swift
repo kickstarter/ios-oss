@@ -80,6 +80,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.configureNavigationBarForPledgeFlow()
+
     _ = self
       |> \.extendedLayoutIncludesOpaqueBars .~ true
 
@@ -429,7 +431,6 @@ extension RewardsCollectionViewController {
       action: #selector(RewardsCollectionViewController.closeButtonTapped)
     )
 
-    closeButton.width = Styles.minTouchSize.width
     closeButton.accessibilityLabel = Strings.Dismiss()
 
     rewardsCollectionViewController.navigationItem.setLeftBarButton(closeButton, animated: false)

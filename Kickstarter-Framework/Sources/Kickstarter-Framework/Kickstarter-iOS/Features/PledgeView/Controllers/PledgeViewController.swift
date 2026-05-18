@@ -134,8 +134,9 @@ final class PledgeViewController: UIViewController,
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    _ = self
-      |> \.extendedLayoutIncludesOpaqueBars .~ true
+    self.configureNavigationBarForPledgeFlow()
+
+    self.extendedLayoutIncludesOpaqueBars = true
 
     self.titleLabel.text = Strings.Checkout()
 
@@ -208,7 +209,7 @@ final class PledgeViewController: UIViewController,
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.rootScrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+      self.rootScrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
       self.rootScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.rootScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.rootScrollView.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor),
@@ -364,6 +365,7 @@ final class PledgeViewController: UIViewController,
         self.delegate?.pledgeViewControllerDidUpdatePledge(self, message: message)
       }
 
+    // This is currently called when a pledge is being *edited*.
     self.viewModel.outputs.popToRootViewController
       .observeForControllerAction()
       .observeValues { [weak self] in

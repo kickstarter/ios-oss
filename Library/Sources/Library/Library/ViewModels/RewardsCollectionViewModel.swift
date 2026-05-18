@@ -467,6 +467,10 @@ private func titleForContext(_ context: RewardsCollectionViewContext, project: P
   }
 
   guard project.state == .live else {
+    if project.isInPostCampaignPledgingPhase {
+      return Strings.Back_this_project()
+    }
+
     return Strings.View_rewards()
   }
 
