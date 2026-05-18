@@ -99,8 +99,7 @@ final class PostCampaignCheckoutViewController: UIViewController,
     _ = self
       |> \.extendedLayoutIncludesOpaqueBars .~ true
 
-    self.title = Strings.Back_this_project()
-
+    self.title = Strings.Pledge_flow_navigation_bar_titles_Payment()
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.configureChildViewControllers()

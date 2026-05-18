@@ -35,7 +35,7 @@ final class PledgeViewContextTests: TestCase {
     XCTAssertFalse(context.sectionSeparatorsHidden)
     XCTAssertFalse(context.shippingLocationViewHidden)
     XCTAssertEqual(context.submitButtonTitle, "Pledge")
-    XCTAssertEqual(context.title, "Back this project")
+    XCTAssertEqual(context.title, "Payment")
   }
 
   func testUpdate() {

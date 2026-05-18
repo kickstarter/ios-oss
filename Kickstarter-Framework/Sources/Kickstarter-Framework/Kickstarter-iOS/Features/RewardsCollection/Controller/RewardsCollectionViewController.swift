@@ -301,7 +301,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
     let vc = RewardAddOnSelectionViewController.instantiate()
     vc.pledgeViewDelegate = self.pledgeViewDelegate
     vc.configure(with: data)
-    vc.navigationItem.title = self.title
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

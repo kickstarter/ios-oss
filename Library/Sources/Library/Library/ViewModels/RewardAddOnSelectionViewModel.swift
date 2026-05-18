@@ -41,6 +41,7 @@ public protocol RewardAddOnSelectionViewModelOutputs {
   var endRefreshing: Signal<(), Never> { get }
   var goToPledge: Signal<PledgeViewData, Never> { get }
   var headerTitle: Signal<String, Never> { get }
+  var pageTitle: Signal<String, Never> { get }
   var loadAddOnRewardsIntoDataSource: Signal<[RewardAddOnSelectionDataSourceItem], Never> { get }
   var loadAddOnRewardsIntoDataSourceAndReloadTableView:
     Signal<[RewardAddOnSelectionDataSourceItem], Never> { get }
@@ -83,6 +84,12 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       hasAddons
         ? Strings.Customize_your_reward_with_optional_addons()
         : Strings.Customize_your_reward()
+    }
+
+    self.pageTitle = hasAddOns.map { (hasAddOns: Bool) -> String in
+      hasAddOns
+        ? Strings.Pledge_flow_navigation_bar_titles_Addons()
+        : Strings.Pledge_flow_navigation_bar_titles_Bonus_support()
     }
 
     // Only fetch add-ons if the base reward has add-ons.
@@ -422,6 +429,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
   public let endRefreshing: Signal<(), Never>
   public let goToPledge: Signal<PledgeViewData, Never>
   public let headerTitle: Signal<String, Never>
+  public let pageTitle: Signal<String, Never>
   public let loadAddOnRewardsIntoDataSource: Signal<[RewardAddOnSelectionDataSourceItem], Never>
   public let loadAddOnRewardsIntoDataSourceAndReloadTableView:
     Signal<[RewardAddOnSelectionDataSourceItem], Never>

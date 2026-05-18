@@ -103,8 +103,11 @@
 "Blocked_user_confirmation" = "Wenn du diesen Nutzer blockierst, siehst du keine Kommentare oder Inhalte mehr von ihm. Falls du Projekte von diesem Nutzer gespeichert oder unterstützt hast, musst du deinen Beitrag vor dem Blockieren entfernen. Weitere Informationen dazu, wie du die Blockierung eines Nutzers aufheben kannst, findest du im Hilfecenter.";
 "Bonus" = "Bonus";
 "Bonus_support" = "Bonus-Unterstützung";
+"Bookmark" = "Bookmark";
+"Bookmark_this_project" = "Bookmark this project";
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
+"By_a_superbacker" = "By a superbacker";
 "By_creating_an_account_you_agree_to_Kickstarters_Terms_of_Use_and_Privacy_Policy" = "Mit Erstellung eines Kontos erklärst du dich mit Kickstarters <a href=\"%{terms_of_use_link}\">Nutzungsbedingungen</a> und <a href=\"%{privacy_policy_link}\">Datenschutzrichtlinien</a> einverstanden.";
 "By_pledging_you_acknowledge" = "Durch deinen Finanzierungsbeitrag erkennst du an, dass weder der Projektgründer noch Kickstarter Belohnungen oder Rückerstattungen garantieren.";
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Bei Leistung eines Finanzierungsbeitrags erkennst du Kickstarters <a href=\"%{terms_of_use_link}\">Nutzungsbedingungen</a>, <a href=\"%{privacy_policy_link}\">Datenschutzrichtlinien</a> und <a href=\"%{cookie_policy_link}\">Cookie-Richtlinien</a> an.";
@@ -113,6 +116,7 @@
 "By_submitting_your_pledge_you_agree_that_Stripe_may_charge_your_payment_method" = "Durch das Einsenden deines Finanzierungsbeitrags erklärst du dich mit einer Abbuchung von deiner Zahlungsweise durch unseren Zahlungsdienstleister Stripe einverstanden.";
 "CVC" = "CVC";
 "Campaign" = "Kampagne";
+"Campaign_goal_reached" = "Campaign goal reached";
 "Cancel" = "Abbrechen";
 "Cancel_pledge" = "Beitrag zurückziehen";
 "Cancel_your_pledge" = "Deinen Beitrag zurückziehen";
@@ -297,6 +301,7 @@
 "Find_projects_youll_love_and_help_bring" = "Finde Projekte, die zu dir passen und hilf mit bei der Umsetzung neuer, kreativer Ideen.";
 "Find_projects_youll_love_in_art_design_film" = "Finde Projekte nach deinem Geschmack - in Kunst, Design, Film, Spiele, Musik und vielen anderen Kategorien. Wenn du ein Projekt unterstützt hast, wird deren Aktivität hier angezeigt.";
 "First_created" = "Erstes Projekt";
+"First_time_creator" = "First-time creator";
 "Fix" = "Korrigieren";
 "Fix_payment" = "Zahlung korrigieren";
 "Fix_payment_method" = "Zahlungsmethode ändern";
@@ -362,6 +367,7 @@
 "Help_local_businesses_keep_the_lights" = "Mit deiner Hilfe gehen bei lokalen Geschäften während COVID-19 nicht die Lichter aus.";
 "Hide_password" = "Passwort verbergen";
 "Home" = "Home";
+"Hot_right_now" = "Absolutes Highlight";
 "How_backers_found_your_project" = "Wie Unterstützer dein Projekt gefunden haben";
 "I_am_incorporating_AI_in_my_project" = "Ich werde KI auf andere Weise in mein Projekt integrieren.";
 "I_plan_to_use_AI_generated_content" = "Ich plane, bei meinem Projekt KI-generierte Inhalte zu nutzen.";
@@ -398,6 +404,7 @@
 "Join_our_secret_society" = "Sei dabei bei unserem Geheimbund.";
 "Joining_the_live_stream" = "Verbindung zum Live-Stream wird aufgebaut";
 "Just_for_you" = "Nur für dich.";
+"Just_launched" = "Gerade veröffentlicht";
 "Keep_in_touch_after_your_campaign" = "Bleibe auch nach deiner Kampagne in Verbindung und plane dein nächstes Projekt.";
 "Keep_reading" = "Mehr lesen";
 "Keep_up_with_future_live_streams" = "Zeitnahe Info zu zukünftigen Live-Streams";
@@ -464,12 +471,14 @@
 "Message_user_name" = "Nachricht senden an %{user_name}…";
 "Messages" = "Nachrichten";
 "Million_plus" = "Über %{total_amount} Millionen";
+"More_options" = "Weitere Optionen";
 "More_than_number_of_items_items" = "Mehr als %{number_of_items} Benachrichtigungen";
 "Most_backed" = "Meist unterstüzt";
 "Most_funded" = "Meist finanziert";
 "My_project_seeks_funding_for_AI_technology" = "Mit meinem Projekt soll KI-Technologie finanziert werden.";
 "Name" = "Name";
 "Near_me" = "In meiner Nähe";
+"Near_you" = "Near you";
 "Never" = "Niemals";
 "New_email" = "Neue E-Mail";
 "New_password" = "Neues Passwort";
@@ -546,6 +555,7 @@
 "Percentage_raised_pill_bucket_0" = "Unter 75 % gesammelt";
 "Percentage_raised_pill_bucket_1" = "75–100 % gesammelt";
 "Percentage_raised_pill_bucket_2" = "Über 100 % gesammelt";
+"Play" = "Abspielen";
 "Please_enter_a_pledge_amount_between_min_and_max" = "Bitte gebe einen Betrag zwischen %{min} und %{max} ein.";
 "Please_enter_an_amount_of_amount_or_less" = "Bitte gib einen Finanzierungsbeitrag von %{amount} oder weniger ein.";
 "Please_enter_an_amount_of_amount_or_more" = "Bitte gib einen Finanzierungsbeitrag von mindestens %{amount} ein.";
@@ -560,6 +570,11 @@
 "Pledge_amount_pledged" = "%{pledge_amount} beigetragen";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Du kannst jeden beliebigen Betrag eingeben, um das Projekt zu unterstützen.";
 "Pledge_details" = "Dein Finanzierungsbeitrag";
+"Pledge_flow_navigation_bar_titles.Addons" = "Add-ons";
+"Pledge_flow_navigation_bar_titles.Bonus_support" = "Bonus-Unterstützung";
+"Pledge_flow_navigation_bar_titles.Payment" = "Zahlung";
+"Pledge_flow_navigation_bar_titles.Project" = "Projekt";
+"Pledge_flow_navigation_bar_titles.Rewards" = "Belohnungen";
 "Pledge_in_full" = "Sofortzahlung";
 "Pledge_label" = "Finanzierungsbeitrag";
 "Pledge_management" = "Beitragsverwaltung";
@@ -586,6 +601,7 @@
 "Prohibited_items" = "Unzulässige Artikel";
 "Project_Cancelled" = "Projekt abgebrochen.";
 "Project_Suspended" = "Projekt ausgesetzt.";
+"Project_We_Love" = "Team-Favoriten";
 "Project_activity" = "Projektaktivität";
 "Project_alerts" = "Wichtige Projekthinweise";
 "Project_cancelled" = "Projekt abgebrochen";
@@ -852,6 +868,7 @@
 "Track_shipment" = "Sendung verfolgen";
 "Track_your_backings" = "Folge deinen unterstützten Projekten";
 "Tracking_number" = "Sendungsnummer: %{number}";
+"Trending" = "Im Trend";
 "Try_adjusting_the_filters" = "Versuche, die Filter anzupassen";
 "Try_rephrasing_your_search" = "Versuche, deine Suche anders zu formulieren";
 "Try_rephrasing_your_search_or_adjusting_the_filters" = "Versuche, deine Suche anders zu formulieren oder die Filter anzupassen";
@@ -1526,6 +1543,7 @@
 "discovery.survey.button.respond_now" = "Jetzt antworten";
 "discovery.survey.creator_needs_some_info_to_deliver_reward_for_project" = "%{creator_name} benötigt einige Angaben, um dir deine Belohnung für %{project_name} zustellen zu können.";
 "discovery.survey.reward_survey" = "Befragung zur Belohnung!";
+"discovery_banner_image_content_description" = "Discovery mode preview";
 "ellipsis_more" = "... weiterlesen";
 "facebook_confirmation.button" = "Neues Konto einrichten";
 "facebook_confirmation.could_not_log_in" = "Anmeldung über Facebook fehlgeschlagen";
@@ -1999,6 +2017,7 @@
 "support_email.subject" = "Hallo Kickstarter App Support";
 "support_email.to" = "app@kickstarter.com";
 "support_email.to_android" = "android@kickstarter.com";
+"swipe_through_a_video_feed_tuning_your_recommendations_along_the_way" = "Swipe through a video feed, tuning your recommendations along the way.";
 "tabbar.activity" = "Aktivität";
 "tabbar.backings" = "Unterstützte Projekte";
 "tabbar.dashboard" = "Dashboard";
@@ -2008,6 +2027,8 @@
 "tabbar.profile" = "Profil";
 "tabbar.search" = "Suche";
 "tabbar.search_projects" = "Projekte suchen";
+"try_it_now" = "Try it now";
+"try_our_new_discovery_mode" = "Try our new discovery mode";
 "two_factor.buttons.resend" = "Erneut senden";
 "two_factor.buttons.submit" = "Absenden";
 "two_factor.code_placeholder" = "Code eingeben";
@@ -2035,3 +2056,4 @@
 "via_custom" = "Benutzerdefiniert";
 "via_external" = "Extern";
 "via_kickstarter" = "über Kickstarter";
+"video_feed_campaign_subtitle" = "%{pledged} pledged • Join %{backers} backers";

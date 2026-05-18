@@ -1736,6 +1736,40 @@ contributeurs"
     )
   }
   /**
+   "Bookmark"
+
+   - **en**: "Bookmark"
+   - **de**: "Bookmark"
+   - **es**: "Bookmark"
+   - **fr**: "Bookmark"
+   - **ja**: "ブックマーク"
+  */
+  public static func Bookmark() -> String {
+    return localizedString(
+      key: "Bookmark",
+      defaultValue: "Bookmark",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Bookmark this project"
+
+   - **en**: "Bookmark this project"
+   - **de**: "Bookmark this project"
+   - **es**: "Bookmark this project"
+   - **fr**: "Bookmark this project"
+   - **ja**: "このプロジェクトをブックマーク"
+  */
+  public static func Bookmark_this_project() -> String {
+    return localizedString(
+      key: "Bookmark_this_project",
+      defaultValue: "Bookmark this project",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Bookmarks"
 
    - **en**: "Bookmarks"
@@ -1765,6 +1799,23 @@ contributeurs"
     return localizedString(
       key: "Bring_creative_projects_to_life",
       defaultValue: "Bring creative projects to life.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "By a superbacker"
+
+   - **en**: "By a superbacker"
+   - **de**: "By a superbacker"
+   - **es**: "By a superbacker"
+   - **fr**: "Par un Superbacker"
+   - **ja**: "スーパーバッカー"
+  */
+  public static func By_a_superbacker() -> String {
+    return localizedString(
+      key: "By_a_superbacker",
+      defaultValue: "By a superbacker",
       count: nil,
       substitutions: [:]
     )
@@ -1901,6 +1952,23 @@ contributeurs"
     return localizedString(
       key: "Campaign",
       defaultValue: "Campaign",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Campaign goal reached"
+
+   - **en**: "Campaign goal reached"
+   - **de**: "Campaign goal reached"
+   - **es**: "Meta de campaña alcanzada"
+   - **fr**: "Objectif de campagne atteint"
+   - **ja**: "Campaign goal reached"
+  */
+  public static func Campaign_goal_reached() -> String {
+    return localizedString(
+      key: "Campaign_goal_reached",
+      defaultValue: "Campaign goal reached",
       count: nil,
       substitutions: [:]
     )
@@ -4910,6 +4978,23 @@ Cliquez pour réessayer."
     )
   }
   /**
+   "First-time creator"
+
+   - **en**: "First-time creator"
+   - **de**: "First-time creator"
+   - **es**: "Creador novato"
+   - **fr**: "Nouveau créateur"
+   - **ja**: "First-time creator"
+  */
+  public static func First_time_creator() -> String {
+    return localizedString(
+      key: "First_time_creator",
+      defaultValue: "First-time creator",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Fix"
 
    - **en**: "Fix"
@@ -6015,6 +6100,23 @@ Cliquez pour réessayer."
     )
   }
   /**
+   "This project is hot!"
+
+   - **en**: "This project is hot!"
+   - **de**: "Absolutes Highlight"
+   - **es**: "Proyecto en tendencia"
+   - **fr**: "Ce projet décolle !"
+   - **ja**: "人気プロジェクト！"
+  */
+  public static func Hot_right_now() -> String {
+    return localizedString(
+      key: "Hot_right_now",
+      defaultValue: "This project is hot!",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "How backers found your project"
 
    - **en**: "How backers found your project"
@@ -6625,6 +6727,23 @@ with friends."
     return localizedString(
       key: "Just_for_you",
       defaultValue: "Just for you.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Just launched"
+
+   - **en**: "Just launched"
+   - **de**: "Gerade veröffentlicht"
+   - **es**: "Proyectos recientes"
+   - **fr**: "En début de campagne"
+   - **ja**: "最新"
+  */
+  public static func Just_launched() -> String {
+    return localizedString(
+      key: "Just_launched",
+      defaultValue: "Just launched",
       count: nil,
       substitutions: [:]
     )
@@ -7684,6 +7803,23 @@ with friends."
     )
   }
   /**
+   "More options"
+
+   - **en**: "More options"
+   - **de**: "Weitere Optionen"
+   - **es**: "Más opciones"
+   - **fr**: "Plus d'options"
+   - **ja**: "その他のオプション"
+  */
+  public static func More_options() -> String {
+    return localizedString(
+      key: "More_options",
+      defaultValue: "More options",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "More than %{number_of_items} items"
 
    - **en**: "More than %{number_of_items} items"
@@ -7781,6 +7917,23 @@ with friends."
     return localizedString(
       key: "Near_me",
       defaultValue: "Near me",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Near you"
+
+   - **en**: "Near you"
+   - **de**: "Near you"
+   - **es**: "Near you"
+   - **fr**: "Près de chez moi"
+   - **ja**: "Near you"
+  */
+  public static func Near_you() -> String {
+    return localizedString(
+      key: "Near_you",
+      defaultValue: "Near you",
       count: nil,
       substitutions: [:]
     )
@@ -9081,6 +9234,23 @@ n'ont rien soutenu."
     )
   }
   /**
+   "Play"
+
+   - **en**: "Play"
+   - **de**: "Abspielen"
+   - **es**: "Reproducir"
+   - **fr**: "Lecture"
+   - **ja**: "動画を再生"
+  */
+  public static func Play() -> String {
+    return localizedString(
+      key: "Play",
+      defaultValue: "Play",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Please enter a pledge amount between %{min} and %{max}."
 
    - **en**: "Please enter a pledge amount between %{min} and %{max}."
@@ -9314,6 +9484,91 @@ n'ont rien soutenu."
     return localizedString(
       key: "Pledge_details",
       defaultValue: "Pledge details",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Add-ons"
+
+   - **en**: "Add-ons"
+   - **de**: "Add-ons"
+   - **es**: "Complementos"
+   - **fr**: "Compléments"
+   - **ja**: "アドオン"
+  */
+  public static func Pledge_flow_navigation_bar_titles_Addons() -> String {
+    return localizedString(
+      key: "Pledge_flow_navigation_bar_titles.Addons",
+      defaultValue: "Add-ons",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Bonus Support"
+
+   - **en**: "Bonus Support"
+   - **de**: "Bonus-Unterstützung"
+   - **es**: "Apoyo extra"
+   - **fr**: "Coup de pouce"
+   - **ja**: "ボーナスサポート"
+  */
+  public static func Pledge_flow_navigation_bar_titles_Bonus_support() -> String {
+    return localizedString(
+      key: "Pledge_flow_navigation_bar_titles.Bonus_support",
+      defaultValue: "Bonus Support",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Payment"
+
+   - **en**: "Payment"
+   - **de**: "Zahlung"
+   - **es**: "Pago"
+   - **fr**: "Paiement"
+   - **ja**: "支払い"
+  */
+  public static func Pledge_flow_navigation_bar_titles_Payment() -> String {
+    return localizedString(
+      key: "Pledge_flow_navigation_bar_titles.Payment",
+      defaultValue: "Payment",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Project"
+
+   - **en**: "Project"
+   - **de**: "Projekt"
+   - **es**: "Proyecto"
+   - **fr**: "Projet"
+   - **ja**: "プロジェクト"
+  */
+  public static func Pledge_flow_navigation_bar_titles_Project() -> String {
+    return localizedString(
+      key: "Pledge_flow_navigation_bar_titles.Project",
+      defaultValue: "Project",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Rewards"
+
+   - **en**: "Rewards"
+   - **de**: "Belohnungen"
+   - **es**: "Recompensas"
+   - **fr**: "Vos récompenses"
+   - **ja**: "リワード"
+  */
+  public static func Pledge_flow_navigation_bar_titles_Rewards() -> String {
+    return localizedString(
+      key: "Pledge_flow_navigation_bar_titles.Rewards",
+      defaultValue: "Rewards",
       count: nil,
       substitutions: [:]
     )
@@ -9756,6 +10011,23 @@ n'ont rien soutenu."
     return localizedString(
       key: "Project_Suspended",
       defaultValue: "Project Suspended.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Project We Love"
+
+   - **en**: "Project We Love"
+   - **de**: "Team-Favoriten"
+   - **es**: "Nuestros Favoritos"
+   - **fr**: "Nos coups de cœur"
+   - **ja**: "素敵なプロジェクト"
+  */
+  public static func Project_We_Love() -> String {
+    return localizedString(
+      key: "Project_We_Love",
+      defaultValue: "Project We Love",
       count: nil,
       substitutions: [:]
     )
@@ -13945,6 +14217,23 @@ catch your eye?"
       defaultValue: "Tracking number: %{number}",
       count: nil,
       substitutions: ["number": number]
+    )
+  }
+  /**
+   "Trending"
+
+   - **en**: "Trending"
+   - **de**: "Im Trend"
+   - **es**: "Trending"
+   - **fr**: "Les tendances"
+   - **ja**: "急上昇"
+  */
+  public static func Trending() -> String {
+    return localizedString(
+      key: "Trending",
+      defaultValue: "Trending",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -23163,6 +23452,23 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "Discovery mode preview"
+
+   - **en**: "Discovery mode preview"
+   - **de**: "Discovery mode preview"
+   - **es**: "Discovery mode preview"
+   - **fr**: "Aperçu du mode découverte"
+   - **ja**: "Discovery mode preview"
+  */
+  public static func discovery_banner_image_content_description() -> String {
+    return localizedString(
+      key: "discovery_banner_image_content_description",
+      defaultValue: "Discovery mode preview",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "…more"
 
    - **en**: "…more"
@@ -30205,6 +30511,23 @@ projets enregistrés"
     )
   }
   /**
+   "Swipe through a video feed, tuning your recommendations along the way."
+
+   - **en**: "Swipe through a video feed, tuning your recommendations along the way."
+   - **de**: "Swipe through a video feed, tuning your recommendations along the way."
+   - **es**: "Swipe through a video feed, tuning your recommendations along the way."
+   - **fr**: "À découvrir : un flux de vidéos qui affinera vos recommandations au fur et à mesure."
+   - **ja**: "Swipe through a video feed, tuning your recommendations along the way."
+  */
+  public static func swipe_through_a_video_feed_tuning_your_recommendations_along_the_way() -> String {
+    return localizedString(
+      key: "swipe_through_a_video_feed_tuning_your_recommendations_along_the_way",
+      defaultValue: "Swipe through a video feed, tuning your recommendations along the way.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Activity"
 
    - **en**: "Activity"
@@ -30353,6 +30676,40 @@ projets enregistrés"
     return localizedString(
       key: "tabbar.search_projects",
       defaultValue: "Search projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Try it now"
+
+   - **en**: "Try it now"
+   - **de**: "Try it now"
+   - **es**: "Probarlo ahora"
+   - **fr**: "J'essaie"
+   - **ja**: "Try it now"
+  */
+  public static func try_it_now() -> String {
+    return localizedString(
+      key: "try_it_now",
+      defaultValue: "Try it now",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Try our new discovery mode"
+
+   - **en**: "Try our new discovery mode"
+   - **de**: "Try our new discovery mode"
+   - **es**: "Prueba nuestro nuevo modo de descubrimiento"
+   - **fr**: "Essayez notre nouveau mode découverte"
+   - **ja**: "Try our new discovery mode"
+  */
+  public static func try_our_new_discovery_mode() -> String {
+    return localizedString(
+      key: "try_our_new_discovery_mode",
+      defaultValue: "Try our new discovery mode",
       count: nil,
       substitutions: [:]
     )
@@ -30746,6 +31103,23 @@ projets enregistrés"
       defaultValue: "via Kickstarter",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "%{pledged} pledged • Join %{backers} backers"
+
+   - **en**: "%{pledged} pledged • Join %{backers} backers"
+   - **de**: "%{pledged} pledged • Join %{backers} backers"
+   - **es**: "%{pledged} recaudado • Únete a %{backers} patrocinadores"
+   - **fr**: "%{pledged} engagés • Rejoignez les %{backers} contributeurs"
+   - **ja**: "プレッジ総額: %{pledged} • 現在のバッカー数: %{backers}"
+  */
+  public static func video_feed_campaign_subtitle(pledged: String, backers: String) -> String {
+    return localizedString(
+      key: "video_feed_campaign_subtitle",
+      defaultValue: "%{pledged} pledged • Join %{backers} backers",
+      count: nil,
+      substitutions: ["pledged": pledged, "backers": backers]
     )
   }
 }
