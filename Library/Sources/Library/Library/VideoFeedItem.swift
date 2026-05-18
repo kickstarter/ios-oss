@@ -10,7 +10,7 @@ public struct VideoFeedItem: Hashable {
   /// Creator name shown in the bottom overlay.
   public let creator: String
 
-  /// Creator avatar URL — used in the right rail's circular avatar button.
+  /// Creator avatar URL for circular avatar button.
   public let creatorImageURL: URL?
 
   /// Stats text shown below the title.

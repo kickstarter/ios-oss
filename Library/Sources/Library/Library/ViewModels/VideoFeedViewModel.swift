@@ -21,7 +21,8 @@ public protocol VideoFeedViewModelType: AnyObject {
 public final class VideoFeedViewModel: VideoFeedViewModelType {
   // MARK: - Outputs
 
-  /// The current working set of items — updated optimistically on watch/unwatch.
+  /// The current working set of items.
+  /// Updated optimistically on watch/unwatch.
   public private(set) var items: [VideoFeedItem] = []
 
   /// Updated only when a real fetch completes.
@@ -32,7 +33,7 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
   public private(set) var errorMessage: String?
 
   /// Watch/Unwatch mutation disposables keyed by project ID.
-  /// Used to ignore taps while a request is already in-flight for a given item.
+  /// Used to ignore taps while a request is already in flight for a given item.
   private var pendingWatchRequests: [String: (input: MutableProperty<Bool>, disposable: Disposable)] = [:]
 
   // MARK: - Inputs

@@ -21,7 +21,7 @@ struct VideoFeedOverlayView: View {
     static let playButtonOffset: CGFloat = -45
     static let closeButtonSize: CGFloat = 44
     static let previewFadeDuration: Double = 0.3
-    /// Preview image opacity when the video has failed to load — dims the BG to surface the label.
+    /// Preview image opacity when the video has failed to load. and dims the BG to surface the label.
     static let failedPreviewOpacity: Double = 0.35
     /// Defining safe area values because `UIHostingConfiguration` returns 0 for safe area insets when in a collectionview.
     static let topSafeAreaPadding: CGFloat = 60

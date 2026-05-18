@@ -80,8 +80,6 @@ final class VideoFeedViewController: UIViewController {
 
   public override func bindViewModel() {
     withObservationTracking {
-      // Observe `fetchedItems` specifically — this only changes on a real fetch,
-      // not on watch/unwatch mutations, so we never call reloadData unnecessarily.
       _ = self.viewModel.fetchedItems
     } onChange: { [weak self] in
       DispatchQueue.main.async { [weak self] in
