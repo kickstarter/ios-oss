@@ -70,7 +70,7 @@ final class VideoFeedViewModelTests: TestCase {
     XCTAssertNotNil(self.vm.errorMessage)
   }
 
-  func testToggleSaved_Watch_ThenUnwatch_UpdatesIsSaved() async {
+  func testToggleSaved_Watch_UpdatesIsSaved() async {
     let mockData = Self.mockVideoFeedQueryData(itemCount: 1, isWatched: false)
 
     await withEnvironment(apiService: MockService(fetchGraphQLResponses: [(VideoFeedQuery.self, mockData)])) {
@@ -79,15 +79,27 @@ final class VideoFeedViewModelTests: TestCase {
 
     let item = try! XCTUnwrap(self.vm.items.first)
 
+    XCTAssertFalse(item.isSaved)
+
     self.vm.toggleSaved(for: item)
 
-    XCTAssertTrue(self.vm.items.first?.isSaved == true)
+    XCTAssert(self.vm.items.first?.isSaved == true)
+  }
 
-    let updatedItem = try! XCTUnwrap(self.vm.items.first)
+  func testToggleSaved_Unwatch_UpdatesIsSaved() async {
+    let mockData = Self.mockVideoFeedQueryData(itemCount: 1, isWatched: true)
 
-    self.vm.toggleSaved(for: updatedItem)
+    await withEnvironment(apiService: MockService(fetchGraphQLResponses: [(VideoFeedQuery.self, mockData)])) {
+      await self.vm.fetchVideoFeed()
+    }
 
-    XCTAssertFalse(self.vm.items.first?.isSaved == true)
+    let item = try! XCTUnwrap(self.vm.items.first)
+
+    XCTAssertTrue(item.isSaved)
+
+    self.vm.toggleSaved(for: item)
+
+    XCTAssert(self.vm.items.first?.isSaved == false)
   }
 
   func testToggleSaved_OnlyAffectsSelectItems() async {
