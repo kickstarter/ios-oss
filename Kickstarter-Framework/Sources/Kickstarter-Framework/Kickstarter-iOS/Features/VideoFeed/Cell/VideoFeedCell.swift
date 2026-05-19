@@ -19,10 +19,10 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   static let reuseIdentifier = "VideoFeedCell"
 
   private enum Constants {
-    static let toastTopPadding: CGFloat = 112
     static let toastHorizontalPadding: CGFloat = 16
+    static let toastTopGap: CGFloat = 8
     static let toastAnimationOffset: CGFloat = 80
-    static let toastAnimationDuration: Double = 0.35
+    static let toastAnimationDuration: Double = 0.15
     static let toastAnimationDamping: CGFloat = 0.8
     static let toastAnimationVelocity: CGFloat = 0.5
   }
@@ -88,6 +88,10 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.onVideoFailed = nil
     self.playbackState.reset()
     self.videoPlayer.stop()
+
+    let toastView = self.errorToastHostingController.view!
+    toastView.alpha = 0
+    toastView.transform = .identity
   }
 
   // MARK: - Configuration
@@ -146,25 +150,30 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   private func setupErrorToastView() {
     let toastView = self.errorToastHostingController.view!
-    toastView.translatesAutoresizingMaskIntoConstraints = false
     toastView.backgroundColor = .clear
     toastView.alpha = 0
-
     addSubview(toastView)
-
-    NSLayoutConstraint.activate([
-      toastView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.toastHorizontalPadding),
-      toastView.trailingAnchor.constraint(
-        equalTo: trailingAnchor,
-        constant: -Constants.toastHorizontalPadding
-      ),
-      toastView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.toastTopPadding)
-    ])
   }
 
-  /// Slides the error toast in from above.
+  /// Slides the error toast in from above to below the close button.
   private func showErrorToast() {
+    let safeAreaTop = self.window.map { $0.safeAreaInsets.top } ?? VideoFeedOverlayView.topSafeAreaPadding
+    let closeButtonBottom = safeAreaTop + VideoFeedOverlayView.closeButtonSize
+    
     let toastView = self.errorToastHostingController.view!
+    let toastWidth = bounds.width - Constants.toastHorizontalPadding * 2
+    let toastHeight = toastView.systemLayoutSizeFitting(
+      CGSize(width: toastWidth, height: UIView.layoutFittingCompressedSize.height),
+      withHorizontalFittingPriority: .required,
+      verticalFittingPriority: .fittingSizeLevel
+    ).height
+
+    toastView.frame = CGRect(
+      x: Constants.toastHorizontalPadding,
+      y: closeButtonBottom + Constants.toastTopGap,
+      width: toastWidth,
+      height: toastHeight
+    )
     toastView.transform = CGAffineTransform(translationX: 0, y: -Constants.toastAnimationOffset)
 
     UIView.animate(
@@ -174,6 +183,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
       initialSpringVelocity: Constants.toastAnimationVelocity
     ) {
       toastView.alpha = 1
+      toastView.transform = .identity
     }
   }
 
