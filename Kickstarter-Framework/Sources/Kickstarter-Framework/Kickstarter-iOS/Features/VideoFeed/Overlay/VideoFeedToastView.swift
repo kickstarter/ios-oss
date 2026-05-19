@@ -22,5 +22,10 @@ struct VideoFeedToastView: View {
         FrostedGlassBackgroundView()
           .clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius))
       }
+      .accessibilityElement(children: .ignore)
+      .accessibilityLabel(self.message)
+      /// Causes VoiceOver to announce the toast automatically when it appears, without requiring the user to navigate to it.
+      .accessibilityAddTraits(.isStaticText)
+      .accessibilityAddTraits(.updatesFrequently)
   }
 }
