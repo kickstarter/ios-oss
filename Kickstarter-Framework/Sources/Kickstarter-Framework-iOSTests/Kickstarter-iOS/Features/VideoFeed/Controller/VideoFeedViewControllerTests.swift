@@ -182,7 +182,6 @@ final class MockVideoFeedVideoPlayer: VideoFeedVideoPlayer {
   override func pause() {}
   override func stop() {}
 
-  /// Fires `onVideoFailed` directly, exercising the same code path as the real player.
   func simulateFailure() {
     self.onVideoFailed?()
   }

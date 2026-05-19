@@ -42,7 +42,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   private let videoPlayer: VideoFeedVideoPlayer
   private let videoPlayerView = VideoFeedPlayerView()
   private let errorToastHostingController = UIHostingController(
-    rootView: VideoFeedToastView(message: "Couldn't load video")
+    rootView: VideoFeedToastView(message: "FPO: Couldn't load video")
   )
 
   // MARK: - Lifecycle
@@ -152,6 +152,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     let toastView = self.errorToastHostingController.view!
     toastView.backgroundColor = .clear
     toastView.alpha = 0
+
     addSubview(toastView)
   }
 
@@ -159,7 +160,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   private func showErrorToast() {
     let safeAreaTop = self.window.map { $0.safeAreaInsets.top } ?? VideoFeedOverlayView.topSafeAreaPadding
     let closeButtonBottom = safeAreaTop + VideoFeedOverlayView.closeButtonSize
-    
+
     let toastView = self.errorToastHostingController.view!
     let toastWidth = bounds.width - Constants.toastHorizontalPadding * 2
     let toastHeight = toastView.systemLayoutSizeFitting(
