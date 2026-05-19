@@ -18,6 +18,15 @@ import UIKit
 final class VideoFeedCell: UICollectionViewCell, ValueCell {
   static let reuseIdentifier = "VideoFeedCell"
 
+  private enum Constants {
+    static let toastTopPadding: CGFloat = 112
+    static let toastHorizontalPadding: CGFloat = 16
+    static let toastAnimationOffset: CGFloat = 80
+    static let toastAnimationDuration: Double = 0.35
+    static let toastAnimationDamping: CGFloat = 0.8
+    static let toastAnimationVelocity: CGFloat = 0.5
+  }
+
   var onCloseTapped: (() -> Void)?
   var onCreatorTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
@@ -32,6 +41,9 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   private let playbackState = VideoFeedPlaybackState()
   private let videoPlayer: VideoFeedVideoPlayer
   private let videoPlayerView = VideoFeedPlayerView()
+  private let errorToastHostingController = UIHostingController(
+    rootView: VideoFeedToastView(message: "Couldn't load video")
+  )
 
   // MARK: - Lifecycle
 
@@ -55,6 +67,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.playbackState.videoPlayer = self.videoPlayer
 
     self.setupVideoPlayerView()
+    self.setupErrorToastView()
     self.setupVideoPlayerCallbacks()
     self.setupTapGesture()
   }
@@ -129,6 +142,41 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.videoPlayer.play()
   }
 
+  // MARK: - Error Toast
+
+  private func setupErrorToastView() {
+    let toastView = self.errorToastHostingController.view!
+    toastView.translatesAutoresizingMaskIntoConstraints = false
+    toastView.backgroundColor = .clear
+    toastView.alpha = 0
+
+    addSubview(toastView)
+
+    NSLayoutConstraint.activate([
+      toastView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.toastHorizontalPadding),
+      toastView.trailingAnchor.constraint(
+        equalTo: trailingAnchor,
+        constant: -Constants.toastHorizontalPadding
+      ),
+      toastView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.toastTopPadding)
+    ])
+  }
+
+  /// Slides the error toast in from above.
+  private func showErrorToast() {
+    let toastView = self.errorToastHostingController.view!
+    toastView.transform = CGAffineTransform(translationX: 0, y: -Constants.toastAnimationOffset)
+
+    UIView.animate(
+      withDuration: Constants.toastAnimationDuration,
+      delay: 0,
+      usingSpringWithDamping: Constants.toastAnimationDamping,
+      initialSpringVelocity: Constants.toastAnimationVelocity
+    ) {
+      toastView.alpha = 1
+    }
+  }
+
   // MARK: - Video Player View Setup
 
   private func setupVideoPlayerView() {
@@ -152,6 +200,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
       guard let self else { return }
 
       self.playbackState.videoDidFail()
+      self.showErrorToast()
       self.onVideoFailed?()
     }
   }
