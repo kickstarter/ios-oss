@@ -21,12 +21,16 @@ final class ProjectPageNavigation {
       return UIBarButtonItem()
     }
 
-    return UIBarButtonItem(
-      image: icon.withRenderingMode(.alwaysOriginal), // We want it to be black, not tinted
+    let item = UIBarButtonItem(
+      image: icon.withRenderingMode(.alwaysTemplate),
       style: .plain,
       target: self,
       action: #selector(ProjectPageNavigation.closeButtonTapped)
     )
+
+    // Force the icon to be our light/dark icon color, not the system tint color
+    item.tintColor = Colors.Icon.primary.uiColor()
+    return item
   }
 
   var rightBarButtonItems: [UIBarButtonItem] {
