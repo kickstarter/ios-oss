@@ -16,7 +16,25 @@ public final class KSRAnalytics {
   private var segmentClient: (TrackingClientType & IdentifyingTrackingClient)?
 
   var anonymousId: String? {
+    // This anonymous ID is used by Statsig for bucketing experiments.
+    // If tracking has been disallowed via consent management, we won't return an anonymous ID.
+    // This makes the iOS behavior consistent with Android.
+    if self.disableTracking() {
+      return nil
+    }
+
     return self.segmentClient?.anonymousId
+  }
+
+  /// Returns `true` if the user has not consented to tracking, or if we can't determine their tracking state.
+  private func disableTracking() -> Bool {
+    guard let appTrackingTransparency = self.appTrackingTransparency else { return true }
+
+    self.appTrackingTransparency?.updateAdvertisingIdentifier()
+
+    guard let _ = appTrackingTransparency.advertisingIdentifier else { return true }
+
+    return false
   }
 
   /// Configures `KSRAnalytics` with a Segment tracking client. Call is idempotent and will only set once.
