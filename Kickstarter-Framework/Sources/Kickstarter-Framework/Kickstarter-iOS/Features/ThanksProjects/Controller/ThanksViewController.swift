@@ -45,13 +45,18 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   }
 
   private func setupNavigationItem() {
-    let icon = Library.image(named: "icon--cross")?.withRenderingMode(.alwaysOriginal)
+    let icon = Library.image(named: "icon--cross")?
+      .withRenderingMode(.alwaysTemplate)
+
     let closeButton = UIBarButtonItem(
       image: icon,
       style: .plain,
       target: self,
       action: #selector(self.closeButtonTapped)
     )
+
+    // Force the icon to be our light/dark icon color, not the system tint color
+    closeButton.tintColor = Colors.Icon.primary.uiColor()
 
     closeButton.accessibilityLabel = Strings.Dismiss()
 

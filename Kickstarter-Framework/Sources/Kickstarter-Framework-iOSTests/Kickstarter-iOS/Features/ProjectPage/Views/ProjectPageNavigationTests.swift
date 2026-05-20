@@ -76,6 +76,36 @@ internal final class ProjectPageNavigationTests: TestCase {
     }
   }
 
+  func testNavigationBar_darkMode() {
+    combos([Language.en], [Device.phone4inch]).forEach { _, device in
+      let navigation = ProjectPageNavigation()
+
+      let project = .template |> Project.lens.personalization.isStarred .~ true
+
+      let watchValue = WatchProjectValue(
+        project: project,
+        context: .project,
+        discoveryParams: nil
+      )
+
+      navigation.configureWatchProject(with: watchValue)
+      navigation.viewDidLoad()
+
+      let (parent, _) = traitControllers(
+        device: device,
+        orientation: .portrait,
+        child: viewControllerWithNavigation(navigation),
+        additionalTraits: UITraitCollection(userInterfaceStyle: .dark)
+      )
+
+      parent.view.frame.size.height = 44
+
+      scheduler.run()
+
+      assertSnapshot(matching: parent.view, as: .image, named: "dark")
+    }
+  }
+
   private func viewControllerWithNavigation(_ navigation: ProjectPageNavigation) -> UIViewController {
     let vc = UIViewController()
     vc.navigationItem.leftBarButtonItem = navigation.closeButton
