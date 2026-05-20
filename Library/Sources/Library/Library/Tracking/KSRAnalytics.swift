@@ -27,7 +27,7 @@ public final class KSRAnalytics {
   }
 
   /// Returns `true` if the user has consented to tracking. Returns `false` if they have not, or if we can't determine their tracking state.
-  private func isTrackingEnabled() -> Bool {
+  internal func isTrackingEnabled() -> Bool {
     guard let appTrackingTransparency = self.appTrackingTransparency else { return false }
 
     self.appTrackingTransparency?.updateAdvertisingIdentifier()
