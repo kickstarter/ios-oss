@@ -12,6 +12,7 @@ struct AudioVideoBlock: View {
   var content: Content
   @Environment(\.richTextStyle) var style: any RichTextStyle
   @State private var player: AVPlayer?
+  internal var onAppear: ((Self) -> Void)?
 
   private var mediaURL: URL? {
     let raw: String?
@@ -49,9 +50,11 @@ struct AudioVideoBlock: View {
       }
     }
     .onAppear {
-      guard let url = self.mediaURL else { return }
-      try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
-      self.player = AVPlayer(url: url)
+      if let url = self.mediaURL {
+        try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
+        self.player = AVPlayer(url: url)
+      }
+      self.onAppear?(self)
     }
     .onDisappear {
       self.player?.pause()
