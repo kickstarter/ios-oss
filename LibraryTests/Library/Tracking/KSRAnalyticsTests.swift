@@ -1,3 +1,4 @@
+import AppTrackingTransparency
 @testable import KsApi
 @testable import KsApiTestHelpers
 @testable import Library
@@ -2035,6 +2036,46 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertNil(props?["project_user_has_starred"])
     XCTAssertNil(props?["project_prelaunch_activated"] as? Bool)
     XCTAssertEqual(false, props?["project_has_add_ons"] as? Bool)
+  }
+
+  func testTrackingIsEnabled_andAnonymousIdIsSet_whenTrackingIsAllowed() {
+    let mockTransparency = MockAppTrackingTransparency()
+    mockTransparency.shouldRequestAuthStatus = true
+    let segmentClient = MockTrackingClient()
+
+    let ksrAnalytics = KSRAnalytics(
+      segmentClient: segmentClient,
+      appTrackingTransparency: mockTransparency
+    )
+
+    XCTAssertNotNil(ksrAnalytics.anonymousId)
+    XCTAssertTrue(ksrAnalytics.isTrackingEnabled())
+  }
+
+  func testTrackingIsNotEnabled_andAnonymousIdIsEmpty_whenTrackingIsDisallowed() {
+    let mockTransparency = MockAppTrackingTransparency()
+    mockTransparency.shouldRequestAuthStatus = false
+    let segmentClient = MockTrackingClient()
+
+    let ksrAnalytics = KSRAnalytics(
+      segmentClient: segmentClient,
+      appTrackingTransparency: mockTransparency
+    )
+
+    XCTAssertNil(ksrAnalytics.anonymousId)
+    XCTAssertFalse(ksrAnalytics.isTrackingEnabled())
+  }
+
+  func testTrackingIsNotEnabled_andAnonymousIdIsEmpty_whenTrackingIsMissing() {
+    let segmentClient = MockTrackingClient()
+
+    let ksrAnalytics = KSRAnalytics(
+      segmentClient: segmentClient,
+      appTrackingTransparency: nil
+    )
+
+    XCTAssertNil(ksrAnalytics.anonymousId)
+    XCTAssertFalse(ksrAnalytics.isTrackingEnabled())
   }
 
   /*
