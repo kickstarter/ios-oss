@@ -55,8 +55,7 @@ final class VideoFeedViewControllerTests: TestCase {
             projectId: "1",
             isSaved: false
           ),
-          isSaved: .constant(false),
-          onSaveTapped: {}
+          isSaved: .constant(false)
         )
 
         assertSnapshot(
@@ -106,8 +105,7 @@ final class VideoFeedViewControllerTests: TestCase {
             projectId: "1",
             isSaved: true
           ),
-          isSaved: .constant(true),
-          onSaveTapped: {}
+          isSaved: .constant(true)
         )
 
         assertSnapshot(

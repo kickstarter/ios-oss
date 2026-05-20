@@ -9,11 +9,6 @@ public protocol VideoFeedViewModelType: AnyObject {
   var fetchedItems: [VideoFeedItem] { get }
   func viewDidLoad()
   func toggleSaved(for item: VideoFeedItem)
-
-  /// Returns the current item for a given ID, falling back to the provided item if not found.
-  func item(for id: String, fallback: VideoFeedItem) -> VideoFeedItem
-
-  /// Returns a binding to `isSaved` for the item with the given ID.
   func isSaved(id: String) -> Binding<Bool>
 }
 
@@ -32,9 +27,8 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
   public private(set) var isLoading = false
   public private(set) var errorMessage: String?
 
-  /// Watch/Unwatch mutation disposables keyed by project ID.
-  /// Used to ignore taps while a request is already in flight for a given item.
-  private var pendingWatchRequests: [String: (input: MutableProperty<Bool>, disposable: Disposable)] = [:]
+  /// Tracks in-flight watch/unwatch requests.
+  private var pendingWatchRequests: [String: Disposable] = [:]
 
   // MARK: - Inputs
 
@@ -46,16 +40,15 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
     }
   }
 
-  /// Returns the current item for a given ID, falling back to the provided item if not found.
-  public func item(for id: String, fallback: VideoFeedItem) -> VideoFeedItem {
-    self.items.first(where: { $0.id == id }) ?? fallback
-  }
-
   /// Returns a binding to `isSaved` for the item with the given ID.
   public func isSaved(id: String) -> Binding<Bool> {
     Binding(
       get: { self.items.first(where: { $0.id == id })?.isSaved ?? false },
-      set: { _ in } // mutations go through toggleSaved
+      set: { [weak self] _ in
+        guard let self, let item = self.items.first(where: { $0.id == id }) else { return }
+
+        self.toggleSaved(for: item)
+      }
     )
   }
 
@@ -64,7 +57,6 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
   /// Optimistically updates `isSaved`. Reverts on failure.
   public func toggleSaved(for item: VideoFeedItem) {
     guard let index = self.items.firstIndex(where: { $0.id == item.id }) else { return }
-
     guard self.pendingWatchRequests[item.projectId] == nil else { return }
 
     let projectId = item.projectId
@@ -78,6 +70,7 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
       : AppEnvironment.current.apiService.watchProject(input: .init(id: projectId))
 
     let disposable = producer
+      .observe(on: QueueScheduler.main)
       .startWithResult { [weak self] result in
         guard let self, let index = self.items.firstIndex(where: { $0.id == projectId }) else { return }
 
@@ -89,7 +82,7 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
         self.pendingWatchRequests.removeValue(forKey: projectId)
       }
 
-    self.pendingWatchRequests[projectId] = (input: MutableProperty(!wasSaved), disposable: disposable)
+    self.pendingWatchRequests[projectId] = disposable
   }
 
   // MARK: - Private

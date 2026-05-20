@@ -28,6 +28,7 @@ struct VideoFeedOverlayView: View {
     static let bottomSafeAreaPadding: CGFloat = 37
   }
 
+  /// Owned by `VideoFeedViewModel`
   @Binding var isSaved: Bool
 
   let item: VideoFeedItem
@@ -38,7 +39,6 @@ struct VideoFeedOverlayView: View {
   var onCreatorTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
-  var onSaveTapped: (() -> Void)?
   var onCTATapped: (() -> Void)?
 
   var body: some View {
@@ -65,8 +65,7 @@ struct VideoFeedOverlayView: View {
           isSaved: self.$isSaved,
           onCreatorTapped: self.onCreatorTapped,
           onShareTapped: self.onShareTapped,
-          onMoreTapped: self.onMoreTapped,
-          onSaveTapped: self.onSaveTapped
+          onMoreTapped: self.onMoreTapped
         )
 
         VideoFeedBottomOverlayView(
