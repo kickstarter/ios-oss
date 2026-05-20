@@ -230,7 +230,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.disposables.append(
       self.viewModel.outputs.trackingAuthorizationStatus
         .observeForUI()
-        .startWithValues(self.updateFirebaseConsent(status:))
+        .startWithValues { status in
+          self.appTrackingAuthorizationChanged(status: status)
+        }
     )
 
     self.viewModel.outputs.synchronizeUbiquitousStore
@@ -431,6 +433,15 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     let task = session.dataTask(with: url)
     task.resume()
+  }
+
+  private func appTrackingAuthorizationChanged(status: AppTrackingAuthorization) {
+    self.updateFirebaseConsent(status: status)
+
+    // We only pass the Segment identifier to Statsig if tracking consent is enabled.
+    // Update Statsig if tracking authorization changes.
+    let statsigUser = AppEnvironment.current.statsigUser()
+    AppEnvironment.current.statsigClient?.reload(withUser: statsigUser)
   }
 
   private func updateFirebaseConsent(status: AppTrackingAuthorization) {
