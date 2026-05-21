@@ -19,7 +19,7 @@ extension VideoFeedItem {
       videoURL: video?.videoSources?.hls?.src.flatMap { URL(string: $0) },
       videoPreviewImageURL: video?.previewImageUrl.flatMap { URL(string: $0) },
       projectId: node.project.id,
-      isSaved: node.project.isWatched ?? false
+      isSaved: node.project.isWatched
     )
   }
 

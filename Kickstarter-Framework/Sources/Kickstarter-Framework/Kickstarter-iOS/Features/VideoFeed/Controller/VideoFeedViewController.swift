@@ -201,8 +201,7 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
 
     cell.configureWith(
       value: item,
-      isSaved: self.viewModel.isSaved(id: item.id),
-      onSaveTapped: { [weak self] in self?.viewModel.toggleSaved(for: item) }
+      isSaved: self.viewModel.isSaved(id: item.id)
     )
 
     if let url = item.videoURL {

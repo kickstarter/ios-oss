@@ -32,7 +32,6 @@ struct VideoFeedRightRailView: View {
   var onCreatorTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
-  var onSaveTapped: (() -> Void)?
 
   var body: some View {
     VStack(spacing: Constants.railSpacing) {
@@ -68,7 +67,7 @@ struct VideoFeedRightRailView: View {
     let iconName = self.isSaved ? Constants.saveIconFilled : Constants.saveIconOutline
 
     return RailButtonView(imageName: iconName, label: Constants.saveCountLabel) {
-      self.onSaveTapped?()
+      self.isSaved.toggle()
     }
     .accessibilityLabel(Constants.saveAccessibilityLabel)
     .animation(.easeInOut(duration: 0.15), value: self.isSaved)

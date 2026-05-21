@@ -100,8 +100,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   func configureWith(
     value: VideoFeedItem,
-    isSaved: Binding<Bool>,
-    onSaveTapped: @escaping () -> Void
+    isSaved: Binding<Bool>
   ) {
     self.contentConfiguration = UIHostingConfiguration {
       VideoFeedOverlayView(
@@ -113,7 +112,6 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
         onCreatorTapped: { [weak self] in self?.onCreatorTapped?() },
         onShareTapped: { [weak self] in self?.onShareTapped?() },
         onMoreTapped: { [weak self] in self?.onMoreTapped?() },
-        onSaveTapped: onSaveTapped,
         onCTATapped: { [weak self] in self?.ctaTapped() }
       )
     }
