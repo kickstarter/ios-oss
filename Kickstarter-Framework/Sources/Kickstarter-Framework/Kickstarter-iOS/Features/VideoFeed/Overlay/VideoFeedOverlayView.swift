@@ -28,6 +28,9 @@ struct VideoFeedOverlayView: View {
     static let bottomSafeAreaPadding: CGFloat = 37
   }
 
+  static let closeButtonSize: CGFloat = 44
+  static let topSafeAreaPadding: CGFloat = 60
+
   /// Owned by `VideoFeedViewModel`
   @Binding var isSaved: Bool
 

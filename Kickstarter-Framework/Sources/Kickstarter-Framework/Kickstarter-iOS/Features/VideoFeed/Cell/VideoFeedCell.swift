@@ -18,6 +18,15 @@ import UIKit
 final class VideoFeedCell: UICollectionViewCell, ValueCell {
   static let reuseIdentifier = "VideoFeedCell"
 
+  private enum Constants {
+    static let toastHorizontalPadding: CGFloat = 16
+    static let toastTopGap: CGFloat = 8
+    static let toastAnimationOffset: CGFloat = 80
+    static let toastAnimationDuration: Double = 0.15
+    static let toastAnimationDamping: CGFloat = 0.8
+    static let toastAnimationVelocity: CGFloat = 0.5
+  }
+
   var onCloseTapped: (() -> Void)?
   var onCreatorTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
@@ -32,6 +41,9 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   private let playbackState = VideoFeedPlaybackState()
   private let videoPlayer: VideoFeedVideoPlayer
   private let videoPlayerView = VideoFeedPlayerView()
+  private let errorToastHostingController = UIHostingController(
+    rootView: VideoFeedToastView(message: "FPO: Couldn't load video")
+  )
 
   // MARK: - Lifecycle
 
@@ -55,6 +67,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.playbackState.videoPlayer = self.videoPlayer
 
     self.setupVideoPlayerView()
+    self.setupErrorToastView()
     self.setupVideoPlayerCallbacks()
     self.setupTapGesture()
   }
@@ -75,6 +88,10 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.onVideoFailed = nil
     self.playbackState.reset()
     self.videoPlayer.stop()
+
+    let toastView = self.errorToastHostingController.view!
+    toastView.alpha = 0
+    toastView.transform = .identity
   }
 
   // MARK: - Configuration
@@ -127,6 +144,48 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.videoPlayer.play()
   }
 
+  // MARK: - Error Toast
+
+  private func setupErrorToastView() {
+    let toastView = self.errorToastHostingController.view!
+    toastView.backgroundColor = .clear
+    toastView.alpha = 0
+
+    addSubview(toastView)
+  }
+
+  /// Slides the error toast in from above to below the close button.
+  private func showErrorToast() {
+    let safeAreaTop = self.window.map { $0.safeAreaInsets.top } ?? VideoFeedOverlayView.topSafeAreaPadding
+    let closeButtonBottom = safeAreaTop + VideoFeedOverlayView.closeButtonSize
+
+    let toastView = self.errorToastHostingController.view!
+    let toastWidth = bounds.width - Constants.toastHorizontalPadding * 2
+    let toastHeight = toastView.systemLayoutSizeFitting(
+      CGSize(width: toastWidth, height: UIView.layoutFittingCompressedSize.height),
+      withHorizontalFittingPriority: .required,
+      verticalFittingPriority: .fittingSizeLevel
+    ).height
+
+    toastView.frame = CGRect(
+      x: Constants.toastHorizontalPadding,
+      y: closeButtonBottom + Constants.toastTopGap,
+      width: toastWidth,
+      height: toastHeight
+    )
+    toastView.transform = CGAffineTransform(translationX: 0, y: -Constants.toastAnimationOffset)
+
+    UIView.animate(
+      withDuration: Constants.toastAnimationDuration,
+      delay: 0,
+      usingSpringWithDamping: Constants.toastAnimationDamping,
+      initialSpringVelocity: Constants.toastAnimationVelocity
+    ) {
+      toastView.alpha = 1
+      toastView.transform = .identity
+    }
+  }
+
   // MARK: - Video Player View Setup
 
   private func setupVideoPlayerView() {
@@ -150,6 +209,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
       guard let self else { return }
 
       self.playbackState.videoDidFail()
+      self.showErrorToast()
       self.onVideoFailed?()
     }
   }

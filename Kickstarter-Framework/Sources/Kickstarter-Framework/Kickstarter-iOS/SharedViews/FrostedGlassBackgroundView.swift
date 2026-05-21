@@ -7,7 +7,7 @@ public struct FrostedGlassBackgroundView: UIViewRepresentable {
     static let overlayRed: CGFloat = 132 / 255
     static let overlayGreen: CGFloat = 132 / 255
     static let overlayBlue: CGFloat = 132 / 255
-    static let overlayAlpha: CGFloat = 0.24
+    static let overlayAlpha: CGFloat = 0.35
   }
 
   public func makeUIView(context _: Context) -> UIVisualEffectView {
