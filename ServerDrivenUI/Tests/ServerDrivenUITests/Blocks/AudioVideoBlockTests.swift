@@ -383,8 +383,10 @@ final class AudioVideoBlockTests: TestCase {
     }
   }
 
-  // MARK: - Inspection helpers
-
+  /// Hosts an `AudioVideoBlock`, waits for its `onAppear`, then runs inspection code.
+  /// This helper bridges the asynchronous nature of SwiftUI lifecycle events to a synchronous
+  /// test flow using ViewInspector. It hosts the view, waits for `onAppear` via an expectation,
+  /// runs the provided inspection closure, and propagates any thrown errors back to the test.
   private func inspectAfterAppear<R>(
     content: AudioVideoBlock.Content,
     colorScheme: ColorScheme,
@@ -394,6 +396,8 @@ final class AudioVideoBlockTests: TestCase {
     var output: R?
     var failure: Error?
 
+    // Convert the view's onAppear into a test expectation using ViewInspector's `on` helper.
+    // When the view appears, run the inspection closure and capture either its output or error.
     let exp = block.on(\.onAppear) { appeared in
       do {
         output = try body(appeared)
@@ -406,8 +410,11 @@ final class AudioVideoBlockTests: TestCase {
       .environment(\.richTextStyle, richTextStyle(colorScheme))
       .frame(width: 300, height: 200)
 
+    // Host the view so that SwiftUI lifecycle events (like onAppear) are triggered.
     ViewHosting.host(view: view)
-    defer { ViewHosting.expel() }
+    defer { ViewHosting.expel() } // Ensure the hosted view is torn down after the test.
+
+    // Block the test until onAppear fires or the timeout elapses.
     wait(for: [exp], timeout: 0.5)
 
     if let failure {
