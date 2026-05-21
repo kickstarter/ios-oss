@@ -71,9 +71,19 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   static func navigationController(withViewControllers viewControllers: [UIViewController])
     -> UINavigationController {
     let nav = NavigationController()
+
     nav.viewControllers = viewControllers
 
-    nav.modalPresentationStyle = ProjectPageViewController.projectPageModalPresentationStyle
+    let modalPresentationStyle = ProjectPageViewController.projectPageModalPresentationStyle
+
+    nav.modalPresentationStyle = modalPresentationStyle
+
+    // If you present a navigation controller .fullScreen, and subsequently push/pop screens onto its stack,
+    // you may briefly see the default (black) background behind the navigation controller.
+    // Setting this background to white prevents us from seeing some odd effects as pages animate.
+    if modalPresentationStyle == .fullScreen {
+      nav.view.backgroundColor = Colors.Background.Surface.primary.uiColor()
+    }
 
     return nav
   }
