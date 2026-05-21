@@ -17,7 +17,9 @@ extension VideoFeedItem {
       categoryPillText: node.project.category?.name ?? "",
       secondaryPillText: node.badges.first?.text ?? "",
       videoURL: video?.videoSources?.hls?.src.flatMap { URL(string: $0) },
-      videoPreviewImageURL: video?.previewImageUrl.flatMap { URL(string: $0) }
+      videoPreviewImageURL: video?.previewImageUrl.flatMap { URL(string: $0) },
+      projectId: node.project.id,
+      isSaved: node.project.isWatched
     )
   }
 

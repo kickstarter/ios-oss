@@ -1,14 +1,34 @@
 import Foundation
 import GraphAPI
 import KsApi
+import ReactiveSwift
+import SwiftUI
+
+public protocol VideoFeedViewModelType: AnyObject {
+  var items: [VideoFeedItem] { get }
+  var fetchedItems: [VideoFeedItem] { get }
+  func viewDidLoad()
+  func toggleSaved(for item: VideoFeedItem)
+  func isSaved(id: String) -> Binding<Bool>
+}
 
 @Observable
-public final class VideoFeedViewModel {
+public final class VideoFeedViewModel: VideoFeedViewModelType {
   // MARK: - Outputs
 
+  /// The current working set of items.
+  /// Updated optimistically on watch/unwatch.
   public private(set) var items: [VideoFeedItem] = []
+
+  /// Updated only when a real fetch completes.
+  /// Allows `VideoFeedViewController` to know when to reload the collection view.
+  public private(set) var fetchedItems: [VideoFeedItem] = []
+
   public private(set) var isLoading = false
   public private(set) var errorMessage: String?
+
+  /// Tracks in-flight watch/unwatch requests.
+  private var pendingWatchRequests: [String: Disposable] = [:]
 
   // MARK: - Inputs
 
@@ -18,6 +38,51 @@ public final class VideoFeedViewModel {
     Task {
       await self.fetchVideoFeed()
     }
+  }
+
+  /// Returns a binding to `isSaved` for the item with the given ID.
+  public func isSaved(id: String) -> Binding<Bool> {
+    Binding(
+      get: { self.items.first(where: { $0.id == id })?.isSaved ?? false },
+      set: { [weak self] _ in
+        guard let self, let item = self.items.first(where: { $0.id == id }) else { return }
+
+        self.toggleSaved(for: item)
+      }
+    )
+  }
+
+  /// Toggles the watched state for a given project.
+  /// Ignores taps while a request is already in flight.
+  /// Optimistically updates `isSaved`. Reverts on failure.
+  public func toggleSaved(for item: VideoFeedItem) {
+    guard let index = self.items.firstIndex(where: { $0.id == item.id }) else { return }
+    guard self.pendingWatchRequests[item.projectId] == nil else { return }
+
+    let projectId = item.projectId
+    let wasSaved = self.items[index].isSaved
+
+    /// Optimistic update.
+    self.items[index].isSaved = !wasSaved
+
+    let producer = wasSaved
+      ? AppEnvironment.current.apiService.unwatchProject(input: .init(id: projectId))
+      : AppEnvironment.current.apiService.watchProject(input: .init(id: projectId))
+
+    let disposable = producer
+      .observe(on: QueueScheduler.main)
+      .startWithResult { [weak self] result in
+        guard let self, let index = self.items.firstIndex(where: { $0.id == projectId }) else { return }
+
+        if case .failure = result {
+          /// Revert optimistic update on failure.
+          self.items[index].isSaved = wasSaved
+        }
+
+        self.pendingWatchRequests.removeValue(forKey: projectId)
+      }
+
+    self.pendingWatchRequests[projectId] = disposable
   }
 
   // MARK: - Private
@@ -35,7 +100,8 @@ public final class VideoFeedViewModel {
 
       let nodes = result?.videoFeed?.nodes?.compactMap { $0 } ?? []
 
-      self.items = nodes.map(VideoFeedItem.init)
+      self.fetchedItems = nodes.map(VideoFeedItem.init)
+      self.items = self.fetchedItems
       self.isLoading = false
     } catch {
       self.isLoading = false

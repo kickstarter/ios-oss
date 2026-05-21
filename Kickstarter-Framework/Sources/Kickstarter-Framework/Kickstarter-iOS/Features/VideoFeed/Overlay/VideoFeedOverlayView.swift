@@ -3,8 +3,8 @@ import Kingfisher
 import Library
 import SwiftUI
 
-/// WIP: Full-screen SwiftUI Video Feed overlay. Currently Static.
-/// Takes a plain VideoFeedItem.
+/// Full-screen SwiftUI Video Feed overlay.
+/// Takes a plain `VideoFeedItem`
 struct VideoFeedOverlayView: View {
   private enum Constants {
     static let topGradientOverlayOpacity: Double = 0.2
@@ -21,12 +21,18 @@ struct VideoFeedOverlayView: View {
     static let playButtonOffset: CGFloat = -45
     static let closeButtonSize: CGFloat = 44
     static let previewFadeDuration: Double = 0.3
-    /// Preview image opacity when the video has failed to load — dims the BG to surface the label.
+    /// Preview image opacity when the video has failed to load. and dims the BG to surface the label.
     static let failedPreviewOpacity: Double = 0.35
-    /// Defining safa area values because `UIHostingConfiguration` returns 0 for safe area insets when in a collectionview.
+    /// Defining safe area values because `UIHostingConfiguration` returns 0 for safe area insets when in a collectionview.
     static let topSafeAreaPadding: CGFloat = 60
     static let bottomSafeAreaPadding: CGFloat = 37
   }
+
+  static let closeButtonSize: CGFloat = 44
+  static let topSafeAreaPadding: CGFloat = 60
+
+  /// Owned by `VideoFeedViewModel`
+  @Binding var isSaved: Bool
 
   let item: VideoFeedItem
   let playbackState: VideoFeedPlaybackState
@@ -34,7 +40,6 @@ struct VideoFeedOverlayView: View {
 
   var onCloseTapped: (() -> Void)?
   var onCreatorTapped: (() -> Void)?
-  var onSaveTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
   var onCTATapped: (() -> Void)?
@@ -60,8 +65,8 @@ struct VideoFeedOverlayView: View {
       VStack(alignment: .trailing, spacing: Constants.railBottomSpacing) {
         VideoFeedRightRailView(
           item: self.item,
+          isSaved: self.$isSaved,
           onCreatorTapped: self.onCreatorTapped,
-          onSaveTapped: self.onSaveTapped,
           onShareTapped: self.onShareTapped,
           onMoreTapped: self.onMoreTapped
         )
@@ -90,7 +95,6 @@ struct VideoFeedOverlayView: View {
       /// Fades out once `isVideoReady` becomes true.
       if let previewURL = self.item.videoPreviewImageURL {
         KFImage(previewURL)
-          /// Loading indicator placeholder until the preview image is loads.
           .placeholder {
             ProgressView()
               .progressViewStyle(.circular)
@@ -103,7 +107,7 @@ struct VideoFeedOverlayView: View {
           .resizable()
           .scaledToFill()
           .ignoresSafeArea()
-          /// Dimmed opacity if the video player errors on load. This will be updated when proper error handling UI is implemented
+          /// Dimmed opacity if the video player errors on load. This will be updated when proper error handling UI is implemented.
           .opacity(
             self.playbackState.isVideoReady
               ? 0
@@ -136,7 +140,7 @@ struct VideoFeedOverlayView: View {
         .foregroundColor(Color(Colors.Icon.light.uiColor()))
         .offset(x: Constants.playIconOffset)
         .frame(width: Constants.playIconSize, height: Constants.playIconSize)
-        /// Second, larger, frame to create the frosted glass ring.
+        /// Second larger frame to create the frosted glass ring.
         .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
         .background(FrostedGlassBackgroundView())
         .clipShape(Circle())

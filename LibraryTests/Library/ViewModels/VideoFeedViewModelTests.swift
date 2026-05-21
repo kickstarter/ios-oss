@@ -70,12 +70,71 @@ final class VideoFeedViewModelTests: TestCase {
     XCTAssertNotNil(self.vm.errorMessage)
   }
 
+  func testToggleSaved_Watch_UpdatesIsSaved() async {
+    let mockData = Self.mockVideoFeedQueryData(itemCount: 1, isWatched: false)
+
+    await withEnvironment(apiService: MockService(fetchGraphQLResponses: [(VideoFeedQuery.self, mockData)])) {
+      await self.vm.fetchVideoFeed()
+    }
+
+    let item = try! XCTUnwrap(self.vm.items.first)
+
+    XCTAssertFalse(item.isSaved)
+
+    self.vm.toggleSaved(for: item)
+
+    XCTAssert(self.vm.items.first?.isSaved == true)
+  }
+
+  func testToggleSaved_Unwatch_UpdatesIsSaved() async {
+    let mockData = Self.mockVideoFeedQueryData(itemCount: 1, isWatched: true)
+
+    await withEnvironment(apiService: MockService(fetchGraphQLResponses: [(VideoFeedQuery.self, mockData)])) {
+      await self.vm.fetchVideoFeed()
+    }
+
+    let item = try! XCTUnwrap(self.vm.items.first)
+
+    XCTAssertTrue(item.isSaved)
+
+    self.vm.toggleSaved(for: item)
+
+    XCTAssert(self.vm.items.first?.isSaved == false)
+  }
+
+  func testToggleSaved_OnlyAffectsSelectItems() async {
+    let mockData = Self.mockVideoFeedQueryData(itemCount: 3, isWatched: false)
+
+    await withEnvironment(apiService: MockService(fetchGraphQLResponses: [(VideoFeedQuery.self, mockData)])) {
+      await self.vm.fetchVideoFeed()
+    }
+
+    let secondItem = try! XCTUnwrap(self.vm.items[1])
+
+    self.vm.toggleSaved(for: secondItem)
+
+    XCTAssertFalse(self.vm.items[0].isSaved, "First item should be unaffected.")
+    XCTAssertTrue(self.vm.items[1].isSaved, "Second item should be toggled.")
+    XCTAssertFalse(self.vm.items[2].isSaved, "Third item should be unaffected.")
+  }
+
+  func testFetchVideoFeed_SetsIsWatched() async {
+    let mockData = Self.mockVideoFeedQueryData(itemCount: 3, isWatched: true)
+
+    await withEnvironment(apiService: MockService(fetchGraphQLResponses: [(VideoFeedQuery.self, mockData)])) {
+      await self.vm.fetchVideoFeed()
+    }
+
+    XCTAssertTrue(self.vm.items.allSatisfy { $0.isSaved })
+  }
+
   // MARK: - Helpers
 
   private static func mockVideoFeedQueryData(
     itemCount: Int,
     hlsSrc: String? = nil,
-    previewImageUrl: String? = nil
+    previewImageUrl: String? = nil,
+    isWatched: Bool = false
   ) -> VideoFeedQuery.Data {
     let nodes: [VideoFeedQuery.Data.VideoFeed.Node] = (0..<itemCount).map { i in
       let pledged = VideoFeedQuery.Data.VideoFeed.Node.Project.Pledged(amount: "1000")
@@ -105,6 +164,7 @@ final class VideoFeedViewModelTests: TestCase {
         slug: "project-\(i)",
         percentFunded: 75,
         backersCount: 100,
+        isWatched: isWatched,
         pledged: pledged,
         creator: creator,
         category: category,

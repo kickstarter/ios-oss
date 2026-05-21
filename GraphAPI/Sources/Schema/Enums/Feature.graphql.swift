@@ -163,4 +163,5 @@ public enum Feature: String, EnumType {
   case segmentedShippingBacker2026 = "segmented_shipping_backer_2026"
   case hideItemVariantsPeak2026 = "hide_item_variants_peak_2026"
   case comboShippingPhase1 = "combo_shipping_phase_1"
+  case newRulesPage2026 = "new_rules_page_2026"
 }

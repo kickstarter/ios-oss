@@ -80,13 +80,20 @@ final class VideoFeedViewController: UIViewController {
 
   public override func bindViewModel() {
     withObservationTracking {
-      self.dataSource.load(self.viewModel.items)
-      self.collectionView.reloadData()
+      _ = self.viewModel.fetchedItems
     } onChange: { [weak self] in
       DispatchQueue.main.async { [weak self] in
-        self?.bindViewModel()
+        guard let self else { return }
+        self.updateFeedWithFetchedItems(self.viewModel.items)
+        self.bindViewModel()
       }
     }
+  }
+
+  /// Reloads the collection view with a fresh set of fetched items.
+  private func updateFeedWithFetchedItems(_ newItems: [VideoFeedItem]) {
+    self.dataSource.load(newItems)
+    self.collectionView.reloadData()
   }
 
   // MARK: - Scroll locking
@@ -185,7 +192,6 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
 
     cell.onCloseTapped = { [weak self] in self?.dismiss(animated: true) }
     cell.onCreatorTapped = { [weak self] in self?.simpleAlert(title: "Creator") }
-    cell.onSaveTapped = { [weak self] in self?.simpleAlert(title: "Saved") }
     cell.onShareTapped = { [weak self] in self?.simpleAlert(title: "Share") }
     cell.onMoreTapped = { [weak self] in self?.simpleAlert(title: "More") }
     cell.onVideoReady = { [weak self] in self?.unlockScrollingIfNeeded() }
@@ -193,8 +199,10 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     cell.onVideoFailed = { [weak self] in self?.unlockScrollingIfNeeded() }
     cell.onCTATapped = { [weak self] in self?.goToProjectPage(for: item) }
 
-    /// Re-configure after wiring callbacks so SwiftUI picks up the closures.
-    cell.configureWith(value: item)
+    cell.configureWith(
+      value: item,
+      isSaved: self.viewModel.isSaved(id: item.id)
+    )
 
     if let url = item.videoURL {
       cell.loadVideo(url: url)

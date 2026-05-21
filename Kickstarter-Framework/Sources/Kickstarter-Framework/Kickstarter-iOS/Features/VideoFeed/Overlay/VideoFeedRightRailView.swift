@@ -12,7 +12,8 @@ struct VideoFeedRightRailView: View {
     static let shareCountLabel = "FPO: 50" // TODO: Replace with real share count from backend
     static let avatarSize: CGFloat = 44
 
-    static let saveIcon = "video-feed-bookmark-icon"
+    static let saveIconFilled = "video-feed-saved-filled-icon"
+    static let saveIconOutline = "video-feed-saved-icon"
     static let shareIcon = "video-feed-share-icon"
     static let moreIcon = "video-feed-ellipsis-icon"
     static let avatarPlaceholderIcon = "avatar--placeholder"
@@ -26,9 +27,9 @@ struct VideoFeedRightRailView: View {
   }
 
   let item: VideoFeedItem
+  @Binding var isSaved: Bool
 
   var onCreatorTapped: (() -> Void)?
-  var onSaveTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
 
@@ -37,7 +38,6 @@ struct VideoFeedRightRailView: View {
       self.creatorAvatar
       self.saveButton
       self.shareButton
-      self.moreButton
     }
   }
 
@@ -64,10 +64,13 @@ struct VideoFeedRightRailView: View {
   }
 
   private var saveButton: some View {
-    RailButtonView(imageName: Constants.saveIcon, label: Constants.saveCountLabel) {
-      self.onSaveTapped?()
+    let iconName = self.isSaved ? Constants.saveIconFilled : Constants.saveIconOutline
+
+    return RailButtonView(imageName: iconName, label: Constants.saveCountLabel) {
+      self.isSaved.toggle()
     }
     .accessibilityLabel(Constants.saveAccessibilityLabel)
+    .animation(.easeInOut(duration: 0.15), value: self.isSaved)
   }
 
   private var shareButton: some View {
@@ -77,6 +80,7 @@ struct VideoFeedRightRailView: View {
     .accessibilityLabel(Constants.shareAccessibilityLabel)
   }
 
+  // Currently hidden. Will be added in VideoFeed V2.
   private var moreButton: some View {
     Button(action: { self.onMoreTapped?() }) {
       if let icon = Library.image(named: Constants.moreIcon) {

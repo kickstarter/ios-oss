@@ -246,6 +246,8 @@ public class VideoFeedQuery: GraphQLQuery {
           public var launchedAt: GraphAPI.DateTime? { __data["launchedAt"] }
           /// Total backers for the project
           public var backersCount: Int { __data["backersCount"] }
+          /// Is the current user watching this project?
+          public var isWatched: Bool { __data["isWatched"] }
           /// How much money is pledged to the project.
           public var pledged: Pledged { __data["pledged"] }
           /// The project's creator.
@@ -271,6 +273,7 @@ public class VideoFeedQuery: GraphQLQuery {
             deadlineAt: GraphAPI.DateTime? = nil,
             launchedAt: GraphAPI.DateTime? = nil,
             backersCount: Int,
+            isWatched: Bool,
             pledged: Pledged,
             creator: Creator? = nil,
             category: Category? = nil,
@@ -287,6 +290,7 @@ public class VideoFeedQuery: GraphQLQuery {
                 "deadlineAt": deadlineAt,
                 "launchedAt": launchedAt,
                 "backersCount": backersCount,
+                "isWatched": isWatched,
                 "pledged": pledged._fieldData,
                 "creator": creator._fieldData,
                 "category": category._fieldData,

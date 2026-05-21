@@ -2,7 +2,6 @@ import Foundation
 
 public struct VideoFeedItem: Hashable {
   public let id: String
-
   public let slug: String
 
   /// Main title shown in the bottom overlay.
@@ -11,7 +10,7 @@ public struct VideoFeedItem: Hashable {
   /// Creator name shown in the bottom overlay.
   public let creator: String
 
-  /// Creator avatar URL — used in the right rail's circular avatar button.
+  /// Creator avatar URL for circular avatar button.
   public let creatorImageURL: URL?
 
   /// Stats text shown below the title.
@@ -28,6 +27,12 @@ public struct VideoFeedItem: Hashable {
 
   /// Video thumbnail/preview image URL.
   public let videoPreviewImageURL: URL?
+
+  /// The GraphQL project ID used for watch/unwatch mutations.
+  public let projectId: String
+
+  /// Whether the current user has saved/watched this project.
+  public var isSaved: Bool
 
   public func hash(into hasher: inout Hasher) {
     hasher.combine(self.id)
