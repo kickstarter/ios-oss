@@ -17,9 +17,8 @@ final class VideoFeedViewControllerTests: TestCase {
   }
 
   func testView_VideoFeedCell() {
-    // TODO: Update to all languages once translations are in [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
     orthogonalCombos(
-      [Language.en],
+      Language.allLanguages,
       Device.allCases
     ).forEach {
       language, device in
@@ -56,7 +55,7 @@ final class VideoFeedViewControllerTests: TestCase {
             videoPreviewImageURL: nil,
             projectId: "1",
             isSaved: false,
-            sharesCount: 1,
+            sharesCount: 2_000,
             watchesCount: 50
           ),
           isSaved: .constant(false)
@@ -71,9 +70,8 @@ final class VideoFeedViewControllerTests: TestCase {
   }
 
   func testView_VideoFeedCell_LongTitle() {
-    // TODO: Update to all languages once translations are in [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
     orthogonalCombos(
-      [Language.en],
+      Language.allLanguages,
       Device.allCases
     ).forEach {
       language, device in
@@ -110,8 +108,8 @@ final class VideoFeedViewControllerTests: TestCase {
             videoPreviewImageURL: nil,
             projectId: "1",
             isSaved: true,
-            sharesCount: 1,
-            watchesCount: 50
+            sharesCount: 2_000,
+            watchesCount: 5_000
           ),
           isSaved: .constant(true)
         )
@@ -125,9 +123,8 @@ final class VideoFeedViewControllerTests: TestCase {
   }
 
   func testView_VideoFeedCell_VideoFailed() {
-    // TODO: Update to all languages once translations are in [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
     orthogonalCombos(
-      [Language.en],
+      Language.allLanguages,
       Device.allCases
     ).forEach {
       language, device in
@@ -161,12 +158,12 @@ final class VideoFeedViewControllerTests: TestCase {
             creatorImageURL: nil,
             statsText: "$50,134 pledged · Join 431 backers",
             categoryPillText: "Project We Love",
-            secondaryPillText: "3 days left",
+            secondaryPillText: "",
             videoURL: nil,
             videoPreviewImageURL: nil,
             projectId: "1",
             isSaved: false,
-            sharesCount: 1,
+            sharesCount: 2_000,
             watchesCount: 50
           ),
           isSaved: .constant(false)
