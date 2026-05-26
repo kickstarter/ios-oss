@@ -168,7 +168,9 @@ final class VideoFeedViewModelTests: TestCase {
         pledged: pledged,
         creator: creator,
         category: category,
-        verticalVideo: verticalVideo
+        verticalVideo: verticalVideo,
+        sharesCount: 2,
+        watchesCount: 3
       )
 
       return VideoFeedQuery.Data.VideoFeed.Node(badges: [], project: project)
