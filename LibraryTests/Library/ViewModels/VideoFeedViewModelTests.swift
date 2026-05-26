@@ -162,6 +162,7 @@ final class VideoFeedViewModelTests: TestCase {
         pid: i,
         name: "Project \(i)",
         slug: "project-\(i)",
+        url: "https://test.com",
         percentFunded: 75,
         backersCount: 100,
         isWatched: isWatched,

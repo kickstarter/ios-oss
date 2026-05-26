@@ -44,6 +44,7 @@ final class VideoFeedViewControllerTests: TestCase {
           value: VideoFeedItem(
             id: "0",
             slug: "video_feed",
+            projectURL: "https://test.com",
             title: "Ringo Move - The Ultimate Workout Bottle",
             creator: "Creator Name",
             creatorImageURL: nil,
@@ -96,6 +97,7 @@ final class VideoFeedViewControllerTests: TestCase {
           value: VideoFeedItem(
             id: "0",
             slug: "video_feed",
+            projectURL: "https://test.com",
             title: "Ringo Move - The Ultimate Workout Bottle for People Who Like Long Product Names That Wrap Across Several Lines For People Who Like Long Product Names That Wrap Across Several Lines",
             creator: "Creator Name",
             creatorImageURL: nil,
@@ -150,6 +152,7 @@ final class VideoFeedViewControllerTests: TestCase {
           value: VideoFeedItem(
             id: "0",
             slug: "video_feed",
+            projectURL: "https://test.com",
             title: "Ringo Move - The Ultimate Workout Bottle",
             creator: "Creator Name",
             creatorImageURL: nil,

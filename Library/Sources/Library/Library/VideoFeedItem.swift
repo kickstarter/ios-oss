@@ -4,6 +4,9 @@ public struct VideoFeedItem: Hashable {
   public let id: String
   public let slug: String
 
+  /// The project's web URL, used for the creator profile webview.
+  public let projectURL: String
+
   /// Main title shown in the bottom overlay.
   public let title: String
 

@@ -5,7 +5,7 @@
 
 public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment ProjectVideoFeedFragment on Project { __typename id pid name slug percentFunded deadlineAt launchedAt backersCount isWatched pledged { __typename amount } creator { __typename name imageUrl(blur: false, width: 200) } category { __typename name } verticalVideo { __typename id previewImageUrl videoSources { __typename hls { __typename src } } } sharesCount watchesCount }"#
+    #"fragment ProjectVideoFeedFragment on Project { __typename id pid name slug url percentFunded deadlineAt launchedAt backersCount isWatched pledged { __typename amount } creator { __typename name imageUrl(blur: false, width: 200) } category { __typename name } verticalVideo { __typename id previewImageUrl videoSources { __typename hls { __typename src } } } sharesCount watchesCount }"#
   }
 
   public let __data: DataDict
@@ -18,6 +18,7 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
     .field("pid", Int.self),
     .field("name", String.self),
     .field("slug", String.self),
+    .field("url", String.self),
     .field("percentFunded", Int.self),
     .field("deadlineAt", GraphAPI.DateTime?.self),
     .field("launchedAt", GraphAPI.DateTime?.self),
@@ -38,6 +39,8 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
   public var name: String { __data["name"] }
   /// The project's unique URL identifier.
   public var slug: String { __data["slug"] }
+  /// A URL to the project's page.
+  public var url: String { __data["url"] }
   /// What percent the project has towards meeting its funding goal.
   public var percentFunded: Int { __data["percentFunded"] }
   /// When is the project scheduled to end?
@@ -66,6 +69,7 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
     pid: Int,
     name: String,
     slug: String,
+    url: String,
     percentFunded: Int,
     deadlineAt: GraphAPI.DateTime? = nil,
     launchedAt: GraphAPI.DateTime? = nil,
@@ -85,6 +89,7 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
         "pid": pid,
         "name": name,
         "slug": slug,
+        "url": url,
         "percentFunded": percentFunded,
         "deadlineAt": deadlineAt,
         "launchedAt": launchedAt,

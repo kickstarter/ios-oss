@@ -238,6 +238,8 @@ public class VideoFeedQuery: GraphQLQuery {
           public var name: String { __data["name"] }
           /// The project's unique URL identifier.
           public var slug: String { __data["slug"] }
+          /// A URL to the project's page.
+          public var url: String { __data["url"] }
           /// What percent the project has towards meeting its funding goal.
           public var percentFunded: Int { __data["percentFunded"] }
           /// When is the project scheduled to end?
@@ -273,6 +275,7 @@ public class VideoFeedQuery: GraphQLQuery {
             pid: Int,
             name: String,
             slug: String,
+            url: String,
             percentFunded: Int,
             deadlineAt: GraphAPI.DateTime? = nil,
             launchedAt: GraphAPI.DateTime? = nil,
@@ -292,6 +295,7 @@ public class VideoFeedQuery: GraphQLQuery {
                 "pid": pid,
                 "name": name,
                 "slug": slug,
+                "url": url,
                 "percentFunded": percentFunded,
                 "deadlineAt": deadlineAt,
                 "launchedAt": launchedAt,
