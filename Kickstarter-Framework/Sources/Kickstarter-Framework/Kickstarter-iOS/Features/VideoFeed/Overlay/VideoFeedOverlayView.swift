@@ -60,7 +60,7 @@ struct VideoFeedOverlayView: View {
       .padding(.leading, Constants.horizontalPadding)
       .padding(.top, Constants.topSafeAreaPadding)
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-      .accessibilityLabel("FPO: Close")
+      .accessibilityLabel(Strings.accessibility_discovery_buttons_close())
 
       VStack(alignment: .trailing, spacing: Constants.railBottomSpacing) {
         VideoFeedRightRailView(
@@ -139,7 +139,7 @@ struct VideoFeedOverlayView: View {
         .onTapGesture { self.playbackState.resume() }
         .opacity(self.playbackState.isPlayButtonVisible ? 1 : 0)
         .animation(.easeInOut(duration: 0.15), value: self.playbackState.isPlayButtonVisible)
-        .accessibilityLabel("FPO: Play")
+        .accessibilityLabel(Strings.Play())
         .accessibilityAddTraits(.isButton)
     }
   }

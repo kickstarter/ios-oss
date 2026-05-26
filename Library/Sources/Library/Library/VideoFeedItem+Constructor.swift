@@ -42,7 +42,9 @@ extension VideoFeedItem {
         )
       } ?? ""
 
-    // TODO: Update with Video Feed Translations [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
-    return "FPO: \(pledgedFormatted) pledged • Join \(project.backersCount) backers"
+    return Strings.video_feed_campaign_subtitle(
+      pledged: pledgedFormatted,
+      backers: project.backersCount.toString()
+    )
   }
 }
