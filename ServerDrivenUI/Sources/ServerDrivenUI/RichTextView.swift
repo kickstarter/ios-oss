@@ -26,12 +26,12 @@ public struct RichTextView: View {
           TextBlock(text: text, header: header)
         case let .listItem(text):
           ListItemBlock(text: text)
-        case .audio:
-          self.unimplemented("Audio")
+        case let .audio(audio):
+          AudioVideoBlock(content: .audio(audio))
         case let .photo(photo):
           ImageBlock(photo: photo)
-        case .video:
-          self.unimplemented("Video")
+        case let .video(video):
+          AudioVideoBlock(content: .video(video))
         case .oembed:
           self.unimplemented("Oembed")
         case .listItemOpen, .listItemClose:
