@@ -34,6 +34,12 @@ public struct VideoFeedItem: Hashable {
   /// Whether the current user has saved/watched this project.
   public var isSaved: Bool
 
+  /// Number of times the project has been shared.
+  public var sharesCount: Int
+
+  /// Number of times the project has been watched (saved)..
+  public var watchesCount: Int
+
   public func hash(into hasher: inout Hasher) {
     hasher.combine(self.id)
   }
