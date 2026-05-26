@@ -43,6 +43,7 @@ final class VideoFeedViewControllerTests: TestCase {
         cell.configureWith(
           value: VideoFeedItem(
             id: "0",
+            pid: 3,
             slug: "video_feed",
             projectURL: "https://test.com",
             title: "Ringo Move - The Ultimate Workout Bottle",
@@ -96,6 +97,7 @@ final class VideoFeedViewControllerTests: TestCase {
         cell.configureWith(
           value: VideoFeedItem(
             id: "0",
+            pid: 3,
             slug: "video_feed",
             projectURL: "https://test.com",
             title: "Ringo Move - The Ultimate Workout Bottle for People Who Like Long Product Names That Wrap Across Several Lines For People Who Like Long Product Names That Wrap Across Several Lines",
@@ -151,6 +153,7 @@ final class VideoFeedViewControllerTests: TestCase {
         cell.configureWith(
           value: VideoFeedItem(
             id: "0",
+            pid: 3,
             slug: "video_feed",
             projectURL: "https://test.com",
             title: "Ringo Move - The Ultimate Workout Bottle",

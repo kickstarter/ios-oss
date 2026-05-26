@@ -34,7 +34,6 @@ final class VideoFeedViewController: UIViewController {
     super.viewDidLoad()
 
     self.view.backgroundColor = Constants.backgroundColor
-    self.navigationController?.navigationBar.isHidden = true
 
     self.configureAudioSession()
     self.observeAppLifecycle()
@@ -47,6 +46,18 @@ final class VideoFeedViewController: UIViewController {
 
   deinit {
     self.lifecycleObservers.forEach(NotificationCenter.default.removeObserver)
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.navigationController?.setNavigationBarHidden(true, animated: animated)
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    self.navigationController?.setNavigationBarHidden(false, animated: animated)
   }
 
   // MARK: - CollectionView
@@ -159,6 +170,18 @@ final class VideoFeedViewController: UIViewController {
 
   // MARK: - Navigation
 
+  private func goToCreatorProfile(for item: VideoFeedItem) {
+    let vc = ProjectCreatorViewController.configuredWith(project: item)
+
+    if self.traitCollection.userInterfaceIdiom == .pad {
+      let nav = UINavigationController(rootViewController: vc)
+      nav.modalPresentationStyle = .formSheet
+      self.present(nav, animated: true)
+    } else {
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
+  }
+
   private func goToProjectPage(for item: VideoFeedItem) {
     let vc = ProjectPageViewController.navigationController(
       withProjectOrParam: .right(Param.slug(item.slug)),
@@ -191,7 +214,7 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     let item = items[indexPath.item]
 
     cell.onCloseTapped = { [weak self] in self?.dismiss(animated: true) }
-    cell.onCreatorTapped = { [weak self] in self?.simpleAlert(title: "Creator") }
+    cell.onCreatorTapped = { [weak self] in self?.goToCreatorProfile(for: item) }
     cell.onShareTapped = { [weak self] in self?.simpleAlert(title: "Share") }
     cell.onMoreTapped = { [weak self] in self?.simpleAlert(title: "More") }
     cell.onVideoReady = { [weak self] in self?.unlockScrollingIfNeeded() }

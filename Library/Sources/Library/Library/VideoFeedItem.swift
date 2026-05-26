@@ -2,6 +2,9 @@ import Foundation
 
 public struct VideoFeedItem: Hashable {
   public let id: String
+
+  public let pid: Int
+
   public let slug: String
 
   /// The project's web URL, used for the creator profile webview.

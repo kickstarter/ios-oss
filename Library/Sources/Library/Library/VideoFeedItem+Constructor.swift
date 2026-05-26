@@ -9,6 +9,7 @@ extension VideoFeedItem {
 
     self.init(
       id: node.project.id,
+      pid: node.project.pid,
       slug: node.project.slug,
       projectURL: node.project.url,
       title: node.project.name,
