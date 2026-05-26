@@ -107,7 +107,7 @@
 "Bookmark_this_project" = "Bookmark this project";
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
-"By_a_superbacker" = "By a superbacker";
+"By_a_superbacker" = "Von einem Superbacker";
 "By_creating_an_account_you_agree_to_Kickstarters_Terms_of_Use_and_Privacy_Policy" = "Mit Erstellung eines Kontos erklärst du dich mit Kickstarters <a href=\"%{terms_of_use_link}\">Nutzungsbedingungen</a> und <a href=\"%{privacy_policy_link}\">Datenschutzrichtlinien</a> einverstanden.";
 "By_pledging_you_acknowledge" = "Durch deinen Finanzierungsbeitrag erkennst du an, dass weder der Projektgründer noch Kickstarter Belohnungen oder Rückerstattungen garantieren.";
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Bei Leistung eines Finanzierungsbeitrags erkennst du Kickstarters <a href=\"%{terms_of_use_link}\">Nutzungsbedingungen</a>, <a href=\"%{privacy_policy_link}\">Datenschutzrichtlinien</a> und <a href=\"%{cookie_policy_link}\">Cookie-Richtlinien</a> an.";
@@ -116,7 +116,7 @@
 "By_submitting_your_pledge_you_agree_that_Stripe_may_charge_your_payment_method" = "Durch das Einsenden deines Finanzierungsbeitrags erklärst du dich mit einer Abbuchung von deiner Zahlungsweise durch unseren Zahlungsdienstleister Stripe einverstanden.";
 "CVC" = "CVC";
 "Campaign" = "Kampagne";
-"Campaign_goal_reached" = "Campaign goal reached";
+"Campaign_goal_reached" = "Kampagnenziel erreicht";
 "Cancel" = "Abbrechen";
 "Cancel_pledge" = "Beitrag zurückziehen";
 "Cancel_your_pledge" = "Deinen Beitrag zurückziehen";
@@ -301,7 +301,7 @@
 "Find_projects_youll_love_and_help_bring" = "Finde Projekte, die zu dir passen und hilf mit bei der Umsetzung neuer, kreativer Ideen.";
 "Find_projects_youll_love_in_art_design_film" = "Finde Projekte nach deinem Geschmack - in Kunst, Design, Film, Spiele, Musik und vielen anderen Kategorien. Wenn du ein Projekt unterstützt hast, wird deren Aktivität hier angezeigt.";
 "First_created" = "Erstes Projekt";
-"First_time_creator" = "First-time creator";
+"First_time_creator" = "Erstmaliger Projektgründer";
 "Fix" = "Korrigieren";
 "Fix_payment" = "Zahlung korrigieren";
 "Fix_payment_method" = "Zahlungsmethode ändern";
@@ -478,7 +478,7 @@
 "My_project_seeks_funding_for_AI_technology" = "Mit meinem Projekt soll KI-Technologie finanziert werden.";
 "Name" = "Name";
 "Near_me" = "In meiner Nähe";
-"Near_you" = "Near you";
+"Near_you" = "In deiner Nähe";
 "Never" = "Niemals";
 "New_email" = "Neue E-Mail";
 "New_password" = "Neues Passwort";
@@ -1543,7 +1543,7 @@
 "discovery.survey.button.respond_now" = "Jetzt antworten";
 "discovery.survey.creator_needs_some_info_to_deliver_reward_for_project" = "%{creator_name} benötigt einige Angaben, um dir deine Belohnung für %{project_name} zustellen zu können.";
 "discovery.survey.reward_survey" = "Befragung zur Belohnung!";
-"discovery_banner_image_content_description" = "Discovery mode preview";
+"discovery_banner_image_content_description" = "Erkundungsmodus-Vorschau";
 "ellipsis_more" = "... weiterlesen";
 "facebook_confirmation.button" = "Neues Konto einrichten";
 "facebook_confirmation.could_not_log_in" = "Anmeldung über Facebook fehlgeschlagen";
@@ -2017,7 +2017,7 @@
 "support_email.subject" = "Hallo Kickstarter App Support";
 "support_email.to" = "app@kickstarter.com";
 "support_email.to_android" = "android@kickstarter.com";
-"swipe_through_a_video_feed_tuning_your_recommendations_along_the_way" = "Swipe through a video feed, tuning your recommendations along the way.";
+"swipe_through_a_video_feed_tuning_your_recommendations_along_the_way" = "Wische durch einen Videofeed und passe dabei deine Empfehlungen an.";
 "tabbar.activity" = "Aktivität";
 "tabbar.backings" = "Unterstützte Projekte";
 "tabbar.dashboard" = "Dashboard";
@@ -2027,8 +2027,8 @@
 "tabbar.profile" = "Profil";
 "tabbar.search" = "Suche";
 "tabbar.search_projects" = "Projekte suchen";
-"try_it_now" = "Try it now";
-"try_our_new_discovery_mode" = "Try our new discovery mode";
+"try_it_now" = "Jetzt ausprobieren";
+"try_our_new_discovery_mode" = "Neuen Erkundungsmodus ausprobieren";
 "two_factor.buttons.resend" = "Erneut senden";
 "two_factor.buttons.submit" = "Absenden";
 "two_factor.code_placeholder" = "Code eingeben";
@@ -2056,4 +2056,4 @@
 "via_custom" = "Benutzerdefiniert";
 "via_external" = "Extern";
 "via_kickstarter" = "über Kickstarter";
-"video_feed_campaign_subtitle" = "%{pledged} pledged • Join %{backers} backers";
+"video_feed_campaign_subtitle" = "%{pledged} finanziert • Von %{backers} Unterstützern unterstützt";

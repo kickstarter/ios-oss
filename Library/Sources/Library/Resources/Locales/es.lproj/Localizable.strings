@@ -103,11 +103,11 @@
 "Blocked_user_confirmation" = "Al bloquear a este usuario, ya no verás sus comentarios ni su contenido. Si guardaste o patrocinaste proyectos del usuario, debes eliminar tu contribución antes de bloquearlo. Puedes desbloquear usuarios desde nuestro Centro de ayuda.";
 "Bonus" = "Extra";
 "Bonus_support" = "Apoyo extra";
-"Bookmark" = "Bookmark";
-"Bookmark_this_project" = "Bookmark this project";
+"Bookmark" = "Guardar";
+"Bookmark_this_project" = "Guardar este proyecto";
 "Bookmarks" = "Marcadores";
 "Bring_creative_projects_to_life" = "Dale vida a proyectos creativos.";
-"By_a_superbacker" = "By a superbacker";
+"By_a_superbacker" = "De un superbacker";
 "By_creating_an_account_you_agree_to_Kickstarters_Terms_of_Use_and_Privacy_Policy" = "Si creas una cuenta, aceptas los <a href=\"%{terms_of_use_link}\">Términos de uso</a> y la <a href=\"%{privacy_policy_link}\">Política de privacidad</a> de Kickstarter.";
 "By_pledging_you_acknowledge" = "Al hacer la contribución, reconoces que las recompensas o los reembolsos no están garantizados por Kickstarter o el creador.";
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Al contribuir, aceptas las <a href=\"%{terms_of_use_link}\">Condiciones de uso</a>, <a href=\"%{privacy_policy_link}\">Política de privacidad</a> y <a href=\"%{cookie_policy_link}\">Política de cookies</a> de Kickstarter.";
@@ -478,7 +478,7 @@
 "My_project_seeks_funding_for_AI_technology" = "Mi proyecto busca financiamiento para la tecnología de IA.";
 "Name" = "Nombre";
 "Near_me" = "Cerca de mí";
-"Near_you" = "Near you";
+"Near_you" = "Cerca de ti";
 "Never" = "Nunca";
 "New_email" = "Nuevo correo electrónico";
 "New_password" = "Contraseña nueva";
@@ -1543,7 +1543,7 @@
 "discovery.survey.button.respond_now" = "Responder ahora";
 "discovery.survey.creator_needs_some_info_to_deliver_reward_for_project" = "%{creator_name} necesita un par de datos para entregarte tu recompensa de %{project_name}.";
 "discovery.survey.reward_survey" = "¡Encuesta sobre recompensas!";
-"discovery_banner_image_content_description" = "Discovery mode preview";
+"discovery_banner_image_content_description" = "Vista previa del modo descubrimiento";
 "ellipsis_more" = "... leer más";
 "facebook_confirmation.button" = "Crear una nueva cuenta";
 "facebook_confirmation.could_not_log_in" = "No se pudo iniciar sesión con Facebook.";
@@ -2017,7 +2017,7 @@
 "support_email.subject" = "Saludos al equipo de atención al cliente de Kickstarter";
 "support_email.to" = "app@kickstarter.com";
 "support_email.to_android" = "android@kickstarter.com";
-"swipe_through_a_video_feed_tuning_your_recommendations_along_the_way" = "Swipe through a video feed, tuning your recommendations along the way.";
+"swipe_through_a_video_feed_tuning_your_recommendations_along_the_way" = "Desliza el dedo por una selección de videos para personalizar las recomendaciones sobre la marcha.";
 "tabbar.activity" = "Actividad";
 "tabbar.backings" = "Contribuciones";
 "tabbar.dashboard" = "Panel de control";

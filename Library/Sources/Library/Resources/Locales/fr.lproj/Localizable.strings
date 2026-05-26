@@ -103,8 +103,8 @@
 "Blocked_user_confirmation" = "Si vous bloquez cet utilisateur, vous ne verrez plus ses commentaires ni son contenu. Si vous avez sauvegardé ou soutenu ses projets, veuillez supprimer votre engagement avant de le bloquer. Pour débloquer un utilisateur, veuillez consulter notre Centre d'assistance.";
 "Bonus" = "Bonus";
 "Bonus_support" = "Coup de pouce";
-"Bookmark" = "Bookmark";
-"Bookmark_this_project" = "Bookmark this project";
+"Bookmark" = "Enregistrer";
+"Bookmark_this_project" = "Enregistrer ce projet";
 "Bookmarks" = "Signets";
 "Bring_creative_projects_to_life" = "Réalisez vos projets créatifs.";
 "By_a_superbacker" = "Par un Superbacker";
