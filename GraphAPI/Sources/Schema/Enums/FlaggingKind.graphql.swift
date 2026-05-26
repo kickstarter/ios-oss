@@ -111,4 +111,6 @@ public enum FlaggingKind: String, EnumType {
   case backingFraud = "BACKING_FRAUD"
   /// backing-spam
   case backingSpam = "BACKING_SPAM"
+  /// phishing
+  case phishing = "PHISHING"
 }

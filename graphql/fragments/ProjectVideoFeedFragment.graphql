@@ -28,4 +28,6 @@ fragment ProjectVideoFeedFragment on Project {
       }
     }
   }
+  sharesCount
+  watchesCount
 }

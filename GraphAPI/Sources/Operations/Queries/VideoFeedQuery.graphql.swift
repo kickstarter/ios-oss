@@ -256,6 +256,10 @@ public class VideoFeedQuery: GraphQLQuery {
           public var category: Category? { __data["category"] }
           /// A project vertical video.
           public var verticalVideo: VerticalVideo? { __data["verticalVideo"] }
+          /// Total number of times the project has been shared to social platforms
+          public var sharesCount: Int { __data["sharesCount"] }
+          /// Number of watchers a project has.
+          public var watchesCount: Int? { __data["watchesCount"] }
 
           public struct Fragments: FragmentContainer {
             public let __data: DataDict
@@ -277,7 +281,9 @@ public class VideoFeedQuery: GraphQLQuery {
             pledged: Pledged,
             creator: Creator? = nil,
             category: Category? = nil,
-            verticalVideo: VerticalVideo? = nil
+            verticalVideo: VerticalVideo? = nil,
+            sharesCount: Int,
+            watchesCount: Int? = nil
           ) {
             self.init(_dataDict: DataDict(
               data: [
@@ -295,6 +301,8 @@ public class VideoFeedQuery: GraphQLQuery {
                 "creator": creator._fieldData,
                 "category": category._fieldData,
                 "verticalVideo": verticalVideo._fieldData,
+                "sharesCount": sharesCount,
+                "watchesCount": watchesCount,
               ],
               fulfilledFragments: [
                 ObjectIdentifier(VideoFeedQuery.Data.VideoFeed.Node.Project.self),

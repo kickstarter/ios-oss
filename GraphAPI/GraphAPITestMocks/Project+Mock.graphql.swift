@@ -69,6 +69,7 @@ public class Project: MockObject {
     @Field<ProjectRewardConnection>("rewards") public var rewards
     @Field<String>("risks") public var risks
     @Field<Bool>("sendMetaCapiEvents") public var sendMetaCapiEvents
+    @Field<Int>("sharesCount") public var sharesCount
     @Field<[Location]>("shippableCountriesExpanded") public var shippableCountriesExpanded
     @Field<String>("slug") public var slug
     @Field<GraphQLEnum<GraphAPI.ProjectState>>("state") public var state
@@ -145,6 +146,7 @@ public extension Mock where O == Project {
     rewards: Mock<ProjectRewardConnection>? = nil,
     risks: String? = nil,
     sendMetaCapiEvents: Bool? = nil,
+    sharesCount: Int? = nil,
     shippableCountriesExpanded: [Mock<Location>]? = nil,
     slug: String? = nil,
     state: GraphQLEnum<GraphAPI.ProjectState>? = nil,
@@ -218,6 +220,7 @@ public extension Mock where O == Project {
     _setEntity(rewards, for: \.rewards)
     _setScalar(risks, for: \.risks)
     _setScalar(sendMetaCapiEvents, for: \.sendMetaCapiEvents)
+    _setScalar(sharesCount, for: \.sharesCount)
     _setList(shippableCountriesExpanded, for: \.shippableCountriesExpanded)
     _setScalar(slug, for: \.slug)
     _setScalar(state, for: \.state)

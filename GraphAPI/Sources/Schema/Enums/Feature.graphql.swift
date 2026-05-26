@@ -164,4 +164,10 @@ public enum Feature: String, EnumType {
   case hideItemVariantsPeak2026 = "hide_item_variants_peak_2026"
   case comboShippingPhase1 = "combo_shipping_phase_1"
   case newRulesPage2026 = "new_rules_page_2026"
+  case collaboratorActiveMembershipLimit = "collaborator_active_membership_limit"
+  case kdsNotifications = "kds_notifications"
+  case newRulesPageRevision = "new_rules_page_revision"
+  case enable6HourSegmentedAddressLocking = "enable_6_hour_segmented_address_locking"
+  case enable24HourSegmentedAddressLocking = "enable_24_hour_segmented_address_locking"
+  case peakDesignBackerReportSkuByRewardBreakdown = "peak_design_backer_report_sku_by_reward_breakdown"
 }
