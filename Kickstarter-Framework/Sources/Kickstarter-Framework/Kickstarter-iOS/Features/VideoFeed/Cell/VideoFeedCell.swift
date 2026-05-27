@@ -42,7 +42,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   private let videoPlayer: VideoFeedVideoPlayer
   private let videoPlayerView = VideoFeedPlayerView()
   private let errorToastHostingController = UIHostingController(
-    rootView: VideoFeedToastView(message: "FPO: Couldn't load video")
+    rootView: VideoFeedToastView(message: Strings.Couldnt_load_video())
   )
 
   // MARK: - Lifecycle

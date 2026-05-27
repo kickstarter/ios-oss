@@ -12,8 +12,7 @@ struct FundedPercentageCircleView: View {
     static let innerCircleOpacity: Double = 0.3
     static let checkmarkIcon = "video-feed-checkmark-icon"
     static let checkmarkIconSize: CGFloat = 12
-    // TODO: Update with Video Feed Translations [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
-    static let accessibilityLabel: String = "FPO: Funded percentage"
+    static let accessibilityLabel: String = Strings.Funded_percentage()
   }
 
   let fundedPercent: Double

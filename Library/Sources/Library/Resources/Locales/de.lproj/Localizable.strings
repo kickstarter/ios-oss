@@ -103,8 +103,8 @@
 "Blocked_user_confirmation" = "Wenn du diesen Nutzer blockierst, siehst du keine Kommentare oder Inhalte mehr von ihm. Falls du Projekte von diesem Nutzer gespeichert oder unterstützt hast, musst du deinen Beitrag vor dem Blockieren entfernen. Weitere Informationen dazu, wie du die Blockierung eines Nutzers aufheben kannst, findest du im Hilfecenter.";
 "Bonus" = "Bonus";
 "Bonus_support" = "Bonus-Unterstützung";
-"Bookmark" = "Bookmark";
-"Bookmark_this_project" = "Bookmark this project";
+"Bookmark" = "Lesezeichen setzen";
+"Bookmark_this_project" = "Lesezeichen für dieses Projekt setzen";
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
 "By_a_superbacker" = "Von einem Superbacker";
@@ -179,6 +179,7 @@
 "Copying_reselling" = "Kopie, Wiederverkauf oder Plagiat";
 "Couldnt_add_attachment" = "Anhang konnte nicht hinzugefügt werden";
 "Couldnt_load_more_comments_Tap_to_retry" = "Weitere Kommentare konnten nicht geladen werden.\nAntippen und erneut versuchen";
+"Couldnt_load_video" = "Video konnte nicht geladen werden";
 "Couldnt_open_live_stream_Try_again_later" = "Live-Stream konnte nicht geöffnet werden. Bitte versuche es später noch einmal.";
 "Couldnt_post" = "Post fehlgeschlagen. Antippen und erneut versuchen";
 "Couldnt_remove_attachment" = "Anhang konnte nicht entfernt werden";
@@ -335,6 +336,7 @@
 "Friend_backed_tech_project" = "<b>%{friend_name}</b> hat ein <i>Technologie-Projekt</i> unterstützt.";
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> hat ein <i>Theater-Projekt</i> unterstützt.";
 "Friend_name_launched_a_project" = "%{friend_name} hat ein Projekt veröffentlicht!";
+"Funded_percentage" = "Funded percentage";
 "Funding_successful" = "Finanzierung erfolgreich";
 "Games_newsletter" = "Jetzt abonnieren - du erhältst von Kickstarters Games-Team alle zwei Wochen News zu neuen Projekten und Updates rund um Games.";
 "Get_notified" = "Benachrichtigungen aktivieren";

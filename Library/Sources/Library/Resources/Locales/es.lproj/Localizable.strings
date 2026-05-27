@@ -179,6 +179,7 @@
 "Copying_reselling" = "Copia, reventa o plagio";
 "Couldnt_add_attachment" = "No se pudo añadir el anexo";
 "Couldnt_load_more_comments_Tap_to_retry" = "No se pudo cargar más comentarios.\nToca para intentar de nuevo.";
+"Couldnt_load_video" = "No se pudo cargar el video";
 "Couldnt_open_live_stream_Try_again_later" = "No se pudo abrir este live stream, por favor inténtalo de nuevo más tarde.";
 "Couldnt_post" = "No se pudo publicar. Toca para intentar de nuevo.";
 "Couldnt_remove_attachment" = "No se pudo remover el anexo";
@@ -335,6 +336,7 @@
 "Friend_backed_tech_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Tecnología</i>.";
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Teatro</i>.";
 "Friend_name_launched_a_project" = "¡%{friend_name} publicó un proyecto!";
+"Funded_percentage" = "Porcentaje financiado";
 "Funding_successful" = "Financiado con éxito";
 "Games_newsletter" = "Suscríbete para recibir, cada dos semanas, una combinación de nuevos proyectos y actualizaciones sobre todo lo relacionado a juegos, seleccionados exclusivamente para ti por el equipo de Juegos de Kickstarter.";
 "Get_notified" = "Notificarme";
