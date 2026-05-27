@@ -249,9 +249,8 @@ internal final class SearchViewContollerTests: TestCase {
     let mockStatsigClient = MockStatsigWrapper()
     mockStatsigClient.features = [.videoFeed: true]
 
-    // TODO: Update to all languages once translations are in [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
     orthogonalCombos(
-      [Language.en],
+      Language.allLanguages,
       [Device.phone5_8inch, Device.pad],
       [UIUserInterfaceStyle.light, UIUserInterfaceStyle.dark]
     )
