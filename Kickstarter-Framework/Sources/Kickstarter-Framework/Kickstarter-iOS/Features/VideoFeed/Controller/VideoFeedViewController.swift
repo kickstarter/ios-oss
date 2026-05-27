@@ -1,6 +1,7 @@
 import AVFoundation
 import FirebaseCrashlytics
 import KDS
+import Kingfisher
 import KsApi
 import Library
 import UIKit
@@ -229,6 +230,14 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
 
     if let url = item.videoURL {
       cell.loadVideo(url: url)
+    }
+
+    /// Prefetch the next cell's preview image so it's ready before the user swipes.
+    let nextIndex = indexPath.item + 1
+
+    if nextIndex < items.count,
+       let nextPreviewURL = items[nextIndex].videoPreviewImageURL {
+      ImagePrefetcher(resources: [nextPreviewURL]).start()
     }
   }
 
