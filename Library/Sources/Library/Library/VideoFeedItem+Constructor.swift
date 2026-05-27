@@ -27,24 +27,27 @@ extension VideoFeedItem {
     )
   }
 
-  private static func statsText(for project: VideoFeedQuery.Data.VideoFeed.Node.Project) -> String {
+  static func statsText(pledgedAmount: Double, backersCount: Int) -> String {
     let currencyCode = AppEnvironment.current.locale.currency?.identifier ?? Project.Country.us.currencyCode
 
-    let pledgedFormatted = project.pledged.amount
-      .flatMap { Double($0) }
-      .map {
-        Format.currency(
-          $0,
-          currencyCode: currencyCode,
-          omitCurrencyCode: false,
-          maximumFractionDigits: 0,
-          minimumFractionDigits: 0
-        )
-      } ?? ""
+    let pledgedFormatted = Format.currency(
+      pledgedAmount,
+      currencyCode: currencyCode,
+      omitCurrencyCode: false,
+      maximumFractionDigits: 0,
+      minimumFractionDigits: 0
+    )
 
     return Strings.video_feed_campaign_subtitle(
       pledged: pledgedFormatted,
-      backers: project.backersCount.toString()
+      backers: backersCount.toString()
     )
+  }
+
+  private static func statsText(for project: VideoFeedQuery.Data.VideoFeed.Node.Project) -> String {
+    let amount = project.pledged.amount
+      .flatMap { Double($0) } ?? 0
+
+    return Self.statsText(pledgedAmount: amount, backersCount: project.backersCount)
   }
 }
