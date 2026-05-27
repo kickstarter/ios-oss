@@ -138,7 +138,8 @@ extension Element {
 
     // - if it's a gif collect attribute data-src instead
     if updatedSrc.contains(HTMLRawText.Image.gifExtension.rawValue),
-       let dataSource = try? child.attr(HTMLRawText.Image.dataSource.rawValue) {
+       let dataSource = try? child.attr(HTMLRawText.Image.dataSource.rawValue),
+       !dataSource.isEmpty {
       updatedSrc = dataSource
     }
 
