@@ -136,9 +136,11 @@ extension Element {
       updatedSrc = source
     }
 
-    // - if it's a gif collect attribute data-src instead
+    /// GIFs use `data-src` for the real URL since `src` just holds a lazy-load placeholder.
+    /// skip if `data-src` is an empty string so we don't replace the real URL with nothing
     if updatedSrc.contains(HTMLRawText.Image.gifExtension.rawValue),
-       let dataSource = try? child.attr(HTMLRawText.Image.dataSource.rawValue) {
+       let dataSource = try? child.attr(HTMLRawText.Image.dataSource.rawValue),
+       !dataSource.isEmpty {
       updatedSrc = dataSource
     }
 
