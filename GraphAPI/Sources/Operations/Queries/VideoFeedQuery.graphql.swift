@@ -238,6 +238,8 @@ public class VideoFeedQuery: GraphQLQuery {
           public var name: String { __data["name"] }
           /// The project's unique URL identifier.
           public var slug: String { __data["slug"] }
+          /// A URL to the project's page.
+          public var url: String { __data["url"] }
           /// What percent the project has towards meeting its funding goal.
           public var percentFunded: Int { __data["percentFunded"] }
           /// When is the project scheduled to end?
@@ -256,6 +258,10 @@ public class VideoFeedQuery: GraphQLQuery {
           public var category: Category? { __data["category"] }
           /// A project vertical video.
           public var verticalVideo: VerticalVideo? { __data["verticalVideo"] }
+          /// Total number of times the project has been shared to social platforms
+          public var sharesCount: Int { __data["sharesCount"] }
+          /// Number of watchers a project has.
+          public var watchesCount: Int? { __data["watchesCount"] }
 
           public struct Fragments: FragmentContainer {
             public let __data: DataDict
@@ -269,6 +275,7 @@ public class VideoFeedQuery: GraphQLQuery {
             pid: Int,
             name: String,
             slug: String,
+            url: String,
             percentFunded: Int,
             deadlineAt: GraphAPI.DateTime? = nil,
             launchedAt: GraphAPI.DateTime? = nil,
@@ -277,7 +284,9 @@ public class VideoFeedQuery: GraphQLQuery {
             pledged: Pledged,
             creator: Creator? = nil,
             category: Category? = nil,
-            verticalVideo: VerticalVideo? = nil
+            verticalVideo: VerticalVideo? = nil,
+            sharesCount: Int,
+            watchesCount: Int? = nil
           ) {
             self.init(_dataDict: DataDict(
               data: [
@@ -286,6 +295,7 @@ public class VideoFeedQuery: GraphQLQuery {
                 "pid": pid,
                 "name": name,
                 "slug": slug,
+                "url": url,
                 "percentFunded": percentFunded,
                 "deadlineAt": deadlineAt,
                 "launchedAt": launchedAt,
@@ -295,6 +305,8 @@ public class VideoFeedQuery: GraphQLQuery {
                 "creator": creator._fieldData,
                 "category": category._fieldData,
                 "verticalVideo": verticalVideo._fieldData,
+                "sharesCount": sharesCount,
+                "watchesCount": watchesCount,
               ],
               fulfilledFragments: [
                 ObjectIdentifier(VideoFeedQuery.Data.VideoFeed.Node.Project.self),

@@ -4,6 +4,7 @@ fragment ProjectVideoFeedFragment on Project {
   pid
   name
   slug
+  url
   percentFunded
   deadlineAt
   launchedAt
@@ -28,4 +29,6 @@ fragment ProjectVideoFeedFragment on Project {
       }
     }
   }
+  sharesCount
+  watchesCount
 }

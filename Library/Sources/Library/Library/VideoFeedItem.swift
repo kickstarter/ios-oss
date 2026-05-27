@@ -2,7 +2,13 @@ import Foundation
 
 public struct VideoFeedItem: Hashable {
   public let id: String
+
+  public let pid: Int
+
   public let slug: String
+
+  /// The project's web URL, used for the creator profile webview.
+  public let projectURL: String
 
   /// Main title shown in the bottom overlay.
   public let title: String
@@ -33,6 +39,12 @@ public struct VideoFeedItem: Hashable {
 
   /// Whether the current user has saved/watched this project.
   public var isSaved: Bool
+
+  /// Number of times the project has been shared.
+  public var sharesCount: Int
+
+  /// Number of times the project has been watched (saved)..
+  public var watchesCount: Int
 
   public func hash(into hasher: inout Hasher) {
     hasher.combine(self.id)

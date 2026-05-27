@@ -43,7 +43,9 @@ final class VideoFeedViewControllerTests: TestCase {
         cell.configureWith(
           value: VideoFeedItem(
             id: "0",
+            pid: 3,
             slug: "video_feed",
+            projectURL: "https://test.com",
             title: "Ringo Move - The Ultimate Workout Bottle",
             creator: "Creator Name",
             creatorImageURL: nil,
@@ -53,7 +55,9 @@ final class VideoFeedViewControllerTests: TestCase {
             videoURL: nil,
             videoPreviewImageURL: nil,
             projectId: "1",
-            isSaved: false
+            isSaved: false,
+            sharesCount: 1,
+            watchesCount: 50
           ),
           isSaved: .constant(false)
         )
@@ -93,7 +97,9 @@ final class VideoFeedViewControllerTests: TestCase {
         cell.configureWith(
           value: VideoFeedItem(
             id: "0",
+            pid: 3,
             slug: "video_feed",
+            projectURL: "https://test.com",
             title: "Ringo Move - The Ultimate Workout Bottle for People Who Like Long Product Names That Wrap Across Several Lines For People Who Like Long Product Names That Wrap Across Several Lines",
             creator: "Creator Name",
             creatorImageURL: nil,
@@ -103,7 +109,9 @@ final class VideoFeedViewControllerTests: TestCase {
             videoURL: nil,
             videoPreviewImageURL: nil,
             projectId: "1",
-            isSaved: true
+            isSaved: true,
+            sharesCount: 1,
+            watchesCount: 50
           ),
           isSaved: .constant(true)
         )
@@ -145,7 +153,9 @@ final class VideoFeedViewControllerTests: TestCase {
         cell.configureWith(
           value: VideoFeedItem(
             id: "0",
+            pid: 3,
             slug: "video_feed",
+            projectURL: "https://test.com",
             title: "Ringo Move - The Ultimate Workout Bottle",
             creator: "Creator Name",
             creatorImageURL: nil,
@@ -155,7 +165,9 @@ final class VideoFeedViewControllerTests: TestCase {
             videoURL: nil,
             videoPreviewImageURL: nil,
             projectId: "1",
-            isSaved: false
+            isSaved: false,
+            sharesCount: 1,
+            watchesCount: 50
           ),
           isSaved: .constant(false)
         )

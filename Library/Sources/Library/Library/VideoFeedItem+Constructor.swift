@@ -9,7 +9,9 @@ extension VideoFeedItem {
 
     self.init(
       id: node.project.id,
+      pid: node.project.pid,
       slug: node.project.slug,
+      projectURL: node.project.url,
       title: node.project.name,
       creator: node.project.creator?.name ?? "",
       creatorImageURL: node.project.creator.flatMap { URL(string: $0.imageUrl) },
@@ -19,7 +21,9 @@ extension VideoFeedItem {
       videoURL: video?.videoSources?.hls?.src.flatMap { URL(string: $0) },
       videoPreviewImageURL: video?.previewImageUrl.flatMap { URL(string: $0) },
       projectId: node.project.id,
-      isSaved: node.project.isWatched
+      isSaved: node.project.isWatched,
+      sharesCount: node.project.sharesCount,
+      watchesCount: node.project.watchesCount ?? 0
     )
   }
 

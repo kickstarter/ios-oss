@@ -5,7 +5,7 @@
 
 public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment ProjectVideoFeedFragment on Project { __typename id pid name slug percentFunded deadlineAt launchedAt backersCount isWatched pledged { __typename amount } creator { __typename name imageUrl(blur: false, width: 200) } category { __typename name } verticalVideo { __typename id previewImageUrl videoSources { __typename hls { __typename src } } } }"#
+    #"fragment ProjectVideoFeedFragment on Project { __typename id pid name slug url percentFunded deadlineAt launchedAt backersCount isWatched pledged { __typename amount } creator { __typename name imageUrl(blur: false, width: 200) } category { __typename name } verticalVideo { __typename id previewImageUrl videoSources { __typename hls { __typename src } } } sharesCount watchesCount }"#
   }
 
   public let __data: DataDict
@@ -18,6 +18,7 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
     .field("pid", Int.self),
     .field("name", String.self),
     .field("slug", String.self),
+    .field("url", String.self),
     .field("percentFunded", Int.self),
     .field("deadlineAt", GraphAPI.DateTime?.self),
     .field("launchedAt", GraphAPI.DateTime?.self),
@@ -27,6 +28,8 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
     .field("creator", Creator?.self),
     .field("category", Category?.self),
     .field("verticalVideo", VerticalVideo?.self),
+    .field("sharesCount", Int.self),
+    .field("watchesCount", Int?.self),
   ] }
 
   public var id: GraphAPI.ID { __data["id"] }
@@ -36,6 +39,8 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
   public var name: String { __data["name"] }
   /// The project's unique URL identifier.
   public var slug: String { __data["slug"] }
+  /// A URL to the project's page.
+  public var url: String { __data["url"] }
   /// What percent the project has towards meeting its funding goal.
   public var percentFunded: Int { __data["percentFunded"] }
   /// When is the project scheduled to end?
@@ -54,12 +59,17 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
   public var category: Category? { __data["category"] }
   /// A project vertical video.
   public var verticalVideo: VerticalVideo? { __data["verticalVideo"] }
+  /// Total number of times the project has been shared to social platforms
+  public var sharesCount: Int { __data["sharesCount"] }
+  /// Number of watchers a project has.
+  public var watchesCount: Int? { __data["watchesCount"] }
 
   public init(
     id: GraphAPI.ID,
     pid: Int,
     name: String,
     slug: String,
+    url: String,
     percentFunded: Int,
     deadlineAt: GraphAPI.DateTime? = nil,
     launchedAt: GraphAPI.DateTime? = nil,
@@ -68,7 +78,9 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
     pledged: Pledged,
     creator: Creator? = nil,
     category: Category? = nil,
-    verticalVideo: VerticalVideo? = nil
+    verticalVideo: VerticalVideo? = nil,
+    sharesCount: Int,
+    watchesCount: Int? = nil
   ) {
     self.init(_dataDict: DataDict(
       data: [
@@ -77,6 +89,7 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
         "pid": pid,
         "name": name,
         "slug": slug,
+        "url": url,
         "percentFunded": percentFunded,
         "deadlineAt": deadlineAt,
         "launchedAt": launchedAt,
@@ -86,6 +99,8 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
         "creator": creator._fieldData,
         "category": category._fieldData,
         "verticalVideo": verticalVideo._fieldData,
+        "sharesCount": sharesCount,
+        "watchesCount": watchesCount,
       ],
       fulfilledFragments: [
         ObjectIdentifier(ProjectVideoFeedFragment.self)

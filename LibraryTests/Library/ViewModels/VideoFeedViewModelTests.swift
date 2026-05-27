@@ -162,13 +162,16 @@ final class VideoFeedViewModelTests: TestCase {
         pid: i,
         name: "Project \(i)",
         slug: "project-\(i)",
+        url: "https://test.com",
         percentFunded: 75,
         backersCount: 100,
         isWatched: isWatched,
         pledged: pledged,
         creator: creator,
         category: category,
-        verticalVideo: verticalVideo
+        verticalVideo: verticalVideo,
+        sharesCount: 2,
+        watchesCount: 3
       )
 
       return VideoFeedQuery.Data.VideoFeed.Node(badges: [], project: project)
