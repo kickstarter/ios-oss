@@ -95,15 +95,6 @@ struct VideoFeedOverlayView: View {
       /// Fades out once `isVideoReady` becomes true.
       if let previewURL = self.item.videoPreviewImageURL {
         KFImage(previewURL)
-          .placeholder {
-            ProgressView()
-              .progressViewStyle(.circular)
-              .tint(Color(Colors.Icon.light.uiColor()))
-              .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
-              .background(FrostedGlassBackgroundView())
-              .clipShape(Circle())
-              .offset(y: Constants.playButtonOffset)
-          }
           .resizable()
           .scaledToFill()
           .ignoresSafeArea()
