@@ -21,6 +21,7 @@ final class VideoFeedViewController: UIViewController {
   private let dataSource = VideoFeedDataSource()
 
   private var lifecycleObservers: [any NSObjectProtocol] = []
+  private var previewImagePrefetcher: ImagePrefetcher?
 
   private lazy var collectionView: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
@@ -233,11 +234,19 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     }
 
     /// Prefetch the next cell's preview image so it's ready before the user swipes.
+    /// Cancel any in-flight prefetching first so rapid scrolling doesn't queue up old requests.
     let nextIndex = indexPath.item + 1
+
+    self.previewImagePrefetcher?.stop()
+    self.previewImagePrefetcher = nil
 
     if nextIndex < items.count,
        let nextPreviewURL = items[nextIndex].videoPreviewImageURL {
-      ImagePrefetcher(resources: [nextPreviewURL]).start()
+      let prefetcher = ImagePrefetcher(resources: [nextPreviewURL])
+
+      prefetcher.start()
+
+      self.previewImagePrefetcher = prefetcher
     }
   }
 
@@ -247,6 +256,8 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     didEndDisplaying cell: UICollectionViewCell,
     forItemAt _: IndexPath
   ) {
+    self.previewImagePrefetcher?.stop()
+    self.previewImagePrefetcher = nil
     (cell as? VideoFeedCell)?.resetVideo()
   }
 
