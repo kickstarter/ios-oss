@@ -3,25 +3,24 @@ import SwiftUI
 /// Custom frosted glass background view.
 public struct FrostedGlassBackgroundView: UIViewRepresentable {
   private enum Constants {
-    static let blurRadius: CGFloat = 6.05
-    static let overlayRed: CGFloat = 132 / 255
-    static let overlayGreen: CGFloat = 132 / 255
-    static let overlayBlue: CGFloat = 132 / 255
-    static let overlayAlpha: CGFloat = 0.35
+    static let red: CGFloat = 32 / 255
+    static let green: CGFloat = 32 / 255
+    static let blue: CGFloat = 32 / 255
+    static let alpha: CGFloat = 0.60
   }
 
-  public func makeUIView(context _: Context) -> UIVisualEffectView {
-    let blur = UIBlurEffect(style: .systemUltraThinMaterial)
-    let view = UIVisualEffectView(effect: blur)
+  public func makeUIView(context _: Context) -> UIView {
+    let view = UIView()
 
     view.backgroundColor = UIColor(
-      red: Constants.overlayRed,
-      green: Constants.overlayGreen,
-      blue: Constants.overlayBlue,
-      alpha: Constants.overlayAlpha
+      red: Constants.red,
+      green: Constants.green,
+      blue: Constants.blue,
+      alpha: Constants.alpha
     )
+
     return view
   }
 
-  public func updateUIView(_: UIVisualEffectView, context _: Context) {}
+  public func updateUIView(_: UIView, context _: Context) {}
 }

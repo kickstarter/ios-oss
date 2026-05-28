@@ -1,6 +1,7 @@
 import AVFoundation
 import FirebaseCrashlytics
 import KDS
+import Kingfisher
 import KsApi
 import Library
 import UIKit
@@ -19,6 +20,7 @@ final class VideoFeedViewController: UIViewController {
   private let dataSource = VideoFeedDataSource()
 
   private var lifecycleObservers: [any NSObjectProtocol] = []
+  private var previewImagePrefetcher: ImagePrefetcher?
 
   private lazy var collectionView: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
@@ -236,6 +238,22 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     if let url = item.videoURL {
       cell.loadVideo(url: url)
     }
+
+    /// Prefetch the next cell's preview image so it's ready before the user swipes.
+    /// Cancel any in-flight prefetching first so rapid scrolling doesn't queue up old requests.
+    let nextIndex = indexPath.item + 1
+
+    self.previewImagePrefetcher?.stop()
+    self.previewImagePrefetcher = nil
+
+    if nextIndex < items.count,
+       let nextPreviewURL = items[nextIndex].videoPreviewImageURL {
+      let prefetcher = ImagePrefetcher(resources: [nextPreviewURL])
+
+      prefetcher.start()
+
+      self.previewImagePrefetcher = prefetcher
+    }
   }
 
   /// Pauses and rewinds when a cell scrolls offscreen so the next appearance starts fresh.
@@ -244,6 +262,8 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     didEndDisplaying cell: UICollectionViewCell,
     forItemAt _: IndexPath
   ) {
+    self.previewImagePrefetcher?.stop()
+    self.previewImagePrefetcher = nil
     (cell as? VideoFeedCell)?.resetVideo()
   }
 

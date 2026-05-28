@@ -342,7 +342,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       // Because the Discover page is the first page we see, it might appear before config values load.
       self.configUpdatedSignal
     )
-    .map { featureVideoFeedEnabled() }
+    .map { featureVideoFeedEnabled() && Reachability.current != .none }
     .skipRepeats()
 
     self.goToCuratedProjects = self.personalizationCellTappedProperty.signal
