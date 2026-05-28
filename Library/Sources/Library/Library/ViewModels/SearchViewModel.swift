@@ -242,7 +242,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .takePairWhen(shouldShowEmptyState)
 
     self.showVideoFeedBanner = self.viewWillAppearAnimatedProperty.signal.ignoreValues()
-      .map { featureVideoFeedEnabled() }
+      .map { featureVideoFeedEnabled() && Reachability.current != .none }
       .skipRepeats()
 
     self.goToProject = Signal.combineLatest(searchResults, queryText)
