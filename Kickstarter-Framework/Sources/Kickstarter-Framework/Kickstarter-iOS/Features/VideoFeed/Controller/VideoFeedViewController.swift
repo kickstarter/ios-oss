@@ -48,6 +48,16 @@ final class VideoFeedViewController: UIViewController {
     self.lifecycleObservers.forEach(NotificationCenter.default.removeObserver)
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    /// Presenting a fullscreen modal nudges the contentOffset.
+    /// This is a side effect of UIKit re-measuring UIHostingConfiguration cells when presenting views.
+    /// This method snaps the collection view cell back into place once the layout has settled.
+
+    self.snapToCurrentPage()
+  }
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
@@ -114,6 +124,16 @@ final class VideoFeedViewController: UIViewController {
     guard !self.collectionView.isScrollEnabled else { return }
 
     self.collectionView.isScrollEnabled = true
+  }
+
+  private func snapToCurrentPage() {
+    let pageHeight = self.collectionView.bounds.height
+
+    guard pageHeight > 0 else { return }
+
+    let currentPage = round(self.collectionView.contentOffset.y / pageHeight)
+
+    self.collectionView.contentOffset.y = currentPage * pageHeight
   }
 
   // MARK: - Audio session
