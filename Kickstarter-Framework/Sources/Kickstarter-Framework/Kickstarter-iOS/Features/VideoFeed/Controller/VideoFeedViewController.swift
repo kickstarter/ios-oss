@@ -8,8 +8,7 @@ import UIKit
 /// Full-screen swipeable video feed.
 ///   - Full-screen paging
 ///   - Plain data source driven by `VideoFeedViewModel`
-///   - Scrolling locked until the first video is ready to play
-///   - Cells starts to load video on `willDisplay` and loops on `didEndDisplaying`
+///   - Cells start loading video on `willDisplay` and reset on `didEndDisplaying`
 ///   - Pauses video on background, resumes on foreground
 final class VideoFeedViewController: UIViewController {
   private enum Constants {
@@ -78,7 +77,6 @@ final class VideoFeedViewController: UIViewController {
     self.collectionView.translatesAutoresizingMaskIntoConstraints = false
     self.collectionView.backgroundColor = Constants.backgroundColor
     self.collectionView.isPagingEnabled = true
-    self.collectionView.isScrollEnabled = false
     self.collectionView.showsVerticalScrollIndicator = false
     self.collectionView.contentInsetAdjustmentBehavior = .never
 
@@ -115,15 +113,6 @@ final class VideoFeedViewController: UIViewController {
   private func updateFeedWithFetchedItems(_ newItems: [VideoFeedItem]) {
     self.dataSource.load(newItems)
     self.collectionView.reloadData()
-  }
-
-  // MARK: - Scroll locking
-
-  /// Unlocks scrolling once the first video is ready to play.
-  private func unlockScrollingIfNeeded() {
-    guard !self.collectionView.isScrollEnabled else { return }
-
-    self.collectionView.isScrollEnabled = true
   }
 
   private func snapToCurrentPage() {
@@ -237,9 +226,6 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     cell.onCreatorTapped = { [weak self] in self?.goToCreatorProfile(for: item) }
     cell.onShareTapped = { [weak self] in self?.simpleAlert(title: "Share") }
     cell.onMoreTapped = { [weak self] in self?.simpleAlert(title: "More") }
-    cell.onVideoReady = { [weak self] in self?.unlockScrollingIfNeeded() }
-    /// Failed videos still need scroll unlocked so the user can swipe past.
-    cell.onVideoFailed = { [weak self] in self?.unlockScrollingIfNeeded() }
     cell.onCTATapped = { [weak self] in self?.goToProjectPage(for: item) }
 
     cell.configureWith(

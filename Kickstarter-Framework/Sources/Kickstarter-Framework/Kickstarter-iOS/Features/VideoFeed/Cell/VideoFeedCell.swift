@@ -12,9 +12,9 @@ import UIKit
 ///
 /// # Playback flow
 /// Loads video on `CollectionView.willDisplay`
-/// After the first frame renders, we call `onVideoReady` +`playbackState.videoDidBecomeReady()`
-/// Preview image fades out , video begins playback, and controller unlocks scrolling.
-/// On `didEndDisplaying`, `clearVideo()` fully tears down the item so recycled cells don't keep buffering.
+/// After the first frame renders, we call `onVideoReady` + `playbackState.videoDidBecomeReady()`
+/// Preview image fades out and video begins playback.
+/// On `didEndDisplaying`, `resetVideo()` fully tears down the item so recycled cells don't keep buffering.
 final class VideoFeedCell: UICollectionViewCell, ValueCell {
   static let reuseIdentifier = "VideoFeedCell"
 
@@ -33,7 +33,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   var onMoreTapped: (() -> Void)?
   var onCTATapped: (() -> Void)?
 
-  /// Called once the video is ready to play. Used to unlock feed scrolling.
+  /// Called once the video is ready to play.
   var onVideoReady: (() -> Void)?
   /// Called when the video fails to load or play.
   var onVideoFailed: (() -> Void)?
