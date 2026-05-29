@@ -103,6 +103,29 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       }
       .map(filteredRewards)
 
+    // Warm cache for addons
+    let _ = project
+      .combineLatest(with: self.shippingLocationSelectedSignal)
+      .switchMap { project, location in
+        AppEnvironment.current.apiService.fetchRewardAddOnsSelectionViewRewards(
+          slug: project.slug,
+          shippingEnabled: location?.graphID != nil,
+          locationId: location?.graphID,
+          cache: true
+        ).materialize()
+      }
+      .observeValues { _ in
+        print("Cached!")
+      }
+    /*
+     AppEnvironment.current.apiService.fetchRewardAddOnsSelectionViewRewards(
+       slug: slug,
+       shippingEnabled: shippingRule?.location.graphID != nil,
+       locationId: shippingRule?.location.graphID
+     )
+
+     */
+
     self.scrollToRewardIndexPath = Signal.combineLatest(
       project,
       fetchedRewards,

@@ -110,7 +110,8 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       AppEnvironment.current.apiService.fetchRewardAddOnsSelectionViewRewards(
         slug: slug,
         shippingEnabled: shippingRule?.location.graphID != nil,
-        locationId: shippingRule?.location.graphID
+        locationId: shippingRule?.location.graphID,
+        cache: true
       )
       .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
       .materialize()

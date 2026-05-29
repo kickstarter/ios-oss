@@ -1189,7 +1189,12 @@
       return producer(for: self.fetchManagePledgeViewBackingResult)
     }
 
-    func fetchRewardAddOnsSelectionViewRewards(slug: String, shippingEnabled: Bool, locationId: String?)
+    func fetchRewardAddOnsSelectionViewRewards(
+      slug: String,
+      shippingEnabled: Bool,
+      locationId: String?,
+      cache _: Bool
+    )
       -> SignalProducer<Project, ErrorEnvelope> {
       guard let client = self.apolloClient else {
         return .empty
