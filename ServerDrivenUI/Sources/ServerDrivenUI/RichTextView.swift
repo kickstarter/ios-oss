@@ -32,8 +32,8 @@ public struct RichTextView: View {
           ImageBlock(photo: photo)
         case let .video(video):
           AudioVideoBlock(content: .video(video))
-        case .oembed:
-          self.unimplemented("Oembed")
+        case let .oembed(oembed):
+          OEmbedBlock(oembed: oembed)
         case .listItemOpen, .listItemClose:
           Group {}
         case .unknown:
