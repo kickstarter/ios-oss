@@ -671,22 +671,18 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .take(first: 1)
       .switchMap { project in
         let query = GraphAPI.ShippableLocationsForProjectQuery(id: project.id)
-        let p1 = AppEnvironment.current.apiService.fetch(query: query)
+        let p1 = AppEnvironment.current.apiService.fetchCached(query: query)
 
         let p2 = AppEnvironment.current.apiService.fetchProjectRewardsWithNoReward(
           projectId: project.id,
           sortedForShippingCountryCode: AppEnvironment.current.countryCode,
-          cache: false
+          cache: true
         )
 
         return p2.combineLatest(with: p1).materialize()
       }
       .values()
       .observeValues { _, _ in
-        // This isn't quite right - it's claiming to be cached, but the rewards
-        // page isn't showing the cached values on first load.
-        // It does work when you open the rewards page a second time, though.
-        // Would be nice to figure out the warming.
         print("Cached!")
       }
 
