@@ -17,11 +17,11 @@ public struct PledgeShippingLocationViewData {
     self.pid = project.id
     self.selectedLocationId = project.personalization.backing?.locationId
 
-    guard project.rewards.count > 0 else {
-      assert(
-        false,
-        "Project has no rewards attached, so we don't know whether or not to show the shipping location."
-      )
+    guard project.rewards.count > 1 else {
+      /*     assert(
+         false,
+         "Project has no rewards attached, so we don't know whether or not to show the shipping location."
+       ) */
 
       self.hasShippableRewards = true
       return
@@ -192,7 +192,7 @@ private func shippableLocations(data: PledgeShippingLocationViewData)
   }
 
   let query = GraphAPI.ShippableLocationsForProjectQuery(id: data.pid)
-  let producer = AppEnvironment.current.apiService.fetch(query: query)
+  let producer = AppEnvironment.current.apiService.fetchCached(query: query)
     .map { data in
       let locations = Location.locations(from: data)
       return locations

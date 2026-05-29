@@ -43,6 +43,9 @@ public protocol ServiceType {
   /// Fetches a GraphQL query and returns the data.
   func fetch<Q: GraphQLQuery>(query: Q) -> SignalProducer<Q.Data, ErrorEnvelope>
 
+  /// Fetches a GraphQL query and returns the data hitting the cache.
+  func fetchCached<Q: GraphQLQuery>(query: Q) -> SignalProducer<Q.Data, ErrorEnvelope>
+
   /// Fetches a GraphQL query with async/await and returns the data.
   func fetch<Q: GraphQLQuery>(query: Q) async throws -> Q.Data?
 
@@ -262,7 +265,7 @@ public protocol ServiceType {
   func fetchProjectRewards(projectId: Int) -> SignalProducer<[Reward], ErrorEnvelope>
 
   /// Fetch the project's rewards, including 'No Reward'. Includes all shipping rules.
-  func fetchProjectRewardsWithNoReward(projectId: Int, sortedForShippingCountryCode: String?)
+  func fetchProjectRewardsWithNoReward(projectId: Int, sortedForShippingCountryCode: String?, cache: Bool)
     -> SignalProducer<[Reward], ErrorEnvelope>
 
   /// Fetch a single project with the specified discovery params.

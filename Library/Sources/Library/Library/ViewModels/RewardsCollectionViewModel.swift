@@ -91,7 +91,8 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         AppEnvironment.current.apiService
           .fetchProjectRewardsWithNoReward(
             projectId: project.id,
-            sortedForShippingCountryCode: location
+            sortedForShippingCountryCode: location,
+            cache: location == AppEnvironment.current.countryCode
           )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()

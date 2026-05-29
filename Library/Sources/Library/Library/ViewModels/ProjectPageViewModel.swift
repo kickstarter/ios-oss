@@ -666,6 +666,26 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         self.rewardsUseCase.goToRewards
       )
 
+    // Warm the cache for the Rewards page
+    project
+      .take(first: 1)
+      .switchMap { project in
+        let query = GraphAPI.ShippableLocationsForProjectQuery(id: project.id)
+        let p1 = AppEnvironment.current.apiService.fetch(query: query)
+
+        let p2 = AppEnvironment.current.apiService.fetchProjectRewardsWithNoReward(
+          projectId: project.id,
+          sortedForShippingCountryCode: AppEnvironment.current.countryCode,
+          cache: false
+        )
+
+        return p2.combineLatest(with: p1).materialize()
+      }
+      .values()
+      .observeValues { _, _ in
+        print("Cached!")
+      }
+
     // MARK: - Pledge View
 
     let shouldGoToPledgeManager = ctaButtonTappedWithType

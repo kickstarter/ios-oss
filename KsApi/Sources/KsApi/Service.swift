@@ -86,8 +86,12 @@ public struct Service: ServiceType {
     return request(Route.addImage(fileUrl: fileURL, toDraft: draft))
   }
 
+  public func fetchCached<Q: GraphQLQuery>(query: Q) -> SignalProducer<Q.Data, ErrorEnvelope> {
+    GraphQL.shared.client.fetch(query: query, cache: true)
+  }
+
   public func fetch<Q: GraphQLQuery>(query: Q) -> SignalProducer<Q.Data, ErrorEnvelope> {
-    GraphQL.shared.client.fetch(query: query)
+    GraphQL.shared.client.fetch(query: query, cache: false)
   }
 
   public func fetch<Q: GraphQLQuery>(query: Q) async throws -> Q.Data? {
@@ -623,8 +627,8 @@ public struct Service: ServiceType {
     let query = GraphAPI
       .FetchProjectRewardsByIdQuery(
         projectId: projectId,
-        includeShippingRules: true,
-        includeLocalPickup: true,
+        includeShippingRules: false,
+        includeLocalPickup: false,
         includePledgeOverTime: false
       )
 
@@ -635,7 +639,8 @@ public struct Service: ServiceType {
 
   public func fetchProjectRewardsWithNoReward(
     projectId: Int,
-    sortedForShippingCountryCode code: String?
+    sortedForShippingCountryCode code: String?,
+    cache shouldCache: Bool
   ) -> SignalProducer<[Reward], ErrorEnvelope> {
     let graphCountryCode: GraphAPI.CountryCode?
     if let code {
@@ -652,7 +657,7 @@ public struct Service: ServiceType {
     )
 
     return GraphQL.shared.client
-      .fetch(query: query)
+      .fetch(query: query, cache: shouldCache)
       .map(Project.projectRewards(from:))
   }
 

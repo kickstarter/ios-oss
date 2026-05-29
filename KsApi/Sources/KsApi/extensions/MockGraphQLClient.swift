@@ -18,7 +18,10 @@ class MockGraphQLClient: ApolloClientType {
   // MARK: Public functions
 
   /// Placeholder implementation because protocol definition used in `Service`
-  public func fetch<Query: GraphQLQuery>(query _: Query) -> SignalProducer<Query.Data, ErrorEnvelope> {
+  public func fetch<Query: GraphQLQuery>(
+    query _: Query,
+    cache _: Bool = false
+  ) -> SignalProducer<Query.Data, ErrorEnvelope> {
     return SignalProducer<Query.Data, ErrorEnvelope>.never
   }
 
