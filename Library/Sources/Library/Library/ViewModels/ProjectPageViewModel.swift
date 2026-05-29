@@ -683,6 +683,10 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
       .values()
       .observeValues { _, _ in
+        // This isn't quite right - it's claiming to be cached, but the rewards
+        // page isn't showing the cached values on first load.
+        // It does work when you open the rewards page a second time, though.
+        // Would be nice to figure out the warming.
         print("Cached!")
       }
 
