@@ -34,30 +34,14 @@ struct OEmbedBlock: View {
   }
 
   var body: some View {
-    Group {
-      if let iframeURL {
-        OEmbedWebView(url: iframeURL, onWebViewCreated: self.onWebViewCreated)
-          .aspectRatio(self.aspectRatio ?? 16.0 / 9.0, contentMode: .fit)
-          .clipShape(RoundedRectangle(cornerRadius: self.style.mediaCornerRadius))
-          .accessibilityElement()
-          .accessibilityLabel(self.oembed.title)
-          .accessibilityAddTraits(.isLink)
-      } else {
-        self.unavailablePlaceholder
-      }
+    if let iframeURL {
+      OEmbedWebView(url: iframeURL, onWebViewCreated: self.onWebViewCreated)
+        .aspectRatio(self.aspectRatio ?? 16.0 / 9.0, contentMode: .fit)
+        .clipShape(RoundedRectangle(cornerRadius: self.style.mediaCornerRadius))
+        .accessibilityElement()
+        .accessibilityLabel(self.oembed.title)
+        .accessibilityAddTraits(.isLink)
     }
-  }
-
-  private var unavailablePlaceholder: some View {
-    RoundedRectangle(cornerRadius: self.style.mediaCornerRadius)
-      .fill(self.style.mediaPlaceholderColor.swiftUIColor())
-      .aspectRatio(self.aspectRatio ?? 16.0 / 9.0, contentMode: .fit)
-      .overlay {
-        Image(systemName: "globe")
-          .font(.title)
-          .foregroundStyle(self.style.bodyColor.swiftUIColor())
-      }
-      .accessibilityLabel("Embedded content unavailable")
   }
 }
 

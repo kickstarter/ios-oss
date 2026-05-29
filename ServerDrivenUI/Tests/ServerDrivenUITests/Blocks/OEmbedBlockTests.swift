@@ -47,29 +47,25 @@ final class OEmbedBlockTests: TestCase {
 
   // MARK: - Missing iframe URL
 
-  func testOEmbedBlockWithNilIframeURL_rendersUnavailablePlaceholder() throws {
+  func testOEmbedBlockWithNilIframeURL_rendersNothing() throws {
     let oembed = makeOembed(title: "Missing Embed", iframeUrl: nil)
 
-    let view = oembedBlock(oembed: oembed, colorScheme: .light)
+    let block = OEmbedBlock(oembed: oembed)
 
-    XCTAssertNoThrow(
-      try view.inspect().find(viewWithAccessibilityLabel: "Embedded content unavailable"),
-      "Expected unavailable placeholder when iframe URL is nil."
-    )
-    XCTAssertNoThrow(
-      try view.inspect().find(ViewType.Image.self),
-      "Expected globe system image in unavailable placeholder."
+    XCTAssertNil(
+      block.iframeURL,
+      "Expected iframeURL to be nil when iframe URL string is nil."
     )
   }
 
-  func testOEmbedBlockWithEmptyIframeURL_rendersUnavailablePlaceholder() throws {
+  func testOEmbedBlockWithEmptyIframeURL_rendersNothing() throws {
     let oembed = makeOembed(title: "Missing Embed", iframeUrl: "")
 
-    let view = oembedBlock(oembed: oembed, colorScheme: .light)
+    let block = OEmbedBlock(oembed: oembed)
 
-    XCTAssertNoThrow(
-      try view.inspect().find(viewWithAccessibilityLabel: "Embedded content unavailable"),
-      "Expected unavailable placeholder when iframe URL is empty."
+    XCTAssertNil(
+      block.iframeURL,
+      "Expected iframeURL to be nil when iframe URL string is empty."
     )
   }
 
@@ -317,49 +313,6 @@ final class OEmbedBlockTests: TestCase {
     )
   }
 
-  func testUnavailablePlaceholder_usesProvidedAspectRatio() throws {
-    let oembed = makeOembed(
-      width: 640,
-      height: 480,
-      title: "Missing",
-      iframeUrl: nil
-    )
-
-    let view = oembedBlock(oembed: oembed, colorScheme: .light)
-    let placeholder = try view.inspect().find(viewWithAccessibilityLabel: "Embedded content unavailable")
-    let aspectRatio = try placeholder.aspectRatio()
-
-    XCTAssertEqual(
-      aspectRatio.aspectRatio,
-      640.0 / 480.0 as CGFloat,
-      "Expected placeholder to use provided aspect ratio."
-    )
-    XCTAssertEqual(
-      aspectRatio.contentMode,
-      .fit,
-      "Expected placeholder content mode to be .fit."
-    )
-  }
-
-  func testUnavailablePlaceholder_withZeroDimensions_fallsBackToSixteenByNine() throws {
-    let oembed = makeOembed(
-      width: 0,
-      height: 0,
-      title: "Missing",
-      iframeUrl: nil
-    )
-
-    let view = oembedBlock(oembed: oembed, colorScheme: .light)
-    let placeholder = try view.inspect().find(viewWithAccessibilityLabel: "Embedded content unavailable")
-    let aspectRatio = try placeholder.aspectRatio()
-
-    XCTAssertEqual(
-      aspectRatio.aspectRatio,
-      16.0 / 9.0 as CGFloat,
-      "Expected placeholder to fall back to 16:9 when dimensions are zero."
-    )
-  }
-
   // MARK: - Empty title
 
   func testOEmbedBlockWithEmptyTitle_hasEmptyAccessibilityLabel() throws {
@@ -396,19 +349,6 @@ final class OEmbedBlockTests: TestCase {
       XCTAssertNoThrow(
         try view.inspect().find(viewWithAccessibilityLabel: "Styled Embed"),
         "Expected accessibility label for color scheme \(colorScheme)."
-      )
-    }
-  }
-
-  func testOEmbedBlockWithNilIframeURL_lightAndDarkStyles() throws {
-    let oembed = makeOembed(title: "Missing Embed", iframeUrl: nil)
-
-    for colorScheme in [ColorScheme.light, ColorScheme.dark] {
-      let view = oembedBlock(oembed: oembed, colorScheme: colorScheme)
-
-      XCTAssertNoThrow(
-        try view.inspect().find(viewWithAccessibilityLabel: "Embedded content unavailable"),
-        "Expected unavailable placeholder for color scheme \(colorScheme)."
       )
     }
   }
