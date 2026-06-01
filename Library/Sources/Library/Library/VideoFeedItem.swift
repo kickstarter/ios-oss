@@ -63,6 +63,6 @@ public struct VideoFeedItem: Hashable {
   // MARK: - Private
 
   private static func formattedCount(_ count: Int) -> String {
-      count.formatted(.number.notation(.compactName)).lowercased()
+    count.formatted(.number.notation(.compactName)).lowercased()
   }
 }
