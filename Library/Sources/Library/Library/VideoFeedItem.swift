@@ -63,12 +63,6 @@ public struct VideoFeedItem: Hashable {
   // MARK: - Private
 
   private static func formattedCount(_ count: Int) -> String {
-    guard count >= 1_000 else { return "\(count)" }
-
-    let value = Double(count) / 1_000
-
-    return value.truncatingRemainder(dividingBy: 1) == 0
-      ? String(format: "%.0fk", value)
-      : String(format: "%.1fk", value)
+      count.formatted(.number.notation(.compactName)).lowercased()
   }
 }
