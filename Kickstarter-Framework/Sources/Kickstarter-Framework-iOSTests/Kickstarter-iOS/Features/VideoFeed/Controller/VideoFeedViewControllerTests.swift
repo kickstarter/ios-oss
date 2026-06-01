@@ -58,8 +58,9 @@ final class VideoFeedViewControllerTests: TestCase {
             videoPreviewImageURL: nil,
             projectId: "1",
             isSaved: false,
-            sharesCount: 2_000,
-            watchesCount: 50
+            sharesCount: 1,
+            watchesCount: 50,
+            percentFunded: 42
           ),
           isSaved: .constant(false)
         )
@@ -115,8 +116,9 @@ final class VideoFeedViewControllerTests: TestCase {
             videoPreviewImageURL: nil,
             projectId: "1",
             isSaved: true,
-            sharesCount: 2_000,
-            watchesCount: 5_000
+            sharesCount: 1,
+            watchesCount: 50,
+            percentFunded: 42
           ),
           isSaved: .constant(true)
         )
@@ -174,8 +176,9 @@ final class VideoFeedViewControllerTests: TestCase {
             videoPreviewImageURL: nil,
             projectId: "1",
             isSaved: false,
-            sharesCount: 2_000,
-            watchesCount: 50
+            sharesCount: 1,
+            watchesCount: 50,
+            percentFunded: 42
           ),
           isSaved: .constant(false)
         )
