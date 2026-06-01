@@ -15,12 +15,6 @@ struct VideoFeedRightRailView: View {
     static let shareIcon = "video-feed-share-icon"
     static let moreIcon = "video-feed-ellipsis-icon"
     static let avatarPlaceholderIcon = "avatar--placeholder"
-
-    /// Accessibility
-    static let creatorAccessibilityLabel = Strings.Creator()
-    static let saveAccessibilityLabel = Strings.Save()
-    static let shareAccessibilityLabel = Strings.Share()
-    static let moreAccessibilityLabel = Strings.More_options()
   }
 
   let item: VideoFeedItem
@@ -46,7 +40,7 @@ struct VideoFeedRightRailView: View {
         .frame(width: Constants.avatarSize, height: Constants.avatarSize)
         .clipShape(Circle())
     }
-    .accessibilityLabel(Constants.creatorAccessibilityLabel)
+    .accessibilityLabel(Strings.Creator())
   }
 
   @ViewBuilder
@@ -66,7 +60,7 @@ struct VideoFeedRightRailView: View {
     return RailButtonView(imageName: iconName, label: self.item.formattedWatchesCount) {
       self.isSaved.toggle()
     }
-    .accessibilityLabel(Constants.saveAccessibilityLabel)
+    .accessibilityLabel(Strings.Save())
     .animation(.easeInOut(duration: 0.15), value: self.isSaved)
   }
 
@@ -74,7 +68,7 @@ struct VideoFeedRightRailView: View {
     RailButtonView(imageName: Constants.shareIcon, label: self.item.formattedSharesCount) {
       self.onShareTapped?()
     }
-    .accessibilityLabel(Constants.shareAccessibilityLabel)
+    .accessibilityLabel(Strings.Share())
   }
 
   // Currently hidden. Will be added in VideoFeed V2.
@@ -86,7 +80,7 @@ struct VideoFeedRightRailView: View {
           .frame(width: Constants.moreButtonSize, height: Constants.moreButtonSize)
       }
     }
-    .accessibilityLabel(Constants.moreAccessibilityLabel)
+    .accessibilityLabel(Strings.More_options())
   }
 }
 

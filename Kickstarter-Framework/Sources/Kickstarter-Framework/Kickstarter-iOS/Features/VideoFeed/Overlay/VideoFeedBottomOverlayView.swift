@@ -41,6 +41,7 @@ struct VideoFeedBottomOverlayView: View {
 
   // MARK: - Main Components
 
+  @ViewBuilder
   private var pills: some View {
     let visiblePills: [(icon: String, text: String)] = [
       ("video-feed-category-icon", self.item.categoryPillText),
@@ -48,13 +49,15 @@ struct VideoFeedBottomOverlayView: View {
     ]
     .filter { !$0.text.isEmpty }
 
-    return HStack(spacing: Constants.pillRowSpacing) {
-      ForEach(visiblePills, id: \.text) { pill in
-        FeedPillView(icon: pill.icon, text: pill.text)
+    if !visiblePills.isEmpty {
+      HStack(spacing: Constants.pillRowSpacing) {
+        ForEach(visiblePills, id: \.text) { pill in
+          FeedPillView(icon: pill.icon, text: pill.text)
+        }
       }
+      .accessibilityElement(children: .combine)
+      .accessibilityLabel(visiblePills.map(\.text).joined(separator: ", "))
     }
-    .accessibilityElement(children: .combine)
-    .accessibilityLabel(visiblePills.map(\.text).joined(separator: ", "))
   }
 
   private var titleText: some View {
