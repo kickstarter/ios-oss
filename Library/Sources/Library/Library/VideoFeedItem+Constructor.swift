@@ -23,7 +23,8 @@ extension VideoFeedItem {
       projectId: node.project.id,
       isSaved: node.project.isWatched,
       sharesCount: node.project.sharesCount,
-      watchesCount: node.project.watchesCount ?? 0
+      watchesCount: node.project.watchesCount ?? 0,
+      percentFunded: node.project.percentFunded
     )
   }
 
