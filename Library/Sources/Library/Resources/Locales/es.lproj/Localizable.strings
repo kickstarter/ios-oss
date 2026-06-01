@@ -336,7 +336,7 @@
 "Friend_backed_tech_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Tecnología</i>.";
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Teatro</i>.";
 "Friend_name_launched_a_project" = "¡%{friend_name} publicó un proyecto!";
-"Funded_percentage" = "Porcentaje financiado";
+"Funded_percentage" = "Porcentaje de financiamiento";
 "Funding_successful" = "Financiado con éxito";
 "Games_newsletter" = "Suscríbete para recibir, cada dos semanas, una combinación de nuevos proyectos y actualizaciones sobre todo lo relacionado a juegos, seleccionados exclusivamente para ti por el equipo de Juegos de Kickstarter.";
 "Get_notified" = "Notificarme";
