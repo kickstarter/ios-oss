@@ -27,13 +27,14 @@ extension VideoFeedItem {
     )
   }
 
-  static func statsText(pledgedAmount: Double, backersCount: Int) -> String {
+  /// Formats a string using a pledge amount in the user's preferred currency and a given backers count.
+  static func statsTextInUserPreferredCurrency(pledgedAmount: Double, backersCount: Int) -> String {
     let currencyCode = AppEnvironment.current.locale.currency?.identifier ?? Project.Country.us.currencyCode
 
     let pledgedFormatted = Format.currency(
       pledgedAmount,
       currencyCode: currencyCode,
-      omitCurrencyCode: false,
+      omitCurrencyCode: true,
       maximumFractionDigits: 0,
       minimumFractionDigits: 0
     )
@@ -48,6 +49,6 @@ extension VideoFeedItem {
     let amount = project.pledged.amount
       .flatMap { Double($0) } ?? 0
 
-    return Self.statsText(pledgedAmount: amount, backersCount: project.backersCount)
+    return Self.statsTextInUserPreferredCurrency(pledgedAmount: amount, backersCount: project.backersCount)
   }
 }

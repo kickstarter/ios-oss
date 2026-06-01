@@ -48,7 +48,10 @@ final class VideoFeedViewControllerTests: TestCase {
             title: "Ringo Move - The Ultimate Workout Bottle",
             creator: "Creator Name",
             creatorImageURL: nil,
-            statsText: VideoFeedItem.statsText(pledgedAmount: 50_134, backersCount: 431),
+            statsText: VideoFeedItem.statsTextInUserPreferredCurrency(
+              pledgedAmount: 50_134,
+              backersCount: 431
+            ),
             categoryPillText: "Project We Love",
             secondaryPillText: "3 days left",
             videoURL: nil,
@@ -63,7 +66,8 @@ final class VideoFeedViewControllerTests: TestCase {
 
         assertSnapshot(
           of: cell,
-          as: .image(perceptualPrecision: 0.99)
+          as: .image(perceptualPrecision: 0.99),
+          named: "\(language.rawValue)_\(device)"
         )
       }
     }
@@ -101,7 +105,10 @@ final class VideoFeedViewControllerTests: TestCase {
             title: "Ringo Move - The Ultimate Workout Bottle for People Who Like Long Product Names That Wrap Across Several Lines For People Who Like Long Product Names That Wrap Across Several Lines",
             creator: "Creator Name",
             creatorImageURL: nil,
-            statsText: VideoFeedItem.statsText(pledgedAmount: 50_134, backersCount: 431),
+            statsText: VideoFeedItem.statsTextInUserPreferredCurrency(
+              pledgedAmount: 50_134,
+              backersCount: 431
+            ),
             categoryPillText: "Project We Love",
             secondaryPillText: "3 days left",
             videoURL: nil,
@@ -116,7 +123,8 @@ final class VideoFeedViewControllerTests: TestCase {
 
         assertSnapshot(
           of: cell,
-          as: .image(perceptualPrecision: 0.99)
+          as: .image(perceptualPrecision: 0.99),
+          named: "\(language.rawValue)_\(device)"
         )
       }
     }
@@ -156,7 +164,10 @@ final class VideoFeedViewControllerTests: TestCase {
             title: "Ringo Move - The Ultimate Workout Bottle",
             creator: "Creator Name",
             creatorImageURL: nil,
-            statsText: VideoFeedItem.statsText(pledgedAmount: 50_134, backersCount: 431),
+            statsText: VideoFeedItem.statsTextInUserPreferredCurrency(
+              pledgedAmount: 50_134,
+              backersCount: 431
+            ),
             categoryPillText: "Project We Love",
             secondaryPillText: "",
             videoURL: nil,
@@ -173,7 +184,8 @@ final class VideoFeedViewControllerTests: TestCase {
 
         assertSnapshot(
           of: cell,
-          as: .image(perceptualPrecision: 0.99)
+          as: .image(perceptualPrecision: 0.99),
+          named: "\(language.rawValue)_\(device)"
         )
       }
     }
