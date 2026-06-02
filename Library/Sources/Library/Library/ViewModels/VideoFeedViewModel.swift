@@ -7,9 +7,12 @@ import SwiftUI
 public protocol VideoFeedViewModelType: AnyObject {
   var items: [VideoFeedItem] { get }
   var fetchedItems: [VideoFeedItem] { get }
+  var loginIntent: LoginIntent? { get }
   func viewDidLoad()
   func toggleSaved(for item: VideoFeedItem)
   func isSaved(id: String) -> Binding<Bool>
+  func showLogin()
+  func clearLoginIntent()
 }
 
 @Observable
@@ -26,13 +29,16 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
 
   public private(set) var isLoading = false
   public private(set) var errorMessage: String?
+  public private(set) var loginIntent: LoginIntent? = nil
 
   /// Tracks in-flight watch/unwatch requests.
   private var pendingWatchRequests: [String: Disposable] = [:]
 
-  // MARK: - Inputs
+  // MARK: - Init
 
   public init() {}
+
+  // MARK: - Inputs
 
   public func viewDidLoad() {
     Task {
@@ -41,11 +47,17 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
   }
 
   /// Returns a binding to `isSaved` for the item with the given ID.
+  /// If the user is logged out, show login instead of toggling saved.
   public func isSaved(id: String) -> Binding<Bool> {
     Binding(
       get: { self.items.first(where: { $0.id == id })?.isSaved ?? false },
       set: { [weak self] _ in
         guard let self, let item = self.items.first(where: { $0.id == id }) else { return }
+
+        guard AppEnvironment.current.currentUser != nil else {
+          self.showLogin()
+          return
+        }
 
         self.toggleSaved(for: item)
       }
@@ -83,6 +95,15 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
       }
 
     self.pendingWatchRequests[projectId] = disposable
+  }
+
+  /// Presents login. Called by the VC when a logged-out user taps the creator avatar or save button.
+  public func showLogin() {
+    self.loginIntent = .loginTab
+  }
+
+  public func clearLoginIntent() {
+    self.loginIntent = nil
   }
 
   // MARK: - Private

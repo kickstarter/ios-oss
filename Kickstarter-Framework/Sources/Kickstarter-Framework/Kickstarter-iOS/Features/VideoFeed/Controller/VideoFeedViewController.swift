@@ -109,6 +109,18 @@ final class VideoFeedViewController: UIViewController {
         self.bindViewModel()
       }
     }
+
+    withObservationTracking {
+      _ = self.viewModel.loginIntent
+    } onChange: { [weak self] in
+      DispatchQueue.main.async { [weak self] in
+        guard let self, let intent = self.viewModel.loginIntent else { return }
+
+        self.goToLoginTout(intent: intent)
+        self.viewModel.clearLoginIntent()
+        self.bindViewModel()
+      }
+    }
   }
 
   /// Reloads the collection view with a fresh set of fetched items.
@@ -181,6 +193,21 @@ final class VideoFeedViewController: UIViewController {
 
   // MARK: - Navigation
 
+  private func goToLoginTout(intent: LoginIntent) {
+    let loginTout = LoginToutViewController.configuredWith(loginIntent: intent)
+    let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
+    let nav = UINavigationController(rootViewController: loginTout)
+    nav.modalPresentationStyle = isIpad ? .formSheet : .fullScreen
+
+    /// Presenting fullscreen over a dark video background can cause a black flash since UIKit briefly shows the default window background.
+    /// Setting the nav controller's background to match the login screen prevents that.
+    if !isIpad {
+      nav.view.backgroundColor = Colors.Background.Surface.primary.uiColor()
+    }
+
+    self.present(nav, animated: true)
+  }
+
   private func goToCreatorProfile(for item: VideoFeedItem) {
     let vc = ProjectCreatorViewController.configuredWith(project: item)
 
@@ -202,6 +229,14 @@ final class VideoFeedViewController: UIViewController {
 
     self.present(vc, animated: true)
   }
+
+  private func onCreatorTapped(for item: VideoFeedItem) {
+    if AppEnvironment.current.currentUser != nil {
+      self.goToCreatorProfile(for: item)
+    } else {
+      self.viewModel.showLogin()
+    }
+  }
 }
 
 extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
@@ -221,11 +256,13 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     guard let cell = cell as? VideoFeedCell else { return }
 
     let items = self.viewModel.items
+
     guard indexPath.item < items.count else { return }
+
     let item = items[indexPath.item]
 
     cell.onCloseTapped = { [weak self] in self?.dismiss(animated: true) }
-    cell.onCreatorTapped = { [weak self] in self?.goToCreatorProfile(for: item) }
+    cell.onCreatorTapped = { [weak self] in self?.onCreatorTapped(for: item) }
     cell.onShareTapped = { [weak self] in self?.simpleAlert(title: "Share") }
     cell.onMoreTapped = { [weak self] in self?.simpleAlert(title: "More") }
     cell.onCTATapped = { [weak self] in self?.goToProjectPage(for: item) }
