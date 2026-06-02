@@ -41,14 +41,23 @@ struct VideoFeedBottomOverlayView: View {
 
   // MARK: - Main Components
 
+  @ViewBuilder
   private var pills: some View {
-    HStack(spacing: Constants.pillRowSpacing) {
-      FeedPillView(icon: "video-feed-category-icon", text: self.item.categoryPillText)
-      FeedPillView(icon: "video-feed-clock-icon", text: self.item.secondaryPillText)
+    let visiblePills: [(icon: String, text: String)] = [
+      ("video-feed-category-icon", self.item.categoryPillText),
+      ("video-feed-clock-icon", self.item.secondaryPillText)
+    ]
+    .filter { !$0.text.isEmpty }
+
+    if !visiblePills.isEmpty {
+      HStack(spacing: Constants.pillRowSpacing) {
+        ForEach(visiblePills, id: \.text) { pill in
+          FeedPillView(icon: pill.icon, text: pill.text)
+        }
+      }
+      .accessibilityElement(children: .combine)
+      .accessibilityLabel(visiblePills.map(\.text).joined(separator: ", "))
     }
-    /// .combined so VoiceOver reads both pills as one element e.g. "Film, 23 days left".
-    .accessibilityElement(children: .combine)
-    .accessibilityLabel("\(self.item.categoryPillText), \(self.item.secondaryPillText)")
   }
 
   private var titleText: some View {

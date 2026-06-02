@@ -103,8 +103,8 @@
 "Blocked_user_confirmation" = "Si vous bloquez cet utilisateur, vous ne verrez plus ses commentaires ni son contenu. Si vous avez sauvegardé ou soutenu ses projets, veuillez supprimer votre engagement avant de le bloquer. Pour débloquer un utilisateur, veuillez consulter notre Centre d'assistance.";
 "Bonus" = "Bonus";
 "Bonus_support" = "Coup de pouce";
-"Bookmark" = "Bookmark";
-"Bookmark_this_project" = "Bookmark this project";
+"Bookmark" = "Enregistrer";
+"Bookmark_this_project" = "Enregistrer ce projet";
 "Bookmarks" = "Signets";
 "Bring_creative_projects_to_life" = "Réalisez vos projets créatifs.";
 "By_a_superbacker" = "Par un Superbacker";
@@ -179,6 +179,7 @@
 "Copying_reselling" = "Produit copié, revente d'articles ou plagiat";
 "Couldnt_add_attachment" = "Impossible d'ajouter la pièce jointe";
 "Couldnt_load_more_comments_Tap_to_retry" = "Impossible de charger plus de commentaires.\nCliquez pour réessayer.";
+"Couldnt_load_video" = "Impossible de charger la vidéo";
 "Couldnt_open_live_stream_Try_again_later" = "Impossible d'ouvrir la diffusion en direct. Veuillez réessayer plus tard.";
 "Couldnt_post" = "Publication impossible. Cliquez pour réessayer.";
 "Couldnt_remove_attachment" = "Impossible de supprimer la pièce jointe";
@@ -335,6 +336,7 @@
 "Friend_backed_tech_project" = "<b>%{friend_name}</b> a soutenu un projet de <i>technologie</i>.";
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> a soutenu un projet de <i>théâtre</i>.";
 "Friend_name_launched_a_project" = "%{friend_name} a lancé un projet !";
+"Funded_percentage" = "Pourcentage de financement";
 "Funding_successful" = "Intégralement financé";
 "Games_newsletter" = "Un mix de nouveaux projets et d'actus sur le thème des jeux, soigneusement sélectionné par l'équipe Jeux de Kickstarter.";
 "Get_notified" = "Notifiez-moi";

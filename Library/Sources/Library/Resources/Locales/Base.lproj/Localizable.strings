@@ -179,6 +179,7 @@
 "Copying_reselling" = "Copying, reselling or plagiarism";
 "Couldnt_add_attachment" = "Couldn't add attachment";
 "Couldnt_load_more_comments_Tap_to_retry" = "Couldn't load more comments.\nTap to retry";
+"Couldnt_load_video" = "Couldn't load video";
 "Couldnt_open_live_stream_Try_again_later" = "Couldn‘t open live stream. Try again later.";
 "Couldnt_post" = "Couldn't post. Tap to retry";
 "Couldnt_remove_attachment" = "Couldn't remove attachment";
@@ -335,6 +336,7 @@
 "Friend_backed_tech_project" = "<b>%{friend_name}</b> backed a <i>Technology</i> project.";
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> backed a <i>Theater</i> project.";
 "Friend_name_launched_a_project" = "%{friend_name} launched a project!";
+"Funded_percentage" = "Funded percentage";
 "Funding_successful" = "Funding successful";
 "Games_newsletter" = "Sign up to receive a biweekly mix of new projects and updates on all things games, handpicked by Kickstarter's Games team.";
 "Get_notified" = "Get notified";

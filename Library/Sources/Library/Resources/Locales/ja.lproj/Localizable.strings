@@ -116,7 +116,7 @@
 "By_submitting_your_pledge_you_agree_that_Stripe_may_charge_your_payment_method" = "プレッジを送信することで、Kickstarter の決済サービスプロバイダー、Stripe がご利用のお支払い方法へ請求を行うことに同意するものとみなされます。";
 "CVC" = "CVC";
 "Campaign" = "プロジェクト";
-"Campaign_goal_reached" = "Campaign goal reached";
+"Campaign_goal_reached" = "キャンペーン目標達成";
 "Cancel" = "キャンセル";
 "Cancel_pledge" = "プレッジを取り消す";
 "Cancel_your_pledge" = "プレッジを取り消す";
@@ -179,6 +179,7 @@
 "Copying_reselling" = "複製、再販、または盗作";
 "Couldnt_add_attachment" = "添付ファイルを追加できませんでした";
 "Couldnt_load_more_comments_Tap_to_retry" = "他のコメントを読み込めませんでした。\nタップして再試行してください";
+"Couldnt_load_video" = "動画を読み込めませんでした";
 "Couldnt_open_live_stream_Try_again_later" = "ライブ配信を開けませんでした。後ほどお試しください。";
 "Couldnt_post" = "投稿できませんでした。タップして再試行してください。";
 "Couldnt_remove_attachment" = "添付ファイルを削除できませんでした";
@@ -301,7 +302,7 @@
 "Find_projects_youll_love_and_help_bring" = "お気に入りを見つけて、クリエイティブなプロジェクトに生命を吹き込もう。";
 "Find_projects_youll_love_in_art_design_film" = "お気に入りを見つけて、クリエイティブなプロジェクトに生命を吹き込もう。";
 "First_created" = "1つめのプロジェクト";
-"First_time_creator" = "First-time creator";
+"First_time_creator" = "初めてのクリエイター";
 "Fix" = "修正する";
 "Fix_payment" = "お支払い方法の修正";
 "Fix_payment_method" = "お支払い方法を修正";
@@ -335,6 +336,7 @@
 "Friend_backed_tech_project" = "<b>%{friend_name}</b> は<i>テクノロジー</i> プロジェクトをバックしています。";
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> は<i>演劇</i> プロジェクトをバックしています。";
 "Friend_name_launched_a_project" = "%{friend_name} がプロジェクトを発表しました！";
+"Funded_percentage" = "ファンディング達成率";
 "Funding_successful" = "ファンディング成功";
 "Games_newsletter" = "Kickstarter の「ゲーム」チーム選りすぐりの、ゲームに関するあらゆる新プロジェクトや更新情報を毎月2回お届けするニュースレターに登録しましょう。";
 "Get_notified" = "通知を希望する";
@@ -478,7 +480,7 @@
 "My_project_seeks_funding_for_AI_technology" = "私のプロジェクトの目的は、AI テクノロジーのための資金調達です。";
 "Name" = "名前";
 "Near_me" = "近辺";
-"Near_you" = "Near you";
+"Near_you" = "近辺";
 "Never" = "通知を受けない";
 "New_email" = "新しいメールアドレス";
 "New_password" = "新しいパスワード";
@@ -1543,7 +1545,7 @@
 "discovery.survey.button.respond_now" = "返信";
 "discovery.survey.creator_needs_some_info_to_deliver_reward_for_project" = "%{creator_name} は%{project_name} のリワードの情報が必要です。";
 "discovery.survey.reward_survey" = "リワードサーベイ";
-"discovery_banner_image_content_description" = "Discovery mode preview";
+"discovery_banner_image_content_description" = "Discovery Mode プレビュー";
 "ellipsis_more" = "さらに表示";
 "facebook_confirmation.button" = "Newアカウント作成";
 "facebook_confirmation.could_not_log_in" = "Facebookでのログインに失敗";
@@ -2017,7 +2019,7 @@
 "support_email.subject" = "ようこそ、Kickstarter App Supportへ";
 "support_email.to" = "app@kickstarter.com";
 "support_email.to_android" = "android@kickstarter.com";
-"swipe_through_a_video_feed_tuning_your_recommendations_along_the_way" = "Swipe through a video feed, tuning your recommendations along the way.";
+"swipe_through_a_video_feed_tuning_your_recommendations_along_the_way" = "動画フィードをスワイプしながら、おすすめを自分好みに調整できます。";
 "tabbar.activity" = "アクティビティ";
 "tabbar.backings" = "支援";
 "tabbar.dashboard" = "ダッシュボード";
@@ -2027,8 +2029,8 @@
 "tabbar.profile" = "プロフィール";
 "tabbar.search" = "さがす";
 "tabbar.search_projects" = "プロジェクトを探す";
-"try_it_now" = "Try it now";
-"try_our_new_discovery_mode" = "Try our new discovery mode";
+"try_it_now" = "今すぐ試す";
+"try_our_new_discovery_mode" = "新しいディスカバリーモードを試す";
 "two_factor.buttons.resend" = "再送する";
 "two_factor.buttons.submit" = "提出する";
 "two_factor.code_placeholder" = "認証コードを入力";

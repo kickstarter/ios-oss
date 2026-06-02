@@ -8,8 +8,6 @@ struct VideoFeedRightRailView: View {
   private enum Constants {
     static let railSpacing: CGFloat = 20
     static let moreButtonSize: CGFloat = 44
-    static let saveCountLabel = "FPO: 1k" // TODO: Replace with real save count from backend
-    static let shareCountLabel = "FPO: 50" // TODO: Replace with real share count from backend
     static let avatarSize: CGFloat = 44
 
     static let saveIconFilled = "video-feed-saved-filled-icon"
@@ -17,13 +15,6 @@ struct VideoFeedRightRailView: View {
     static let shareIcon = "video-feed-share-icon"
     static let moreIcon = "video-feed-ellipsis-icon"
     static let avatarPlaceholderIcon = "avatar--placeholder"
-
-    /// Accessibility
-    // TODO: Update with Video Feed Translations [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
-    static let creatorAccessibilityLabel = "FPO: Creator"
-    static let saveAccessibilityLabel = "FPO: Save"
-    static let shareAccessibilityLabel = "FPO: Share"
-    static let moreAccessibilityLabel = "FPO: More"
   }
 
   let item: VideoFeedItem
@@ -49,7 +40,7 @@ struct VideoFeedRightRailView: View {
         .frame(width: Constants.avatarSize, height: Constants.avatarSize)
         .clipShape(Circle())
     }
-    .accessibilityLabel(Constants.creatorAccessibilityLabel)
+    .accessibilityLabel(Strings.Creator())
   }
 
   @ViewBuilder
@@ -66,18 +57,18 @@ struct VideoFeedRightRailView: View {
   private var saveButton: some View {
     let iconName = self.isSaved ? Constants.saveIconFilled : Constants.saveIconOutline
 
-    return RailButtonView(imageName: iconName, label: Constants.saveCountLabel) {
+    return RailButtonView(imageName: iconName, label: self.item.formattedWatchesCount) {
       self.isSaved.toggle()
     }
-    .accessibilityLabel(Constants.saveAccessibilityLabel)
+    .accessibilityLabel(Strings.Save())
     .animation(.easeInOut(duration: 0.15), value: self.isSaved)
   }
 
   private var shareButton: some View {
-    RailButtonView(imageName: Constants.shareIcon, label: Constants.shareCountLabel) {
+    RailButtonView(imageName: Constants.shareIcon, label: self.item.formattedSharesCount) {
       self.onShareTapped?()
     }
-    .accessibilityLabel(Constants.shareAccessibilityLabel)
+    .accessibilityLabel(Strings.Share())
   }
 
   // Currently hidden. Will be added in VideoFeed V2.
@@ -89,7 +80,7 @@ struct VideoFeedRightRailView: View {
           .frame(width: Constants.moreButtonSize, height: Constants.moreButtonSize)
       }
     }
-    .accessibilityLabel(Constants.moreAccessibilityLabel)
+    .accessibilityLabel(Strings.More_options())
   }
 }
 

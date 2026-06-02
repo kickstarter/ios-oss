@@ -1,13 +1,9 @@
 import KDS
+import Library
 import SwiftUI
 
 internal struct VideoFeedBannerView: View {
   private enum Constants {
-    // TODO: Update with Video Feed Translations [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
-    static let title = "FPO: Try our new discovery mode"
-    static let subtitle = "FPO: Swipe through a video feed, tuning your recommendations along the way."
-    static let ctaTitle = "FPO: Try it now"
-
     static let cardCornerRadius: CGFloat = Spacing.unit_02
     static let cardPadding: CGFloat = Spacing.unit_03
 
@@ -31,25 +27,25 @@ internal struct VideoFeedBannerView: View {
   var body: some View {
     HStack(alignment: .center, spacing: Constants.rootStackSpacing) {
       VStack(alignment: .leading, spacing: Constants.textStackSpacing) {
-        Text(Constants.title)
+        Text(Strings.try_our_new_discovery_mode())
           .font(Font(UIFont.ksr_headingLG()))
           .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
 
-        Text(Constants.subtitle)
+        Text(Strings.swipe_through_a_video_feed_tuning_your_recommendations_along_the_way())
           .font(Font(UIFont.ksr_bodySM()))
           .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
 
         Button {
           self.onTryItNowTapped?()
         } label: {
-          Text(Constants.ctaTitle)
+          Text(Strings.try_it_now())
             .font(Font(UIFont.ksr_bodyMD()))
             .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
             .padding(Constants.ctaContentInsets)
             .background(Color.white)
             .cornerRadius(Constants.ctaCornerRadius)
         }
-        .accessibilityLabel(Constants.ctaTitle)
+        .accessibilityLabel(Strings.try_it_now())
       }
 
       Image("video-feed-banner-thumbnail")
@@ -62,6 +58,6 @@ internal struct VideoFeedBannerView: View {
     .background(Color(Colors.Background.Accent.Purple.banner.uiColor()))
     .cornerRadius(Constants.cardCornerRadius)
     .accessibilityElement(children: .combine)
-    .accessibilityLabel("\(Constants.title). \(Constants.subtitle)")
+    .accessibilityLabel(Strings.try_our_new_discovery_mode())
   }
 }

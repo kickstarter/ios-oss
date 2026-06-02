@@ -43,8 +43,14 @@ public struct VideoFeedItem: Hashable {
   /// Number of times the project has been shared.
   public var sharesCount: Int
 
-  /// Number of times the project has been watched (saved)..
+  /// Number of times the project has been watched (saved).
   public var watchesCount: Int
+
+  /// Formatted watches (saves) count (e.g. "1.2k").
+  public var formattedWatchesCount: String { Self.formattedCount(self.watchesCount) }
+
+  /// Formatted shares count.
+  public var formattedSharesCount: String { Self.formattedCount(self.sharesCount) }
 
   public func hash(into hasher: inout Hasher) {
     hasher.combine(self.id)
@@ -52,5 +58,11 @@ public struct VideoFeedItem: Hashable {
 
   public static func == (lhs: VideoFeedItem, rhs: VideoFeedItem) -> Bool {
     lhs.id == rhs.id
+  }
+
+  // MARK: - Private
+
+  private static func formattedCount(_ count: Int) -> String {
+    count.formatted(.number.notation(.compactName)).lowercased()
   }
 }

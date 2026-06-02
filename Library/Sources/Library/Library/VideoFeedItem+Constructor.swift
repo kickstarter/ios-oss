@@ -27,22 +27,28 @@ extension VideoFeedItem {
     )
   }
 
-  private static func statsText(for project: VideoFeedQuery.Data.VideoFeed.Node.Project) -> String {
+  /// Formats a string using a pledge amount in the user's preferred currency and a given backers count.
+  static func statsTextInUserPreferredCurrency(pledgedAmount: Double, backersCount: Int) -> String {
     let currencyCode = AppEnvironment.current.locale.currency?.identifier ?? Project.Country.us.currencyCode
 
-    let pledgedFormatted = project.pledged.amount
-      .flatMap { Double($0) }
-      .map {
-        Format.currency(
-          $0,
-          currencyCode: currencyCode,
-          omitCurrencyCode: false,
-          maximumFractionDigits: 0,
-          minimumFractionDigits: 0
-        )
-      } ?? ""
+    let pledgedFormatted = Format.currency(
+      pledgedAmount,
+      currencyCode: currencyCode,
+      omitCurrencyCode: true,
+      maximumFractionDigits: 0,
+      minimumFractionDigits: 0
+    )
 
-    // TODO: Update with Video Feed Translations [mbl-3158](https://kickstarter.atlassian.net/browse/MBL-3158)
-    return "FPO: \(pledgedFormatted) pledged • Join \(project.backersCount) backers"
+    return Strings.video_feed_campaign_subtitle(
+      pledged: pledgedFormatted,
+      backers: backersCount.toString()
+    )
+  }
+
+  private static func statsText(for project: VideoFeedQuery.Data.VideoFeed.Node.Project) -> String {
+    let amount = project.pledged.amount
+      .flatMap { Double($0) } ?? 0
+
+    return Self.statsTextInUserPreferredCurrency(pledgedAmount: amount, backersCount: project.backersCount)
   }
 }

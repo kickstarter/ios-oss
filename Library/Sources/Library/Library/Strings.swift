@@ -1739,9 +1739,9 @@ contributeurs"
    "Bookmark"
 
    - **en**: "Bookmark"
-   - **de**: "Bookmark"
-   - **es**: "Bookmark"
-   - **fr**: "Bookmark"
+   - **de**: "Lesezeichen setzen"
+   - **es**: "Guardar"
+   - **fr**: "Enregistrer"
    - **ja**: "ブックマーク"
   */
   public static func Bookmark() -> String {
@@ -1756,9 +1756,9 @@ contributeurs"
    "Bookmark this project"
 
    - **en**: "Bookmark this project"
-   - **de**: "Bookmark this project"
-   - **es**: "Bookmark this project"
-   - **fr**: "Bookmark this project"
+   - **de**: "Lesezeichen für dieses Projekt setzen"
+   - **es**: "Guardar este proyecto"
+   - **fr**: "Enregistrer ce projet"
    - **ja**: "このプロジェクトをブックマーク"
   */
   public static func Bookmark_this_project() -> String {
@@ -1807,8 +1807,8 @@ contributeurs"
    "By a superbacker"
 
    - **en**: "By a superbacker"
-   - **de**: "By a superbacker"
-   - **es**: "By a superbacker"
+   - **de**: "Von einem Superbacker"
+   - **es**: "De un superbacker"
    - **fr**: "Par un Superbacker"
    - **ja**: "スーパーバッカー"
   */
@@ -1960,10 +1960,10 @@ contributeurs"
    "Campaign goal reached"
 
    - **en**: "Campaign goal reached"
-   - **de**: "Campaign goal reached"
+   - **de**: "Kampagnenziel erreicht"
    - **es**: "Meta de campaña alcanzada"
    - **fr**: "Objectif de campagne atteint"
-   - **ja**: "Campaign goal reached"
+   - **ja**: "キャンペーン目標達成"
   */
   public static func Campaign_goal_reached() -> String {
     return localizedString(
@@ -2967,6 +2967,23 @@ Cliquez pour réessayer."
     return localizedString(
       key: "Couldnt_load_more_comments_Tap_to_retry",
       defaultValue: "Couldn't load more comments.\nTap to retry",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Couldn't load video"
+
+   - **en**: "Couldn't load video"
+   - **de**: "Video konnte nicht geladen werden"
+   - **es**: "No se pudo cargar el video"
+   - **fr**: "Impossible de charger la vidéo"
+   - **ja**: "動画を読み込めませんでした"
+  */
+  public static func Couldnt_load_video() -> String {
+    return localizedString(
+      key: "Couldnt_load_video",
+      defaultValue: "Couldn't load video",
       count: nil,
       substitutions: [:]
     )
@@ -4981,10 +4998,10 @@ Cliquez pour réessayer."
    "First-time creator"
 
    - **en**: "First-time creator"
-   - **de**: "First-time creator"
+   - **de**: "Erstmaliger Projektgründer"
    - **es**: "Creador novato"
    - **fr**: "Nouveau créateur"
-   - **ja**: "First-time creator"
+   - **ja**: "初めてのクリエイター"
   */
   public static func First_time_creator() -> String {
     return localizedString(
@@ -5553,6 +5570,23 @@ Cliquez pour réessayer."
       defaultValue: "%{friend_name} launched a project!",
       count: nil,
       substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "Funded percentage"
+
+   - **en**: "Funded percentage"
+   - **de**: "Prozent finanziert"
+   - **es**: "Porcentaje de financiamiento"
+   - **fr**: "Pourcentage de financement"
+   - **ja**: "ファンディング達成率"
+  */
+  public static func Funded_percentage() -> String {
+    return localizedString(
+      key: "Funded_percentage",
+      defaultValue: "Funded percentage",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -7925,10 +7959,10 @@ with friends."
    "Near you"
 
    - **en**: "Near you"
-   - **de**: "Near you"
-   - **es**: "Near you"
+   - **de**: "In deiner Nähe"
+   - **es**: "Cerca de ti"
    - **fr**: "Près de chez moi"
-   - **ja**: "Near you"
+   - **ja**: "近辺"
   */
   public static func Near_you() -> String {
     return localizedString(
@@ -23455,10 +23489,10 @@ Veuillez réessayer ultérieurement."
    "Discovery mode preview"
 
    - **en**: "Discovery mode preview"
-   - **de**: "Discovery mode preview"
-   - **es**: "Discovery mode preview"
+   - **de**: "Erkundungsmodus-Vorschau"
+   - **es**: "Vista previa del modo descubrimiento"
    - **fr**: "Aperçu du mode découverte"
-   - **ja**: "Discovery mode preview"
+   - **ja**: "Discovery Mode プレビュー"
   */
   public static func discovery_banner_image_content_description() -> String {
     return localizedString(
@@ -30514,10 +30548,10 @@ projets enregistrés"
    "Swipe through a video feed, tuning your recommendations along the way."
 
    - **en**: "Swipe through a video feed, tuning your recommendations along the way."
-   - **de**: "Swipe through a video feed, tuning your recommendations along the way."
-   - **es**: "Swipe through a video feed, tuning your recommendations along the way."
+   - **de**: "Wische durch einen Videofeed und passe dabei deine Empfehlungen an."
+   - **es**: "Desliza el dedo por una selección de videos para personalizar las recomendaciones sobre la marcha."
    - **fr**: "À découvrir : un flux de vidéos qui affinera vos recommandations au fur et à mesure."
-   - **ja**: "Swipe through a video feed, tuning your recommendations along the way."
+   - **ja**: "動画フィードをスワイプしながら、おすすめを自分好みに調整できます。"
   */
   public static func swipe_through_a_video_feed_tuning_your_recommendations_along_the_way() -> String {
     return localizedString(
@@ -30684,10 +30718,10 @@ projets enregistrés"
    "Try it now"
 
    - **en**: "Try it now"
-   - **de**: "Try it now"
+   - **de**: "Jetzt ausprobieren"
    - **es**: "Probarlo ahora"
    - **fr**: "J'essaie"
-   - **ja**: "Try it now"
+   - **ja**: "今すぐ試す"
   */
   public static func try_it_now() -> String {
     return localizedString(
@@ -30701,10 +30735,10 @@ projets enregistrés"
    "Try our new discovery mode"
 
    - **en**: "Try our new discovery mode"
-   - **de**: "Try our new discovery mode"
+   - **de**: "Neuen Erkundungsmodus ausprobieren"
    - **es**: "Prueba nuestro nuevo modo de descubrimiento"
    - **fr**: "Essayez notre nouveau mode découverte"
-   - **ja**: "Try our new discovery mode"
+   - **ja**: "新しいディスカバリーモードを試す"
   */
   public static func try_our_new_discovery_mode() -> String {
     return localizedString(
@@ -31109,7 +31143,7 @@ projets enregistrés"
    "%{pledged} pledged • Join %{backers} backers"
 
    - **en**: "%{pledged} pledged • Join %{backers} backers"
-   - **de**: "%{pledged} pledged • Join %{backers} backers"
+   - **de**: "%{pledged} finanziert • Von %{backers} Unterstützern unterstützt"
    - **es**: "%{pledged} recaudado • Únete a %{backers} patrocinadores"
    - **fr**: "%{pledged} engagés • Rejoignez les %{backers} contributeurs"
    - **ja**: "プレッジ総額: %{pledged} • 現在のバッカー数: %{backers}"
