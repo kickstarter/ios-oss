@@ -52,6 +52,9 @@ public struct VideoFeedItem: Hashable {
   /// Formatted shares count.
   public var formattedSharesCount: String { Self.formattedCount(self.sharesCount) }
 
+  /// Percentage of funding goal reached. Can exceed 100 for overfunded projects.
+  public let percentFunded: Int
+
   public func hash(into hasher: inout Hasher) {
     hasher.combine(self.id)
   }
