@@ -7,8 +7,8 @@ struct VideoFeedToastView: View {
     static let height: CGFloat = 56
     static let horizontalPadding: CGFloat = 16
     static let cornerRadius: CGFloat = 12
-    static let borderOpacity: CGFloat = 0.14
-    static let background: Color = Color(red: 32 / 255, green: 32 / 255, blue: 32 / 255).opacity(0.80)
+    static let borderOpacity: CGFloat = 0.35
+    static let background: Color = Color(red: 32 / 255, green: 32 / 255, blue: 32 / 255).opacity(0.95)
   }
 
   let message: String
