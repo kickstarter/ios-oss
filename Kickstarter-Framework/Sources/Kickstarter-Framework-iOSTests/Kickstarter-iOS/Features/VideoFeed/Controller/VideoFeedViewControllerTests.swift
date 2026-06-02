@@ -60,7 +60,7 @@ final class VideoFeedViewControllerTests: TestCase {
             isSaved: false,
             sharesCount: 1,
             watchesCount: 50,
-            percentFunded: 42
+            percentFunded: 100
           ),
           isSaved: .constant(false)
         )

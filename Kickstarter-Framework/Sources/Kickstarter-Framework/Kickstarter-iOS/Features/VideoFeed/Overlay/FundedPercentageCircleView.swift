@@ -15,9 +15,19 @@ struct FundedPercentageCircleView: View {
     static let accessibilityLabel: String = Strings.Funded_percentage()
   }
 
-  let fundedPercent: Double
+  let fundedPercent: Int
+  var animationDisabled: Bool = false
 
-  @State private var animatedProgress: Double = 0
+  @State private var animatedProgress: Double
+
+  /// SwiftUI's `@State` initializes before `onAppear` fires, so we need a custom init so that
+  /// the snapshot tests can capture a filled in circle.
+  init(fundedPercent: Int, animationDisabled: Bool = false) {
+    self.fundedPercent = fundedPercent
+    self.animationDisabled = animationDisabled
+
+    self._animatedProgress = State(initialValue: Double(fundedPercent) / 100.0)
+  }
 
   // MARK: - Body
 
@@ -29,15 +39,23 @@ struct FundedPercentageCircleView: View {
     }
     .frame(width: Constants.size, height: Constants.size)
     .onAppear {
+      guard UIView.areAnimationsEnabled else { return }
+
+      self.animatedProgress = 0
+
       withAnimation(.easeOut(duration: Constants.animationDuration)) {
-        self.animatedProgress = self.fundedPercent
+        self.animatedProgress = Double(self.fundedPercent) / 100.0
       }
     }
     .onChange(of: self.fundedPercent) { _, newValue in
       self.animatedProgress = 0
 
-      withAnimation(.easeOut(duration: Constants.animationDuration)) {
-        self.animatedProgress = newValue
+      if self.animationDisabled {
+        self.animatedProgress = Double(newValue) / 100.0
+      } else {
+        withAnimation(.easeOut(duration: Constants.animationDuration)) {
+          self.animatedProgress = Double(newValue) / 100.0
+        }
       }
     }
     .accessibilityElement(children: .ignore)
@@ -65,16 +83,14 @@ struct FundedPercentageCircleView: View {
 
   @ViewBuilder
   private var PercentFundedAmount: some View {
-    let fundedAmount = Int(self.fundedPercent * 100)
-
-    if fundedAmount >= 100 {
+    if self.fundedPercent >= 100 {
       if let icon = Library.image(named: Constants.checkmarkIcon) {
         Image(uiImage: icon.withRenderingMode(.alwaysTemplate))
           .font(.system(size: Constants.checkmarkIconSize, weight: .semibold))
           .foregroundColor(Color(Colors.Icon.light.uiColor()))
       }
     } else {
-      Text("\(fundedAmount)")
+      Text("\(self.fundedPercent)")
         .font(Font(UIFont.ksr_caption1()).bold())
         .foregroundColor(Color(Colors.Text.light.uiColor()))
         .monospacedDigit()

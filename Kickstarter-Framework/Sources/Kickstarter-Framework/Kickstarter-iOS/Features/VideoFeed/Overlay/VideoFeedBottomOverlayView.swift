@@ -31,7 +31,7 @@ struct VideoFeedBottomOverlayView: View {
 
         Spacer()
 
-        FundedPercentageCircleView(fundedPercent: Double(self.item.percentFunded) / 100.0)
+        FundedPercentageCircleView(fundedPercent: self.item.percentFunded)
       }
       self.ctaButton
       self.progressBar
