@@ -63,6 +63,7 @@ final class VideoFeedViewController: UIViewController {
     super.viewWillAppear(animated)
 
     self.navigationController?.setNavigationBarHidden(true, animated: animated)
+    self.viewModel.viewWillAppear()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
