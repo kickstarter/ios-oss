@@ -25,6 +25,7 @@ import ReactiveSwift
  - parameter skipRepeats:          A boolean that determines if results can be repeated.
  - parameter valuesFromEnvelope:   A function to get an array of values from the results envelope.
  - parameter cursorFromEnvelope:   A function to get the cursor for the next page from a results envelope.
+                                   Return `nil` when there is no next page.
  - parameter requestFromParams:    A function to get a request for values from a params value.
  - parameter requestFromCursor:    A function to get a request for values from a cursor value.
  - parameter concater:             An optional function that concats a page of values to the current array of
@@ -43,7 +44,7 @@ public func paginate<Cursor, Value: Equatable, Envelope, ErrorEnvelope, RequestP
   clearOnNewRequest: Bool,
   skipRepeats: Bool = true,
   valuesFromEnvelope: @escaping ((Envelope) -> [Value]),
-  cursorFromEnvelope: @escaping ((Envelope) -> Cursor),
+  cursorFromEnvelope: @escaping ((Envelope) -> Cursor?),
   requestFromParams: @escaping ((RequestParams) -> SignalProducer<Envelope, ErrorEnvelope>),
   requestFromCursor: @escaping ((Cursor) -> SignalProducer<Envelope, ErrorEnvelope>),
   concater: @escaping (([Value], [Value]) -> [Value]) = (+)
@@ -59,8 +60,8 @@ public func paginate<Cursor, Value: Equatable, Envelope, ErrorEnvelope, RequestP
   let isLoading = MutableProperty<Bool>(false)
   let errors = MutableProperty<ErrorEnvelope?>(nil)
 
-  // Emits the last cursor when nextPage emits
-  let cursorOnNextPage = cursor.producer.skipNil().sample(on: requestNextPage)
+  // Emits the last cursor when nextPage emits, only when a next page actually exists.
+  let cursorOnNextPage = cursor.producer.sample(on: requestNextPage).skipNil()
 
   let paginatedValues = requestFirstPage
     .switchMap { requestParams in

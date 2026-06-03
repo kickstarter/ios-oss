@@ -18,6 +18,7 @@ extension GraphAPI.ProjectCardFragment {
 
     let pageInfo = Mock<PageInfo>()
     pageInfo.hasNextPage = true
+    pageInfo.endCursor = "mockEndCursor"
     pageInfo.hasPreviousPage = false
 
     let projectsConnectionMock = Mock<GraphAPITestMocks.ProjectsConnectionWithTotalCount>(
