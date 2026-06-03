@@ -194,6 +194,8 @@ final class VideoFeedViewController: UIViewController {
 
   // MARK: - Navigation
 
+  /// TODO: This pattern is duplicated across several VCs.
+  /// Its worth pulling into a `UIViewController` extension, with the background color fix keyed off the videoFeed intent.
   private func goToLoginTout(intent: LoginIntent) {
     let loginTout = LoginToutViewController.configuredWith(loginIntent: intent)
     let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad

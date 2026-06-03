@@ -119,7 +119,7 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
 
   /// Triggers the login flow. Called  when a logged-out user tries to save a project.
   private func showLogin() {
-    self.loginIntent = .loginTab
+    self.loginIntent = .videoFeed
   }
 
   func fetchVideoFeed() async {
