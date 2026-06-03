@@ -54,20 +54,10 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
     }
 
     for index in self.items.indices {
-      if let id = self.projectIntID(from: self.items[index].projectId), let cached = cache[id] {
+      if let id = decompose(id: self.items[index].projectId), let cached = cache[id] {
         self.items[index].isSaved = cached
       }
     }
-  }
-
-  /// Decodes a base64 GraphQL ID into a normal integer for easier lookup..
-  private func projectIntID(from graphID: String) -> Int? {
-    guard
-      let data = Data(base64Encoded: graphID),
-      let decoded = String(data: data, encoding: .utf8)
-    else { return nil }
-
-    return Int(decoded.replacingOccurrences(of: "Project-", with: ""))
   }
 
   /// Returns a binding to `isSaved` for the item with the given ID.
