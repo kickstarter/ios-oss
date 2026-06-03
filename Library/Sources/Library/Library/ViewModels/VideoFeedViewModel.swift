@@ -12,7 +12,6 @@ public protocol VideoFeedViewModelType: AnyObject {
   func viewWillAppear()
   func toggleSaved(for item: VideoFeedItem)
   func isSaved(id: String) -> Binding<Bool>
-  func showLogin()
   func clearLoginIntent()
 }
 
@@ -122,16 +121,16 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
     self.pendingWatchRequests[projectId] = disposable
   }
 
-  /// Presents login. Called by the VC when a logged-out user taps the creator avatar or save button.
-  public func showLogin() {
-    self.loginIntent = .loginTab
-  }
-
   public func clearLoginIntent() {
     self.loginIntent = nil
   }
 
   // MARK: - Private
+
+  /// Triggers the login flow. Called  when a logged-out user tries to save a project.
+  private func showLogin() {
+    self.loginIntent = .loginTab
+  }
 
   func fetchVideoFeed() async {
     guard !self.isLoading else { return }

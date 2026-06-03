@@ -230,14 +230,6 @@ final class VideoFeedViewController: UIViewController {
 
     self.present(vc, animated: true)
   }
-
-  private func onCreatorTapped(for item: VideoFeedItem) {
-    if AppEnvironment.current.currentUser != nil {
-      self.goToCreatorProfile(for: item)
-    } else {
-      self.viewModel.showLogin()
-    }
-  }
 }
 
 extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
@@ -263,7 +255,7 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     let item = items[indexPath.item]
 
     cell.onCloseTapped = { [weak self] in self?.dismiss(animated: true) }
-    cell.onCreatorTapped = { [weak self] in self?.onCreatorTapped(for: item) }
+    cell.onCreatorTapped = { [weak self] in self?.goToCreatorProfile(for: item) }
     cell.onShareTapped = { [weak self] in self?.simpleAlert(title: "Share") }
     cell.onMoreTapped = { [weak self] in self?.simpleAlert(title: "More") }
     cell.onCTATapped = { [weak self] in self?.goToProjectPage(for: item) }
