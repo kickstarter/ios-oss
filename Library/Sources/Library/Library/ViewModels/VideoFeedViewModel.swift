@@ -7,9 +7,12 @@ import SwiftUI
 public protocol VideoFeedViewModelType: AnyObject {
   var items: [VideoFeedItem] { get }
   var fetchedItems: [VideoFeedItem] { get }
+  var loginIntent: LoginIntent? { get }
   func viewDidLoad()
+  func viewWillAppear()
   func toggleSaved(for item: VideoFeedItem)
   func isSaved(id: String) -> Binding<Bool>
+  func clearLoginIntent()
 }
 
 @Observable
@@ -26,13 +29,16 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
 
   public private(set) var isLoading = false
   public private(set) var errorMessage: String?
+  public private(set) var loginIntent: LoginIntent? = nil
 
   /// Tracks in-flight watch/unwatch requests.
   private var pendingWatchRequests: [String: Disposable] = [:]
 
-  // MARK: - Inputs
+  // MARK: - Init
 
   public init() {}
+
+  // MARK: - Inputs
 
   public func viewDidLoad() {
     Task {
@@ -40,12 +46,32 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
     }
   }
 
+  /// Called each time the feed reappears.
+  /// Reconciles the save button's state for when users save projects from a presented project page (when tapping the CTA).
+  public func viewWillAppear() {
+    guard let cache = AppEnvironment.current.cache[KSCache.ksr_projectSaved] as? [Int: Bool] else {
+      return
+    }
+
+    for index in self.items.indices {
+      if let id = decompose(id: self.items[index].projectId), let cached = cache[id] {
+        self.items[index].isSaved = cached
+      }
+    }
+  }
+
   /// Returns a binding to `isSaved` for the item with the given ID.
+  /// If the user is logged out, show login instead of toggling saved.
   public func isSaved(id: String) -> Binding<Bool> {
     Binding(
       get: { self.items.first(where: { $0.id == id })?.isSaved ?? false },
       set: { [weak self] _ in
         guard let self, let item = self.items.first(where: { $0.id == id }) else { return }
+
+        guard AppEnvironment.current.currentUser != nil else {
+          self.showLogin()
+          return
+        }
 
         self.toggleSaved(for: item)
       }
@@ -85,7 +111,16 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
     self.pendingWatchRequests[projectId] = disposable
   }
 
+  public func clearLoginIntent() {
+    self.loginIntent = nil
+  }
+
   // MARK: - Private
+
+  /// Triggers the login flow. Called  when a logged-out user tries to save a project.
+  private func showLogin() {
+    self.loginIntent = .videoFeed
+  }
 
   func fetchVideoFeed() async {
     guard !self.isLoading else { return }

@@ -424,7 +424,8 @@ extension DiscoveryPageViewController: VideoFeedBannerCellDelegate {
     let nav = UINavigationController(rootViewController: VideoFeedViewController())
     nav.modalPresentationStyle = .fullScreen
 
-    self.present(nav, animated: true)
+    let presenter = self.view.window?.rootViewController ?? self
+    presenter.present(nav, animated: true)
   }
 }
 

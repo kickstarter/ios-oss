@@ -63,6 +63,7 @@ final class VideoFeedViewController: UIViewController {
     super.viewWillAppear(animated)
 
     self.navigationController?.setNavigationBarHidden(true, animated: animated)
+    self.viewModel.viewWillAppear()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -106,6 +107,18 @@ final class VideoFeedViewController: UIViewController {
       DispatchQueue.main.async { [weak self] in
         guard let self else { return }
         self.updateFeedWithFetchedItems(self.viewModel.items)
+        self.bindViewModel()
+      }
+    }
+
+    withObservationTracking {
+      _ = self.viewModel.loginIntent
+    } onChange: { [weak self] in
+      DispatchQueue.main.async { [weak self] in
+        guard let self, let intent = self.viewModel.loginIntent else { return }
+
+        self.goToLoginTout(intent: intent)
+        self.viewModel.clearLoginIntent()
         self.bindViewModel()
       }
     }
@@ -181,6 +194,23 @@ final class VideoFeedViewController: UIViewController {
 
   // MARK: - Navigation
 
+  /// TODO: This pattern is duplicated across several VCs.
+  /// Its worth pulling into a `UIViewController` extension, with the background color fix keyed off the videoFeed intent.
+  private func goToLoginTout(intent: LoginIntent) {
+    let loginTout = LoginToutViewController.configuredWith(loginIntent: intent)
+    let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
+    let nav = UINavigationController(rootViewController: loginTout)
+    nav.modalPresentationStyle = isIpad ? .formSheet : .fullScreen
+
+    /// Presenting fullscreen over a dark video background can cause a black flash since UIKit briefly shows the default window background.
+    /// Setting the nav controller's background to match the login screen prevents that.
+    if !isIpad {
+      nav.view.backgroundColor = Colors.Background.Surface.primary.uiColor()
+    }
+
+    self.present(nav, animated: true)
+  }
+
   private func goToCreatorProfile(for item: VideoFeedItem) {
     let vc = ProjectCreatorViewController.configuredWith(project: item)
 
@@ -221,7 +251,9 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     guard let cell = cell as? VideoFeedCell else { return }
 
     let items = self.viewModel.items
+
     guard indexPath.item < items.count else { return }
+
     let item = items[indexPath.item]
 
     cell.onCloseTapped = { [weak self] in self?.dismiss(animated: true) }

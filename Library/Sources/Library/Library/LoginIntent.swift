@@ -8,6 +8,7 @@ public enum LoginIntent: String {
   case messageCreator
   case onboarding
   case starProject
+  case videoFeed
 
   var trackingString: String {
     switch self {
@@ -29,6 +30,8 @@ public enum LoginIntent: String {
       return "onboarding"
     case .starProject:
       return "star"
+    case .videoFeed:
+      return "video_feed"
     }
   }
 }
