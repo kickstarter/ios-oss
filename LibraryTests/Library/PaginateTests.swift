@@ -797,4 +797,70 @@ final class PaginateTests: TestCase {
 
     pageCountLoadedTest.assertValues([1, 2, 3, 1, 2, 3, 4, 1])
   }
+
+  func testPagination_StopsWhenCursorIsNil() {
+    var numberOfRequests = 0
+
+    let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { p in
+      numberOfRequests += 1
+      return .init(value: [p])
+    }
+    let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { c in
+      numberOfRequests += 1
+      return .init(value: [c])
+    }
+
+    /// Returns a cursor for the first page, nil after that to simulate hasNextPage: false
+    let cursorFromEnvelope: ([Int]) -> Int? = { values in
+      guard let last = values.last else { return nil }
+
+      return last == 1 ? last + 1 : nil
+    }
+
+    let (values, loading, _, _) = paginate(
+      requestFirstPageWith: newRequest,
+      requestNextPageWhen: nextPage,
+      clearOnNewRequest: true,
+      valuesFromEnvelope: valuesFromEnvelope,
+      cursorFromEnvelope: cursorFromEnvelope,
+      requestFromParams: requestFromParams,
+      requestFromCursor: requestFromCursor
+    )
+
+    let valuesTest = TestObserver<[Int], Never>()
+    values.observe(valuesTest.observer)
+
+    let loadingTest = TestObserver<Bool, Never>()
+    loading.observe(loadingTest.observer)
+
+    /// Load first page (cursor will be 2)
+    self.newRequestObserver.send(value: 1)
+
+    self.scheduler.advance()
+
+    valuesTest.assertValues([[1]], "First page of values emitted.")
+    loadingTest.assertValues([true, false], "Loading started and stopped.")
+
+    XCTAssertEqual(1, numberOfRequests, "One request made.")
+
+    /// Load second page (cursor will be nil after this)
+    self.nextPageObserver.send(value: ())
+
+    self.scheduler.advance()
+
+    valuesTest.assertValues([[1], [1, 2]], "Second page of values emitted.")
+    loadingTest.assertValues([true, false, true, false], "Loading started and stopped.")
+
+    XCTAssertEqual(2, numberOfRequests, "Two requests made.")
+
+    /// Try to load a third page (cursor is nil so no request should fire)
+    self.nextPageObserver.send(value: ())
+
+    self.scheduler.advance()
+
+    valuesTest.assertValues([[1], [1, 2]], "No new values emitted.")
+    loadingTest.assertValues([true, false, true, false], "Loading did not start again.")
+
+    XCTAssertEqual(2, numberOfRequests, "No additional requests made.")
+  }
 }
