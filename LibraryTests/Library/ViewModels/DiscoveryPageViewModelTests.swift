@@ -1,3 +1,4 @@
+import Experimentation
 @testable import KsApi
 @testable import KsApiTestHelpers
 @testable import Library
@@ -35,6 +36,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let showEmptyState = TestObserver<EmptyState, Never>()
   fileprivate let showOnboarding = TestObserver<Bool, Never>()
   fileprivate let showPersonalization = TestObserver<Bool, Never>()
+  fileprivate let showVideoFeedBanner = TestObserver<Bool, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -60,6 +62,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
     self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
     self.vm.outputs.showPersonalization.observe(self.showPersonalization.observer)
+    self.vm.outputs.showVideoFeedBanner.observe(self.showVideoFeedBanner.observer)
 
     self.vm.outputs.projectsLoaded
       .map { $0.0.count }
@@ -1205,6 +1208,59 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.projectsAreLoading.assertValueCount(4)
+    }
+  }
+
+  func testShowVideoFeedBanner_featureEnabled_showsOnViewWillAppear() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.videoFeed: true]
+
+    withEnvironment(statsigClient: mockStatsig) {
+      self.showVideoFeedBanner.assertDidNotEmitValue()
+
+      self.vm.inputs.viewWillAppear()
+
+      self.showVideoFeedBanner.assertLastValue(true, "Banner shows when feature flag is on.")
+    }
+  }
+
+  func testShowVideoFeedBanner_featureDisabled_hiddenOnViewWillAppear() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.videoFeed: false]
+
+    withEnvironment(statsigClient: mockStatsig) {
+      self.vm.inputs.viewWillAppear()
+
+      self.showVideoFeedBanner.assertLastValue(false, "Banner hidden when feature flag is off.")
+    }
+  }
+
+  func testShowVideoFeedBanner_featureEnabled_showsOnConfigUpdated() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.videoFeed: true]
+
+    withEnvironment(statsigClient: mockStatsig) {
+      self.showVideoFeedBanner.assertDidNotEmitValue()
+
+      self.vm.inputs.configUpdated()
+
+      self.showVideoFeedBanner.assertLastValue(
+        true,
+        "Banner shows when config updates with feature flag on."
+      )
+    }
+  }
+
+  func testShowVideoFeedBanner_skipRepeats() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.videoFeed: true]
+
+    withEnvironment(statsigClient: mockStatsig) {
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewWillAppear()
+
+      self.showVideoFeedBanner.assertValueCount(1, "Repeated identical values are skipped.")
     }
   }
 }

@@ -337,10 +337,13 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     .ignoreValues()
     .map(shouldShowPersonalization)
 
+    self.reachabilityProperty <~ Reachability.signalProducer
+
     self.showVideoFeedBanner = Signal.merge(
       self.viewWillAppearProperty.signal,
-      // Because the Discover page is the first page we see, it might appear before config values load.
-      self.configUpdatedSignal
+      /// Because the Discover page is the first page we see, it might appear before config values load.
+      self.configUpdatedSignal,
+      self.reachabilityProperty.signal.ignoreValues()
     )
     .map { featureVideoFeedEnabled() && Reachability.current != .none }
     .skipRepeats()
@@ -477,6 +480,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
+
+  private let reachabilityProperty = MutableProperty(Reachability.current)
 
   public let activitiesForSample: Signal<[Activity], Never>
   public let asyncReloadData: Signal<Void, Never>
