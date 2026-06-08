@@ -241,9 +241,14 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.showEmptyState = requestFirstPageWith
       .takePairWhen(shouldShowEmptyState)
 
-    self.showVideoFeedBanner = self.viewWillAppearAnimatedProperty.signal.ignoreValues()
-      .map { featureVideoFeedEnabled() && Reachability.current != .none }
-      .skipRepeats()
+    self.reachabilityProperty <~ Reachability.signalProducer
+
+    self.showVideoFeedBanner = Signal.merge(
+      self.viewWillAppearAnimatedProperty.signal.ignoreValues(),
+      self.reachabilityProperty.signal.ignoreValues()
+    )
+    .map { featureVideoFeedEnabled() && Reachability.current != .none }
+    .skipRepeats()
 
     self.goToProject = Signal.combineLatest(searchResults, queryText)
       .takePairWhen(self.tappedProjectIndexSignal)
@@ -399,6 +404,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   private let categoriesUseCase: FetchCategoriesUseCase
   private let searchFiltersUseCase: SearchFiltersUseCase
   private let locationsUseCase: FetchLocationsUseCase
+  private let reachabilityProperty = MutableProperty(Reachability.current)
 
   public let goToProject: Signal<(ProjectPageParam, RefTag), Never>
   public let projects: Signal<[SearchResultCard], Never>

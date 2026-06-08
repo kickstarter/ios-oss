@@ -21,6 +21,7 @@ class VideoFeedVideoPlayer {
   private var timeObserverToken: Any?
   private var endObserver: (any NSObjectProtocol)?
   private var failedObserver: (any NSObjectProtocol)?
+  private var stalledObserver: (any NSObjectProtocol)?
   /// Once `onReady` has fired, flip this so we don't fire it repeatedly.
   private var hasFiredOnReady = false
   private var hasFiredOnFailed = false
@@ -59,6 +60,7 @@ class VideoFeedVideoPlayer {
         self?.player.play()
       }
     }
+
     /// Catches mid-playback failures (network drop, decoder errors, etc.).
     self.failedObserver = NotificationCenter.default.addObserver(
       forName: .AVPlayerItemFailedToPlayToEndTime,
@@ -66,6 +68,26 @@ class VideoFeedVideoPlayer {
       queue: .main
     ) { [weak self] _ in
       self?.notifyFailed()
+    }
+
+    /// Catches errors caused by losing network connection mid-playback.
+    /// AVPlayer triggers this when it can no longer load a video but doesn't transition to .failed it just freezes,
+    /// `AVPlayerItemFailedToPlayToEndTime` never fires in this specific case.
+    self.stalledObserver = NotificationCenter.default.addObserver(
+      forName: AVPlayerItem.playbackStalledNotification,
+      object: item,
+      queue: .main
+    ) { [weak self] _ in
+      guard let self, self.player.currentItem === item else { return }
+
+      /// Giving the player a 3s window to recover.
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+        guard let self,
+              self.player.currentItem === item,
+              self.player.rate == 0 else { return }
+
+        self.notifyFailed()
+      }
     }
 
     self.player.play()
@@ -155,6 +177,7 @@ class VideoFeedVideoPlayer {
   /// Both the `AVPlayerItemFailedToPlayToEndTime` notification and the failed to load timeout can observe the same failure.
   private func notifyFailed() {
     guard !self.hasFiredOnFailed else { return }
+
     self.hasFiredOnFailed = true
     self.onVideoFailed?()
   }
@@ -163,11 +186,19 @@ class VideoFeedVideoPlayer {
     if let endObserver = self.endObserver {
       NotificationCenter.default.removeObserver(endObserver)
     }
+
     self.endObserver = nil
 
     if let failedObserver = self.failedObserver {
       NotificationCenter.default.removeObserver(failedObserver)
     }
+
     self.failedObserver = nil
+
+    if let stalledObserver = self.stalledObserver {
+      NotificationCenter.default.removeObserver(stalledObserver)
+    }
+
+    self.stalledObserver = nil
   }
 }

@@ -1,3 +1,4 @@
+import Experimentation
 import Foundation
 import GraphAPI
 @testable import KsApi
@@ -24,6 +25,7 @@ internal final class SearchViewModelTests: TestCase {
   fileprivate let showEmptyState = TestObserver<Bool, Never>()
   fileprivate let showEmptyStateParams = TestObserver<DiscoveryParams, Never>()
   fileprivate let showFilters = TestObserver<SearchFilterModalType, Never>()
+  fileprivate let showVideoFeedBanner = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -38,6 +40,7 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.outputs.searchLoaderIndicatorIsAnimating.observe(self.searchLoaderIndicatorIsAnimating.observer)
     self.vm.outputs.showEmptyState.map(second).observe(self.showEmptyState.observer)
     self.vm.outputs.showEmptyState.map(first).observe(self.showEmptyStateParams.observer)
+    self.vm.outputs.showVideoFeedBanner.observe(self.showVideoFeedBanner.observer)
 
     self.vm.outputs.searchResults
       .map { $0.projects.count }
@@ -1050,6 +1053,43 @@ internal final class SearchViewModelTests: TestCase {
 
       XCTAssertEqual("maverick", segmentClientProps?["discover_search_term"] as? String)
       XCTAssertEqual(200, segmentClientProps?["discover_search_results_count"] as? Int)
+    }
+  }
+
+  func testShowVideoFeedBanner_featureEnabled_showsOnViewWillAppear() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.videoFeed: true]
+
+    withEnvironment(statsigClient: mockStatsig) {
+      self.showVideoFeedBanner.assertDidNotEmitValue()
+
+      self.vm.inputs.viewWillAppear(animated: true)
+
+      self.showVideoFeedBanner.assertLastValue(true, "Banner shows when feature flag is on.")
+    }
+  }
+
+  func testShowVideoFeedBanner_featureDisabled_hiddenOnViewWillAppear() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.videoFeed: false]
+
+    withEnvironment(statsigClient: mockStatsig) {
+      self.vm.inputs.viewWillAppear(animated: true)
+
+      self.showVideoFeedBanner.assertLastValue(false, "Banner hidden when feature flag is off.")
+    }
+  }
+
+  func testShowVideoFeedBanner_skipRepeats() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.videoFeed: true]
+
+    withEnvironment(statsigClient: mockStatsig) {
+      self.vm.inputs.viewWillAppear(animated: true)
+      self.vm.inputs.viewWillAppear(animated: true)
+      self.vm.inputs.viewWillAppear(animated: true)
+
+      self.showVideoFeedBanner.assertValueCount(1, "Repeated identical values are skipped.")
     }
   }
 }
