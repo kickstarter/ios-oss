@@ -9,11 +9,13 @@ public protocol VideoFeedViewModelType: AnyObject {
   var fetchedItems: [VideoFeedItem] { get }
   var loginIntent: LoginIntent? { get }
   var isInitialLoadComplete: Bool { get }
+  var saveFailedItemId: String? { get }
   func viewDidLoad()
   func viewWillAppear()
   func toggleSaved(for item: VideoFeedItem)
   func isSaved(id: String) -> Binding<Bool>
   func clearLoginIntent()
+  func clearSaveFailedItemId()
 }
 
 @Observable
@@ -32,6 +34,10 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
   public private(set) var errorMessage: String?
   public private(set) var loginIntent: LoginIntent? = nil
   public private(set) var isInitialLoadComplete: Bool = false
+
+  /// Set to the project ID of an item whose save/unsave request failed.
+  /// Observed by `VideoFeedViewController` to trigger the error toast on the correct cell.
+  public private(set) var saveFailedItemId: String? = nil
 
   /// Tracks in-flight watch/unwatch requests.
   private var pendingWatchRequests: [String: Disposable] = [:]
@@ -82,7 +88,7 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
 
   /// Toggles the watched state for a given project.
   /// Ignores taps while a request is already in flight.
-  /// Optimistically updates `isSaved`. Reverts on failure.
+  /// Optimistically updates `isSaved`. Reverts on failure and triggers the save error toast.
   public func toggleSaved(for item: VideoFeedItem) {
     guard let index = self.items.firstIndex(where: { $0.id == item.id }) else { return }
     guard self.pendingWatchRequests[item.projectId] == nil else { return }
@@ -103,8 +109,9 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
         guard let self, let index = self.items.firstIndex(where: { $0.id == projectId }) else { return }
 
         if case .failure = result {
-          /// Revert optimistic update on failure.
+          /// Revert optimistic update on failure and surface the error toast.
           self.items[index].isSaved = wasSaved
+          self.saveFailedItemId = projectId
         }
 
         self.pendingWatchRequests.removeValue(forKey: projectId)
@@ -117,9 +124,13 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
     self.loginIntent = nil
   }
 
+  public func clearSaveFailedItemId() {
+    self.saveFailedItemId = nil
+  }
+
   // MARK: - Private
 
-  /// Triggers the login flow. Called  when a logged-out user tries to save a project.
+  /// Triggers the login flow. Called when a logged-out user tries to save a project.
   private func showLogin() {
     self.loginIntent = .videoFeed
   }

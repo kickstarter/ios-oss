@@ -14,6 +14,8 @@ final class VideoFeedPlaybackState {
   var isVideoReady: Bool = false
   /// Set via `VideoFeedCell` after the video player is created.
   var hasFailed: Bool = false
+  /// True when a save/unsave project request has failed.
+  var hasSaveFailed: Bool = false
   var videoPlayer: VideoFeedVideoPlayer?
 
   /// Pauses playback and shows the play button.
@@ -32,6 +34,7 @@ final class VideoFeedPlaybackState {
     self.isPlaying = true
     self.isVideoReady = false
     self.hasFailed = false
+    self.hasSaveFailed = false
   }
 
   /// Called by the video player once it is ready to play.
