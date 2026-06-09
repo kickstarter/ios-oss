@@ -14,7 +14,7 @@ public enum NotificationAuthorizationStatus {
   case provisional
 }
 
-public protocol AppDelegateViewModelInputs {
+public protocol SceneDelegateViewModelInputs {
   /// Call when the application is handed off to.
   func applicationContinueUserActivity(_ userActivity: NSUserActivity) -> Bool
 
@@ -88,7 +88,7 @@ public protocol AppDelegateViewModelInputs {
   func userSessionStarted()
 }
 
-public protocol AppDelegateViewModelOutputs {
+public protocol SceneDelegateViewModelOutputs {
   /// The value to return from the delegate's `application:didFinishLaunchingWithOptions:` method.
   var applicationDidFinishLaunchingReturnValue: Bool { get }
 
@@ -184,13 +184,13 @@ public protocol AppDelegateViewModelOutputs {
   var updateConfigInEnvironment: Signal<Config, Never> { get }
 }
 
-public protocol AppDelegateViewModelType {
-  var inputs: AppDelegateViewModelInputs { get }
-  var outputs: AppDelegateViewModelOutputs { get }
+public protocol SceneDelegateViewModelType {
+  var inputs: SceneDelegateViewModelInputs { get }
+  var outputs: SceneDelegateViewModelOutputs { get }
 }
 
-public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateViewModelInputs,
-  AppDelegateViewModelOutputs {
+public final class SceneDelegateViewModel: SceneDelegateViewModelType, SceneDelegateViewModelInputs,
+  SceneDelegateViewModelOutputs {
   public init() {
     let currentUserEvent = Signal
       .merge(
@@ -633,8 +633,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
   }
 
-  public var inputs: AppDelegateViewModelInputs { return self }
-  public var outputs: AppDelegateViewModelOutputs { return self }
+  public var inputs: SceneDelegateViewModelInputs { return self }
+  public var outputs: SceneDelegateViewModelOutputs { return self }
 
   fileprivate let applicationContinueUserActivityProperty = MutableProperty<NSUserActivity?>(nil)
   public func applicationContinueUserActivity(_ userActivity: NSUserActivity) -> Bool {
@@ -1158,7 +1158,7 @@ private func updateUserNotificationSetting(navigation: Navigation) -> SignalProd
 
 /// A utility for handling all of the `.project` deep links.
 /// These deep links can make stacks of view controllers - like Project > Comment > Thread.
-/// I pulled these out of `AppDelegateViewModel.init` to them easier to reason about.
+/// I pulled these out of `SceneDelegateViewModel.init` to them easier to reason about.
 private struct ProjectDeepLink {
   /// TODO: This could be cleaned up to be more imperative. It's basically mapping a project deep link and its subpages
   /// into an array of `UIViewController`s.

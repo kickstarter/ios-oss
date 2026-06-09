@@ -610,7 +610,7 @@ public struct Service: ServiceType {
    - `CommentsViewModel`
    - `UpdateViewModel`
    - `UpdatePreviewViewModel`
-   - `AppDelegateViewModel`
+   - `SceneDelegateViewModel`
 
    Eventually this v1 network request can be replaced with `fetchProject(projectParam:)` if we refactor the use cases above in the future.
    */

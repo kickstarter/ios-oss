@@ -24,7 +24,7 @@ import UserNotifications
 @UIApplicationMain
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
-  fileprivate let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
+  fileprivate let viewModel: SceneDelegateViewModelType = SceneDelegateViewModel()
   fileprivate var disposables: [any Disposable] = []
   // Custom Braze cancellable type. As long as we keep a reference to this active, Braze will
   // use this to tell us about any Braze push notifications the app handles.

@@ -11,8 +11,8 @@ import ReactiveSwift
 import UserNotifications
 import XCTest
 
-final class AppDelegateViewModelTests: TestCase {
-  var vm: AppDelegateViewModelType!
+final class SceneDelegateViewModelTests: TestCase {
+  var vm: SceneDelegateViewModelType!
 
   private let applicationIconBadgeNumber = TestObserver<Int, Never>()
   private let configureFirebase = TestObserver<(), Never>()
@@ -57,7 +57,7 @@ final class AppDelegateViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm = AppDelegateViewModel()
+    self.vm = SceneDelegateViewModel()
 
     self.vm.outputs.applicationIconBadgeNumber.observe(self.applicationIconBadgeNumber.observer)
     self.vm.outputs.configureFirebase.observe(self.configureFirebase.observer)
