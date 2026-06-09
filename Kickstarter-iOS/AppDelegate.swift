@@ -23,8 +23,8 @@ import UserNotifications
 
 @UIApplicationMain
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
-  var window: UIWindow?
-  fileprivate let viewModel: SceneDelegateViewModelType = SceneDelegateViewModel()
+  // The window is owned by `SceneDelegate` in the scene-based lifecycle.
+  internal let viewModel: SceneDelegateViewModelType = SceneDelegateViewModel()
   fileprivate var disposables: [any Disposable] = []
   // Custom Braze cancellable type. As long as we keep a reference to this active, Braze will
   // use this to tell us about any Braze push notifications the app handles.
@@ -34,7 +34,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   private weak var braze: Braze?
 
   internal var rootTabBarController: RootTabBarViewController? {
-    return self.window?.rootViewController as? RootTabBarViewController
+    // The window now lives on the active `UIWindowScene` rather than on the app delegate.
+    let windowScene = UIApplication.shared.connectedScenes
+      .first { $0 is UIWindowScene } as? UIWindowScene
+    let window = windowScene?.windows.first { $0.isKeyWindow } ?? windowScene?.windows.first
+    return window?.rootViewController as? RootTabBarViewController
   }
 
   func application(
@@ -309,8 +313,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.viewModel.inputs.configUpdatedNotificationObserved()
       }
 
-    self.window?.tintColor = LegacyColors.ksr_create_700.uiColor()
-
     self.viewModel.inputs.applicationDidFinishLaunching(
       application: application,
       launchOptions: launchOptions
@@ -319,47 +321,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     UNUserNotificationCenter.current().delegate = self
 
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
-  }
-
-  func applicationDidBecomeActive(_: UIApplication) {
-    self.viewModel.inputs.applicationActive(state: true)
-  }
-
-  func applicationWillResignActive(_: UIApplication) {
-    self.viewModel.inputs.applicationActive(state: false)
-  }
-
-  func applicationWillEnterForeground(_: UIApplication) {
-    self.viewModel.inputs.applicationWillEnterForeground()
-  }
-
-  func applicationDidEnterBackground(_: UIApplication) {
-    self.viewModel.inputs.applicationDidEnterBackground()
-  }
-
-  func application(
-    _: UIApplication,
-    continue userActivity: NSUserActivity,
-    restorationHandler _: @escaping ([UIUserActivityRestoring]?) -> Void
-  ) -> Bool {
-    return self.viewModel.inputs.applicationContinueUserActivity(userActivity)
-  }
-
-  func application(
-    _ app: UIApplication,
-    open url: URL,
-    options: [UIApplication.OpenURLOptionsKey: Any] = [:]
-  ) -> Bool {
-    // If this is not a Facebook login call, handle the potential deep-link
-    guard !AppEnvironment.current.facebookSDK.handleOpenURL(app, open: url, options: options) else {
-      return true
-    }
-
-    return self.viewModel.inputs.applicationOpenUrl(
-      application: app,
-      url: url,
-      options: options
-    )
   }
 
   // MARK: - Remote notifications
@@ -380,15 +341,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   internal func applicationDidReceiveMemoryWarning(_: UIApplication) {
     self.viewModel.inputs.applicationDidReceiveMemoryWarning()
-  }
-
-  internal func application(
-    _: UIApplication,
-    performActionFor shortcutItem: UIApplicationShortcutItem,
-    completionHandler: @escaping (Bool) -> Void
-  ) {
-    self.viewModel.inputs.applicationPerformActionForShortcutItem(shortcutItem)
-    completionHandler(true)
   }
 
   // MARK: - Functions
