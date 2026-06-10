@@ -5,6 +5,8 @@ import WebKit
 struct OEmbedBlock: View {
   var oembed: RichTextElement.OEmbed
   @Environment(\.richTextStyle) var style: any RichTextStyle
+
+  // Just for testing, please do not use directly
   internal var onWebViewCreated: ((WKWebView) -> Void)?
 
   var iframeURL: URL? {
