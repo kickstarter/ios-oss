@@ -7,6 +7,13 @@ internal protocol VideoFeedBannerCellDelegate: AnyObject {
   func videoFeedBannerCellDidTapTryItNow(_ cell: VideoFeedBannerCell)
 }
 
+@Observable
+final class VideoFeedBannerViewState {
+  var isLoading: Bool = false
+}
+
+// MARK: - Cell
+
 internal final class VideoFeedBannerCell: UITableViewCell, ValueCell {
   internal weak var delegate: VideoFeedBannerCellDelegate?
 
@@ -16,6 +23,7 @@ internal final class VideoFeedBannerCell: UITableViewCell, ValueCell {
   }
 
   private var hostingController: UIHostingController<VideoFeedBannerView>?
+  private let bannerState = VideoFeedBannerViewState()
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -29,16 +37,25 @@ internal final class VideoFeedBannerCell: UITableViewCell, ValueCell {
 
   internal func configureWith(value _: Void) {}
 
+  // MARK: - Loading
+
+  func setLoading(_ loading: Bool) {
+    withAnimation(.easeInOut(duration: 0.2)) {
+      self.bannerState.isLoading = loading
+    }
+  }
+
+  // MARK: - Setup
+
   private func setUp() {
     self.selectionStyle = .none
     self.backgroundColor = .clear
     self.contentView.backgroundColor = .clear
 
-    var bannerView = VideoFeedBannerView()
+    var bannerView = VideoFeedBannerView(state: self.bannerState)
 
     bannerView.onTryItNowTapped = { [weak self] in
       guard let self else { return }
-
       self.delegate?.videoFeedBannerCellDidTapTryItNow(self)
     }
 
@@ -74,7 +91,6 @@ internal final class VideoFeedBannerCell: UITableViewCell, ValueCell {
     guard let host = self.hostingController, host.parent == nil else { return }
 
     parent.addChild(host)
-
     host.didMove(toParent: parent)
   }
 }
