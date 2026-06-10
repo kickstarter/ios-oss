@@ -89,9 +89,10 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       })
       .flatMap { project, location in
         AppEnvironment.current.apiService
-          .fetchProjectRewardsWithNoReward(
+          .fetchProjectRewards(
             projectId: project.id,
-            sortedForShippingCountryCode: location
+            sortedForShippingCountryCode: location,
+            withNoReward: .first
           )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()

@@ -3,6 +3,11 @@ import GraphAPI
 import Prelude
 import ReactiveSwift
 
+public enum NoRewardSortType {
+  case first
+  case last
+}
+
 extension Project {
   static func projectRewardsProducer(
     from data: GraphAPI.FetchProjectRewardsByIdQuery.Data
@@ -12,7 +17,10 @@ extension Project {
     return SignalProducer(value: projectRewards)
   }
 
-  static func projectRewards(from data: GraphAPI.FetchSortedProjectRewardsByIdQuery.Data) -> [Reward] {
+  static func projectRewards(
+    from data: GraphAPI.FetchSortedProjectRewardsByIdQuery.Data,
+    withNoReward noRewardSortType: NoRewardSortType
+  ) -> [Reward] {
     guard let project = data.project else {
       return []
     }
@@ -31,7 +39,13 @@ extension Project {
       } ?? []
 
     let noReward = Reward.noRewardReward(from: project.fragments.noRewardRewardFragment)
-    return [noReward] + projectRewards
+
+    switch noRewardSortType {
+    case .first:
+      return [noReward] + projectRewards
+    case .last:
+      return projectRewards + [noReward]
+    }
   }
 
   static func projectRewards(from data: GraphAPI.FetchProjectRewardsByIdQuery.Data) -> [Reward] {

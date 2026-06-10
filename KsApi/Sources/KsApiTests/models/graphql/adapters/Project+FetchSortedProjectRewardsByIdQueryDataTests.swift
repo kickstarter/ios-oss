@@ -17,7 +17,7 @@ final class Project_FetchSortedProjectRewardsByIdQueryDataTests: XCTestCase {
       ])
     XCTAssertNotNil(data)
 
-    let rewards = Project.projectRewards(from: data)
+    let rewards = Project.projectRewards(from: data, withNoReward: .first)
 
     XCTAssertEqual(rewards.count, 2)
 
@@ -27,7 +27,7 @@ final class Project_FetchSortedProjectRewardsByIdQueryDataTests: XCTestCase {
     }
 
     // Unlike the other rewards fetch, this one automatically adds no-reward.
-    XCTAssertTrue(firstReward.isNoReward, "Query should have inserted no-reward reward")
+    XCTAssertTrue(firstReward.isNoReward, "Query should have inserted no-reward reward first")
     XCTAssertEqual(firstReward.convertedMinimum, 0.780313)
 
     // The rewards and shipping rules code goes through the same pathway as
@@ -39,5 +39,29 @@ final class Project_FetchSortedProjectRewardsByIdQueryDataTests: XCTestCase {
       1,
       "Should have parsed the expanded shipping rules"
     )
+  }
+
+  func testFetch_noRewardSort_lastPutsNoRewardLast() {
+    let dataUrl = Bundle.module.url(forResource: "FetchSortedProjectRewardsById", withExtension: "json")!
+    let data: GraphAPI.FetchSortedProjectRewardsByIdQuery.Data =
+      try! testGraphObject(fromResource: dataUrl, variables: [
+        "projectId": 1_480_998_200,
+        "location": "DE",
+        "includeShippingRules": true,
+        "includeLocalPickup": true
+      ])
+    XCTAssertNotNil(data)
+
+    let rewards = Project.projectRewards(from: data, withNoReward: .last)
+
+    XCTAssertEqual(rewards.count, 2)
+
+    guard let lastReward = rewards.last else {
+      XCTFail("Expected there to be two rewards")
+      return
+    }
+
+    // Unlike the other rewards fetch, this one automatically adds no-reward.
+    XCTAssertTrue(lastReward.isNoReward, "Query should have inserted no-reward reward last")
   }
 }
