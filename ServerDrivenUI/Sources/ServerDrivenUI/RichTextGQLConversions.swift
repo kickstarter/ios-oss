@@ -336,7 +336,7 @@ extension RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextVide
 
 extension RichTextComponentFragment.Item.AsRichTextOembed {
   var asRichTextElement: RichTextElement {
-    .oembed(RichTextElement.Oembed(
+    .oembed(RichTextElement.OEmbed(
       width: width,
       height: height,
       version: version,
@@ -353,7 +353,7 @@ extension RichTextComponentFragment.Item.AsRichTextOembed {
 
 extension RichTextComponentFragment.Item.AsRichText.Child.AsRichTextOembed {
   var asRichTextElement: RichTextElement {
-    .oembed(RichTextElement.Oembed(
+    .oembed(RichTextElement.OEmbed(
       width: width,
       height: height,
       version: version,
@@ -370,7 +370,7 @@ extension RichTextComponentFragment.Item.AsRichText.Child.AsRichTextOembed {
 
 extension RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextOembed {
   var asRichTextElement: RichTextElement {
-    .oembed(RichTextElement.Oembed(
+    .oembed(RichTextElement.OEmbed(
       width: width,
       height: height,
       version: version,
@@ -387,7 +387,7 @@ extension RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextOembed
 
 extension RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextOembed {
   var asRichTextElement: RichTextElement {
-    .oembed(RichTextElement.Oembed(
+    .oembed(RichTextElement.OEmbed(
       width: width,
       height: height,
       version: version,

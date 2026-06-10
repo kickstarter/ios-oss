@@ -3,7 +3,7 @@ import SwiftUI
 import WebKit
 
 struct OEmbedBlock: View {
-  var oembed: RichTextElement.Oembed
+  var oembed: RichTextElement.OEmbed
   @Environment(\.richTextStyle) var style: any RichTextStyle
   internal var onWebViewCreated: ((WKWebView) -> Void)?
 

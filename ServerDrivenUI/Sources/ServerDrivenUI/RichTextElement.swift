@@ -11,7 +11,7 @@ public indirect enum RichTextElement: Sendable {
   case audio(Audio)
   case photo(Photo)
   case video(Video)
-  case oembed(Oembed)
+  case oembed(OEmbed)
   case unknown
 
   public struct Text: Sendable {
@@ -107,7 +107,7 @@ public indirect enum RichTextElement: Sendable {
     let formats: [VideoFormat]
   }
 
-  public struct Oembed: Sendable {
+  public struct OEmbed: Sendable {
     let width: Int
     let height: Int
     let version: String

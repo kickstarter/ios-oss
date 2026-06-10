@@ -393,8 +393,8 @@ private func makeOembed(
   type: String = "video",
   iframeUrl: String?,
   originalUrl: String? = "https://example.com/original"
-) -> RichTextElement.Oembed {
-  RichTextElement.Oembed(
+) -> RichTextElement.OEmbed {
+  RichTextElement.OEmbed(
     width: width,
     height: height,
     version: "1.0",
@@ -411,7 +411,7 @@ private func makeOembed(
 @MainActor
 @ViewBuilder
 private func oembedBlock(
-  oembed: RichTextElement.Oembed,
+  oembed: RichTextElement.OEmbed,
   colorScheme: ColorScheme,
   width: CGFloat? = 300,
   height: CGFloat? = 200
