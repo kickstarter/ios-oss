@@ -11,5 +11,9 @@ public struct iOSTestExperiment: StatsigExperimentProtocol {
     return .ios_test_experiment
   }
 
+  public var layer: StatsigExperimentLayer? {
+    return nil
+  }
+
   public init() {}
 }

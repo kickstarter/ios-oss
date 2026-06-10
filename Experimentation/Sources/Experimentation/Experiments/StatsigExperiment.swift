@@ -27,13 +27,22 @@ public protocol StatsigExperimentProtocol<Parameters> {
 
   /// The name of the experiment (in Statsig)
   var name: StatsigExperimentName { get }
+
+  /// The layer of the experiment (in Statsig).
+  /// May be `nil` if the experiment is not part of a layer.
+  var layer: StatsigExperimentLayer? { get }
 }
 
 /// The names of our Statsig experiments.
 /// Maps directly to the experiment name in the Statsig console.
 public enum StatsigExperimentName: String, CaseIterable {
   case ios_test_experiment
+  case ios_test_experiment_in_layer
   case fullscreen_checkout_experience_experiment
   case logged_in_aa_experiment
   case logged_out_aa_experiment
+}
+
+public enum StatsigExperimentLayer: String, CaseIterable {
+  case ios_test_layer
 }

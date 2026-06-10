@@ -12,5 +12,9 @@ public struct FullScreenCheckoutExperiment: StatsigExperimentProtocol {
     return .fullscreen_checkout_experience_experiment
   }
 
+  public var layer: StatsigExperimentLayer? {
+    return nil
+  }
+
   public init() {}
 }

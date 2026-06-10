@@ -88,4 +88,36 @@ final class StatsigWrapperTests: XCTestCase {
 
     XCTAssertEqual(client.checkGate(for: .videoFeed), false)
   }
+
+  func testClient_returnsBoolValue_forExperimentInLayer() {
+    let experiment = iOSTestExperimentInLayer()
+    let expectation = XCTestExpectation(description: "Waiting for Statsig")
+
+    let statsig = StatsigClient(sdkKey: "fake", options: StatsigOptions(initializeOffline: true)) { _ in
+      expectation.fulfill()
+    }
+
+    let client = StatsigWrapper(client: statsig)
+
+    XCTAssertNil(
+      client.boolValue(forKey: .test_parameter, inExperiment: experiment),
+      "Value should be nil because Statsig isn't initialized yet."
+    )
+
+    self.wait(for: [expectation])
+
+    XCTAssertNil(
+      client.boolValue(forKey: .test_parameter, inExperiment: experiment),
+      "Value should be nil because experiment has no value."
+    )
+
+    statsig.overrideLayer(
+      "ios_test_layer",
+      value: [
+        "test_parameter": true
+      ]
+    )
+
+    XCTAssertEqual(client.boolValue(forKey: .test_parameter, inExperiment: experiment), true)
+  }
 }
