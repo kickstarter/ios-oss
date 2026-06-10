@@ -223,9 +223,12 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.addGestureRecognizer(tap)
   }
 
-  /// Tapping anywhere on the cell pauses playback and shows the play button.
-  /// Tapping the play button resumes playback and hides it.
+  /// Tapping anywhere on the cell toggles playback:
   @objc private func cellTapped() {
-    self.playbackState.pause()
+    if self.playbackState.isPlaying {
+      self.playbackState.pause()
+    } else {
+      self.playbackState.resume()
+    }
   }
 }

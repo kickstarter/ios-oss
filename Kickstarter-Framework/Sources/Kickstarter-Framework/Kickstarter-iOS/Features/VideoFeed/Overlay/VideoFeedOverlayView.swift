@@ -135,8 +135,6 @@ struct VideoFeedOverlayView: View {
         .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
         .background(FrostedGlassBackgroundView())
         .clipShape(Circle())
-        /// Tapping the play button resumes playback and hides the button.
-        .onTapGesture { self.playbackState.resume() }
         .opacity(self.playbackState.isPlayButtonVisible ? 1 : 0)
         .animation(.easeInOut(duration: 0.15), value: self.playbackState.isPlayButtonVisible)
         .accessibilityLabel(Strings.Play())

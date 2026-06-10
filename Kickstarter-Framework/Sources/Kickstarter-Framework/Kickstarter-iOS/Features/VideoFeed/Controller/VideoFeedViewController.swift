@@ -145,7 +145,7 @@ final class VideoFeedViewController: UIViewController {
   /// Auto play video audio
   private func configureAudioSession() {
     do {
-      try AVAudioSession.sharedInstance().setCategory(.playback, mode: .moviePlayback)
+      try AVAudioSession.sharedInstance().setCategory(.soloAmbient, mode: .default)
       try AVAudioSession.sharedInstance().setActive(true)
     } catch {
       #if DEBUG
