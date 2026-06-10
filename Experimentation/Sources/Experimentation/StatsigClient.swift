@@ -83,6 +83,12 @@ public final class StatsigWrapper: StatsigClientType {
       return nil
     }
 
+    if let layer = experiment.layer {
+      return self.client
+        .getLayer(layer.rawValue)
+        .getValue(forKey: key.rawValue)
+    }
+
     return self.client
       .getExperiment(experiment.name.rawValue)
       .getValue(forKey: key.rawValue)

@@ -12,6 +12,10 @@ public struct NullExperimentWithUserID: StatsigExperimentProtocol {
   public var name: StatsigExperimentName {
     return .logged_in_aa_experiment
   }
+
+  public var layer: StatsigExperimentLayer? {
+    return nil
+  }
 }
 
 /// This is an A/A experiment to test that our A/B testing infrastructure works correctly.
@@ -23,5 +27,9 @@ public struct NullExperimentWithAnonymousID: StatsigExperimentProtocol {
 
   public var name: StatsigExperimentName {
     return .logged_out_aa_experiment
+  }
+
+  public var layer: StatsigExperimentLayer? {
+    return nil
   }
 }
