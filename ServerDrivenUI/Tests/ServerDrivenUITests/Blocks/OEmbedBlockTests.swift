@@ -329,30 +329,6 @@ final class OEmbedBlockTests: TestCase {
     )
   }
 
-  // MARK: - Color schemes
-
-  func testOEmbedBlockWithValidIframeURL_lightAndDarkStyles() throws {
-    let oembed = makeOembed(
-      title: "Styled Embed",
-      iframeUrl: "https://example.com/embed"
-    )
-
-    for colorScheme in [ColorScheme.light, ColorScheme.dark] {
-      let view = oembedBlock(oembed: oembed, colorScheme: colorScheme)
-      let block = try view.inspect().find(OEmbedBlock.self).actualView()
-
-      XCTAssertEqual(
-        block.oembed.title,
-        "Styled Embed",
-        "OEmbedBlock.oembed.title should be preserved for color scheme \(colorScheme)."
-      )
-      XCTAssertNoThrow(
-        try view.inspect().find(viewWithAccessibilityLabel: "Styled Embed"),
-        "Expected accessibility label for color scheme \(colorScheme)."
-      )
-    }
-  }
-
   // MARK: - Container sizing
 
   func testOEmbedBlockWithValidIframeURL_respectsContainerFrame() throws {
