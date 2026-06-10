@@ -54,7 +54,7 @@ private struct OEmbedWebView: UIViewRepresentable {
   var onWebViewCreated: ((WKWebView) -> Void)?
 
   /// Referrer sent with embed requests so providers can validate the source domain.
-  static let referrer = "https://www.kickstarter.com"
+  @Environment(\.referrer) var referrer: URL
 
   func makeCoordinator() -> Coordinator {
     Coordinator()
@@ -85,7 +85,7 @@ private struct OEmbedWebView: UIViewRepresentable {
     context.coordinator.loadedURL = self.url
 
     var request = URLRequest(url: self.url)
-    request.setValue(Self.referrer, forHTTPHeaderField: "Referer")
+    request.setValue(self.referrer.absoluteString, forHTTPHeaderField: "Referer")
     webView.load(request)
   }
 }
@@ -114,4 +114,8 @@ extension OEmbedWebView {
       return nil
     }
   }
+}
+
+extension EnvironmentValues {
+  @Entry var referrer: URL = URL(string: "https://www.kickstarter.com/")!
 }
