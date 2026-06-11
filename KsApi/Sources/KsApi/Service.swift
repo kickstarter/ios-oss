@@ -636,7 +636,7 @@ public struct Service: ServiceType {
   public func fetchProjectRewards(
     projectId: Int,
     sortedForShippingCountryCode code: String?,
-    withNoReward noRewardSortType: NoRewardSortType
+    withNoReward inserter: NoRewardInserter
   ) -> SignalProducer<[Reward], ErrorEnvelope> {
     let graphCountryCode: GraphAPI.CountryCode?
     if let code {
@@ -655,7 +655,7 @@ public struct Service: ServiceType {
     return GraphQL.shared.client
       .fetch(query: query)
       .map { results in
-        Project.projectRewards(from: results, withNoReward: noRewardSortType)
+        Project.projectRewards(from: results, withNoReward: inserter)
       }
   }
 

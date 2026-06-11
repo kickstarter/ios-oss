@@ -3,9 +3,15 @@ import GraphAPI
 import Prelude
 import ReactiveSwift
 
-public enum NoRewardSortType {
-  case first
-  case last
+/// A protocol that defines how we want to insert the `No Reward` into the overall rewards list.
+///
+/// The project rewards fetched by `FetchSortedProjectRewardsByIdQuery` are sorted on the backend -
+/// but 'No Reward' is inserted by the frontend.
+///
+/// This is pulled out into its own protocol so that we can implement more complex sort behavior, including context that
+/// KsApi doesn't necessarily have.
+public protocol NoRewardInserter {
+  func insert(noReward: Reward, intoRewards: [Reward]) -> [Reward]
 }
 
 extension Project {
@@ -19,7 +25,7 @@ extension Project {
 
   static func projectRewards(
     from data: GraphAPI.FetchSortedProjectRewardsByIdQuery.Data,
-    withNoReward noRewardSortType: NoRewardSortType
+    withNoReward inserter: NoRewardInserter
   ) -> [Reward] {
     guard let project = data.project else {
       return []
@@ -39,13 +45,7 @@ extension Project {
       } ?? []
 
     let noReward = Reward.noRewardReward(from: project.fragments.noRewardRewardFragment)
-
-    switch noRewardSortType {
-    case .first:
-      return [noReward] + projectRewards
-    case .last:
-      return projectRewards + [noReward]
-    }
+    return inserter.insert(noReward: noReward, intoRewards: projectRewards)
   }
 
   static func projectRewards(from data: GraphAPI.FetchProjectRewardsByIdQuery.Data) -> [Reward] {

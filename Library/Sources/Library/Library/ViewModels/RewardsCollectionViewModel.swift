@@ -92,7 +92,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
           .fetchProjectRewards(
             projectId: project.id,
             sortedForShippingCountryCode: location,
-            withNoReward: .first
+            withNoReward: NoRewardFirst()
           )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
