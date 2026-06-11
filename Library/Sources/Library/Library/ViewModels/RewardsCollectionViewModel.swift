@@ -1,3 +1,4 @@
+import Experimentation
 import KsApi
 import Prelude
 import ReactiveSwift
@@ -68,38 +69,32 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       .takeWhen(self.viewDidLoadProperty.signal)
       .map(titleForContext)
 
-    // The actual selected shipping location.
+    // The selected shipping location.
     // Can be nil if the project has no shippable rewards.
-    let selectedShippingLocation: Signal<Location?, Never> = self.shippingLocationSelectedSignal
-
-    // The country to which we should filter the rewards.
     // TODO: If we passed in ShippableCountries to the location selector, we could call this faster.
-    let filterCountry: Signal<String?, Never> = self.shippingLocationSelectedSignal
+    let selectedShippingLocation: Signal<Location?, Never> = self.shippingLocationSelectedSignal
       .signal
-      .map { $0?.country }
       .skipRepeats()
 
     let isLoadingProperty = MutableProperty(true)
 
     // Fetch the sorted rewards when a shipping country code is selected
     let fetchedRewards = project
-      .combineLatest(with: filterCountry)
+      .combineLatest(with: selectedShippingLocation)
       .on(value: { _ in
         isLoadingProperty.value = true
       })
       .flatMap { project, location in
-        AppEnvironment.current.apiService
-          .fetchProjectRewards(
-            projectId: project.id,
-            sortedForShippingCountryCode: location,
-            withNoReward: NoRewardFirst()
-          )
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-          .values()
-          .on(completed: {
-            isLoadingProperty.value = false
-          })
+        fetchRewards(
+          forProject: project,
+          sortedForShippingLocation: location
+        )
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
+        .values()
+        .on(completed: {
+          isLoadingProperty.value = false
+        })
       }
       .map(filteredRewards)
 
@@ -590,4 +585,36 @@ private extension Signal where Error == Never {
       .filter { _, test in test == true }
       .map { value, _ in value }
   }
+}
+
+private func shouldMoveNoRewardCard() -> Bool {
+  let experiment = MoveNoRewardOptionExperiment()
+  guard let shouldMove = experiment.boolValue(forKey: .show_no_reward_after_available_rewards) else {
+    return false
+  }
+
+  return shouldMove
+}
+
+private func fetchRewards(
+  forProject project: Project,
+  sortedForShippingLocation location: Location?
+) -> SignalProducer<[Reward], ErrorEnvelope> {
+  let inserter: NoRewardInserter
+
+  if shouldMoveNoRewardCard() {
+    inserter = NoRewardAfterLastAvailableReward(
+      shippingLocation: location,
+      project: project
+    )
+  } else {
+    inserter = NoRewardFirst()
+  }
+
+  return AppEnvironment.current.apiService
+    .fetchProjectRewards(
+      projectId: project.id,
+      sortedForShippingCountryCode: location?.country,
+      withNoReward: inserter
+    )
 }
