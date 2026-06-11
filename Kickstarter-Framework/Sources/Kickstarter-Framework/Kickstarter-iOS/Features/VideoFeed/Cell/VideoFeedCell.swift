@@ -21,13 +21,6 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   private enum Constants {
     static let toastHorizontalPadding: CGFloat = 16
     static let toastTopGap: CGFloat = 8
-    static let toastSpacing: CGFloat = 8
-    static let toastSlideInOffset: CGFloat = 80
-    static let toastSlideInDuration: Double = 0.35
-    static let toastSlideInDamping: CGFloat = 0.8
-    static let toastSlideInVelocity: CGFloat = 0.5
-    static let toastFadeOutDuration: Double = 0.2
-    static let saveErrorToastAutoDismissDelay: Double = 3.0
   }
 
   var onCloseTapped: (() -> Void)?
@@ -46,10 +39,11 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   private let videoPlayer: VideoFeedVideoPlayer
   private let videoPlayerView = VideoFeedPlayerView()
 
-  private var activeToasts: [UIView] = []
-  private weak var videoErrorToastView: UIView?
-  private weak var currentSaveErrorToastView: UIView?
-  private var currentSaveErrorToastDismissWorkItem: DispatchWorkItem?
+  private lazy var toastContainerController: UIHostingController<VideoFeedToastContainerView> = {
+    let controller = UIHostingController(rootView: VideoFeedToastContainerView())
+    controller.view.backgroundColor = .clear
+    return controller
+  }()
 
   // MARK: - Lifecycle
 
@@ -70,6 +64,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.setupVideoPlayerView()
     self.setupVideoPlayerCallbacks()
     self.setupTapGesture()
+    self.setupToastContainer()
   }
 
   @available(*, unavailable)
@@ -144,147 +139,36 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.videoPlayer.play()
   }
 
-  // MARK: - Toast Layout
-
-  private var toastOriginY: CGFloat {
-    VideoFeedOverlayView.topSafeAreaPadding + VideoFeedOverlayView.closeButtonSize + Constants.toastTopGap
-  }
-
-  private var toastWidth: CGFloat {
-    bounds.width - Constants.toastHorizontalPadding * 2
-  }
-
-  private func height(for toastView: UIView) -> CGFloat {
-    toastView.systemLayoutSizeFitting(
-      CGSize(width: self.toastWidth, height: UIView.layoutFittingCompressedSize.height),
-      withHorizontalFittingPriority: .required,
-      verticalFittingPriority: .fittingSizeLevel
-    ).height
-  }
-
-  private func relayoutToasts() {
-    var nextToastOriginY = self.toastOriginY
-
-    for activeToastView in self.activeToasts {
-      let toastHeight = self.height(for: activeToastView)
-
-      activeToastView.frame = CGRect(
-        x: Constants.toastHorizontalPadding,
-        y: nextToastOriginY,
-        width: self.toastWidth,
-        height: toastHeight
-      )
-
-      nextToastOriginY += toastHeight + Constants.toastSpacing
-    }
-  }
-
   // MARK: - Toast View
 
   private func resetToasts() {
-    self.currentSaveErrorToastDismissWorkItem?.cancel()
-    self.currentSaveErrorToastDismissWorkItem = nil
-    self.currentSaveErrorToastView = nil
-    self.videoErrorToastView = nil
+    self.toastContainerController.rootView.videoErrorMessage = nil
+    self.toastContainerController.rootView.saveErrorMessage = nil
+    self.toastContainerController.rootView.onSaveErrorDismissed = nil
     self.playbackState.hasSaveFailed = false
-    self.activeToasts.forEach { $0.removeFromSuperview() }
-    self.activeToasts.removeAll()
-  }
-
-  /// Adds a toast to the top of the `activeToasts` stack, pushing any existing toasts down.
-  /// The toast slides in from above with a spring animation.
-  private func insertToast(_ toastView: UIView) {
-    /// Position off-screen above its final slot, ready to slide in
-    toastView.frame = CGRect(
-      x: Constants.toastHorizontalPadding,
-      y: self.toastOriginY,
-      width: self.toastWidth,
-      height: self.height(for: toastView)
-    )
-    toastView.alpha = 0
-    toastView.transform = CGAffineTransform(translationX: 0, y: -Constants.toastSlideInOffset)
-
-    self.addSubview(toastView)
-    self.activeToasts.insert(toastView, at: 0)
-
-    /// Slide in the new toast and push any existing toasts down to make room
-    UIView.animate(
-      withDuration: Constants.toastSlideInDuration,
-      delay: 0,
-      usingSpringWithDamping: Constants.toastSlideInDamping,
-      initialSpringVelocity: Constants.toastSlideInVelocity
-    ) {
-      toastView.alpha = 1
-      toastView.transform = .identity
-
-      self.relayoutToasts()
-    }
   }
 
   // MARK: - Video Error Toast
 
   private func showVideoErrorToast() {
-    let host = UIHostingController(rootView: VideoFeedToastView(message: Strings.Couldnt_load_video()))
-    host.view.backgroundColor = .clear
-
-    self.videoErrorToastView = host.view
-    self.insertToast(host.view)
+    self.toastContainerController.rootView.videoErrorMessage = Strings.Couldnt_load_video()
   }
 
   // MARK: - Save Error Toast
 
   func showSaveErrorToast() {
     self.playbackState.hasSaveFailed = true
+    self.toastContainerController.rootView.saveErrorMessage = Strings.Something_went_wrong_please_try_again()
 
-    if let visibleSaveToast = self.currentSaveErrorToastView {
-      self.scheduleSaveErrorToastDismissal(for: visibleSaveToast)
-      return
-    }
+    self.toastContainerController.rootView.onSaveErrorDismissed = { [weak self] in
+      guard let self else { return }
 
-    let host = UIHostingController(
-      rootView: VideoFeedToastView(message: Strings.Something_went_wrong_please_try_again())
-    )
-    host.view.backgroundColor = .clear
+      self.toastContainerController.rootView.saveErrorMessage = nil
 
-    let toastView = host.view!
-    self.currentSaveErrorToastView = toastView
-    self.insertToast(toastView)
-    self.scheduleSaveErrorToastDismissal(for: toastView)
-  }
-
-  private func scheduleSaveErrorToastDismissal(for toastView: UIView) {
-    self.currentSaveErrorToastDismissWorkItem?.cancel()
-
-    let work = DispatchWorkItem { [weak self, weak toastView] in
-      guard let self, let toastView else { return }
-
-      self.dismissSaveErrorToast(toastView)
-    }
-
-    self.currentSaveErrorToastDismissWorkItem = work
-
-    DispatchQueue.main.asyncAfter(deadline: .now() + Constants.saveErrorToastAutoDismissDelay, execute: work)
-  }
-
-  private func dismissSaveErrorToast(_ toastView: UIView) {
-    UIView.animate(
-      withDuration: Constants.toastFadeOutDuration,
-      animations: { toastView.alpha = 0 },
-      completion: { _ in
-        toastView.removeFromSuperview()
-        self.activeToasts.removeAll { $0 === toastView }
-        self.currentSaveErrorToastView = nil
-        self.currentSaveErrorToastDismissWorkItem = nil
-
-        UIView.animate(withDuration: Constants.toastSlideInDuration) {
-          self.relayoutToasts()
-        }
-
-        if self.videoErrorToastView?.superview == nil {
-          self.playbackState.hasSaveFailed = false
-        }
+      if self.toastContainerController.rootView.videoErrorMessage == nil {
+        self.playbackState.hasSaveFailed = false
       }
-    )
+    }
   }
 
   // MARK: - Video Player View Setup
@@ -294,6 +178,26 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.videoPlayerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     self.videoPlayerView.setPlayer(self.videoPlayer.player)
     self.insertSubview(self.videoPlayerView, belowSubview: self.contentView)
+  }
+
+  private func setupToastContainer() {
+    self.addSubview(self.toastContainerController.view)
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    /// Position the container just below the close button and inset from the cell edges.
+    let toastOriginY = VideoFeedOverlayView.topSafeAreaPadding + VideoFeedOverlayView
+      .closeButtonSize + Constants.toastTopGap
+    let toastWidth = self.bounds.width - Constants.toastHorizontalPadding * 2
+
+    self.toastContainerController.view.frame = CGRect(
+      x: Constants.toastHorizontalPadding,
+      y: toastOriginY,
+      width: toastWidth,
+      height: 200
+    )
   }
 
   private func setupVideoPlayerCallbacks() {
