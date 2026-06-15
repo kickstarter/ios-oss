@@ -17,6 +17,10 @@ public final class MockStatsigWrapper: StatsigClientType {
 
   public func showDebugger() {}
 
+  public func stableID() -> String? {
+    return nil
+  }
+
   public func checkGate(for feature: StatsigFeature) -> Bool? {
     self.features[feature]
   }

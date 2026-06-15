@@ -55,9 +55,15 @@ public final class StatsigWrapper: StatsigClientType {
     self.client.openDebugView()
   }
 
+  /// Returns the Statsig SDK generated stableID as soon as the SDK is initialized.
+  public func stableID() -> String? {
+    return self.client.getStableID()
+  }
+
   public func reload(withUser user: StatsigClientUser) {
-    let user = StatsigUser.from(user)
-    self.client.updateUserWithResult(user) { error in
+    let statsigUser = StatsigUser.from(user, stableID: self.client.getStableID())
+
+    self.client.updateUserWithResult(statsigUser) { error in
       if let error {
         debugPrint("Statsig reload error: \(error.localizedDescription)")
       } else {
@@ -96,14 +102,25 @@ public final class StatsigWrapper: StatsigClientType {
 }
 
 private extension StatsigUser {
-  /// Create a `StatsigUser` (Statsig's model object) from a `StatsigClientUser` (our model object)
-  static func from(_ clientUser: StatsigClientUser) -> StatsigUser {
+  /// Create a `StatsigUser` (Statsig's model object) from a `StatsigClientUser` (our model object).
+  ///
+  /// - Parameter stableID: The device ID  from `StatsigClient.getStableID()`.
+  ///   Passed in so the gate always has something to evaluate against, even before
+  ///   the user is logged in or Segment has loaded. Gates using this should be set
+  ///   to Stable ID in the Statsig console.
+  static func from(_ clientUser: StatsigClientUser, stableID: String? = nil) -> StatsigUser {
     let ksrStringId = clientUser.ksrUserId != nil ? String(clientUser.ksrUserId!) : nil
 
-    if let segmentId = clientUser.segmentAnonymousId {
-      return StatsigUser(userID: ksrStringId, customIDs: ["segmentAnonymousID": segmentId])
-    } else {
-      return StatsigUser(userID: ksrStringId)
+    var customIDs: [String: String] = [:]
+
+    if let stableID = stableID ?? clientUser.stableId {
+      customIDs["stableID"] = stableID
     }
+
+    if let segmentId = clientUser.segmentAnonymousId {
+      customIDs["segmentAnonymousID"] = segmentId
+    }
+
+    return StatsigUser(userID: ksrStringId, customIDs: customIDs.isEmpty ? nil : customIDs)
   }
 }

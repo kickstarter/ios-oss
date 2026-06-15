@@ -8,7 +8,8 @@ public extension Environment {
 
     let statsigUser = StatsigClientUser(
       ksrUserId: user?.id,
-      segmentAnonymousId: self.ksrAnalytics.anonymousId
+      segmentAnonymousId: self.ksrAnalytics.anonymousId,
+      stableId: self.statsigClient?.stableID()
     )
 
     self.statsigClient?.reload(withUser: statsigUser)
@@ -17,7 +18,8 @@ public extension Environment {
   func statsigUser() -> StatsigClientUser {
     StatsigClientUser(
       ksrUserId: self.currentUser?.id,
-      segmentAnonymousId: self.ksrAnalytics.anonymousId
+      segmentAnonymousId: self.ksrAnalytics.anonymousId,
+      stableId: self.statsigClient?.stableID()
     )
   }
 }

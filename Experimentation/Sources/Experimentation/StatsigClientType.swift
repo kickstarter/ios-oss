@@ -4,10 +4,12 @@ import Foundation
 public struct StatsigClientUser {
   let ksrUserId: Int?
   let segmentAnonymousId: String?
+  let stableId: String?
 
-  public init(ksrUserId: Int?, segmentAnonymousId: String?) {
+  public init(ksrUserId: Int?, segmentAnonymousId: String?, stableId: String? = nil) {
     self.ksrUserId = ksrUserId
     self.segmentAnonymousId = segmentAnonymousId
+    self.stableId = stableId
   }
 }
 
@@ -27,6 +29,9 @@ public protocol StatsigClientType: AnyObject {
   /// Returns a boolean value from an experiment.
   /// May return `nil` if the experiment or key are invalid.
   func boolValue<T: StatsigExperimentProtocol>(forKey key: T.Parameters, inExperiment experiment: T) -> Bool?
+
+  /// Returns the Statsig SDK generated stable device ID.
+  func stableID() -> String?
 
   // Statsig supports Bool, Int, String and even Object parameters for experiments.
   // When and if we need them, we can expand this implementation to support more types.
