@@ -13,7 +13,8 @@ protocol DiscoveryPageViewControllerDelegate: AnyObject {
 }
 
 internal final class DiscoveryPageViewController: UITableViewController,
-  MessageBannerViewControllerPresenting {
+  MessageBannerViewControllerPresenting,
+  VideoFeedBannerPresenting {
   fileprivate let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
 
@@ -28,7 +29,7 @@ internal final class DiscoveryPageViewController: UITableViewController,
   internal var messageBannerViewController: MessageBannerViewController?
 
   /// Holds a ref to the VideoFeedViewController while its data loads.
-  private var pendingVideoFeedVC: VideoFeedViewController?
+  var pendingVideoFeedVC: VideoFeedViewController?
 
   internal static func configuredWith(sort: DiscoveryParams.Sort) -> DiscoveryPageViewController {
     let vc = Storyboard.DiscoveryPage.instantiate(DiscoveryPageViewController.self)
@@ -431,40 +432,7 @@ internal final class DiscoveryPageViewController: UITableViewController,
 
 extension DiscoveryPageViewController: VideoFeedBannerCellDelegate {
   func videoFeedBannerCellDidTapTryItNow(_ cell: VideoFeedBannerCell) {
-    guard self.pendingVideoFeedVC == nil else { return }
-
-    cell.setLoading(true)
-
-    let feedVC = VideoFeedViewController()
-
-    self.pendingVideoFeedVC = feedVC
-
-    feedVC.loadViewIfNeeded()
-
-    feedVC.onReadyToPresent = { [weak self, weak cell, weak feedVC] in
-      guard let self, let feedVC else { return }
-
-      self.pendingVideoFeedVC = nil
-      cell?.setLoading(false)
-
-      let nav = UINavigationController(rootViewController: feedVC)
-      nav.modalPresentationStyle = .fullScreen
-
-      let presenter = self.view.window?.rootViewController ?? self
-      presenter.present(nav, animated: true)
-    }
-
-    feedVC.onFetchFailed = { [weak self, weak cell] in
-      guard let self else { return }
-
-      self.pendingVideoFeedVC = nil
-      cell?.setLoading(false)
-
-      self.messageBannerViewController?.showBanner(
-        with: .error,
-        message: Strings.Something_went_wrong_please_try_again()
-      )
-    }
+    self.presentVideoFeed(from: cell)
   }
 }
 
