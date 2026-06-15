@@ -120,4 +120,22 @@ final class StatsigWrapperTests: XCTestCase {
 
     XCTAssertEqual(client.boolValue(forKey: .test_parameter, inExperiment: experiment), true)
   }
+
+  func testClient_includesStableID_inUserCustomIDs() {
+    let expectation = XCTestExpectation(description: "Waiting for Statsig")
+    let statsig = StatsigClient(sdkKey: "fake", options: StatsigOptions(initializeOffline: true)) { _ in
+      expectation.fulfill()
+    }
+
+    self.wait(for: [expectation])
+
+    let client = StatsigWrapper(client: statsig)
+    XCTAssertNotNil(client.stableID(), "stableID should not be nil after initialization")
+
+    /// Reload with a user that has no login or segment ID yet
+    let user = StatsigClientUser(ksrUserId: nil, segmentAnonymousId: nil, stableId: client.stableID())
+    client.reload(withUser: user)
+
+    XCTAssertNotNil(client.stableID(), "stableID should persist after reload")
+  }
 }
