@@ -8,6 +8,7 @@ public protocol VideoFeedViewModelType: AnyObject {
   var items: [VideoFeedItem] { get }
   var fetchedItems: [VideoFeedItem] { get }
   var loginIntent: LoginIntent? { get }
+  var isInitialLoadComplete: Bool { get }
   func viewDidLoad()
   func viewWillAppear()
   func toggleSaved(for item: VideoFeedItem)
@@ -30,6 +31,7 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
   public private(set) var isLoading = false
   public private(set) var errorMessage: String?
   public private(set) var loginIntent: LoginIntent? = nil
+  public private(set) var isInitialLoadComplete: Bool = false
 
   /// Tracks in-flight watch/unwatch requests.
   private var pendingWatchRequests: [String: Disposable] = [:]
@@ -41,7 +43,7 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
   // MARK: - Inputs
 
   public func viewDidLoad() {
-    Task {
+    Task { @MainActor in
       await self.fetchVideoFeed()
     }
   }
@@ -122,6 +124,7 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
     self.loginIntent = .videoFeed
   }
 
+  @MainActor
   func fetchVideoFeed() async {
     guard !self.isLoading else { return }
 
@@ -135,6 +138,15 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
 
       let nodes = result?.videoFeed?.nodes?.compactMap { $0 } ?? []
 
+      guard !nodes.isEmpty else {
+        self.isLoading = false
+        self.errorMessage = Strings.Something_went_wrong_please_try_again()
+        return
+      }
+
+      /// Set isInitialLoadComplete before fetchedItems so the fetchedItems observer
+      /// sees the correct value when it fires.
+      self.isInitialLoadComplete = true
       self.fetchedItems = nodes.map(VideoFeedItem.init)
       self.items = self.fetchedItems
       self.isLoading = false

@@ -22,6 +22,12 @@ final class VideoFeedViewController: UIViewController {
   private var lifecycleObservers: [any NSObjectProtocol] = []
   private var previewImagePrefetcher: ImagePrefetcher?
 
+  /// Called once the first batch of items has loaded and the feed is ready to present.
+  var onReadyToPresent: (() -> Void)?
+
+  /// Called if the initial fetch fails.
+  var onFetchFailed: (() -> Void)?
+
   private lazy var collectionView: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
     layout.scrollDirection = .vertical
@@ -41,8 +47,11 @@ final class VideoFeedViewController: UIViewController {
 
     self.setupCollectionView()
     self.bindViewModel()
+  }
 
+  func startFetch() {
     self.viewModel.viewDidLoad()
+    self.bindViewModel()
   }
 
   deinit {
@@ -55,7 +64,6 @@ final class VideoFeedViewController: UIViewController {
     /// Presenting a fullscreen modal nudges the contentOffset.
     /// This is a side effect of UIKit re-measuring UIHostingConfiguration cells when presenting views.
     /// This method snaps the collection view cell back into place once the layout has settled.
-
     self.snapToCurrentPage()
   }
 
@@ -106,7 +114,26 @@ final class VideoFeedViewController: UIViewController {
     } onChange: { [weak self] in
       DispatchQueue.main.async { [weak self] in
         guard let self else { return }
+
         self.updateFeedWithFetchedItems(self.viewModel.items)
+
+        /// isInitialLoadComplete is set before fetchedItems in the VM, so it's
+        /// guaranteed to be true here on the first successful fetch.
+        if self.viewModel.isInitialLoadComplete {
+          self.onReadyToPresent?()
+        }
+
+        self.bindViewModel()
+      }
+    }
+
+    withObservationTracking {
+      _ = self.viewModel.errorMessage
+    } onChange: { [weak self] in
+      DispatchQueue.main.async { [weak self] in
+        guard let self, self.viewModel.errorMessage != nil else { return }
+
+        self.onFetchFailed?()
         self.bindViewModel()
       }
     }

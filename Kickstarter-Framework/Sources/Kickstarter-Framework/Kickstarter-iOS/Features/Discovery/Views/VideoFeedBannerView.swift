@@ -24,6 +24,8 @@ internal struct VideoFeedBannerView: View {
 
   internal var onTryItNowTapped: (() -> Void)?
 
+  @Bindable var state: VideoFeedBannerViewState
+
   var body: some View {
     HStack(alignment: .center, spacing: Constants.rootStackSpacing) {
       VStack(alignment: .leading, spacing: Constants.textStackSpacing) {
@@ -38,13 +40,30 @@ internal struct VideoFeedBannerView: View {
         Button {
           self.onTryItNowTapped?()
         } label: {
+          /// ProgressView has no intrinsic size, so we use the label as the layout anchor
+          /// and swap the visible content on top via overlay.
+          /// Without this the ProgressView's lack of intrinsic size causes the animation to stutter.
           Text(Strings.try_it_now())
             .font(Font(UIFont.ksr_bodyMD()))
-            .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
+            .hidden()
             .padding(Constants.ctaContentInsets)
             .background(Color.white)
             .cornerRadius(Constants.ctaCornerRadius)
+            .overlay {
+              if self.state.isLoading {
+                ProgressView()
+                  .progressViewStyle(.circular)
+                  .tint(Color(Colors.Icon.dark.uiColor()))
+                  .transition(.opacity.combined(with: .scale(scale: 0.8)))
+              } else {
+                Text(Strings.try_it_now())
+                  .font(Font(UIFont.ksr_bodyMD()))
+                  .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
+                  .transition(.opacity.combined(with: .scale(scale: 0.8)))
+              }
+            }
         }
+        .disabled(self.state.isLoading)
         .accessibilityLabel(Strings.try_it_now())
       }
 

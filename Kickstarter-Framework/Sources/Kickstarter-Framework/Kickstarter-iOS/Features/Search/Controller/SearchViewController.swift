@@ -13,7 +13,9 @@ private enum Constants {
   static let searchBarHeight = Styles.grid(8)
 }
 
-internal final class SearchViewController: UITableViewController {
+internal final class SearchViewController: UITableViewController,
+  MessageBannerViewControllerPresenting,
+  VideoFeedBannerPresenting {
   internal let viewModel: SearchViewModelType = SearchViewModel()
   internal let dataSource = SearchDataSource()
 
@@ -26,6 +28,11 @@ internal final class SearchViewController: UITableViewController {
   private let searchLoaderIndicator = UIActivityIndicatorView()
   private var sortAndFilterHeader: UIViewController?
 
+  internal var messageBannerViewController: MessageBannerViewController?
+
+  /// Holds a ref to the VideoFeedViewController while its data loads.
+  var pendingVideoFeedVC: VideoFeedViewController?
+
   private var searchBarWidth: CGFloat {
     return self.view.bounds.width * Constants.searchBarWidthFactor
   }
@@ -36,6 +43,8 @@ internal final class SearchViewController: UITableViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.configureSubviews()
     self.setupConstraints()
@@ -53,7 +62,6 @@ internal final class SearchViewController: UITableViewController {
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: Constants.estimatedRowHeight)
 
-    // Hides the bottom border (shadow) of the navigation bar to visually give the search bar more space
     self.navigationController?.navigationBar.standardAppearance.shadowColor = .clear
     self.navigationController?.navigationBar.scrollEdgeAppearance?.shadowColor = .clear
 
@@ -121,12 +129,10 @@ internal final class SearchViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] type in
         if type == .sort {
-          // Sort is a special case modal, not part of the root filter view.
           self?.showSort()
           return
         }
 
-        // All other filters go to the same modal.
         self?.showFilters(filterType: type)
       }
   }
@@ -177,7 +183,6 @@ internal final class SearchViewController: UITableViewController {
       self.searchBar.bottomAnchor.constraint(equalTo: self.searchBarContainerView.bottomAnchor)
     ])
 
-    // Set initial width based on current view bounds; updated later in `bindStyles` if needed
     self.searchBarWidthConstraint = self.searchBar.widthAnchor
       .constraint(equalToConstant: self.searchBarWidth)
 
@@ -304,11 +309,7 @@ extension SearchViewController: SearchEmptyStateCellDelegate {
 // MARK: - VideoFeedBannerCellDelegate
 
 extension SearchViewController: VideoFeedBannerCellDelegate {
-  func videoFeedBannerCellDidTapTryItNow(_: VideoFeedBannerCell) {
-    let nav = UINavigationController(rootViewController: VideoFeedViewController())
-    nav.modalPresentationStyle = .fullScreen
-
-    let presenter = self.view.window?.rootViewController ?? self
-    presenter.present(nav, animated: true)
+  func videoFeedBannerCellDidTapTryItNow(_ cell: VideoFeedBannerCell) {
+    self.presentVideoFeed(from: cell)
   }
 }

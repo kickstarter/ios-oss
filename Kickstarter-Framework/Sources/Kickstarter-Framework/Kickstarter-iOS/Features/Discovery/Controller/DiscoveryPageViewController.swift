@@ -12,7 +12,9 @@ protocol DiscoveryPageViewControllerDelegate: AnyObject {
   )
 }
 
-internal final class DiscoveryPageViewController: UITableViewController {
+internal final class DiscoveryPageViewController: UITableViewController,
+  MessageBannerViewControllerPresenting,
+  VideoFeedBannerPresenting {
   fileprivate let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
 
@@ -24,6 +26,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate var emptyStatesController: EmptyStatesViewController?
   private lazy var headerLabel = { UILabel(frame: .zero) }()
 
+  internal var messageBannerViewController: MessageBannerViewController?
+
+  /// Holds a ref to the VideoFeedViewController while its data loads.
+  var pendingVideoFeedVC: VideoFeedViewController?
+
   internal static func configuredWith(sort: DiscoveryParams.Sort) -> DiscoveryPageViewController {
     let vc = Storyboard.DiscoveryPage.instantiate(DiscoveryPageViewController.self)
     vc.viewModel.inputs.configureWith(sort: sort)
@@ -32,6 +39,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.tableView.register(nib: Nib.DiscoveryPostcardCell)
     self.tableView.registerCellClass(PersonalizationCell.self)
@@ -419,13 +428,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
   }
 }
 
-extension DiscoveryPageViewController: VideoFeedBannerCellDelegate {
-  func videoFeedBannerCellDidTapTryItNow(_: VideoFeedBannerCell) {
-    let nav = UINavigationController(rootViewController: VideoFeedViewController())
-    nav.modalPresentationStyle = .fullScreen
+// MARK: - VideoFeedBannerCellDelegate
 
-    let presenter = self.view.window?.rootViewController ?? self
-    presenter.present(nav, animated: true)
+extension DiscoveryPageViewController: VideoFeedBannerCellDelegate {
+  func videoFeedBannerCellDidTapTryItNow(_ cell: VideoFeedBannerCell) {
+    self.presentVideoFeed(from: cell)
   }
 }
 
