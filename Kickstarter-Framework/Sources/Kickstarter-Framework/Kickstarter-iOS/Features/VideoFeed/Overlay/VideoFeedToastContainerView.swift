@@ -12,6 +12,10 @@ struct VideoFeedToastContainerView: View {
   var saveErrorMessage: String?
   var onSaveErrorDismissed: (() -> Void)?
 
+  var hasError: Bool {
+    self.videoErrorMessage != nil || self.saveErrorMessage != nil
+  }
+
   var body: some View {
     VStack(spacing: Constants.spacing) {
       if let message = self.saveErrorMessage {

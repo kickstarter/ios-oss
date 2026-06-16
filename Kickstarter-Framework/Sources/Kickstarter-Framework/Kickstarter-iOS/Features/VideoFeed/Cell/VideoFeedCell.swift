@@ -158,14 +158,15 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   func showSaveErrorToast() {
     self.playbackState.hasSaveFailed = true
-    self.toastContainerController.rootView.saveErrorMessage = Strings.Something_went_wrong_please_try_again()
+    self.toastContainerController.rootView.saveErrorMessage = Strings
+      .Something_went_wrong_please_try_again()
 
     self.toastContainerController.rootView.onSaveErrorDismissed = { [weak self] in
       guard let self else { return }
 
       self.toastContainerController.rootView.saveErrorMessage = nil
 
-      if self.toastContainerController.rootView.videoErrorMessage == nil {
+      if !self.toastContainerController.rootView.hasError {
         self.playbackState.hasSaveFailed = false
       }
     }
