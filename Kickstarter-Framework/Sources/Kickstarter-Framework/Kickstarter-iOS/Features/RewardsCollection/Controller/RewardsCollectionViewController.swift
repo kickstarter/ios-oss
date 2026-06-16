@@ -184,7 +184,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     self.viewModel.outputs.scrollToRewardIndexPath
       .observeForUI()
       .observeValues { [weak self] indexPath in
-        self?.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
+        self?.scrollToReward(atIndexPath: indexPath)
       }
 
     self.viewModel.outputs.goToAddOnSelection
@@ -246,6 +246,17 @@ final class RewardsCollectionViewController: UICollectionViewController {
   }
 
   // MARK: - Functions
+
+  private func scrollToReward(atIndexPath indexPath: IndexPath) {
+    let rewardCount = self.collectionView.numberOfItems(inSection: indexPath.section)
+
+    guard indexPath.row < rewardCount else {
+      assert(false, "scrollToReward(atIndexPath:) tried to scroll out-of-bounds.")
+      return
+    }
+
+    self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
+  }
 
   private func setupConstraints() {
     _ = self.collectionView
