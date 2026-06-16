@@ -40,7 +40,7 @@ final class VideoFeedViewControllerTests: TestCase {
         )
 
         cell.configureWith(
-          value: VideoFeedItem(
+          item: .constant(VideoFeedItem(
             id: "0",
             pid: 3,
             slug: "video_feed",
@@ -61,7 +61,7 @@ final class VideoFeedViewControllerTests: TestCase {
             sharesCount: 1,
             watchesCount: 50,
             percentFunded: 100
-          ),
+          )),
           isSaved: .constant(false)
         )
 
@@ -98,7 +98,7 @@ final class VideoFeedViewControllerTests: TestCase {
         )
 
         cell.configureWith(
-          value: VideoFeedItem(
+          item: .constant(VideoFeedItem(
             id: "0",
             pid: 3,
             slug: "video_feed",
@@ -119,7 +119,7 @@ final class VideoFeedViewControllerTests: TestCase {
             sharesCount: 1,
             watchesCount: 50,
             percentFunded: 42
-          ),
+          )),
           isSaved: .constant(true)
         )
 
@@ -158,7 +158,7 @@ final class VideoFeedViewControllerTests: TestCase {
         )
 
         cell.configureWith(
-          value: VideoFeedItem(
+          item: .constant(VideoFeedItem(
             id: "0",
             pid: 3,
             slug: "video_feed",
@@ -179,7 +179,7 @@ final class VideoFeedViewControllerTests: TestCase {
             sharesCount: 1,
             watchesCount: 50,
             percentFunded: 42
-          ),
+          )),
           isSaved: .constant(false)
         )
 
@@ -218,7 +218,7 @@ final class VideoFeedViewControllerTests: TestCase {
         )
 
         cell.configureWith(
-          value: VideoFeedItem(
+          item: .constant(VideoFeedItem(
             id: "0",
             pid: 3,
             slug: "video_feed",
@@ -239,7 +239,7 @@ final class VideoFeedViewControllerTests: TestCase {
             sharesCount: 1,
             watchesCount: 50,
             percentFunded: 42
-          ),
+          )),
           isSaved: .constant(false)
         )
 
@@ -280,7 +280,7 @@ final class VideoFeedViewControllerTests: TestCase {
         )
 
         cell.configureWith(
-          value: VideoFeedItem(
+          item: .constant(VideoFeedItem(
             id: "0",
             pid: 3,
             slug: "video_feed",
@@ -301,7 +301,7 @@ final class VideoFeedViewControllerTests: TestCase {
             sharesCount: 1,
             watchesCount: 50,
             percentFunded: 42
-          ),
+          )),
           isSaved: .constant(false)
         )
 

@@ -4,7 +4,7 @@ import Library
 import SwiftUI
 
 /// Full-screen SwiftUI Video Feed overlay.
-/// Takes a plain `VideoFeedItem`
+/// Takes a `Binding<VideoFeedItem>` so mutations to things like, watchesCount, re-render automatically.
 struct VideoFeedOverlayView: View {
   private enum Constants {
     static let topGradientOverlayOpacity: Double = 0.2
@@ -34,7 +34,8 @@ struct VideoFeedOverlayView: View {
   /// Owned by `VideoFeedViewModel`
   @Binding var isSaved: Bool
 
-  let item: VideoFeedItem
+  @Binding var item: VideoFeedItem
+
   let playbackState: VideoFeedPlaybackState
   let videoPlayer: VideoFeedVideoPlayer
 
@@ -64,7 +65,7 @@ struct VideoFeedOverlayView: View {
 
       VStack(alignment: .trailing, spacing: Constants.railBottomSpacing) {
         VideoFeedRightRailView(
-          item: self.item,
+          item: self.$item,
           isSaved: self.$isSaved,
           onCreatorTapped: self.onCreatorTapped,
           onShareTapped: self.onShareTapped,

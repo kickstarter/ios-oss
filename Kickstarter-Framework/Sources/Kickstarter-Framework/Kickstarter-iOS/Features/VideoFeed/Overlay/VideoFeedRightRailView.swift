@@ -17,7 +17,7 @@ struct VideoFeedRightRailView: View {
     static let avatarPlaceholderIcon = "avatar--placeholder"
   }
 
-  let item: VideoFeedItem
+  @Binding var item: VideoFeedItem
   @Binding var isSaved: Bool
 
   var onCreatorTapped: (() -> Void)?

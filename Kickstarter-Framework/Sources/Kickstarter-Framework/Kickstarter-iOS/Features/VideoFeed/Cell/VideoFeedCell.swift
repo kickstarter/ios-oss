@@ -92,15 +92,15 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   func configureWith(value _: VideoFeedItem) {}
 
   func configureWith(
-    value: VideoFeedItem,
+    item: Binding<VideoFeedItem>,
     isSaved: Binding<Bool>
   ) {
-    self.currentItemId = value.id
+    self.currentItemId = item.wrappedValue.id
 
     self.contentConfiguration = UIHostingConfiguration {
       VideoFeedOverlayView(
         isSaved: isSaved,
-        item: value,
+        item: item,
         playbackState: self.playbackState,
         videoPlayer: self.videoPlayer,
         onCloseTapped: { [weak self] in self?.onCloseTapped?() },

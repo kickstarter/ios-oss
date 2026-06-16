@@ -4,6 +4,7 @@ import KDS
 import Kingfisher
 import KsApi
 import Library
+import SwiftUI
 import UIKit
 
 /// Full-screen swipeable video feed.
@@ -173,6 +174,27 @@ final class VideoFeedViewController: UIViewController {
     self.collectionView.reloadData()
   }
 
+  /// This re-runs `UIHostingConfiguration` on the currently active cell so the SwiftUI view can get any updated values that may have mutated when presenting a view on top of the feed.
+  /// (i.e. `watchesCount` and `isSaved` changes made in the Project Page).
+  private func reconfigureVisibleCell() {
+    guard let indexPath = self.collectionView.indexPathsForVisibleItems.first,
+          let cell = self.collectionView.cellForItem(at: indexPath) as? VideoFeedCell else { return }
+
+    let items = self.viewModel.items
+
+    guard indexPath.item < items.count else { return }
+
+    let item = items[indexPath.item]
+
+    cell.configureWith(
+      item: Binding(
+        get: { self.viewModel.items.first(where: { $0.id == item.id }) ?? item },
+        set: { _ in }
+      ),
+      isSaved: self.viewModel.isSaved(id: item.id)
+    )
+  }
+
   private func snapToCurrentPage() {
     let pageHeight = self.collectionView.bounds.height
 
@@ -306,7 +328,10 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     cell.onCTATapped = { [weak self] in self?.goToProjectPage(for: item) }
 
     cell.configureWith(
-      value: item,
+      item: Binding(
+        get: { self.viewModel.items.first(where: { $0.id == item.id }) ?? item },
+        set: { _ in }
+      ),
       isSaved: self.viewModel.isSaved(id: item.id)
     )
 
