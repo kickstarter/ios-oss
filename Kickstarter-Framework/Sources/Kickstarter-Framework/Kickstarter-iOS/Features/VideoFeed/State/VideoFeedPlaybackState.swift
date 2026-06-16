@@ -40,7 +40,6 @@ final class VideoFeedPlaybackState {
   /// Called by the video player once it is ready to play.
   func videoDidBecomeReady() {
     self.isVideoReady = true
-    self.videoPlayer?.play()
   }
 
   /// Called by the video player when the current video feed item fails to load or play.
