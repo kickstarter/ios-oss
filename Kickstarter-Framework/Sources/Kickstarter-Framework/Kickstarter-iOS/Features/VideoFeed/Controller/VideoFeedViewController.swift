@@ -47,8 +47,11 @@ final class VideoFeedViewController: UIViewController {
 
     self.setupCollectionView()
     self.bindViewModel()
+  }
 
+  func startFetch() {
     self.viewModel.viewDidLoad()
+    self.bindViewModel()
   }
 
   deinit {
@@ -112,17 +115,15 @@ final class VideoFeedViewController: UIViewController {
       DispatchQueue.main.async { [weak self] in
         guard let self else { return }
 
-        let items = self.viewModel.items
+        self.updateFeedWithFetchedItems(self.viewModel.items)
 
-        self.updateFeedWithFetchedItems(items)
-        self.bindViewModel()
-
-        if !items.isEmpty, let readyToPresent = self.onReadyToPresent {
-          self.onReadyToPresent = nil
-          self.onFetchFailed = nil
-
-          readyToPresent()
+        /// isInitialLoadComplete is set before fetchedItems in the VM, so it's
+        /// guaranteed to be true here on the first successful fetch.
+        if self.viewModel.isInitialLoadComplete {
+          self.onReadyToPresent?()
         }
+
+        self.bindViewModel()
       }
     }
 
@@ -132,14 +133,7 @@ final class VideoFeedViewController: UIViewController {
       DispatchQueue.main.async { [weak self] in
         guard let self, self.viewModel.errorMessage != nil else { return }
 
-        self.onReadyToPresent = nil
-
-        if let fetchFailed = self.onFetchFailed {
-          self.onFetchFailed = nil
-
-          fetchFailed()
-        }
-
+        self.onFetchFailed?()
         self.bindViewModel()
       }
     }

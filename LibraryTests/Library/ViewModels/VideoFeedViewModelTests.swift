@@ -57,7 +57,7 @@ final class VideoFeedViewModelTests: TestCase {
 
     XCTAssertTrue(self.vm.items.isEmpty)
     XCTAssertFalse(self.vm.isLoading)
-    XCTAssertNil(self.vm.errorMessage)
+    XCTAssertEqual(self.vm.errorMessage, Strings.Something_went_wrong_please_try_again())
   }
 
   func testViewDidLoad_Failure_SetsErrorMessage() async {
