@@ -587,7 +587,9 @@ private extension Signal where Error == Never {
   }
 }
 
-private func shouldMoveNoRewardCard() -> Bool {
+// MARK: Experiments
+
+private func shouldMoveNoReward_afterLastAvailableReward() -> Bool {
   let experiment = MoveNoRewardOptionExperiment()
   guard let shouldMove = experiment.boolValue(forKey: .show_no_reward_after_available_rewards) else {
     return false
@@ -602,7 +604,7 @@ private func fetchRewards(
 ) -> SignalProducer<[Reward], ErrorEnvelope> {
   let inserter: NoRewardInserter
 
-  if shouldMoveNoRewardCard() {
+  if shouldMoveNoReward_afterLastAvailableReward() {
     inserter = NoRewardAfterLastAvailableReward(
       shippingLocation: location,
       project: project
