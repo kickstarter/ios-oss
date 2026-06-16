@@ -114,14 +114,19 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   }
 
   func ctaTapped() {
-    self.pausePlayback()
+    self.playbackState.pause()
     self.onCTATapped?()
   }
 
   // MARK: - Video Playback
 
+  /// Buffers the video but does not start playback. Call `startPlayback()` once the cell is settled.
   func loadVideo(url: URL) {
     self.videoPlayer.load(url: url)
+  }
+
+  func startPlayback() {
+    self.videoPlayer.play()
   }
 
   func resetVideo() {

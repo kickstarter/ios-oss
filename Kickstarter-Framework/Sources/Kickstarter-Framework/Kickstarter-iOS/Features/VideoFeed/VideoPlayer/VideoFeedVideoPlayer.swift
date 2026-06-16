@@ -90,8 +90,6 @@ class VideoFeedVideoPlayer {
       }
     }
 
-    self.player.play()
-
     /// Fallback handler:
     /// if the item hasn't started playing after 3s, check if it failed and notify the UI.
     /// The `=== item` check guards against the cell being recycled before this fires.

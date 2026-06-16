@@ -9,7 +9,9 @@ import UIKit
 /// Full-screen swipeable video feed.
 ///   - Full-screen paging
 ///   - Plain data source driven by `VideoFeedViewModel`
-///   - Cells start loading video on `willDisplay` and reset on `didEndDisplaying`
+///   - Cells buffer video on `willDisplay` and reset on `didEndDisplaying`
+///   - Playback only starts once a cell is fully settled (scroll has ended)
+///   - Current cell audio plays until the next cell takes over
 ///   - Pauses video on background, resumes on foreground
 final class VideoFeedViewController: UIViewController {
   private enum Constants {
@@ -21,6 +23,7 @@ final class VideoFeedViewController: UIViewController {
 
   private var lifecycleObservers: [any NSObjectProtocol] = []
   private var previewImagePrefetcher: ImagePrefetcher?
+  private var isScrolling = false
 
   /// Called once the first batch of items has loaded and the feed is ready to present.
   var onReadyToPresent: (() -> Void)?
@@ -171,6 +174,10 @@ final class VideoFeedViewController: UIViewController {
   private func updateFeedWithFetchedItems(_ newItems: [VideoFeedItem]) {
     self.dataSource.load(newItems)
     self.collectionView.reloadData()
+
+    DispatchQueue.main.async {
+      self.activateCurrentPageCell()
+    }
   }
 
   private func snapToCurrentPage() {
@@ -283,7 +290,7 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     layout _: UICollectionViewLayout,
     sizeForItemAt _: IndexPath
   ) -> CGSize {
-    collectionView.bounds.size
+    CGSize(width: floor(collectionView.bounds.width), height: floor(collectionView.bounds.height))
   }
 
   func collectionView(
@@ -304,6 +311,13 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     cell.onShareTapped = { [weak self] in self?.simpleAlert(title: "Share") }
     cell.onMoreTapped = { [weak self] in self?.simpleAlert(title: "More") }
     cell.onCTATapped = { [weak self] in self?.goToProjectPage(for: item) }
+
+    cell.onVideoReady = { [weak self, weak cell] in
+      guard let self, let cell else { return }
+      /// Only start playback once scroll has fully settled.
+
+      cell.startPlayback()
+    }
 
     cell.configureWith(
       value: item,
@@ -340,6 +354,36 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     self.previewImagePrefetcher?.stop()
     self.previewImagePrefetcher = nil
     (cell as? VideoFeedCell)?.resetVideo()
+  }
+
+  // MARK: - Scroll based playback
+
+  func scrollViewWillBeginDragging(_: UIScrollView) {
+    self.isScrolling = true
+  }
+
+  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    guard !scrollView.isDragging else { return }
+
+    self.isScrolling = false
+    self.activateCurrentPageCell()
+  }
+
+  private func activateCurrentPageCell() {
+    let pageHeight = self.collectionView.bounds.height
+
+    guard pageHeight > 0 else { return }
+
+    let currentPage = Int(round(self.collectionView.contentOffset.y / pageHeight))
+    let activeIndexPath = IndexPath(item: currentPage, section: 0)
+
+    for cell in self.collectionView.visibleCells.compactMap({ $0 as? VideoFeedCell }) {
+      if self.collectionView.indexPath(for: cell) == activeIndexPath {
+        cell.startPlayback()
+      } else {
+        cell.pausePlayback()
+      }
+    }
   }
 
   // MARK: - Helpers
