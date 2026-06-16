@@ -63,7 +63,13 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
 
     for index in self.items.indices {
       if let id = decompose(id: self.items[index].projectId), let cached = cache[id] {
+        let wasSaved = self.items[index].isSaved
         self.items[index].isSaved = cached
+
+        /// Update the count if the save state changed on the project page.
+        if cached != wasSaved {
+          self.items[index].watchesCount += cached ? 1 : -1
+        }
       }
     }
   }
@@ -88,7 +94,7 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
 
   /// Toggles the watched state for a given project.
   /// Ignores taps while a request is already in flight.
-  /// Optimistically updates `isSaved`. Reverts on failure and triggers the save error toast.
+  /// Optimistically updates `isSaved` and `watchesCount` (Reverts both on failure).
   public func toggleSaved(for item: VideoFeedItem) {
     guard let index = self.items.firstIndex(where: { $0.id == item.id }) else { return }
     guard self.pendingWatchRequests[item.projectId] == nil else { return }
@@ -97,7 +103,13 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
     let wasSaved = self.items[index].isSaved
 
     /// Optimistic update.
-    self.items[index].isSaved = !wasSaved
+    if wasSaved {
+      self.items[index].isSaved = false
+      self.items[index].watchesCount -= 1
+    } else {
+      self.items[index].isSaved = true
+      self.items[index].watchesCount += 1
+    }
 
     let producer = wasSaved
       ? AppEnvironment.current.apiService.unwatchProject(input: .init(id: projectId))
