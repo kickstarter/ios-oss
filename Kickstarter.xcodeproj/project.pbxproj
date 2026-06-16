@@ -323,6 +323,7 @@
 		E19D49C72DB7F07A004A74D5 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		E1A310242D270CB00062646C /* (null) in Sources */ = {isa = PBXBuildFile; };
 		E1BAA03E2C1A1CE4004F8B06 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		E1BBB0482FDB0F3C0045D296 /* NoRewardInserterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BBB0472FDB0F320045D296 /* NoRewardInserterTests.swift */; };
 		E1BBB65E2E00724100291D48 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		E1DBB2372DAEBCE10050733F /* (null) in Sources */ = {isa = PBXBuildFile; };
 /* End PBXBuildFile section */
@@ -739,6 +740,7 @@
 		E190EB6E2E29944E006A6DB6 /* graphql-schema.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "graphql-schema.json"; sourceTree = "<group>"; };
 		E19C55F02F4CB84D00C768F6 /* NoRewardRewardFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = NoRewardRewardFragment.graphql; sourceTree = "<group>"; };
 		E1B33F502E538157008903BA /* GraphAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = GraphAPI; sourceTree = "<group>"; };
+		E1BBB0472FDB0F320045D296 /* NoRewardInserterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoRewardInserterTests.swift; sourceTree = "<group>"; };
 		E1D529FC2ED4D21A00923AA9 /* ShippableLocationsForProjectQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ShippableLocationsForProjectQuery.graphql; sourceTree = "<group>"; };
 		E1FD854E2F9A7FF50095DBDB /* Experimentation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Experimentation; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1122,6 +1124,7 @@
 				AAF548802F2445C0001DB5AC /* RewardCardViewModelTests.swift */,
 				AAF548812F2445C0001DB5AC /* RewardCellViewModelTests.swift */,
 				AAF548822F2445C0001DB5AC /* RewardsCollectionViewModelTests.swift */,
+				E1BBB0472FDB0F320045D296 /* NoRewardInserterTests.swift */,
 				AAF548832F2445C0001DB5AC /* RewardsUseCaseTests.swift */,
 				AAF548842F2445C0001DB5AC /* RewardTrackingActivitiesCellViewModelTest.swift */,
 				AAF548852F2445C0001DB5AC /* RewardTrackingDetailsViewModelTest.swift */,
@@ -1842,6 +1845,7 @@
 				AAF549732F2445C0001DB5AC /* SettingsRecommendationsCellViewModelTests.swift in Sources */,
 				AAF549742F2445C0001DB5AC /* ShareViewModelTests.swift in Sources */,
 				AAF549752F2445C0001DB5AC /* ShippingRulesViewModelTests.swift in Sources */,
+				E1BBB0482FDB0F3C0045D296 /* NoRewardInserterTests.swift in Sources */,
 				AAF549762F2445C0001DB5AC /* SortPagerViewModelTests.swift in Sources */,
 				AAF549772F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift in Sources */,
 				AAF549782F2445C0001DB5AC /* ThanksViewModelTests.swift in Sources */,

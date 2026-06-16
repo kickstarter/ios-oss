@@ -5,6 +5,24 @@ import GraphAPI
 import ReactiveSwift
 import XCTest
 
+private enum NoRewardSortType {
+  case first
+  case last
+}
+
+private struct TestNoRewardInserter: NoRewardInserter {
+  let sortType: NoRewardSortType
+
+  func insert(noReward: KsApi.Reward, intoRewards rewards: [KsApi.Reward]) -> [KsApi.Reward] {
+    switch self.sortType {
+    case .first:
+      return [noReward] + rewards
+    case .last:
+      return rewards + [noReward]
+    }
+  }
+}
+
 final class Project_FetchSortedProjectRewardsByIdQueryDataTests: XCTestCase {
   func testFetch_parsesRewards_andAddsNoRewardReward() {
     let dataUrl = Bundle.module.url(forResource: "FetchSortedProjectRewardsById", withExtension: "json")!
@@ -17,7 +35,7 @@ final class Project_FetchSortedProjectRewardsByIdQueryDataTests: XCTestCase {
       ])
     XCTAssertNotNil(data)
 
-    let rewards = Project.projectRewards(from: data, withNoReward: .first)
+    let rewards = Project.projectRewards(from: data, withNoReward: TestNoRewardInserter(sortType: .first))
 
     XCTAssertEqual(rewards.count, 2)
 
@@ -52,7 +70,7 @@ final class Project_FetchSortedProjectRewardsByIdQueryDataTests: XCTestCase {
       ])
     XCTAssertNotNil(data)
 
-    let rewards = Project.projectRewards(from: data, withNoReward: .last)
+    let rewards = Project.projectRewards(from: data, withNoReward: TestNoRewardInserter(sortType: .last))
 
     XCTAssertEqual(rewards.count, 2)
 
