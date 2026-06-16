@@ -7,7 +7,7 @@ import UIKit
 /// # Component Structure
 /// - `VideoFeedPlayerView` UIView backed by AVPlayerLayer, sits below the SwiftUI content view
 /// - `VideoFeedVideoPlayer` AVPlayer wrapper, exposes `onVideoReady` / `onVideoFailed` callbacks
-/// - `VideoFeedPlaybackState` observable UI state (isPlaying, isVideoReady, hasFailed)
+/// - `VideoFeedPlaybackState` observable UI state (isPlaying, isVideoReady, hasFailed, hasSaveFailed)
 /// - `VideoFeedOverlayView` SwiftUI overlay with gradients, right rail components, and bottom campaign info + CTA
 ///
 /// # Playback flow
@@ -21,10 +21,6 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   private enum Constants {
     static let toastHorizontalPadding: CGFloat = 16
     static let toastTopGap: CGFloat = 8
-    static let toastAnimationOffset: CGFloat = 80
-    static let toastAnimationDuration: Double = 0.15
-    static let toastAnimationDamping: CGFloat = 0.8
-    static let toastAnimationVelocity: CGFloat = 0.5
   }
 
   var onCloseTapped: (() -> Void)?
@@ -32,44 +28,43 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
   var onCTATapped: (() -> Void)?
-
   /// Called once the video is ready to play.
   var onVideoReady: (() -> Void)?
   /// Called when the video fails to load or play.
   var onVideoFailed: (() -> Void)?
 
+  private(set) var currentItemId: String?
+
   private let playbackState = VideoFeedPlaybackState()
   private let videoPlayer: VideoFeedVideoPlayer
   private let videoPlayerView = VideoFeedPlayerView()
-  private let errorToastHostingController = UIHostingController(
-    rootView: VideoFeedToastView(message: Strings.Couldnt_load_video())
-  )
+
+  private lazy var toastContainerController: UIHostingController<VideoFeedToastContainerView> = {
+    let controller = UIHostingController(rootView: VideoFeedToastContainerView())
+    controller.view.backgroundColor = .clear
+    return controller
+  }()
 
   // MARK: - Lifecycle
 
   override init(frame: CGRect) {
     self.videoPlayer = VideoFeedVideoPlayer()
-
     super.init(frame: frame)
-
     self.commonInit()
   }
 
   init(frame: CGRect, videoPlayer: VideoFeedVideoPlayer) {
     self.videoPlayer = videoPlayer
-
     super.init(frame: frame)
-
     self.commonInit()
   }
 
   private func commonInit() {
     self.playbackState.videoPlayer = self.videoPlayer
-
     self.setupVideoPlayerView()
-    self.setupErrorToastView()
     self.setupVideoPlayerCallbacks()
     self.setupTapGesture()
+    self.setupToastContainer()
   }
 
   @available(*, unavailable)
@@ -86,12 +81,10 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.onCTATapped = nil
     self.onVideoReady = nil
     self.onVideoFailed = nil
+    self.currentItemId = nil
+    self.resetToasts()
     self.playbackState.reset()
     self.videoPlayer.stop()
-
-    let toastView = self.errorToastHostingController.view!
-    toastView.alpha = 0
-    toastView.transform = .identity
   }
 
   // MARK: - Configuration
@@ -102,6 +95,8 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     value: VideoFeedItem,
     isSaved: Binding<Bool>
   ) {
+    self.currentItemId = value.id
+
     self.contentConfiguration = UIHostingConfiguration {
       VideoFeedOverlayView(
         isSaved: isSaved,
@@ -132,6 +127,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   func resetVideo() {
     self.videoPlayer.stop()
     self.playbackState.reset()
+    self.resetToasts()
   }
 
   func pausePlayback() {
@@ -140,49 +136,39 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   func resumePlayback() {
     guard self.playbackState.isPlaying else { return }
-
     self.videoPlayer.play()
   }
 
-  // MARK: - Error Toast
+  // MARK: - Toast View
 
-  private func setupErrorToastView() {
-    let toastView = self.errorToastHostingController.view!
-    toastView.backgroundColor = .clear
-    toastView.alpha = 0
-
-    addSubview(toastView)
+  private func resetToasts() {
+    self.toastContainerController.rootView.videoErrorMessage = nil
+    self.toastContainerController.rootView.saveErrorMessage = nil
+    self.toastContainerController.rootView.onSaveErrorDismissed = nil
+    self.playbackState.hasSaveFailed = false
   }
 
-  /// Slides the error toast in from above to below the close button.
-  private func showErrorToast() {
-    let safeAreaTop = self.window.map { $0.safeAreaInsets.top } ?? VideoFeedOverlayView.topSafeAreaPadding
-    let closeButtonBottom = safeAreaTop + VideoFeedOverlayView.closeButtonSize
+  // MARK: - Video Error Toast
 
-    let toastView = self.errorToastHostingController.view!
-    let toastWidth = bounds.width - Constants.toastHorizontalPadding * 2
-    let toastHeight = toastView.systemLayoutSizeFitting(
-      CGSize(width: toastWidth, height: UIView.layoutFittingCompressedSize.height),
-      withHorizontalFittingPriority: .required,
-      verticalFittingPriority: .fittingSizeLevel
-    ).height
+  private func showVideoErrorToast() {
+    self.toastContainerController.rootView.videoErrorMessage = Strings.Couldnt_load_video()
+  }
 
-    toastView.frame = CGRect(
-      x: Constants.toastHorizontalPadding,
-      y: closeButtonBottom + Constants.toastTopGap,
-      width: toastWidth,
-      height: toastHeight
-    )
-    toastView.transform = CGAffineTransform(translationX: 0, y: -Constants.toastAnimationOffset)
+  // MARK: - Save Error Toast
 
-    UIView.animate(
-      withDuration: Constants.toastAnimationDuration,
-      delay: 0,
-      usingSpringWithDamping: Constants.toastAnimationDamping,
-      initialSpringVelocity: Constants.toastAnimationVelocity
-    ) {
-      toastView.alpha = 1
-      toastView.transform = .identity
+  func showSaveErrorToast() {
+    self.playbackState.hasSaveFailed = true
+    self.toastContainerController.rootView.saveErrorMessage = Strings
+      .Something_went_wrong_please_try_again()
+
+    self.toastContainerController.rootView.onSaveErrorDismissed = { [weak self] in
+      guard let self else { return }
+
+      self.toastContainerController.rootView.saveErrorMessage = nil
+
+      if !self.toastContainerController.rootView.hasError {
+        self.playbackState.hasSaveFailed = false
+      }
     }
   }
 
@@ -192,34 +178,49 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.videoPlayerView.frame = self.bounds
     self.videoPlayerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     self.videoPlayerView.setPlayer(self.videoPlayer.player)
-    /// Sits under the SwiftUI overlay so the overlay's gradients/buttons render on top of it.
     self.insertSubview(self.videoPlayerView, belowSubview: self.contentView)
   }
 
-  /// Wires the player's ready/failed signals through to `self.playbackState`.
+  private func setupToastContainer() {
+    self.addSubview(self.toastContainerController.view)
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    /// Position the container just below the close button and inset from the cell edges.
+    let toastOriginY = VideoFeedOverlayView.topSafeAreaPadding + VideoFeedOverlayView
+      .closeButtonSize + Constants.toastTopGap
+    let toastWidth = self.bounds.width - Constants.toastHorizontalPadding * 2
+
+    self.toastContainerController.view.frame = CGRect(
+      x: Constants.toastHorizontalPadding,
+      y: toastOriginY,
+      width: toastWidth,
+      height: 200
+    )
+  }
+
   private func setupVideoPlayerCallbacks() {
     self.videoPlayer.onVideoReady = { [weak self] in
       guard let self else { return }
-
       self.playbackState.videoDidBecomeReady()
       self.onVideoReady?()
     }
 
     self.videoPlayer.onVideoFailed = { [weak self] in
       guard let self else { return }
-
       self.playbackState.videoDidFail()
-      self.showErrorToast()
+      self.showVideoErrorToast()
       self.onVideoFailed?()
     }
   }
 
-  // MARK: - Tap gesture
+  // MARK: - Tap Gesture
 
   private func setupTapGesture() {
     let tap = UITapGestureRecognizer(target: self, action: #selector(self.cellTapped))
     tap.cancelsTouchesInView = false
-
     self.addGestureRecognizer(tap)
   }
 

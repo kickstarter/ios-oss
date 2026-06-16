@@ -149,6 +149,22 @@ final class VideoFeedViewController: UIViewController {
         self.bindViewModel()
       }
     }
+
+    withObservationTracking {
+      _ = self.viewModel.saveFailedItemId
+    } onChange: { [weak self] in
+      DispatchQueue.main.async { [weak self] in
+        guard let self, let failedId = self.viewModel.saveFailedItemId else { return }
+
+        self.collectionView.visibleCells
+          .compactMap { $0 as? VideoFeedCell }
+          .first { $0.currentItemId == failedId }?
+          .showSaveErrorToast()
+
+        self.viewModel.clearSaveFailedItemId()
+        self.bindViewModel()
+      }
+    }
   }
 
   /// Reloads the collection view with a fresh set of fetched items.

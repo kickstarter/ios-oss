@@ -21,7 +21,7 @@ struct VideoFeedOverlayView: View {
     static let playButtonOffset: CGFloat = -45
     static let closeButtonSize: CGFloat = 44
     static let previewFadeDuration: Double = 0.3
-    /// Preview image opacity when the video has failed to load. and dims the BG to surface the label.
+    /// Preview image opacity when the video has failed to load or a save request has failed.
     static let failedPreviewOpacity: Double = 0.35
     /// Defining safe area values because `UIHostingConfiguration` returns 0 for safe area insets when in a collectionview.
     static let topSafeAreaPadding: CGFloat = 60
@@ -98,12 +98,7 @@ struct VideoFeedOverlayView: View {
           .resizable()
           .scaledToFill()
           .ignoresSafeArea()
-          /// Dimmed opacity if the video player errors on load. This will be updated when proper error handling UI is implemented.
-          .opacity(
-            self.playbackState.isVideoReady
-              ? 0
-              : (self.playbackState.hasFailed ? Constants.failedPreviewOpacity : 1)
-          )
+          .opacity(self.previewImageOpacity)
           .animation(
             .easeInOut(duration: Constants.previewFadeDuration),
             value: self.playbackState.isVideoReady
@@ -112,10 +107,24 @@ struct VideoFeedOverlayView: View {
             .easeInOut(duration: Constants.previewFadeDuration),
             value: self.playbackState.hasFailed
           )
+          .animation(
+            .easeInOut(duration: Constants.previewFadeDuration),
+            value: self.playbackState.hasSaveFailed
+          )
           .accessibilityHidden(true)
       }
     }
     .ignoresSafeArea()
+  }
+
+  private var previewImageOpacity: Double {
+    if self.playbackState.isVideoReady {
+      return 0
+    } else if self.playbackState.hasFailed || self.playbackState.hasSaveFailed {
+      return Constants.failedPreviewOpacity
+    } else {
+      return 1
+    }
   }
 
   // MARK: - Play Button

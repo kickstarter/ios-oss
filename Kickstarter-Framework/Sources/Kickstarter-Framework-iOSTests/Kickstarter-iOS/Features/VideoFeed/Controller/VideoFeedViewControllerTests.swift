@@ -183,7 +183,130 @@ final class VideoFeedViewControllerTests: TestCase {
           isSaved: .constant(false)
         )
 
-        player.simulateFailure()
+        player.simulateVideoFailure()
+
+        assertSnapshot(
+          of: cell,
+          as: .image(perceptualPrecision: 0.99),
+          named: "\(language.rawValue)_\(device)"
+        )
+      }
+    }
+  }
+
+  func testView_VideoFeedCell_SaveFailed() {
+    orthogonalCombos(
+      Language.allLanguages,
+      Device.allCases
+    ).forEach {
+      language, device in
+
+      let appBundle = Bundle(identifier: KickstarterBundleIdentifier.debug.rawValue) ?? Bundle.main
+
+      withEnvironment(
+        language: language,
+        mainBundle: MockBundle(bundleIdentifier: appBundle.bundleIdentifier)
+      ) {
+        let cell = VideoFeedCell(
+          frame: CGRect(
+            x: 0,
+            y: 0,
+            width: device.deviceSize.width,
+            height: device.deviceSize.height
+          ),
+          videoPlayer: MockVideoFeedVideoPlayer()
+        )
+
+        cell.configureWith(
+          value: VideoFeedItem(
+            id: "0",
+            pid: 3,
+            slug: "video_feed",
+            projectURL: "https://test.com",
+            title: "Ringo Move - The Ultimate Workout Bottle",
+            creator: "Creator Name",
+            creatorImageURL: nil,
+            statsText: VideoFeedItem.statsTextInUserPreferredCurrency(
+              pledgedAmount: 50_134,
+              backersCount: 431
+            ),
+            categoryPillText: "Project We Love",
+            secondaryPillText: "3 days left",
+            videoURL: nil,
+            videoPreviewImageURL: nil,
+            projectId: "1",
+            isSaved: false,
+            sharesCount: 1,
+            watchesCount: 50,
+            percentFunded: 42
+          ),
+          isSaved: .constant(false)
+        )
+
+        cell.showSaveErrorToast()
+
+        assertSnapshot(
+          of: cell,
+          as: .image(perceptualPrecision: 0.99),
+          named: "\(language.rawValue)_\(device)"
+        )
+      }
+    }
+  }
+
+  func testView_VideoFeedCell_VideoAndSaveFailed() {
+    orthogonalCombos(
+      Language.allLanguages,
+      Device.allCases
+    ).forEach {
+      language, device in
+
+      let appBundle = Bundle(identifier: KickstarterBundleIdentifier.debug.rawValue) ?? Bundle.main
+
+      withEnvironment(
+        language: language,
+        mainBundle: MockBundle(bundleIdentifier: appBundle.bundleIdentifier)
+      ) {
+        let player = MockVideoFeedVideoPlayer()
+
+        let cell = VideoFeedCell(
+          frame: CGRect(
+            x: 0,
+            y: 0,
+            width: device.deviceSize.width,
+            height: device.deviceSize.height
+          ),
+          videoPlayer: player
+        )
+
+        cell.configureWith(
+          value: VideoFeedItem(
+            id: "0",
+            pid: 3,
+            slug: "video_feed",
+            projectURL: "https://test.com",
+            title: "Ringo Move - The Ultimate Workout Bottle",
+            creator: "Creator Name",
+            creatorImageURL: nil,
+            statsText: VideoFeedItem.statsTextInUserPreferredCurrency(
+              pledgedAmount: 50_134,
+              backersCount: 431
+            ),
+            categoryPillText: "Project We Love",
+            secondaryPillText: "",
+            videoURL: nil,
+            videoPreviewImageURL: nil,
+            projectId: "1",
+            isSaved: false,
+            sharesCount: 1,
+            watchesCount: 50,
+            percentFunded: 42
+          ),
+          isSaved: .constant(false)
+        )
+
+        player.simulateVideoFailure()
+        cell.showSaveErrorToast()
 
         assertSnapshot(
           of: cell,
@@ -203,7 +326,7 @@ final class MockVideoFeedVideoPlayer: VideoFeedVideoPlayer {
   override func pause() {}
   override func stop() {}
 
-  func simulateFailure() {
+  func simulateVideoFailure() {
     self.onVideoFailed?()
   }
 }
