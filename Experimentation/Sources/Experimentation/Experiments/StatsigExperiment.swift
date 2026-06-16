@@ -41,8 +41,10 @@ public enum StatsigExperimentName: String, CaseIterable {
   case fullscreen_checkout_experience_experiment
   case logged_in_aa_experiment
   case logged_out_aa_experiment
+  case move_no_reward_option_ios = "move_no-reward_option_ios"
 }
 
 public enum StatsigExperimentLayer: String, CaseIterable {
   case ios_test_layer
+  case ios_checkout
 }

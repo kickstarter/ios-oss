@@ -23,6 +23,8 @@ public extension StatsigExperimentName {
       return NullExperimentWithUserID()
     case .logged_out_aa_experiment:
       return NullExperimentWithAnonymousID()
+    case .move_no_reward_option_ios:
+      return MoveNoRewardOptionExperiment()
     }
   }
 }
