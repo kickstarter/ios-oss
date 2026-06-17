@@ -259,9 +259,7 @@ final class VideoFeedViewController: UIViewController {
   }
 
   private func resumeVisibleCell() {
-    self.collectionView.visibleCells
-      .compactMap { $0 as? VideoFeedCell }
-      .forEach { $0.resumePlayback() }
+    self.activateCurrentPageCell()
   }
 
   // MARK: - Navigation
@@ -335,8 +333,7 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     cell.onCTATapped = { [weak self] in self?.goToProjectPage(for: item) }
 
     cell.onVideoReady = { [weak self, weak cell] in
-      guard let self, let cell else { return }
-      /// Only start playback once scroll has fully settled.
+      guard let self, let cell, !self.isScrolling else { return }
 
       cell.startPlayback()
     }

@@ -126,7 +126,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   }
 
   func startPlayback() {
-    self.videoPlayer.play()
+    self.playbackState.resume()
   }
 
   func resetVideo() {
@@ -136,7 +136,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   }
 
   func pausePlayback() {
-    self.videoPlayer.pause()
+    self.playbackState.pause()
   }
 
   func resumePlayback() {
