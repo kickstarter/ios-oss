@@ -28,8 +28,7 @@ internal final class DiscoveryPageViewController: UITableViewController,
 
   internal var messageBannerViewController: MessageBannerViewController?
 
-  /// Holds a ref to the VideoFeedViewController while its data loads.
-  var pendingVideoFeedVC: VideoFeedViewController?
+  var videoFeedVC: VideoFeedViewController?
 
   internal static func configuredWith(sort: DiscoveryParams.Sort) -> DiscoveryPageViewController {
     let vc = Storyboard.DiscoveryPage.instantiate(DiscoveryPageViewController.self)

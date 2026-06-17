@@ -5,16 +5,28 @@ import ReactiveSwift
 import SwiftUI
 
 public protocol VideoFeedViewModelType: AnyObject {
+  /// Current active set of video items shown in the feed.
   var items: [VideoFeedItem] { get }
+  /// Updated only on a completed fetch. Used to trigger collection view reloads.
   var fetchedItems: [VideoFeedItem] { get }
+  /// Set when a logged-out user taps save. Triggers the login flow.
   var loginIntent: LoginIntent? { get }
+  /// True once the first fetch completes successfully.
   var isInitialLoadComplete: Bool { get }
+  /// Project ID of the most recent failed save. Triggers the error toast on the selected cell.
   var saveFailedItemId: String? { get }
+
+  /// Kicks off the initial feed fetch.
   func viewDidLoad()
+  /// Syncs save state and fires any save the user tapped before logging in.
   func viewWillAppear()
+  /// Optimistically toggles the saved state for a project.
   func toggleSaved(for item: VideoFeedItem)
-  func isSaved(id: String) -> Binding<Bool>
+  /// Returns a binding to the saved state for the given project ID.
+  func isSaved(projectId: String) -> Binding<Bool>
+  /// Clears the pending login intent after the login flow is presented.
   func clearLoginIntent()
+  /// Clears the save error after the toast has been shown.
   func clearSaveFailedItemId()
 }
 
@@ -39,6 +51,9 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
   /// Observed by `VideoFeedViewController` to trigger the error toast on the correct cell.
   public private(set) var saveFailedItemId: String? = nil
 
+  /// Store the item id when a logged-out user taps save. Finishes executing on next `viewWillAppear` if login succeeded.
+  private var pendingSaveItemId: String? = nil
+
   /// Tracks in-flight watch/unwatch requests.
   private var pendingWatchRequests: [String: Disposable] = [:]
 
@@ -56,34 +71,46 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
 
   /// Called each time the feed reappears.
   /// Reconciles the save button's state for when users save projects from a presented project page (when tapping the CTA).
+  /// Also executes any save action that was deferred, pending login.
   public func viewWillAppear() {
-    guard let cache = AppEnvironment.current.cache[KSCache.ksr_projectSaved] as? [Int: Bool] else {
-      return
-    }
+    if let cache = AppEnvironment.current.cache[KSCache.ksr_projectSaved] as? [Int: Bool] {
+      for index in self.items.indices {
+        if let id = decompose(id: self.items[index].projectId), let cached = cache[id] {
+          let wasSaved = self.items[index].isSaved
+          self.items[index].isSaved = cached
 
-    for index in self.items.indices {
-      if let id = decompose(id: self.items[index].projectId), let cached = cache[id] {
-        let wasSaved = self.items[index].isSaved
-        self.items[index].isSaved = cached
-
-        /// Update the count if the save state changed on the project page.
-        if cached != wasSaved {
-          self.items[index].watchesCount += cached ? 1 : -1
+          /// Update the count if the save state changed on the project page.
+          if cached != wasSaved {
+            self.items[index].watchesCount += cached ? 1 : -1
+          }
         }
       }
     }
+
+    /// If the user logged in after tapping save, execute the deferred toggle now.
+    guard let pendingId = self.pendingSaveItemId,
+          AppEnvironment.current.currentUser != nil,
+          let item = self.items.first(where: { $0.id == pendingId }) else {
+      self.pendingSaveItemId = nil
+      return
+    }
+
+    self.pendingSaveItemId = nil
+    self.toggleSaved(for: item)
   }
 
   /// Returns a binding to `isSaved` for the item with the given ID.
-  /// If the user is logged out, show login instead of toggling saved.
-  public func isSaved(id: String) -> Binding<Bool> {
+  /// If the user is logged out, save the intended id to save and show login instead.
+  public func isSaved(projectId: String) -> Binding<Bool> {
     Binding(
-      get: { self.items.first(where: { $0.id == id })?.isSaved ?? false },
+      get: { self.items.first(where: { $0.id == projectId })?.isSaved ?? false },
       set: { [weak self] _ in
-        guard let self, let item = self.items.first(where: { $0.id == id }) else { return }
+        guard let self, let item = self.items.first(where: { $0.id == projectId }) else { return }
 
         guard AppEnvironment.current.currentUser != nil else {
+          self.pendingSaveItemId = item.id
           self.showLogin()
+
           return
         }
 

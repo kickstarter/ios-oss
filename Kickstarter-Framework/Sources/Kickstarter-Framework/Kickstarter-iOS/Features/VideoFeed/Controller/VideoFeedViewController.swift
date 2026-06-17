@@ -76,12 +76,18 @@ final class VideoFeedViewController: UIViewController {
 
     self.navigationController?.setNavigationBarHidden(true, animated: animated)
     self.viewModel.viewWillAppear()
+
+    DispatchQueue.main.async {
+      self.reconfigureVisibleCell()
+      self.activateCurrentPageCell()
+    }
   }
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
 
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
+    self.pauseVisibleCell()
   }
 
   // MARK: - CollectionView
@@ -198,7 +204,7 @@ final class VideoFeedViewController: UIViewController {
         get: { self.viewModel.items.first(where: { $0.id == item.id }) ?? item },
         set: { _ in }
       ),
-      isSaved: self.viewModel.isSaved(id: item.id)
+      isSaved: self.viewModel.isSaved(projectId: item.id)
     )
   }
 
@@ -230,7 +236,7 @@ final class VideoFeedViewController: UIViewController {
 
   // MARK: - App lifecycle
 
-  /// Pause video on background and resumes on foreground.
+  /// Pause video on background, resume on foreground, and re-render the active cell after login.
   private func observeAppLifecycle() {
     let center = NotificationCenter.default
 
@@ -248,6 +254,18 @@ final class VideoFeedViewController: UIViewController {
         queue: .main
       ) { [weak self] _ in
         self?.resumeVisibleCell()
+      },
+      center.addObserver(
+        forName: .ksr_sessionStarted,
+        object: nil,
+        queue: .main
+      ) { [weak self] _ in
+        /// Re-render the active cell after login so  saves and state changes are reflected immediately.
+        self?.viewModel.viewWillAppear()
+
+        DispatchQueue.main.async {
+          self?.reconfigureVisibleCell()
+        }
       }
     ]
   }
@@ -332,18 +350,12 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     cell.onMoreTapped = { [weak self] in self?.simpleAlert(title: "More") }
     cell.onCTATapped = { [weak self] in self?.goToProjectPage(for: item) }
 
-    cell.onVideoReady = { [weak self, weak cell] in
-      guard let self, let cell, !self.isScrolling else { return }
-
-      cell.startPlayback()
-    }
-
     cell.configureWith(
       item: Binding(
         get: { self.viewModel.items.first(where: { $0.id == item.id }) ?? item },
         set: { _ in }
       ),
-      isSaved: self.viewModel.isSaved(id: item.id)
+      isSaved: self.viewModel.isSaved(projectId: item.id)
     )
 
     if let url = item.videoURL {
