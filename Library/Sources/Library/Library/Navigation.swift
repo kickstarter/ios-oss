@@ -161,7 +161,8 @@ private let allRoutes: [String: (RouteParamsDecoded) -> Navigation?] = [
   "/projects/:creator_param/:project_param/surveys/:survey_param/edit_address": pledgeManagerWebview,
   "/settings/:notification_param/:enabled_param": settingsNotifications,
   "/users/:user_param/surveys/:survey_response_id": userSurvey,
-  "/projects/:creator_param/:project_param/order_edits/:order_edit_id/checkout": pledgeManagerWebview
+  "/projects/:creator_param/:project_param/order_edits/:order_edit_id/checkout": pledgeManagerWebview,
+  "/projects/:creator_param/:project_param/order_edits/new": pledgeManagerWebview
 ]
 
 private let deepLinkRoutes: [String: (RouteParamsDecoded) -> Navigation?] = allRoutes.restrict(
