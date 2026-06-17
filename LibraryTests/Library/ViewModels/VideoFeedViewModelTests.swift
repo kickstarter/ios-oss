@@ -4,6 +4,7 @@ import GraphAPI
 @testable import KsApiTestHelpers
 @testable import Library
 @testable import LibraryTestHelpers
+import SwiftUI
 import XCTest
 
 final class VideoFeedViewModelTests: TestCase {
@@ -83,7 +84,8 @@ final class VideoFeedViewModelTests: TestCase {
 
     self.vm.toggleSaved(for: item)
 
-    XCTAssert(self.vm.items.first?.isSaved == true)
+    XCTAssertTrue(self.vm.items.first?.isSaved == true)
+    XCTAssertEqual(self.vm.items.first?.watchesCount, 4)
   }
 
   func testToggleSaved_Unwatch_UpdatesIsSaved() async {
@@ -99,7 +101,36 @@ final class VideoFeedViewModelTests: TestCase {
 
     self.vm.toggleSaved(for: item)
 
-    XCTAssert(self.vm.items.first?.isSaved == false)
+    XCTAssertTrue(self.vm.items.first?.isSaved == false)
+    XCTAssertEqual(self.vm.items.first?.watchesCount, 2)
+  }
+
+  func testToggleSaved_WatchesCountIncrementsOptimistically() async {
+    let mockData = Self.mockVideoFeedQueryData(itemCount: 1, isWatched: false)
+
+    await withEnvironment(apiService: MockService(fetchGraphQLResponses: [(VideoFeedQuery.self, mockData)])) {
+      await self.vm.fetchVideoFeed()
+    }
+
+    let item = try! XCTUnwrap(self.vm.items.first)
+    let originalCount = item.watchesCount
+
+    self.vm.toggleSaved(for: item)
+    XCTAssertEqual(self.vm.items.first?.watchesCount, originalCount + 1, "Count should increment on save.")
+  }
+
+  func testToggleSaved_WatchesCountDecrementsOptimistically() async {
+    let mockData = Self.mockVideoFeedQueryData(itemCount: 1, isWatched: true)
+
+    await withEnvironment(apiService: MockService(fetchGraphQLResponses: [(VideoFeedQuery.self, mockData)])) {
+      await self.vm.fetchVideoFeed()
+    }
+
+    let item = try! XCTUnwrap(self.vm.items.first)
+    let originalCount = item.watchesCount
+
+    self.vm.toggleSaved(for: item)
+    XCTAssertEqual(self.vm.items.first?.watchesCount, originalCount - 1, "Count should decrement on unsave.")
   }
 
   func testToggleSaved_OnlyAffectsSelectItems() async {
@@ -126,6 +157,49 @@ final class VideoFeedViewModelTests: TestCase {
     }
 
     XCTAssertTrue(self.vm.items.allSatisfy { $0.isSaved })
+  }
+
+  func testViewWillAppear_UpdateSave_WhenLoggedIn() async {
+    let mockData = Self.mockVideoFeedQueryData(itemCount: 1, isWatched: false)
+
+    await withEnvironment(apiService: MockService(fetchGraphQLResponses: [(VideoFeedQuery.self, mockData)])) {
+      await self.vm.fetchVideoFeed()
+    }
+
+    let item = try! XCTUnwrap(self.vm.items.first)
+
+    /// Simulate logged-out save tap
+    withEnvironment(currentUser: nil) {
+      let binding = self.vm.isSaved(projectId: item.id)
+      binding.wrappedValue = true
+    }
+
+    XCTAssertEqual(self.vm.items.first?.isSaved, false, "Should not have saved yet. user was logged out.")
+
+    /// Simulate login and return to feed.
+    withEnvironment(currentUser: .template) {
+      self.vm.viewWillAppear()
+    }
+
+    XCTAssertTrue(self.vm.items.first?.isSaved == true, "Should have saved after logging in.")
+    XCTAssertEqual(self.vm.items.first?.watchesCount, 4, "Count should increment after deferred save fires.")
+
+    /// Same flow but staying logged out.
+    let vm2 = VideoFeedViewModel()
+
+    await withEnvironment(apiService: MockService(fetchGraphQLResponses: [(VideoFeedQuery.self, mockData)])) {
+      await vm2.fetchVideoFeed()
+    }
+
+    let item2 = try! XCTUnwrap(vm2.items.first)
+
+    withEnvironment(currentUser: nil) {
+      let binding = vm2.isSaved(projectId: item2.id)
+      binding.wrappedValue = true
+      vm2.viewWillAppear()
+    }
+
+    XCTAssertEqual(vm2.items.first?.isSaved, false, "Should not save if user is still logged out.")
   }
 
   // MARK: - Helpers
