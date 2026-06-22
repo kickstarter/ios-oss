@@ -18,6 +18,7 @@ struct VideoFeedBottomOverlayView: View {
   let item: VideoFeedItem
   let videoPlayer: VideoFeedVideoPlayer
   var onCTATapped: (() -> Void)?
+  var onProgressBarTapped: ((Float) -> Void)?
 
   var body: some View {
     VStack(alignment: .leading, spacing: Constants.contentSpacing) {
@@ -87,7 +88,7 @@ struct VideoFeedBottomOverlayView: View {
   }
 
   private var progressBar: some View {
-    VideoFeedProgressBarView(player: self.videoPlayer)
+    VideoFeedProgressBarView(player: self.videoPlayer, onProgressBarTapped: self.onProgressBarTapped)
       .padding(.top, Constants.progressTopPadding)
   }
 }
