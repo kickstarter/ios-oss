@@ -18,8 +18,10 @@ public protocol VideoFeedViewModelType: AnyObject {
 
   /// Kicks off the initial feed fetch.
   func viewDidLoad()
-  /// Syncs save state and fires any save the user tapped before logging in.
+  /// Syncs save state from the project page cache on return to the feed.
   func viewWillAppear()
+  /// Fires any save the user tapped before logging in.
+  func userSessionStarted()
   /// Optimistically toggles the saved state for a project.
   func toggleSaved(for item: VideoFeedItem)
   /// Returns a binding to the saved state for the given project ID.
@@ -51,7 +53,7 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
   /// Observed by `VideoFeedViewController` to trigger the error toast on the correct cell.
   public private(set) var saveFailedItemId: String? = nil
 
-  /// Store the item id when a logged-out user taps save. Finishes executing on next `viewWillAppear` if login succeeded.
+  /// Store the item id when a logged-out user taps save. Finishes executing on `userSessionStarted` if login succeeded.
   private var pendingSaveItemId: String? = nil
 
   /// Tracks in-flight watch/unwatch requests.
@@ -71,25 +73,26 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
 
   /// Called each time the feed reappears.
   /// Reconciles the save button's state for when users save projects from a presented project page (when tapping the CTA).
-  /// Also executes any save action that was deferred, pending login.
   public func viewWillAppear() {
-    if let cache = AppEnvironment.current.cache[KSCache.ksr_projectSaved] as? [Int: Bool] {
-      for index in self.items.indices {
-        if let id = decompose(id: self.items[index].projectId), let cached = cache[id] {
-          let wasSaved = self.items[index].isSaved
-          self.items[index].isSaved = cached
+    guard let cache = AppEnvironment.current.cache[KSCache.ksr_projectSaved] as? [Int: Bool] else { return }
 
-          /// Update the count if the save state changed on the project page.
-          if cached != wasSaved {
-            self.items[index].watchesCount += cached ? 1 : -1
-          }
+    for index in self.items.indices {
+      if let id = decompose(id: self.items[index].projectId), let cached = cache[id] {
+        let wasSaved = self.items[index].isSaved
+
+        self.items[index].isSaved = cached
+
+        /// Update the count if the save state changed on the project page.
+        if cached != wasSaved {
+          self.items[index].watchesCount += cached ? 1 : -1
         }
       }
     }
+  }
 
-    /// If the user logged in after tapping save, execute the deferred toggle now.
-    guard let pendingId = self.pendingSaveItemId,
-          AppEnvironment.current.currentUser != nil,
+  /// Called after login completes. Fires any save that was deferred due to a pending login.
+  public func userSessionStarted() {
+    guard let pendingId = self.pendingSaveItemId, AppEnvironment.current.currentUser != nil,
           let item = self.items.first(where: { $0.id == pendingId }) else {
       self.pendingSaveItemId = nil
       return

@@ -261,10 +261,10 @@ final class VideoFeedViewController: UIViewController {
         object: nil,
         queue: .main
       ) { [weak self] _ in
-        /// Re-render the active cell after login so  saves and state changes are reflected immediately.
-        self?.viewModel.viewWillAppear()
+        /// Fire any save that was deferred (pending login) then re-render the active cell.
+        self?.viewModel.userSessionStarted()
 
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
           self?.reconfigureVisibleCell()
         }
       }

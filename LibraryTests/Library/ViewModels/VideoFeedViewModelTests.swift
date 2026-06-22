@@ -178,7 +178,7 @@ final class VideoFeedViewModelTests: TestCase {
 
     /// Simulate login and return to feed.
     withEnvironment(currentUser: .template) {
-      self.vm.viewWillAppear()
+      self.vm.userSessionStarted()
     }
 
     XCTAssertTrue(self.vm.items.first?.isSaved == true, "Should have saved after logging in.")
@@ -196,7 +196,8 @@ final class VideoFeedViewModelTests: TestCase {
     withEnvironment(currentUser: nil) {
       let binding = vm2.isSaved(projectId: item2.id)
       binding.wrappedValue = true
-      vm2.viewWillAppear()
+
+      vm2.userSessionStarted()
     }
 
     XCTAssertEqual(vm2.items.first?.isSaved, false, "Should not save if user is still logged out.")
