@@ -559,11 +559,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.configureStatsig = self.applicationLaunchOptionsProperty.signal.ignoreValues()
       .map { _ in
-        if AppEnvironment.current.mainBundle.isRelease {
-          return .production(Secrets.Statsig.production)
-        } else {
-          return .staging(Secrets.Statsig.staging)
-        }
+        statsigSDKKey()
       }
 
     self.setApplicationShortcutItems = currentUserEvent
@@ -1345,4 +1341,18 @@ private struct ProjectDeepLink {
       // This one is already in its own nav controller, `RewardPledgeNavigationController`
       .merge(with: fixErroredPledgeLink.map { $0 as UINavigationController })
   }
+}
+
+private func statsigSDKKey() -> StatsigClientSDKKey {
+  let mainBundle = AppEnvironment.current.mainBundle
+
+  if mainBundle.isRelease {
+    return .productionTier(Secrets.Statsig.production)
+  } else if mainBundle.isBeta {
+    return .stagingTier(Secrets.Statsig.staging)
+  } else if mainBundle.isDebug {
+    return .developmentTier(Secrets.Statsig.development)
+  }
+
+  return .stagingTier(Secrets.Statsig.sandbox)
 }
