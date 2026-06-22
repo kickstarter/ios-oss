@@ -126,7 +126,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   }
 
   func startPlayback() {
-    self.videoPlayer.play()
+    self.playbackState.resume()
   }
 
   func resetVideo() {
@@ -136,12 +136,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   }
 
   func pausePlayback() {
-    self.videoPlayer.pause()
-  }
-
-  func resumePlayback() {
-    guard self.playbackState.isPlaying else { return }
-    self.videoPlayer.play()
+    self.playbackState.pause()
   }
 
   // MARK: - Toast View
@@ -229,7 +224,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.addGestureRecognizer(tap)
   }
 
-  /// Tapping anywhere on the cell toggles playback:
+  /// Tapping anywhere on the cell toggles playback.
   @objc private func cellTapped() {
     if self.playbackState.isPlaying {
       self.playbackState.pause()

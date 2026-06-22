@@ -30,8 +30,7 @@ internal final class SearchViewController: UITableViewController,
 
   internal var messageBannerViewController: MessageBannerViewController?
 
-  /// Holds a ref to the VideoFeedViewController while its data loads.
-  var pendingVideoFeedVC: VideoFeedViewController?
+  var videoFeedVC: VideoFeedViewController?
 
   private var searchBarWidth: CGFloat {
     return self.view.bounds.width * Constants.searchBarWidthFactor

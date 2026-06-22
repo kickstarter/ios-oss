@@ -76,12 +76,19 @@ final class VideoFeedViewController: UIViewController {
 
     self.navigationController?.setNavigationBarHidden(true, animated: animated)
     self.viewModel.viewWillAppear()
+
+    /// Dispatching so item state updates on the project page (to handle project saves for example) before we reconfigure the cell.
+    DispatchQueue.main.async { [weak self] in
+      self?.reconfigureVisibleCell()
+      self?.activateCurrentPageCell()
+    }
   }
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
 
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
+    self.pauseVisibleCell()
   }
 
   // MARK: - CollectionView
@@ -169,6 +176,16 @@ final class VideoFeedViewController: UIViewController {
         self.bindViewModel()
       }
     }
+
+    /// Reconfigures the visible cell whenever items mutate (e.g. save state changes made on the project page).
+    withObservationTracking {
+      _ = self.viewModel.items
+    } onChange: { [weak self] in
+      DispatchQueue.main.async { [weak self] in
+        self?.reconfigureVisibleCell()
+        self?.bindViewModel()
+      }
+    }
   }
 
   /// Reloads the collection view with a fresh set of fetched items.
@@ -198,7 +215,7 @@ final class VideoFeedViewController: UIViewController {
         get: { self.viewModel.items.first(where: { $0.id == item.id }) ?? item },
         set: { _ in }
       ),
-      isSaved: self.viewModel.isSaved(id: item.id)
+      isSaved: self.viewModel.isSaved(projectId: item.id)
     )
   }
 
@@ -230,7 +247,7 @@ final class VideoFeedViewController: UIViewController {
 
   // MARK: - App lifecycle
 
-  /// Pause video on background and resumes on foreground.
+  /// Pause video on background, resume on foreground, and re-render the active cell after login.
   private func observeAppLifecycle() {
     let center = NotificationCenter.default
 
@@ -248,6 +265,18 @@ final class VideoFeedViewController: UIViewController {
         queue: .main
       ) { [weak self] _ in
         self?.resumeVisibleCell()
+      },
+      center.addObserver(
+        forName: .ksr_sessionStarted,
+        object: nil,
+        queue: .main
+      ) { [weak self] _ in
+        /// Fire any save that was deferred (pending login) then re-render the active cell.
+        self?.viewModel.userSessionStarted()
+
+        DispatchQueue.main.async { [weak self] in
+          self?.reconfigureVisibleCell()
+        }
       }
     ]
   }
@@ -259,9 +288,7 @@ final class VideoFeedViewController: UIViewController {
   }
 
   private func resumeVisibleCell() {
-    self.collectionView.visibleCells
-      .compactMap { $0 as? VideoFeedCell }
-      .forEach { $0.resumePlayback() }
+    self.activateCurrentPageCell()
   }
 
   // MARK: - Navigation
@@ -334,19 +361,12 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     cell.onMoreTapped = { [weak self] in self?.simpleAlert(title: "More") }
     cell.onCTATapped = { [weak self] in self?.goToProjectPage(for: item) }
 
-    cell.onVideoReady = { [weak self, weak cell] in
-      guard let self, let cell else { return }
-      /// Only start playback once scroll has fully settled.
-
-      cell.startPlayback()
-    }
-
     cell.configureWith(
       item: Binding(
         get: { self.viewModel.items.first(where: { $0.id == item.id }) ?? item },
         set: { _ in }
       ),
-      isSaved: self.viewModel.isSaved(id: item.id)
+      isSaved: self.viewModel.isSaved(projectId: item.id)
     )
 
     if let url = item.videoURL {
