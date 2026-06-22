@@ -44,6 +44,7 @@ struct VideoFeedOverlayView: View {
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
   var onCTATapped: (() -> Void)?
+  var onProgressBarTapped: ((Float) -> Void)?
 
   var body: some View {
     ZStack(alignment: .bottom) {
@@ -76,7 +77,8 @@ struct VideoFeedOverlayView: View {
         VideoFeedBottomOverlayView(
           item: self.item,
           videoPlayer: self.videoPlayer,
-          onCTATapped: self.onCTATapped
+          onCTATapped: self.onCTATapped,
+          onProgressBarTapped: self.onProgressBarTapped
         )
         .frame(maxWidth: .infinity, alignment: .leading)
       }

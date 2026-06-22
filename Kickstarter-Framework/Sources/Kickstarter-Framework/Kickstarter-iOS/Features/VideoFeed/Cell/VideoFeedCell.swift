@@ -32,6 +32,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   var onVideoFailed: (() -> Void)?
   var onPauseTapped: (() -> Void)?
   var onResumeTapped: (() -> Void)?
+  var onProgressBarTapped: ((Float) -> Void)?
 
   private(set) var currentItemId: String?
 
@@ -83,6 +84,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.onVideoFailed = nil
     self.onPauseTapped = nil
     self.onResumeTapped = nil
+    self.onProgressBarTapped = nil
     self.currentItemId = nil
     self.resetToasts()
     self.playbackState.reset()
@@ -109,7 +111,8 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
         onCreatorTapped: { [weak self] in self?.onCreatorTapped?() },
         onShareTapped: { [weak self] in self?.onShareTapped?() },
         onMoreTapped: { [weak self] in self?.onMoreTapped?() },
-        onCTATapped: { [weak self] in self?.ctaTapped() }
+        onCTATapped: { [weak self] in self?.ctaTapped() },
+        onProgressBarTapped: { [weak self] progress in self?.onProgressBarTapped?(progress) }
       )
     }
     .margins(.all, 0)
