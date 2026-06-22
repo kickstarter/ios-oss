@@ -176,6 +176,16 @@ final class VideoFeedViewController: UIViewController {
         self.bindViewModel()
       }
     }
+
+    /// Reconfigures the visible cell whenever items mutate (e.g. save state changes made on the project page).
+    withObservationTracking {
+      _ = self.viewModel.items
+    } onChange: { [weak self] in
+      DispatchQueue.main.async { [weak self] in
+        self?.reconfigureVisibleCell()
+        self?.bindViewModel()
+      }
+    }
   }
 
   /// Reloads the collection view with a fresh set of fetched items.
