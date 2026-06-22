@@ -1,4 +1,5 @@
 import KDS
+import Kingfisher
 import Library
 import SwiftUI
 
@@ -36,7 +37,7 @@ struct VideoFeedRightRailView: View {
 
   private var creatorAvatar: some View {
     Button(action: { self.onCreatorTapped?() }) {
-      self.avatarPlaceholder
+      self.avatarImage
         .frame(width: Constants.avatarSize, height: Constants.avatarSize)
         .clipShape(Circle())
     }
@@ -44,14 +45,19 @@ struct VideoFeedRightRailView: View {
   }
 
   @ViewBuilder
-  private var avatarPlaceholder: some View {
-    if let image = Library.image(named: Constants.avatarPlaceholderIcon) {
-      Image(uiImage: image)
-        .resizable()
-        .scaledToFill()
-    } else {
-      Color(Colors.Text.placeholder.uiColor())
-    }
+  private var avatarImage: some View {
+    KFImage(self.item.creatorImageURL)
+      .placeholder {
+        if let image = Library.image(named: Constants.avatarPlaceholderIcon) {
+          Image(uiImage: image)
+            .resizable()
+            .scaledToFill()
+        } else {
+          Color(Colors.Text.placeholder.uiColor())
+        }
+      }
+      .resizable()
+      .scaledToFill()
   }
 
   private var saveButton: some View {
