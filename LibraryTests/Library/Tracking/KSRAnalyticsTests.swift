@@ -1916,6 +1916,11 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(KSRAnalytics.CTAContext.signUpInitiate.trackingString, "sign_up_initiate")
     XCTAssertEqual(KSRAnalytics.CTAContext.signUpSubmit.trackingString, "sign_up_submit")
     XCTAssertEqual(KSRAnalytics.CTAContext.forgotPassword.trackingString, "forgot_password")
+    XCTAssertEqual(KSRAnalytics.CTAContext.videoFeedPlay.trackingString, "video_feed_play")
+    XCTAssertEqual(KSRAnalytics.CTAContext.videoFeedPause.trackingString, "video_feed_pause")
+    XCTAssertEqual(KSRAnalytics.CTAContext.videoFeedSave.trackingString, "video_feed_save")
+    XCTAssertEqual(KSRAnalytics.CTAContext.videoFeedShare.trackingString, "video_feed_share")
+    XCTAssertEqual(KSRAnalytics.CTAContext.videoFeedProgressBar.trackingString, "video_feed_progress_bar")
   }
 
   func testSectionContextTrackingStrings() {
@@ -1968,6 +1973,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(KSRAnalytics.LocationContext.globalNav.trackingString, "global_nav")
     XCTAssertEqual(KSRAnalytics.LocationContext.recommendations.trackingString, "recommendations")
     XCTAssertEqual(KSRAnalytics.LocationContext.searchResults.trackingString, "search_results")
+    XCTAssertEqual(KSRAnalytics.LocationContext.videoFeed.trackingString, "video_feed")
   }
 
   func testPaymentTypeTrackingStrings() {
@@ -2076,6 +2082,54 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertNil(ksrAnalytics.anonymousId)
     XCTAssertFalse(ksrAnalytics.isTrackingEnabled())
+  }
+
+  func testTrackVideoFeedImpression() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      segmentClient: segmentClient,
+      appTrackingTransparency: self.appTrackingTransparency
+    )
+
+    ksrAnalytics.trackVideoFeedImpression(
+      videoId: "video_123",
+      projectId: "project_456",
+      positionInSession: 2
+    )
+
+    XCTAssertEqual(["Page Viewed"], segmentClient.events)
+    XCTAssertEqual("video_feed", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("video_feed", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("video_123", segmentClient.properties.last?["video_feed_video_id"] as? String)
+    XCTAssertEqual("project_456", segmentClient.properties.last?["video_feed_project_id"] as? String)
+    XCTAssertEqual(2, segmentClient.properties.last?["video_feed_position_in_session"] as? Int)
+  }
+
+  func testTrackVideoFeedSwipe() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      segmentClient: segmentClient,
+      appTrackingTransparency: self.appTrackingTransparency
+    )
+
+    ksrAnalytics.trackVideoFeedSwipe(
+      videoId: "video_456",
+      projectId: "project_789",
+      positionInSession: 3,
+      fromVideoId: "video_123",
+      totalWatchTimeMs: 4_200,
+      totalVideoDurationMs: 30_000
+    )
+
+    XCTAssertEqual(["Page Viewed"], segmentClient.events)
+    XCTAssertEqual("video_feed", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("video_feed", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("video_456", segmentClient.properties.last?["video_feed_video_id"] as? String)
+    XCTAssertEqual("project_789", segmentClient.properties.last?["video_feed_project_id"] as? String)
+    XCTAssertEqual(3, segmentClient.properties.last?["video_feed_position_in_session"] as? Int)
+    XCTAssertEqual("video_123", segmentClient.properties.last?["video_feed_from_video_id"] as? String)
+    XCTAssertEqual(4_200, segmentClient.properties.last?["video_feed_total_watch_time"] as? Int)
+    XCTAssertEqual(30_000, segmentClient.properties.last?["video_feed_total_video_duration"] as? Int)
   }
 
   /*
