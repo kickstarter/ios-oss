@@ -1473,6 +1473,37 @@ public final class KSRAnalytics {
     self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
   }
 
+  /// Call when the user taps play, pause, save, or share in the video feed.
+  public func trackVideoFeedCTAClicked(
+    ctaContext: CTAContext,
+    videoId: String,
+    projectId: String
+  ) {
+    var props = contextProperties(ctaContext: ctaContext, page: .videoFeed)
+
+    props["video_feed_video_id"] = videoId
+    props["video_feed_project_id"] = projectId
+
+    self.track(event: SegmentEvent.ctaClicked.rawValue, properties: props)
+  }
+
+  /// Call when the user lifts their finger from the video progress bar scrubber.
+  public func trackVideoFeedProgressBarTapped(
+    videoId: String,
+    projectId: String,
+    positionInSession: Int,
+    percentageWatched: Float
+  ) {
+    var props = contextProperties(ctaContext: .videoFeedProgressBar, page: .videoFeed)
+
+    props["video_feed_video_id"] = videoId
+    props["video_feed_project_id"] = projectId
+    props["video_feed_position_in_session"] = positionInSession
+    props["video_feed_percentage_watched"] = percentageWatched
+
+    self.track(event: SegmentEvent.ctaClicked.rawValue, properties: props)
+  }
+
   // MARK: - Onboarding Events
 
   /**
