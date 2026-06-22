@@ -28,10 +28,10 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
   var onCTATapped: (() -> Void)?
-  /// Called once the video is ready to play.
   var onVideoReady: (() -> Void)?
-  /// Called when the video fails to load or play.
   var onVideoFailed: (() -> Void)?
+  var onPauseTapped: (() -> Void)?
+  var onResumeTapped: (() -> Void)?
 
   private(set) var currentItemId: String?
 
@@ -81,6 +81,8 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.onCTATapped = nil
     self.onVideoReady = nil
     self.onVideoFailed = nil
+    self.onPauseTapped = nil
+    self.onResumeTapped = nil
     self.currentItemId = nil
     self.resetToasts()
     self.playbackState.reset()
@@ -228,8 +230,10 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   @objc private func cellTapped() {
     if self.playbackState.isPlaying {
       self.playbackState.pause()
+      self.onPauseTapped?()
     } else {
       self.playbackState.resume()
+      self.onResumeTapped?()
     }
   }
 }
