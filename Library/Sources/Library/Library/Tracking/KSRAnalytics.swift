@@ -1435,6 +1435,44 @@ public final class KSRAnalytics {
     return props.withAllValuesFrom(["login_intent": intent.trackingString])
   }
 
+  // MARK: - VideoFeed Events
+
+  /// Call when a video becomes the actively visible item, including on first load.
+  public func trackVideoFeedImpression(
+    videoId: String,
+    projectId: String,
+    positionInSession: Int
+  ) {
+    var props = contextProperties(page: .videoFeed, locationContext: .videoFeed)
+
+    props["video_feed_video_id"] = videoId
+    props["video_feed_project_id"] = projectId
+    props["video_feed_position_in_session"] = positionInSession
+
+    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
+  }
+
+  /// Call when the user swipes to a new video.
+  public func trackVideoFeedSwipe(
+    videoId: String,
+    projectId: String,
+    positionInSession: Int,
+    fromVideoId: String,
+    totalWatchTimeMs: Int,
+    totalVideoDurationMs: Int
+  ) {
+    var props = contextProperties(page: .videoFeed, locationContext: .videoFeed)
+
+    props["video_feed_video_id"] = videoId
+    props["video_feed_project_id"] = projectId
+    props["video_feed_position_in_session"] = positionInSession
+    props["video_feed_from_video_id"] = fromVideoId
+    props["video_feed_total_watch_time"] = totalWatchTimeMs
+    props["video_feed_total_video_duration"] = totalVideoDurationMs
+
+    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
+  }
+
   // MARK: - Onboarding Events
 
   /**
