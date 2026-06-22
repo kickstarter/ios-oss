@@ -414,6 +414,13 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     guard !scrollView.isDragging else { return }
 
     self.isScrolling = false
+
+    let pageHeight = self.collectionView.bounds.height
+    guard pageHeight > 0 else { return }
+
+    let currentPage = Int(round(self.collectionView.contentOffset.y / pageHeight))
+
+    self.viewModel.trackPageViewed(atIndex: currentPage)
     self.activateCurrentPageCell()
   }
 
