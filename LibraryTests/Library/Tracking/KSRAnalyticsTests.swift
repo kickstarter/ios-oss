@@ -2132,6 +2132,109 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(30_000, segmentClient.properties.last?["video_feed_total_video_duration"] as? Int)
   }
 
+  func testTrackVideoFeedCTAClicked_Play() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      segmentClient: segmentClient,
+      appTrackingTransparency: self.appTrackingTransparency
+    )
+
+    ksrAnalytics.trackVideoFeedCTAClicked(
+      ctaContext: .videoFeedPlay,
+      videoId: "video_123",
+      projectId: "project_456"
+    )
+
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual("video_feed", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("video_feed_play", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("video_123", segmentClient.properties.last?["video_feed_video_id"] as? String)
+    XCTAssertEqual("project_456", segmentClient.properties.last?["video_feed_project_id"] as? String)
+  }
+
+  func testTrackVideoFeedCTAClicked_Pause() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      segmentClient: segmentClient,
+      appTrackingTransparency: self.appTrackingTransparency
+    )
+
+    ksrAnalytics.trackVideoFeedCTAClicked(
+      ctaContext: .videoFeedPause,
+      videoId: "video_123",
+      projectId: "project_456"
+    )
+
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual("video_feed", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("video_feed_pause", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("video_123", segmentClient.properties.last?["video_feed_video_id"] as? String)
+    XCTAssertEqual("project_456", segmentClient.properties.last?["video_feed_project_id"] as? String)
+  }
+
+  func testTrackVideoFeedCTAClicked_Save() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      segmentClient: segmentClient,
+      appTrackingTransparency: self.appTrackingTransparency
+    )
+
+    ksrAnalytics.trackVideoFeedCTAClicked(
+      ctaContext: .videoFeedSave,
+      videoId: "video_123",
+      projectId: "project_456"
+    )
+
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual("video_feed", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("video_feed_save", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("video_123", segmentClient.properties.last?["video_feed_video_id"] as? String)
+    XCTAssertEqual("project_456", segmentClient.properties.last?["video_feed_project_id"] as? String)
+  }
+
+  func testTrackVideoFeedCTAClicked_Share() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      segmentClient: segmentClient,
+      appTrackingTransparency: self.appTrackingTransparency
+    )
+
+    ksrAnalytics.trackVideoFeedCTAClicked(
+      ctaContext: .videoFeedShare,
+      videoId: "video_123",
+      projectId: "project_456"
+    )
+
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual("video_feed", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("video_feed_share", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("video_123", segmentClient.properties.last?["video_feed_video_id"] as? String)
+    XCTAssertEqual("project_456", segmentClient.properties.last?["video_feed_project_id"] as? String)
+  }
+
+  func testTrackVideoFeedProgressBarTapped() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      segmentClient: segmentClient,
+      appTrackingTransparency: self.appTrackingTransparency
+    )
+
+    ksrAnalytics.trackVideoFeedProgressBarTapped(
+      videoId: "video_123",
+      projectId: "project_456",
+      positionInSession: 1,
+      percentageWatched: 0.45
+    )
+
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual("video_feed", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("video_feed_progress_bar", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("video_123", segmentClient.properties.last?["video_feed_video_id"] as? String)
+    XCTAssertEqual("project_456", segmentClient.properties.last?["video_feed_project_id"] as? String)
+    XCTAssertEqual(1, segmentClient.properties.last?["video_feed_position_in_session"] as? Int)
+    XCTAssertEqual(0.45, segmentClient.properties.last?["video_feed_percentage_watched"] as? Float)
+  }
+
   /*
    Helper for testing pledgeProperties from a template Reward
    */
