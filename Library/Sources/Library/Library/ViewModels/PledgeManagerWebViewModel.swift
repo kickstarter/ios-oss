@@ -248,7 +248,8 @@ private func isUnpreparedSupportedRequest(request: URLRequest) -> Bool {
 }
 
 private func isSupportedRequest(request: URLRequest) -> Bool {
-  guard case (.project(_, .pledgeManagerWebview, _, _))? = Navigation.match(request) else { return false }
+  let navigation = Navigation.match(request)
+  guard case (.project(_, .pledgeManagerWebview, _, _))? = navigation else { return false }
   return true
 }
 
