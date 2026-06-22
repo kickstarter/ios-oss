@@ -76,6 +76,7 @@ public final class KSRAnalytics {
     case thanks // ThanksViewController
     case twoFactorAuth = "two_factor_auth" // TwoFactorViewController
     case updatePledge = "update_pledge" // PledgeViewController
+    case videoFeed = "video_feed" // VideoFeedViewController
   }
 
   /// Determines the authentication type for login or signup events.
@@ -189,6 +190,11 @@ public final class KSRAnalytics {
     case signUpSubmit
     case surveyResponseInitiate
     case toggleRewardReceived
+    case videoFeedPlay
+    case videoFeedPause
+    case videoFeedSave
+    case videoFeedShare
+    case videoFeedProgressBar
     case watchProject
     /// Onboarding CTA Context
     case onboardingClose
@@ -239,6 +245,11 @@ public final class KSRAnalytics {
       case .signUpSubmit: return "sign_up_submit"
       case .surveyResponseInitiate: return "survey_response_initiate"
       case .toggleRewardReceived: return "toggle_reward_received"
+      case .videoFeedPlay: return "video_feed_play"
+      case .videoFeedPause: return "video_feed_pause"
+      case .videoFeedSave: return "video_feed_save"
+      case .videoFeedShare: return "video_feed_share"
+      case .videoFeedProgressBar: return "video_feed_progress_bar"
       case .watchProject: return "watch_project"
       }
     }
@@ -516,6 +527,7 @@ public final class KSRAnalytics {
     case globalNav
     case recommendations
     case searchResults
+    case videoFeed
 
     var trackingString: String {
       switch self {
@@ -527,6 +539,7 @@ public final class KSRAnalytics {
       case .globalNav: return "global_nav"
       case .recommendations: return "recommendations"
       case .searchResults: return "search_results"
+      case .videoFeed: return "video_feed"
       }
     }
   }
