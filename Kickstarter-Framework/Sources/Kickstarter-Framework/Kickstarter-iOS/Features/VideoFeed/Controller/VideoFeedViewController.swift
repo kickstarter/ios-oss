@@ -77,9 +77,10 @@ final class VideoFeedViewController: UIViewController {
     self.navigationController?.setNavigationBarHidden(true, animated: animated)
     self.viewModel.viewWillAppear()
 
-    DispatchQueue.main.async {
-      self.reconfigureVisibleCell()
-      self.activateCurrentPageCell()
+    /// Dispatching so item state updates on the project page (to handle project saves for example) before we reconfigure the cell.
+    DispatchQueue.main.async { [weak self] in
+      self?.reconfigureVisibleCell()
+      self?.activateCurrentPageCell()
     }
   }
 
