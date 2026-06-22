@@ -30,6 +30,8 @@ public protocol VideoFeedViewModelType: AnyObject {
   func clearLoginIntent()
   /// Clears the save error after the toast has been shown.
   func clearSaveFailedItemId()
+  /// Tracks a swipe to a new video, then fires an impression for the incoming video.
+  func trackPageViewed(atIndex index: Int)
 }
 
 @Observable
@@ -58,6 +60,8 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
 
   /// Tracks in-flight watch/unwatch requests.
   private var pendingWatchRequests: [String: Disposable] = [:]
+
+  private var lastPageIndex: Int = 0
 
   // MARK: - Init
 
@@ -141,6 +145,12 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
       self.items[index].watchesCount += 1
     }
 
+    AppEnvironment.current.ksrAnalytics.trackVideoFeedCTAClicked(
+      ctaContext: .videoFeedSave,
+      videoId: item.id,
+      projectId: item.projectId
+    )
+
     let producer = wasSaved
       ? AppEnvironment.current.apiService.unwatchProject(input: .init(id: projectId))
       : AppEnvironment.current.apiService.watchProject(input: .init(id: projectId))
@@ -168,6 +178,30 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
 
   public func clearSaveFailedItemId() {
     self.saveFailedItemId = nil
+  }
+
+  public func trackPageViewed(atIndex index: Int) {
+    guard index < self.items.count else { return }
+
+    let incoming = self.items[index]
+    let outgoing = self.items[self.lastPageIndex]
+
+    AppEnvironment.current.ksrAnalytics.trackVideoFeedSwipe(
+      videoId: incoming.id,
+      projectId: incoming.projectId,
+      positionInSession: index,
+      fromVideoId: outgoing.id,
+      totalWatchTimeMs: 0,
+      totalVideoDurationMs: 0
+    )
+
+    AppEnvironment.current.ksrAnalytics.trackVideoFeedImpression(
+      videoId: incoming.id,
+      projectId: incoming.projectId,
+      positionInSession: index
+    )
+
+    self.lastPageIndex = index
   }
 
   // MARK: - Private
@@ -203,6 +237,12 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
       self.fetchedItems = nodes.map(VideoFeedItem.init)
       self.items = self.fetchedItems
       self.isLoading = false
+
+      AppEnvironment.current.ksrAnalytics.trackVideoFeedImpression(
+        videoId: self.items[0].id,
+        projectId: self.items[0].projectId,
+        positionInSession: 0
+      )
     } catch {
       self.isLoading = false
       self.errorMessage = error.localizedDescription
