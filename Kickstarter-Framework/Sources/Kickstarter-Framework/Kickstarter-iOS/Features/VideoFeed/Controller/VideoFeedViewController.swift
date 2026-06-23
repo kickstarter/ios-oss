@@ -357,9 +357,21 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
 
     cell.onCloseTapped = { [weak self] in self?.dismiss(animated: true) }
     cell.onCreatorTapped = { [weak self] in self?.goToCreatorProfile(for: item) }
-    cell.onShareTapped = { [weak self] in self?.simpleAlert(title: "Share") }
+    cell.onShareTapped = { [weak self] in
+      self?.simpleAlert(title: "Share")
+      self?.viewModel.trackCTAClicked(ctaContext: .videoFeedShare, item: item)
+    }
     cell.onMoreTapped = { [weak self] in self?.simpleAlert(title: "More") }
     cell.onCTATapped = { [weak self] in self?.goToProjectPage(for: item) }
+    cell.onPauseTapped = { [weak self] in
+      self?.viewModel.trackCTAClicked(ctaContext: .videoFeedPause, item: item)
+    }
+    cell.onResumeTapped = { [weak self] in
+      self?.viewModel.trackCTAClicked(ctaContext: .videoFeedPlay, item: item)
+    }
+    cell.onProgressBarTapped = { [weak self] percentageWatched in
+      self?.trackProgressBarTapped(item: item, percentageWatched: percentageWatched)
+    }
 
     cell.configureWith(
       item: Binding(
@@ -439,6 +451,19 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
   }
 
   // MARK: - Helpers
+
+  private func trackProgressBarTapped(item: VideoFeedItem, percentageWatched: Float) {
+    let pageHeight = self.collectionView.bounds.height
+    let positionInSession = pageHeight > 0
+      ? Int(round(self.collectionView.contentOffset.y / pageHeight))
+      : 0
+
+    self.viewModel.trackProgressBarTapped(
+      item: item,
+      positionInSession: positionInSession,
+      percentageWatched: percentageWatched
+    )
+  }
 
   private func simpleAlert(title: String) {
     let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)

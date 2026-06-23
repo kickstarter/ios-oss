@@ -32,6 +32,10 @@ public protocol VideoFeedViewModelType: AnyObject {
   func clearSaveFailedItemId()
   /// Tracks a swipe to a new video, then fires an impression for the incoming video.
   func trackPageViewed(atIndex index: Int)
+  /// Tracks a CTA tap in the video feed (play, pause, save, share).
+  func trackCTAClicked(ctaContext: KSRAnalytics.CTAContext, item: VideoFeedItem)
+  /// Tracks progress bar scrubs in the video feed.
+  func trackProgressBarTapped(item: VideoFeedItem, positionInSession: Int, percentageWatched: Float)
 }
 
 @Observable
@@ -202,6 +206,23 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
     )
 
     self.lastPageIndex = index
+  }
+
+  public func trackCTAClicked(ctaContext: KSRAnalytics.CTAContext, item: VideoFeedItem) {
+    AppEnvironment.current.ksrAnalytics.trackVideoFeedCTAClicked(
+      ctaContext: ctaContext,
+      videoId: item.id,
+      projectId: item.projectId
+    )
+  }
+
+  public func trackProgressBarTapped(item: VideoFeedItem, positionInSession: Int, percentageWatched: Float) {
+    AppEnvironment.current.ksrAnalytics.trackVideoFeedProgressBarTapped(
+      videoId: item.id,
+      projectId: item.projectId,
+      positionInSession: positionInSession,
+      percentageWatched: percentageWatched
+    )
   }
 
   // MARK: - Private
