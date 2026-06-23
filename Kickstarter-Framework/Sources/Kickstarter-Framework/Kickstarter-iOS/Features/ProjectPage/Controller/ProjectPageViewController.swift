@@ -54,18 +54,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   internal var overlayView: OverlayView? = OverlayView(frame: .zero)
 
   static var projectPageModalPresentationStyle: UIModalPresentationStyle {
-    // iPad always presents with .fullScreen.
-    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-      return .fullScreen
-    }
+    /// This used to be `.formSheet` on iPhone, and `.fullScreen` on iPad.
+    /// We changed it to always be `.fullScreen`.
 
-    let experiment = FullScreenCheckoutExperiment()
-    guard let isFullScreen = experiment.boolValue(forKey: .fullscreen_project_page) else {
-      // Default to .formSheet if the experiment can't be found
-      return .formSheet
-    }
-
-    return isFullScreen ? .fullScreen : .formSheet
+    return .fullScreen
   }
 
   static func navigationController(withViewControllers viewControllers: [UIViewController])
@@ -653,32 +645,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       }
   }
 
-  private func shouldPushSPC() -> Bool {
-    let experiment = FullScreenCheckoutExperiment()
-    guard let shouldPush = experiment.boolValue(forKey: .push_spc) else {
-      // The old (default) behavior is that SPC is pushed, not presented.
-      return true
-    }
-
-    return shouldPush
-  }
-
   private func goToSimilarProject(_ param: any ProjectPageParam) {
-    if self.shouldPushSPC() {
-      let vc = ProjectPageViewController.configuredWith(
-        projectOrParam: .right(param),
-        refInfo: RefInfo(.similarProjects)
-      )
-
-      assert(
-        self.navigationController.isSome,
-        "The project page requires a navigation controller to push SPC."
-      )
-
-      self.navigationController?.pushViewController(vc, animated: true)
-      return
-    }
-
     let nav = ProjectPageViewController.navigationController(
       withProjectOrParam: .right(param),
       refInfo: RefInfo(.similarProjects)
@@ -782,39 +749,19 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.present(nav, animated: true, completion: nil)
   }
 
-  private func shouldPushPledgeFlow() -> Bool {
-    let experiment = FullScreenCheckoutExperiment()
-    guard let shouldPush = experiment.boolValue(forKey: .push_pledge_flow) else {
-      return false
-    }
-
-    return shouldPush
-  }
-
   private func goToRewards(project: Project, refTag: RefTag?, secretRewardToken: String?) {
-    if self.shouldPushPledgeFlow() {
-      let vc = RewardsCollectionViewController.rewardsController(
-        with: project,
-        refTag: refTag,
-        secretRewardToken: secretRewardToken
-      )
-
-      assert(
-        self.navigationController.isSome,
-        "The project page requires a navigation controller to push the rewards flow."
-      )
-
-      self.navigationController?.pushViewController(vc, animated: true)
-      return
-    }
-
-    let vc = RewardsCollectionViewController.navigationController(
+    let vc = RewardsCollectionViewController.rewardsController(
       with: project,
       refTag: refTag,
       secretRewardToken: secretRewardToken
     )
 
-    self.present(vc, animated: true)
+    assert(
+      self.navigationController.isSome,
+      "The project page requires a navigation controller to push the rewards flow."
+    )
+
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToManagePledge(params: ManagePledgeViewParamConfigData) {
