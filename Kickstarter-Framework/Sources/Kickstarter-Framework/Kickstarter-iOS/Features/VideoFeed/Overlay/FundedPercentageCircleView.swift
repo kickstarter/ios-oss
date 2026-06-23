@@ -6,7 +6,7 @@ import SwiftUI
 /// The circle animates from 0% up to the target `fundedPercent` when the view appears.
 struct FundedPercentageCircleView: View {
   private enum Constants {
-    static let size: CGFloat = 40
+    static let baseSize: CGFloat = 40
     static let lineWidth: CGFloat = 6
     static let animationDuration: Double = 1.25
     static let innerCircleOpacity: Double = 0.3
@@ -19,6 +19,7 @@ struct FundedPercentageCircleView: View {
   var animationDisabled: Bool = false
 
   @State private var animatedProgress: Double
+  @ScaledMetric private var size: CGFloat = Constants.baseSize
 
   /// SwiftUI's `@State` initializes before `onAppear` fires, so we need a custom init so that
   /// the snapshot tests can capture a filled in circle.
@@ -37,7 +38,7 @@ struct FundedPercentageCircleView: View {
       self.FilledCircle
       self.PercentFundedAmount
     }
-    .frame(width: Constants.size, height: Constants.size)
+    .frame(width: self.size, height: self.size)
     .onAppear {
       guard UIView.areAnimationsEnabled else { return }
 
@@ -91,10 +92,13 @@ struct FundedPercentageCircleView: View {
       }
     } else {
       Text("\(self.fundedPercent)")
-        .font(Font(UIFont.ksr_caption1()).bold())
+        .font(Font(UIFont.ksr_caption1()))
+        .bold()
         .foregroundColor(Color(Colors.Text.light.uiColor()))
         .monospacedDigit()
         .lineLimit(1)
+        .minimumScaleFactor(0.5)
+        .padding(Constants.lineWidth)
     }
   }
 }
