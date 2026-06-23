@@ -88,6 +88,18 @@ internal final class PledgeManagerWebViewController: WebViewController {
       .observeValues { [weak self] request in
         self?.webView.load(request)
       }
+
+    self.viewModel.outputs.presentDownloadShareSheet
+      .observeForControllerAction()
+      .observeValues { [weak self] fileURL in
+        self?.presentDownloadShareSheet(for: fileURL)
+      }
+
+    self.viewModel.outputs.showDownloadErrorAlert
+      .observeForControllerAction()
+      .observeValues { [weak self] message in
+        self?.present(UIAlertController.genericError(message), animated: true)
+      }
   }
 
   @objc fileprivate func closeButtonTapped() {
@@ -104,6 +116,55 @@ internal final class PledgeManagerWebViewController: WebViewController {
         navigationAction: WKNavigationActionData(navigationAction: navigationAction)
       )
     )
+  }
+
+  internal override func webView(
+    _: WKWebView,
+    decidePolicyFor navigationResponse: WKNavigationResponse,
+    decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
+  ) {
+    decisionHandler(
+      self.viewModel.inputs.decidePolicyFor(
+        navigationResponse: WKNavigationResponseData(navigationResponse: navigationResponse)
+      )
+    )
+  }
+
+  internal func webView(
+    _: WKWebView,
+    navigationAction _: WKNavigationAction,
+    didBecome download: WKDownload
+  ) {
+    self.viewModel.inputs.webViewDidStartDownload(download)
+  }
+
+  internal func webView(
+    _: WKWebView,
+    navigationResponse _: WKNavigationResponse,
+    didBecome download: WKDownload
+  ) {
+    self.viewModel.inputs.webViewDidStartDownload(download)
+  }
+
+  // MARK: - Downloads
+
+  fileprivate func presentDownloadShareSheet(for fileURL: URL) {
+    let controller = UIActivityViewController(activityItems: [fileURL], applicationActivities: nil)
+
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      controller.modalPresentationStyle = .popover
+      let popover = controller.popoverPresentationController
+      popover?.sourceView = self.webView
+      popover?.sourceRect = CGRect(
+        x: self.webView.bounds.midX,
+        y: self.webView.bounds.midY,
+        width: 0,
+        height: 0
+      )
+      popover?.permittedArrowDirections = []
+    }
+
+    self.present(controller, animated: true, completion: nil)
   }
 
   // MARK: - Handle login

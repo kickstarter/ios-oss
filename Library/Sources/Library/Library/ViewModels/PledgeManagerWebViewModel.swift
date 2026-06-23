@@ -23,8 +23,14 @@ public protocol PledgeManagerWebViewModelInputs {
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
   func decidePolicyFor(navigationAction: WKNavigationActionData) -> WKNavigationActionPolicy
 
+  /// Call when the webview needs to decide a policy for a navigation response. Returns the decision policy.
+  func decidePolicyFor(navigationResponse: WKNavigationResponseData) -> WKNavigationResponsePolicy
+
   /// Call when view model should handle fetching the necessary data and trigger `goToUpdate`.
   func fetchUpdateVCData(param: Param, updateId: Int)
+
+  /// Call when the webview hands off a download to be managed natively.
+  func webViewDidStartDownload(_ download: WKDownload)
 
   /// Call when the user session starts.
   func userSessionStarted()
@@ -45,6 +51,12 @@ public protocol PledgeManagerWebViewModelOutputs {
 
   /// Emits a login intent that should be used to log in.
   var goToLoginSignup: Signal<LoginIntent, Never> { get }
+
+  /// Emits the on-disk location of a finished download that should be shared.
+  var presentDownloadShareSheet: Signal<URL, Never> { get }
+
+  /// Emits an error message that should be shown when a download fails.
+  var showDownloadErrorAlert: Signal<String, Never> { get }
 
   /// Emits a title, if any, that should be shown in the top bar.
   /// `nil` should reset the view to have no title.
@@ -143,20 +155,24 @@ public final class PledgeManagerWebViewModel: PledgeManagerWebViewModelType {
     self.policyDecisionProperty <~ newNavigationAction
       .map { action in
         if isStripeNavigationAction(action) {
-          return true
+          return .allow
+        }
+
+        if isDownloadAction(action) {
+          return .download
         }
 
         // A supported request will be prepared by logic elsewhere in the class and loaded into
         // the web view from there. Never allow the unprepared version of these to render.
         let request = action.request
         if isSupportedRequest(request: request) {
-          return AppEnvironment.current.apiService.isPrepared(request: request)
+          return AppEnvironment.current.apiService.isPrepared(request: request) ? .allow : .cancel
         }
 
         // If the corresponding native navigation request exists,
         // this request will be handled elsewhere.
         if nativeNavigationRequestForURLRequest(request) != nil {
-          return false
+          return .cancel
         }
 
         // Log unrecognized urls.
@@ -167,18 +183,56 @@ public final class PledgeManagerWebViewModel: PledgeManagerWebViewModelType {
         // Never show unsupported kickstarter navigation requests, since these
         // can get the user into bad/weird states.
         if isKickstarterRequest(request) {
-          return false
+          return .cancel
         }
 
-        return featureBypassPledgeManagerDecisionPolicyEnabled()
+        return featureBypassPledgeManagerDecisionPolicyEnabled() ? .allow : .cancel
       }
-      .map { $0 ? .allow : .cancel }
 
     self.webViewLoadRequest = Signal.merge(
       initialRequest,
       newUnpreparedRequest
     )
     .map { request in AppEnvironment.current.apiService.preparedRequest(forRequest: request) }
+
+    // Mirror Safari: render anything the web view can display inline, and treat
+    // everything else as a file download.
+    self.navigationResponsePolicyProperty <~ self.policyForNavigationResponseProperty.signal.skipNil()
+      .map { navigationResponse in
+        navigationResponse.canShowMIMEType ? .allow : .download
+      }
+
+    // Wrap each `WKDownload` in an object that owns its delegate and file
+    // lifecycle, then translate its reactive events into outputs.
+    let newDownload = self.startedDownloadProperty.signal.skipNil()
+      .map(WebViewDownload.init(download:))
+
+    let downloadCompleted = newDownload
+      .flatMap(.merge) { download in download.completed.map { url in (download, url) } }
+
+    let downloadFailed = newDownload
+      .flatMap(.merge) { download in download.failed.map { error in (download, error) } }
+
+    self.presentDownloadShareSheet = downloadCompleted.map(second)
+
+    self.showDownloadErrorAlert = downloadFailed
+      .map { _ in Strings.Something_went_wrong_please_try_again() }
+
+    // `WKDownload` only holds its delegate weakly, so retain each wrapper while
+    // it is in flight and release it once it terminates.
+    let terminatedDownload = Signal.merge(
+      downloadCompleted.map(first),
+      downloadFailed.map(first)
+    )
+
+    self.activeDownloadsProperty <~ Signal.merge(
+      newDownload.map { download in (true, download) },
+      terminatedDownload.map { download in (false, download) }
+    )
+    .scan([]) { (current: [WebViewDownload], next: (Bool, WebViewDownload)) -> [WebViewDownload] in
+      let (isStarting, download) = next
+      return isStarting ? current + [download] : current.filter { $0 !== download }
+    }
   }
 
   fileprivate let closeButtonTappedProperty = MutableProperty(())
@@ -190,6 +244,21 @@ public final class PledgeManagerWebViewModel: PledgeManagerWebViewModelType {
     self.policyForNavigationActionProperty.value = navigationAction
     return self.policyDecisionProperty.value
   }
+
+  fileprivate let policyForNavigationResponseProperty = MutableProperty<WKNavigationResponseData?>(nil)
+  fileprivate let navigationResponsePolicyProperty = MutableProperty(WKNavigationResponsePolicy.allow)
+  public func decidePolicyFor(navigationResponse: WKNavigationResponseData) -> WKNavigationResponsePolicy {
+    self.policyForNavigationResponseProperty.value = navigationResponse
+    return self.navigationResponsePolicyProperty.value
+  }
+
+  fileprivate let startedDownloadProperty = MutableProperty<WKDownload?>(nil)
+  public func webViewDidStartDownload(_ download: WKDownload) {
+    self.startedDownloadProperty.value = download
+  }
+
+  /// Retains in-flight download wrappers; see `init` for details.
+  private let activeDownloadsProperty = MutableProperty<[WebViewDownload]>([])
 
   fileprivate let initialUrlProperty = MutableProperty<String?>(nil)
   public func configureWith(url: String) {
@@ -214,6 +283,8 @@ public final class PledgeManagerWebViewModel: PledgeManagerWebViewModelType {
   public let presentUpdateVC: Signal<(Project, Update), Never>
   public let webViewLoadRequest: Signal<URLRequest, Never>
   public let goToLoginSignup: Signal<LoginIntent, Never>
+  public let presentDownloadShareSheet: Signal<URL, Never>
+  public let showDownloadErrorAlert: Signal<String, Never>
   public let title: Signal<String?, Never>
 
   public var inputs: PledgeManagerWebViewModelInputs { return self }
@@ -263,6 +334,15 @@ private func isStripeNavigationAction(_ actionData: WKNavigationActionData) -> B
     return true
   }
   return false
+}
+
+private func isDownloadAction(_ actionData: WKNavigationActionData) -> Bool {
+  let downloadDomains = ["s3.amazonaws.com"]
+  if let host = actionData.request.url?.host(), downloadDomains.contains(where: { host.hasSuffix($0) }) {
+    return true
+  } else {
+    return false
+  }
 }
 
 private func isStripeHost(_ host: String) -> Bool {

@@ -324,6 +324,26 @@ final class PledgeManagerWebViewModelTests: TestCase {
       WKNavigationActionPolicy.allow
     )
   }
+
+  // MARK: - Download tests
+
+  func testDecidePolicyForNavigationResponse_DisplayableMIMEType_Allows() {
+    let response = WKNavigationResponseData(canShowMIMEType: true, response: URLResponse())
+
+    XCTAssertEqual(
+      self.vm.inputs.decidePolicyFor(navigationResponse: response),
+      WKNavigationResponsePolicy.allow
+    )
+  }
+
+  func testDecidePolicyForNavigationResponse_NonDisplayableMIMEType_Downloads() {
+    let response = WKNavigationResponseData(canShowMIMEType: false, response: URLResponse())
+
+    XCTAssertEqual(
+      self.vm.inputs.decidePolicyFor(navigationResponse: response),
+      WKNavigationResponsePolicy.download
+    )
+  }
 }
 
 // MARK: - Helpers
