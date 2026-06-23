@@ -312,14 +312,10 @@ final class VideoFeedViewController: UIViewController {
 
   private func goToCreatorProfile(for item: VideoFeedItem) {
     let vc = ProjectCreatorViewController.configuredWith(project: item)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
 
-    if self.traitCollection.userInterfaceIdiom == .pad {
-      let nav = UINavigationController(rootViewController: vc)
-      nav.modalPresentationStyle = .formSheet
-      self.present(nav, animated: true)
-    } else {
-      self.navigationController?.pushViewController(vc, animated: true)
-    }
+    self.present(nav, animated: true)
   }
 
   private func goToProjectPage(for item: VideoFeedItem) {
