@@ -58,6 +58,7 @@ struct VideoFeedOverlayView: View {
             .frame(width: Constants.closeButtonSize, height: Constants.closeButtonSize)
         }
       }
+      .contentShape(Rectangle())
       .padding(.leading, Constants.horizontalPadding)
       .padding(.top, Constants.topSafeAreaPadding)
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -135,20 +136,22 @@ struct VideoFeedOverlayView: View {
     let icon = Library.image(named: "video-feed-play-icon")
 
     if let icon {
-      Image(uiImage: icon)
-        .resizable()
-        .scaledToFit()
-        .foregroundColor(Color(Colors.Icon.light.uiColor()))
-        .offset(x: Constants.playIconOffset)
-        .frame(width: Constants.playIconSize, height: Constants.playIconSize)
-        /// Second larger frame to create the frosted glass ring.
-        .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
-        .background(FrostedGlassBackgroundView())
-        .clipShape(Circle())
-        .opacity(self.playbackState.isPlayButtonVisible ? 1 : 0)
-        .animation(.easeInOut(duration: 0.15), value: self.playbackState.isPlayButtonVisible)
-        .accessibilityLabel(Strings.Play())
-        .accessibilityAddTraits(.isButton)
+      Button(action: { self.playbackState.resume() }) {
+        Image(uiImage: icon)
+          .resizable()
+          .scaledToFit()
+          .foregroundColor(Color(Colors.Icon.light.uiColor()))
+          .offset(x: Constants.playIconOffset)
+          .frame(width: Constants.playIconSize, height: Constants.playIconSize)
+          /// Second larger frame to create the frosted glass ring.
+          .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
+          .background(FrostedGlassBackgroundView())
+          .clipShape(Circle())
+      }
+      .opacity(self.playbackState.isPlayButtonVisible ? 1 : 0)
+      .animation(.easeInOut(duration: 0.15), value: self.playbackState.isPlayButtonVisible)
+      .accessibilityLabel(Strings.Play())
+      .accessibilityHidden(!self.playbackState.isPlayButtonVisible)
     }
   }
 

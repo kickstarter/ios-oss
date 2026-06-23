@@ -97,8 +97,10 @@ struct FundedPercentageCircleView: View {
         .foregroundColor(Color(Colors.Text.light.uiColor()))
         .monospacedDigit()
         .lineLimit(1)
-        .minimumScaleFactor(0.5)
+        .minimumScaleFactor(0.7)
+        .allowsTightening(true)
         .padding(Constants.lineWidth)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
   }
 }
