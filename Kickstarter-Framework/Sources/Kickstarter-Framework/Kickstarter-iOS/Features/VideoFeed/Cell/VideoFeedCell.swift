@@ -144,6 +144,15 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.playbackState.pause()
   }
 
+  /// Duration of the current video in milliseconds
+  var currentVideoDurationMs: Int? {
+    guard let duration = self.videoPlayer.player.currentItem?.duration, duration.isNumeric,
+          duration.seconds > 0
+    else { return nil }
+
+    return Int(duration.seconds * 1_000)
+  }
+
   // MARK: - Toast View
 
   private func resetToasts() {
