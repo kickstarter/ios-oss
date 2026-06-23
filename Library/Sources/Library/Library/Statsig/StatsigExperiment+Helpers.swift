@@ -17,8 +17,6 @@ public extension StatsigExperimentName {
       return iOSTestExperiment()
     case .ios_test_experiment_in_layer:
       return iOSTestExperimentInLayer()
-    case .fullscreen_checkout_experience_experiment:
-      return FullScreenCheckoutExperiment()
     case .logged_in_aa_experiment:
       return NullExperimentWithUserID()
     case .logged_out_aa_experiment:
