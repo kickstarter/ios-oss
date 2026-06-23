@@ -29,7 +29,6 @@ struct VideoFeedRightRailView: View {
     VStack(spacing: Constants.railSpacing) {
       self.creatorAvatar
       self.saveButton
-      self.shareButton
     }
   }
 
