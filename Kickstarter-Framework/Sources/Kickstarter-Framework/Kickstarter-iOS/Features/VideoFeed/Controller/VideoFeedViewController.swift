@@ -429,7 +429,21 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
 
     let currentPage = Int(round(self.collectionView.contentOffset.y / pageHeight))
 
-    self.viewModel.trackPageViewed(atIndex: currentPage)
+    /// The departing cell is the one still partially on-screen that the user swiped away from.
+    /// It hasn't been recycled yet so we can still read its watch time and duration.
+    let departingCell = self.collectionView.visibleCells
+      .compactMap { $0 as? VideoFeedCell }
+      .first { cell in
+        guard let indexPath = self.collectionView.indexPath(for: cell) else { return false }
+
+        return indexPath.item != currentPage
+      }
+
+    self.viewModel.trackPageViewed(
+      atIndex: currentPage,
+      totalWatchTimeMs: departingCell?.watchTimeMs ?? 0,
+      totalVideoDurationMs: departingCell?.currentVideoDurationMs ?? 0
+    )
     self.activateCurrentPageCell()
   }
 
@@ -457,7 +471,6 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     let positionInSession = pageHeight > 0
       ? Int(round(self.collectionView.contentOffset.y / pageHeight))
       : 0
-
     self.viewModel.trackProgressBarTapped(
       item: item,
       positionInSession: positionInSession,

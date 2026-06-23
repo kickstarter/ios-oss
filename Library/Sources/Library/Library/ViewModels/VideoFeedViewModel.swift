@@ -31,10 +31,9 @@ public protocol VideoFeedViewModelType: AnyObject {
   /// Clears the save error after the toast has been shown.
   func clearSaveFailedItemId()
   /// Tracks a swipe to a new video, then fires an impression for the incoming video.
-  func trackPageViewed(atIndex index: Int)
+  func trackPageViewed(atIndex index: Int, totalWatchTimeMs: Int, totalVideoDurationMs: Int)
   /// Tracks a CTA tap in the video feed (play, pause, save, share).
   func trackCTAClicked(ctaContext: KSRAnalytics.CTAContext, item: VideoFeedItem)
-  /// Tracks progress bar scrubs in the video feed.
   func trackProgressBarTapped(item: VideoFeedItem, positionInSession: Int, percentageWatched: Float)
 }
 
@@ -184,7 +183,7 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
     self.saveFailedItemId = nil
   }
 
-  public func trackPageViewed(atIndex index: Int) {
+  public func trackPageViewed(atIndex index: Int, totalWatchTimeMs: Int, totalVideoDurationMs: Int) {
     guard index < self.items.count else { return }
 
     let incoming = self.items[index]
@@ -195,8 +194,8 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
       projectId: incoming.projectId,
       positionInSession: index,
       fromVideoId: outgoing.id,
-      totalWatchTimeMs: 0,
-      totalVideoDurationMs: 0
+      totalWatchTimeMs: totalWatchTimeMs,
+      totalVideoDurationMs: totalVideoDurationMs
     )
 
     AppEnvironment.current.ksrAnalytics.trackVideoFeedImpression(
