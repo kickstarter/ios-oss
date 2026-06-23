@@ -47,6 +47,7 @@ struct VideoFeedRightRailView: View {
   @ViewBuilder
   private var avatarImage: some View {
     KFImage(self.item.creatorImageURL)
+      .fade(duration: 0.3)
       .placeholder {
         if let image = Library.image(named: Constants.avatarPlaceholderIcon) {
           Image(uiImage: image)
