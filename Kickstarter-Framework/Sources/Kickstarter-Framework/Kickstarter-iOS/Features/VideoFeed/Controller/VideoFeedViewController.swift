@@ -312,8 +312,15 @@ final class VideoFeedViewController: UIViewController {
 
   private func goToCreatorProfile(for item: VideoFeedItem) {
     let vc = ProjectCreatorViewController.configuredWith(project: item)
+    vc.isPresentedFromVideoFeed = true
+
     let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = .formSheet
+
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      nav.modalPresentationStyle = .formSheet
+    } else {
+      nav.modalPresentationStyle = .fullScreen
+    }
 
     self.present(nav, animated: true)
   }
