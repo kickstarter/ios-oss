@@ -133,6 +133,20 @@ final class VideoFeedViewModelTests: TestCase {
     XCTAssertEqual(self.vm.items.first?.watchesCount, originalCount - 1, "Count should decrement on unsave.")
   }
 
+  func testToggleSaved_WatchesCount_NeverDropsBelowOne_OnUnsave() async {
+    let mockData = Self.mockVideoFeedQueryData(itemCount: 1, isWatched: true, watchesCount: 1)
+
+    await withEnvironment(apiService: MockService(fetchGraphQLResponses: [(VideoFeedQuery.self, mockData)])) {
+      await self.vm.fetchVideoFeed()
+    }
+
+    let item = try! XCTUnwrap(self.vm.items.first)
+
+    self.vm.toggleSaved(for: item)
+
+    XCTAssertEqual(self.vm.items.first?.watchesCount, 1, "Count should not drop below 1 on unsave.")
+  }
+
   func testToggleSaved_OnlyAffectsSelectItems() async {
     let mockData = Self.mockVideoFeedQueryData(itemCount: 3, isWatched: false)
 
@@ -147,6 +161,48 @@ final class VideoFeedViewModelTests: TestCase {
     XCTAssertFalse(self.vm.items[0].isSaved, "First item should be unaffected.")
     XCTAssertTrue(self.vm.items[1].isSaved, "Second item should be toggled.")
     XCTAssertFalse(self.vm.items[2].isSaved, "Third item should be unaffected.")
+  }
+
+  func testToggleSaved_RapidTaps_OnlyLastRequestWins() async {
+    let mockData = Self.mockVideoFeedQueryData(itemCount: 1, isWatched: false)
+
+    await withEnvironment(apiService: MockService(fetchGraphQLResponses: [(VideoFeedQuery.self, mockData)])) {
+      await self.vm.fetchVideoFeed()
+    }
+
+    let item = try! XCTUnwrap(self.vm.items.first)
+
+    /// Tap 3 times rapidly: save, unsave, save.
+    self.vm.toggleSaved(for: item)
+    self.vm.toggleSaved(for: self.vm.items.first!)
+    self.vm.toggleSaved(for: self.vm.items.first!)
+
+    /// Final optimistic state should reflect the last tap (saved).
+    XCTAssertTrue(self.vm.items.first?.isSaved == true, "Final state should reflect last tap.")
+    XCTAssertNil(self.vm.saveFailedItemId, "No error toast should show for cancelled intermediate requests.")
+  }
+
+  func testToggleSaved_RapidTaps_CountIsConsistent() async {
+    let mockData = Self.mockVideoFeedQueryData(itemCount: 1, isWatched: false)
+
+    await withEnvironment(apiService: MockService(fetchGraphQLResponses: [(VideoFeedQuery.self, mockData)])) {
+      await self.vm.fetchVideoFeed()
+    }
+
+    let originalCount = self.vm.items.first!.watchesCount
+    let item = try! XCTUnwrap(self.vm.items.first)
+
+    /// Tap twice: save then unsave.
+    self.vm.toggleSaved(for: item)
+    self.vm.toggleSaved(for: self.vm.items.first!)
+
+    /// Final optimistic state should be back to unsaved with original count.
+    XCTAssertFalse(self.vm.items.first?.isSaved == true)
+    XCTAssertEqual(
+      self.vm.items.first?.watchesCount,
+      originalCount,
+      "Count should return to original after save then unsave."
+    )
   }
 
   func testFetchVideoFeed_SetsIsWatched() async {
@@ -278,7 +334,8 @@ final class VideoFeedViewModelTests: TestCase {
     itemCount: Int,
     hlsSrc: String? = nil,
     previewImageUrl: String? = nil,
-    isWatched: Bool = false
+    isWatched: Bool = false,
+    watchesCount: Int = 3
   ) -> VideoFeedQuery.Data {
     let nodes: [VideoFeedQuery.Data.VideoFeed.Node] = (0..<itemCount).map { i in
       let pledged = VideoFeedQuery.Data.VideoFeed.Node.Project.Pledged(amount: "1000")
@@ -315,7 +372,7 @@ final class VideoFeedViewModelTests: TestCase {
         category: category,
         verticalVideo: verticalVideo,
         sharesCount: 2,
-        watchesCount: 3
+        watchesCount: watchesCount
       )
 
       return VideoFeedQuery.Data.VideoFeed.Node(badges: [], project: project)
