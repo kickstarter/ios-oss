@@ -203,6 +203,75 @@ final class VideoFeedViewModelTests: TestCase {
     XCTAssertEqual(vm2.items.first?.isSaved, false, "Should not save if user is still logged out.")
   }
 
+  // MARK: - Analytics
+
+  func testTrackPageViewed_FiresOnSwipeForDepartingVideo() async {
+    let mockData = Self.mockVideoFeedQueryData(itemCount: 3)
+    var propertiesList: [[String: Any]] = []
+
+    await withEnvironment(
+      apiService: MockService(fetchGraphQLResponses: [(VideoFeedQuery.self, mockData)]),
+      appTrackingTransparency: self.appTrackingTransparency
+    ) {
+      await self.vm.fetchVideoFeed()
+
+      AppEnvironment.current.ksrAnalytics.logEventCallback = { _, props in
+        propertiesList.append(props)
+      }
+
+      self.vm.trackPageViewed(atIndex: 1, totalWatchTimeMs: 3_000, totalVideoDurationMs: 8_000)
+    }
+
+    let swipeProps = propertiesList.first
+    XCTAssertEqual("project-0", swipeProps?["video_feed_from_video_id"] as? String)
+    XCTAssertEqual("project-1", swipeProps?["video_feed_video_id"] as? String)
+    XCTAssertEqual(3_000, swipeProps?["video_feed_total_watch_time"] as? Int)
+    XCTAssertEqual(8_000, swipeProps?["video_feed_total_video_duration"] as? Int)
+  }
+
+  func testTrackPageViewed_FiresImpressionOfIncomingVideo() async {
+    let mockData = Self.mockVideoFeedQueryData(itemCount: 3)
+    var propertiesList: [[String: Any]] = []
+
+    await withEnvironment(
+      apiService: MockService(fetchGraphQLResponses: [(VideoFeedQuery.self, mockData)]),
+      appTrackingTransparency: self.appTrackingTransparency
+    ) {
+      await self.vm.fetchVideoFeed()
+
+      AppEnvironment.current.ksrAnalytics.logEventCallback = { _, props in
+        propertiesList.append(props)
+      }
+
+      self.vm.trackPageViewed(atIndex: 1, totalWatchTimeMs: 5_000, totalVideoDurationMs: 10_000)
+    }
+
+    let impressionProps = propertiesList.last
+    XCTAssertEqual("project-1", impressionProps?["video_feed_video_id"] as? String)
+    XCTAssertEqual(1, impressionProps?["video_feed_position_in_session"] as? Int)
+    XCTAssertEqual("video_feed", impressionProps?["context_page"] as? String)
+  }
+
+  func testFetchVideoFeed_FiresImpressionForFirstItem() async {
+    let mockData = Self.mockVideoFeedQueryData(itemCount: 3)
+    var propertiesList: [[String: Any]] = []
+
+    await withEnvironment(
+      apiService: MockService(fetchGraphQLResponses: [(VideoFeedQuery.self, mockData)]),
+      appTrackingTransparency: self.appTrackingTransparency
+    ) {
+      AppEnvironment.current.ksrAnalytics.logEventCallback = { _, props in
+        propertiesList.append(props)
+      }
+
+      await self.vm.fetchVideoFeed()
+    }
+
+    let impressionProps = propertiesList.last
+    XCTAssertEqual("project-0", impressionProps?["video_feed_video_id"] as? String)
+    XCTAssertEqual(0, impressionProps?["video_feed_position_in_session"] as? Int)
+  }
+
   // MARK: - Helpers
 
   private static func mockVideoFeedQueryData(
