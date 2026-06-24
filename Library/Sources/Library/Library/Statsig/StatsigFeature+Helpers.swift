@@ -19,6 +19,11 @@ public func statsigFeatureEnabled(feature: StatsigFeature) -> Bool {
   return false
 }
 
+/// Returns whether the project story rich text feature is enabled for the current user.
+public func featureProjectStoryRichTextEnabled() -> Bool {
+  statsigFeatureEnabled(feature: .projectStoryRichText)
+}
+
 /// Returns whether the video feed feature is enabled for the current user.
 public func featureVideoFeedEnabled() -> Bool {
   statsigFeatureEnabled(feature: .videoFeed)
