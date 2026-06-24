@@ -23,16 +23,20 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     static let toastTopGap: CGFloat = 8
   }
 
-  var onCloseTapped: (() -> Void)?
-  var onCreatorTapped: (() -> Void)?
-  var onShareTapped: (() -> Void)?
-  var onMoreTapped: (() -> Void)?
-  var onCTATapped: (() -> Void)?
-  var onVideoReady: (() -> Void)?
-  var onVideoFailed: (() -> Void)?
-  var onPauseTapped: (() -> Void)?
-  var onResumeTapped: (() -> Void)?
-  var onProgressBarTapped: ((Float) -> Void)?
+  enum Event {
+    case closeTapped
+    case creatorTapped
+    case shareTapped
+    case moreTapped
+    case ctaTapped
+    case videoReady
+    case videoFailed
+    case pauseTapped
+    case resumeTapped
+    case progressBarTapped(Float)
+  }
+
+  var onEvent: ((Event) -> Void)?
 
   private(set) var currentItemId: String?
 
@@ -75,16 +79,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   override func prepareForReuse() {
     super.prepareForReuse()
-    self.onCloseTapped = nil
-    self.onCreatorTapped = nil
-    self.onShareTapped = nil
-    self.onMoreTapped = nil
-    self.onCTATapped = nil
-    self.onVideoReady = nil
-    self.onVideoFailed = nil
-    self.onPauseTapped = nil
-    self.onResumeTapped = nil
-    self.onProgressBarTapped = nil
+    self.onEvent = nil
     self.currentItemId = nil
     self.resetToasts()
     self.playbackState.reset()
@@ -107,12 +102,12 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
         item: item,
         playbackState: self.playbackState,
         videoPlayer: self.videoPlayer,
-        onCloseTapped: { [weak self] in self?.onCloseTapped?() },
-        onCreatorTapped: { [weak self] in self?.onCreatorTapped?() },
-        onShareTapped: { [weak self] in self?.onShareTapped?() },
-        onMoreTapped: { [weak self] in self?.onMoreTapped?() },
+        onCloseTapped: { [weak self] in self?.onEvent?(.closeTapped) },
+        onCreatorTapped: { [weak self] in self?.onEvent?(.creatorTapped) },
+        onShareTapped: { [weak self] in self?.onEvent?(.shareTapped) },
+        onMoreTapped: { [weak self] in self?.onEvent?(.moreTapped) },
         onCTATapped: { [weak self] in self?.ctaTapped() },
-        onProgressBarTapped: { [weak self] progress in self?.onProgressBarTapped?(progress) }
+        onProgressBarTapped: { [weak self] progress in self?.onEvent?(.progressBarTapped(progress)) }
       )
     }
     .margins(.all, 0)
@@ -120,7 +115,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   func ctaTapped() {
     self.playbackState.pause()
-    self.onCTATapped?()
+    self.onEvent?(.ctaTapped)
   }
 
   // MARK: - Video Playback
@@ -223,14 +218,14 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     self.videoPlayer.onVideoReady = { [weak self] in
       guard let self else { return }
       self.playbackState.videoDidBecomeReady()
-      self.onVideoReady?()
+      self.onEvent?(.videoReady)
     }
 
     self.videoPlayer.onVideoFailed = { [weak self] in
       guard let self else { return }
       self.playbackState.videoDidFail()
       self.showVideoErrorToast()
-      self.onVideoFailed?()
+      self.onEvent?(.videoFailed)
     }
   }
 
@@ -246,10 +241,10 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   @objc private func cellTapped() {
     if self.playbackState.isPlaying {
       self.playbackState.pause()
-      self.onPauseTapped?()
+      self.onEvent?(.pauseTapped)
     } else {
       self.playbackState.resume()
-      self.onResumeTapped?()
+      self.onEvent?(.resumeTapped)
     }
   }
 }
