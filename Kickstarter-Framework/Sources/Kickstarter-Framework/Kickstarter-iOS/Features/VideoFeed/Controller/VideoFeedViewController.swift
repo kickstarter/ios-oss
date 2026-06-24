@@ -25,6 +25,7 @@ final class VideoFeedViewController: UIViewController {
   private var lifecycleObservers: [any NSObjectProtocol] = []
   private var previewImagePrefetcher: ImagePrefetcher?
   private var isScrolling = false
+  private var currentPageIndex: Int = 0
 
   /// Called once the first batch of items has loaded and the feed is ready to present.
   var onReadyToPresent: (() -> Void)?
@@ -190,6 +191,7 @@ final class VideoFeedViewController: UIViewController {
 
   /// Reloads the collection view with a fresh set of fetched items.
   private func updateFeedWithFetchedItems(_ newItems: [VideoFeedItem]) {
+    self.currentPageIndex = 0
     self.dataSource.load(newItems)
     self.collectionView.reloadData()
 
@@ -427,23 +429,22 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     let pageHeight = self.collectionView.bounds.height
     guard pageHeight > 0 else { return }
 
-    let currentPage = Int(round(self.collectionView.contentOffset.y / pageHeight))
+    let newPageIndex = Int(round(self.collectionView.contentOffset.y / pageHeight))
 
-    /// The departing cell is the one still partially on-screen that the user swiped away from.
-    /// It hasn't been recycled yet so we can still read its watch time and duration.
+    /// Look up the departing cell directly by the last known page index.
     let departingCell = self.collectionView.visibleCells
       .compactMap { $0 as? VideoFeedCell }
-      .first { cell in
-        guard let indexPath = self.collectionView.indexPath(for: cell) else { return false }
-
-        return indexPath.item != currentPage
+      .first {
+        self.collectionView.indexPath(for: $0)?.item == self.currentPageIndex
       }
 
     self.viewModel.trackPageViewed(
-      atIndex: currentPage,
+      atIndex: newPageIndex,
       totalWatchTimeMs: departingCell?.watchTimeMs ?? 0,
       totalVideoDurationMs: departingCell?.currentVideoDurationMs ?? 0
     )
+
+    self.currentPageIndex = newPageIndex
     self.activateCurrentPageCell()
   }
 
