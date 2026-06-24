@@ -7,6 +7,8 @@ import WebKit
 internal final class ProjectCreatorViewController: WebViewController {
   fileprivate let viewModel: ProjectCreatorViewModelType = ProjectCreatorViewModel()
 
+  var isPresentedFromVideoFeed = false
+
   internal static func configuredWith(project: any ProjectCreatorConfiguration)
     -> ProjectCreatorViewController {
     let vc = ProjectCreatorViewController()
@@ -20,7 +22,7 @@ internal final class ProjectCreatorViewController: WebViewController {
 
     self.navigationItem.title = Strings.project_subpages_menu_buttons_creator()
 
-    if self.traitCollection.userInterfaceIdiom == .pad {
+    if self.traitCollection.userInterfaceIdiom == .pad || self.isPresentedFromVideoFeed {
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(self.closeButtonTapped))
     }
   }
@@ -53,7 +55,7 @@ internal final class ProjectCreatorViewController: WebViewController {
     self.viewModel.outputs.goBackToProject
       .observeForControllerAction()
       .observeValues { [weak self] in
-        if self?.traitCollection.userInterfaceIdiom == .pad {
+        if self?.traitCollection.userInterfaceIdiom == .pad || self?.isPresentedFromVideoFeed == true {
           self?.dismiss(animated: true, completion: nil)
         } else {
           self?.navigationController?.popViewController(animated: true)
