@@ -76,6 +76,7 @@ public final class KSRAnalytics {
     case thanks // ThanksViewController
     case twoFactorAuth = "two_factor_auth" // TwoFactorViewController
     case updatePledge = "update_pledge" // PledgeViewController
+    case videoFeed = "video_feed" // VideoFeedViewController
   }
 
   /// Determines the authentication type for login or signup events.
@@ -189,6 +190,11 @@ public final class KSRAnalytics {
     case signUpSubmit
     case surveyResponseInitiate
     case toggleRewardReceived
+    case videoFeedPlay
+    case videoFeedPause
+    case videoFeedSave
+    case videoFeedShare
+    case videoFeedProgressBar
     case watchProject
     /// Onboarding CTA Context
     case onboardingClose
@@ -239,6 +245,11 @@ public final class KSRAnalytics {
       case .signUpSubmit: return "sign_up_submit"
       case .surveyResponseInitiate: return "survey_response_initiate"
       case .toggleRewardReceived: return "toggle_reward_received"
+      case .videoFeedPlay: return "video_feed_play"
+      case .videoFeedPause: return "video_feed_pause"
+      case .videoFeedSave: return "video_feed_save"
+      case .videoFeedShare: return "video_feed_share"
+      case .videoFeedProgressBar: return "video_feed_progress_bar"
       case .watchProject: return "watch_project"
       }
     }
@@ -516,6 +527,7 @@ public final class KSRAnalytics {
     case globalNav
     case recommendations
     case searchResults
+    case videoFeed
 
     var trackingString: String {
       switch self {
@@ -527,6 +539,7 @@ public final class KSRAnalytics {
       case .globalNav: return "global_nav"
       case .recommendations: return "recommendations"
       case .searchResults: return "search_results"
+      case .videoFeed: return "video_feed"
       }
     }
   }
@@ -1420,6 +1433,75 @@ public final class KSRAnalytics {
     }
 
     return props.withAllValuesFrom(["login_intent": intent.trackingString])
+  }
+
+  // MARK: - VideoFeed Events
+
+  /// Call when a video becomes the actively visible item, including on first load.
+  public func trackVideoFeedImpression(
+    videoId: String,
+    projectId: String,
+    positionInSession: Int
+  ) {
+    var props = contextProperties(page: .videoFeed, locationContext: .videoFeed)
+
+    props["video_feed_video_id"] = videoId
+    props["video_feed_project_id"] = projectId
+    props["video_feed_position_in_session"] = positionInSession
+
+    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
+  }
+
+  /// Call when the user swipes to a new video.
+  public func trackVideoFeedSwipe(
+    videoId: String,
+    projectId: String,
+    positionInSession: Int,
+    fromVideoId: String,
+    totalWatchTimeMs: Int,
+    totalVideoDurationMs: Int
+  ) {
+    var props = contextProperties(page: .videoFeed, locationContext: .videoFeed)
+
+    props["video_feed_video_id"] = videoId
+    props["video_feed_project_id"] = projectId
+    props["video_feed_position_in_session"] = positionInSession
+    props["video_feed_from_video_id"] = fromVideoId
+    props["video_feed_total_watch_time"] = totalWatchTimeMs
+    props["video_feed_total_video_duration"] = totalVideoDurationMs
+
+    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
+  }
+
+  /// Call when the user taps play, pause, save, or share in the video feed.
+  public func trackVideoFeedCTAClicked(
+    ctaContext: CTAContext,
+    videoId: String,
+    projectId: String
+  ) {
+    var props = contextProperties(ctaContext: ctaContext, page: .videoFeed)
+
+    props["video_feed_video_id"] = videoId
+    props["video_feed_project_id"] = projectId
+
+    self.track(event: SegmentEvent.ctaClicked.rawValue, properties: props)
+  }
+
+  /// Call when the user lifts their finger from the video progress bar scrubber.
+  public func trackVideoFeedProgressBarTapped(
+    videoId: String,
+    projectId: String,
+    positionInSession: Int,
+    percentageWatched: Float
+  ) {
+    var props = contextProperties(ctaContext: .videoFeedProgressBar, page: .videoFeed)
+
+    props["video_feed_video_id"] = videoId
+    props["video_feed_project_id"] = projectId
+    props["video_feed_position_in_session"] = positionInSession
+    props["video_feed_percentage_watched"] = percentageWatched
+
+    self.track(event: SegmentEvent.ctaClicked.rawValue, properties: props)
   }
 
   // MARK: - Onboarding Events

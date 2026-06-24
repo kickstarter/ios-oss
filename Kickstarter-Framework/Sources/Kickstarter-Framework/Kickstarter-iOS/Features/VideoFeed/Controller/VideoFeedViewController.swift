@@ -25,6 +25,7 @@ final class VideoFeedViewController: UIViewController {
   private var lifecycleObservers: [any NSObjectProtocol] = []
   private var previewImagePrefetcher: ImagePrefetcher?
   private var isScrolling = false
+  private var currentPageIndex: Int = 0
 
   /// Called once the first batch of items has loaded and the feed is ready to present.
   var onReadyToPresent: (() -> Void)?
@@ -190,6 +191,7 @@ final class VideoFeedViewController: UIViewController {
 
   /// Reloads the collection view with a fresh set of fetched items.
   private func updateFeedWithFetchedItems(_ newItems: [VideoFeedItem]) {
+    self.currentPageIndex = 0
     self.dataSource.load(newItems)
     self.collectionView.reloadData()
 
@@ -358,11 +360,31 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
 
     let item = items[indexPath.item]
 
-    cell.onCloseTapped = { [weak self] in self?.dismiss(animated: true) }
-    cell.onCreatorTapped = { [weak self] in self?.goToCreatorProfile(for: item) }
-    cell.onShareTapped = { [weak self] in self?.simpleAlert(title: "Share") }
-    cell.onMoreTapped = { [weak self] in self?.simpleAlert(title: "More") }
-    cell.onCTATapped = { [weak self] in self?.goToProjectPage(for: item) }
+    cell.onEvent = { [weak self] event in
+      guard let self else { return }
+
+      switch event {
+      case .closeTapped:
+        self.dismiss(animated: true)
+      case .creatorTapped:
+        self.goToCreatorProfile(for: item)
+      case .shareTapped:
+        self.simpleAlert(title: "Share")
+        self.viewModel.trackCTAClicked(ctaContext: .videoFeedShare, item: item)
+      case .moreTapped:
+        self.simpleAlert(title: "More")
+      case .ctaTapped:
+        self.goToProjectPage(for: item)
+      case .pauseTapped:
+        self.viewModel.trackCTAClicked(ctaContext: .videoFeedPause, item: item)
+      case .resumeTapped:
+        self.viewModel.trackCTAClicked(ctaContext: .videoFeedPlay, item: item)
+      case let .progressBarTapped(percentageWatched):
+        self.trackProgressBarTapped(item: item, percentageWatched: percentageWatched)
+      case .videoReady, .videoFailed:
+        break
+      }
+    }
 
     cell.configureWith(
       item: Binding(
@@ -376,8 +398,6 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
       cell.loadVideo(url: url)
     }
 
-    /// Prefetch the next cell's preview image so it's ready before the user swipes.
-    /// Cancel any in-flight prefetching first so rapid scrolling doesn't queue up old requests.
     let nextIndex = indexPath.item + 1
 
     self.previewImagePrefetcher?.stop()
@@ -414,6 +434,26 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     guard !scrollView.isDragging else { return }
 
     self.isScrolling = false
+
+    let pageHeight = self.collectionView.bounds.height
+    guard pageHeight > 0 else { return }
+
+    let newPageIndex = Int(round(self.collectionView.contentOffset.y / pageHeight))
+
+    /// Look up the departing cell directly by the last known page index.
+    let departingCell = self.collectionView.visibleCells
+      .compactMap { $0 as? VideoFeedCell }
+      .first {
+        self.collectionView.indexPath(for: $0)?.item == self.currentPageIndex
+      }
+
+    self.viewModel.trackPageViewed(
+      atIndex: newPageIndex,
+      totalWatchTimeMs: departingCell?.watchTimeMs ?? 0,
+      totalVideoDurationMs: departingCell?.currentVideoDurationMs ?? 0
+    )
+
+    self.currentPageIndex = newPageIndex
     self.activateCurrentPageCell()
   }
 
@@ -435,6 +475,18 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
   }
 
   // MARK: - Helpers
+
+  private func trackProgressBarTapped(item: VideoFeedItem, percentageWatched: Float) {
+    let pageHeight = self.collectionView.bounds.height
+    let positionInSession = pageHeight > 0
+      ? Int(round(self.collectionView.contentOffset.y / pageHeight))
+      : 0
+    self.viewModel.trackProgressBarTapped(
+      item: item,
+      positionInSession: positionInSession,
+      percentageWatched: percentageWatched
+    )
+  }
 
   private func simpleAlert(title: String) {
     let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)

@@ -11,6 +11,7 @@ struct VideoFeedProgressBarView: View {
   }
 
   let player: VideoFeedVideoPlayer
+  var onProgressBarTapped: ((Float) -> Void)?
 
   @State private var isScrubbing = false
   @State private var scrubProgress: Double = 0
@@ -55,6 +56,8 @@ struct VideoFeedProgressBarView: View {
           }
           .onEnded { value in
             self.scrubProgress = min(max(value.location.x / geo.size.width, 0), 1)
+
+            self.onProgressBarTapped?(Float(self.scrubProgress))
 
             self.player.seek(to: self.scrubProgress) { success in
               /// If Seek failed. Revert video back to where it was.

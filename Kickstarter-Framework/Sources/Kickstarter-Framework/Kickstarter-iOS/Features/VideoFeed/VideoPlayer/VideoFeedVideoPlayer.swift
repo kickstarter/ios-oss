@@ -9,6 +9,9 @@ class VideoFeedVideoPlayer {
   // MARK: - Outputs
 
   private(set) var progress: Double = 0
+  /// Total watch time in milliseconds. Excludes paused intervals.
+  /// Resets when the player stops. Does not reset on scrub.
+  private(set) var watchTimeMs: Int = 0
 
   var isPlaying: Bool { self.player.rate > 0 }
   let player = AVPlayer()
@@ -123,6 +126,7 @@ class VideoFeedVideoPlayer {
     self.player.replaceCurrentItem(with: nil)
 
     self.progress = 0
+    self.watchTimeMs = 0
 
     self.hasFiredOnReady = false
     self.hasFiredOnFailed = false
@@ -165,6 +169,11 @@ class VideoFeedVideoPlayer {
       if !self.hasFiredOnReady, time.seconds > 0 {
         self.hasFiredOnReady = true
         self.onVideoReady?()
+      }
+
+      /// Watch time only while playing (rate > 0 means not paused).
+      if self.player.rate > 0 {
+        self.watchTimeMs = Int(time.seconds * 1_000)
       }
 
       self.progress = time.seconds / duration.seconds
