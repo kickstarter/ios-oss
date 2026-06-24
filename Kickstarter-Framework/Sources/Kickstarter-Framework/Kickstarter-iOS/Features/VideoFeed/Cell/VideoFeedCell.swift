@@ -239,6 +239,8 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   /// Tapping anywhere on the cell toggles playback.
   @objc private func cellTapped() {
+    guard self.playbackState.isVideoReady else { return }
+
     if self.playbackState.isPlaying {
       self.playbackState.pause()
       self.onEvent?(.pauseTapped)
