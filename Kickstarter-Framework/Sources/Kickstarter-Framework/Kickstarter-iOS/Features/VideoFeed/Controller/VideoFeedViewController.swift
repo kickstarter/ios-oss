@@ -360,22 +360,30 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
 
     let item = items[indexPath.item]
 
-    cell.onCloseTapped = { [weak self] in self?.dismiss(animated: true) }
-    cell.onCreatorTapped = { [weak self] in self?.goToCreatorProfile(for: item) }
-    cell.onShareTapped = { [weak self] in
-      self?.simpleAlert(title: "Share")
-      self?.viewModel.trackCTAClicked(ctaContext: .videoFeedShare, item: item)
-    }
-    cell.onMoreTapped = { [weak self] in self?.simpleAlert(title: "More") }
-    cell.onCTATapped = { [weak self] in self?.goToProjectPage(for: item) }
-    cell.onPauseTapped = { [weak self] in
-      self?.viewModel.trackCTAClicked(ctaContext: .videoFeedPause, item: item)
-    }
-    cell.onResumeTapped = { [weak self] in
-      self?.viewModel.trackCTAClicked(ctaContext: .videoFeedPlay, item: item)
-    }
-    cell.onProgressBarTapped = { [weak self] percentageWatched in
-      self?.trackProgressBarTapped(item: item, percentageWatched: percentageWatched)
+    cell.onEvent = { [weak self] event in
+      guard let self else { return }
+
+      switch event {
+      case .closeTapped:
+        self.dismiss(animated: true)
+      case .creatorTapped:
+        self.goToCreatorProfile(for: item)
+      case .shareTapped:
+        self.simpleAlert(title: "Share")
+        self.viewModel.trackCTAClicked(ctaContext: .videoFeedShare, item: item)
+      case .moreTapped:
+        self.simpleAlert(title: "More")
+      case .ctaTapped:
+        self.goToProjectPage(for: item)
+      case .pauseTapped:
+        self.viewModel.trackCTAClicked(ctaContext: .videoFeedPause, item: item)
+      case .resumeTapped:
+        self.viewModel.trackCTAClicked(ctaContext: .videoFeedPlay, item: item)
+      case let .progressBarTapped(percentageWatched):
+        self.trackProgressBarTapped(item: item, percentageWatched: percentageWatched)
+      case .videoReady, .videoFailed:
+        break
+      }
     }
 
     cell.configureWith(
@@ -390,8 +398,6 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
       cell.loadVideo(url: url)
     }
 
-    /// Prefetch the next cell's preview image so it's ready before the user swipes.
-    /// Cancel any in-flight prefetching first so rapid scrolling doesn't queue up old requests.
     let nextIndex = indexPath.item + 1
 
     self.previewImagePrefetcher?.stop()
