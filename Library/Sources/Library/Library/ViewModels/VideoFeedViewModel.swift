@@ -22,7 +22,7 @@ public protocol VideoFeedViewModelType: AnyObject {
   func viewWillAppear()
   /// Fires any save the user tapped before logging in.
   func userSessionStarted()
-  /// Optimistically toggles the saved state for a project.
+  /// Optimistically toggles the saved state for a project, cancelling any in-flight request first.
   func toggleSaved(for item: VideoFeedItem)
   /// Returns a binding to the saved state for the given project ID.
   func isSaved(projectId: String) -> Binding<Bool>
@@ -63,6 +63,8 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
 
   /// Tracks in-flight watch/unwatch requests.
   private var pendingWatchRequests: [String: Disposable] = [:]
+
+  private var saveRequestTokens: [String: UUID] = [:]
 
   private var lastPageIndex: Int = 0
 
@@ -129,20 +131,28 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
     )
   }
 
-  /// Toggles the watched state for a given project.
-  /// Ignores taps while a request is already in flight.
-  /// Optimistically updates `isSaved` and `watchesCount` (Reverts both on failure).
+  /// Optimistically toggles the watched state for a given project.
+  /// Cancels any in-flight request for this item before firing a new one, so rapid taps
+  /// (e.g. save then quick-unsave) don't get into a wonky state. The optimistic state always reflects the
+  /// latest tap, and the final request always matches it.
   public func toggleSaved(for item: VideoFeedItem) {
     guard let index = self.items.firstIndex(where: { $0.id == item.id }) else { return }
-    guard self.pendingWatchRequests[item.projectId] == nil else { return }
 
     let projectId = item.projectId
+
+    /// Cancel the in-flight request if there is one before firing the new one.
+    self.pendingWatchRequests[projectId]?.dispose()
+    self.pendingWatchRequests.removeValue(forKey: projectId)
+
+    let token = UUID()
+    self.saveRequestTokens[projectId] = token
+
     let wasSaved = self.items[index].isSaved
 
     /// Optimistic update.
     if wasSaved {
       self.items[index].isSaved = false
-      self.items[index].watchesCount -= 1
+      self.items[index].watchesCount = max(0, self.items[index].watchesCount - 1)
     } else {
       self.items[index].isSaved = true
       self.items[index].watchesCount += 1
@@ -159,17 +169,21 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
       : AppEnvironment.current.apiService.watchProject(input: .init(id: projectId))
 
     let disposable = producer
-      .observe(on: QueueScheduler.main)
       .startWithResult { [weak self] result in
         guard let self, let index = self.items.firstIndex(where: { $0.id == projectId }) else { return }
+
+        /// Ignore this response if a newer tap has already replaced this request.
+        guard self.saveRequestTokens[projectId] == token else { return }
 
         if case .failure = result {
           /// Revert optimistic update on failure and surface the error toast.
           self.items[index].isSaved = wasSaved
-          self.saveFailedItemId = projectId
+          self.items[index].watchesCount = max(0, self.items[index].watchesCount + (wasSaved ? 1 : -1))
+          self.saveFailedItemId = self.items[index].id
         }
 
         self.pendingWatchRequests.removeValue(forKey: projectId)
+        self.saveRequestTokens.removeValue(forKey: projectId)
       }
 
     self.pendingWatchRequests[projectId] = disposable
