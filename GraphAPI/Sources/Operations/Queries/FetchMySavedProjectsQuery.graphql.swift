@@ -178,8 +178,6 @@ public class FetchMySavedProjectsQuery: GraphQLQuery {
         public var projectUsdExchangeRate: Double { __data["projectUsdExchangeRate"] }
         /// Where the project is based.
         public var location: Location? { __data["location"] }
-        /// Potential hurdles to project completion.
-        public var risks: String { __data["risks"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict
@@ -224,8 +222,7 @@ public class FetchMySavedProjectsQuery: GraphQLQuery {
           projectDescription: String,
           stateChangedAt: GraphAPI.DateTime,
           projectUsdExchangeRate: Double,
-          location: Location? = nil,
-          risks: String
+          location: Location? = nil
         ) {
           self.init(_dataDict: DataDict(
             data: [
@@ -264,7 +261,6 @@ public class FetchMySavedProjectsQuery: GraphQLQuery {
               "stateChangedAt": stateChangedAt,
               "projectUsdExchangeRate": projectUsdExchangeRate,
               "location": location._fieldData,
-              "risks": risks,
             ],
             fulfilledFragments: [
               ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.self),

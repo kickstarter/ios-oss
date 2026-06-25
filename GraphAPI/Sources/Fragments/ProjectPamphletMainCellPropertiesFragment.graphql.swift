@@ -5,7 +5,7 @@
 
 public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment ProjectPamphletMainCellPropertiesFragment on Project { __typename pid name projectDescription: description creator { __typename id name isBlocked imageUrl(width: 200) } state stateChangedAt image { __typename url(width: 1024) } prelaunchActivated backing { __typename id } backersCount percentFunded goal { __typename ...MoneyFragment } pledged { __typename ...MoneyFragment } currency fxRate usdExchangeRate projectUsdExchangeRate category { __typename name } location { __typename displayableName } deadlineAt launchedAt country { __typename code name } risks video { __typename videoSources { __typename hls { __typename src } high { __typename src } } } url }"#
+    #"fragment ProjectPamphletMainCellPropertiesFragment on Project { __typename pid name projectDescription: description creator { __typename id name isBlocked imageUrl(width: 200) } state stateChangedAt image { __typename url(width: 1024) } prelaunchActivated backing { __typename id } backersCount percentFunded goal { __typename ...MoneyFragment } pledged { __typename ...MoneyFragment } currency fxRate usdExchangeRate projectUsdExchangeRate category { __typename name } location { __typename displayableName } deadlineAt launchedAt country { __typename code name } video { __typename videoSources { __typename hls { __typename src } high { __typename src } } } url }"#
   }
 
   public let __data: DataDict
@@ -36,7 +36,6 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
     .field("deadlineAt", GraphAPI.DateTime?.self),
     .field("launchedAt", GraphAPI.DateTime?.self),
     .field("country", Country.self),
-    .field("risks", String.self),
     .field("video", Video?.self),
     .field("url", String.self),
   ] }
@@ -85,8 +84,6 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
   public var launchedAt: GraphAPI.DateTime? { __data["launchedAt"] }
   /// The project's country
   public var country: Country { __data["country"] }
-  /// Potential hurdles to project completion.
-  public var risks: String { __data["risks"] }
   /// A project video.
   public var video: Video? { __data["video"] }
   /// A URL to the project's page.
@@ -115,7 +112,6 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
     deadlineAt: GraphAPI.DateTime? = nil,
     launchedAt: GraphAPI.DateTime? = nil,
     country: Country,
-    risks: String,
     video: Video? = nil,
     url: String
   ) {
@@ -144,7 +140,6 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
         "deadlineAt": deadlineAt,
         "launchedAt": launchedAt,
         "country": country._fieldData,
-        "risks": risks,
         "video": video._fieldData,
         "url": url,
       ],

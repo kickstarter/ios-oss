@@ -248,8 +248,6 @@ public struct PPOCardFragment: GraphAPI.SelectionSet, Fragment {
       public var projectUsdExchangeRate: Double { __data["projectUsdExchangeRate"] }
       /// Where the project is based.
       public var location: Location? { __data["location"] }
-      /// Potential hurdles to project completion.
-      public var risks: String { __data["risks"] }
 
       public struct Fragments: FragmentContainer {
         public let __data: DataDict
@@ -296,8 +294,7 @@ public struct PPOCardFragment: GraphAPI.SelectionSet, Fragment {
         projectDescription: String,
         stateChangedAt: GraphAPI.DateTime,
         projectUsdExchangeRate: Double,
-        location: Location? = nil,
-        risks: String
+        location: Location? = nil
       ) {
         self.init(_dataDict: DataDict(
           data: [
@@ -337,7 +334,6 @@ public struct PPOCardFragment: GraphAPI.SelectionSet, Fragment {
             "stateChangedAt": stateChangedAt,
             "projectUsdExchangeRate": projectUsdExchangeRate,
             "location": location._fieldData,
-            "risks": risks,
           ],
           fulfilledFragments: [
             ObjectIdentifier(PPOCardFragment.Backing.Project.self),
