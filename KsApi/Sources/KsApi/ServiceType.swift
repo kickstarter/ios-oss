@@ -265,12 +265,11 @@ public protocol ServiceType {
   /// Uses the included `NoRewardInserter` to decide where 'No Reward' should live in the list.
   func fetchProjectRewards(
     projectId: Int,
-    sortedForShippingCountryCode: String?,
-    withNoReward: NoRewardInserter
-  )
-    -> SignalProducer<[Reward], ErrorEnvelope>
+    sortedForShippingCountry location: Location?,
+    withNoReward inserter: NoRewardInserter
+  ) -> SignalProducer<[Reward], ErrorEnvelope>
 
-  /// Fetch a single project with the specified discovery params.
+  /// Fetch a single project wit h the specified discovery params.
   func fetchProject(_ params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope>
 
   /// Fetch the newest data for a particular project from its project value.

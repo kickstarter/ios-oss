@@ -38,10 +38,14 @@ extension Project {
         }
 
         let rewardFragment = node.fragments.rewardFragment
-        let shippingRuleFragment = node.fragments.simpleShippingRulesExpandedFragment
-        let expandedShippingRules = ShippingRule.simpleShippingRulesExpanded(from: shippingRuleFragment)
+        let shippingRules = node.shippingRulesExpanded?.nodes?.compactMap { node -> ShippingRule? in
+          guard let fragment = node?.fragments.shippingRuleFragment else {
+            return nil
+          }
+          return ShippingRule.shippingRule(from: fragment)
+        }
 
-        return Reward.reward(from: rewardFragment, expandedShippingRules: expandedShippingRules)
+        return Reward.reward(from: rewardFragment, expandedShippingRules: shippingRules)
       } ?? []
 
     let noReward = Reward.noRewardReward(from: project.fragments.noRewardRewardFragment)

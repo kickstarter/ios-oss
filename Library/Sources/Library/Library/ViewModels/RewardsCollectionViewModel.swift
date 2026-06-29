@@ -616,7 +616,7 @@ private func fetchRewards(
   return AppEnvironment.current.apiService
     .fetchProjectRewards(
       projectId: project.id,
-      sortedForShippingCountryCode: location?.country,
+      sortedForShippingCountry: location,
       withNoReward: inserter
     )
 }

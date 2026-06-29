@@ -242,6 +242,7 @@ public struct Project {
   }
 
   public var rewards: [Reward] {
+    assert(false)
     return self.rewardData.rewards
   }
 

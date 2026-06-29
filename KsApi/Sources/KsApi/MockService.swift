@@ -1441,7 +1441,7 @@
 
     func fetchProjectRewards(
       projectId: Int,
-      sortedForShippingCountryCode _: String?,
+      sortedForShippingCountry location: Location?,
       withNoReward _: NoRewardInserter
     ) -> SignalProducer<[Reward], ErrorEnvelope> {
       guard let client = self.apolloClient else {
@@ -1453,7 +1453,8 @@
           projectId: projectId,
           includeShippingRules: false,
           includeLocalPickup: true,
-          location: nil
+          location: nil,
+          locationID: nil
         )
 
       return client

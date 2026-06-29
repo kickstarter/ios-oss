@@ -635,21 +635,26 @@ public struct Service: ServiceType {
 
   public func fetchProjectRewards(
     projectId: Int,
-    sortedForShippingCountryCode code: String?,
+    sortedForShippingCountry location: Location?,
     withNoReward inserter: NoRewardInserter
   ) -> SignalProducer<[Reward], ErrorEnvelope> {
     let graphCountryCode: GraphAPI.CountryCode?
-    if let code {
-      graphCountryCode = GraphAPI.CountryCode(rawValue: code)
+    let graphCountryID: String?
+
+    if let location {
+      graphCountryCode = GraphAPI.CountryCode(rawValue: location.country)
+      graphCountryID = location.graphID
     } else {
       graphCountryCode = nil
+      graphCountryID = nil
     }
 
     let query = GraphAPI.FetchSortedProjectRewardsByIdQuery(
       projectId: projectId,
       includeShippingRules: true,
       includeLocalPickup: true,
-      location: GraphQLEnum.caseOrNil(graphCountryCode)
+      location: GraphQLEnum.caseOrNil(graphCountryCode),
+      locationID: GraphQLNullable.someOrNil(graphCountryID)
     )
 
     return GraphQL.shared.client
