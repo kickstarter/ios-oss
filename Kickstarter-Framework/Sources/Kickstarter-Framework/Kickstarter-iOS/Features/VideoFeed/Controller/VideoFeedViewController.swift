@@ -63,6 +63,10 @@ final class VideoFeedViewController: UIViewController {
     self.lifecycleObservers.forEach(NotificationCenter.default.removeObserver)
   }
 
+  public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    return .portrait
+  }
+
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
