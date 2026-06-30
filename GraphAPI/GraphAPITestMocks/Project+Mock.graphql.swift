@@ -63,7 +63,6 @@ public class Project: MockObject {
     @Field<String>("projectNotice") public var projectNotice
     @Field<Bool>("projectPrelaunchActivated") public var projectPrelaunchActivated
     @Field<GraphQLEnum<GraphAPI.ProjectState>>("projectState") public var projectState
-    @Field<[Tag?]>("projectTags") public var projectTags
     @Field<Double>("projectUsdExchangeRate") public var projectUsdExchangeRate
     @Field<String>("redemptionPageUrl") public var redemptionPageUrl
     @Field<ProjectRewardConnection>("rewards") public var rewards
@@ -140,7 +139,6 @@ public extension Mock where O == Project {
     projectNotice: String? = nil,
     projectPrelaunchActivated: Bool? = nil,
     projectState: GraphQLEnum<GraphAPI.ProjectState>? = nil,
-    projectTags: [Mock<Tag>?]? = nil,
     projectUsdExchangeRate: Double? = nil,
     redemptionPageUrl: String? = nil,
     rewards: Mock<ProjectRewardConnection>? = nil,
@@ -214,7 +212,6 @@ public extension Mock where O == Project {
     _setScalar(projectNotice, for: \.projectNotice)
     _setScalar(projectPrelaunchActivated, for: \.projectPrelaunchActivated)
     _setScalar(projectState, for: \.projectState)
-    _setList(projectTags, for: \.projectTags)
     _setScalar(projectUsdExchangeRate, for: \.projectUsdExchangeRate)
     _setScalar(redemptionPageUrl, for: \.redemptionPageUrl)
     _setEntity(rewards, for: \.rewards)

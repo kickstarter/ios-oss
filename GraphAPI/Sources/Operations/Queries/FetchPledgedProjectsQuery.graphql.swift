@@ -347,12 +347,8 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                 public var pid: Int { __data["pid"] }
                 /// The project's unique URL identifier.
                 public var slug: String { __data["slug"] }
-                /// Backing Add-ons
-                public var addOns: AddOns? { __data["addOns"] }
                 /// Total backers for the project
                 public var backersCount: Int { __data["backersCount"] }
-                /// The current user's backing of this project.  Does not include inactive backings.
-                public var backing: Backing? { __data["backing"] }
                 /// The project's category.
                 public var category: Category? { __data["category"] }
                 /// Comment count - defaults to root level comments only
@@ -373,24 +369,16 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                 public var percentFunded: Int { __data["percentFunded"] }
                 /// Whether a project has activated prelaunch (can return true if project has been launched)
                 public var isPrelaunchActivated: Bool { __data["isPrelaunchActivated"] }
-                /// Tags project has been tagged with
-                public var projectTags: [ProjectTag?] { __data["projectTags"] }
                 /// Is this project configured for post-campaign pledges?
                 public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
-                /// Project rewards.
-                public var rewards: Rewards? { __data["rewards"] }
                 /// The project's current state in the state machine.
                 public var state: GraphQLEnum<GraphAPI.ProjectState> { __data["state"] }
-                /// A project video.
-                public var video: Video? { __data["video"] }
                 /// How much money is pledged to the project.
                 public var pledged: Pledged { __data["pledged"] }
                 /// Exchange rate for the current user's currency
                 public var fxRate: Double { __data["fxRate"] }
                 /// Exchange rate to US Dollars (USD), null for draft projects.
                 public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
-                /// Project updates.
-                public var posts: Posts { __data["posts"] }
                 /// The minimum amount to raise for the project to be successful.
                 public var goal: Goal? { __data["goal"] }
                 /// The project has launched
@@ -426,9 +414,7 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                   name: String,
                   pid: Int,
                   slug: String,
-                  addOns: AddOns? = nil,
                   backersCount: Int,
-                  backing: Backing? = nil,
                   category: Category? = nil,
                   commentsCount: Int,
                   country: Country,
@@ -439,15 +425,11 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                   isWatched: Bool,
                   percentFunded: Int,
                   isPrelaunchActivated: Bool,
-                  projectTags: [ProjectTag?],
                   postCampaignPledgingEnabled: Bool,
-                  rewards: Rewards? = nil,
                   state: GraphQLEnum<GraphAPI.ProjectState>,
-                  video: Video? = nil,
                   pledged: Pledged,
                   fxRate: Double,
                   usdExchangeRate: Double? = nil,
-                  posts: Posts,
                   goal: Goal? = nil,
                   isLaunched: Bool,
                   prelaunchActivated: Bool,
@@ -466,9 +448,7 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                       "name": name,
                       "pid": pid,
                       "slug": slug,
-                      "addOns": addOns._fieldData,
                       "backersCount": backersCount,
-                      "backing": backing._fieldData,
                       "category": category._fieldData,
                       "commentsCount": commentsCount,
                       "country": country._fieldData,
@@ -479,15 +459,11 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                       "isWatched": isWatched,
                       "percentFunded": percentFunded,
                       "isPrelaunchActivated": isPrelaunchActivated,
-                      "projectTags": projectTags._fieldData,
                       "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
-                      "rewards": rewards._fieldData,
                       "state": state,
-                      "video": video._fieldData,
                       "pledged": pledged._fieldData,
                       "fxRate": fxRate,
                       "usdExchangeRate": usdExchangeRate,
-                      "posts": posts._fieldData,
                       "goal": goal._fieldData,
                       "isLaunched": isLaunched,
                       "prelaunchActivated": prelaunchActivated,
@@ -593,36 +569,6 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                   }
                 }
 
-                public typealias AddOns = ProjectAnalyticsFragment.AddOns
-
-                /// PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Backing
-                ///
-                /// Parent Type: `Backing`
-                public struct Backing: GraphAPI.SelectionSet {
-                  public let __data: DataDict
-                  public init(_dataDict: DataDict) { __data = _dataDict }
-
-                  public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Backing }
-
-                  public var id: GraphAPI.ID { __data["id"] }
-
-                  public init(
-                    id: GraphAPI.ID
-                  ) {
-                    self.init(_dataDict: DataDict(
-                      data: [
-                        "__typename": GraphAPI.Objects.Backing.typename,
-                        "id": id,
-                      ],
-                      fulfilledFragments: [
-                        ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Backing.self),
-                        ObjectIdentifier(ProjectAnalyticsFragment.Backing.self),
-                        ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Backing.self)
-                      ]
-                    ))
-                  }
-                }
-
                 /// PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Category
                 ///
                 /// Parent Type: `Category`
@@ -695,44 +641,6 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                   }
                 }
 
-                public typealias ProjectTag = ProjectAnalyticsFragment.ProjectTag
-
-                public typealias Rewards = ProjectAnalyticsFragment.Rewards
-
-                /// PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Video
-                ///
-                /// Parent Type: `Video`
-                public struct Video: GraphAPI.SelectionSet {
-                  public let __data: DataDict
-                  public init(_dataDict: DataDict) { __data = _dataDict }
-
-                  public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Video }
-
-                  public var id: GraphAPI.ID { __data["id"] }
-                  /// A video's sources (hls, high, base)
-                  public var videoSources: VideoSources? { __data["videoSources"] }
-
-                  public init(
-                    id: GraphAPI.ID,
-                    videoSources: VideoSources? = nil
-                  ) {
-                    self.init(_dataDict: DataDict(
-                      data: [
-                        "__typename": GraphAPI.Objects.Video.typename,
-                        "id": id,
-                        "videoSources": videoSources._fieldData,
-                      ],
-                      fulfilledFragments: [
-                        ObjectIdentifier(FetchPledgedProjectsQuery.Data.PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Video.self),
-                        ObjectIdentifier(ProjectAnalyticsFragment.Video.self),
-                        ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Video.self)
-                      ]
-                    ))
-                  }
-
-                  public typealias VideoSources = ProjectPamphletMainCellPropertiesFragment.Video.VideoSources
-                }
-
                 /// PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Pledged
                 ///
                 /// Parent Type: `Money`
@@ -778,8 +686,6 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
                     ))
                   }
                 }
-
-                public typealias Posts = ProjectAnalyticsFragment.Posts
 
                 /// PledgeProjectsOverview.Pledges.Edge.Node.Backing.Project.Goal
                 ///

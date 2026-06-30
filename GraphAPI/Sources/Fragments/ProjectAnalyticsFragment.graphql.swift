@@ -5,7 +5,7 @@
 
 public struct ProjectAnalyticsFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment ProjectAnalyticsFragment on Project { __typename addOns { __typename totalCount } backersCount backing { __typename id } category { __typename analyticsName parentCategory { __typename analyticsName id } } commentsCount(withReplies: true) country { __typename code } creator { __typename id createdProjects { __typename totalCount } } currency deadlineAt launchedAt pid name isInPostCampaignPledgingPhase isWatched percentFunded isPrelaunchActivated: prelaunchActivated projectTags: tags(scope: DISCOVER) { __typename name } postCampaignPledgingEnabled rewards { __typename totalCount } state video { __typename id } pledged { __typename amount } fxRate usdExchangeRate posts { __typename totalCount } goal { __typename amount } }"#
+    #"fragment ProjectAnalyticsFragment on Project { __typename backersCount category { __typename analyticsName parentCategory { __typename analyticsName id } } commentsCount(withReplies: true) country { __typename code } creator { __typename id createdProjects { __typename totalCount } } currency deadlineAt launchedAt pid name isInPostCampaignPledgingPhase isWatched percentFunded isPrelaunchActivated: prelaunchActivated postCampaignPledgingEnabled state pledged { __typename amount } fxRate usdExchangeRate goal { __typename amount } }"#
   }
 
   public let __data: DataDict
@@ -14,9 +14,7 @@ public struct ProjectAnalyticsFragment: GraphAPI.SelectionSet, Fragment {
   public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Project }
   public static var __selections: [ApolloAPI.Selection] { [
     .field("__typename", String.self),
-    .field("addOns", AddOns?.self),
     .field("backersCount", Int.self),
-    .field("backing", Backing?.self),
     .field("category", Category?.self),
     .field("commentsCount", Int.self, arguments: ["withReplies": true]),
     .field("country", Country.self),
@@ -30,24 +28,16 @@ public struct ProjectAnalyticsFragment: GraphAPI.SelectionSet, Fragment {
     .field("isWatched", Bool.self),
     .field("percentFunded", Int.self),
     .field("prelaunchActivated", alias: "isPrelaunchActivated", Bool.self),
-    .field("tags", alias: "projectTags", [ProjectTag?].self, arguments: ["scope": "DISCOVER"]),
     .field("postCampaignPledgingEnabled", Bool.self),
-    .field("rewards", Rewards?.self),
     .field("state", GraphQLEnum<GraphAPI.ProjectState>.self),
-    .field("video", Video?.self),
     .field("pledged", Pledged.self),
     .field("fxRate", Double.self),
     .field("usdExchangeRate", Double?.self),
-    .field("posts", Posts.self),
     .field("goal", Goal?.self),
   ] }
 
-  /// Backing Add-ons
-  public var addOns: AddOns? { __data["addOns"] }
   /// Total backers for the project
   public var backersCount: Int { __data["backersCount"] }
-  /// The current user's backing of this project.  Does not include inactive backings.
-  public var backing: Backing? { __data["backing"] }
   /// The project's category.
   public var category: Category? { __data["category"] }
   /// Comment count - defaults to root level comments only
@@ -74,31 +64,21 @@ public struct ProjectAnalyticsFragment: GraphAPI.SelectionSet, Fragment {
   public var percentFunded: Int { __data["percentFunded"] }
   /// Whether a project has activated prelaunch (can return true if project has been launched)
   public var isPrelaunchActivated: Bool { __data["isPrelaunchActivated"] }
-  /// Tags project has been tagged with
-  public var projectTags: [ProjectTag?] { __data["projectTags"] }
   /// Is this project configured for post-campaign pledges?
   public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
-  /// Project rewards.
-  public var rewards: Rewards? { __data["rewards"] }
   /// The project's current state in the state machine.
   public var state: GraphQLEnum<GraphAPI.ProjectState> { __data["state"] }
-  /// A project video.
-  public var video: Video? { __data["video"] }
   /// How much money is pledged to the project.
   public var pledged: Pledged { __data["pledged"] }
   /// Exchange rate for the current user's currency
   public var fxRate: Double { __data["fxRate"] }
   /// Exchange rate to US Dollars (USD), null for draft projects.
   public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
-  /// Project updates.
-  public var posts: Posts { __data["posts"] }
   /// The minimum amount to raise for the project to be successful.
   public var goal: Goal? { __data["goal"] }
 
   public init(
-    addOns: AddOns? = nil,
     backersCount: Int,
-    backing: Backing? = nil,
     category: Category? = nil,
     commentsCount: Int,
     country: Country,
@@ -112,23 +92,17 @@ public struct ProjectAnalyticsFragment: GraphAPI.SelectionSet, Fragment {
     isWatched: Bool,
     percentFunded: Int,
     isPrelaunchActivated: Bool,
-    projectTags: [ProjectTag?],
     postCampaignPledgingEnabled: Bool,
-    rewards: Rewards? = nil,
     state: GraphQLEnum<GraphAPI.ProjectState>,
-    video: Video? = nil,
     pledged: Pledged,
     fxRate: Double,
     usdExchangeRate: Double? = nil,
-    posts: Posts,
     goal: Goal? = nil
   ) {
     self.init(_dataDict: DataDict(
       data: [
         "__typename": GraphAPI.Objects.Project.typename,
-        "addOns": addOns._fieldData,
         "backersCount": backersCount,
-        "backing": backing._fieldData,
         "category": category._fieldData,
         "commentsCount": commentsCount,
         "country": country._fieldData,
@@ -142,81 +116,17 @@ public struct ProjectAnalyticsFragment: GraphAPI.SelectionSet, Fragment {
         "isWatched": isWatched,
         "percentFunded": percentFunded,
         "isPrelaunchActivated": isPrelaunchActivated,
-        "projectTags": projectTags._fieldData,
         "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
-        "rewards": rewards._fieldData,
         "state": state,
-        "video": video._fieldData,
         "pledged": pledged._fieldData,
         "fxRate": fxRate,
         "usdExchangeRate": usdExchangeRate,
-        "posts": posts._fieldData,
         "goal": goal._fieldData,
       ],
       fulfilledFragments: [
         ObjectIdentifier(ProjectAnalyticsFragment.self)
       ]
     ))
-  }
-
-  /// AddOns
-  ///
-  /// Parent Type: `ProjectRewardConnection`
-  public struct AddOns: GraphAPI.SelectionSet {
-    public let __data: DataDict
-    public init(_dataDict: DataDict) { __data = _dataDict }
-
-    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.ProjectRewardConnection }
-    public static var __selections: [ApolloAPI.Selection] { [
-      .field("__typename", String.self),
-      .field("totalCount", Int.self),
-    ] }
-
-    public var totalCount: Int { __data["totalCount"] }
-
-    public init(
-      totalCount: Int
-    ) {
-      self.init(_dataDict: DataDict(
-        data: [
-          "__typename": GraphAPI.Objects.ProjectRewardConnection.typename,
-          "totalCount": totalCount,
-        ],
-        fulfilledFragments: [
-          ObjectIdentifier(ProjectAnalyticsFragment.AddOns.self)
-        ]
-      ))
-    }
-  }
-
-  /// Backing
-  ///
-  /// Parent Type: `Backing`
-  public struct Backing: GraphAPI.SelectionSet {
-    public let __data: DataDict
-    public init(_dataDict: DataDict) { __data = _dataDict }
-
-    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Backing }
-    public static var __selections: [ApolloAPI.Selection] { [
-      .field("__typename", String.self),
-      .field("id", GraphAPI.ID.self),
-    ] }
-
-    public var id: GraphAPI.ID { __data["id"] }
-
-    public init(
-      id: GraphAPI.ID
-    ) {
-      self.init(_dataDict: DataDict(
-        data: [
-          "__typename": GraphAPI.Objects.Backing.typename,
-          "id": id,
-        ],
-        fulfilledFragments: [
-          ObjectIdentifier(ProjectAnalyticsFragment.Backing.self)
-        ]
-      ))
-    }
   }
 
   /// Category
@@ -386,97 +296,6 @@ public struct ProjectAnalyticsFragment: GraphAPI.SelectionSet, Fragment {
     }
   }
 
-  /// ProjectTag
-  ///
-  /// Parent Type: `Tag`
-  public struct ProjectTag: GraphAPI.SelectionSet {
-    public let __data: DataDict
-    public init(_dataDict: DataDict) { __data = _dataDict }
-
-    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Tag }
-    public static var __selections: [ApolloAPI.Selection] { [
-      .field("__typename", String.self),
-      .field("name", String.self),
-    ] }
-
-    /// Tag name.
-    public var name: String { __data["name"] }
-
-    public init(
-      name: String
-    ) {
-      self.init(_dataDict: DataDict(
-        data: [
-          "__typename": GraphAPI.Objects.Tag.typename,
-          "name": name,
-        ],
-        fulfilledFragments: [
-          ObjectIdentifier(ProjectAnalyticsFragment.ProjectTag.self)
-        ]
-      ))
-    }
-  }
-
-  /// Rewards
-  ///
-  /// Parent Type: `ProjectRewardConnection`
-  public struct Rewards: GraphAPI.SelectionSet {
-    public let __data: DataDict
-    public init(_dataDict: DataDict) { __data = _dataDict }
-
-    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.ProjectRewardConnection }
-    public static var __selections: [ApolloAPI.Selection] { [
-      .field("__typename", String.self),
-      .field("totalCount", Int.self),
-    ] }
-
-    public var totalCount: Int { __data["totalCount"] }
-
-    public init(
-      totalCount: Int
-    ) {
-      self.init(_dataDict: DataDict(
-        data: [
-          "__typename": GraphAPI.Objects.ProjectRewardConnection.typename,
-          "totalCount": totalCount,
-        ],
-        fulfilledFragments: [
-          ObjectIdentifier(ProjectAnalyticsFragment.Rewards.self)
-        ]
-      ))
-    }
-  }
-
-  /// Video
-  ///
-  /// Parent Type: `Video`
-  public struct Video: GraphAPI.SelectionSet {
-    public let __data: DataDict
-    public init(_dataDict: DataDict) { __data = _dataDict }
-
-    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Video }
-    public static var __selections: [ApolloAPI.Selection] { [
-      .field("__typename", String.self),
-      .field("id", GraphAPI.ID.self),
-    ] }
-
-    public var id: GraphAPI.ID { __data["id"] }
-
-    public init(
-      id: GraphAPI.ID
-    ) {
-      self.init(_dataDict: DataDict(
-        data: [
-          "__typename": GraphAPI.Objects.Video.typename,
-          "id": id,
-        ],
-        fulfilledFragments: [
-          ObjectIdentifier(ProjectAnalyticsFragment.Video.self)
-        ]
-      ))
-    }
-  }
-
   /// Pledged
   ///
   /// Parent Type: `Money`
@@ -503,36 +322,6 @@ public struct ProjectAnalyticsFragment: GraphAPI.SelectionSet, Fragment {
         ],
         fulfilledFragments: [
           ObjectIdentifier(ProjectAnalyticsFragment.Pledged.self)
-        ]
-      ))
-    }
-  }
-
-  /// Posts
-  ///
-  /// Parent Type: `PostConnection`
-  public struct Posts: GraphAPI.SelectionSet {
-    public let __data: DataDict
-    public init(_dataDict: DataDict) { __data = _dataDict }
-
-    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.PostConnection }
-    public static var __selections: [ApolloAPI.Selection] { [
-      .field("__typename", String.self),
-      .field("totalCount", Int.self),
-    ] }
-
-    public var totalCount: Int { __data["totalCount"] }
-
-    public init(
-      totalCount: Int
-    ) {
-      self.init(_dataDict: DataDict(
-        data: [
-          "__typename": GraphAPI.Objects.PostConnection.typename,
-          "totalCount": totalCount,
-        ],
-        fulfilledFragments: [
-          ObjectIdentifier(ProjectAnalyticsFragment.Posts.self)
         ]
       ))
     }

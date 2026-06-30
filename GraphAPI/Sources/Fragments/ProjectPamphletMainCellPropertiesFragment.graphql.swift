@@ -5,7 +5,7 @@
 
 public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment ProjectPamphletMainCellPropertiesFragment on Project { __typename pid name projectDescription: description creator { __typename id name isBlocked imageUrl(width: 200) } state stateChangedAt image { __typename url(width: 1024) } prelaunchActivated backing { __typename id } backersCount percentFunded goal { __typename ...MoneyFragment } pledged { __typename ...MoneyFragment } currency fxRate usdExchangeRate projectUsdExchangeRate category { __typename name } location { __typename displayableName } deadlineAt launchedAt country { __typename code name } risks video { __typename videoSources { __typename hls { __typename src } high { __typename src } } } url }"#
+    #"fragment ProjectPamphletMainCellPropertiesFragment on Project { __typename pid name projectDescription: description creator { __typename id name isBlocked imageUrl(width: 200) } state stateChangedAt image { __typename url(width: 1024) } prelaunchActivated backersCount percentFunded goal { __typename ...MoneyFragment } pledged { __typename ...MoneyFragment } currency fxRate usdExchangeRate projectUsdExchangeRate category { __typename name } location { __typename displayableName } deadlineAt launchedAt country { __typename code name } risks url }"#
   }
 
   public let __data: DataDict
@@ -22,7 +22,6 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
     .field("stateChangedAt", GraphAPI.DateTime.self),
     .field("image", Image?.self),
     .field("prelaunchActivated", Bool.self),
-    .field("backing", Backing?.self),
     .field("backersCount", Int.self),
     .field("percentFunded", Int.self),
     .field("goal", Goal?.self),
@@ -37,7 +36,6 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
     .field("launchedAt", GraphAPI.DateTime?.self),
     .field("country", Country.self),
     .field("risks", String.self),
-    .field("video", Video?.self),
     .field("url", String.self),
   ] }
 
@@ -57,8 +55,6 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
   public var image: Image? { __data["image"] }
   /// Whether a project has activated prelaunch (can return true if project has been launched)
   public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
-  /// The current user's backing of this project.  Does not include inactive backings.
-  public var backing: Backing? { __data["backing"] }
   /// Total backers for the project
   public var backersCount: Int { __data["backersCount"] }
   /// What percent the project has towards meeting its funding goal.
@@ -87,8 +83,6 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
   public var country: Country { __data["country"] }
   /// Potential hurdles to project completion.
   public var risks: String { __data["risks"] }
-  /// A project video.
-  public var video: Video? { __data["video"] }
   /// A URL to the project's page.
   public var url: String { __data["url"] }
 
@@ -101,7 +95,6 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
     stateChangedAt: GraphAPI.DateTime,
     image: Image? = nil,
     prelaunchActivated: Bool,
-    backing: Backing? = nil,
     backersCount: Int,
     percentFunded: Int,
     goal: Goal? = nil,
@@ -116,7 +109,6 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
     launchedAt: GraphAPI.DateTime? = nil,
     country: Country,
     risks: String,
-    video: Video? = nil,
     url: String
   ) {
     self.init(_dataDict: DataDict(
@@ -130,7 +122,6 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
         "stateChangedAt": stateChangedAt,
         "image": image._fieldData,
         "prelaunchActivated": prelaunchActivated,
-        "backing": backing._fieldData,
         "backersCount": backersCount,
         "percentFunded": percentFunded,
         "goal": goal._fieldData,
@@ -145,7 +136,6 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
         "launchedAt": launchedAt,
         "country": country._fieldData,
         "risks": risks,
-        "video": video._fieldData,
         "url": url,
       ],
       fulfilledFragments: [
@@ -225,36 +215,6 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
         ],
         fulfilledFragments: [
           ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Image.self)
-        ]
-      ))
-    }
-  }
-
-  /// Backing
-  ///
-  /// Parent Type: `Backing`
-  public struct Backing: GraphAPI.SelectionSet {
-    public let __data: DataDict
-    public init(_dataDict: DataDict) { __data = _dataDict }
-
-    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Backing }
-    public static var __selections: [ApolloAPI.Selection] { [
-      .field("__typename", String.self),
-      .field("id", GraphAPI.ID.self),
-    ] }
-
-    public var id: GraphAPI.ID { __data["id"] }
-
-    public init(
-      id: GraphAPI.ID
-    ) {
-      self.init(_dataDict: DataDict(
-        data: [
-          "__typename": GraphAPI.Objects.Backing.typename,
-          "id": id,
-        ],
-        fulfilledFragments: [
-          ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Backing.self)
         ]
       ))
     }
@@ -449,131 +409,6 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
           ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Country.self)
         ]
       ))
-    }
-  }
-
-  /// Video
-  ///
-  /// Parent Type: `Video`
-  public struct Video: GraphAPI.SelectionSet {
-    public let __data: DataDict
-    public init(_dataDict: DataDict) { __data = _dataDict }
-
-    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Video }
-    public static var __selections: [ApolloAPI.Selection] { [
-      .field("__typename", String.self),
-      .field("videoSources", VideoSources?.self),
-    ] }
-
-    /// A video's sources (hls, high, base)
-    public var videoSources: VideoSources? { __data["videoSources"] }
-
-    public init(
-      videoSources: VideoSources? = nil
-    ) {
-      self.init(_dataDict: DataDict(
-        data: [
-          "__typename": GraphAPI.Objects.Video.typename,
-          "videoSources": videoSources._fieldData,
-        ],
-        fulfilledFragments: [
-          ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Video.self)
-        ]
-      ))
-    }
-
-    /// Video.VideoSources
-    ///
-    /// Parent Type: `VideoSources`
-    public struct VideoSources: GraphAPI.SelectionSet {
-      public let __data: DataDict
-      public init(_dataDict: DataDict) { __data = _dataDict }
-
-      public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.VideoSources }
-      public static var __selections: [ApolloAPI.Selection] { [
-        .field("__typename", String.self),
-        .field("hls", Hls?.self),
-        .field("high", High?.self),
-      ] }
-
-      public var hls: Hls? { __data["hls"] }
-      public var high: High? { __data["high"] }
-
-      public init(
-        hls: Hls? = nil,
-        high: High? = nil
-      ) {
-        self.init(_dataDict: DataDict(
-          data: [
-            "__typename": GraphAPI.Objects.VideoSources.typename,
-            "hls": hls._fieldData,
-            "high": high._fieldData,
-          ],
-          fulfilledFragments: [
-            ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Video.VideoSources.self)
-          ]
-        ))
-      }
-
-      /// Video.VideoSources.Hls
-      ///
-      /// Parent Type: `VideoSourceInfo`
-      public struct Hls: GraphAPI.SelectionSet {
-        public let __data: DataDict
-        public init(_dataDict: DataDict) { __data = _dataDict }
-
-        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.VideoSourceInfo }
-        public static var __selections: [ApolloAPI.Selection] { [
-          .field("__typename", String.self),
-          .field("src", String?.self),
-        ] }
-
-        public var src: String? { __data["src"] }
-
-        public init(
-          src: String? = nil
-        ) {
-          self.init(_dataDict: DataDict(
-            data: [
-              "__typename": GraphAPI.Objects.VideoSourceInfo.typename,
-              "src": src,
-            ],
-            fulfilledFragments: [
-              ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Video.VideoSources.Hls.self)
-            ]
-          ))
-        }
-      }
-
-      /// Video.VideoSources.High
-      ///
-      /// Parent Type: `VideoSourceInfo`
-      public struct High: GraphAPI.SelectionSet {
-        public let __data: DataDict
-        public init(_dataDict: DataDict) { __data = _dataDict }
-
-        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.VideoSourceInfo }
-        public static var __selections: [ApolloAPI.Selection] { [
-          .field("__typename", String.self),
-          .field("src", String?.self),
-        ] }
-
-        public var src: String? { __data["src"] }
-
-        public init(
-          src: String? = nil
-        ) {
-          self.init(_dataDict: DataDict(
-            data: [
-              "__typename": GraphAPI.Objects.VideoSourceInfo.typename,
-              "src": src,
-            ],
-            fulfilledFragments: [
-              ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Video.VideoSources.High.self)
-            ]
-          ))
-        }
-      }
     }
   }
 }

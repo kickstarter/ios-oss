@@ -14,9 +14,9 @@ fragment ProjectPamphletMainCellPropertiesFragment on Project {
     url(width: 1024)
   }
   prelaunchActivated
-  backing {
-    id
-  }
+  #backing {
+  #  id
+  #}
   backersCount
   percentFunded
   goal {
@@ -42,15 +42,15 @@ fragment ProjectPamphletMainCellPropertiesFragment on Project {
     name
   }
   risks
-  video {
-    videoSources {
-      hls {
-        src
-      }
-      high {
-        src
-      }
-    }
-  }
+ # video {
+ #   videoSources {
+ #     hls {
+ #       src
+ #     }
+ #     high {
+ #       src
+ #     }
+ #   }
+ # }
   url
 }

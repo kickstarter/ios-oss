@@ -217,11 +217,12 @@ extension GraphAPI.ProjectAnalyticsFragment: ProjectAnalyticsProperties {
   }
 
   public var hasAddOns: Bool {
-    (self.addOns?.totalCount ?? 0) > 0
+    return false
+    // (self.addOns?.totalCount ?? 0) > 0
   }
 
   public var hasVideo: Bool {
-    self.video != nil
+    false // self.video != nil
   }
 
   public var personalizationIsStarred: Bool? {
@@ -229,11 +230,11 @@ extension GraphAPI.ProjectAnalyticsFragment: ProjectAnalyticsProperties {
   }
 
   public var personalizationIsBacking: Bool? {
-    self.backing != nil
+    return false // self.backing != nil
   }
 
   public var rewardsCount: Int {
-    self.rewards?.totalCount ?? 0
+    return 0 // self.rewards?.totalCount ?? 0
   }
 
   public var stateValue: String {
@@ -271,10 +272,10 @@ extension GraphAPI.ProjectAnalyticsFragment: ProjectAnalyticsProperties {
   }
 
   public var statsUpdatesCount: Int? {
-    self.posts.totalCount
+    return nil // self.posts.totalCount
   }
 
   public var tags: [String]? {
-    self.projectTags.compactMap { $0?.name }
+    return nil // self.projectTags.compactMap { $0?.name }
   }
 }

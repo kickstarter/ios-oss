@@ -441,9 +441,9 @@ import Library
     )
 
     internal static let projectAnalyticsFragmentTemplate = GraphAPI.ProjectAnalyticsFragment(
-      addOns: nil,
+      // addOns: nil,
       backersCount: 42,
-      backing: nil,
+      // backing: nil,
       category: nil,
       commentsCount: 42,
       country: .init(code: GraphQLEnum.case(.us)),
@@ -457,15 +457,15 @@ import Library
       isWatched: true,
       percentFunded: 100,
       isPrelaunchActivated: false,
-      projectTags: [],
+      // projectTags: [],
       postCampaignPledgingEnabled: false,
-      rewards: nil,
+      // rewards: nil,
       state: GraphQLEnum.case(.successful),
-      video: nil,
+      //  video: nil,
       pledged: .init(amount: nil),
       fxRate: 4,
       usdExchangeRate: nil,
-      posts: ProjectAnalyticsFragment.Posts(totalCount: 0),
+      // posts: ProjectAnalyticsFragment.Posts(totalCount: 0),
       goal: nil
     )
 

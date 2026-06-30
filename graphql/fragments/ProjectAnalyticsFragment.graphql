@@ -1,12 +1,12 @@
 fragment ProjectAnalyticsFragment on Project {
-  addOns {
-    totalCount
-  }
+  #addOns {
+  #  totalCount
+  #}
 
   backersCount
-  backing {
-    id
-  }
+  #backing {
+  #  id
+  #}
 
   category {
     analyticsName
@@ -38,26 +38,26 @@ fragment ProjectAnalyticsFragment on Project {
   isWatched
   percentFunded
   isPrelaunchActivated: prelaunchActivated
-  projectTags: tags(scope: DISCOVER) {
-    name
-  }
+  #projectTags: tags(scope: DISCOVER) {
+  #  name
+  #}
   postCampaignPledgingEnabled
-  rewards {
-    totalCount
-  }
+  #rewards {
+  #  totalCount
+  #}
   state
-  video {
-    id
-  }
+  #video {
+  #  id
+  #}
 
   pledged {
     amount
   }
   fxRate
   usdExchangeRate
-  posts {
-    totalCount
-  }
+  #posts {
+  #  totalCount
+  #}
   goal {
     amount
   }

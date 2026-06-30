@@ -97,12 +97,12 @@ extension GraphAPI.ProjectPamphletMainCellPropertiesFragment: HasProjectPamphlet
       state = .failed
     }
 
-    let video: (hls: String?, high: String)?
-    if let sources = self.video?.videoSources, let high = sources.high?.src {
-      video = (hls: sources.hls?.src, high: high)
-    } else {
-      video = nil
-    }
+    let video: (hls: String?, high: String)? = nil
+    /* if let sources = self.video?.videoSources, let high = sources.high?.src {
+       video = (hls: sources.hls?.src, high: high)
+     } else {
+       video = nil
+     } */
 
     return ProjectPamphletMainCellProperties(
       param: .id(self.pid),
@@ -116,7 +116,7 @@ extension GraphAPI.ProjectPamphletMainCellPropertiesFragment: HasProjectPamphlet
       stateChangedAt: TimeInterval(self.stateChangedAt) ?? 0,
       photo: self.image?.url ?? "",
       displayPrelaunch: nil,
-      isBacking: self.backing.isSome,
+      isBacking: false, // self.backing.isSome,
       backersCount: self.backersCount,
       categoryName: self.category?.name ?? "",
       locationName: self.location?.displayableName ?? "",

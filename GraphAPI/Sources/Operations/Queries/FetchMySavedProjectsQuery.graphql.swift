@@ -140,12 +140,8 @@ public class FetchMySavedProjectsQuery: GraphQLQuery {
         public var goal: Goal? { __data["goal"] }
         /// How much money is pledged to the project.
         public var pledged: Pledged { __data["pledged"] }
-        /// Backing Add-ons
-        public var addOns: AddOns? { __data["addOns"] }
         /// Total backers for the project
         public var backersCount: Int { __data["backersCount"] }
-        /// The current user's backing of this project.  Does not include inactive backings.
-        public var backing: Backing? { __data["backing"] }
         /// The project's category.
         public var category: Category? { __data["category"] }
         /// Comment count - defaults to root level comments only
@@ -158,18 +154,10 @@ public class FetchMySavedProjectsQuery: GraphQLQuery {
         public var currency: GraphQLEnum<GraphAPI.CurrencyCode> { __data["currency"] }
         /// Whether a project has activated prelaunch (can return true if project has been launched)
         public var isPrelaunchActivated: Bool { __data["isPrelaunchActivated"] }
-        /// Tags project has been tagged with
-        public var projectTags: [ProjectTag?] { __data["projectTags"] }
-        /// Project rewards.
-        public var rewards: Rewards? { __data["rewards"] }
-        /// A project video.
-        public var video: Video? { __data["video"] }
         /// Exchange rate for the current user's currency
         public var fxRate: Double { __data["fxRate"] }
         /// Exchange rate to US Dollars (USD), null for draft projects.
         public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
-        /// Project updates.
-        public var posts: Posts { __data["posts"] }
         /// A short description of the project.
         public var projectDescription: String { __data["projectDescription"] }
         /// The last time a project's state changed, time since epoch
@@ -206,21 +194,15 @@ public class FetchMySavedProjectsQuery: GraphQLQuery {
           isWatched: Bool,
           goal: Goal? = nil,
           pledged: Pledged,
-          addOns: AddOns? = nil,
           backersCount: Int,
-          backing: Backing? = nil,
           category: Category? = nil,
           commentsCount: Int,
           country: Country,
           creator: Creator? = nil,
           currency: GraphQLEnum<GraphAPI.CurrencyCode>,
           isPrelaunchActivated: Bool,
-          projectTags: [ProjectTag?],
-          rewards: Rewards? = nil,
-          video: Video? = nil,
           fxRate: Double,
           usdExchangeRate: Double? = nil,
-          posts: Posts,
           projectDescription: String,
           stateChangedAt: GraphAPI.DateTime,
           projectUsdExchangeRate: Double,
@@ -245,21 +227,15 @@ public class FetchMySavedProjectsQuery: GraphQLQuery {
               "isWatched": isWatched,
               "goal": goal._fieldData,
               "pledged": pledged._fieldData,
-              "addOns": addOns._fieldData,
               "backersCount": backersCount,
-              "backing": backing._fieldData,
               "category": category._fieldData,
               "commentsCount": commentsCount,
               "country": country._fieldData,
               "creator": creator._fieldData,
               "currency": currency,
               "isPrelaunchActivated": isPrelaunchActivated,
-              "projectTags": projectTags._fieldData,
-              "rewards": rewards._fieldData,
-              "video": video._fieldData,
               "fxRate": fxRate,
               "usdExchangeRate": usdExchangeRate,
-              "posts": posts._fieldData,
               "projectDescription": projectDescription,
               "stateChangedAt": stateChangedAt,
               "projectUsdExchangeRate": projectUsdExchangeRate,
@@ -399,36 +375,6 @@ public class FetchMySavedProjectsQuery: GraphQLQuery {
           }
         }
 
-        public typealias AddOns = ProjectAnalyticsFragment.AddOns
-
-        /// Projects.Node.Backing
-        ///
-        /// Parent Type: `Backing`
-        public struct Backing: GraphAPI.SelectionSet {
-          public let __data: DataDict
-          public init(_dataDict: DataDict) { __data = _dataDict }
-
-          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Backing }
-
-          public var id: GraphAPI.ID { __data["id"] }
-
-          public init(
-            id: GraphAPI.ID
-          ) {
-            self.init(_dataDict: DataDict(
-              data: [
-                "__typename": GraphAPI.Objects.Backing.typename,
-                "id": id,
-              ],
-              fulfilledFragments: [
-                ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.Backing.self),
-                ObjectIdentifier(ProjectAnalyticsFragment.Backing.self),
-                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Backing.self)
-              ]
-            ))
-          }
-        }
-
         /// Projects.Node.Category
         ///
         /// Parent Type: `Category`
@@ -546,46 +492,6 @@ public class FetchMySavedProjectsQuery: GraphQLQuery {
 
           public typealias CreatedProjects = ProjectAnalyticsFragment.Creator.CreatedProjects
         }
-
-        public typealias ProjectTag = ProjectAnalyticsFragment.ProjectTag
-
-        public typealias Rewards = ProjectAnalyticsFragment.Rewards
-
-        /// Projects.Node.Video
-        ///
-        /// Parent Type: `Video`
-        public struct Video: GraphAPI.SelectionSet {
-          public let __data: DataDict
-          public init(_dataDict: DataDict) { __data = _dataDict }
-
-          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Video }
-
-          public var id: GraphAPI.ID { __data["id"] }
-          /// A video's sources (hls, high, base)
-          public var videoSources: VideoSources? { __data["videoSources"] }
-
-          public init(
-            id: GraphAPI.ID,
-            videoSources: VideoSources? = nil
-          ) {
-            self.init(_dataDict: DataDict(
-              data: [
-                "__typename": GraphAPI.Objects.Video.typename,
-                "id": id,
-                "videoSources": videoSources._fieldData,
-              ],
-              fulfilledFragments: [
-                ObjectIdentifier(FetchMySavedProjectsQuery.Data.Projects.Node.Video.self),
-                ObjectIdentifier(ProjectAnalyticsFragment.Video.self),
-                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Video.self)
-              ]
-            ))
-          }
-
-          public typealias VideoSources = ProjectPamphletMainCellPropertiesFragment.Video.VideoSources
-        }
-
-        public typealias Posts = ProjectAnalyticsFragment.Posts
 
         public typealias Location = ProjectPamphletMainCellPropertiesFragment.Location
       }

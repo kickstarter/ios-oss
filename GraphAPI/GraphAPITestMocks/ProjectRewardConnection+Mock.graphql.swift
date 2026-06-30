@@ -11,17 +11,14 @@ public class ProjectRewardConnection: MockObject {
 
   public struct MockFields {
     @Field<[Reward?]>("nodes") public var nodes
-    @Field<Int>("totalCount") public var totalCount
   }
 }
 
 public extension Mock where O == ProjectRewardConnection {
   convenience init(
-    nodes: [Mock<Reward>?]? = nil,
-    totalCount: Int? = nil
+    nodes: [Mock<Reward>?]? = nil
   ) {
     self.init()
     _setList(nodes, for: \.nodes)
-    _setScalar(totalCount, for: \.totalCount)
   }
 }

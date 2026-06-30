@@ -191,12 +191,8 @@ public class SearchQuery: GraphQLQuery {
         public var projectLaunchedAt: GraphAPI.DateTime? { __data["projectLaunchedAt"] }
         /// Is the current user watching this project?
         public var isWatched: Bool { __data["isWatched"] }
-        /// Backing Add-ons
-        public var addOns: AddOns? { __data["addOns"] }
         /// Total backers for the project
         public var backersCount: Int { __data["backersCount"] }
-        /// The current user's backing of this project.  Does not include inactive backings.
-        public var backing: Backing? { __data["backing"] }
         /// The project's category.
         public var category: Category? { __data["category"] }
         /// Comment count - defaults to root level comments only
@@ -217,22 +213,14 @@ public class SearchQuery: GraphQLQuery {
         public var percentFunded: Int { __data["percentFunded"] }
         /// Whether a project has activated prelaunch (can return true if project has been launched)
         public var isPrelaunchActivated: Bool { __data["isPrelaunchActivated"] }
-        /// Tags project has been tagged with
-        public var projectTags: [ProjectTag?] { __data["projectTags"] }
         /// Is this project configured for post-campaign pledges?
         public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
-        /// Project rewards.
-        public var rewards: Rewards? { __data["rewards"] }
         /// The project's current state in the state machine.
         public var state: GraphQLEnum<GraphAPI.ProjectState> { __data["state"] }
-        /// A project video.
-        public var video: Video? { __data["video"] }
         /// Exchange rate for the current user's currency
         public var fxRate: Double { __data["fxRate"] }
         /// Exchange rate to US Dollars (USD), null for draft projects.
         public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
-        /// Project updates.
-        public var posts: Posts { __data["posts"] }
         /// Whether a project has activated prelaunch (can return true if project has been launched)
         public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
         /// A URL to the project's page.
@@ -270,9 +258,7 @@ public class SearchQuery: GraphQLQuery {
           deadlineAt: GraphAPI.DateTime? = nil,
           projectLaunchedAt: GraphAPI.DateTime? = nil,
           isWatched: Bool,
-          addOns: AddOns? = nil,
           backersCount: Int,
-          backing: Backing? = nil,
           category: Category? = nil,
           commentsCount: Int,
           country: Country,
@@ -283,14 +269,10 @@ public class SearchQuery: GraphQLQuery {
           isInPostCampaignPledgingPhase: Bool,
           percentFunded: Int,
           isPrelaunchActivated: Bool,
-          projectTags: [ProjectTag?],
           postCampaignPledgingEnabled: Bool,
-          rewards: Rewards? = nil,
           state: GraphQLEnum<GraphAPI.ProjectState>,
-          video: Video? = nil,
           fxRate: Double,
           usdExchangeRate: Double? = nil,
-          posts: Posts,
           prelaunchActivated: Bool,
           url: String,
           projectDescription: String,
@@ -313,9 +295,7 @@ public class SearchQuery: GraphQLQuery {
               "deadlineAt": deadlineAt,
               "projectLaunchedAt": projectLaunchedAt,
               "isWatched": isWatched,
-              "addOns": addOns._fieldData,
               "backersCount": backersCount,
-              "backing": backing._fieldData,
               "category": category._fieldData,
               "commentsCount": commentsCount,
               "country": country._fieldData,
@@ -326,14 +306,10 @@ public class SearchQuery: GraphQLQuery {
               "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
               "percentFunded": percentFunded,
               "isPrelaunchActivated": isPrelaunchActivated,
-              "projectTags": projectTags._fieldData,
               "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
-              "rewards": rewards._fieldData,
               "state": state,
-              "video": video._fieldData,
               "fxRate": fxRate,
               "usdExchangeRate": usdExchangeRate,
-              "posts": posts._fieldData,
               "prelaunchActivated": prelaunchActivated,
               "url": url,
               "projectDescription": projectDescription,
@@ -479,36 +455,6 @@ public class SearchQuery: GraphQLQuery {
           }
         }
 
-        public typealias AddOns = ProjectAnalyticsFragment.AddOns
-
-        /// Projects.Node.Backing
-        ///
-        /// Parent Type: `Backing`
-        public struct Backing: GraphAPI.SelectionSet {
-          public let __data: DataDict
-          public init(_dataDict: DataDict) { __data = _dataDict }
-
-          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Backing }
-
-          public var id: GraphAPI.ID { __data["id"] }
-
-          public init(
-            id: GraphAPI.ID
-          ) {
-            self.init(_dataDict: DataDict(
-              data: [
-                "__typename": GraphAPI.Objects.Backing.typename,
-                "id": id,
-              ],
-              fulfilledFragments: [
-                ObjectIdentifier(SearchQuery.Data.Projects.Node.Backing.self),
-                ObjectIdentifier(ProjectAnalyticsFragment.Backing.self),
-                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Backing.self)
-              ]
-            ))
-          }
-        }
-
         /// Projects.Node.Category
         ///
         /// Parent Type: `Category`
@@ -626,46 +572,6 @@ public class SearchQuery: GraphQLQuery {
 
           public typealias CreatedProjects = ProjectAnalyticsFragment.Creator.CreatedProjects
         }
-
-        public typealias ProjectTag = ProjectAnalyticsFragment.ProjectTag
-
-        public typealias Rewards = ProjectAnalyticsFragment.Rewards
-
-        /// Projects.Node.Video
-        ///
-        /// Parent Type: `Video`
-        public struct Video: GraphAPI.SelectionSet {
-          public let __data: DataDict
-          public init(_dataDict: DataDict) { __data = _dataDict }
-
-          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Video }
-
-          public var id: GraphAPI.ID { __data["id"] }
-          /// A video's sources (hls, high, base)
-          public var videoSources: VideoSources? { __data["videoSources"] }
-
-          public init(
-            id: GraphAPI.ID,
-            videoSources: VideoSources? = nil
-          ) {
-            self.init(_dataDict: DataDict(
-              data: [
-                "__typename": GraphAPI.Objects.Video.typename,
-                "id": id,
-                "videoSources": videoSources._fieldData,
-              ],
-              fulfilledFragments: [
-                ObjectIdentifier(SearchQuery.Data.Projects.Node.Video.self),
-                ObjectIdentifier(ProjectAnalyticsFragment.Video.self),
-                ObjectIdentifier(ProjectPamphletMainCellPropertiesFragment.Video.self)
-              ]
-            ))
-          }
-
-          public typealias VideoSources = ProjectPamphletMainCellPropertiesFragment.Video.VideoSources
-        }
-
-        public typealias Posts = ProjectAnalyticsFragment.Posts
 
         public typealias Location = ProjectPamphletMainCellPropertiesFragment.Location
       }
