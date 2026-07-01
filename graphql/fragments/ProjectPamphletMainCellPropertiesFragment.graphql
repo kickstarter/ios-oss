@@ -41,7 +41,6 @@ fragment ProjectPamphletMainCellPropertiesFragment on Project {
     code
     name
   }
-  risks
   video {
     videoSources {
       hls {

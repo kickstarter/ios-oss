@@ -359,8 +359,7 @@ final class SimilarProjectsUseCaseTests: TestCase {
       posts: FetchSimilarProjectsQuery.Data.Projects.Node.Posts(totalCount: 0),
       projectDescription: description,
       stateChangedAt: stateChangedAt,
-      projectUsdExchangeRate: Double(projectUsdExchangeRate),
-      risks: ""
+      projectUsdExchangeRate: Double(projectUsdExchangeRate)
     )
   }
 }

@@ -28,6 +28,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "User": return GraphAPI.Objects.User
     case "UserUrl": return GraphAPI.Objects.UserUrl
     case "Location": return GraphAPI.Objects.Location
+    case "Task": return GraphAPI.Objects.Task
     case "Project": return GraphAPI.Objects.Project
     case "CreatorInterview": return GraphAPI.Objects.CreatorInterview
     case "FreeformPost": return GraphAPI.Objects.FreeformPost
@@ -59,12 +60,12 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "InterviewQuestion": return GraphAPI.Objects.InterviewQuestion
     case "InterviewAnswer": return GraphAPI.Objects.InterviewAnswer
     case "ShipStationConfiguration": return GraphAPI.Objects.ShipStationConfiguration
+    case "ZendeskTicket": return GraphAPI.Objects.ZendeskTicket
     case "Organization": return GraphAPI.Objects.Organization
     case "CuratedPage": return GraphAPI.Objects.CuratedPage
+    case "UserSettings": return GraphAPI.Objects.UserSettings
     case "SavedSearchSegment": return GraphAPI.Objects.SavedSearchSegment
     case "ProjectInvestigation": return GraphAPI.Objects.ProjectInvestigation
-    case "Task": return GraphAPI.Objects.Task
-    case "ZendeskTicket": return GraphAPI.Objects.ZendeskTicket
     case "Survey": return GraphAPI.Objects.Survey
     case "PostCommentPayload": return GraphAPI.Objects.PostCommentPayload
     case "CommentConnection": return GraphAPI.Objects.CommentConnection
