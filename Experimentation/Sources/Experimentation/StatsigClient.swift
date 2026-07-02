@@ -8,10 +8,14 @@ public let StatsigLoadedNotification = NSNotification.Name("StatsigClientDataRel
 ///
 /// See Statsig's documentation: https://docs.statsig.com/guides/using-environments
 public enum StatsigClientSDKKey {
-  /// An SDK key which will be sent to the Staging tier of Statsig.
-  case staging(String)
   /// An SDK key which will be sent to the Production tier of Statsig
-  case production(String)
+  case productionTier(String)
+
+  /// An SDK key which will be sent to the Staging tier of Statsig.
+  case stagingTier(String)
+
+  /// An SDK key which will be sent to the Development tier of Statsig.
+  case developmentTier(String)
 }
 
 /// A thin wrapper around the Statsig class `StatsigClient`.
@@ -23,12 +27,15 @@ public final class StatsigWrapper: StatsigClientType {
     let tier: StatsigEnvironment.EnvironmentTier
 
     switch sdkKey {
-    case let .production(prodKey):
+    case let .productionTier(prodKey):
       key = prodKey
       tier = .Production
-    case let .staging(stagingKey):
+    case let .stagingTier(stagingKey):
       key = stagingKey
       tier = .Staging
+    case let .developmentTier(devKey):
+      key = devKey
+      tier = .Development
     }
 
     let client = StatsigClient(
