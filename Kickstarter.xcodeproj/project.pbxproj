@@ -215,7 +215,6 @@
 		AAF549722F2445C0001DB5AC /* SettingsPrivacyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548902F2445C0001DB5AC /* SettingsPrivacyViewModelTests.swift */; };
 		AAF549732F2445C0001DB5AC /* SettingsRecommendationsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548912F2445C0001DB5AC /* SettingsRecommendationsCellViewModelTests.swift */; };
 		AAF549742F2445C0001DB5AC /* ShareViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548922F2445C0001DB5AC /* ShareViewModelTests.swift */; };
-		AAF549752F2445C0001DB5AC /* ShippingRulesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548932F2445C0001DB5AC /* ShippingRulesViewModelTests.swift */; };
 		AAF549762F2445C0001DB5AC /* SortPagerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548942F2445C0001DB5AC /* SortPagerViewModelTests.swift */; };
 		AAF549772F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548952F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift */; };
 		AAF549782F2445C0001DB5AC /* ThanksViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548962F2445C0001DB5AC /* ThanksViewModelTests.swift */; };
@@ -581,7 +580,6 @@
 		AAF548902F2445C0001DB5AC /* SettingsPrivacyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548912F2445C0001DB5AC /* SettingsRecommendationsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRecommendationsCellViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548922F2445C0001DB5AC /* ShareViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewModelTests.swift; sourceTree = "<group>"; };
-		AAF548932F2445C0001DB5AC /* ShippingRulesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingRulesViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548942F2445C0001DB5AC /* SortPagerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortPagerViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548952F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksCategoryCellViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548962F2445C0001DB5AC /* ThanksViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksViewModelTests.swift; sourceTree = "<group>"; };
@@ -1141,7 +1139,6 @@
 				AAF548902F2445C0001DB5AC /* SettingsPrivacyViewModelTests.swift */,
 				AAF548912F2445C0001DB5AC /* SettingsRecommendationsCellViewModelTests.swift */,
 				AAF548922F2445C0001DB5AC /* ShareViewModelTests.swift */,
-				AAF548932F2445C0001DB5AC /* ShippingRulesViewModelTests.swift */,
 				AAF548942F2445C0001DB5AC /* SortPagerViewModelTests.swift */,
 				AAF548952F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift */,
 				AAF548962F2445C0001DB5AC /* ThanksViewModelTests.swift */,
@@ -1844,7 +1841,6 @@
 				AAF549722F2445C0001DB5AC /* SettingsPrivacyViewModelTests.swift in Sources */,
 				AAF549732F2445C0001DB5AC /* SettingsRecommendationsCellViewModelTests.swift in Sources */,
 				AAF549742F2445C0001DB5AC /* ShareViewModelTests.swift in Sources */,
-				AAF549752F2445C0001DB5AC /* ShippingRulesViewModelTests.swift in Sources */,
 				E1BBB0482FDB0F3C0045D296 /* NoRewardInserterTests.swift in Sources */,
 				AAF549762F2445C0001DB5AC /* SortPagerViewModelTests.swift in Sources */,
 				AAF549772F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift in Sources */,
