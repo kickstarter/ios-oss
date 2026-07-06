@@ -66,6 +66,7 @@ internal struct VideoFeedBannerView: View {
         .disabled(self.state.isLoading)
         .accessibilityLabel(Strings.try_it_now())
       }
+      .frame(maxWidth: .infinity, alignment: .leading)
 
       Image("video-feed-banner-thumbnail")
         .resizable()
@@ -73,7 +74,9 @@ internal struct VideoFeedBannerView: View {
         .frame(width: Constants.thumbnailWidth, height: Constants.thumbnailHeight)
         .accessibilityHidden(true)
     }
-    .padding(Constants.cardPadding)
+    .frame(maxWidth: .infinity)
+    .padding(.vertical, Constants.cardPadding)
+    .padding(.horizontal, self.state.horizontalContentPadding)
     .background(Color(Colors.Background.Accent.Purple.banner.uiColor()))
     .cornerRadius(Constants.cardCornerRadius)
     .accessibilityElement(children: .combine)

@@ -322,6 +322,9 @@ internal final class DiscoveryPageViewController: UITableViewController,
     if let cell = cell as? VideoFeedBannerCell {
       cell.delegate = self
       cell.addHostingControllerToParent(self)
+      cell.horizontalInset = self.traitCollection.isRegularRegular
+        ? Styles.grid(30)
+        : Styles.grid(2)
     } else if let cell = cell as? DiscoveryPostcardCell {
       cell.delegate = self
     } else if let cell = cell as? ActivitySampleBackingCell, cell.delegate == nil {

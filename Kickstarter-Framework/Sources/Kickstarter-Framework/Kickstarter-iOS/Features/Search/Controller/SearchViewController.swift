@@ -262,6 +262,9 @@ internal final class SearchViewController: UITableViewController,
     if let cell = cell as? VideoFeedBannerCell {
       cell.delegate = self
       cell.addHostingControllerToParent(self)
+      cell.horizontalInset = self.traitCollection.isRegularRegular
+        ? Styles.grid(20)
+        : Styles.grid(2)
     }
 
     self.viewModel.inputs.willDisplayRow(
