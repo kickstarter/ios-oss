@@ -322,6 +322,7 @@ internal final class DiscoveryPageViewController: UITableViewController,
     if let cell = cell as? VideoFeedBannerCell {
       cell.delegate = self
       cell.addHostingControllerToParent(self)
+      /// The cell's traitCollection reflects the wrong context at this point. Reading from the VC guarantees the correct size class since the discovery vc overrides it differently.
       cell.horizontalInset = self.traitCollection.isRegularRegular
         ? Styles.grid(30)
         : Styles.grid(2)
