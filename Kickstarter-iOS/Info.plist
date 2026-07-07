@@ -71,10 +71,12 @@
 		<string>org-appextension-feature-password-management</string>
 		<string>instagram</string>
 		<string>instagram-stories</string>
+		<string>twitter</string>
 		<string>fb</string>
 		<string>facebook-stories</string>
 		<string>whatsapp</string>
-		<string>x-twitter</string>
+    <string>twitter</string>
+    <string>x-twitter</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
@@ -119,7 +121,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Add photos and video to your project updates.</string>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>We use personal data to provide a good experience on Kickstarter, and to help connect you with projects you&apos;ll love.</string>
+	<string>We use personal data to provide a good experience on Kickstarter, and to help connect you with projects you'll love.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
