@@ -69,6 +69,14 @@
 	<array>
 		<string>fbauth2</string>
 		<string>org-appextension-feature-password-management</string>
+		<string>instagram</string>
+		<string>instagram-stories</string>
+		<string>twitter</string>
+		<string>fb</string>
+		<string>facebook-stories</string>
+		<string>whatsapp</string>
+    <string>twitter</string>
+    <string>x-twitter</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
