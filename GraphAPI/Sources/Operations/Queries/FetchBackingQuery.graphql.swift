@@ -8,7 +8,7 @@ public class FetchBackingQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FetchBacking($id: ID!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment project { __typename ...ProjectFragment } paymentIncrements { __typename ...PaymentIncrementFragment } } }"#,
-      fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
+      fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
     ))
 
   public var id: ID
@@ -773,11 +773,6 @@ public class FetchBackingQuery: GraphQLQuery {
         public var deadlineAt: GraphAPI.DateTime? { __data["deadlineAt"] }
         /// A short description of the project.
         public var description: String { __data["description"] }
-        /// The environmental commitments of the project.
-        public var environmentalCommitments: [EnvironmentalCommitment?]? { __data["environmentalCommitments"] }
-        public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
-        /// List of FAQs of a project
-        public var faqs: Faqs? { __data["faqs"] }
         /// The date at which pledge collections will end
         public var finalCollectionDate: GraphAPI.ISO8601DateTime? { __data["finalCollectionDate"] }
         /// Exchange rate for the current user's currency
@@ -830,12 +825,8 @@ public class FetchBackingQuery: GraphQLQuery {
         public var posts: Posts { __data["posts"] }
         /// Whether a project has activated prelaunch (can return true if project has been launched)
         public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
-        /// The text of the currently applied project notice, empty if there is no notice
-        public var projectNotice: String? { __data["projectNotice"] }
         /// URL for redeeming the backing
         public var redemptionPageUrl: String { __data["redemptionPageUrl"] }
-        /// Potential hurdles to project completion.
-        public var risks: String { __data["risks"] }
         /// Is this project configured so that events should be triggered for Meta's Conversions API?
         public var sendMetaCapiEvents: Bool { __data["sendMetaCapiEvents"] }
         /// The project's unique URL identifier.
@@ -844,8 +835,6 @@ public class FetchBackingQuery: GraphQLQuery {
         public var state: GraphQLEnum<GraphAPI.ProjectState> { __data["state"] }
         /// The last time a project's state changed, time since epoch
         public var stateChangedAt: GraphAPI.DateTime { __data["stateChangedAt"] }
-        /// The story behind the project, parsed for presentation.
-        public var story: GraphAPI.HTML { __data["story"] }
         /// Tags project has been tagged with
         public var tags: [Tag?] { __data["tags"] }
         /// A URL to the project's page.
@@ -856,6 +845,17 @@ public class FetchBackingQuery: GraphQLQuery {
         public var video: Video? { __data["video"] }
         /// Number of watchers a project has.
         public var watchesCount: Int? { __data["watchesCount"] }
+        public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
+        /// The environmental commitments of the project.
+        public var environmentalCommitments: [EnvironmentalCommitment?]? { __data["environmentalCommitments"] }
+        /// List of FAQs of a project
+        public var faqs: Faqs? { __data["faqs"] }
+        /// The text of the currently applied project notice, empty if there is no notice
+        public var projectNotice: String? { __data["projectNotice"] }
+        /// Potential hurdles to project completion.
+        public var risks: String { __data["risks"] }
+        /// The story behind the project, parsed for presentation.
+        public var story: GraphAPI.HTML { __data["story"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict
@@ -863,6 +863,7 @@ public class FetchBackingQuery: GraphQLQuery {
 
           public var projectFragment: ProjectFragment { _toFragment() }
           public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
+          public var extendedProjectPropertiesFragment: ExtendedProjectPropertiesFragment { _toFragment() }
         }
 
         public init(
@@ -876,9 +877,6 @@ public class FetchBackingQuery: GraphQLQuery {
           currency: GraphQLEnum<GraphAPI.CurrencyCode>,
           deadlineAt: GraphAPI.DateTime? = nil,
           description: String,
-          environmentalCommitments: [EnvironmentalCommitment?]? = nil,
-          aiDisclosure: AiDisclosure? = nil,
-          faqs: Faqs? = nil,
           finalCollectionDate: GraphAPI.ISO8601DateTime? = nil,
           fxRate: Double,
           goal: Goal? = nil,
@@ -905,19 +903,22 @@ public class FetchBackingQuery: GraphQLQuery {
           postCampaignPledgingEnabled: Bool,
           posts: Posts,
           prelaunchActivated: Bool,
-          projectNotice: String? = nil,
           redemptionPageUrl: String,
-          risks: String,
           sendMetaCapiEvents: Bool,
           slug: String,
           state: GraphQLEnum<GraphAPI.ProjectState>,
           stateChangedAt: GraphAPI.DateTime,
-          story: GraphAPI.HTML,
           tags: [Tag?],
           url: String,
           usdExchangeRate: Double? = nil,
           video: Video? = nil,
-          watchesCount: Int? = nil
+          watchesCount: Int? = nil,
+          aiDisclosure: AiDisclosure? = nil,
+          environmentalCommitments: [EnvironmentalCommitment?]? = nil,
+          faqs: Faqs? = nil,
+          projectNotice: String? = nil,
+          risks: String,
+          story: GraphAPI.HTML
         ) {
           self.init(_dataDict: DataDict(
             data: [
@@ -932,9 +933,6 @@ public class FetchBackingQuery: GraphQLQuery {
               "currency": currency,
               "deadlineAt": deadlineAt,
               "description": description,
-              "environmentalCommitments": environmentalCommitments._fieldData,
-              "aiDisclosure": aiDisclosure._fieldData,
-              "faqs": faqs._fieldData,
               "finalCollectionDate": finalCollectionDate,
               "fxRate": fxRate,
               "goal": goal._fieldData,
@@ -961,24 +959,28 @@ public class FetchBackingQuery: GraphQLQuery {
               "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
               "posts": posts._fieldData,
               "prelaunchActivated": prelaunchActivated,
-              "projectNotice": projectNotice,
               "redemptionPageUrl": redemptionPageUrl,
-              "risks": risks,
               "sendMetaCapiEvents": sendMetaCapiEvents,
               "slug": slug,
               "state": state,
               "stateChangedAt": stateChangedAt,
-              "story": story,
               "tags": tags._fieldData,
               "url": url,
               "usdExchangeRate": usdExchangeRate,
               "video": video._fieldData,
               "watchesCount": watchesCount,
+              "aiDisclosure": aiDisclosure._fieldData,
+              "environmentalCommitments": environmentalCommitments._fieldData,
+              "faqs": faqs._fieldData,
+              "projectNotice": projectNotice,
+              "risks": risks,
+              "story": story,
             ],
             fulfilledFragments: [
               ObjectIdentifier(FetchBackingQuery.Data.Backing.Project.self),
               ObjectIdentifier(ProjectFragment.self),
               ObjectIdentifier(NoRewardRewardFragment.self),
+              ObjectIdentifier(ExtendedProjectPropertiesFragment.self),
               ObjectIdentifier(BackingFragment.Project.self)
             ]
           ))
@@ -1197,12 +1199,6 @@ public class FetchBackingQuery: GraphQLQuery {
 
           public typealias CreatedProjects = PublicUserFragment.CreatedProjects
         }
-
-        public typealias EnvironmentalCommitment = ProjectFragment.EnvironmentalCommitment
-
-        public typealias AiDisclosure = ProjectFragment.AiDisclosure
-
-        public typealias Faqs = ProjectFragment.Faqs
 
         /// Backing.Project.Goal
         ///
@@ -1428,6 +1424,12 @@ public class FetchBackingQuery: GraphQLQuery {
         public typealias Tag = ProjectFragment.Tag
 
         public typealias Video = ProjectFragment.Video
+
+        public typealias AiDisclosure = ExtendedProjectPropertiesFragment.AiDisclosure
+
+        public typealias EnvironmentalCommitment = ExtendedProjectPropertiesFragment.EnvironmentalCommitment
+
+        public typealias Faqs = ExtendedProjectPropertiesFragment.Faqs
       }
 
       /// Backing.PaymentIncrement
