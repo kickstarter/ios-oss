@@ -73,10 +73,8 @@ extension Project {
       .filter { $0 != "" }
       .last
 
-    let extendedProjectProperties = extendedProject(
-      from: projectFragment.fragments
-        .extendedProjectPropertiesFragment
-    )
+    let extendedFragment = projectFragment.fragments.extendedProjectPropertiesFragment
+    let extendedProjectProperties = extendedProject(from: extendedFragment)
 
     let lastWave = projectFragment.lastWave
       .flatMap { LastWave(fromFragment: $0.fragments.lastWaveFragment) }
@@ -262,11 +260,10 @@ private func projectVideo(from projectFragment: GraphAPI.ProjectFragment) -> Pro
 }
 
 /**
- Returns a `ExtendedProjectProperties` object from `ProjectFragment`
+ Returns a `ExtendedProjectProperties` object from `ExtendedProjectPropertiesFragment`
  */
 private func extendedProject(
-  from fragment: GraphAPI
-    .ExtendedProjectPropertiesFragment
+  from fragment: GraphAPI.ExtendedProjectPropertiesFragment
 ) -> ExtendedProjectProperties {
   let risks = fragment.risks
   let environmentalCommitments = extendedProjectEnvironmentalCommitments(from: fragment)
@@ -288,13 +285,12 @@ private func extendedProject(
 }
 
 /**
- Returns a `ProjectStoryElements` object from `ProjectFragment`
+ Returns a `ProjectStoryElements` object from `ExtendedProjectPropertiesFragment`
  */
 private func storyElements(
-  from projectFragment: GraphAPI
-    .ExtendedProjectPropertiesFragment
+  from fragment: GraphAPI.ExtendedProjectPropertiesFragment
 ) -> ProjectStoryElements {
-  let viewElements = Project.htmlParser.parse(bodyHtml: projectFragment.story)
+  let viewElements = Project.htmlParser.parse(bodyHtml: fragment.story)
   var seenURLStrings = Set<String>()
   var htmlElementsWithUniqueAudioVideoViewElements = [HTMLViewElement]()
 
@@ -317,16 +313,15 @@ private func storyElements(
 }
 
 /**
- Returns a `GraphQLProject.ProjectFAQ` from `ProjectFragment`
+ Returns a `GraphQLProject.ProjectFAQ` from `ExtendedProjectPropertiesFragment`
  */
 
 private func extendedProjectFAQs(
-  from projectFragment: GraphAPI
-    .ExtendedProjectPropertiesFragment
+  from fragment: GraphAPI.ExtendedProjectPropertiesFragment
 ) -> [ProjectFAQ] {
   var faqs = [ProjectFAQ]()
 
-  if let allFaqs = projectFragment.faqs?.nodes.flatMap({ $0 }) {
+  if let allFaqs = fragment.faqs?.nodes.flatMap({ $0 }) {
     for faq in allFaqs {
       guard let id = faq?.id,
             let decomposedId = decompose(id: id),
@@ -356,12 +351,11 @@ private func extendedProjectFAQs(
 }
 
 /**
- Returns a `GraphQLProject.EnvironmentalCommitment` from `ProjectFragment`
+ Returns a `GraphQLProject.EnvironmentalCommitment` from `ExtendedProjectPropertiesFragment`
  */
 
 private func extendedProjectEnvironmentalCommitments(
-  from fragment: GraphAPI
-    .ExtendedProjectPropertiesFragment
+  from fragment: GraphAPI.ExtendedProjectPropertiesFragment
 ) -> [ProjectTabCategoryDescription] {
   var environmentalCommitments = [ProjectTabCategoryDescription]()
 
@@ -404,10 +398,9 @@ private func extendedProjectEnvironmentalCommitments(
 }
 
 private func extendedProjectAIDisclosure(
-  from projectFragment: GraphAPI
-    .ExtendedProjectPropertiesFragment
+  from fragment: GraphAPI.ExtendedProjectPropertiesFragment
 ) -> ProjectAIDisclosure? {
-  guard let aiDisclosureRawData = projectFragment.aiDisclosure,
+  guard let aiDisclosureRawData = fragment.aiDisclosure,
         let decomposedId = decompose(id: aiDisclosureRawData.id) else {
     return nil
   }
