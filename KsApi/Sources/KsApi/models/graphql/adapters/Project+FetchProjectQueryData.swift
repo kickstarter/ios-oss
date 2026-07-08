@@ -46,7 +46,8 @@ extension Project {
         flagging: data.project?.flagging != nil,
         rewards: [Reward.noRewardReward(from: noRewardFragment)],
         addOns: nil,
-        backing: nil
+        backing: nil,
+        storyRichText: data.project?.storyRichText.fragments.richTextComponentFragment
       )
     else { return (nil, nil) }
 

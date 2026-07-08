@@ -1,6 +1,9 @@
 query FetchProjectByParam($projectId: Int, $slug: String) {
   project(pid: $projectId, slug: $slug) {
     ...ProjectFragment
+    storyRichText {
+      ...RichTextComponentFragment
+    }
     backing {
       id
     }
