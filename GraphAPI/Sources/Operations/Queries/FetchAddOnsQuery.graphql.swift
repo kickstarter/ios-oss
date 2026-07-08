@@ -8,7 +8,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FetchAddOns($projectSlug: String!, $shippingEnabled: Boolean!, $locationId: ID, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { project(slug: $projectSlug) { __typename ...ProjectFragment addOns { __typename nodes { __typename ...RewardFragment shippingRulesExpanded(forLocation: $locationId) @include(if: $shippingEnabled) { __typename nodes { __typename ...ShippingRuleFragment } } } } } }"#,
-      fragments: [CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
+      fragments: [CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectFragment.self, ProjectStatsFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
     ))
 
   public var projectSlug: String
@@ -83,30 +83,20 @@ public class FetchAddOnsQuery: GraphQLQuery {
       public var addOns: AddOns? { __data["addOns"] }
       /// Available card types.
       public var availableCardTypes: [GraphQLEnum<GraphAPI.CreditCardTypes>] { __data["availableCardTypes"] }
-      /// Total backers for the project
-      public var backersCount: Int { __data["backersCount"] }
       /// The project's category.
       public var category: Category? { __data["category"] }
       /// True if the current user can comment (considers restrictions)
       public var canComment: Bool { __data["canComment"] }
-      /// Comment count - defaults to root level comments only
-      public var commentsCount: Int { __data["commentsCount"] }
       /// The project's country
       public var country: Country { __data["country"] }
       /// The project's creator.
       public var creator: Creator? { __data["creator"] }
-      /// The project's currency code.
-      public var currency: GraphQLEnum<GraphAPI.CurrencyCode> { __data["currency"] }
       /// When is the project scheduled to end?
       public var deadlineAt: GraphAPI.DateTime? { __data["deadlineAt"] }
       /// A short description of the project.
       public var description: String { __data["description"] }
       /// The date at which pledge collections will end
       public var finalCollectionDate: GraphAPI.ISO8601DateTime? { __data["finalCollectionDate"] }
-      /// Exchange rate for the current user's currency
-      public var fxRate: Double { __data["fxRate"] }
-      /// The minimum amount to raise for the project to be successful.
-      public var goal: Goal? { __data["goal"] }
       /// The project's primary image.
       public var image: Image? { __data["image"] }
       /// Whether or not this is a Kickstarter-featured project.
@@ -135,12 +125,8 @@ public class FetchAddOnsQuery: GraphQLQuery {
       public var pid: Int { __data["pid"] }
       /// The project's pledge manager
       public var pledgeManager: PledgeManager? { __data["pledgeManager"] }
-      /// How much money is pledged to the project.
-      public var pledged: Pledged { __data["pledged"] }
       /// Is this project configured for post-campaign pledges?
       public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
-      /// Project updates.
-      public var posts: Posts { __data["posts"] }
       /// Whether a project has activated prelaunch (can return true if project has been launched)
       public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
       /// URL for redeeming the backing
@@ -157,8 +143,6 @@ public class FetchAddOnsQuery: GraphQLQuery {
       public var tags: [Tag?] { __data["tags"] }
       /// A URL to the project's page.
       public var url: String { __data["url"] }
-      /// Exchange rate to US Dollars (USD), null for draft projects.
-      public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
       /// A project video.
       public var video: Video? { __data["video"] }
       /// Number of watchers a project has.
@@ -174,6 +158,8 @@ public class FetchAddOnsQuery: GraphQLQuery {
       public var risks: String { __data["risks"] }
       /// The story behind the project, parsed for presentation.
       public var story: GraphAPI.HTML { __data["story"] }
+      /// Exchange rate for the current user's currency
+      public var fxRate: Double { __data["fxRate"] }
       /// Whether a project is enrolled in plot
       public var isPledgeOverTimeAllowed: Bool { __data["isPledgeOverTimeAllowed"] }
       /// Backer-facing summary of when the incremental charges will occur
@@ -184,6 +170,20 @@ public class FetchAddOnsQuery: GraphQLQuery {
       public var pledgeOverTimeCollectionPlanShortPitch: String? { __data["pledgeOverTimeCollectionPlanShortPitch"] }
       /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
       public var pledgeOverTimeMinimumExplanation: String? { __data["pledgeOverTimeMinimumExplanation"] }
+      /// Total backers for the project
+      public var backersCount: Int { __data["backersCount"] }
+      /// Comment count - defaults to root level comments only
+      public var commentsCount: Int { __data["commentsCount"] }
+      /// The project's currency code.
+      public var currency: GraphQLEnum<GraphAPI.CurrencyCode> { __data["currency"] }
+      /// The minimum amount to raise for the project to be successful.
+      public var goal: Goal? { __data["goal"] }
+      /// How much money is pledged to the project.
+      public var pledged: Pledged { __data["pledged"] }
+      /// Project updates.
+      public var posts: Posts { __data["posts"] }
+      /// Exchange rate to US Dollars (USD), null for draft projects.
+      public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
 
       public struct Fragments: FragmentContainer {
         public let __data: DataDict
@@ -193,23 +193,19 @@ public class FetchAddOnsQuery: GraphQLQuery {
         public var extendedProjectPropertiesFragment: ExtendedProjectPropertiesFragment { _toFragment() }
         public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
         public var pledgeOverTimeFragment: PledgeOverTimeFragment { _toFragment() }
+        public var projectStatsFragment: ProjectStatsFragment { _toFragment() }
       }
 
       public init(
         addOns: AddOns? = nil,
         availableCardTypes: [GraphQLEnum<GraphAPI.CreditCardTypes>],
-        backersCount: Int,
         category: Category? = nil,
         canComment: Bool,
-        commentsCount: Int,
         country: Country,
         creator: Creator? = nil,
-        currency: GraphQLEnum<GraphAPI.CurrencyCode>,
         deadlineAt: GraphAPI.DateTime? = nil,
         description: String,
         finalCollectionDate: GraphAPI.ISO8601DateTime? = nil,
-        fxRate: Double,
-        goal: Goal? = nil,
         image: Image? = nil,
         isProjectWeLove: Bool,
         isProjectOfTheDay: Bool? = nil,
@@ -224,9 +220,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
         name: String,
         pid: Int,
         pledgeManager: PledgeManager? = nil,
-        pledged: Pledged,
         postCampaignPledgingEnabled: Bool,
-        posts: Posts,
         prelaunchActivated: Bool,
         redemptionPageUrl: String,
         sendMetaCapiEvents: Bool,
@@ -235,7 +229,6 @@ public class FetchAddOnsQuery: GraphQLQuery {
         stateChangedAt: GraphAPI.DateTime,
         tags: [Tag?],
         url: String,
-        usdExchangeRate: Double? = nil,
         video: Video? = nil,
         watchesCount: Int? = nil,
         aiDisclosure: AiDisclosure? = nil,
@@ -244,29 +237,32 @@ public class FetchAddOnsQuery: GraphQLQuery {
         projectNotice: String? = nil,
         risks: String,
         story: GraphAPI.HTML,
+        fxRate: Double,
         isPledgeOverTimeAllowed: Bool,
         pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
         pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil,
         pledgeOverTimeCollectionPlanShortPitch: String? = nil,
-        pledgeOverTimeMinimumExplanation: String? = nil
+        pledgeOverTimeMinimumExplanation: String? = nil,
+        backersCount: Int,
+        commentsCount: Int,
+        currency: GraphQLEnum<GraphAPI.CurrencyCode>,
+        goal: Goal? = nil,
+        pledged: Pledged,
+        posts: Posts,
+        usdExchangeRate: Double? = nil
       ) {
         self.init(_dataDict: DataDict(
           data: [
             "__typename": GraphAPI.Objects.Project.typename,
             "addOns": addOns._fieldData,
             "availableCardTypes": availableCardTypes,
-            "backersCount": backersCount,
             "category": category._fieldData,
             "canComment": canComment,
-            "commentsCount": commentsCount,
             "country": country._fieldData,
             "creator": creator._fieldData,
-            "currency": currency,
             "deadlineAt": deadlineAt,
             "description": description,
             "finalCollectionDate": finalCollectionDate,
-            "fxRate": fxRate,
-            "goal": goal._fieldData,
             "image": image._fieldData,
             "isProjectWeLove": isProjectWeLove,
             "isProjectOfTheDay": isProjectOfTheDay,
@@ -281,9 +277,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
             "name": name,
             "pid": pid,
             "pledgeManager": pledgeManager._fieldData,
-            "pledged": pledged._fieldData,
             "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
-            "posts": posts._fieldData,
             "prelaunchActivated": prelaunchActivated,
             "redemptionPageUrl": redemptionPageUrl,
             "sendMetaCapiEvents": sendMetaCapiEvents,
@@ -292,7 +286,6 @@ public class FetchAddOnsQuery: GraphQLQuery {
             "stateChangedAt": stateChangedAt,
             "tags": tags._fieldData,
             "url": url,
-            "usdExchangeRate": usdExchangeRate,
             "video": video._fieldData,
             "watchesCount": watchesCount,
             "aiDisclosure": aiDisclosure._fieldData,
@@ -301,18 +294,27 @@ public class FetchAddOnsQuery: GraphQLQuery {
             "projectNotice": projectNotice,
             "risks": risks,
             "story": story,
+            "fxRate": fxRate,
             "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed,
             "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation,
             "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments,
             "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch,
             "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation,
+            "backersCount": backersCount,
+            "commentsCount": commentsCount,
+            "currency": currency,
+            "goal": goal._fieldData,
+            "pledged": pledged._fieldData,
+            "posts": posts._fieldData,
+            "usdExchangeRate": usdExchangeRate,
           ],
           fulfilledFragments: [
             ObjectIdentifier(FetchAddOnsQuery.Data.Project.self),
             ObjectIdentifier(ProjectFragment.self),
             ObjectIdentifier(ExtendedProjectPropertiesFragment.self),
             ObjectIdentifier(NoRewardRewardFragment.self),
-            ObjectIdentifier(PledgeOverTimeFragment.self)
+            ObjectIdentifier(PledgeOverTimeFragment.self),
+            ObjectIdentifier(ProjectStatsFragment.self)
           ]
         ))
       }
@@ -1286,50 +1288,6 @@ public class FetchAddOnsQuery: GraphQLQuery {
         public typealias CreatedProjects = PublicUserFragment.CreatedProjects
       }
 
-      /// Project.Goal
-      ///
-      /// Parent Type: `Money`
-      public struct Goal: GraphAPI.SelectionSet {
-        public let __data: DataDict
-        public init(_dataDict: DataDict) { __data = _dataDict }
-
-        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Money }
-
-        /// Floating-point numeric value of monetary amount represented as a string
-        public var amount: String? { __data["amount"] }
-        /// Currency of the monetary amount
-        public var currency: GraphQLEnum<GraphAPI.CurrencyCode>? { __data["currency"] }
-        /// Symbol of the currency in which the monetary amount appears
-        public var symbol: String? { __data["symbol"] }
-
-        public struct Fragments: FragmentContainer {
-          public let __data: DataDict
-          public init(_dataDict: DataDict) { __data = _dataDict }
-
-          public var moneyFragment: MoneyFragment { _toFragment() }
-        }
-
-        public init(
-          amount: String? = nil,
-          currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
-          symbol: String? = nil
-        ) {
-          self.init(_dataDict: DataDict(
-            data: [
-              "__typename": GraphAPI.Objects.Money.typename,
-              "amount": amount,
-              "currency": currency,
-              "symbol": symbol,
-            ],
-            fulfilledFragments: [
-              ObjectIdentifier(FetchAddOnsQuery.Data.Project.Goal.self),
-              ObjectIdentifier(ProjectFragment.Goal.self),
-              ObjectIdentifier(MoneyFragment.self)
-            ]
-          ))
-        }
-      }
-
       public typealias Image = ProjectFragment.Image
 
       /// Project.LastWave
@@ -1461,52 +1419,6 @@ public class FetchAddOnsQuery: GraphQLQuery {
         }
       }
 
-      /// Project.Pledged
-      ///
-      /// Parent Type: `Money`
-      public struct Pledged: GraphAPI.SelectionSet {
-        public let __data: DataDict
-        public init(_dataDict: DataDict) { __data = _dataDict }
-
-        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Money }
-
-        /// Floating-point numeric value of monetary amount represented as a string
-        public var amount: String? { __data["amount"] }
-        /// Currency of the monetary amount
-        public var currency: GraphQLEnum<GraphAPI.CurrencyCode>? { __data["currency"] }
-        /// Symbol of the currency in which the monetary amount appears
-        public var symbol: String? { __data["symbol"] }
-
-        public struct Fragments: FragmentContainer {
-          public let __data: DataDict
-          public init(_dataDict: DataDict) { __data = _dataDict }
-
-          public var moneyFragment: MoneyFragment { _toFragment() }
-        }
-
-        public init(
-          amount: String? = nil,
-          currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
-          symbol: String? = nil
-        ) {
-          self.init(_dataDict: DataDict(
-            data: [
-              "__typename": GraphAPI.Objects.Money.typename,
-              "amount": amount,
-              "currency": currency,
-              "symbol": symbol,
-            ],
-            fulfilledFragments: [
-              ObjectIdentifier(FetchAddOnsQuery.Data.Project.Pledged.self),
-              ObjectIdentifier(ProjectFragment.Pledged.self),
-              ObjectIdentifier(MoneyFragment.self)
-            ]
-          ))
-        }
-      }
-
-      public typealias Posts = ProjectFragment.Posts
-
       public typealias Tag = ProjectFragment.Tag
 
       /// Project.Video
@@ -1555,6 +1467,96 @@ public class FetchAddOnsQuery: GraphQLQuery {
       public typealias EnvironmentalCommitment = ExtendedProjectPropertiesFragment.EnvironmentalCommitment
 
       public typealias Faqs = ExtendedProjectPropertiesFragment.Faqs
+
+      /// Project.Goal
+      ///
+      /// Parent Type: `Money`
+      public struct Goal: GraphAPI.SelectionSet {
+        public let __data: DataDict
+        public init(_dataDict: DataDict) { __data = _dataDict }
+
+        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Money }
+
+        /// Floating-point numeric value of monetary amount represented as a string
+        public var amount: String? { __data["amount"] }
+        /// Currency of the monetary amount
+        public var currency: GraphQLEnum<GraphAPI.CurrencyCode>? { __data["currency"] }
+        /// Symbol of the currency in which the monetary amount appears
+        public var symbol: String? { __data["symbol"] }
+
+        public struct Fragments: FragmentContainer {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public var moneyFragment: MoneyFragment { _toFragment() }
+        }
+
+        public init(
+          amount: String? = nil,
+          currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+          symbol: String? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Money.typename,
+              "amount": amount,
+              "currency": currency,
+              "symbol": symbol,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchAddOnsQuery.Data.Project.Goal.self),
+              ObjectIdentifier(ProjectStatsFragment.Goal.self),
+              ObjectIdentifier(MoneyFragment.self)
+            ]
+          ))
+        }
+      }
+
+      /// Project.Pledged
+      ///
+      /// Parent Type: `Money`
+      public struct Pledged: GraphAPI.SelectionSet {
+        public let __data: DataDict
+        public init(_dataDict: DataDict) { __data = _dataDict }
+
+        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Money }
+
+        /// Floating-point numeric value of monetary amount represented as a string
+        public var amount: String? { __data["amount"] }
+        /// Currency of the monetary amount
+        public var currency: GraphQLEnum<GraphAPI.CurrencyCode>? { __data["currency"] }
+        /// Symbol of the currency in which the monetary amount appears
+        public var symbol: String? { __data["symbol"] }
+
+        public struct Fragments: FragmentContainer {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public var moneyFragment: MoneyFragment { _toFragment() }
+        }
+
+        public init(
+          amount: String? = nil,
+          currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
+          symbol: String? = nil
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Money.typename,
+              "amount": amount,
+              "currency": currency,
+              "symbol": symbol,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchAddOnsQuery.Data.Project.Pledged.self),
+              ObjectIdentifier(ProjectStatsFragment.Pledged.self),
+              ObjectIdentifier(MoneyFragment.self)
+            ]
+          ))
+        }
+      }
+
+      public typealias Posts = ProjectStatsFragment.Posts
     }
   }
 }

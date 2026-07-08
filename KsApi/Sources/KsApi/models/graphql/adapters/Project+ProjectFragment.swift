@@ -86,6 +86,9 @@ extension Project {
 
     let plotFragment = projectFragment.fragments.pledgeOverTimeFragment
 
+    let statsFragment = projectFragment.fragments.projectStatsFragment
+    let stats = projectStats(from: statsFragment, currentUserChosenCurrency: currentUserChosenCurrency)
+
     return
       Project(
         availableCardTypes: availableCardTypes,
@@ -124,7 +127,7 @@ extension Project {
         slug: generatedSlug ?? projectFragment.slug,
         staffPick: projectFragment.isProjectWeLove,
         state: state,
-        stats: projectStats(from: projectFragment, currentUserChosenCurrency: currentUserChosenCurrency),
+        stats: stats,
         tags: discoverTags,
         urls: urls,
         video: video,
@@ -215,32 +218,32 @@ private func projectState(from projectState: GraphAPI.ProjectState?) -> Project.
  Returns a minimal `Project.Stats` from a `ProjectFragment`
  */
 private func projectStats(
-  from projectFragment: GraphAPI.ProjectFragment,
+  from statsFragment: GraphAPI.ProjectStatsFragment,
   currentUserChosenCurrency: String?
 ) -> Project.Stats {
-  let pledgedRawData = projectFragment.pledged.fragments.moneyFragment.amount.flatMap(Float.init)
-  let pledgedRawValue = projectFragment.pledged.fragments.moneyFragment.amount.flatMap(Float.init) ?? 0
+  let pledgedRawData = statsFragment.pledged.fragments.moneyFragment.amount.flatMap(Float.init)
+  let pledgedRawValue = statsFragment.pledged.fragments.moneyFragment.amount.flatMap(Float.init) ?? 0
   let pledgedValue = pledgedRawData != nil ? Int(pledgedRawValue) : 0
-  let fxRateValue = Float(projectFragment.fxRate)
+  let fxRateValue = Float(statsFragment.fxRate)
   let convertedPledgedAmountValue = pledgedRawData != nil ? pledgedRawValue * fxRateValue : nil
-  let staticUSDRateValue = Float(projectFragment.usdExchangeRate ?? 0)
+  let staticUSDRateValue = Float(statsFragment.usdExchangeRate ?? 0)
   var usdExchangeRate: Float?
 
-  if let usdExchangeRateRawValue = projectFragment.usdExchangeRate {
+  if let usdExchangeRateRawValue = statsFragment.usdExchangeRate {
     usdExchangeRate = Float(usdExchangeRateRawValue)
   }
 
   return Project.Stats(
-    backersCount: projectFragment.backersCount,
-    commentsCount: projectFragment.commentsCount,
+    backersCount: statsFragment.backersCount,
+    commentsCount: statsFragment.commentsCount,
     convertedPledgedAmount: convertedPledgedAmountValue,
-    projectCurrency: projectFragment.currency.rawValue,
+    projectCurrency: statsFragment.currency.rawValue,
     userCurrency: currentUserChosenCurrency,
     userCurrencyRate: fxRateValue,
-    goal: projectFragment.goal?.fragments.moneyFragment.amount.flatMap(Float.init).flatMap(Int.init) ?? 0,
+    goal: statsFragment.goal?.fragments.moneyFragment.amount.flatMap(Float.init).flatMap(Int.init) ?? 0,
     pledged: pledgedValue,
     staticUsdRate: staticUSDRateValue,
-    updatesCount: projectFragment.posts.totalCount,
+    updatesCount: statsFragment.posts.totalCount,
     usdExchangeRate: usdExchangeRate
   )
 }

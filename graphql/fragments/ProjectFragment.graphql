@@ -1,26 +1,19 @@
 fragment ProjectFragment on Project {
   availableCardTypes
-  backersCount
   category {
     ...CategoryFragment
   }
   canComment
-  commentsCount(withReplies: true)
   country {
     ...CountryFragment
   }
   creator {
     ...PublicUserFragment
   }
-  currency
   deadlineAt
   description
   ...ExtendedProjectPropertiesFragment
   finalCollectionDate
-  fxRate
-  goal {
-    ...MoneyFragment
-  }
   image {
     id
     url(width: 1024)
@@ -45,15 +38,10 @@ fragment ProjectFragment on Project {
   pledgeManager {
     ...PledgeManagerFragment
   }
-  pledged {
-    ...MoneyFragment
-  }
   ...PledgeOverTimeFragment
   postCampaignPledgingEnabled
-  posts {
-    totalCount
-  }
   prelaunchActivated
+  ...ProjectStatsFragment
   redemptionPageUrl
   sendMetaCapiEvents
   slug
@@ -63,7 +51,6 @@ fragment ProjectFragment on Project {
     name
   }
   url
-  usdExchangeRate
   video {
     ...ProjectVideoFragment
   }
