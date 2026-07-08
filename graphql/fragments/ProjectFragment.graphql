@@ -54,7 +54,6 @@ fragment ProjectFragment on Project {
     totalCount
   }
   prelaunchActivated
-  ...ProjectVideoFragment
   redemptionPageUrl
   sendMetaCapiEvents
   slug
@@ -65,5 +64,8 @@ fragment ProjectFragment on Project {
   }
   url
   usdExchangeRate
+  video {
+    ...ProjectVideoFragment
+  }
   watchesCount
 }

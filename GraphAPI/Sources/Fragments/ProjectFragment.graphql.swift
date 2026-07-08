@@ -5,7 +5,7 @@
 
 public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment ProjectFragment on Project { __typename availableCardTypes backersCount category { __typename ...CategoryFragment } canComment commentsCount(withReplies: true) country { __typename ...CountryFragment } creator { __typename ...PublicUserFragment } currency deadlineAt description ...ExtendedProjectPropertiesFragment finalCollectionDate fxRate goal { __typename ...MoneyFragment } image { __typename id url(width: 1024) } isProjectWeLove isProjectOfTheDay isWatched isLaunched isInPostCampaignPledgingPhase lastWave { __typename ...LastWaveFragment } launchedAt location { __typename ...LocationFragment } maxPledge minPledge name ...NoRewardRewardFragment pid pledgeManager { __typename ...PledgeManagerFragment } pledged { __typename ...MoneyFragment } ...PledgeOverTimeFragment postCampaignPledgingEnabled posts { __typename totalCount } prelaunchActivated ...ProjectVideoFragment redemptionPageUrl sendMetaCapiEvents slug state stateChangedAt tags(scope: DISCOVER) { __typename name } url usdExchangeRate watchesCount }"#
+    #"fragment ProjectFragment on Project { __typename availableCardTypes backersCount category { __typename ...CategoryFragment } canComment commentsCount(withReplies: true) country { __typename ...CountryFragment } creator { __typename ...PublicUserFragment } currency deadlineAt description ...ExtendedProjectPropertiesFragment finalCollectionDate fxRate goal { __typename ...MoneyFragment } image { __typename id url(width: 1024) } isProjectWeLove isProjectOfTheDay isWatched isLaunched isInPostCampaignPledgingPhase lastWave { __typename ...LastWaveFragment } launchedAt location { __typename ...LocationFragment } maxPledge minPledge name ...NoRewardRewardFragment pid pledgeManager { __typename ...PledgeManagerFragment } pledged { __typename ...MoneyFragment } ...PledgeOverTimeFragment postCampaignPledgingEnabled posts { __typename totalCount } prelaunchActivated redemptionPageUrl sendMetaCapiEvents slug state stateChangedAt tags(scope: DISCOVER) { __typename name } url usdExchangeRate video { __typename ...ProjectVideoFragment } watchesCount }"#
   }
 
   public let __data: DataDict
@@ -53,11 +53,11 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     .field("tags", [Tag?].self, arguments: ["scope": "DISCOVER"]),
     .field("url", String.self),
     .field("usdExchangeRate", Double?.self),
+    .field("video", Video?.self),
     .field("watchesCount", Int?.self),
     .fragment(ExtendedProjectPropertiesFragment.self),
     .fragment(NoRewardRewardFragment.self),
     .fragment(PledgeOverTimeFragment.self),
-    .fragment(ProjectVideoFragment.self),
   ] }
 
   /// Available card types.
@@ -138,6 +138,8 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public var url: String { __data["url"] }
   /// Exchange rate to US Dollars (USD), null for draft projects.
   public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
+  /// A project video.
+  public var video: Video? { __data["video"] }
   /// Number of watchers a project has.
   public var watchesCount: Int? { __data["watchesCount"] }
   public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
@@ -161,8 +163,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public var pledgeOverTimeCollectionPlanShortPitch: String? { __data["pledgeOverTimeCollectionPlanShortPitch"] }
   /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
   public var pledgeOverTimeMinimumExplanation: String? { __data["pledgeOverTimeMinimumExplanation"] }
-  /// A project video.
-  public var video: Video? { __data["video"] }
 
   public struct Fragments: FragmentContainer {
     public let __data: DataDict
@@ -171,7 +171,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     public var extendedProjectPropertiesFragment: ExtendedProjectPropertiesFragment { _toFragment() }
     public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
     public var pledgeOverTimeFragment: PledgeOverTimeFragment { _toFragment() }
-    public var projectVideoFragment: ProjectVideoFragment { _toFragment() }
   }
 
   public init(
@@ -214,6 +213,7 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     tags: [Tag?],
     url: String,
     usdExchangeRate: Double? = nil,
+    video: Video? = nil,
     watchesCount: Int? = nil,
     aiDisclosure: AiDisclosure? = nil,
     environmentalCommitments: [EnvironmentalCommitment?]? = nil,
@@ -225,8 +225,7 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
     pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil,
     pledgeOverTimeCollectionPlanShortPitch: String? = nil,
-    pledgeOverTimeMinimumExplanation: String? = nil,
-    video: Video? = nil
+    pledgeOverTimeMinimumExplanation: String? = nil
   ) {
     self.init(_dataDict: DataDict(
       data: [
@@ -270,6 +269,7 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
         "tags": tags._fieldData,
         "url": url,
         "usdExchangeRate": usdExchangeRate,
+        "video": video._fieldData,
         "watchesCount": watchesCount,
         "aiDisclosure": aiDisclosure._fieldData,
         "environmentalCommitments": environmentalCommitments._fieldData,
@@ -282,13 +282,11 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
         "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments,
         "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch,
         "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation,
-        "video": video._fieldData,
       ],
       fulfilledFragments: [
         ObjectIdentifier(ProjectFragment.self),
         ObjectIdentifier(ExtendedProjectPropertiesFragment.self),
-        ObjectIdentifier(PledgeOverTimeFragment.self),
-        ObjectIdentifier(ProjectVideoFragment.self)
+        ObjectIdentifier(PledgeOverTimeFragment.self)
       ]
     ))
   }
@@ -843,11 +841,53 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     }
   }
 
+  /// Video
+  ///
+  /// Parent Type: `Video`
+  public struct Video: GraphAPI.SelectionSet {
+    public let __data: DataDict
+    public init(_dataDict: DataDict) { __data = _dataDict }
+
+    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Video }
+    public static var __selections: [ApolloAPI.Selection] { [
+      .field("__typename", String.self),
+      .fragment(ProjectVideoFragment.self),
+    ] }
+
+    public var id: GraphAPI.ID { __data["id"] }
+    /// A video's sources (hls, high, base)
+    public var videoSources: VideoSources? { __data["videoSources"] }
+
+    public struct Fragments: FragmentContainer {
+      public let __data: DataDict
+      public init(_dataDict: DataDict) { __data = _dataDict }
+
+      public var projectVideoFragment: ProjectVideoFragment { _toFragment() }
+    }
+
+    public init(
+      id: GraphAPI.ID,
+      videoSources: VideoSources? = nil
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.Video.typename,
+          "id": id,
+          "videoSources": videoSources._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ProjectFragment.Video.self),
+          ObjectIdentifier(ProjectVideoFragment.self)
+        ]
+      ))
+    }
+
+    public typealias VideoSources = ProjectVideoFragment.VideoSources
+  }
+
   public typealias AiDisclosure = ExtendedProjectPropertiesFragment.AiDisclosure
 
   public typealias EnvironmentalCommitment = ExtendedProjectPropertiesFragment.EnvironmentalCommitment
 
   public typealias Faqs = ExtendedProjectPropertiesFragment.Faqs
-
-  public typealias Video = ProjectVideoFragment.Video
 }

@@ -923,6 +923,8 @@ public class FetchUserBackingsQuery: GraphQLQuery {
             public var url: String { __data["url"] }
             /// Exchange rate to US Dollars (USD), null for draft projects.
             public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
+            /// A project video.
+            public var video: Video? { __data["video"] }
             /// Number of watchers a project has.
             public var watchesCount: Int? { __data["watchesCount"] }
             public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
@@ -946,8 +948,6 @@ public class FetchUserBackingsQuery: GraphQLQuery {
             public var pledgeOverTimeCollectionPlanShortPitch: String? { __data["pledgeOverTimeCollectionPlanShortPitch"] }
             /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
             public var pledgeOverTimeMinimumExplanation: String? { __data["pledgeOverTimeMinimumExplanation"] }
-            /// A project video.
-            public var video: Video? { __data["video"] }
 
             public struct Fragments: FragmentContainer {
               public let __data: DataDict
@@ -957,7 +957,6 @@ public class FetchUserBackingsQuery: GraphQLQuery {
               public var extendedProjectPropertiesFragment: ExtendedProjectPropertiesFragment { _toFragment() }
               public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
               public var pledgeOverTimeFragment: PledgeOverTimeFragment { _toFragment() }
-              public var projectVideoFragment: ProjectVideoFragment { _toFragment() }
             }
 
             public init(
@@ -1000,6 +999,7 @@ public class FetchUserBackingsQuery: GraphQLQuery {
               tags: [Tag?],
               url: String,
               usdExchangeRate: Double? = nil,
+              video: Video? = nil,
               watchesCount: Int? = nil,
               aiDisclosure: AiDisclosure? = nil,
               environmentalCommitments: [EnvironmentalCommitment?]? = nil,
@@ -1011,8 +1011,7 @@ public class FetchUserBackingsQuery: GraphQLQuery {
               pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
               pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil,
               pledgeOverTimeCollectionPlanShortPitch: String? = nil,
-              pledgeOverTimeMinimumExplanation: String? = nil,
-              video: Video? = nil
+              pledgeOverTimeMinimumExplanation: String? = nil
             ) {
               self.init(_dataDict: DataDict(
                 data: [
@@ -1056,6 +1055,7 @@ public class FetchUserBackingsQuery: GraphQLQuery {
                   "tags": tags._fieldData,
                   "url": url,
                   "usdExchangeRate": usdExchangeRate,
+                  "video": video._fieldData,
                   "watchesCount": watchesCount,
                   "aiDisclosure": aiDisclosure._fieldData,
                   "environmentalCommitments": environmentalCommitments._fieldData,
@@ -1068,7 +1068,6 @@ public class FetchUserBackingsQuery: GraphQLQuery {
                   "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments,
                   "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch,
                   "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation,
-                  "video": video._fieldData,
                 ],
                 fulfilledFragments: [
                   ObjectIdentifier(FetchUserBackingsQuery.Data.Me.Backings.Node.Project.self),
@@ -1076,7 +1075,6 @@ public class FetchUserBackingsQuery: GraphQLQuery {
                   ObjectIdentifier(ExtendedProjectPropertiesFragment.self),
                   ObjectIdentifier(NoRewardRewardFragment.self),
                   ObjectIdentifier(PledgeOverTimeFragment.self),
-                  ObjectIdentifier(ProjectVideoFragment.self),
                   ObjectIdentifier(BackingFragment.Project.self)
                 ]
               ))
@@ -1519,13 +1517,52 @@ public class FetchUserBackingsQuery: GraphQLQuery {
 
             public typealias Tag = ProjectFragment.Tag
 
+            /// Me.Backings.Node.Project.Video
+            ///
+            /// Parent Type: `Video`
+            public struct Video: GraphAPI.SelectionSet {
+              public let __data: DataDict
+              public init(_dataDict: DataDict) { __data = _dataDict }
+
+              public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Video }
+
+              public var id: GraphAPI.ID { __data["id"] }
+              /// A video's sources (hls, high, base)
+              public var videoSources: VideoSources? { __data["videoSources"] }
+
+              public struct Fragments: FragmentContainer {
+                public let __data: DataDict
+                public init(_dataDict: DataDict) { __data = _dataDict }
+
+                public var projectVideoFragment: ProjectVideoFragment { _toFragment() }
+              }
+
+              public init(
+                id: GraphAPI.ID,
+                videoSources: VideoSources? = nil
+              ) {
+                self.init(_dataDict: DataDict(
+                  data: [
+                    "__typename": GraphAPI.Objects.Video.typename,
+                    "id": id,
+                    "videoSources": videoSources._fieldData,
+                  ],
+                  fulfilledFragments: [
+                    ObjectIdentifier(FetchUserBackingsQuery.Data.Me.Backings.Node.Project.Video.self),
+                    ObjectIdentifier(ProjectFragment.Video.self),
+                    ObjectIdentifier(ProjectVideoFragment.self)
+                  ]
+                ))
+              }
+
+              public typealias VideoSources = ProjectVideoFragment.VideoSources
+            }
+
             public typealias AiDisclosure = ExtendedProjectPropertiesFragment.AiDisclosure
 
             public typealias EnvironmentalCommitment = ExtendedProjectPropertiesFragment.EnvironmentalCommitment
 
             public typealias Faqs = ExtendedProjectPropertiesFragment.Faqs
-
-            public typealias Video = ProjectVideoFragment.Video
           }
 
           /// Me.Backings.Node.PaymentIncrement
