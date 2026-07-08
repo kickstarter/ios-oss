@@ -10,23 +10,19 @@ fragment ProjectFragment on Project {
   creator {
     ...PublicUserFragment
   }
-  deadlineAt
   description
   ...ExtendedProjectPropertiesFragment
-  finalCollectionDate
   image {
     id
     url(width: 1024)
   }
   isProjectWeLove
-  isProjectOfTheDay
   isWatched
   isLaunched
   isInPostCampaignPledgingPhase
   lastWave {
     ...LastWaveFragment
   }
-  launchedAt
   location {
     ...LocationFragment
   }
@@ -42,11 +38,11 @@ fragment ProjectFragment on Project {
   postCampaignPledgingEnabled
   prelaunchActivated
   ...ProjectStatsFragment
+  ...ProjectDatesFragment
   redemptionPageUrl
   sendMetaCapiEvents
   slug
   state
-  stateChangedAt
   tags(scope: DISCOVER) {
     name
   }

@@ -8,7 +8,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FetchAddOns($projectSlug: String!, $shippingEnabled: Boolean!, $locationId: ID, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { project(slug: $projectSlug) { __typename ...ProjectFragment addOns { __typename nodes { __typename ...RewardFragment shippingRulesExpanded(forLocation: $locationId) @include(if: $shippingEnabled) { __typename nodes { __typename ...ShippingRuleFragment } } } } } }"#,
-      fragments: [CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectFragment.self, ProjectStatsFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
+      fragments: [CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
     ))
 
   public var projectSlug: String
@@ -91,18 +91,12 @@ public class FetchAddOnsQuery: GraphQLQuery {
       public var country: Country { __data["country"] }
       /// The project's creator.
       public var creator: Creator? { __data["creator"] }
-      /// When is the project scheduled to end?
-      public var deadlineAt: GraphAPI.DateTime? { __data["deadlineAt"] }
       /// A short description of the project.
       public var description: String { __data["description"] }
-      /// The date at which pledge collections will end
-      public var finalCollectionDate: GraphAPI.ISO8601DateTime? { __data["finalCollectionDate"] }
       /// The project's primary image.
       public var image: Image? { __data["image"] }
       /// Whether or not this is a Kickstarter-featured project.
       public var isProjectWeLove: Bool { __data["isProjectWeLove"] }
-      /// Whether or not this is a Project of the Day.
-      public var isProjectOfTheDay: Bool? { __data["isProjectOfTheDay"] }
       /// Is the current user watching this project?
       public var isWatched: Bool { __data["isWatched"] }
       /// The project has launched
@@ -111,8 +105,6 @@ public class FetchAddOnsQuery: GraphQLQuery {
       public var isInPostCampaignPledgingPhase: Bool { __data["isInPostCampaignPledgingPhase"] }
       /// The last checkout_wave, if there is one
       public var lastWave: LastWave? { __data["lastWave"] }
-      /// When the project launched
-      public var launchedAt: GraphAPI.DateTime? { __data["launchedAt"] }
       /// Where the project is based.
       public var location: Location? { __data["location"] }
       /// The max pledge amount for a single reward tier.
@@ -137,8 +129,6 @@ public class FetchAddOnsQuery: GraphQLQuery {
       public var slug: String { __data["slug"] }
       /// The project's current state in the state machine.
       public var state: GraphQLEnum<GraphAPI.ProjectState> { __data["state"] }
-      /// The last time a project's state changed, time since epoch
-      public var stateChangedAt: GraphAPI.DateTime { __data["stateChangedAt"] }
       /// Tags project has been tagged with
       public var tags: [Tag?] { __data["tags"] }
       /// A URL to the project's page.
@@ -184,6 +174,16 @@ public class FetchAddOnsQuery: GraphQLQuery {
       public var posts: Posts { __data["posts"] }
       /// Exchange rate to US Dollars (USD), null for draft projects.
       public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
+      /// Whether or not this is a Project of the Day.
+      public var isProjectOfTheDay: Bool? { __data["isProjectOfTheDay"] }
+      /// When is the project scheduled to end?
+      public var deadlineAt: GraphAPI.DateTime? { __data["deadlineAt"] }
+      /// The date at which pledge collections will end
+      public var finalCollectionDate: GraphAPI.ISO8601DateTime? { __data["finalCollectionDate"] }
+      /// When the project launched
+      public var launchedAt: GraphAPI.DateTime? { __data["launchedAt"] }
+      /// The last time a project's state changed, time since epoch
+      public var stateChangedAt: GraphAPI.DateTime { __data["stateChangedAt"] }
 
       public struct Fragments: FragmentContainer {
         public let __data: DataDict
@@ -194,6 +194,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
         public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
         public var pledgeOverTimeFragment: PledgeOverTimeFragment { _toFragment() }
         public var projectStatsFragment: ProjectStatsFragment { _toFragment() }
+        public var projectDatesFragment: ProjectDatesFragment { _toFragment() }
       }
 
       public init(
@@ -203,17 +204,13 @@ public class FetchAddOnsQuery: GraphQLQuery {
         canComment: Bool,
         country: Country,
         creator: Creator? = nil,
-        deadlineAt: GraphAPI.DateTime? = nil,
         description: String,
-        finalCollectionDate: GraphAPI.ISO8601DateTime? = nil,
         image: Image? = nil,
         isProjectWeLove: Bool,
-        isProjectOfTheDay: Bool? = nil,
         isWatched: Bool,
         isLaunched: Bool,
         isInPostCampaignPledgingPhase: Bool,
         lastWave: LastWave? = nil,
-        launchedAt: GraphAPI.DateTime? = nil,
         location: Location? = nil,
         maxPledge: Int,
         minPledge: Int,
@@ -226,7 +223,6 @@ public class FetchAddOnsQuery: GraphQLQuery {
         sendMetaCapiEvents: Bool,
         slug: String,
         state: GraphQLEnum<GraphAPI.ProjectState>,
-        stateChangedAt: GraphAPI.DateTime,
         tags: [Tag?],
         url: String,
         video: Video? = nil,
@@ -249,7 +245,12 @@ public class FetchAddOnsQuery: GraphQLQuery {
         goal: Goal? = nil,
         pledged: Pledged,
         posts: Posts,
-        usdExchangeRate: Double? = nil
+        usdExchangeRate: Double? = nil,
+        isProjectOfTheDay: Bool? = nil,
+        deadlineAt: GraphAPI.DateTime? = nil,
+        finalCollectionDate: GraphAPI.ISO8601DateTime? = nil,
+        launchedAt: GraphAPI.DateTime? = nil,
+        stateChangedAt: GraphAPI.DateTime
       ) {
         self.init(_dataDict: DataDict(
           data: [
@@ -260,17 +261,13 @@ public class FetchAddOnsQuery: GraphQLQuery {
             "canComment": canComment,
             "country": country._fieldData,
             "creator": creator._fieldData,
-            "deadlineAt": deadlineAt,
             "description": description,
-            "finalCollectionDate": finalCollectionDate,
             "image": image._fieldData,
             "isProjectWeLove": isProjectWeLove,
-            "isProjectOfTheDay": isProjectOfTheDay,
             "isWatched": isWatched,
             "isLaunched": isLaunched,
             "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
             "lastWave": lastWave._fieldData,
-            "launchedAt": launchedAt,
             "location": location._fieldData,
             "maxPledge": maxPledge,
             "minPledge": minPledge,
@@ -283,7 +280,6 @@ public class FetchAddOnsQuery: GraphQLQuery {
             "sendMetaCapiEvents": sendMetaCapiEvents,
             "slug": slug,
             "state": state,
-            "stateChangedAt": stateChangedAt,
             "tags": tags._fieldData,
             "url": url,
             "video": video._fieldData,
@@ -307,6 +303,11 @@ public class FetchAddOnsQuery: GraphQLQuery {
             "pledged": pledged._fieldData,
             "posts": posts._fieldData,
             "usdExchangeRate": usdExchangeRate,
+            "isProjectOfTheDay": isProjectOfTheDay,
+            "deadlineAt": deadlineAt,
+            "finalCollectionDate": finalCollectionDate,
+            "launchedAt": launchedAt,
+            "stateChangedAt": stateChangedAt,
           ],
           fulfilledFragments: [
             ObjectIdentifier(FetchAddOnsQuery.Data.Project.self),
@@ -314,7 +315,8 @@ public class FetchAddOnsQuery: GraphQLQuery {
             ObjectIdentifier(ExtendedProjectPropertiesFragment.self),
             ObjectIdentifier(NoRewardRewardFragment.self),
             ObjectIdentifier(PledgeOverTimeFragment.self),
-            ObjectIdentifier(ProjectStatsFragment.self)
+            ObjectIdentifier(ProjectStatsFragment.self),
+            ObjectIdentifier(ProjectDatesFragment.self)
           ]
         ))
       }

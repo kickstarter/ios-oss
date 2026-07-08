@@ -1,0 +1,7 @@
+fragment ProjectDatesFragment on Project {
+  isProjectOfTheDay
+  deadlineAt
+  finalCollectionDate
+  launchedAt
+  stateChangedAt
+}

@@ -5,7 +5,7 @@
 
 public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment ProjectFragment on Project { __typename availableCardTypes category { __typename ...CategoryFragment } canComment country { __typename ...CountryFragment } creator { __typename ...PublicUserFragment } deadlineAt description ...ExtendedProjectPropertiesFragment finalCollectionDate image { __typename id url(width: 1024) } isProjectWeLove isProjectOfTheDay isWatched isLaunched isInPostCampaignPledgingPhase lastWave { __typename ...LastWaveFragment } launchedAt location { __typename ...LocationFragment } maxPledge minPledge name ...NoRewardRewardFragment pid pledgeManager { __typename ...PledgeManagerFragment } ...PledgeOverTimeFragment postCampaignPledgingEnabled prelaunchActivated ...ProjectStatsFragment redemptionPageUrl sendMetaCapiEvents slug state stateChangedAt tags(scope: DISCOVER) { __typename name } url video { __typename ...ProjectVideoFragment } watchesCount }"#
+    #"fragment ProjectFragment on Project { __typename availableCardTypes category { __typename ...CategoryFragment } canComment country { __typename ...CountryFragment } creator { __typename ...PublicUserFragment } description ...ExtendedProjectPropertiesFragment image { __typename id url(width: 1024) } isProjectWeLove isWatched isLaunched isInPostCampaignPledgingPhase lastWave { __typename ...LastWaveFragment } location { __typename ...LocationFragment } maxPledge minPledge name ...NoRewardRewardFragment pid pledgeManager { __typename ...PledgeManagerFragment } ...PledgeOverTimeFragment postCampaignPledgingEnabled prelaunchActivated ...ProjectStatsFragment ...ProjectDatesFragment redemptionPageUrl sendMetaCapiEvents slug state tags(scope: DISCOVER) { __typename name } url video { __typename ...ProjectVideoFragment } watchesCount }"#
   }
 
   public let __data: DataDict
@@ -19,17 +19,13 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     .field("canComment", Bool.self),
     .field("country", Country.self),
     .field("creator", Creator?.self),
-    .field("deadlineAt", GraphAPI.DateTime?.self),
     .field("description", String.self),
-    .field("finalCollectionDate", GraphAPI.ISO8601DateTime?.self),
     .field("image", Image?.self),
     .field("isProjectWeLove", Bool.self),
-    .field("isProjectOfTheDay", Bool?.self),
     .field("isWatched", Bool.self),
     .field("isLaunched", Bool.self),
     .field("isInPostCampaignPledgingPhase", Bool.self),
     .field("lastWave", LastWave?.self),
-    .field("launchedAt", GraphAPI.DateTime?.self),
     .field("location", Location?.self),
     .field("maxPledge", Int.self),
     .field("minPledge", Int.self),
@@ -42,7 +38,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     .field("sendMetaCapiEvents", Bool.self),
     .field("slug", String.self),
     .field("state", GraphQLEnum<GraphAPI.ProjectState>.self),
-    .field("stateChangedAt", GraphAPI.DateTime.self),
     .field("tags", [Tag?].self, arguments: ["scope": "DISCOVER"]),
     .field("url", String.self),
     .field("video", Video?.self),
@@ -51,6 +46,7 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     .fragment(NoRewardRewardFragment.self),
     .fragment(PledgeOverTimeFragment.self),
     .fragment(ProjectStatsFragment.self),
+    .fragment(ProjectDatesFragment.self),
   ] }
 
   /// Available card types.
@@ -63,18 +59,12 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public var country: Country { __data["country"] }
   /// The project's creator.
   public var creator: Creator? { __data["creator"] }
-  /// When is the project scheduled to end?
-  public var deadlineAt: GraphAPI.DateTime? { __data["deadlineAt"] }
   /// A short description of the project.
   public var description: String { __data["description"] }
-  /// The date at which pledge collections will end
-  public var finalCollectionDate: GraphAPI.ISO8601DateTime? { __data["finalCollectionDate"] }
   /// The project's primary image.
   public var image: Image? { __data["image"] }
   /// Whether or not this is a Kickstarter-featured project.
   public var isProjectWeLove: Bool { __data["isProjectWeLove"] }
-  /// Whether or not this is a Project of the Day.
-  public var isProjectOfTheDay: Bool? { __data["isProjectOfTheDay"] }
   /// Is the current user watching this project?
   public var isWatched: Bool { __data["isWatched"] }
   /// The project has launched
@@ -83,8 +73,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public var isInPostCampaignPledgingPhase: Bool { __data["isInPostCampaignPledgingPhase"] }
   /// The last checkout_wave, if there is one
   public var lastWave: LastWave? { __data["lastWave"] }
-  /// When the project launched
-  public var launchedAt: GraphAPI.DateTime? { __data["launchedAt"] }
   /// Where the project is based.
   public var location: Location? { __data["location"] }
   /// The max pledge amount for a single reward tier.
@@ -109,8 +97,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public var slug: String { __data["slug"] }
   /// The project's current state in the state machine.
   public var state: GraphQLEnum<GraphAPI.ProjectState> { __data["state"] }
-  /// The last time a project's state changed, time since epoch
-  public var stateChangedAt: GraphAPI.DateTime { __data["stateChangedAt"] }
   /// Tags project has been tagged with
   public var tags: [Tag?] { __data["tags"] }
   /// A URL to the project's page.
@@ -156,6 +142,16 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public var posts: Posts { __data["posts"] }
   /// Exchange rate to US Dollars (USD), null for draft projects.
   public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
+  /// Whether or not this is a Project of the Day.
+  public var isProjectOfTheDay: Bool? { __data["isProjectOfTheDay"] }
+  /// When is the project scheduled to end?
+  public var deadlineAt: GraphAPI.DateTime? { __data["deadlineAt"] }
+  /// The date at which pledge collections will end
+  public var finalCollectionDate: GraphAPI.ISO8601DateTime? { __data["finalCollectionDate"] }
+  /// When the project launched
+  public var launchedAt: GraphAPI.DateTime? { __data["launchedAt"] }
+  /// The last time a project's state changed, time since epoch
+  public var stateChangedAt: GraphAPI.DateTime { __data["stateChangedAt"] }
 
   public struct Fragments: FragmentContainer {
     public let __data: DataDict
@@ -165,6 +161,7 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
     public var pledgeOverTimeFragment: PledgeOverTimeFragment { _toFragment() }
     public var projectStatsFragment: ProjectStatsFragment { _toFragment() }
+    public var projectDatesFragment: ProjectDatesFragment { _toFragment() }
   }
 
   public init(
@@ -173,17 +170,13 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     canComment: Bool,
     country: Country,
     creator: Creator? = nil,
-    deadlineAt: GraphAPI.DateTime? = nil,
     description: String,
-    finalCollectionDate: GraphAPI.ISO8601DateTime? = nil,
     image: Image? = nil,
     isProjectWeLove: Bool,
-    isProjectOfTheDay: Bool? = nil,
     isWatched: Bool,
     isLaunched: Bool,
     isInPostCampaignPledgingPhase: Bool,
     lastWave: LastWave? = nil,
-    launchedAt: GraphAPI.DateTime? = nil,
     location: Location? = nil,
     maxPledge: Int,
     minPledge: Int,
@@ -196,7 +189,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     sendMetaCapiEvents: Bool,
     slug: String,
     state: GraphQLEnum<GraphAPI.ProjectState>,
-    stateChangedAt: GraphAPI.DateTime,
     tags: [Tag?],
     url: String,
     video: Video? = nil,
@@ -219,7 +211,12 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     goal: Goal? = nil,
     pledged: Pledged,
     posts: Posts,
-    usdExchangeRate: Double? = nil
+    usdExchangeRate: Double? = nil,
+    isProjectOfTheDay: Bool? = nil,
+    deadlineAt: GraphAPI.DateTime? = nil,
+    finalCollectionDate: GraphAPI.ISO8601DateTime? = nil,
+    launchedAt: GraphAPI.DateTime? = nil,
+    stateChangedAt: GraphAPI.DateTime
   ) {
     self.init(_dataDict: DataDict(
       data: [
@@ -229,17 +226,13 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
         "canComment": canComment,
         "country": country._fieldData,
         "creator": creator._fieldData,
-        "deadlineAt": deadlineAt,
         "description": description,
-        "finalCollectionDate": finalCollectionDate,
         "image": image._fieldData,
         "isProjectWeLove": isProjectWeLove,
-        "isProjectOfTheDay": isProjectOfTheDay,
         "isWatched": isWatched,
         "isLaunched": isLaunched,
         "isInPostCampaignPledgingPhase": isInPostCampaignPledgingPhase,
         "lastWave": lastWave._fieldData,
-        "launchedAt": launchedAt,
         "location": location._fieldData,
         "maxPledge": maxPledge,
         "minPledge": minPledge,
@@ -252,7 +245,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
         "sendMetaCapiEvents": sendMetaCapiEvents,
         "slug": slug,
         "state": state,
-        "stateChangedAt": stateChangedAt,
         "tags": tags._fieldData,
         "url": url,
         "video": video._fieldData,
@@ -276,13 +268,19 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
         "pledged": pledged._fieldData,
         "posts": posts._fieldData,
         "usdExchangeRate": usdExchangeRate,
+        "isProjectOfTheDay": isProjectOfTheDay,
+        "deadlineAt": deadlineAt,
+        "finalCollectionDate": finalCollectionDate,
+        "launchedAt": launchedAt,
+        "stateChangedAt": stateChangedAt,
       ],
       fulfilledFragments: [
         ObjectIdentifier(ProjectFragment.self),
         ObjectIdentifier(ExtendedProjectPropertiesFragment.self),
         ObjectIdentifier(NoRewardRewardFragment.self),
         ObjectIdentifier(PledgeOverTimeFragment.self),
-        ObjectIdentifier(ProjectStatsFragment.self)
+        ObjectIdentifier(ProjectStatsFragment.self),
+        ObjectIdentifier(ProjectDatesFragment.self)
       ]
     ))
   }

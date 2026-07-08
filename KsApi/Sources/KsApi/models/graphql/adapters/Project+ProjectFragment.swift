@@ -25,7 +25,7 @@ extension Project {
         currency: projectFragment.currency.value
       ),
       let categoryFragment = projectFragment.category?.fragments.categoryFragment,
-      let dates = projectDates(from: projectFragment),
+      let dates = projectDates(from: projectFragment.fragments.projectDatesFragment),
       let memberData = projectMemberData(from: projectFragment),
       let photo = projectPhoto(from: projectFragment),
       let state = projectState(from: projectFragment.state.value),
@@ -153,23 +153,23 @@ private func projectPersonalization(
 /**
  Returns a minimal `Project.Dates` from a `ProjectFragment`
  */
-private func projectDates(from projectFragment: GraphAPI.ProjectFragment) -> Project.Dates? {
-  guard let stateChangedAt = TimeInterval(projectFragment.stateChangedAt)
+private func projectDates(from datesFragment: GraphAPI.ProjectDatesFragment) -> Project.Dates? {
+  guard let stateChangedAt = TimeInterval(datesFragment.stateChangedAt)
   else { return nil }
 
   let startOfToday = Calendar.current.startOfDay(for: Date()).timeIntervalSince1970
 
   var featuredAtDate: TimeInterval?
 
-  if let projectOfTheDay = projectFragment.isProjectOfTheDay {
+  if let projectOfTheDay = datesFragment.isProjectOfTheDay {
     featuredAtDate = projectOfTheDay ? startOfToday : nil
   }
 
   return Project.Dates(
-    deadline: projectFragment.deadlineAt.flatMap(TimeInterval.init),
+    deadline: datesFragment.deadlineAt.flatMap(TimeInterval.init),
     featuredAt: featuredAtDate,
-    finalCollectionDate: finalCollectionDateTimeInterval(from: projectFragment.finalCollectionDate),
-    launchedAt: projectFragment.launchedAt.flatMap(TimeInterval.init),
+    finalCollectionDate: finalCollectionDateTimeInterval(from: datesFragment.finalCollectionDate),
+    launchedAt: datesFragment.launchedAt.flatMap(TimeInterval.init),
     stateChangedAt: stateChangedAt
   )
 }
