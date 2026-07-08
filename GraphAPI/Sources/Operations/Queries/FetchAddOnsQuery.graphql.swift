@@ -8,7 +8,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FetchAddOns($projectSlug: String!, $shippingEnabled: Boolean!, $locationId: ID, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { project(slug: $projectSlug) { __typename ...ProjectFragment addOns { __typename nodes { __typename ...RewardFragment shippingRulesExpanded(forLocation: $locationId) @include(if: $shippingEnabled) { __typename nodes { __typename ...ShippingRuleFragment } } } } } }"#,
-      fragments: [CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
+      fragments: [CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, ProjectFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
     ))
 
   public var projectSlug: String
@@ -169,8 +169,6 @@ public class FetchAddOnsQuery: GraphQLQuery {
       public var url: String { __data["url"] }
       /// Exchange rate to US Dollars (USD), null for draft projects.
       public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
-      /// A project video.
-      public var video: Video? { __data["video"] }
       /// Number of watchers a project has.
       public var watchesCount: Int? { __data["watchesCount"] }
       public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
@@ -184,6 +182,8 @@ public class FetchAddOnsQuery: GraphQLQuery {
       public var risks: String { __data["risks"] }
       /// The story behind the project, parsed for presentation.
       public var story: GraphAPI.HTML { __data["story"] }
+      /// A project video.
+      public var video: Video? { __data["video"] }
 
       public struct Fragments: FragmentContainer {
         public let __data: DataDict
@@ -192,6 +192,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
         public var projectFragment: ProjectFragment { _toFragment() }
         public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
         public var extendedProjectPropertiesFragment: ExtendedProjectPropertiesFragment { _toFragment() }
+        public var projectVideoFragment: ProjectVideoFragment { _toFragment() }
       }
 
       public init(
@@ -240,14 +241,14 @@ public class FetchAddOnsQuery: GraphQLQuery {
         tags: [Tag?],
         url: String,
         usdExchangeRate: Double? = nil,
-        video: Video? = nil,
         watchesCount: Int? = nil,
         aiDisclosure: AiDisclosure? = nil,
         environmentalCommitments: [EnvironmentalCommitment?]? = nil,
         faqs: Faqs? = nil,
         projectNotice: String? = nil,
         risks: String,
-        story: GraphAPI.HTML
+        story: GraphAPI.HTML,
+        video: Video? = nil
       ) {
         self.init(_dataDict: DataDict(
           data: [
@@ -297,7 +298,6 @@ public class FetchAddOnsQuery: GraphQLQuery {
             "tags": tags._fieldData,
             "url": url,
             "usdExchangeRate": usdExchangeRate,
-            "video": video._fieldData,
             "watchesCount": watchesCount,
             "aiDisclosure": aiDisclosure._fieldData,
             "environmentalCommitments": environmentalCommitments._fieldData,
@@ -305,12 +305,14 @@ public class FetchAddOnsQuery: GraphQLQuery {
             "projectNotice": projectNotice,
             "risks": risks,
             "story": story,
+            "video": video._fieldData,
           ],
           fulfilledFragments: [
             ObjectIdentifier(FetchAddOnsQuery.Data.Project.self),
             ObjectIdentifier(ProjectFragment.self),
             ObjectIdentifier(NoRewardRewardFragment.self),
-            ObjectIdentifier(ExtendedProjectPropertiesFragment.self)
+            ObjectIdentifier(ExtendedProjectPropertiesFragment.self),
+            ObjectIdentifier(ProjectVideoFragment.self)
           ]
         ))
       }
@@ -1507,13 +1509,13 @@ public class FetchAddOnsQuery: GraphQLQuery {
 
       public typealias Tag = ProjectFragment.Tag
 
-      public typealias Video = ProjectFragment.Video
-
       public typealias AiDisclosure = ExtendedProjectPropertiesFragment.AiDisclosure
 
       public typealias EnvironmentalCommitment = ExtendedProjectPropertiesFragment.EnvironmentalCommitment
 
       public typealias Faqs = ExtendedProjectPropertiesFragment.Faqs
+
+      public typealias Video = ProjectVideoFragment.Video
     }
   }
 }

@@ -82,6 +82,8 @@ extension Project {
     let pledgeManager = projectFragment.pledgeManager
       .flatMap { PledgeManager(fromFragment: $0.fragments.pledgeManagerFragment) }
 
+    let video = projectVideo(from: projectFragment.fragments.projectVideoFragment)
+
     return
       Project(
         availableCardTypes: availableCardTypes,
@@ -123,7 +125,7 @@ extension Project {
         stats: projectStats(from: projectFragment, currentUserChosenCurrency: currentUserChosenCurrency),
         tags: discoverTags,
         urls: urls,
-        video: projectVideo(from: projectFragment),
+        video: video,
         watchesCount: projectFragment.watchesCount,
         isPledgeOverTimeAllowed: projectFragment.isPledgeOverTimeAllowed
       )
@@ -242,11 +244,11 @@ private func projectStats(
 }
 
 /**
- Returns a video `Project.video` from `ProjectFragment`
+ Returns a video `Project.video` from `ProjectVideoFragment`
  */
 
-private func projectVideo(from projectFragment: GraphAPI.ProjectFragment) -> Project.Video? {
-  guard let video = projectFragment.video,
+private func projectVideo(from videoFragment: GraphAPI.ProjectVideoFragment) -> Project.Video? {
+  guard let video = videoFragment.video,
         let videoId = decompose(id: video.id),
         let high = video.videoSources?.high?.src else {
     return nil

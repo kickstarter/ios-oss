@@ -66,18 +66,8 @@ fragment ProjectFragment on Project {
   }
   url
   usdExchangeRate
-  video {
-    id
-    videoSources {
-      high {
-        src
-      }
-      hls {
-        src
-      }
-    }
-  }
   watchesCount
   ...NoRewardRewardFragment
   ...ExtendedProjectPropertiesFragment
+  ...ProjectVideoFragment
 }

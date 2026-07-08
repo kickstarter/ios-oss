@@ -8,7 +8,7 @@ public class FetchUserBackingsQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FetchUserBackings($status: BackingState!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { me { __typename backings(status: $status) { __typename nodes { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment project { __typename ...ProjectFragment } errorReason paymentIncrements { __typename ...PaymentIncrementFragment } } totalCount } id imageUrl: imageUrl(blur: false, width: 1024) name uid } }"#,
-      fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
+      fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, ProjectFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
     ))
 
   public var status: GraphQLEnum<BackingState>
@@ -933,8 +933,6 @@ public class FetchUserBackingsQuery: GraphQLQuery {
             public var url: String { __data["url"] }
             /// Exchange rate to US Dollars (USD), null for draft projects.
             public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
-            /// A project video.
-            public var video: Video? { __data["video"] }
             /// Number of watchers a project has.
             public var watchesCount: Int? { __data["watchesCount"] }
             public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
@@ -948,6 +946,8 @@ public class FetchUserBackingsQuery: GraphQLQuery {
             public var risks: String { __data["risks"] }
             /// The story behind the project, parsed for presentation.
             public var story: GraphAPI.HTML { __data["story"] }
+            /// A project video.
+            public var video: Video? { __data["video"] }
 
             public struct Fragments: FragmentContainer {
               public let __data: DataDict
@@ -956,6 +956,7 @@ public class FetchUserBackingsQuery: GraphQLQuery {
               public var projectFragment: ProjectFragment { _toFragment() }
               public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
               public var extendedProjectPropertiesFragment: ExtendedProjectPropertiesFragment { _toFragment() }
+              public var projectVideoFragment: ProjectVideoFragment { _toFragment() }
             }
 
             public init(
@@ -1003,14 +1004,14 @@ public class FetchUserBackingsQuery: GraphQLQuery {
               tags: [Tag?],
               url: String,
               usdExchangeRate: Double? = nil,
-              video: Video? = nil,
               watchesCount: Int? = nil,
               aiDisclosure: AiDisclosure? = nil,
               environmentalCommitments: [EnvironmentalCommitment?]? = nil,
               faqs: Faqs? = nil,
               projectNotice: String? = nil,
               risks: String,
-              story: GraphAPI.HTML
+              story: GraphAPI.HTML,
+              video: Video? = nil
             ) {
               self.init(_dataDict: DataDict(
                 data: [
@@ -1059,7 +1060,6 @@ public class FetchUserBackingsQuery: GraphQLQuery {
                   "tags": tags._fieldData,
                   "url": url,
                   "usdExchangeRate": usdExchangeRate,
-                  "video": video._fieldData,
                   "watchesCount": watchesCount,
                   "aiDisclosure": aiDisclosure._fieldData,
                   "environmentalCommitments": environmentalCommitments._fieldData,
@@ -1067,12 +1067,14 @@ public class FetchUserBackingsQuery: GraphQLQuery {
                   "projectNotice": projectNotice,
                   "risks": risks,
                   "story": story,
+                  "video": video._fieldData,
                 ],
                 fulfilledFragments: [
                   ObjectIdentifier(FetchUserBackingsQuery.Data.Me.Backings.Node.Project.self),
                   ObjectIdentifier(ProjectFragment.self),
                   ObjectIdentifier(NoRewardRewardFragment.self),
                   ObjectIdentifier(ExtendedProjectPropertiesFragment.self),
+                  ObjectIdentifier(ProjectVideoFragment.self),
                   ObjectIdentifier(BackingFragment.Project.self)
                 ]
               ))
@@ -1515,13 +1517,13 @@ public class FetchUserBackingsQuery: GraphQLQuery {
 
             public typealias Tag = ProjectFragment.Tag
 
-            public typealias Video = ProjectFragment.Video
-
             public typealias AiDisclosure = ExtendedProjectPropertiesFragment.AiDisclosure
 
             public typealias EnvironmentalCommitment = ExtendedProjectPropertiesFragment.EnvironmentalCommitment
 
             public typealias Faqs = ExtendedProjectPropertiesFragment.Faqs
+
+            public typealias Video = ProjectVideoFragment.Video
           }
 
           /// Me.Backings.Node.PaymentIncrement
