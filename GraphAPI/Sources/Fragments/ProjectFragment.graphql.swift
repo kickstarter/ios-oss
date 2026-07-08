@@ -5,7 +5,7 @@
 
 public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment ProjectFragment on Project { __typename availableCardTypes backersCount category { __typename ...CategoryFragment } canComment commentsCount(withReplies: true) country { __typename ...CountryFragment } creator { __typename ...PublicUserFragment } currency deadlineAt description finalCollectionDate fxRate goal { __typename ...MoneyFragment } image { __typename id url(width: 1024) } isProjectWeLove isProjectOfTheDay isWatched isLaunched isInPostCampaignPledgingPhase lastWave { __typename ...LastWaveFragment } launchedAt location { __typename ...LocationFragment } maxPledge minPledge name pid pledgeManager { __typename ...PledgeManagerFragment } pledged { __typename ...MoneyFragment } ...PledgeOverTimeFragment postCampaignPledgingEnabled posts { __typename totalCount } prelaunchActivated redemptionPageUrl sendMetaCapiEvents slug state stateChangedAt tags(scope: DISCOVER) { __typename name } url usdExchangeRate watchesCount ...NoRewardRewardFragment ...ExtendedProjectPropertiesFragment ...ProjectVideoFragment }"#
+    #"fragment ProjectFragment on Project { __typename availableCardTypes backersCount category { __typename ...CategoryFragment } canComment commentsCount(withReplies: true) country { __typename ...CountryFragment } creator { __typename ...PublicUserFragment } currency deadlineAt description ...ExtendedProjectPropertiesFragment finalCollectionDate fxRate goal { __typename ...MoneyFragment } image { __typename id url(width: 1024) } isProjectWeLove isProjectOfTheDay isWatched isLaunched isInPostCampaignPledgingPhase lastWave { __typename ...LastWaveFragment } launchedAt location { __typename ...LocationFragment } maxPledge minPledge name ...NoRewardRewardFragment pid pledgeManager { __typename ...PledgeManagerFragment } pledged { __typename ...MoneyFragment } ...PledgeOverTimeFragment postCampaignPledgingEnabled posts { __typename totalCount } prelaunchActivated ...ProjectVideoFragment redemptionPageUrl sendMetaCapiEvents slug state stateChangedAt tags(scope: DISCOVER) { __typename name } url usdExchangeRate watchesCount }"#
   }
 
   public let __data: DataDict
@@ -54,9 +54,9 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     .field("url", String.self),
     .field("usdExchangeRate", Double?.self),
     .field("watchesCount", Int?.self),
-    .fragment(PledgeOverTimeFragment.self),
-    .fragment(NoRewardRewardFragment.self),
     .fragment(ExtendedProjectPropertiesFragment.self),
+    .fragment(NoRewardRewardFragment.self),
+    .fragment(PledgeOverTimeFragment.self),
     .fragment(ProjectVideoFragment.self),
   ] }
 
@@ -140,16 +140,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
   /// Number of watchers a project has.
   public var watchesCount: Int? { __data["watchesCount"] }
-  /// Whether a project is enrolled in plot
-  public var isPledgeOverTimeAllowed: Bool { __data["isPledgeOverTimeAllowed"] }
-  /// Backer-facing summary of when the incremental charges will occur
-  public var pledgeOverTimeCollectionPlanChargeExplanation: String? { __data["pledgeOverTimeCollectionPlanChargeExplanation"] }
-  /// Quick summary of the amount of increments pledges will be spread over
-  public var pledgeOverTimeCollectionPlanChargedAsNPayments: String? { __data["pledgeOverTimeCollectionPlanChargedAsNPayments"] }
-  /// Backer-facing short summary of this project's number of payment increments to split over
-  public var pledgeOverTimeCollectionPlanShortPitch: String? { __data["pledgeOverTimeCollectionPlanShortPitch"] }
-  /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
-  public var pledgeOverTimeMinimumExplanation: String? { __data["pledgeOverTimeMinimumExplanation"] }
   public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
   /// The environmental commitments of the project.
   public var environmentalCommitments: [EnvironmentalCommitment?]? { __data["environmentalCommitments"] }
@@ -161,6 +151,16 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public var risks: String { __data["risks"] }
   /// The story behind the project, parsed for presentation.
   public var story: GraphAPI.HTML { __data["story"] }
+  /// Whether a project is enrolled in plot
+  public var isPledgeOverTimeAllowed: Bool { __data["isPledgeOverTimeAllowed"] }
+  /// Backer-facing summary of when the incremental charges will occur
+  public var pledgeOverTimeCollectionPlanChargeExplanation: String? { __data["pledgeOverTimeCollectionPlanChargeExplanation"] }
+  /// Quick summary of the amount of increments pledges will be spread over
+  public var pledgeOverTimeCollectionPlanChargedAsNPayments: String? { __data["pledgeOverTimeCollectionPlanChargedAsNPayments"] }
+  /// Backer-facing short summary of this project's number of payment increments to split over
+  public var pledgeOverTimeCollectionPlanShortPitch: String? { __data["pledgeOverTimeCollectionPlanShortPitch"] }
+  /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
+  public var pledgeOverTimeMinimumExplanation: String? { __data["pledgeOverTimeMinimumExplanation"] }
   /// A project video.
   public var video: Video? { __data["video"] }
 
@@ -168,9 +168,9 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     public let __data: DataDict
     public init(_dataDict: DataDict) { __data = _dataDict }
 
-    public var pledgeOverTimeFragment: PledgeOverTimeFragment { _toFragment() }
-    public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
     public var extendedProjectPropertiesFragment: ExtendedProjectPropertiesFragment { _toFragment() }
+    public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
+    public var pledgeOverTimeFragment: PledgeOverTimeFragment { _toFragment() }
     public var projectVideoFragment: ProjectVideoFragment { _toFragment() }
   }
 
@@ -215,17 +215,17 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     url: String,
     usdExchangeRate: Double? = nil,
     watchesCount: Int? = nil,
-    isPledgeOverTimeAllowed: Bool,
-    pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
-    pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil,
-    pledgeOverTimeCollectionPlanShortPitch: String? = nil,
-    pledgeOverTimeMinimumExplanation: String? = nil,
     aiDisclosure: AiDisclosure? = nil,
     environmentalCommitments: [EnvironmentalCommitment?]? = nil,
     faqs: Faqs? = nil,
     projectNotice: String? = nil,
     risks: String,
     story: GraphAPI.HTML,
+    isPledgeOverTimeAllowed: Bool,
+    pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
+    pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil,
+    pledgeOverTimeCollectionPlanShortPitch: String? = nil,
+    pledgeOverTimeMinimumExplanation: String? = nil,
     video: Video? = nil
   ) {
     self.init(_dataDict: DataDict(
@@ -271,23 +271,23 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
         "url": url,
         "usdExchangeRate": usdExchangeRate,
         "watchesCount": watchesCount,
-        "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed,
-        "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation,
-        "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments,
-        "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch,
-        "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation,
         "aiDisclosure": aiDisclosure._fieldData,
         "environmentalCommitments": environmentalCommitments._fieldData,
         "faqs": faqs._fieldData,
         "projectNotice": projectNotice,
         "risks": risks,
         "story": story,
+        "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed,
+        "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation,
+        "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments,
+        "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch,
+        "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation,
         "video": video._fieldData,
       ],
       fulfilledFragments: [
         ObjectIdentifier(ProjectFragment.self),
-        ObjectIdentifier(PledgeOverTimeFragment.self),
         ObjectIdentifier(ExtendedProjectPropertiesFragment.self),
+        ObjectIdentifier(PledgeOverTimeFragment.self),
         ObjectIdentifier(ProjectVideoFragment.self)
       ]
     ))

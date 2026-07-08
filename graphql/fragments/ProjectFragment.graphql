@@ -15,6 +15,7 @@ fragment ProjectFragment on Project {
   currency
   deadlineAt
   description
+  ...ExtendedProjectPropertiesFragment
   finalCollectionDate
   fxRate
   goal {
@@ -39,6 +40,7 @@ fragment ProjectFragment on Project {
   maxPledge
   minPledge
   name
+  ...NoRewardRewardFragment
   pid
   pledgeManager {
     ...PledgeManagerFragment
@@ -52,6 +54,7 @@ fragment ProjectFragment on Project {
     totalCount
   }
   prelaunchActivated
+  ...ProjectVideoFragment
   redemptionPageUrl
   sendMetaCapiEvents
   slug
@@ -63,7 +66,4 @@ fragment ProjectFragment on Project {
   url
   usdExchangeRate
   watchesCount
-  ...NoRewardRewardFragment
-  ...ExtendedProjectPropertiesFragment
-  ...ProjectVideoFragment
 }

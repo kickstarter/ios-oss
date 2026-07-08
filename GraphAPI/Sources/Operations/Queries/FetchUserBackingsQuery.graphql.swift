@@ -925,16 +925,6 @@ public class FetchUserBackingsQuery: GraphQLQuery {
             public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
             /// Number of watchers a project has.
             public var watchesCount: Int? { __data["watchesCount"] }
-            /// Whether a project is enrolled in plot
-            public var isPledgeOverTimeAllowed: Bool { __data["isPledgeOverTimeAllowed"] }
-            /// Backer-facing summary of when the incremental charges will occur
-            public var pledgeOverTimeCollectionPlanChargeExplanation: String? { __data["pledgeOverTimeCollectionPlanChargeExplanation"] }
-            /// Quick summary of the amount of increments pledges will be spread over
-            public var pledgeOverTimeCollectionPlanChargedAsNPayments: String? { __data["pledgeOverTimeCollectionPlanChargedAsNPayments"] }
-            /// Backer-facing short summary of this project's number of payment increments to split over
-            public var pledgeOverTimeCollectionPlanShortPitch: String? { __data["pledgeOverTimeCollectionPlanShortPitch"] }
-            /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
-            public var pledgeOverTimeMinimumExplanation: String? { __data["pledgeOverTimeMinimumExplanation"] }
             public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
             /// The environmental commitments of the project.
             public var environmentalCommitments: [EnvironmentalCommitment?]? { __data["environmentalCommitments"] }
@@ -946,6 +936,16 @@ public class FetchUserBackingsQuery: GraphQLQuery {
             public var risks: String { __data["risks"] }
             /// The story behind the project, parsed for presentation.
             public var story: GraphAPI.HTML { __data["story"] }
+            /// Whether a project is enrolled in plot
+            public var isPledgeOverTimeAllowed: Bool { __data["isPledgeOverTimeAllowed"] }
+            /// Backer-facing summary of when the incremental charges will occur
+            public var pledgeOverTimeCollectionPlanChargeExplanation: String? { __data["pledgeOverTimeCollectionPlanChargeExplanation"] }
+            /// Quick summary of the amount of increments pledges will be spread over
+            public var pledgeOverTimeCollectionPlanChargedAsNPayments: String? { __data["pledgeOverTimeCollectionPlanChargedAsNPayments"] }
+            /// Backer-facing short summary of this project's number of payment increments to split over
+            public var pledgeOverTimeCollectionPlanShortPitch: String? { __data["pledgeOverTimeCollectionPlanShortPitch"] }
+            /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
+            public var pledgeOverTimeMinimumExplanation: String? { __data["pledgeOverTimeMinimumExplanation"] }
             /// A project video.
             public var video: Video? { __data["video"] }
 
@@ -954,9 +954,9 @@ public class FetchUserBackingsQuery: GraphQLQuery {
               public init(_dataDict: DataDict) { __data = _dataDict }
 
               public var projectFragment: ProjectFragment { _toFragment() }
-              public var pledgeOverTimeFragment: PledgeOverTimeFragment { _toFragment() }
-              public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
               public var extendedProjectPropertiesFragment: ExtendedProjectPropertiesFragment { _toFragment() }
+              public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
+              public var pledgeOverTimeFragment: PledgeOverTimeFragment { _toFragment() }
               public var projectVideoFragment: ProjectVideoFragment { _toFragment() }
             }
 
@@ -1001,17 +1001,17 @@ public class FetchUserBackingsQuery: GraphQLQuery {
               url: String,
               usdExchangeRate: Double? = nil,
               watchesCount: Int? = nil,
-              isPledgeOverTimeAllowed: Bool,
-              pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
-              pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil,
-              pledgeOverTimeCollectionPlanShortPitch: String? = nil,
-              pledgeOverTimeMinimumExplanation: String? = nil,
               aiDisclosure: AiDisclosure? = nil,
               environmentalCommitments: [EnvironmentalCommitment?]? = nil,
               faqs: Faqs? = nil,
               projectNotice: String? = nil,
               risks: String,
               story: GraphAPI.HTML,
+              isPledgeOverTimeAllowed: Bool,
+              pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
+              pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil,
+              pledgeOverTimeCollectionPlanShortPitch: String? = nil,
+              pledgeOverTimeMinimumExplanation: String? = nil,
               video: Video? = nil
             ) {
               self.init(_dataDict: DataDict(
@@ -1057,25 +1057,25 @@ public class FetchUserBackingsQuery: GraphQLQuery {
                   "url": url,
                   "usdExchangeRate": usdExchangeRate,
                   "watchesCount": watchesCount,
-                  "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed,
-                  "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation,
-                  "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments,
-                  "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch,
-                  "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation,
                   "aiDisclosure": aiDisclosure._fieldData,
                   "environmentalCommitments": environmentalCommitments._fieldData,
                   "faqs": faqs._fieldData,
                   "projectNotice": projectNotice,
                   "risks": risks,
                   "story": story,
+                  "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed,
+                  "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation,
+                  "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments,
+                  "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch,
+                  "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation,
                   "video": video._fieldData,
                 ],
                 fulfilledFragments: [
                   ObjectIdentifier(FetchUserBackingsQuery.Data.Me.Backings.Node.Project.self),
                   ObjectIdentifier(ProjectFragment.self),
-                  ObjectIdentifier(PledgeOverTimeFragment.self),
-                  ObjectIdentifier(NoRewardRewardFragment.self),
                   ObjectIdentifier(ExtendedProjectPropertiesFragment.self),
+                  ObjectIdentifier(NoRewardRewardFragment.self),
+                  ObjectIdentifier(PledgeOverTimeFragment.self),
                   ObjectIdentifier(ProjectVideoFragment.self),
                   ObjectIdentifier(BackingFragment.Project.self)
                 ]
