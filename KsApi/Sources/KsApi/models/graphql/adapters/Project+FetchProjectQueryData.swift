@@ -71,7 +71,8 @@ extension Project {
         rewards: [Reward.noRewardReward(from: noRewardFragment)],
         addOns: nil,
         backing: nil,
-        currentUserChosenCurrency: data.me?.chosenCurrency ?? configCurrency
+        currentUserChosenCurrency: data.me?.chosenCurrency ?? configCurrency,
+        storyRichText: data.project?.storyRichText.fragments.richTextComponentFragment
       )
     else { return (nil, nil) }
 
@@ -97,7 +98,8 @@ extension Project {
         rewards: [Reward.noRewardReward(from: noRewardFragment)],
         addOns: nil,
         backing: nil,
-        currentUserChosenCurrency: data.me?.chosenCurrency ?? configCurrency
+        currentUserChosenCurrency: data.me?.chosenCurrency ?? configCurrency,
+        storyRichText: data.project?.storyRichText.fragments.richTextComponentFragment
       )
     else { return (nil, nil) }
 

@@ -4,6 +4,9 @@ query FetchProjectById($projectId: Int!) {
   }
   project(pid: $projectId) {
     ...ProjectFragment
+    storyRichText {
+      ...RichTextComponentFragment
+    }
     backing {
       id
     }

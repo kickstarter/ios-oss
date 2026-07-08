@@ -61,6 +61,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "ShipStationConfiguration": return GraphAPI.Objects.ShipStationConfiguration
     case "Organization": return GraphAPI.Objects.Organization
     case "CuratedPage": return GraphAPI.Objects.CuratedPage
+    case "UserSettings": return GraphAPI.Objects.UserSettings
     case "SavedSearchSegment": return GraphAPI.Objects.SavedSearchSegment
     case "ProjectInvestigation": return GraphAPI.Objects.ProjectInvestigation
     case "Task": return GraphAPI.Objects.Task
@@ -106,6 +107,17 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "PostConnection": return GraphAPI.Objects.PostConnection
     case "VideoSources": return GraphAPI.Objects.VideoSources
     case "VideoSourceInfo": return GraphAPI.Objects.VideoSourceInfo
+    case "RichTextComponent": return GraphAPI.Objects.RichTextComponent
+    case "RichText": return GraphAPI.Objects.RichText
+    case "RichTextHeader": return GraphAPI.Objects.RichTextHeader
+    case "RichTextListItem": return GraphAPI.Objects.RichTextListItem
+    case "RichTextListOpen": return GraphAPI.Objects.RichTextListOpen
+    case "RichTextListClose": return GraphAPI.Objects.RichTextListClose
+    case "RichTextPhoto": return GraphAPI.Objects.RichTextPhoto
+    case "RichTextAudio": return GraphAPI.Objects.RichTextAudio
+    case "RichTextVideo": return GraphAPI.Objects.RichTextVideo
+    case "RichTextOembed": return GraphAPI.Objects.RichTextOembed
+    case "AttachedVideoFormat": return GraphAPI.Objects.AttachedVideoFormat
     case "RewardConnection": return GraphAPI.Objects.RewardConnection
     case "PageInfo": return GraphAPI.Objects.PageInfo
     case "RewardItemsConnection": return GraphAPI.Objects.RewardItemsConnection
@@ -124,17 +136,6 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "RewardTotalCountConnection": return GraphAPI.Objects.RewardTotalCountConnection
     case "PaymentIncrement": return GraphAPI.Objects.PaymentIncrement
     case "PaymentIncrementAmount": return GraphAPI.Objects.PaymentIncrementAmount
-    case "RichTextComponent": return GraphAPI.Objects.RichTextComponent
-    case "RichText": return GraphAPI.Objects.RichText
-    case "RichTextHeader": return GraphAPI.Objects.RichTextHeader
-    case "RichTextListItem": return GraphAPI.Objects.RichTextListItem
-    case "RichTextListOpen": return GraphAPI.Objects.RichTextListOpen
-    case "RichTextListClose": return GraphAPI.Objects.RichTextListClose
-    case "RichTextPhoto": return GraphAPI.Objects.RichTextPhoto
-    case "RichTextAudio": return GraphAPI.Objects.RichTextAudio
-    case "RichTextVideo": return GraphAPI.Objects.RichTextVideo
-    case "RichTextOembed": return GraphAPI.Objects.RichTextOembed
-    case "AttachedVideoFormat": return GraphAPI.Objects.AttachedVideoFormat
     case "CategorySubcategoriesConnection": return GraphAPI.Objects.CategorySubcategoriesConnection
     case "PaymentPlan": return GraphAPI.Objects.PaymentPlan
     case "Validation": return GraphAPI.Objects.Validation

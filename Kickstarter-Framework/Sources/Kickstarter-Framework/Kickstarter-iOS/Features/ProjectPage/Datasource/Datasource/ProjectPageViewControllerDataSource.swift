@@ -2,6 +2,7 @@ import AVFoundation
 import KsApi
 import Library
 import Prelude
+import ServerDrivenUI
 import UIKit
 
 internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
@@ -154,53 +155,55 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         inSection: Section.campaignHeader.rawValue
       )
 
-      let htmlViewElements = project.extendedProjectProperties?.story.htmlViewElements ?? []
+      if !featureProjectStoryRichTextEnabled() {
+        let htmlViewElements = project.extendedProjectProperties?.story.htmlViewElements ?? []
 
-      htmlViewElements.forEach { element in
-        switch element {
-        case let element as TextViewElement:
-          self
-            .appendRow(
-              value: element,
-              cellClass: TextViewElementCell.self,
+        htmlViewElements.forEach { element in
+          switch element {
+          case let element as TextViewElement:
+            self
+              .appendRow(
+                value: element,
+                cellClass: TextViewElementCell.self,
+                toSection: Section.campaign.rawValue
+              )
+          case let element as ImageViewElement:
+            let preExistingElementImage = self.preexistingImageViewElementsWithData
+              .filter { $0.element.src == element.src }
+              .first?.image
+            let dataExists = preExistingElementImage != nil
+            let value = dataExists ? (element, preExistingElementImage) : (element, nil)
+
+            self.appendRow(
+              value: value,
+              cellClass: ImageViewElementCell.self,
               toSection: Section.campaign.rawValue
             )
-        case let element as ImageViewElement:
-          let preExistingElementImage = self.preexistingImageViewElementsWithData
-            .filter { $0.element.src == element.src }
-            .first?.image
-          let dataExists = preExistingElementImage != nil
-          let value = dataExists ? (element, preExistingElementImage) : (element, nil)
+          case let element as AudioVideoViewElement:
+            let preExistingAudioVideoElementWithPlayer = self.preexistingAudioVideoViewElementsWithPlayer
+              .filter { $0.0.sourceURLString == element.sourceURLString }
+              .first
 
-          self.appendRow(
-            value: value,
-            cellClass: ImageViewElementCell.self,
-            toSection: Section.campaign.rawValue
-          )
-        case let element as AudioVideoViewElement:
-          let preExistingAudioVideoElementWithPlayer = self.preexistingAudioVideoViewElementsWithPlayer
-            .filter { $0.0.sourceURLString == element.sourceURLString }
-            .first
+            let elementWithPlayer = (
+              element,
+              preExistingAudioVideoElementWithPlayer?.player,
+              preExistingAudioVideoElementWithPlayer?.image
+            )
 
-          let elementWithPlayer = (
-            element,
-            preExistingAudioVideoElementWithPlayer?.player,
-            preExistingAudioVideoElementWithPlayer?.image
-          )
-
-          self.appendRow(
-            value: elementWithPlayer,
-            cellClass: AudioVideoViewElementCell.self,
-            toSection: Section.campaign.rawValue
-          )
-        case let element as ExternalSourceViewElement:
-          self.appendRow(
-            value: element,
-            cellClass: ExternalSourceViewElementCell.self,
-            toSection: Section.campaign.rawValue
-          )
-        default:
-          break
+            self.appendRow(
+              value: elementWithPlayer,
+              cellClass: AudioVideoViewElementCell.self,
+              toSection: Section.campaign.rawValue
+            )
+          case let element as ExternalSourceViewElement:
+            self.appendRow(
+              value: element,
+              cellClass: ExternalSourceViewElementCell.self,
+              toSection: Section.campaign.rawValue
+            )
+          default:
+            break
+          }
         }
       }
     case let (.faq, .left(project)):

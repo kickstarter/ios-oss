@@ -1,4 +1,5 @@
 import Foundation
+import GraphAPI
 /**
  TODO:
  This model is meant to replace `Project` which has almost been converted to use GraphQL properties.
@@ -58,6 +59,15 @@ public struct ProjectFAQ {
 
 public struct ProjectStoryElements {
   public var htmlViewElements: [HTMLViewElement]
+  public var richText: RichTextComponentFragment?
+
+  public init(
+    htmlViewElements: [HTMLViewElement],
+    richText: RichTextComponentFragment? = nil
+  ) {
+    self.htmlViewElements = htmlViewElements
+    self.richText = richText
+  }
 }
 
 public struct ProjectTabCategoryDescription {

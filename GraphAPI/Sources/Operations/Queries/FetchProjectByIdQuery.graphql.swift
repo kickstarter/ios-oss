@@ -7,8 +7,8 @@ public class FetchProjectByIdQuery: GraphQLQuery {
   public static let operationName: String = "FetchProjectById"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchProjectById($projectId: Int!) { me { __typename chosenCurrency } project(pid: $projectId) { __typename ...ProjectFragment backing { __typename id } flagging { __typename id kind } } }"#,
-      fragments: [CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self]
+      #"query FetchProjectById($projectId: Int!) { me { __typename chosenCurrency } project(pid: $projectId) { __typename ...ProjectFragment storyRichText { __typename ...RichTextComponentFragment } backing { __typename id } flagging { __typename id kind } } }"#,
+      fragments: [CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self, RichTextComponentFragment.self, RichTextItemFragment.self]
     ))
 
   public var projectId: Int
@@ -91,11 +91,14 @@ public class FetchProjectByIdQuery: GraphQLQuery {
       public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Project }
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
+        .field("storyRichText", StoryRichText.self),
         .field("backing", Backing?.self),
         .field("flagging", Flagging?.self),
         .fragment(ProjectFragment.self),
       ] }
 
+      /// Return an itemized version of the story. This feature is in BETA: types can change anytime!
+      public var storyRichText: StoryRichText { __data["storyRichText"] }
       /// The current user's backing of this project.  Does not include inactive backings.
       public var backing: Backing? { __data["backing"] }
       /// A report by the current user for the project.
@@ -213,6 +216,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
       }
 
       public init(
+        storyRichText: StoryRichText,
         backing: Backing? = nil,
         flagging: Flagging? = nil,
         availableCardTypes: [GraphQLEnum<GraphAPI.CreditCardTypes>],
@@ -271,6 +275,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
         self.init(_dataDict: DataDict(
           data: [
             "__typename": GraphAPI.Objects.Project.typename,
+            "storyRichText": storyRichText._fieldData,
             "backing": backing._fieldData,
             "flagging": flagging._fieldData,
             "availableCardTypes": availableCardTypes,
@@ -332,6 +337,46 @@ public class FetchProjectByIdQuery: GraphQLQuery {
             ObjectIdentifier(NoRewardRewardFragment.self)
           ]
         ))
+      }
+
+      /// Project.StoryRichText
+      ///
+      /// Parent Type: `RichTextComponent`
+      public struct StoryRichText: GraphAPI.SelectionSet {
+        public let __data: DataDict
+        public init(_dataDict: DataDict) { __data = _dataDict }
+
+        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextComponent }
+        public static var __selections: [ApolloAPI.Selection] { [
+          .field("__typename", String.self),
+          .fragment(RichTextComponentFragment.self),
+        ] }
+
+        public var items: [Item] { __data["items"] }
+
+        public struct Fragments: FragmentContainer {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public var richTextComponentFragment: RichTextComponentFragment { _toFragment() }
+        }
+
+        public init(
+          items: [Item]
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.RichTextComponent.typename,
+              "items": items._fieldData,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchProjectByIdQuery.Data.Project.StoryRichText.self),
+              ObjectIdentifier(RichTextComponentFragment.self)
+            ]
+          ))
+        }
+
+        public typealias Item = RichTextComponentFragment.Item
       }
 
       /// Project.Backing

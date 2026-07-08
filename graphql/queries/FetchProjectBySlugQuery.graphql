@@ -4,6 +4,9 @@ query FetchProjectBySlug($slug: String!) {
   }
   project(slug: $slug) {
     ...ProjectFragment
+    storyRichText {
+      ...RichTextComponentFragment
+    }
     backing {
       id
     }

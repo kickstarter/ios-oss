@@ -3,6 +3,23 @@ import GraphAPI
 import KsApi
 import Prelude
 import ReactiveSwift
+import ServerDrivenUI
+
+public enum ProjectPageContentView: Equatable {
+  case tableView
+  case richTextView([RichTextElement])
+
+  public static func == (lhs: ProjectPageContentView, rhs: ProjectPageContentView) -> Bool {
+    switch (lhs, rhs) {
+    case (.tableView, .tableView):
+      return true
+    case let (.richTextView(leftRichText), .richTextView(rightRichText)):
+      return leftRichText == rightRichText
+    default:
+      return false
+    }
+  }
+}
 
 public protocol ProjectPageParam {
   var param: Param { get }
@@ -110,6 +127,9 @@ public protocol ProjectPageViewModelInputs {
 }
 
 public protocol ProjectPageViewModelOutputs {
+  /// Emits a `ProjectPageContentView` to determine which content view to show in the campaign section.
+  var selectedContentView: Signal<ProjectPageContentView, Never> { get }
+
   /// Emits a tuple of a `NavigationSection`, `Project` and `RefTag?` to configure the data source
   var configureDataSource: Signal<
     (NavigationSection, Either<Project, any ProjectPageParam>, RefTag?),
@@ -578,6 +598,23 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .filter { NavigationSection(rawValue: $0) == .campaign }
       .ignoreValues()
 
+    let campaignNavSectionSignal = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(NavigationSection.overview),
+      self.projectNavigationSelectorViewDidSelectProperty.signal.skipNil()
+        .compactMap { NavigationSection(rawValue: $0) }
+    )
+
+    self.selectedContentView = Signal.combineLatest(campaignNavSectionSignal, project)
+      .map { navSection, project -> ProjectPageContentView in
+        guard navSection == .campaign,
+              featureProjectStoryRichTextEnabled(),
+              let richText = project.extendedProjectProperties?.story.richText?.asRichTextElements() else {
+          return .tableView
+        }
+        return .richTextView(richText)
+      }
+      .skipRepeats()
+
     self.goToURL = self.didSelectCampaignImageLinkProperty.signal.skipNil()
 
     // MARK: Project notice
@@ -828,6 +865,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
   private let viewPledgeUseCase: ViewPledgeUseCase
 
+  public let selectedContentView: Signal<ProjectPageContentView, Never>
   public let configureDataSource: Signal<
     (NavigationSection, Either<Project, any ProjectPageParam>, RefTag?),
     Never

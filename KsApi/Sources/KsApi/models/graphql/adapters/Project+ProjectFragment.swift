@@ -15,7 +15,8 @@ extension Project {
     rewards: [Reward] = [],
     addOns: [Reward]? = nil,
     backing: Backing? = nil,
-    currentUserChosenCurrency: String?
+    currentUserChosenCurrency: String?,
+    storyRichText: GraphAPI.RichTextComponentFragment? = nil
   ) -> Project? {
     guard
       let country = Country.country(
@@ -73,7 +74,10 @@ extension Project {
       .filter { $0 != "" }
       .last
 
-    let extendedProjectProperties = extendedProject(from: projectFragment)
+    let extendedProjectProperties = extendedProject(
+      from: projectFragment,
+      storyRichText: storyRichText
+    )
 
     let lastWave = projectFragment.lastWave
       .flatMap { LastWave(fromFragment: $0.fragments.lastWaveFragment) }
@@ -261,7 +265,10 @@ private func projectVideo(from projectFragment: GraphAPI.ProjectFragment) -> Pro
 /**
  Returns a `ExtendedProjectProperties` object from `ProjectFragment`
  */
-private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> ExtendedProjectProperties {
+private func extendedProject(
+  from projectFragment: GraphAPI.ProjectFragment,
+  storyRichText: GraphAPI.RichTextComponentFragment? = nil
+) -> ExtendedProjectProperties {
   let risks = projectFragment.risks
   let environmentalCommitments = extendedProjectEnvironmentalCommitments(from: projectFragment)
   let faqs = extendedProjectFAQs(from: projectFragment)
@@ -273,7 +280,7 @@ private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> 
     faqs: faqs,
     aiDisclosure: aiDisclosure,
     risks: risks,
-    story: storyElements(from: projectFragment),
+    story: storyElements(from: projectFragment, storyRichText: storyRichText),
     minimumPledgeAmount: minimumSingleTierPledgeAmount,
     projectNotice: projectFragment.projectNotice
   )
@@ -284,7 +291,10 @@ private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> 
 /**
  Returns a `ProjectStoryElements` object from `ProjectFragment`
  */
-private func storyElements(from projectFragment: GraphAPI.ProjectFragment) -> ProjectStoryElements {
+private func storyElements(
+  from projectFragment: GraphAPI.ProjectFragment,
+  storyRichText: GraphAPI.RichTextComponentFragment? = nil
+) -> ProjectStoryElements {
   let viewElements = Project.htmlParser.parse(bodyHtml: projectFragment.story)
   var seenURLStrings = Set<String>()
   var htmlElementsWithUniqueAudioVideoViewElements = [HTMLViewElement]()
@@ -302,7 +312,10 @@ private func storyElements(from projectFragment: GraphAPI.ProjectFragment) -> Pr
     }
   }
 
-  let storyElements = ProjectStoryElements(htmlViewElements: htmlElementsWithUniqueAudioVideoViewElements)
+  let storyElements = ProjectStoryElements(
+    htmlViewElements: htmlElementsWithUniqueAudioVideoViewElements,
+    richText: storyRichText
+  )
 
   return storyElements
 }
