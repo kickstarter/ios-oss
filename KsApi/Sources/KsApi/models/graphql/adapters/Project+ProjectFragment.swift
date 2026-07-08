@@ -14,7 +14,8 @@ extension Project {
     flagging: Bool? = nil,
     rewards: [Reward] = [],
     addOns: [Reward]? = nil,
-    backing: Backing? = nil
+    backing: Backing? = nil,
+    storyRichText: GraphAPI.RichTextComponentFragment? = nil
   ) -> Project? {
     guard
       let country = Country.country(
@@ -73,7 +74,10 @@ extension Project {
       .last
 
     let extendedFragment = projectFragment.fragments.extendedProjectPropertiesFragment
-    let extendedProjectProperties = extendedProject(from: extendedFragment)
+    let extendedProjectProperties = extendedProject(
+      from: extendedFragment,
+      storyRichText: storyRichText
+    )
 
     let lastWave = projectFragment.lastWave
       .flatMap { LastWave(fromFragment: $0.fragments.lastWaveFragment) }
@@ -268,7 +272,8 @@ private func projectVideo(from videoFragment: GraphAPI.ProjectVideoFragment?) ->
  Returns a `ExtendedProjectProperties` object from `ExtendedProjectPropertiesFragment`
  */
 private func extendedProject(
-  from fragment: GraphAPI.ExtendedProjectPropertiesFragment
+  from fragment: GraphAPI.ExtendedProjectPropertiesFragment,
+  storyRichText: GraphAPI.RichTextComponentFragment? = nil
 ) -> ExtendedProjectProperties {
   let risks = fragment.risks
   let environmentalCommitments = extendedProjectEnvironmentalCommitments(from: fragment)
@@ -281,7 +286,7 @@ private func extendedProject(
     faqs: faqs,
     aiDisclosure: aiDisclosure,
     risks: risks,
-    story: storyElements(from: fragment),
+    story: storyElements(from: fragment, storyRichText: storyRichText),
     minimumPledgeAmount: minimumSingleTierPledgeAmount,
     projectNotice: fragment.projectNotice
   )
@@ -293,7 +298,8 @@ private func extendedProject(
  Returns a `ProjectStoryElements` object from `ExtendedProjectPropertiesFragment`
  */
 private func storyElements(
-  from fragment: GraphAPI.ExtendedProjectPropertiesFragment
+  from fragment: GraphAPI.ExtendedProjectPropertiesFragment,
+  storyRichText: GraphAPI.RichTextComponentFragment? = nil
 ) -> ProjectStoryElements {
   let viewElements = Project.htmlParser.parse(bodyHtml: fragment.story)
   var seenURLStrings = Set<String>()
@@ -312,7 +318,10 @@ private func storyElements(
     }
   }
 
-  let storyElements = ProjectStoryElements(htmlViewElements: htmlElementsWithUniqueAudioVideoViewElements)
+  let storyElements = ProjectStoryElements(
+    htmlViewElements: htmlElementsWithUniqueAudioVideoViewElements,
+    richText: storyRichText
+  )
 
   return storyElements
 }

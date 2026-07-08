@@ -29,6 +29,17 @@ final class ProjectPageViewModelTests: TestCase {
       projectNotice: nil
     )
 
+  private let projectWithRichText = Project.template
+    |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+      environmentalCommitments: [],
+      faqs: [],
+      aiDisclosure: nil,
+      risks: "",
+      story: ProjectStoryElements(htmlViewElements: [], richText: RichTextComponentFragment(items: [])),
+      minimumPledgeAmount: 1,
+      projectNotice: nil
+    )
+
   private let configureDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
   private let configureDataSourceProject = TestObserver<Either<Project, any ProjectPageParam>, Never>()
   private let configureChildViewControllersWithProject = TestObserver<Project, Never>()
@@ -68,6 +79,7 @@ final class ProjectPageViewModelTests: TestCase {
   private let updateFAQsInDataSourceProject = TestObserver<Project, Never>()
   private let updateFAQsInDataSourceIsExpandedValues = TestObserver<[Bool], Never>()
   private let updateWatchProjectWithPrelaunchProjectState = TestObserver<PledgeCTAPrelaunchState, Never>()
+  private let selectedContentView = TestObserver<ProjectPageContentView, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -144,6 +156,7 @@ final class ProjectPageViewModelTests: TestCase {
       .observe(self.updateFAQsInDataSourceIsExpandedValues.observer)
     self.vm.outputs.updateWatchProjectWithPrelaunchProjectState.map { $0 }
       .observe(self.updateWatchProjectWithPrelaunchProjectState.observer)
+    self.vm.outputs.selectedContentView.observe(self.selectedContentView.observer)
   }
 
   func testConfigureChildViewControllersWithProject_WithFriendsNoBacking_ConfiguredWithProject() {
@@ -1916,6 +1929,129 @@ final class ProjectPageViewModelTests: TestCase {
       XCTAssertEqual(imageElement?.src, imageUrl.absoluteString, "Should emit the correct image URL")
       XCTAssertNil(imageElement?.href, "Image should not have a link")
       XCTAssertNil(imageElement?.caption, "Image should not have a caption")
+    }
+  }
+
+  // MARK: - selectedContentView
+
+  func testselectedContentView_defaultsToTableViewOnViewDidLoad() {
+    self.vm.inputs.configureWith(
+      projectOrParam: .left(self.projectWithEmptyProperties),
+      refInfo: RefInfo(.category)
+    )
+    self.vm.inputs.viewDidLoad()
+
+    self.selectedContentView.assertValues([.tableView])
+  }
+
+  func testselectedContentView_featureFlagOff_campaignSection_returnsTableView() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.projectStoryRichText: false]
+
+    withEnvironment(statsigClient: mockStatsig) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(self.projectWithRichText),
+        refInfo: RefInfo(.category)
+      )
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(
+        index: NavigationSection.campaign.rawValue
+      )
+
+      self.selectedContentView.assertLastValue(
+        .tableView,
+        "Feature flag off → table view even with rich text."
+      )
+    }
+  }
+
+  func testselectedContentView_featureFlagOn_noRichText_campaignSection_returnsTableView() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.projectStoryRichText: true]
+
+    withEnvironment(statsigClient: mockStatsig) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(self.projectWithEmptyProperties),
+        refInfo: RefInfo(.category)
+      )
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(
+        index: NavigationSection.campaign.rawValue
+      )
+
+      self.selectedContentView.assertLastValue(.tableView, "No rich text → table view even with flag on.")
+    }
+  }
+
+  func testselectedContentView_featureFlagOn_hasRichText_campaignSection_returnsRichTextView() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.projectStoryRichText: true]
+
+    withEnvironment(statsigClient: mockStatsig) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(self.projectWithRichText),
+        refInfo: RefInfo(.category)
+      )
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(
+        index: NavigationSection.campaign.rawValue
+      )
+
+      self.selectedContentView.assertValueCount(2)
+      XCTAssertEqual(self.selectedContentView.values.first, .tableView)
+      guard case .richTextView = self.selectedContentView.values[1] else {
+        return XCTFail("Second value is not richTextView")
+      }
+    }
+  }
+
+  func testselectedContentView_switchingFromCampaignToOverview_returnsTableView() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.projectStoryRichText: true]
+
+    withEnvironment(statsigClient: mockStatsig) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(self.projectWithRichText),
+        refInfo: RefInfo(.category)
+      )
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(
+        index: NavigationSection.campaign.rawValue
+      )
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(
+        index: NavigationSection.overview.rawValue
+      )
+
+      self.selectedContentView.assertValueCount(3)
+      XCTAssertEqual(self.selectedContentView.values.first, .tableView)
+      XCTAssertEqual(self.selectedContentView.values.last, .tableView)
+      guard case .richTextView = self.selectedContentView.values[1] else {
+        return XCTFail("Second value is not richTextView")
+      }
+    }
+  }
+
+  func testselectedContentView_skipRepeats_doesNotReemitSameValue() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.projectStoryRichText: true]
+
+    withEnvironment(statsigClient: mockStatsig) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(self.projectWithRichText),
+        refInfo: RefInfo(.category)
+      )
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(
+        index: NavigationSection.campaign.rawValue
+      )
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(
+        index: NavigationSection.campaign.rawValue
+      )
+
+      self.selectedContentView.assertValueCount(
+        2,
+        "Repeated campaign selection is suppressed by skipRepeats."
+      )
     }
   }
 

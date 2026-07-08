@@ -3,7 +3,7 @@ import GraphAPI
 
 /// Represents a single block-level element in a RichText list. Used to make implementing
 /// the different views in SwiftUI more easily and with a consistent interface.
-public indirect enum RichTextElement: Sendable {
+public indirect enum RichTextElement: Sendable, Equatable {
   case text(Text, HeaderLevel?)
   case listItemOpen
   case listItemClose
@@ -14,7 +14,7 @@ public indirect enum RichTextElement: Sendable {
   case oembed(OEmbed)
   case unknown
 
-  public struct Text: Sendable {
+  public struct Text: Sendable, Equatable {
     let text: String
     let link: URL?
     let styles: [Style]
@@ -27,7 +27,7 @@ public indirect enum RichTextElement: Sendable {
       self.children = children
     }
 
-    public enum Style: String, Sendable {
+    public enum Style: String, Sendable, Equatable {
       case strong = "STRONG"
       case emphasis = "EMPHASIS"
       case heading1 = "HEADING_1"
@@ -57,7 +57,7 @@ public indirect enum RichTextElement: Sendable {
     }
   }
 
-  public enum HeaderLevel: String, Sendable {
+  public enum HeaderLevel: String, Sendable, Equatable {
     case one = "HEADING_1"
     case two = "HEADING_2"
     case three = "HEADING_3"
@@ -76,21 +76,21 @@ public indirect enum RichTextElement: Sendable {
     }
   }
 
-  public struct Audio: Sendable {
+  public struct Audio: Sendable, Equatable {
     let altText: String?
     let assetID: String?
     let caption: String?
     let url: String?
   }
 
-  public struct Photo: Sendable {
+  public struct Photo: Sendable, Equatable {
     let altText: String?
     let assetID: String?
     let caption: String?
     let url: String?
   }
 
-  public struct VideoFormat: Sendable {
+  public struct VideoFormat: Sendable, Equatable {
     let encoding: String
     let height: String
     let width: String
@@ -98,7 +98,7 @@ public indirect enum RichTextElement: Sendable {
     let url: String
   }
 
-  public struct Video: Sendable {
+  public struct Video: Sendable, Equatable {
     let altText: String?
     let assetID: String?
     let caption: String?
@@ -107,7 +107,7 @@ public indirect enum RichTextElement: Sendable {
     let formats: [VideoFormat]
   }
 
-  public struct OEmbed: Sendable {
+  public struct OEmbed: Sendable, Equatable {
     let width: Int
     let height: Int
     let version: String
