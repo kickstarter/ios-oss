@@ -5,7 +5,7 @@
 
 public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment ProjectFragment on Project { __typename availableCardTypes backersCount category { __typename ...CategoryFragment } canComment commentsCount(withReplies: true) country { __typename ...CountryFragment } creator { __typename ...PublicUserFragment } currency deadlineAt description finalCollectionDate fxRate goal { __typename ...MoneyFragment } image { __typename id url(width: 1024) } isPledgeOverTimeAllowed isProjectWeLove isProjectOfTheDay isWatched isLaunched isInPostCampaignPledgingPhase lastWave { __typename ...LastWaveFragment } launchedAt location { __typename ...LocationFragment } maxPledge minPledge name pid pledgeManager { __typename ...PledgeManagerFragment } pledgeOverTimeCollectionPlanChargeExplanation pledgeOverTimeCollectionPlanChargedAsNPayments pledgeOverTimeCollectionPlanShortPitch pledgeOverTimeMinimumExplanation pledged { __typename ...MoneyFragment } postCampaignPledgingEnabled posts { __typename totalCount } prelaunchActivated redemptionPageUrl sendMetaCapiEvents slug state stateChangedAt tags(scope: DISCOVER) { __typename name } url usdExchangeRate watchesCount ...NoRewardRewardFragment ...ExtendedProjectPropertiesFragment ...ProjectVideoFragment }"#
+    #"fragment ProjectFragment on Project { __typename availableCardTypes backersCount category { __typename ...CategoryFragment } canComment commentsCount(withReplies: true) country { __typename ...CountryFragment } creator { __typename ...PublicUserFragment } currency deadlineAt description finalCollectionDate fxRate goal { __typename ...MoneyFragment } image { __typename id url(width: 1024) } isProjectWeLove isProjectOfTheDay isWatched isLaunched isInPostCampaignPledgingPhase lastWave { __typename ...LastWaveFragment } launchedAt location { __typename ...LocationFragment } maxPledge minPledge name pid pledgeManager { __typename ...PledgeManagerFragment } pledged { __typename ...MoneyFragment } ...PledgeOverTimeFragment postCampaignPledgingEnabled posts { __typename totalCount } prelaunchActivated redemptionPageUrl sendMetaCapiEvents slug state stateChangedAt tags(scope: DISCOVER) { __typename name } url usdExchangeRate watchesCount ...NoRewardRewardFragment ...ExtendedProjectPropertiesFragment ...ProjectVideoFragment }"#
   }
 
   public let __data: DataDict
@@ -28,7 +28,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     .field("fxRate", Double.self),
     .field("goal", Goal?.self),
     .field("image", Image?.self),
-    .field("isPledgeOverTimeAllowed", Bool.self),
     .field("isProjectWeLove", Bool.self),
     .field("isProjectOfTheDay", Bool?.self),
     .field("isWatched", Bool.self),
@@ -42,10 +41,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     .field("name", String.self),
     .field("pid", Int.self),
     .field("pledgeManager", PledgeManager?.self),
-    .field("pledgeOverTimeCollectionPlanChargeExplanation", String?.self),
-    .field("pledgeOverTimeCollectionPlanChargedAsNPayments", String?.self),
-    .field("pledgeOverTimeCollectionPlanShortPitch", String?.self),
-    .field("pledgeOverTimeMinimumExplanation", String?.self),
     .field("pledged", Pledged.self),
     .field("postCampaignPledgingEnabled", Bool.self),
     .field("posts", Posts.self),
@@ -59,6 +54,7 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     .field("url", String.self),
     .field("usdExchangeRate", Double?.self),
     .field("watchesCount", Int?.self),
+    .fragment(PledgeOverTimeFragment.self),
     .fragment(NoRewardRewardFragment.self),
     .fragment(ExtendedProjectPropertiesFragment.self),
     .fragment(ProjectVideoFragment.self),
@@ -92,8 +88,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public var goal: Goal? { __data["goal"] }
   /// The project's primary image.
   public var image: Image? { __data["image"] }
-  /// Whether a project is enrolled in plot
-  public var isPledgeOverTimeAllowed: Bool { __data["isPledgeOverTimeAllowed"] }
   /// Whether or not this is a Kickstarter-featured project.
   public var isProjectWeLove: Bool { __data["isProjectWeLove"] }
   /// Whether or not this is a Project of the Day.
@@ -120,14 +114,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public var pid: Int { __data["pid"] }
   /// The project's pledge manager
   public var pledgeManager: PledgeManager? { __data["pledgeManager"] }
-  /// Backer-facing summary of when the incremental charges will occur
-  public var pledgeOverTimeCollectionPlanChargeExplanation: String? { __data["pledgeOverTimeCollectionPlanChargeExplanation"] }
-  /// Quick summary of the amount of increments pledges will be spread over
-  public var pledgeOverTimeCollectionPlanChargedAsNPayments: String? { __data["pledgeOverTimeCollectionPlanChargedAsNPayments"] }
-  /// Backer-facing short summary of this project's number of payment increments to split over
-  public var pledgeOverTimeCollectionPlanShortPitch: String? { __data["pledgeOverTimeCollectionPlanShortPitch"] }
-  /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
-  public var pledgeOverTimeMinimumExplanation: String? { __data["pledgeOverTimeMinimumExplanation"] }
   /// How much money is pledged to the project.
   public var pledged: Pledged { __data["pledged"] }
   /// Is this project configured for post-campaign pledges?
@@ -154,6 +140,16 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
   /// Number of watchers a project has.
   public var watchesCount: Int? { __data["watchesCount"] }
+  /// Whether a project is enrolled in plot
+  public var isPledgeOverTimeAllowed: Bool { __data["isPledgeOverTimeAllowed"] }
+  /// Backer-facing summary of when the incremental charges will occur
+  public var pledgeOverTimeCollectionPlanChargeExplanation: String? { __data["pledgeOverTimeCollectionPlanChargeExplanation"] }
+  /// Quick summary of the amount of increments pledges will be spread over
+  public var pledgeOverTimeCollectionPlanChargedAsNPayments: String? { __data["pledgeOverTimeCollectionPlanChargedAsNPayments"] }
+  /// Backer-facing short summary of this project's number of payment increments to split over
+  public var pledgeOverTimeCollectionPlanShortPitch: String? { __data["pledgeOverTimeCollectionPlanShortPitch"] }
+  /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
+  public var pledgeOverTimeMinimumExplanation: String? { __data["pledgeOverTimeMinimumExplanation"] }
   public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
   /// The environmental commitments of the project.
   public var environmentalCommitments: [EnvironmentalCommitment?]? { __data["environmentalCommitments"] }
@@ -172,6 +168,7 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     public let __data: DataDict
     public init(_dataDict: DataDict) { __data = _dataDict }
 
+    public var pledgeOverTimeFragment: PledgeOverTimeFragment { _toFragment() }
     public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
     public var extendedProjectPropertiesFragment: ExtendedProjectPropertiesFragment { _toFragment() }
     public var projectVideoFragment: ProjectVideoFragment { _toFragment() }
@@ -192,7 +189,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     fxRate: Double,
     goal: Goal? = nil,
     image: Image? = nil,
-    isPledgeOverTimeAllowed: Bool,
     isProjectWeLove: Bool,
     isProjectOfTheDay: Bool? = nil,
     isWatched: Bool,
@@ -206,10 +202,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     name: String,
     pid: Int,
     pledgeManager: PledgeManager? = nil,
-    pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
-    pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil,
-    pledgeOverTimeCollectionPlanShortPitch: String? = nil,
-    pledgeOverTimeMinimumExplanation: String? = nil,
     pledged: Pledged,
     postCampaignPledgingEnabled: Bool,
     posts: Posts,
@@ -223,6 +215,11 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     url: String,
     usdExchangeRate: Double? = nil,
     watchesCount: Int? = nil,
+    isPledgeOverTimeAllowed: Bool,
+    pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
+    pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil,
+    pledgeOverTimeCollectionPlanShortPitch: String? = nil,
+    pledgeOverTimeMinimumExplanation: String? = nil,
     aiDisclosure: AiDisclosure? = nil,
     environmentalCommitments: [EnvironmentalCommitment?]? = nil,
     faqs: Faqs? = nil,
@@ -248,7 +245,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
         "fxRate": fxRate,
         "goal": goal._fieldData,
         "image": image._fieldData,
-        "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed,
         "isProjectWeLove": isProjectWeLove,
         "isProjectOfTheDay": isProjectOfTheDay,
         "isWatched": isWatched,
@@ -262,10 +258,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
         "name": name,
         "pid": pid,
         "pledgeManager": pledgeManager._fieldData,
-        "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation,
-        "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments,
-        "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch,
-        "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation,
         "pledged": pledged._fieldData,
         "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
         "posts": posts._fieldData,
@@ -279,6 +271,11 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
         "url": url,
         "usdExchangeRate": usdExchangeRate,
         "watchesCount": watchesCount,
+        "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed,
+        "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation,
+        "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments,
+        "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch,
+        "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation,
         "aiDisclosure": aiDisclosure._fieldData,
         "environmentalCommitments": environmentalCommitments._fieldData,
         "faqs": faqs._fieldData,
@@ -289,6 +286,7 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
       ],
       fulfilledFragments: [
         ObjectIdentifier(ProjectFragment.self),
+        ObjectIdentifier(PledgeOverTimeFragment.self),
         ObjectIdentifier(ExtendedProjectPropertiesFragment.self),
         ObjectIdentifier(ProjectVideoFragment.self)
       ]

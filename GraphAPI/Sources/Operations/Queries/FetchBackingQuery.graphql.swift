@@ -8,7 +8,7 @@ public class FetchBackingQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FetchBacking($id: ID!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment project { __typename ...ProjectFragment } paymentIncrements { __typename ...PaymentIncrementFragment } } }"#,
-      fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, ProjectFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
+      fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
     ))
 
   public var id: ID
@@ -781,8 +781,6 @@ public class FetchBackingQuery: GraphQLQuery {
         public var goal: Goal? { __data["goal"] }
         /// The project's primary image.
         public var image: Image? { __data["image"] }
-        /// Whether a project is enrolled in plot
-        public var isPledgeOverTimeAllowed: Bool { __data["isPledgeOverTimeAllowed"] }
         /// Whether or not this is a Kickstarter-featured project.
         public var isProjectWeLove: Bool { __data["isProjectWeLove"] }
         /// Whether or not this is a Project of the Day.
@@ -809,14 +807,6 @@ public class FetchBackingQuery: GraphQLQuery {
         public var pid: Int { __data["pid"] }
         /// The project's pledge manager
         public var pledgeManager: PledgeManager? { __data["pledgeManager"] }
-        /// Backer-facing summary of when the incremental charges will occur
-        public var pledgeOverTimeCollectionPlanChargeExplanation: String? { __data["pledgeOverTimeCollectionPlanChargeExplanation"] }
-        /// Quick summary of the amount of increments pledges will be spread over
-        public var pledgeOverTimeCollectionPlanChargedAsNPayments: String? { __data["pledgeOverTimeCollectionPlanChargedAsNPayments"] }
-        /// Backer-facing short summary of this project's number of payment increments to split over
-        public var pledgeOverTimeCollectionPlanShortPitch: String? { __data["pledgeOverTimeCollectionPlanShortPitch"] }
-        /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
-        public var pledgeOverTimeMinimumExplanation: String? { __data["pledgeOverTimeMinimumExplanation"] }
         /// How much money is pledged to the project.
         public var pledged: Pledged { __data["pledged"] }
         /// Is this project configured for post-campaign pledges?
@@ -843,6 +833,16 @@ public class FetchBackingQuery: GraphQLQuery {
         public var usdExchangeRate: Double? { __data["usdExchangeRate"] }
         /// Number of watchers a project has.
         public var watchesCount: Int? { __data["watchesCount"] }
+        /// Whether a project is enrolled in plot
+        public var isPledgeOverTimeAllowed: Bool { __data["isPledgeOverTimeAllowed"] }
+        /// Backer-facing summary of when the incremental charges will occur
+        public var pledgeOverTimeCollectionPlanChargeExplanation: String? { __data["pledgeOverTimeCollectionPlanChargeExplanation"] }
+        /// Quick summary of the amount of increments pledges will be spread over
+        public var pledgeOverTimeCollectionPlanChargedAsNPayments: String? { __data["pledgeOverTimeCollectionPlanChargedAsNPayments"] }
+        /// Backer-facing short summary of this project's number of payment increments to split over
+        public var pledgeOverTimeCollectionPlanShortPitch: String? { __data["pledgeOverTimeCollectionPlanShortPitch"] }
+        /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
+        public var pledgeOverTimeMinimumExplanation: String? { __data["pledgeOverTimeMinimumExplanation"] }
         public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
         /// The environmental commitments of the project.
         public var environmentalCommitments: [EnvironmentalCommitment?]? { __data["environmentalCommitments"] }
@@ -862,6 +862,7 @@ public class FetchBackingQuery: GraphQLQuery {
           public init(_dataDict: DataDict) { __data = _dataDict }
 
           public var projectFragment: ProjectFragment { _toFragment() }
+          public var pledgeOverTimeFragment: PledgeOverTimeFragment { _toFragment() }
           public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
           public var extendedProjectPropertiesFragment: ExtendedProjectPropertiesFragment { _toFragment() }
           public var projectVideoFragment: ProjectVideoFragment { _toFragment() }
@@ -882,7 +883,6 @@ public class FetchBackingQuery: GraphQLQuery {
           fxRate: Double,
           goal: Goal? = nil,
           image: Image? = nil,
-          isPledgeOverTimeAllowed: Bool,
           isProjectWeLove: Bool,
           isProjectOfTheDay: Bool? = nil,
           isWatched: Bool,
@@ -896,10 +896,6 @@ public class FetchBackingQuery: GraphQLQuery {
           name: String,
           pid: Int,
           pledgeManager: PledgeManager? = nil,
-          pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
-          pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil,
-          pledgeOverTimeCollectionPlanShortPitch: String? = nil,
-          pledgeOverTimeMinimumExplanation: String? = nil,
           pledged: Pledged,
           postCampaignPledgingEnabled: Bool,
           posts: Posts,
@@ -913,6 +909,11 @@ public class FetchBackingQuery: GraphQLQuery {
           url: String,
           usdExchangeRate: Double? = nil,
           watchesCount: Int? = nil,
+          isPledgeOverTimeAllowed: Bool,
+          pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
+          pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil,
+          pledgeOverTimeCollectionPlanShortPitch: String? = nil,
+          pledgeOverTimeMinimumExplanation: String? = nil,
           aiDisclosure: AiDisclosure? = nil,
           environmentalCommitments: [EnvironmentalCommitment?]? = nil,
           faqs: Faqs? = nil,
@@ -938,7 +939,6 @@ public class FetchBackingQuery: GraphQLQuery {
               "fxRate": fxRate,
               "goal": goal._fieldData,
               "image": image._fieldData,
-              "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed,
               "isProjectWeLove": isProjectWeLove,
               "isProjectOfTheDay": isProjectOfTheDay,
               "isWatched": isWatched,
@@ -952,10 +952,6 @@ public class FetchBackingQuery: GraphQLQuery {
               "name": name,
               "pid": pid,
               "pledgeManager": pledgeManager._fieldData,
-              "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation,
-              "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments,
-              "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch,
-              "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation,
               "pledged": pledged._fieldData,
               "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
               "posts": posts._fieldData,
@@ -969,6 +965,11 @@ public class FetchBackingQuery: GraphQLQuery {
               "url": url,
               "usdExchangeRate": usdExchangeRate,
               "watchesCount": watchesCount,
+              "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed,
+              "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation,
+              "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments,
+              "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch,
+              "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation,
               "aiDisclosure": aiDisclosure._fieldData,
               "environmentalCommitments": environmentalCommitments._fieldData,
               "faqs": faqs._fieldData,
@@ -980,6 +981,7 @@ public class FetchBackingQuery: GraphQLQuery {
             fulfilledFragments: [
               ObjectIdentifier(FetchBackingQuery.Data.Backing.Project.self),
               ObjectIdentifier(ProjectFragment.self),
+              ObjectIdentifier(PledgeOverTimeFragment.self),
               ObjectIdentifier(NoRewardRewardFragment.self),
               ObjectIdentifier(ExtendedProjectPropertiesFragment.self),
               ObjectIdentifier(ProjectVideoFragment.self),
