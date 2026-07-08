@@ -81,6 +81,8 @@ extension Project {
     let pledgeManager = projectFragment.pledgeManager
       .flatMap { PledgeManager(fromFragment: $0.fragments.pledgeManagerFragment) }
 
+    let plotFragment = projectFragment.fragments.pledgeOverTimeFragment
+
     return
       Project(
         availableCardTypes: availableCardTypes,
@@ -98,12 +100,12 @@ extension Project {
         location: location,
         name: projectFragment.name,
         pledgeManager: pledgeManager,
-        pledgeOverTimeCollectionPlanChargeExplanation: projectFragment
+        pledgeOverTimeCollectionPlanChargeExplanation: plotFragment
           .pledgeOverTimeCollectionPlanChargeExplanation ?? "",
-        pledgeOverTimeCollectionPlanChargedAsNPayments: projectFragment
+        pledgeOverTimeCollectionPlanChargedAsNPayments: plotFragment
           .pledgeOverTimeCollectionPlanChargedAsNPayments ?? "",
-        pledgeOverTimeCollectionPlanShortPitch: projectFragment.pledgeOverTimeCollectionPlanShortPitch ?? "",
-        pledgeOverTimeMinimumExplanation: projectFragment.pledgeOverTimeMinimumExplanation ?? "",
+        pledgeOverTimeCollectionPlanShortPitch: plotFragment.pledgeOverTimeCollectionPlanShortPitch ?? "",
+        pledgeOverTimeMinimumExplanation: plotFragment.pledgeOverTimeMinimumExplanation ?? "",
         personalization: projectPersonalization(
           isStarred: projectFragment.isWatched,
           backing: backing,
@@ -124,7 +126,7 @@ extension Project {
         urls: urls,
         video: projectVideo(from: projectFragment),
         watchesCount: projectFragment.watchesCount,
-        isPledgeOverTimeAllowed: projectFragment.isPledgeOverTimeAllowed
+        isPledgeOverTimeAllowed: plotFragment.isPledgeOverTimeAllowed
       )
   }
 }

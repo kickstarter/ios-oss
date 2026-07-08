@@ -624,8 +624,7 @@ public struct Service: ServiceType {
       .FetchProjectRewardsByIdQuery(
         projectId: projectId,
         includeShippingRules: true,
-        includeLocalPickup: true,
-        includePledgeOverTime: false
+        includeLocalPickup: true
       )
 
     return GraphQL.shared.client
@@ -657,21 +656,6 @@ public struct Service: ServiceType {
       .map { results in
         Project.projectRewards(from: results, withNoReward: inserter)
       }
-  }
-
-  public func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int)
-    -> SignalProducer<RewardsAndPledgeOverTimeEnvelope, ErrorEnvelope> {
-    let query = GraphAPI
-      .FetchProjectRewardsByIdQuery(
-        projectId: projectId,
-        includeShippingRules: true,
-        includeLocalPickup: true,
-        includePledgeOverTime: true
-      )
-
-    return GraphQL.shared.client
-      .fetch(query: query)
-      .flatMap(Project.projectRewardsAndPledgeOverTimeDataProducer(from:))
   }
 
   public func fetchProject(_ params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {

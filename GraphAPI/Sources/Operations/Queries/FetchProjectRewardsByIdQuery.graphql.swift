@@ -7,32 +7,28 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
   public static let operationName: String = "FetchProjectRewardsById"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!, $includePledgeOverTime: Boolean!) { project(pid: $projectId) { __typename rewards { __typename nodes { __typename ...RewardFragment ...SimpleShippingRulesExpandedFragment @include(if: $includeShippingRules) } } ...PledgeOverTimeFragment @include(if: $includePledgeOverTime) } }"#,
-      fragments: [LocationFragment.self, MoneyFragment.self, PledgeOverTimeFragment.self, RewardFragment.self, ShippingRuleFragment.self, SimpleShippingRulesExpandedFragment.self]
+      #"query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { project(pid: $projectId) { __typename rewards { __typename nodes { __typename ...RewardFragment ...SimpleShippingRulesExpandedFragment @include(if: $includeShippingRules) } } } }"#,
+      fragments: [LocationFragment.self, MoneyFragment.self, RewardFragment.self, ShippingRuleFragment.self, SimpleShippingRulesExpandedFragment.self]
     ))
 
   public var projectId: Int
   public var includeShippingRules: Bool
   public var includeLocalPickup: Bool
-  public var includePledgeOverTime: Bool
 
   public init(
     projectId: Int,
     includeShippingRules: Bool,
-    includeLocalPickup: Bool,
-    includePledgeOverTime: Bool
+    includeLocalPickup: Bool
   ) {
     self.projectId = projectId
     self.includeShippingRules = includeShippingRules
     self.includeLocalPickup = includeLocalPickup
-    self.includePledgeOverTime = includePledgeOverTime
   }
 
   public var __variables: Variables? { [
     "projectId": projectId,
     "includeShippingRules": includeShippingRules,
-    "includeLocalPickup": includeLocalPickup,
-    "includePledgeOverTime": includePledgeOverTime
+    "includeLocalPickup": includeLocalPickup
   ] }
 
   public struct Data: GraphAPI.SelectionSet {
@@ -72,20 +68,10 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
         .field("rewards", Rewards?.self),
-        .include(if: "includePledgeOverTime", .inlineFragment(IfIncludePledgeOverTime.self)),
       ] }
 
       /// Project rewards.
       public var rewards: Rewards? { __data["rewards"] }
-
-      public var ifIncludePledgeOverTime: IfIncludePledgeOverTime? { _asInlineFragment() }
-
-      public struct Fragments: FragmentContainer {
-        public let __data: DataDict
-        public init(_dataDict: DataDict) { __data = _dataDict }
-
-        public var pledgeOverTimeFragment: PledgeOverTimeFragment? { _toFragment() }
-      }
 
       public init(
         rewards: Rewards? = nil
@@ -1214,66 +1200,6 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
 
             public typealias AudienceData = RewardFragment.AudienceData
           }
-        }
-      }
-
-      /// Project.IfIncludePledgeOverTime
-      ///
-      /// Parent Type: `Project`
-      public struct IfIncludePledgeOverTime: GraphAPI.InlineFragment {
-        public let __data: DataDict
-        public init(_dataDict: DataDict) { __data = _dataDict }
-
-        public typealias RootEntityType = FetchProjectRewardsByIdQuery.Data.Project
-        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Project }
-        public static var __selections: [ApolloAPI.Selection] { [
-          .fragment(PledgeOverTimeFragment.self),
-        ] }
-
-        /// Project rewards.
-        public var rewards: Rewards? { __data["rewards"] }
-        /// Whether a project is enrolled in plot
-        public var isPledgeOverTimeAllowed: Bool { __data["isPledgeOverTimeAllowed"] }
-        /// Backer-facing summary of when the incremental charges will occur
-        public var pledgeOverTimeCollectionPlanChargeExplanation: String? { __data["pledgeOverTimeCollectionPlanChargeExplanation"] }
-        /// Quick summary of the amount of increments pledges will be spread over
-        public var pledgeOverTimeCollectionPlanChargedAsNPayments: String? { __data["pledgeOverTimeCollectionPlanChargedAsNPayments"] }
-        /// Backer-facing short summary of this project's number of payment increments to split over
-        public var pledgeOverTimeCollectionPlanShortPitch: String? { __data["pledgeOverTimeCollectionPlanShortPitch"] }
-        /// The minimum pledge amount to be eligible for PLOT, localized to the project currency and backer language
-        public var pledgeOverTimeMinimumExplanation: String? { __data["pledgeOverTimeMinimumExplanation"] }
-
-        public struct Fragments: FragmentContainer {
-          public let __data: DataDict
-          public init(_dataDict: DataDict) { __data = _dataDict }
-
-          public var pledgeOverTimeFragment: PledgeOverTimeFragment { _toFragment() }
-        }
-
-        public init(
-          rewards: Rewards? = nil,
-          isPledgeOverTimeAllowed: Bool,
-          pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
-          pledgeOverTimeCollectionPlanChargedAsNPayments: String? = nil,
-          pledgeOverTimeCollectionPlanShortPitch: String? = nil,
-          pledgeOverTimeMinimumExplanation: String? = nil
-        ) {
-          self.init(_dataDict: DataDict(
-            data: [
-              "__typename": GraphAPI.Objects.Project.typename,
-              "rewards": rewards._fieldData,
-              "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed,
-              "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation,
-              "pledgeOverTimeCollectionPlanChargedAsNPayments": pledgeOverTimeCollectionPlanChargedAsNPayments,
-              "pledgeOverTimeCollectionPlanShortPitch": pledgeOverTimeCollectionPlanShortPitch,
-              "pledgeOverTimeMinimumExplanation": pledgeOverTimeMinimumExplanation,
-            ],
-            fulfilledFragments: [
-              ObjectIdentifier(FetchProjectRewardsByIdQuery.Data.Project.self),
-              ObjectIdentifier(FetchProjectRewardsByIdQuery.Data.Project.IfIncludePledgeOverTime.self),
-              ObjectIdentifier(PledgeOverTimeFragment.self)
-            ]
-          ))
         }
       }
     }

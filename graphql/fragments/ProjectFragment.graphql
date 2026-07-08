@@ -50,7 +50,6 @@ fragment ProjectFragment on Project {
     id
     url(width: 1024)
   }
-  isPledgeOverTimeAllowed
   isProjectWeLove
   isProjectOfTheDay
   isWatched
@@ -70,10 +69,7 @@ fragment ProjectFragment on Project {
   pledgeManager {
     ...PledgeManagerFragment
   }
-  pledgeOverTimeCollectionPlanChargeExplanation
-  pledgeOverTimeCollectionPlanChargedAsNPayments
-  pledgeOverTimeCollectionPlanShortPitch
-  pledgeOverTimeMinimumExplanation
+  ...PledgeOverTimeFragment
   pledged {
     ...MoneyFragment
   }

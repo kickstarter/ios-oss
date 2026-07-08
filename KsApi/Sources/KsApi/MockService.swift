@@ -1395,30 +1395,6 @@
       }
     }
 
-    func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int)
-      -> SignalProducer<
-        RewardsAndPledgeOverTimeEnvelope,
-        ErrorEnvelope
-      > {
-      guard let client = self.apolloClient else {
-        return .empty
-      }
-
-      let query = GraphAPI
-        .FetchProjectRewardsByIdQuery(
-          projectId: projectId,
-          includeShippingRules: false,
-          includeLocalPickup: true,
-          includePledgeOverTime: true
-        )
-
-      return client
-        .fetchWithResult(
-          query: query,
-          result: self.fetchProjectRewardsAndPledgeOverTimeDataResult
-        )
-    }
-
     internal func fetchProjectRewards(projectId: Int) -> SignalProducer<[Reward], ErrorEnvelope> {
       guard let client = self.apolloClient else {
         return .empty
@@ -1428,8 +1404,7 @@
         .FetchProjectRewardsByIdQuery(
           projectId: projectId,
           includeShippingRules: false,
-          includeLocalPickup: true,
-          includePledgeOverTime: false
+          includeLocalPickup: true
         )
 
       return client

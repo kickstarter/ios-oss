@@ -92,7 +92,7 @@ public final class ManagePledgeViewModel:
         AppEnvironment.current.apiService.fetchProject(param: param)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .switchMap { project in
-            fetchProjectRewardsAndPledgeOverTimeData(project: project)
+            fetchProjectRewards(project: project)
           }
           .materialize()
       }
@@ -486,31 +486,6 @@ private func fetchProjectRewards(project: Project) -> SignalProducer<Project, Er
     .switchMap { projectRewards -> SignalProducer<Project, ErrorEnvelope> in
 
       let projectUpdated = projectWithUpdatedRewards(project, rewards: projectRewards)
-
-      return SignalProducer(value: projectUpdated)
-    }
-}
-
-private func fetchProjectRewardsAndPledgeOverTimeData(project: Project)
-  -> SignalProducer<Project, ErrorEnvelope> {
-  return AppEnvironment.current.apiService
-    .fetchProjectRewardsAndPledgeOverTimeData(projectId: project.id)
-    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-    .switchMap { envelope -> SignalProducer<Project, ErrorEnvelope> in
-
-      var projectUpdated = projectWithUpdatedRewards(project, rewards: envelope.rewards)
-
-      projectUpdated = projectUpdated
-        |> Project.lens.isPledgeOverTimeAllowed .~ envelope.isPledgeOverTimeAllowed
-        |> Project.lens
-        .pledgeOverTimeCollectionPlanChargeExplanation .~ envelope
-        .pledgeOverTimeCollectionPlanChargeExplanation
-        |> Project.lens
-        .pledgeOverTimeCollectionPlanChargedAsNPayments .~ envelope
-        .pledgeOverTimeCollectionPlanChargedAsNPayments
-        |> Project.lens
-        .pledgeOverTimeCollectionPlanShortPitch .~ envelope.pledgeOverTimeCollectionPlanShortPitch
-        |> Project.lens.pledgeOverTimeMinimumExplanation .~ envelope.pledgeOverTimeMinimumExplanation
 
       return SignalProducer(value: projectUpdated)
     }
