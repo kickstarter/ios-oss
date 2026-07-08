@@ -151,7 +151,7 @@ private func projectPersonalization(
 }
 
 /**
- Returns a minimal `Project.Dates` from a `ProjectFragment`
+ Returns a minimal `Project.Dates` from a `ProjectDatesFragment`
  */
 private func projectDates(from datesFragment: GraphAPI.ProjectDatesFragment) -> Project.Dates? {
   guard let stateChangedAt = TimeInterval(datesFragment.stateChangedAt)
@@ -215,7 +215,7 @@ private func projectState(from projectState: GraphAPI.ProjectState?) -> Project.
 }
 
 /**
- Returns a minimal `Project.Stats` from a `ProjectFragment`
+ Returns a minimal `Project.Stats` from a `ProjectStatsFragment`
  */
 private func projectStats(
   from statsFragment: GraphAPI.ProjectStatsFragment,
