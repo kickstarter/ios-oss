@@ -7,7 +7,7 @@ public class FetchProjectByParamQuery: GraphQLQuery {
   public static let operationName: String = "FetchProjectByParam"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchProjectByParam($projectId: Int, $slug: String) { me { __typename chosenCurrency } project(pid: $projectId, slug: $slug) { __typename ...ProjectFragment backing { __typename id } flagging { __typename id kind } } }"#,
+      #"query FetchProjectByParam($projectId: Int, $slug: String) { project(pid: $projectId, slug: $slug) { __typename ...ProjectFragment backing { __typename id } flagging { __typename id kind } } }"#,
       fragments: [CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, ProjectVideoFragment.self, PublicUserFragment.self]
     ))
 
@@ -33,63 +33,27 @@ public class FetchProjectByParamQuery: GraphQLQuery {
 
     public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Query }
     public static var __selections: [ApolloAPI.Selection] { [
-      .field("me", Me?.self),
       .field("project", Project?.self, arguments: [
         "pid": .variable("projectId"),
         "slug": .variable("slug")
       ]),
     ] }
 
-    /// You.
-    public var me: Me? { __data["me"] }
     /// Fetches a project given its slug or pid.
     public var project: Project? { __data["project"] }
 
     public init(
-      me: Me? = nil,
       project: Project? = nil
     ) {
       self.init(_dataDict: DataDict(
         data: [
           "__typename": GraphAPI.Objects.Query.typename,
-          "me": me._fieldData,
           "project": project._fieldData,
         ],
         fulfilledFragments: [
           ObjectIdentifier(FetchProjectByParamQuery.Data.self)
         ]
       ))
-    }
-
-    /// Me
-    ///
-    /// Parent Type: `User`
-    public struct Me: GraphAPI.SelectionSet {
-      public let __data: DataDict
-      public init(_dataDict: DataDict) { __data = _dataDict }
-
-      public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.User }
-      public static var __selections: [ApolloAPI.Selection] { [
-        .field("__typename", String.self),
-        .field("chosenCurrency", String?.self),
-      ] }
-
-      /// The user's chosen currency
-      public var chosenCurrency: String? { __data["chosenCurrency"] }
-
-      public init(
-        chosenCurrency: String? = nil
-      ) {
-        self.init(_dataDict: DataDict(
-          data: [
-            "__typename": GraphAPI.Objects.User.typename,
-            "chosenCurrency": chosenCurrency,
-          ],
-          fulfilledFragments: [
-            ObjectIdentifier(FetchProjectByParamQuery.Data.Me.self)
-          ]
-        ))
-      }
     }
 
     /// Project

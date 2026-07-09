@@ -96,7 +96,17 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "TriggerThirdPartyEventPayload": return GraphAPI.Objects.TriggerThirdPartyEventPayload
     case "UpdateBackerCompletedPayload": return GraphAPI.Objects.UpdateBackerCompletedPayload
     case "Query": return GraphAPI.Objects.Query
+    case "Country": return GraphAPI.Objects.Country
+    case "UserCreatedProjectsConnection": return GraphAPI.Objects.UserCreatedProjectsConnection
+    case "EnvironmentalCommitment": return GraphAPI.Objects.EnvironmentalCommitment
+    case "ProjectFaqConnection": return GraphAPI.Objects.ProjectFaqConnection
+    case "ProjectFaq": return GraphAPI.Objects.ProjectFaq
+    case "CheckoutWave": return GraphAPI.Objects.CheckoutWave
+    case "PledgeManager": return GraphAPI.Objects.PledgeManager
     case "Money": return GraphAPI.Objects.Money
+    case "PostConnection": return GraphAPI.Objects.PostConnection
+    case "VideoSources": return GraphAPI.Objects.VideoSources
+    case "VideoSourceInfo": return GraphAPI.Objects.VideoSourceInfo
     case "RewardConnection": return GraphAPI.Objects.RewardConnection
     case "PageInfo": return GraphAPI.Objects.PageInfo
     case "RewardItemsConnection": return GraphAPI.Objects.RewardItemsConnection
@@ -104,11 +114,6 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "ResourceAudience": return GraphAPI.Objects.ResourceAudience
     case "SimpleShippingRule": return GraphAPI.Objects.SimpleShippingRule
     case "ProjectsConnectionWithTotalCount": return GraphAPI.Objects.ProjectsConnectionWithTotalCount
-    case "Country": return GraphAPI.Objects.Country
-    case "UserCreatedProjectsConnection": return GraphAPI.Objects.UserCreatedProjectsConnection
-    case "PostConnection": return GraphAPI.Objects.PostConnection
-    case "VideoSources": return GraphAPI.Objects.VideoSources
-    case "VideoSourceInfo": return GraphAPI.Objects.VideoSourceInfo
     case "VideoFeedConnection": return GraphAPI.Objects.VideoFeedConnection
     case "VideoFeedItem": return GraphAPI.Objects.VideoFeedItem
     case "Badge": return GraphAPI.Objects.Badge
@@ -118,11 +123,6 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "UserSavedProjectsConnection": return GraphAPI.Objects.UserSavedProjectsConnection
     case "SurveyResponsesConnection": return GraphAPI.Objects.SurveyResponsesConnection
     case "RewardTotalCountConnection": return GraphAPI.Objects.RewardTotalCountConnection
-    case "EnvironmentalCommitment": return GraphAPI.Objects.EnvironmentalCommitment
-    case "ProjectFaqConnection": return GraphAPI.Objects.ProjectFaqConnection
-    case "ProjectFaq": return GraphAPI.Objects.ProjectFaq
-    case "CheckoutWave": return GraphAPI.Objects.CheckoutWave
-    case "PledgeManager": return GraphAPI.Objects.PledgeManager
     case "PaymentIncrement": return GraphAPI.Objects.PaymentIncrement
     case "PaymentIncrementAmount": return GraphAPI.Objects.PaymentIncrementAmount
     case "RichTextComponent": return GraphAPI.Objects.RichTextComponent

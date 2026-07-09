@@ -1,7 +1,4 @@
 query FetchProjectByParam($projectId: Int, $slug: String) {
-  me {
-    chosenCurrency
-  }
   project(pid: $projectId, slug: $slug) {
     ...ProjectFragment
     backing {

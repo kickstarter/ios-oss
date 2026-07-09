@@ -1,9 +1,5 @@
 {
   "data": {
-    "me": {
-      "__typename": "User",
-      "chosenCurrency": "EUR"
-    },
     "project": {
       "__typename": "Project",
       "backing": {
