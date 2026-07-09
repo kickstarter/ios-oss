@@ -736,6 +736,7 @@
 		E190EB6B2E29944E006A6DB6 /* SimilarProjectQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = SimilarProjectQuery.graphql; sourceTree = "<group>"; };
 		E190EB6C2E29944E006A6DB6 /* ValidateCheckout.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ValidateCheckout.graphql; sourceTree = "<group>"; };
 		E190EB6E2E29944E006A6DB6 /* graphql-schema.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "graphql-schema.json"; sourceTree = "<group>"; };
+		E19342C22FFD78BE006F6C82 /* ExtendedProjectPropertiesFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ExtendedProjectPropertiesFragment.graphql; sourceTree = "<group>"; };
 		E19C55F02F4CB84D00C768F6 /* NoRewardRewardFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = NoRewardRewardFragment.graphql; sourceTree = "<group>"; };
 		E1B33F502E538157008903BA /* GraphAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = GraphAPI; sourceTree = "<group>"; };
 		E1BBB0472FDB0F320045D296 /* NoRewardInserterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoRewardInserterTests.swift; sourceTree = "<group>"; };
@@ -1270,7 +1271,6 @@
 		E190EB3A2E29944E006A6DB6 /* fragments */ = {
 			isa = PBXGroup;
 			children = (
-				E19C55F02F4CB84D00C768F6 /* NoRewardRewardFragment.graphql */,
 				E190EB1B2E29944E006A6DB6 /* BackerDashboardProjectCellFragment.graphql */,
 				E190EB1C2E29944E006A6DB6 /* BackingFragment.graphql */,
 				E190EB1D2E29944E006A6DB6 /* CategoryFragment.graphql */,
@@ -1279,9 +1279,11 @@
 				E190EB202E29944E006A6DB6 /* CommentFragment.graphql */,
 				E190EB212E29944E006A6DB6 /* CommentWithRepliesFragment.graphql */,
 				E190EB222E29944E006A6DB6 /* CountryFragment.graphql */,
+				E19342C22FFD78BE006F6C82 /* ExtendedProjectPropertiesFragment.graphql */,
 				E190EB232E29944E006A6DB6 /* LastWaveFragment.graphql */,
 				E190EB242E29944E006A6DB6 /* LocationFragment.graphql */,
 				E190EB252E29944E006A6DB6 /* MoneyFragment.graphql */,
+				E19C55F02F4CB84D00C768F6 /* NoRewardRewardFragment.graphql */,
 				E190EB262E29944E006A6DB6 /* OrderFragment.graphql */,
 				E190EB272E29944E006A6DB6 /* PaymentIncrementFragment.graphql */,
 				33AA26C82E39EA00002DBD60 /* PaymentIncrementBackingFragment.graphql */,

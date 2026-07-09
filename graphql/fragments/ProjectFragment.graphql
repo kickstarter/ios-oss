@@ -15,32 +15,6 @@ fragment ProjectFragment on Project {
   currency
   deadlineAt
   description
-  environmentalCommitments {
-    commitmentCategory
-    description
-    id
-  }
-  aiDisclosure {
-    id
-    fundingForAiAttribution
-    fundingForAiConsent
-    fundingForAiOption
-    generatedByAiConsent
-    generatedByAiDetails
-    involvesAi
-    involvesFunding
-    involvesGeneration
-    involvesOther
-    otherAiDetails
-  }
-  faqs {
-    nodes {
-      question
-      answer
-      id
-      createdAt
-    }
-  }
   finalCollectionDate
   fxRate
   goal {
@@ -82,14 +56,11 @@ fragment ProjectFragment on Project {
     totalCount
   }
   prelaunchActivated
-  projectNotice
   redemptionPageUrl
-  risks
   sendMetaCapiEvents
   slug
   state
   stateChangedAt
-  story
   tags(scope: DISCOVER) {
     name
   }
@@ -108,4 +79,5 @@ fragment ProjectFragment on Project {
   }
   watchesCount
   ...NoRewardRewardFragment
+  ...ExtendedProjectPropertiesFragment
 }

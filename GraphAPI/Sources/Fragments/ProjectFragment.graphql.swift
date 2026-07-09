@@ -5,7 +5,7 @@
 
 public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment ProjectFragment on Project { __typename availableCardTypes backersCount category { __typename ...CategoryFragment } canComment commentsCount(withReplies: true) country { __typename ...CountryFragment } creator { __typename ...PublicUserFragment } currency deadlineAt description environmentalCommitments { __typename commitmentCategory description id } aiDisclosure { __typename id fundingForAiAttribution fundingForAiConsent fundingForAiOption generatedByAiConsent generatedByAiDetails involvesAi involvesFunding involvesGeneration involvesOther otherAiDetails } faqs { __typename nodes { __typename question answer id createdAt } } finalCollectionDate fxRate goal { __typename ...MoneyFragment } image { __typename id url(width: 1024) } isPledgeOverTimeAllowed isProjectWeLove isProjectOfTheDay isWatched isLaunched isInPostCampaignPledgingPhase lastWave { __typename ...LastWaveFragment } launchedAt location { __typename ...LocationFragment } maxPledge minPledge name pid pledgeManager { __typename ...PledgeManagerFragment } pledgeOverTimeCollectionPlanChargeExplanation pledgeOverTimeCollectionPlanChargedAsNPayments pledgeOverTimeCollectionPlanShortPitch pledgeOverTimeMinimumExplanation pledged { __typename ...MoneyFragment } postCampaignPledgingEnabled posts { __typename totalCount } prelaunchActivated projectNotice redemptionPageUrl risks sendMetaCapiEvents slug state stateChangedAt story tags(scope: DISCOVER) { __typename name } url usdExchangeRate video { __typename id videoSources { __typename high { __typename src } hls { __typename src } } } watchesCount ...NoRewardRewardFragment }"#
+    #"fragment ProjectFragment on Project { __typename availableCardTypes backersCount category { __typename ...CategoryFragment } canComment commentsCount(withReplies: true) country { __typename ...CountryFragment } creator { __typename ...PublicUserFragment } currency deadlineAt description finalCollectionDate fxRate goal { __typename ...MoneyFragment } image { __typename id url(width: 1024) } isPledgeOverTimeAllowed isProjectWeLove isProjectOfTheDay isWatched isLaunched isInPostCampaignPledgingPhase lastWave { __typename ...LastWaveFragment } launchedAt location { __typename ...LocationFragment } maxPledge minPledge name pid pledgeManager { __typename ...PledgeManagerFragment } pledgeOverTimeCollectionPlanChargeExplanation pledgeOverTimeCollectionPlanChargedAsNPayments pledgeOverTimeCollectionPlanShortPitch pledgeOverTimeMinimumExplanation pledged { __typename ...MoneyFragment } postCampaignPledgingEnabled posts { __typename totalCount } prelaunchActivated redemptionPageUrl sendMetaCapiEvents slug state stateChangedAt tags(scope: DISCOVER) { __typename name } url usdExchangeRate video { __typename id videoSources { __typename high { __typename src } hls { __typename src } } } watchesCount ...NoRewardRewardFragment ...ExtendedProjectPropertiesFragment }"#
   }
 
   public let __data: DataDict
@@ -24,9 +24,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     .field("currency", GraphQLEnum<GraphAPI.CurrencyCode>.self),
     .field("deadlineAt", GraphAPI.DateTime?.self),
     .field("description", String.self),
-    .field("environmentalCommitments", [EnvironmentalCommitment?]?.self),
-    .field("aiDisclosure", AiDisclosure?.self),
-    .field("faqs", Faqs?.self),
     .field("finalCollectionDate", GraphAPI.ISO8601DateTime?.self),
     .field("fxRate", Double.self),
     .field("goal", Goal?.self),
@@ -53,20 +50,18 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     .field("postCampaignPledgingEnabled", Bool.self),
     .field("posts", Posts.self),
     .field("prelaunchActivated", Bool.self),
-    .field("projectNotice", String?.self),
     .field("redemptionPageUrl", String.self),
-    .field("risks", String.self),
     .field("sendMetaCapiEvents", Bool.self),
     .field("slug", String.self),
     .field("state", GraphQLEnum<GraphAPI.ProjectState>.self),
     .field("stateChangedAt", GraphAPI.DateTime.self),
-    .field("story", GraphAPI.HTML.self),
     .field("tags", [Tag?].self, arguments: ["scope": "DISCOVER"]),
     .field("url", String.self),
     .field("usdExchangeRate", Double?.self),
     .field("video", Video?.self),
     .field("watchesCount", Int?.self),
     .fragment(NoRewardRewardFragment.self),
+    .fragment(ExtendedProjectPropertiesFragment.self),
   ] }
 
   /// Available card types.
@@ -89,11 +84,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public var deadlineAt: GraphAPI.DateTime? { __data["deadlineAt"] }
   /// A short description of the project.
   public var description: String { __data["description"] }
-  /// The environmental commitments of the project.
-  public var environmentalCommitments: [EnvironmentalCommitment?]? { __data["environmentalCommitments"] }
-  public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
-  /// List of FAQs of a project
-  public var faqs: Faqs? { __data["faqs"] }
   /// The date at which pledge collections will end
   public var finalCollectionDate: GraphAPI.ISO8601DateTime? { __data["finalCollectionDate"] }
   /// Exchange rate for the current user's currency
@@ -146,12 +136,8 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public var posts: Posts { __data["posts"] }
   /// Whether a project has activated prelaunch (can return true if project has been launched)
   public var prelaunchActivated: Bool { __data["prelaunchActivated"] }
-  /// The text of the currently applied project notice, empty if there is no notice
-  public var projectNotice: String? { __data["projectNotice"] }
   /// URL for redeeming the backing
   public var redemptionPageUrl: String { __data["redemptionPageUrl"] }
-  /// Potential hurdles to project completion.
-  public var risks: String { __data["risks"] }
   /// Is this project configured so that events should be triggered for Meta's Conversions API?
   public var sendMetaCapiEvents: Bool { __data["sendMetaCapiEvents"] }
   /// The project's unique URL identifier.
@@ -160,8 +146,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public var state: GraphQLEnum<GraphAPI.ProjectState> { __data["state"] }
   /// The last time a project's state changed, time since epoch
   public var stateChangedAt: GraphAPI.DateTime { __data["stateChangedAt"] }
-  /// The story behind the project, parsed for presentation.
-  public var story: GraphAPI.HTML { __data["story"] }
   /// Tags project has been tagged with
   public var tags: [Tag?] { __data["tags"] }
   /// A URL to the project's page.
@@ -172,12 +156,24 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public var video: Video? { __data["video"] }
   /// Number of watchers a project has.
   public var watchesCount: Int? { __data["watchesCount"] }
+  public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
+  /// The environmental commitments of the project.
+  public var environmentalCommitments: [EnvironmentalCommitment?]? { __data["environmentalCommitments"] }
+  /// List of FAQs of a project
+  public var faqs: Faqs? { __data["faqs"] }
+  /// The text of the currently applied project notice, empty if there is no notice
+  public var projectNotice: String? { __data["projectNotice"] }
+  /// Potential hurdles to project completion.
+  public var risks: String { __data["risks"] }
+  /// The story behind the project, parsed for presentation.
+  public var story: GraphAPI.HTML { __data["story"] }
 
   public struct Fragments: FragmentContainer {
     public let __data: DataDict
     public init(_dataDict: DataDict) { __data = _dataDict }
 
     public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
+    public var extendedProjectPropertiesFragment: ExtendedProjectPropertiesFragment { _toFragment() }
   }
 
   public init(
@@ -191,9 +187,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     currency: GraphQLEnum<GraphAPI.CurrencyCode>,
     deadlineAt: GraphAPI.DateTime? = nil,
     description: String,
-    environmentalCommitments: [EnvironmentalCommitment?]? = nil,
-    aiDisclosure: AiDisclosure? = nil,
-    faqs: Faqs? = nil,
     finalCollectionDate: GraphAPI.ISO8601DateTime? = nil,
     fxRate: Double,
     goal: Goal? = nil,
@@ -220,19 +213,22 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     postCampaignPledgingEnabled: Bool,
     posts: Posts,
     prelaunchActivated: Bool,
-    projectNotice: String? = nil,
     redemptionPageUrl: String,
-    risks: String,
     sendMetaCapiEvents: Bool,
     slug: String,
     state: GraphQLEnum<GraphAPI.ProjectState>,
     stateChangedAt: GraphAPI.DateTime,
-    story: GraphAPI.HTML,
     tags: [Tag?],
     url: String,
     usdExchangeRate: Double? = nil,
     video: Video? = nil,
-    watchesCount: Int? = nil
+    watchesCount: Int? = nil,
+    aiDisclosure: AiDisclosure? = nil,
+    environmentalCommitments: [EnvironmentalCommitment?]? = nil,
+    faqs: Faqs? = nil,
+    projectNotice: String? = nil,
+    risks: String,
+    story: GraphAPI.HTML
   ) {
     self.init(_dataDict: DataDict(
       data: [
@@ -247,9 +243,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
         "currency": currency,
         "deadlineAt": deadlineAt,
         "description": description,
-        "environmentalCommitments": environmentalCommitments._fieldData,
-        "aiDisclosure": aiDisclosure._fieldData,
-        "faqs": faqs._fieldData,
         "finalCollectionDate": finalCollectionDate,
         "fxRate": fxRate,
         "goal": goal._fieldData,
@@ -276,22 +269,26 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
         "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
         "posts": posts._fieldData,
         "prelaunchActivated": prelaunchActivated,
-        "projectNotice": projectNotice,
         "redemptionPageUrl": redemptionPageUrl,
-        "risks": risks,
         "sendMetaCapiEvents": sendMetaCapiEvents,
         "slug": slug,
         "state": state,
         "stateChangedAt": stateChangedAt,
-        "story": story,
         "tags": tags._fieldData,
         "url": url,
         "usdExchangeRate": usdExchangeRate,
         "video": video._fieldData,
         "watchesCount": watchesCount,
+        "aiDisclosure": aiDisclosure._fieldData,
+        "environmentalCommitments": environmentalCommitments._fieldData,
+        "faqs": faqs._fieldData,
+        "projectNotice": projectNotice,
+        "risks": risks,
+        "story": story,
       ],
       fulfilledFragments: [
-        ObjectIdentifier(ProjectFragment.self)
+        ObjectIdentifier(ProjectFragment.self),
+        ObjectIdentifier(ExtendedProjectPropertiesFragment.self)
       ]
     ))
   }
@@ -516,192 +513,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     }
 
     public typealias CreatedProjects = PublicUserFragment.CreatedProjects
-  }
-
-  /// EnvironmentalCommitment
-  ///
-  /// Parent Type: `EnvironmentalCommitment`
-  public struct EnvironmentalCommitment: GraphAPI.SelectionSet {
-    public let __data: DataDict
-    public init(_dataDict: DataDict) { __data = _dataDict }
-
-    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.EnvironmentalCommitment }
-    public static var __selections: [ApolloAPI.Selection] { [
-      .field("__typename", String.self),
-      .field("commitmentCategory", GraphQLEnum<GraphAPI.EnvironmentalCommitmentCategory>.self),
-      .field("description", String.self),
-      .field("id", GraphAPI.ID.self),
-    ] }
-
-    /// The type of environmental commitment
-    public var commitmentCategory: GraphQLEnum<GraphAPI.EnvironmentalCommitmentCategory> { __data["commitmentCategory"] }
-    /// An environmental commitment description
-    public var description: String { __data["description"] }
-    public var id: GraphAPI.ID { __data["id"] }
-
-    public init(
-      commitmentCategory: GraphQLEnum<GraphAPI.EnvironmentalCommitmentCategory>,
-      description: String,
-      id: GraphAPI.ID
-    ) {
-      self.init(_dataDict: DataDict(
-        data: [
-          "__typename": GraphAPI.Objects.EnvironmentalCommitment.typename,
-          "commitmentCategory": commitmentCategory,
-          "description": description,
-          "id": id,
-        ],
-        fulfilledFragments: [
-          ObjectIdentifier(ProjectFragment.EnvironmentalCommitment.self)
-        ]
-      ))
-    }
-  }
-
-  /// AiDisclosure
-  ///
-  /// Parent Type: `AiDisclosure`
-  public struct AiDisclosure: GraphAPI.SelectionSet {
-    public let __data: DataDict
-    public init(_dataDict: DataDict) { __data = _dataDict }
-
-    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.AiDisclosure }
-    public static var __selections: [ApolloAPI.Selection] { [
-      .field("__typename", String.self),
-      .field("id", GraphAPI.ID.self),
-      .field("fundingForAiAttribution", Bool?.self),
-      .field("fundingForAiConsent", Bool?.self),
-      .field("fundingForAiOption", Bool?.self),
-      .field("generatedByAiConsent", String?.self),
-      .field("generatedByAiDetails", String?.self),
-      .field("involvesAi", Bool.self),
-      .field("involvesFunding", Bool.self),
-      .field("involvesGeneration", Bool.self),
-      .field("involvesOther", Bool.self),
-      .field("otherAiDetails", String?.self),
-    ] }
-
-    public var id: GraphAPI.ID { __data["id"] }
-    public var fundingForAiAttribution: Bool? { __data["fundingForAiAttribution"] }
-    public var fundingForAiConsent: Bool? { __data["fundingForAiConsent"] }
-    public var fundingForAiOption: Bool? { __data["fundingForAiOption"] }
-    public var generatedByAiConsent: String? { __data["generatedByAiConsent"] }
-    public var generatedByAiDetails: String? { __data["generatedByAiDetails"] }
-    public var involvesAi: Bool { __data["involvesAi"] }
-    public var involvesFunding: Bool { __data["involvesFunding"] }
-    public var involvesGeneration: Bool { __data["involvesGeneration"] }
-    public var involvesOther: Bool { __data["involvesOther"] }
-    public var otherAiDetails: String? { __data["otherAiDetails"] }
-
-    public init(
-      id: GraphAPI.ID,
-      fundingForAiAttribution: Bool? = nil,
-      fundingForAiConsent: Bool? = nil,
-      fundingForAiOption: Bool? = nil,
-      generatedByAiConsent: String? = nil,
-      generatedByAiDetails: String? = nil,
-      involvesAi: Bool,
-      involvesFunding: Bool,
-      involvesGeneration: Bool,
-      involvesOther: Bool,
-      otherAiDetails: String? = nil
-    ) {
-      self.init(_dataDict: DataDict(
-        data: [
-          "__typename": GraphAPI.Objects.AiDisclosure.typename,
-          "id": id,
-          "fundingForAiAttribution": fundingForAiAttribution,
-          "fundingForAiConsent": fundingForAiConsent,
-          "fundingForAiOption": fundingForAiOption,
-          "generatedByAiConsent": generatedByAiConsent,
-          "generatedByAiDetails": generatedByAiDetails,
-          "involvesAi": involvesAi,
-          "involvesFunding": involvesFunding,
-          "involvesGeneration": involvesGeneration,
-          "involvesOther": involvesOther,
-          "otherAiDetails": otherAiDetails,
-        ],
-        fulfilledFragments: [
-          ObjectIdentifier(ProjectFragment.AiDisclosure.self)
-        ]
-      ))
-    }
-  }
-
-  /// Faqs
-  ///
-  /// Parent Type: `ProjectFaqConnection`
-  public struct Faqs: GraphAPI.SelectionSet {
-    public let __data: DataDict
-    public init(_dataDict: DataDict) { __data = _dataDict }
-
-    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.ProjectFaqConnection }
-    public static var __selections: [ApolloAPI.Selection] { [
-      .field("__typename", String.self),
-      .field("nodes", [Node?]?.self),
-    ] }
-
-    /// A list of nodes.
-    public var nodes: [Node?]? { __data["nodes"] }
-
-    public init(
-      nodes: [Node?]? = nil
-    ) {
-      self.init(_dataDict: DataDict(
-        data: [
-          "__typename": GraphAPI.Objects.ProjectFaqConnection.typename,
-          "nodes": nodes._fieldData,
-        ],
-        fulfilledFragments: [
-          ObjectIdentifier(ProjectFragment.Faqs.self)
-        ]
-      ))
-    }
-
-    /// Faqs.Node
-    ///
-    /// Parent Type: `ProjectFaq`
-    public struct Node: GraphAPI.SelectionSet {
-      public let __data: DataDict
-      public init(_dataDict: DataDict) { __data = _dataDict }
-
-      public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.ProjectFaq }
-      public static var __selections: [ApolloAPI.Selection] { [
-        .field("__typename", String.self),
-        .field("question", String.self),
-        .field("answer", String.self),
-        .field("id", GraphAPI.ID.self),
-        .field("createdAt", GraphAPI.DateTime?.self),
-      ] }
-
-      /// Faq question
-      public var question: String { __data["question"] }
-      /// Faq answer
-      public var answer: String { __data["answer"] }
-      public var id: GraphAPI.ID { __data["id"] }
-      /// When faq was posted
-      public var createdAt: GraphAPI.DateTime? { __data["createdAt"] }
-
-      public init(
-        question: String,
-        answer: String,
-        id: GraphAPI.ID,
-        createdAt: GraphAPI.DateTime? = nil
-      ) {
-        self.init(_dataDict: DataDict(
-          data: [
-            "__typename": GraphAPI.Objects.ProjectFaq.typename,
-            "question": question,
-            "answer": answer,
-            "id": id,
-            "createdAt": createdAt,
-          ],
-          fulfilledFragments: [
-            ObjectIdentifier(ProjectFragment.Faqs.Node.self)
-          ]
-        ))
-      }
-    }
   }
 
   /// Goal
@@ -1160,4 +971,10 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
       }
     }
   }
+
+  public typealias AiDisclosure = ExtendedProjectPropertiesFragment.AiDisclosure
+
+  public typealias EnvironmentalCommitment = ExtendedProjectPropertiesFragment.EnvironmentalCommitment
+
+  public typealias Faqs = ExtendedProjectPropertiesFragment.Faqs
 }

@@ -1,0 +1,32 @@
+fragment ExtendedProjectPropertiesFragment on Project {
+  aiDisclosure {
+    id
+    fundingForAiAttribution
+    fundingForAiConsent
+    fundingForAiOption
+    generatedByAiConsent
+    generatedByAiDetails
+    involvesAi
+    involvesFunding
+    involvesGeneration
+    involvesOther
+    otherAiDetails
+  }
+  environmentalCommitments {
+    commitmentCategory
+    description
+    id
+  }
+  faqs {
+    nodes {
+      question
+      answer
+      id
+      createdAt
+    }
+  }
+  minPledge
+  projectNotice
+  risks
+  story
+}

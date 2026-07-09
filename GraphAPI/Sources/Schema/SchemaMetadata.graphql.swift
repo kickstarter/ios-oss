@@ -98,15 +98,15 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "Query": return GraphAPI.Objects.Query
     case "Country": return GraphAPI.Objects.Country
     case "UserCreatedProjectsConnection": return GraphAPI.Objects.UserCreatedProjectsConnection
-    case "EnvironmentalCommitment": return GraphAPI.Objects.EnvironmentalCommitment
-    case "ProjectFaqConnection": return GraphAPI.Objects.ProjectFaqConnection
-    case "ProjectFaq": return GraphAPI.Objects.ProjectFaq
     case "Money": return GraphAPI.Objects.Money
     case "CheckoutWave": return GraphAPI.Objects.CheckoutWave
     case "PledgeManager": return GraphAPI.Objects.PledgeManager
     case "PostConnection": return GraphAPI.Objects.PostConnection
     case "VideoSources": return GraphAPI.Objects.VideoSources
     case "VideoSourceInfo": return GraphAPI.Objects.VideoSourceInfo
+    case "EnvironmentalCommitment": return GraphAPI.Objects.EnvironmentalCommitment
+    case "ProjectFaqConnection": return GraphAPI.Objects.ProjectFaqConnection
+    case "ProjectFaq": return GraphAPI.Objects.ProjectFaq
     case "RewardConnection": return GraphAPI.Objects.RewardConnection
     case "PageInfo": return GraphAPI.Objects.PageInfo
     case "RewardItemsConnection": return GraphAPI.Objects.RewardItemsConnection

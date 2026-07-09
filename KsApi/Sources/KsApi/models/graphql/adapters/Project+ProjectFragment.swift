@@ -73,7 +73,8 @@ extension Project {
       .filter { $0 != "" }
       .last
 
-    let extendedProjectProperties = extendedProject(from: projectFragment)
+    let extendedFragment = projectFragment.fragments.extendedProjectPropertiesFragment
+    let extendedProjectProperties = extendedProject(from: extendedFragment)
 
     let lastWave = projectFragment.lastWave
       .flatMap { LastWave(fromFragment: $0.fragments.lastWaveFragment) }
@@ -259,33 +260,37 @@ private func projectVideo(from projectFragment: GraphAPI.ProjectFragment) -> Pro
 }
 
 /**
- Returns a `ExtendedProjectProperties` object from `ProjectFragment`
+ Returns a `ExtendedProjectProperties` object from `ExtendedProjectPropertiesFragment`
  */
-private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> ExtendedProjectProperties {
-  let risks = projectFragment.risks
-  let environmentalCommitments = extendedProjectEnvironmentalCommitments(from: projectFragment)
-  let faqs = extendedProjectFAQs(from: projectFragment)
-  let minimumSingleTierPledgeAmount = projectFragment.minPledge
-  let aiDisclosure = extendedProjectAIDisclosure(from: projectFragment)
+private func extendedProject(
+  from fragment: GraphAPI.ExtendedProjectPropertiesFragment
+) -> ExtendedProjectProperties {
+  let risks = fragment.risks
+  let environmentalCommitments = extendedProjectEnvironmentalCommitments(from: fragment)
+  let faqs = extendedProjectFAQs(from: fragment)
+  let minimumSingleTierPledgeAmount = fragment.minPledge
+  let aiDisclosure = extendedProjectAIDisclosure(from: fragment)
 
   let extendedProjectProperties = ExtendedProjectProperties(
     environmentalCommitments: environmentalCommitments,
     faqs: faqs,
     aiDisclosure: aiDisclosure,
     risks: risks,
-    story: storyElements(from: projectFragment),
+    story: storyElements(from: fragment),
     minimumPledgeAmount: minimumSingleTierPledgeAmount,
-    projectNotice: projectFragment.projectNotice
+    projectNotice: fragment.projectNotice
   )
 
   return extendedProjectProperties
 }
 
 /**
- Returns a `ProjectStoryElements` object from `ProjectFragment`
+ Returns a `ProjectStoryElements` object from `ExtendedProjectPropertiesFragment`
  */
-private func storyElements(from projectFragment: GraphAPI.ProjectFragment) -> ProjectStoryElements {
-  let viewElements = Project.htmlParser.parse(bodyHtml: projectFragment.story)
+private func storyElements(
+  from fragment: GraphAPI.ExtendedProjectPropertiesFragment
+) -> ProjectStoryElements {
+  let viewElements = Project.htmlParser.parse(bodyHtml: fragment.story)
   var seenURLStrings = Set<String>()
   var htmlElementsWithUniqueAudioVideoViewElements = [HTMLViewElement]()
 
@@ -308,16 +313,15 @@ private func storyElements(from projectFragment: GraphAPI.ProjectFragment) -> Pr
 }
 
 /**
- Returns a `GraphQLProject.ProjectFAQ` from `ProjectFragment`
+ Returns a `GraphQLProject.ProjectFAQ` from `ExtendedProjectPropertiesFragment`
  */
 
 private func extendedProjectFAQs(
-  from projectFragment: GraphAPI
-    .ProjectFragment
+  from fragment: GraphAPI.ExtendedProjectPropertiesFragment
 ) -> [ProjectFAQ] {
   var faqs = [ProjectFAQ]()
 
-  if let allFaqs = projectFragment.faqs?.nodes.flatMap({ $0 }) {
+  if let allFaqs = fragment.faqs?.nodes.flatMap({ $0 }) {
     for faq in allFaqs {
       guard let id = faq?.id,
             let decomposedId = decompose(id: id),
@@ -347,16 +351,15 @@ private func extendedProjectFAQs(
 }
 
 /**
- Returns a `GraphQLProject.EnvironmentalCommitment` from `ProjectFragment`
+ Returns a `GraphQLProject.EnvironmentalCommitment` from `ExtendedProjectPropertiesFragment`
  */
 
 private func extendedProjectEnvironmentalCommitments(
-  from projectFragment: GraphAPI
-    .ProjectFragment
+  from fragment: GraphAPI.ExtendedProjectPropertiesFragment
 ) -> [ProjectTabCategoryDescription] {
   var environmentalCommitments = [ProjectTabCategoryDescription]()
 
-  if let allEnvironmentalCommitments = projectFragment.environmentalCommitments {
+  if let allEnvironmentalCommitments = fragment.environmentalCommitments {
     for commitment in allEnvironmentalCommitments {
       guard let id = commitment?.id,
             let decomposedId = decompose(id: id),
@@ -395,10 +398,9 @@ private func extendedProjectEnvironmentalCommitments(
 }
 
 private func extendedProjectAIDisclosure(
-  from projectFragment: GraphAPI
-    .ProjectFragment
+  from fragment: GraphAPI.ExtendedProjectPropertiesFragment
 ) -> ProjectAIDisclosure? {
-  guard let aiDisclosureRawData = projectFragment.aiDisclosure,
+  guard let aiDisclosureRawData = fragment.aiDisclosure,
         let decomposedId = decompose(id: aiDisclosureRawData.id) else {
     return nil
   }
