@@ -1318,81 +1318,15 @@
       guard let client = self.apolloClient else {
         return .empty
       }
+      let query = GraphAPI.FetchProjectByParamQuery(
+        projectId: .someOrNil(projectParam.id),
+        slug: .someOrNil(projectParam.slug)
+      )
 
-      switch (projectParam.id, projectParam.slug) {
-      case let (.some(paramId), _):
-        let fetchProjectQuery = GraphAPI
-          .FetchProjectByIdQuery(projectId: paramId)
-
-        let projectOrErrorOnlyResult: Result<Project, ErrorEnvelope>
-
-        switch self.fetchProjectPamphletEnvelopeResult {
-        case let .success(projectPamphletData):
-          projectOrErrorOnlyResult = .success(projectPamphletData.project)
-        case let .failure(errorEnvelope):
-          projectOrErrorOnlyResult = .failure(errorEnvelope)
-        case .none:
-          return .empty
-        }
-
-        /**
-         FIXME: Separately attaching passed in `backingId` from `Project.ProjectPamphletData` and not calling the mock client directly with `Project.ProjectPamphletData` because it is not `Decodable` (error, unsure how to correct at this time, because `Project` which is not decodable can be passed in on its' own)
-         */
-        let producer = client
-          .fetchWithResult(query: fetchProjectQuery, result: projectOrErrorOnlyResult)
-          .switchMap { project -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope> in
-            let pamphletData = Project
-              .ProjectPamphletData(
-                project: project,
-                backingId: self.fetchProjectPamphletEnvelopeResult?.value?.backingId
-              )
-
-            return SignalProducer(value: pamphletData)
-          }
-
-        return producer
-      case let (_, .some(paramSlug)):
-        let fetchProjectQuery = GraphAPI
-          .FetchProjectBySlugQuery(slug: paramSlug)
-
-        let projectOrErrorOnlyResult: Result<Project, ErrorEnvelope>
-
-        switch self.fetchProjectPamphletEnvelopeResult {
-        case let .success(projectPamphletData):
-          projectOrErrorOnlyResult = .success(projectPamphletData.project)
-        case let .failure(errorEnvelope):
-          projectOrErrorOnlyResult = .failure(errorEnvelope)
-        case .none:
-          return .empty
-        }
-
-        var producer: SignalProducer<Project.ProjectPamphletData, ErrorEnvelope> =
-          SignalProducer(error: .couldNotParseJSON)
-
-        /**
-         FIXME: Separately attaching passed in `backingId` from `Project.ProjectPamphletData` and not calling the mock client directly with `Project.ProjectPamphletData` because it is not `Decodable` (error, unsure how to correct at this time, because `Project` which is not decodable can be passed in on its' own)
-         */
-        _ = client
-          .fetchWithResult(query: fetchProjectQuery, result: projectOrErrorOnlyResult)
-          .on(
-            failed: { errorEnvelope in
-              producer = SignalProducer(error: errorEnvelope)
-            },
-            value: { project in
-              let pamphletData = Project
-                .ProjectPamphletData(
-                  project: project,
-                  backingId: self.fetchProjectPamphletEnvelopeResult?.value?.backingId
-                )
-
-              producer = SignalProducer(value: pamphletData)
-            }
-          )
-
-        return producer
-      default:
-        return .empty
-      }
+      return client.fetchWithResult(
+        query: query,
+        result: self.fetchProjectPamphletEnvelopeResult
+      )
     }
 
     func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int)
@@ -1474,29 +1408,6 @@
           .template |> Project.lens.id .~ params.hashValue
         ]
       return SignalProducer(value: envelope)
-    }
-
-    internal func fetchProject(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
-      guard let client = self.apolloClient else {
-        return .empty
-      }
-
-      let fetchProjectCommentsQuery = GraphAPI
-        .FetchProjectByIdQuery(projectId: project.id)
-
-      let projectOnlyResult: Result<Project, ErrorEnvelope>
-
-      switch self.fetchProjectEnvelopeResult {
-      case let .success(project):
-        projectOnlyResult = .success(project)
-      case let .failure(errorEnvelope):
-        projectOnlyResult = .failure(errorEnvelope)
-      case .none:
-        return .empty
-      }
-
-      return client
-        .fetchWithResult(query: fetchProjectCommentsQuery, result: projectOnlyResult)
     }
 
     internal func fetchProject_combine(project _: Project) -> AnyPublisher<Project, ErrorEnvelope> {

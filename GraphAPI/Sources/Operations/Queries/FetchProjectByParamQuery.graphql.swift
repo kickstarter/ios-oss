@@ -3,21 +3,29 @@
 
 @_exported import ApolloAPI
 
-public class FetchProjectByIdQuery: GraphQLQuery {
-  public static let operationName: String = "FetchProjectById"
+public class FetchProjectByParamQuery: GraphQLQuery {
+  public static let operationName: String = "FetchProjectByParam"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchProjectById($projectId: Int!) { me { __typename chosenCurrency } project(pid: $projectId) { __typename ...ProjectFragment backing { __typename id } flagging { __typename id kind } } }"#,
+      #"query FetchProjectByParam($projectId: Int, $slug: String) { me { __typename chosenCurrency } project(pid: $projectId, slug: $slug) { __typename ...ProjectFragment backing { __typename id } flagging { __typename id kind } } }"#,
       fragments: [CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, ProjectFragment.self, PublicUserFragment.self]
     ))
 
-  public var projectId: Int
+  public var projectId: GraphQLNullable<Int>
+  public var slug: GraphQLNullable<String>
 
-  public init(projectId: Int) {
+  public init(
+    projectId: GraphQLNullable<Int>,
+    slug: GraphQLNullable<String>
+  ) {
     self.projectId = projectId
+    self.slug = slug
   }
 
-  public var __variables: Variables? { ["projectId": projectId] }
+  public var __variables: Variables? { [
+    "projectId": projectId,
+    "slug": slug
+  ] }
 
   public struct Data: GraphAPI.SelectionSet {
     public let __data: DataDict
@@ -26,7 +34,10 @@ public class FetchProjectByIdQuery: GraphQLQuery {
     public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Query }
     public static var __selections: [ApolloAPI.Selection] { [
       .field("me", Me?.self),
-      .field("project", Project?.self, arguments: ["pid": .variable("projectId")]),
+      .field("project", Project?.self, arguments: [
+        "pid": .variable("projectId"),
+        "slug": .variable("slug")
+      ]),
     ] }
 
     /// You.
@@ -45,7 +56,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
           "project": project._fieldData,
         ],
         fulfilledFragments: [
-          ObjectIdentifier(FetchProjectByIdQuery.Data.self)
+          ObjectIdentifier(FetchProjectByParamQuery.Data.self)
         ]
       ))
     }
@@ -75,7 +86,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
             "chosenCurrency": chosenCurrency,
           ],
           fulfilledFragments: [
-            ObjectIdentifier(FetchProjectByIdQuery.Data.Me.self)
+            ObjectIdentifier(FetchProjectByParamQuery.Data.Me.self)
           ]
         ))
       }
@@ -328,7 +339,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
             "story": story,
           ],
           fulfilledFragments: [
-            ObjectIdentifier(FetchProjectByIdQuery.Data.Project.self),
+            ObjectIdentifier(FetchProjectByParamQuery.Data.Project.self),
             ObjectIdentifier(ProjectFragment.self),
             ObjectIdentifier(NoRewardRewardFragment.self),
             ObjectIdentifier(ExtendedProjectPropertiesFragment.self)
@@ -360,7 +371,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
               "id": id,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchProjectByIdQuery.Data.Project.Backing.self)
+              ObjectIdentifier(FetchProjectByParamQuery.Data.Project.Backing.self)
             ]
           ))
         }
@@ -395,7 +406,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
               "kind": kind,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchProjectByIdQuery.Data.Project.Flagging.self)
+              ObjectIdentifier(FetchProjectByParamQuery.Data.Project.Flagging.self)
             ]
           ))
         }
@@ -440,7 +451,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
               "parentCategory": parentCategory._fieldData,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchProjectByIdQuery.Data.Project.Category.self),
+              ObjectIdentifier(FetchProjectByParamQuery.Data.Project.Category.self),
               ObjectIdentifier(ProjectFragment.Category.self),
               ObjectIdentifier(CategoryFragment.self)
             ]
@@ -482,7 +493,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
               "name": name,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchProjectByIdQuery.Data.Project.Country.self),
+              ObjectIdentifier(FetchProjectByParamQuery.Data.Project.Country.self),
               ObjectIdentifier(ProjectFragment.Country.self),
               ObjectIdentifier(CountryFragment.self)
             ]
@@ -553,7 +564,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
               "createdProjects": createdProjects._fieldData,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchProjectByIdQuery.Data.Project.Creator.self),
+              ObjectIdentifier(FetchProjectByParamQuery.Data.Project.Creator.self),
               ObjectIdentifier(ProjectFragment.Creator.self),
               ObjectIdentifier(PublicUserFragment.self)
             ]
@@ -603,7 +614,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
                 "name": name,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FetchProjectByIdQuery.Data.Project.Creator.Location.self),
+                ObjectIdentifier(FetchProjectByParamQuery.Data.Project.Creator.Location.self),
                 ObjectIdentifier(PublicUserFragment.Location.self),
                 ObjectIdentifier(LocationFragment.self)
               ]
@@ -650,7 +661,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
               "symbol": symbol,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchProjectByIdQuery.Data.Project.Goal.self),
+              ObjectIdentifier(FetchProjectByParamQuery.Data.Project.Goal.self),
               ObjectIdentifier(ProjectFragment.Goal.self),
               ObjectIdentifier(MoneyFragment.self)
             ]
@@ -691,7 +702,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
               "active": active,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchProjectByIdQuery.Data.Project.LastWave.self),
+              ObjectIdentifier(FetchProjectByParamQuery.Data.Project.LastWave.self),
               ObjectIdentifier(ProjectFragment.LastWave.self),
               ObjectIdentifier(LastWaveFragment.self)
             ]
@@ -742,7 +753,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
               "name": name,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchProjectByIdQuery.Data.Project.Location.self),
+              ObjectIdentifier(FetchProjectByParamQuery.Data.Project.Location.self),
               ObjectIdentifier(ProjectFragment.Location.self),
               ObjectIdentifier(LocationFragment.self)
             ]
@@ -781,7 +792,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
               "acceptsNewBackers": acceptsNewBackers,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchProjectByIdQuery.Data.Project.PledgeManager.self),
+              ObjectIdentifier(FetchProjectByParamQuery.Data.Project.PledgeManager.self),
               ObjectIdentifier(ProjectFragment.PledgeManager.self),
               ObjectIdentifier(PledgeManagerFragment.self)
             ]
@@ -825,7 +836,7 @@ public class FetchProjectByIdQuery: GraphQLQuery {
               "symbol": symbol,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchProjectByIdQuery.Data.Project.Pledged.self),
+              ObjectIdentifier(FetchProjectByParamQuery.Data.Project.Pledged.self),
               ObjectIdentifier(ProjectFragment.Pledged.self),
               ObjectIdentifier(MoneyFragment.self)
             ]

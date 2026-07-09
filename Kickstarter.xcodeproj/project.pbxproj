@@ -720,8 +720,7 @@
 		E190EB592E29944E006A6DB6 /* FetchMyBackedProjectsQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMyBackedProjectsQuery.graphql; sourceTree = "<group>"; };
 		E190EB5A2E29944E006A6DB6 /* FetchMySavedProjectsQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchMySavedProjectsQuery.graphql; sourceTree = "<group>"; };
 		E190EB5B2E29944E006A6DB6 /* FetchPPOQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchPPOQuery.graphql; sourceTree = "<group>"; };
-		E190EB5C2E29944E006A6DB6 /* FetchProjectByIdQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectByIdQuery.graphql; sourceTree = "<group>"; };
-		E190EB5D2E29944E006A6DB6 /* FetchProjectBySlugQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectBySlugQuery.graphql; sourceTree = "<group>"; };
+		E190EB5C2E29944E006A6DB6 /* FetchProjectByParamQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectByParamQuery.graphql; sourceTree = "<group>"; };
 		E190EB5E2E29944E006A6DB6 /* FetchProjectComments.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectComments.graphql; sourceTree = "<group>"; };
 		E190EB612E29944E006A6DB6 /* FetchProjectRewardsByIdQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectRewardsByIdQuery.graphql; sourceTree = "<group>"; };
 		E190EB622E29944E006A6DB6 /* FetchRootCategories.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchRootCategories.graphql; sourceTree = "<group>"; };
@@ -1357,8 +1356,7 @@
 				E190EB592E29944E006A6DB6 /* FetchMyBackedProjectsQuery.graphql */,
 				E190EB5A2E29944E006A6DB6 /* FetchMySavedProjectsQuery.graphql */,
 				E190EB5B2E29944E006A6DB6 /* FetchPPOQuery.graphql */,
-				E190EB5C2E29944E006A6DB6 /* FetchProjectByIdQuery.graphql */,
-				E190EB5D2E29944E006A6DB6 /* FetchProjectBySlugQuery.graphql */,
+				E190EB5C2E29944E006A6DB6 /* FetchProjectByParamQuery.graphql */,
 				E190EB5E2E29944E006A6DB6 /* FetchProjectComments.graphql */,
 				E190EB612E29944E006A6DB6 /* FetchProjectRewardsByIdQuery.graphql */,
 				E1047B652F59D4240071584F /* FetchSortedProjectRewardsByIdQuery.graphql */,
