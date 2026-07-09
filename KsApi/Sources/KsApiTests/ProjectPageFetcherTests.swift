@@ -8,7 +8,7 @@ import XCTest
 public final class ProjectPageFetcherTests: XCTestCase {
   func test_oldProjectFetch_fetchesProjectBackingAndRewards() {
     let projectResponseURL = Bundle.module.url(
-      forResource: "FetchProjectByIdQuery",
+      forResource: "FetchProjectByParamQuery",
       withExtension: "json"
     )!
 
@@ -22,7 +22,7 @@ public final class ProjectPageFetcherTests: XCTestCase {
       withExtension: "json"
     )!
 
-    let fetchProjectResponse: GraphAPI.FetchProjectByIdQuery
+    let fetchProjectResponse: GraphAPI.FetchProjectByParamQuery
       .Data = try! testGraphObject(fromResource: projectResponseURL)
     let fetchBackingResponse: GraphAPI.FetchBackingQuery
       .Data = try! testGraphObject(fromResource: backingResponseURL)

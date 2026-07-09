@@ -8,7 +8,7 @@ public enum FetchProjectQueryTemplate {
   case valid
 
   /// `FetchProjectBySlug` returns identical data.
-  var data: GraphAPI.FetchProjectByIdQuery.Data {
+  var data: GraphAPI.FetchProjectByParamQuery.Data {
     switch self {
     case .valid:
       return try! testGraphObject(data: self.validResultMap)
