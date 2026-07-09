@@ -18,8 +18,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
 
       let project = Project.project(
         from: fragment,
-        flagging: false,
-        currentUserChosenCurrency: nil
+        flagging: false
       )
 
       guard let project = project else {
@@ -389,6 +388,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
        "description":"In this unforgiving Hell, people are forced to fight to the death in an elite gamble for their souls.",
        "finalCollectionDate":null,
        "fxRate":1.26411401,
+       "fxRateCurrency":"USD",
        "friends":{
           "__typename":"ProjectBackerFriendsConnection",
           "nodes":[

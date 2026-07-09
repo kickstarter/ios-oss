@@ -904,6 +904,7 @@ private func backingDictionary() -> [String: Any] {
         "nodes": []
       },
       "fxRate": 1.23244501,
+      "fxRateCurrency": "USD",
       "goal": {
         "__typename": "Money",
         "amount": "3000.0",

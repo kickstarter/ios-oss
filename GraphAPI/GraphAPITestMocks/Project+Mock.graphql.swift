@@ -29,6 +29,7 @@ public class Project: MockObject {
     @Field<GraphAPI.ISO8601DateTime>("finalCollectionDate") public var finalCollectionDate
     @Field<Flagging>("flagging") public var flagging
     @Field<Double>("fxRate") public var fxRate
+    @Field<GraphQLEnum<GraphAPI.CurrencyCode>>("fxRateCurrency") public var fxRateCurrency
     @Field<Money>("goal") public var goal
     @Field<GraphAPI.ID>("id") public var id
     @Field<Photo>("image") public var image
@@ -106,6 +107,7 @@ public extension Mock where O == Project {
     finalCollectionDate: GraphAPI.ISO8601DateTime? = nil,
     flagging: Mock<Flagging>? = nil,
     fxRate: Double? = nil,
+    fxRateCurrency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
     goal: Mock<Money>? = nil,
     id: GraphAPI.ID? = nil,
     image: Mock<Photo>? = nil,
@@ -180,6 +182,7 @@ public extension Mock where O == Project {
     _setScalar(finalCollectionDate, for: \.finalCollectionDate)
     _setEntity(flagging, for: \.flagging)
     _setScalar(fxRate, for: \.fxRate)
+    _setScalar(fxRateCurrency, for: \.fxRateCurrency)
     _setEntity(goal, for: \.goal)
     _setScalar(id, for: \.id)
     _setEntity(image, for: \.image)

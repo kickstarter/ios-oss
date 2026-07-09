@@ -14,8 +14,7 @@ extension Project {
     flagging: Bool? = nil,
     rewards: [Reward] = [],
     addOns: [Reward]? = nil,
-    backing: Backing? = nil,
-    currentUserChosenCurrency: String?
+    backing: Backing? = nil
   ) -> Project? {
     guard
       let country = Country.country(
@@ -87,7 +86,7 @@ extension Project {
     let plotFragment = projectFragment.fragments.pledgeOverTimeFragment
 
     let statsFragment = projectFragment.fragments.projectStatsFragment
-    let stats = projectStats(from: statsFragment, currentUserChosenCurrency: currentUserChosenCurrency)
+    let stats = projectStats(from: statsFragment)
 
     return
       Project(
@@ -218,8 +217,7 @@ private func projectState(from projectState: GraphAPI.ProjectState?) -> Project.
  Returns a minimal `Project.Stats` from a `ProjectStatsFragment`
  */
 private func projectStats(
-  from statsFragment: GraphAPI.ProjectStatsFragment,
-  currentUserChosenCurrency: String?
+  from statsFragment: GraphAPI.ProjectStatsFragment
 ) -> Project.Stats {
   let pledgedRawData = statsFragment.pledged.fragments.moneyFragment.amount.flatMap(Float.init)
   let pledgedRawValue = statsFragment.pledged.fragments.moneyFragment.amount.flatMap(Float.init) ?? 0
@@ -238,7 +236,7 @@ private func projectStats(
     commentsCount: statsFragment.commentsCount,
     convertedPledgedAmount: convertedPledgedAmountValue,
     projectCurrency: statsFragment.currency.rawValue,
-    userCurrency: currentUserChosenCurrency,
+    userCurrency: statsFragment.fxRateCurrency.rawValue,
     userCurrencyRate: fxRateValue,
     goal: statsFragment.goal?.fragments.moneyFragment.amount.flatMap(Float.init).flatMap(Int.init) ?? 0,
     pledged: pledgedValue,

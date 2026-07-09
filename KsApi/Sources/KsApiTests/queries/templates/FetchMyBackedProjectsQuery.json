@@ -110,6 +110,7 @@
           },
           "finalCollectionDate": null,
           "fxRate": 1,
+          "fxRateCurrency": "USD",
           "goal": {
             "__typename": "Money",
             "amount": "1000.0",
@@ -305,6 +306,7 @@
           },
           "finalCollectionDate": null,
           "fxRate": 1,
+          "fxRateCurrency": "USD",
           "goal": {
             "__typename": "Money",
             "amount": "2000.0",
@@ -535,6 +537,7 @@
           },
           "finalCollectionDate": null,
           "fxRate": 1,
+          "fxRateCurrency": "USD",
           "goal": {
             "__typename": "Money",
             "amount": "20000.0",

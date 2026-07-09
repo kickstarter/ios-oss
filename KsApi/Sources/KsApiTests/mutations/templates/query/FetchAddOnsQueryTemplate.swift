@@ -258,6 +258,7 @@ public enum FetchAddsOnsQueryTemplate {
             "description": "Notebooks, paper tape and sticker sets from the Peppermint Fox Press, inspired by vintage books. For poets, planners, and storytellers.",
             "finalCollectionDate": null,
             "fxRate": 0.93110152,
+            "fxRateCurrency": "USD",
             "goal": {
               "__typename": "Money",
               "amount": "1500.0",

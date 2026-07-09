@@ -102,6 +102,7 @@
             }
           },
           "fxRate": 0.12867125,
+          "fxRateCurrency": "USD",
           "usdExchangeRate": 0.12867125,
           "posts": {
             "__typename": "PostConnection",
@@ -193,6 +194,7 @@
           "state": "LIVE",
           "video": null,
           "fxRate": 1.0884875,
+          "fxRateCurrency": "USD",
           "usdExchangeRate": 1.0884875,
           "posts": {
             "__typename": "PostConnection",
@@ -298,6 +300,7 @@
             }
           },
           "fxRate": 1,
+          "fxRateCurrency": "USD",
           "usdExchangeRate": 1,
           "posts": {
             "__typename": "PostConnection",
@@ -403,6 +406,7 @@
             }
           },
           "fxRate": 1,
+          "fxRateCurrency": "USD",
           "usdExchangeRate": 1,
           "posts": {
             "__typename": "PostConnection",
@@ -508,6 +512,7 @@
             }
           },
           "fxRate": 1,
+          "fxRateCurrency": "USD",
           "usdExchangeRate": 1,
           "posts": {
             "__typename": "PostConnection",

@@ -35,7 +35,7 @@ extension ProjectAndBackingEnvelope {
         addOns: addOns,
         paymentIncrements: paymentIncrements
       ),
-      let project = Project.project(from: projectFragment, backing: backing, currentUserChosenCurrency: nil)
+      let project = Project.project(from: projectFragment, backing: backing)
     else {
       return SignalProducer(error: .couldNotParseJSON)
     }

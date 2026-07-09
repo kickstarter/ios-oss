@@ -11,12 +11,10 @@ extension Project {
   }
 
   static func projectProducer(
-    from data: GraphAPI.FetchProjectByParamQuery.Data,
-    configCurrency: String?
+    from data: GraphAPI.FetchProjectByParamQuery.Data
   ) -> SignalProducer<ProjectPamphletData, ErrorEnvelope> {
     let projectAndBackingId = Project.project(
-      from: data,
-      configCurrency: configCurrency
+      from: data
     )
 
     guard let project = projectAndBackingId.0 else {
@@ -32,8 +30,7 @@ extension Project {
   }
 
   internal static func project(
-    from data: GraphAPI.FetchProjectByParamQuery.Data,
-    configCurrency: String?
+    from data: GraphAPI.FetchProjectByParamQuery.Data
   ) -> (Project?, Int?) {
     var projectBackingId: Int?
 
@@ -49,8 +46,7 @@ extension Project {
         flagging: data.project?.flagging != nil,
         rewards: [Reward.noRewardReward(from: noRewardFragment)],
         addOns: nil,
-        backing: nil,
-        currentUserChosenCurrency: data.me?.chosenCurrency ?? configCurrency
+        backing: nil
       )
     else { return (nil, nil) }
 

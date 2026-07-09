@@ -3,6 +3,7 @@ fragment ProjectStatsFragment on Project {
   commentsCount(withReplies: true)
   currency
   fxRate
+  fxRateCurrency
   goal {
     ...MoneyFragment
   }

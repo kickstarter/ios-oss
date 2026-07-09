@@ -300,6 +300,7 @@
           },
           "finalCollectionDate": null,
           "fxRate": 1,
+          "fxRateCurrency": "USD",
           "goal": {
             "__typename": "Money",
             "amount": "1000.0",
@@ -598,6 +599,7 @@
           },
           "finalCollectionDate": "2023-11-16T11:22:26-05:00",
           "fxRate": 1,
+          "fxRateCurrency": "USD",
           "goal": {
             "__typename": "Money",
             "amount": "126000.0",
@@ -1055,6 +1057,7 @@
           },
           "finalCollectionDate": "2023-10-17T10:15:39-04:00",
           "fxRate": 1,
+          "fxRateCurrency": "USD",
           "goal": {
             "__typename": "Money",
             "amount": "10000.0",
@@ -1331,6 +1334,7 @@
           },
           "finalCollectionDate": "2023-10-11T14:25:50-04:00",
           "fxRate": 1,
+          "fxRateCurrency": "USD",
           "goal": {
             "__typename": "Money",
             "amount": "5000.0",

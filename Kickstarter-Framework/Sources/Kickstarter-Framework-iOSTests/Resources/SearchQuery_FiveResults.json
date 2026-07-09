@@ -102,6 +102,7 @@
             }
           },
           "fxRate": 1,
+          "fxRateCurrency": "USD",
           "usdExchangeRate": 1,
           "posts": {
             "__typename": "PostConnection",
@@ -193,6 +194,7 @@
           "state": "LIVE",
           "video": null,
           "fxRate": 1,
+          "fxRateCurrency": "USD",
           "usdExchangeRate": 1,
           "posts": {
             "__typename": "PostConnection",
@@ -284,6 +286,7 @@
           "state": "LIVE",
           "video": null,
           "fxRate": 0.12867125,
+          "fxRateCurrency": "USD",
           "usdExchangeRate": 0.12867125,
           "posts": {
             "__typename": "PostConnection",
@@ -375,6 +378,7 @@
           "state": "LIVE",
           "video": null,
           "fxRate": 1,
+          "fxRateCurrency": "USD",
           "usdExchangeRate": 1,
           "posts": {
             "__typename": "PostConnection",
@@ -471,6 +475,7 @@
           "state": "LIVE",
           "video": null,
           "fxRate": 1,
+          "fxRateCurrency": "USD",
           "usdExchangeRate": 1,
           "posts": {
             "__typename": "PostConnection",

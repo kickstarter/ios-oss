@@ -116,6 +116,7 @@ public enum FetchProjectQueryTemplate {
           "description":"A photographic book about the daily life and work on board of a Russian research vessel during the MOSAiC expedition in the Arctic.",
           "finalCollectionDate":null,
           "fxRate":1.49547966,
+          "fxRateCurrency": "USD",
           "friends":{
              "__typename":"ProjectBackerFriendsConnection",
              "nodes":[]

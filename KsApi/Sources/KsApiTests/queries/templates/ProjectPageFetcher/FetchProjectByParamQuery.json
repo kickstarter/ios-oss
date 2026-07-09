@@ -88,6 +88,7 @@
       },
       "finalCollectionDate": null,
       "fxRate": 0.848212,
+      "fxRateCurrency": "EUR",
       "goal": {
         "__typename": "Money",
         "amount": "1000.0",
