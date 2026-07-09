@@ -584,24 +584,14 @@ public struct Service: ServiceType {
    */
   public func fetchProject(projectParam: Param, configCurrency: String?)
     -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope> {
-    switch (projectParam.id, projectParam.slug) {
-    case let (.some(projectId), _):
-      let query = GraphAPI
-        .FetchProjectByIdQuery(projectId: projectId)
+    let query = GraphAPI.FetchProjectByParamQuery(
+      projectId: .someOrNil(projectParam.id),
+      slug: .someOrNil(projectParam.slug)
+    )
 
-      return GraphQL.shared.client
-        .fetch(query: query)
-        .flatMap { Project.projectProducer(from: $0, configCurrency: configCurrency) }
-    case let (_, .some(projectSlug)):
-      let query = GraphAPI
-        .FetchProjectBySlugQuery(slug: projectSlug)
-
-      return GraphQL.shared.client
-        .fetch(query: query)
-        .flatMap { Project.projectProducer(from: $0, configCurrency: configCurrency) }
-    default:
-      return .empty
-    }
+    return GraphQL.shared.client
+      .fetch(query: query)
+      .flatMap { Project.projectProducer(from: $0, configCurrency: configCurrency) }
   }
 
   /**
@@ -676,10 +666,6 @@ public struct Service: ServiceType {
 
   public func fetchProject(_ params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
     return request(.discover(params |> DiscoveryParams.lens.perPage .~ 1))
-  }
-
-  public func fetchProject(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
-    return request(.project(.id(project.id)))
   }
 
   public func fetchProject_combine(project: Project) -> AnyPublisher<Project, ErrorEnvelope> {
