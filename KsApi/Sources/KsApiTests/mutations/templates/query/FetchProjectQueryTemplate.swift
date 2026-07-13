@@ -20,10 +20,6 @@ public enum FetchProjectQueryTemplate {
   private var validResultMap: [String: Any] {
     let json = """
     {
-       "me":{
-          "__typename": "User",
-          "chosenCurrency":"CAD"
-       },
        "project":{
           "backing": {
             "__typename": "Backing",
@@ -116,7 +112,7 @@ public enum FetchProjectQueryTemplate {
           "description":"A photographic book about the daily life and work on board of a Russian research vessel during the MOSAiC expedition in the Arctic.",
           "finalCollectionDate":null,
           "fxRate":1.49547966,
-          "fxRateCurrency": "USD",
+          "fxRateCurrency": "CAD",
           "friends":{
              "__typename":"ProjectBackerFriendsConnection",
              "nodes":[]
