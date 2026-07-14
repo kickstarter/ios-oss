@@ -313,6 +313,7 @@
 		E108416C2DC27F24000E4F17 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		E10BE8D02B02975C00F73DC9 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */; };
 		E10BE8D42B02975C00F73DC9 /* RichPushNotifications.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E10FED153005D38600EAF400 /* ProjectPageViewModel_TrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10FED143005D38600EAF400 /* ProjectPageViewModel_TrackingTests.swift */; };
 		E113BD842B7D255000D3A809 /* Library_Keychain_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E113BD832B7D255000D3A809 /* Library_Keychain_iOSTests.swift */; };
 		E113BD8D2B7D255A00D3A809 /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E113BD772B7D1B7700D3A809 /* KeychainTests.swift */; };
 		E182E5BA2B8CDFDE0008DD69 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */; };
@@ -649,6 +650,7 @@
 		E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RichPushNotifications.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		E10BE8D12B02975C00F73DC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E10FED143005D38600EAF400 /* ProjectPageViewModel_TrackingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewModel_TrackingTests.swift; sourceTree = "<group>"; };
 		E113BD772B7D1B7700D3A809 /* KeychainTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
 		E113BD812B7D255000D3A809 /* Library-Keychain-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Library-Keychain-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E113BD832B7D255000D3A809 /* Library_Keychain_iOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library_Keychain_iOSTests.swift; sourceTree = "<group>"; };
@@ -1103,6 +1105,7 @@
 				AAF5486C2F2445C0001DB5AC /* ProjectNotificationCellViewModelTests.swift */,
 				AAF5486D2F2445C0001DB5AC /* ProjectNotificationsViewModelTest.swift */,
 				AAF5486E2F2445C0001DB5AC /* ProjectPageViewModelTests.swift */,
+				E10FED143005D38600EAF400 /* ProjectPageViewModel_TrackingTests.swift */,
 				AAF5486F2F2445C0001DB5AC /* ProjectPamphletContentViewModelTests.swift */,
 				AAF548702F2445C0001DB5AC /* ProjectPamphletCreatorHeaderCellViewModelTests.swift */,
 				AAF548712F2445C0001DB5AC /* ProjectPamphletMainCellViewModelTests.swift */,
@@ -1754,6 +1757,7 @@
 				AAF5491B2F2445C0001DB5AC /* HelpViewModelTests.swift in Sources */,
 				AAF5491C2F2445C0001DB5AC /* KSRSearchBarViewModelTests.swift in Sources */,
 				AAF5491D2F2445C0001DB5AC /* LoadingBarButtonItemViewModelTests.swift in Sources */,
+				E10FED153005D38600EAF400 /* ProjectPageViewModel_TrackingTests.swift in Sources */,
 				AAF5491E2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift in Sources */,
 				AAF5491F2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift in Sources */,
 				AAF549202F2445C0001DB5AC /* LoginToutViewModelTests.swift in Sources */,
