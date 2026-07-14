@@ -229,22 +229,16 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     let freshProjectAndRefTagEvent = self.configDataProperty.signal
       .skipNil()
-      .takePairWhen(Signal.merge(
-        self.viewDidLoadProperty.signal.mapConst(true),
-        self.userSessionStartedProperty.signal.mapConst(true),
-        self.didBackProjectProperty.signal.ignoreValues().mapConst(false),
-        self.managePledgeViewControllerFinishedWithMessageProperty.signal.ignoreValues().mapConst(false),
-        self.pledgeRetryButtonTappedProperty.signal.mapConst(false)
+      .takeWhen(Signal.merge(
+        self.viewDidLoadProperty.signal.ignoreValues(),
+        self.userSessionStartedProperty.signal.ignoreValues(),
+        self.didBackProjectProperty.signal.ignoreValues(),
+        self.managePledgeViewControllerFinishedWithMessageProperty.signal.ignoreValues(),
+        self.pledgeRetryButtonTappedProperty.signal.ignoreValues()
       ))
-      .map { data, shouldPrefix -> (Either<Project, any ProjectPageParam>, RefInfo?, String?, Bool) in
-        let (projectOrParam, refInfo, secretRewardToken) = data
-
-        return (projectOrParam, refInfo, secretRewardToken, shouldPrefix)
-      }
-      .switchMap { projectOrParam, refInfo, secretRewardToken, shouldPrefix in
+      .switchMap { projectOrParam, refInfo, secretRewardToken in
         fetchProject(
           projectOrParam: projectOrParam,
-          shouldPrefix: shouldPrefix,
           afterAddingSecretRewardToken: secretRewardToken
         )
         .on(
@@ -307,31 +301,28 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     self.precreateAudioVideoURLs = self.prepareAudioVideoAtProperty.signal.skipNil()
 
-    let initialProjectData = self.configDataProperty.signal
+    // Project data that is passed when the ProjectPageViewController is initialized.
+    // Used to show the Project overview page while we re-fetch the rest of the project data.
+    let staleProjectData = self.configDataProperty.signal
       .takeWhen(self.viewDidLoadProperty.signal)
-      .compactMap { data -> (Either<Project, any ProjectPageParam>, RefTag?)? in
-        guard
-          let (either, refInfo, _) = data,
-          let right = either.right,
-          let project = right.initialProject
-        else { return nil }
+      .filter {
+        canDisplayProjectPreview(withData: $0?.0)
+      }
+      .skipNil()
 
-        return (either, refInfo?.refTag)
+    let staleProjectDataSource = staleProjectData
+      .map { projectOrParam, refInfo, _ in
+        (NavigationSection.overview, projectOrParam, refInfo?.refTag)
       }
 
-    let initialProjectDataSource = initialProjectData
-      .map { config, refInfo in
-        (NavigationSection.overview, config, refInfo)
-      }
-
-    // The first tab we render by default is overview
+    // The first tab we render by default is overview.
     self.configureDataSource = freshProjectAndRefTag
       .combineLatest(with: self.viewDidLoadProperty.signal)
       .map { projectAndRefTag, _ in
         let (project, refTag) = projectAndRefTag
         return (.overview, .left(project), refTag)
       }
-      .merge(with: initialProjectDataSource)
+      .merge(with: staleProjectDataSource)
 
     let projectAndBacking = project
       .filter { $0.personalization.isBacking ?? false }
@@ -406,7 +397,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
 
     let trackFreshProjectAndRefTagViewed: Signal<(Project, RefTag?), Never> = Signal.zip(
-      freshProjectAndRefTag.skip(first: 1),
+      freshProjectAndRefTag,
       self.viewDidAppearAnimatedProperty.signal.ignoreValues()
     )
     .map(unpack)
@@ -902,7 +893,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
 private func fetchProject(
   projectOrParam: Either<Project, any ProjectPageParam>,
-  shouldPrefix: Bool,
   afterAddingSecretRewardToken token: String?
 ) -> SignalProducer<Project, ErrorEnvelope> {
   // TODO: We're posting this mutation more frequently than we need to.
@@ -914,15 +904,13 @@ private func fetchProject(
   )
   .then(
     fetchProject(
-      projectOrParam: projectOrParam,
-      shouldPrefix: shouldPrefix
+      projectOrParam: projectOrParam
     )
   )
 }
 
 private func fetchProject(
-  projectOrParam: Either<Project, any ProjectPageParam>,
-  shouldPrefix: Bool
+  projectOrParam: Either<Project, any ProjectPageParam>
 )
   -> SignalProducer<Project, ErrorEnvelope> {
   let param = projectOrParam.param
@@ -935,10 +923,6 @@ private func fetchProject(
     configCurrency: configCurrency
   )
   .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-
-  if let project = projectOrParam.left, shouldPrefix {
-    return producer.prefix(value: project)
-  }
 
   return producer
 }
@@ -961,4 +945,22 @@ private extension Either where A == Project, B == ProjectPageParam {
       return projectParam.param
     }
   }
+}
+
+/// Whether or not the view model can emit some initial (stale) data while we wait for the project to reload.
+private func canDisplayProjectPreview(withData either: Either<Project, ProjectPageParam>?) -> Bool {
+  guard let either else { return false }
+
+  // The VM was configured with a ProjectPageParam that has an initialProject set
+  if let right = either.right,
+     let _ = right.initialProject {
+    return true
+  }
+
+  // The VM was configured with a Project object
+  if let _ = either.left {
+    return true
+  }
+
+  return false
 }
