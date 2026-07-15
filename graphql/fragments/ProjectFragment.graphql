@@ -1,83 +1,54 @@
 fragment ProjectFragment on Project {
   availableCardTypes
-  backersCount
   category {
     ...CategoryFragment
   }
   canComment
-  commentsCount(withReplies: true)
   country {
     ...CountryFragment
   }
   creator {
     ...PublicUserFragment
   }
-  currency
-  deadlineAt
   description
-  finalCollectionDate
-  fxRate
-  goal {
-    ...MoneyFragment
-  }
+  ...ExtendedProjectPropertiesFragment
   image {
     id
     url(width: 1024)
   }
-  isPledgeOverTimeAllowed
   isProjectWeLove
-  isProjectOfTheDay
   isWatched
   isLaunched
   isInPostCampaignPledgingPhase
   lastWave {
     ...LastWaveFragment
   }
-  launchedAt
   location {
     ...LocationFragment
   }
   maxPledge
   minPledge
   name
+  ...NoRewardRewardFragment
   pid
   pledgeManager {
     ...PledgeManagerFragment
   }
-  pledgeOverTimeCollectionPlanChargeExplanation
-  pledgeOverTimeCollectionPlanChargedAsNPayments
-  pledgeOverTimeCollectionPlanShortPitch
-  pledgeOverTimeMinimumExplanation
-  pledged {
-    ...MoneyFragment
-  }
+  ...PledgeOverTimeFragment
   postCampaignPledgingEnabled
-  posts {
-    totalCount
-  }
   prelaunchActivated
+  ...ProjectStatsFragment
+  ...ProjectDatesFragment
   redemptionPageUrl
   sendMetaCapiEvents
   slug
   state
-  stateChangedAt
   tags(scope: DISCOVER) {
     name
   }
   url
-  usdExchangeRate
   video {
-    id
-    videoSources {
-      high {
-        src
-      }
-      hls {
-        src
-      }
-    }
+    ...ProjectVideoFragment
   }
   watchesCount
-  ...NoRewardRewardFragment
-  ...ExtendedProjectPropertiesFragment
 }

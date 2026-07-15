@@ -1,0 +1,11 @@
+fragment ProjectVideoFragment on Video {
+  id
+  videoSources {
+    high {
+      src
+    }
+    hls {
+      src
+    }
+  }
+}

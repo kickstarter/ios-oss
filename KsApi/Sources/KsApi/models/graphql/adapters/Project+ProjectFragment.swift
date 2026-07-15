@@ -25,7 +25,7 @@ extension Project {
         currency: projectFragment.currency.value
       ),
       let categoryFragment = projectFragment.category?.fragments.categoryFragment,
-      let dates = projectDates(from: projectFragment),
+      let dates = projectDates(from: projectFragment.fragments.projectDatesFragment),
       let memberData = projectMemberData(from: projectFragment),
       let photo = projectPhoto(from: projectFragment),
       let state = projectState(from: projectFragment.state.value),
@@ -82,6 +82,13 @@ extension Project {
     let pledgeManager = projectFragment.pledgeManager
       .flatMap { PledgeManager(fromFragment: $0.fragments.pledgeManagerFragment) }
 
+    let video = projectVideo(from: projectFragment.video?.fragments.projectVideoFragment)
+
+    let plotFragment = projectFragment.fragments.pledgeOverTimeFragment
+
+    let statsFragment = projectFragment.fragments.projectStatsFragment
+    let stats = projectStats(from: statsFragment, currentUserChosenCurrency: currentUserChosenCurrency)
+
     return
       Project(
         availableCardTypes: availableCardTypes,
@@ -99,12 +106,12 @@ extension Project {
         location: location,
         name: projectFragment.name,
         pledgeManager: pledgeManager,
-        pledgeOverTimeCollectionPlanChargeExplanation: projectFragment
+        pledgeOverTimeCollectionPlanChargeExplanation: plotFragment
           .pledgeOverTimeCollectionPlanChargeExplanation ?? "",
-        pledgeOverTimeCollectionPlanChargedAsNPayments: projectFragment
+        pledgeOverTimeCollectionPlanChargedAsNPayments: plotFragment
           .pledgeOverTimeCollectionPlanChargedAsNPayments ?? "",
-        pledgeOverTimeCollectionPlanShortPitch: projectFragment.pledgeOverTimeCollectionPlanShortPitch ?? "",
-        pledgeOverTimeMinimumExplanation: projectFragment.pledgeOverTimeMinimumExplanation ?? "",
+        pledgeOverTimeCollectionPlanShortPitch: plotFragment.pledgeOverTimeCollectionPlanShortPitch ?? "",
+        pledgeOverTimeMinimumExplanation: plotFragment.pledgeOverTimeMinimumExplanation ?? "",
         personalization: projectPersonalization(
           isStarred: projectFragment.isWatched,
           backing: backing,
@@ -120,12 +127,12 @@ extension Project {
         slug: generatedSlug ?? projectFragment.slug,
         staffPick: projectFragment.isProjectWeLove,
         state: state,
-        stats: projectStats(from: projectFragment, currentUserChosenCurrency: currentUserChosenCurrency),
+        stats: stats,
         tags: discoverTags,
         urls: urls,
-        video: projectVideo(from: projectFragment),
+        video: video,
         watchesCount: projectFragment.watchesCount,
-        isPledgeOverTimeAllowed: projectFragment.isPledgeOverTimeAllowed
+        isPledgeOverTimeAllowed: plotFragment.isPledgeOverTimeAllowed
       )
   }
 }
@@ -144,25 +151,25 @@ private func projectPersonalization(
 }
 
 /**
- Returns a minimal `Project.Dates` from a `ProjectFragment`
+ Returns a minimal `Project.Dates` from a `ProjectDatesFragment`
  */
-private func projectDates(from projectFragment: GraphAPI.ProjectFragment) -> Project.Dates? {
-  guard let stateChangedAt = TimeInterval(projectFragment.stateChangedAt)
+private func projectDates(from datesFragment: GraphAPI.ProjectDatesFragment) -> Project.Dates? {
+  guard let stateChangedAt = TimeInterval(datesFragment.stateChangedAt)
   else { return nil }
 
   let startOfToday = Calendar.current.startOfDay(for: Date()).timeIntervalSince1970
 
   var featuredAtDate: TimeInterval?
 
-  if let projectOfTheDay = projectFragment.isProjectOfTheDay {
+  if let projectOfTheDay = datesFragment.isProjectOfTheDay {
     featuredAtDate = projectOfTheDay ? startOfToday : nil
   }
 
   return Project.Dates(
-    deadline: projectFragment.deadlineAt.flatMap(TimeInterval.init),
+    deadline: datesFragment.deadlineAt.flatMap(TimeInterval.init),
     featuredAt: featuredAtDate,
-    finalCollectionDate: finalCollectionDateTimeInterval(from: projectFragment.finalCollectionDate),
-    launchedAt: projectFragment.launchedAt.flatMap(TimeInterval.init),
+    finalCollectionDate: finalCollectionDateTimeInterval(from: datesFragment.finalCollectionDate),
+    launchedAt: datesFragment.launchedAt.flatMap(TimeInterval.init),
     stateChangedAt: stateChangedAt
   )
 }
@@ -208,45 +215,45 @@ private func projectState(from projectState: GraphAPI.ProjectState?) -> Project.
 }
 
 /**
- Returns a minimal `Project.Stats` from a `ProjectFragment`
+ Returns a minimal `Project.Stats` from a `ProjectStatsFragment`
  */
 private func projectStats(
-  from projectFragment: GraphAPI.ProjectFragment,
+  from statsFragment: GraphAPI.ProjectStatsFragment,
   currentUserChosenCurrency: String?
 ) -> Project.Stats {
-  let pledgedRawData = projectFragment.pledged.fragments.moneyFragment.amount.flatMap(Float.init)
-  let pledgedRawValue = projectFragment.pledged.fragments.moneyFragment.amount.flatMap(Float.init) ?? 0
+  let pledgedRawData = statsFragment.pledged.fragments.moneyFragment.amount.flatMap(Float.init)
+  let pledgedRawValue = statsFragment.pledged.fragments.moneyFragment.amount.flatMap(Float.init) ?? 0
   let pledgedValue = pledgedRawData != nil ? Int(pledgedRawValue) : 0
-  let fxRateValue = Float(projectFragment.fxRate)
+  let fxRateValue = Float(statsFragment.fxRate)
   let convertedPledgedAmountValue = pledgedRawData != nil ? pledgedRawValue * fxRateValue : nil
-  let staticUSDRateValue = Float(projectFragment.usdExchangeRate ?? 0)
+  let staticUSDRateValue = Float(statsFragment.usdExchangeRate ?? 0)
   var usdExchangeRate: Float?
 
-  if let usdExchangeRateRawValue = projectFragment.usdExchangeRate {
+  if let usdExchangeRateRawValue = statsFragment.usdExchangeRate {
     usdExchangeRate = Float(usdExchangeRateRawValue)
   }
 
   return Project.Stats(
-    backersCount: projectFragment.backersCount,
-    commentsCount: projectFragment.commentsCount,
+    backersCount: statsFragment.backersCount,
+    commentsCount: statsFragment.commentsCount,
     convertedPledgedAmount: convertedPledgedAmountValue,
-    projectCurrency: projectFragment.currency.rawValue,
+    projectCurrency: statsFragment.currency.rawValue,
     userCurrency: currentUserChosenCurrency,
     userCurrencyRate: fxRateValue,
-    goal: projectFragment.goal?.fragments.moneyFragment.amount.flatMap(Float.init).flatMap(Int.init) ?? 0,
+    goal: statsFragment.goal?.fragments.moneyFragment.amount.flatMap(Float.init).flatMap(Int.init) ?? 0,
     pledged: pledgedValue,
     staticUsdRate: staticUSDRateValue,
-    updatesCount: projectFragment.posts.totalCount,
+    updatesCount: statsFragment.posts.totalCount,
     usdExchangeRate: usdExchangeRate
   )
 }
 
 /**
- Returns a video `Project.video` from `ProjectFragment`
+ Returns a video `Project.video` from `ProjectVideoFragment`
  */
 
-private func projectVideo(from projectFragment: GraphAPI.ProjectFragment) -> Project.Video? {
-  guard let video = projectFragment.video,
+private func projectVideo(from videoFragment: GraphAPI.ProjectVideoFragment?) -> Project.Video? {
+  guard let video = videoFragment,
         let videoId = decompose(id: video.id),
         let high = video.videoSources?.high?.src else {
     return nil
