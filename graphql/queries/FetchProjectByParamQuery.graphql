@@ -1,8 +1,8 @@
-query FetchProjectBySlug($slug: String!) {
+query FetchProjectByParam($projectId: Int, $slug: String) {
   me {
     chosenCurrency
   }
-  project(slug: $slug) {
+  project(pid: $projectId, slug: $slug) {
     ...ProjectFragment
     backing {
       id
