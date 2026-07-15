@@ -27,16 +27,19 @@ public struct UpdateUserAccountInput: InputObject {
     ])
   }
 
+  /// Deprecated: only used when changing a password.
   public var currentPassword: GraphQLNullable<String> {
     get { __data["currentPassword"] }
     set { __data["currentPassword"] = newValue }
   }
 
+  /// Deprecated: new password for legacy password changes.
   public var password: GraphQLNullable<String> {
     get { __data["password"] }
     set { __data["password"] = newValue }
   }
 
+  /// Deprecated: confirmation for the password field.
   public var passwordConfirmation: GraphQLNullable<String> {
     get { __data["passwordConfirmation"] }
     set { __data["passwordConfirmation"] = newValue }
