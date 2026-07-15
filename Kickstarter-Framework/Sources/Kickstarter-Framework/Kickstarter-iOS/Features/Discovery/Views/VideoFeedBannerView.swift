@@ -32,6 +32,7 @@ internal struct VideoFeedBannerView: View {
         Text(Strings.try_our_new_discovery_mode())
           .font(Font(UIFont.ksr_headingLG()))
           .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
+          .lineLimit(nil)
 
         Text(Strings.swipe_through_a_video_feed_tuning_your_recommendations_along_the_way())
           .font(Font(UIFont.ksr_bodySM()))
@@ -67,6 +68,7 @@ internal struct VideoFeedBannerView: View {
         .accessibilityLabel(Strings.try_it_now())
       }
       .frame(maxWidth: .infinity, alignment: .leading)
+      .fixedSize(horizontal: false, vertical: true)
 
       Image("video-feed-banner-thumbnail")
         .resizable()
