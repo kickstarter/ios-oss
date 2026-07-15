@@ -6,11 +6,27 @@ extension ShippingRule {
    Returns a minimal `ShippingRule` from a `ShippingRuleFragment`
    */
   static func shippingRule(from shippingRuleFragment: GraphAPI.ShippingRuleFragment) -> ShippingRule? {
-    let locationFragment = shippingRuleFragment.location.fragments.locationFragment
     let estimatedMin = shippingRuleFragment.estimatedMin
     let estimatedMax = shippingRuleFragment.estimatedMax
 
-    guard let location = Location.location(from: locationFragment) else { return nil }
+    // TODO(CHECK-356): ShippingRule.location is now nullable.
+    // The app will be updated to handle this.
+    // This is a temporary fix so that we can update the GraphQL schema and un-stick our app builds.
+    let location: Location?
+    if let locationFragment = shippingRuleFragment.location?.fragments.locationFragment {
+      location = Location.location(from: locationFragment)
+    } else {
+      assert(false, "Created a placeholder location.")
+      location = Location(
+        country: "",
+        displayableName: "",
+        id: -9_999,
+        localizedName: "",
+        name: ""
+      )
+    }
+
+    guard let location else { return nil }
 
     let estimatedMinMoney = Money.init(
       amount: estimatedMin?.amount.flatMap(Double.init) ?? 0,

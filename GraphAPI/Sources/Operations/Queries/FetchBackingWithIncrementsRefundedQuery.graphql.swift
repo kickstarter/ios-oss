@@ -596,7 +596,7 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
             public var cost: Cost? { __data["cost"] }
             public var id: GraphAPI.ID { __data["id"] }
             /// The shipping location to which the rule pertains.
-            public var location: Location { __data["location"] }
+            public var location: Location? { __data["location"] }
             /// The estimated minimum shipping cost
             public var estimatedMin: EstimatedMin? { __data["estimatedMin"] }
             /// The estimated maximum shipping cost
@@ -612,7 +612,7 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
             public init(
               cost: Cost? = nil,
               id: GraphAPI.ID,
-              location: Location,
+              location: Location? = nil,
               estimatedMin: EstimatedMin? = nil,
               estimatedMax: EstimatedMax? = nil
             ) {
@@ -1508,7 +1508,7 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
           public var cost: Cost? { __data["cost"] }
           public var id: GraphAPI.ID { __data["id"] }
           /// The shipping location to which the rule pertains.
-          public var location: Location { __data["location"] }
+          public var location: Location? { __data["location"] }
           /// The estimated minimum shipping cost
           public var estimatedMin: EstimatedMin? { __data["estimatedMin"] }
           /// The estimated maximum shipping cost
@@ -1524,7 +1524,7 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
           public init(
             cost: Cost? = nil,
             id: GraphAPI.ID,
-            location: Location,
+            location: Location? = nil,
             estimatedMin: EstimatedMin? = nil,
             estimatedMax: EstimatedMax? = nil
           ) {
