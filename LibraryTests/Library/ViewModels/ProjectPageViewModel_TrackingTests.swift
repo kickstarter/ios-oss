@@ -8,6 +8,9 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+/// Contains just the tracking-related tests for `ProjectPageViewModel`.
+/// The rest of the tests are in `ProjectPageViewModelTests`.
+/// This was split up because the test files were getting intractably long.
 final class ProjectPageViewModel_TrackingTests: TestCase {
   fileprivate var vm: ProjectPageViewModelType!
 

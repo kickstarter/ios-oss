@@ -8,6 +8,9 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+/// Contains the input/output tests for the `ProjectPageViewModel`.
+/// Tracking-related tests are in their own file, `ProjectPageViewModel_TrackingTests`.
+/// This test class would benefit from being split up even more, due to its length.
 final class ProjectPageViewModelTests: TestCase {
   private let releaseBundle = MockBundle(
     bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
