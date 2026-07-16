@@ -80,6 +80,7 @@ let package = Package(
       dependencies: [
         .byName(name: "Library"),
         .byName(name: "LibraryTestHelpers"),
+        .product(name: "Experimentation", package: "Experimentation"),
         .product(name: "KsApiTestHelpers", package: "KsApi"),
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
         .product(name: "ReactiveExtensions-TestHelpers", package: "Kickstarter-ReactiveExtensions")

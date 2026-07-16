@@ -1,5 +1,5 @@
 {
-  "originHash" : "186a9681f4b880ab31689bb4eefc5971656e90bed22eb7f90817ff7b3c5cf6f6",
+  "originHash" : "d133cc19ed539b131d195a4788eaf816afbfeb93b6120715a2dd6ee928980aed",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -287,6 +287,15 @@
       "state" : {
         "revision" : "392dd6058624d9f6c5b4c769d165ddd8c7293394",
         "version" : "0.15.4"
+      }
+    },
+    {
+      "identity" : "statsig-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/statsig-io/statsig-kit.git",
+      "state" : {
+        "revision" : "ca19474601d61dfcc9fc38b82dcb6408ea0b8631",
+        "version" : "1.62.6"
       }
     },
     {

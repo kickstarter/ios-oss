@@ -67,7 +67,7 @@ public final class RewardsUseCase: RewardsUseCaseType, RewardsUseCaseOutputs {
   /// Attempts to add the user to the secret reward group if logged in and a valid token is present.
   /// - Returns: `true` if the GraphQL mutation `addUserToSecretRewardGroup` was triggered successfully.
   ///            `false` if the user is not logged in or the token is missing/empty, thus skipping the mutation.
-  static func addUserToSecretRewardGroupIfNeeded(
+  public static func addUserToSecretRewardGroupIfNeeded(
     project param: Param,
     secretRewardToken: String?
   ) -> SignalProducer<Bool, ErrorEnvelope> {

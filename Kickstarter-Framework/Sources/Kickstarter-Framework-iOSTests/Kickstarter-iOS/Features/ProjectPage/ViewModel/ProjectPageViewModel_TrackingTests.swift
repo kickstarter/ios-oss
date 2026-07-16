@@ -3,6 +3,7 @@ import AVFoundation
 @testable import KsApiTestHelpers
 @testable import Library
 @testable import LibraryTestHelpers
+@testable import Kickstarter_Framework
 import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift

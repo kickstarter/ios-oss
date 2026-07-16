@@ -36,7 +36,7 @@ public final class SimilarProjectsUseCase: SimilarProjectsUseCaseType, SimilarPr
   SimilarProjectsUseCaseOutputs {
   // MARK: - Initialization
 
-  init() {
+  public init() {
     self.navigateToProject = self.projectTappedSignal
 
     self.projectIDLoadedSignal
