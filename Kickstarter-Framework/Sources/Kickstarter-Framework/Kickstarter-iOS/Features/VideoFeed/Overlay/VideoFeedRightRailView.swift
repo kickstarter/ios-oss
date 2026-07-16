@@ -7,9 +7,10 @@ import SwiftUI
 /// Contains the creator avatar, save, share, and more (…) buttons.
 struct VideoFeedRightRailView: View {
   private enum Constants {
-    static let railSpacing: CGFloat = 20
+    static let railSpacing: CGFloat = 12
     static let moreButtonSize: CGFloat = 44
     static let avatarSize: CGFloat = 44
+    static let avatarBorderWidth: CGFloat = 2
 
     static let saveIconFilled = "video-feed-saved-filled-icon"
     static let saveIconOutline = "video-feed-saved-icon"
@@ -26,10 +27,11 @@ struct VideoFeedRightRailView: View {
   var onMoreTapped: (() -> Void)?
 
   var body: some View {
-    VStack(spacing: Constants.railSpacing) {
+    VStack(alignment: .center, spacing: Constants.railSpacing) {
       self.creatorAvatar
       self.saveButton
     }
+    .frame(width: Constants.avatarSize)
   }
 
   // MARK: - Buttons
@@ -39,6 +41,7 @@ struct VideoFeedRightRailView: View {
       self.avatarImage
         .frame(width: Constants.avatarSize, height: Constants.avatarSize)
         .clipShape(Circle())
+        .background(Circle().fill(Color.white))
     }
     .accessibilityLabel(Strings.Creator())
   }
@@ -96,7 +99,7 @@ struct VideoFeedRightRailView: View {
 private struct RailButtonView: View {
   private enum Constants {
     static let buttonSize: CGFloat = 44
-    static let labelSpacing: CGFloat = 4
+    static let labelSpacing: CGFloat = 2
   }
 
   let imageName: String

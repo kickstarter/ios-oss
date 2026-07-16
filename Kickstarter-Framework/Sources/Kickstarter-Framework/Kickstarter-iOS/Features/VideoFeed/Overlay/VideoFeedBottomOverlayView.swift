@@ -134,7 +134,7 @@ private struct FeedPillView: View {
 private struct CTAButtonStyle: SwiftUI.ButtonStyle {
   private enum Constants {
     static let horizontalPadding: CGFloat = 16
-    static let verticalPadding: CGFloat = 12
+    static let verticalPadding: CGFloat = 8
     static let borderWidth: CGFloat = 1
     static let borderOpacity: Double = 0.9
     static let borderOpacityPressed: Double = 0.5
