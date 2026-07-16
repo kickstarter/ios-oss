@@ -122,7 +122,7 @@ private struct FeedPillView: View {
     }
     .padding(.horizontal, Constants.horizontalPadding)
     .padding(.vertical, Constants.verticalPadding)
-    .background(FrostedGlassBackgroundView().opacity(Constants.opacity))
+    .background(FrostedGlassBackgroundView().opacity(0.35))
     .overlay(
       RoundedRectangle(cornerRadius: Constants.cornerRadius)
         .strokeBorder(Color.white.opacity(Constants.opacity), lineWidth: Constants.borderWidth)

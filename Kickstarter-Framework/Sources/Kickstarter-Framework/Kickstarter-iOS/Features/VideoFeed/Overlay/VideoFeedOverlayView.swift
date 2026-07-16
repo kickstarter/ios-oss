@@ -145,9 +145,11 @@ struct VideoFeedOverlayView: View {
           .foregroundColor(Color(Colors.Icon.light.uiColor()))
           .offset(x: Constants.playIconOffset)
           .frame(width: Constants.playIconSize, height: Constants.playIconSize)
-          /// Second larger frame to create the frosted glass ring.
           .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
-          .background(FrostedGlassBackgroundView())
+          .background(FrostedGlassBackgroundView().overlay(Circle().strokeBorder(
+            Color.white.opacity(0.75),
+            lineWidth: 1
+          )))
           .clipShape(Circle())
       }
       .opacity(self.playbackState.isPlayButtonVisible ? 1 : 0)
