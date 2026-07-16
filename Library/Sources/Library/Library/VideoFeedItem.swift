@@ -22,11 +22,8 @@ public struct VideoFeedItem: Hashable {
   /// Stats text shown below the title.
   public let statsText: String
 
-  /// Left pill label.
-  public let categoryPillText: String
-
-  /// Right pill label.
-  public let secondaryPillText: String
+  /// Badges for this project (e.g. "Project We Love", "3 days left").
+  public let badges: [Badge]
 
   /// HLS video stream URL.
   public let videoURL: URL?
@@ -67,5 +64,23 @@ public struct VideoFeedItem: Hashable {
 
   private static func formattedCount(_ count: Int) -> String {
     count.formatted(.number.notation(.compactName)).lowercased()
+  }
+}
+
+// MARK: - Badge
+
+extension VideoFeedItem {
+  public struct Badge: Hashable {
+    public let type: BadgeType
+    public let text: String
+    public let icon: String?
+  }
+
+  public enum BadgeType: Hashable {
+    case projectWeLove
+    case daysLeft
+    case justLaunched
+    case trending
+    case unknown
   }
 }
