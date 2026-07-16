@@ -35,7 +35,7 @@ public final class ProjectPageFetcherTests: XCTestCase {
     // This mimicks what Service does internally to map the GraphAPI objects to V1 model objects.
     // MockService requires V1 objects, so this is a best effort
     // to duplicate the actual GraphQL mapping behavior.
-    let projectResult = Project.projectProducer(from: fetchProjectResponse, configCurrency: nil).first()
+    let projectResult = Project.projectProducer(from: fetchProjectResponse).first()
     let backingResult = ProjectAndBackingEnvelope.envelopeProducer(from: fetchBackingResponse).first()
     let rewardsResult = Project.projectRewardsProducer(from: fetchRewardsResponse).first()
 
@@ -47,7 +47,7 @@ public final class ProjectPageFetcherTests: XCTestCase {
 
     let fetcher = ProjectPageFetcher(withService: mockService)
 
-    let producer = fetcher.fetchProjectPage(projectParam: .id(0), configCurrency: nil)
+    let producer = fetcher.fetchProjectPage(projectParam: .id(0))
     let project = producer.allValues().first
 
     XCTAssertNotNil(project)

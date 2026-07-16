@@ -125,7 +125,8 @@
         ]
       },
       "minPledge": 1,
-      "fxRate": 0.780313
+      "fxRate": 0.780313,
+      "fxRateCurrency": "CHF",
     }
   }
 }

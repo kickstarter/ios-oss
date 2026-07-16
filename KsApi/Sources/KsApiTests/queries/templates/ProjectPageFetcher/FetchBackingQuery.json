@@ -10,6 +10,7 @@
         "__typename": "Project",
         "pid": 1452473812,
         "fxRate": 0.848212,
+        "fxRateCurrency": "EUR",
         "minPledge": 1,
         "country": {
           "__typename": "Country",

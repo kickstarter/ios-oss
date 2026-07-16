@@ -582,7 +582,7 @@ public struct Service: ServiceType {
 
    This is the only use case at the moment as it effects the `ProjectPageViewController` directly.
    */
-  public func fetchProject(projectParam: Param, configCurrency: String?)
+  public func fetchProject(projectParam: Param)
     -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope> {
     let query = GraphAPI.FetchProjectByParamQuery(
       projectId: .someOrNil(projectParam.id),
@@ -591,7 +591,7 @@ public struct Service: ServiceType {
 
     return GraphQL.shared.client
       .fetch(query: query)
-      .flatMap { Project.projectProducer(from: $0, configCurrency: configCurrency) }
+      .flatMap { Project.projectProducer(from: $0) }
   }
 
   /**

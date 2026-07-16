@@ -9,12 +9,10 @@ public struct ProjectPageFetcher {
   }
 
   public func fetchProjectPage(
-    projectParam param: Param,
-    configCurrency: String?
+    projectParam param: Param
   ) -> SignalProducer<Project, ErrorEnvelope> {
     let projectAndBackingIdProducer = self.apiService.fetchProject(
-      projectParam: param,
-      configCurrency: configCurrency
+      projectParam: param
     )
 
     let projectAndBackingProducer = projectAndBackingIdProducer

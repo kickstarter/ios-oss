@@ -930,6 +930,8 @@ public class FetchUserBackingsQuery: GraphQLQuery {
             public var commentsCount: Int { __data["commentsCount"] }
             /// The project's currency code.
             public var currency: GraphQLEnum<GraphAPI.CurrencyCode> { __data["currency"] }
+            /// Currency code for the current user's currency
+            public var fxRateCurrency: GraphQLEnum<GraphAPI.CurrencyCode> { __data["fxRateCurrency"] }
             /// The minimum amount to raise for the project to be successful.
             public var goal: Goal? { __data["goal"] }
             /// How much money is pledged to the project.
@@ -1005,6 +1007,7 @@ public class FetchUserBackingsQuery: GraphQLQuery {
               backersCount: Int,
               commentsCount: Int,
               currency: GraphQLEnum<GraphAPI.CurrencyCode>,
+              fxRateCurrency: GraphQLEnum<GraphAPI.CurrencyCode>,
               goal: Goal? = nil,
               pledged: Pledged,
               posts: Posts,
@@ -1061,6 +1064,7 @@ public class FetchUserBackingsQuery: GraphQLQuery {
                   "backersCount": backersCount,
                   "commentsCount": commentsCount,
                   "currency": currency,
+                  "fxRateCurrency": fxRateCurrency,
                   "goal": goal._fieldData,
                   "pledged": pledged._fieldData,
                   "posts": posts._fieldData,

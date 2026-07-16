@@ -8,8 +8,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
   /// `FetchProjectQueryBySlug` returns identical data.
   func testFetchProjectQueryData_Success() {
     let producer = Project.projectProducer(
-      from: FetchProjectQueryTemplate.valid.data,
-      configCurrency: Project.Country.de.currencyCode
+      from: FetchProjectQueryTemplate.valid.data
     )
 
     let projectProducer = producer

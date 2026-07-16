@@ -926,13 +926,9 @@ private func fetchProject(
 )
   -> SignalProducer<Project, ErrorEnvelope> {
   let param = projectOrParam.param
-  let configCurrency = AppEnvironment.current.launchedCountries.countries
-    .first(where: { $0.countryCode == AppEnvironment.current.countryCode })?.currencyCode
-
   let fetcher = ProjectPageFetcher(withService: AppEnvironment.current.apiService)
   let producer = fetcher.fetchProjectPage(
-    projectParam: param.param,
-    configCurrency: configCurrency
+    projectParam: param.param
   )
   .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 

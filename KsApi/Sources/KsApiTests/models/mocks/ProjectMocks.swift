@@ -16,6 +16,7 @@ extension GraphAPITestMocks.Project {
     project.minPledge = 678
     project.maxPledge = 999_999
     project.fxRate = 1.0
+    project.fxRateCurrency = GraphQLEnum(.usd)
     project.stateChangedAt = "232434"
     project.location = GraphAPITestMocks.Location.mock
     project.canComment = true

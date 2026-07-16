@@ -111,6 +111,7 @@ public enum FetchUserBackingsQueryTemplate {
                 "description": "test blurb",
                 "finalCollectionDate": nil,
                 "fxRate": 1.0,
+                "fxRateCurrency": "USD",
                 "friends": [
                   "__typename": "ProjectBackerFriendsConnection",
                   "nodes": []

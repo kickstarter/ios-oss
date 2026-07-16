@@ -5,7 +5,7 @@
 
 public struct ProjectStatsFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment ProjectStatsFragment on Project { __typename backersCount commentsCount(withReplies: true) currency fxRate goal { __typename ...MoneyFragment } pledged { __typename ...MoneyFragment } posts { __typename totalCount } usdExchangeRate }"#
+    #"fragment ProjectStatsFragment on Project { __typename backersCount commentsCount(withReplies: true) currency fxRate fxRateCurrency goal { __typename ...MoneyFragment } pledged { __typename ...MoneyFragment } posts { __typename totalCount } usdExchangeRate }"#
   }
 
   public let __data: DataDict
@@ -18,6 +18,7 @@ public struct ProjectStatsFragment: GraphAPI.SelectionSet, Fragment {
     .field("commentsCount", Int.self, arguments: ["withReplies": true]),
     .field("currency", GraphQLEnum<GraphAPI.CurrencyCode>.self),
     .field("fxRate", Double.self),
+    .field("fxRateCurrency", GraphQLEnum<GraphAPI.CurrencyCode>.self),
     .field("goal", Goal?.self),
     .field("pledged", Pledged.self),
     .field("posts", Posts.self),
@@ -32,6 +33,8 @@ public struct ProjectStatsFragment: GraphAPI.SelectionSet, Fragment {
   public var currency: GraphQLEnum<GraphAPI.CurrencyCode> { __data["currency"] }
   /// Exchange rate for the current user's currency
   public var fxRate: Double { __data["fxRate"] }
+  /// Currency code for the current user's currency
+  public var fxRateCurrency: GraphQLEnum<GraphAPI.CurrencyCode> { __data["fxRateCurrency"] }
   /// The minimum amount to raise for the project to be successful.
   public var goal: Goal? { __data["goal"] }
   /// How much money is pledged to the project.
@@ -46,6 +49,7 @@ public struct ProjectStatsFragment: GraphAPI.SelectionSet, Fragment {
     commentsCount: Int,
     currency: GraphQLEnum<GraphAPI.CurrencyCode>,
     fxRate: Double,
+    fxRateCurrency: GraphQLEnum<GraphAPI.CurrencyCode>,
     goal: Goal? = nil,
     pledged: Pledged,
     posts: Posts,
@@ -58,6 +62,7 @@ public struct ProjectStatsFragment: GraphAPI.SelectionSet, Fragment {
         "commentsCount": commentsCount,
         "currency": currency,
         "fxRate": fxRate,
+        "fxRateCurrency": fxRateCurrency,
         "goal": goal._fieldData,
         "pledged": pledged._fieldData,
         "posts": posts._fieldData,
