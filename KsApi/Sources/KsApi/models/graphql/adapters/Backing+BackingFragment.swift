@@ -104,16 +104,12 @@ private func backingStatus(from backingFragment: GraphAPI.BackingFragment) -> Ba
 
 private func backingReward(from backingFragment: GraphAPI.BackingFragment) -> Reward? {
   guard let reward = backingFragment.reward?.fragments.rewardFragment else {
-    let projectMinimumPledgeAmount: Int = backingFragment.project?.minPledge ?? 1
-    let projectFXRate: Double = backingFragment.project?.fxRate ?? 1.0
+    guard let project = backingFragment.project else {
+      return Reward.noReward
+    }
 
-    let convertedMinimumAmount = projectFXRate * Double(projectMinimumPledgeAmount)
-
-    let emptyReward = Reward.noReward
-      |> Reward.lens.minimum .~ Double(projectMinimumPledgeAmount)
-      |> Reward.lens.convertedMinimum .~ convertedMinimumAmount
-
-    return emptyReward
+    let noRewardFragment = project.fragments.noRewardRewardFragment
+    return Reward.noRewardReward(from: noRewardFragment)
   }
 
   return Reward.reward(from: reward)
