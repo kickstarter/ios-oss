@@ -10,6 +10,7 @@ internal protocol VideoFeedBannerCellDelegate: AnyObject {
 @Observable
 final class VideoFeedBannerViewState {
   var isLoading: Bool = false
+  var horizontalContentPadding: CGFloat = Spacing.unit_03
 }
 
 // MARK: - Cell
@@ -18,8 +19,24 @@ internal final class VideoFeedBannerCell: UITableViewCell, ValueCell {
   internal weak var delegate: VideoFeedBannerCellDelegate?
 
   private enum Constants {
-    static let horizontalPadding: CGFloat = Spacing.unit_03
     static let verticalPadding: CGFloat = Spacing.unit_03
+  }
+
+  /// Set by the host view controller in willDisplay so the banner matches the
+  /// project card width for that specific view (discovery vs. search).
+  var horizontalInset: CGFloat = Styles.grid(2) {
+    didSet {
+      self.contentView.preservesSuperviewLayoutMargins = false
+      self.contentView.layoutMargins = .init(
+        top: 0,
+        left: self.horizontalInset,
+        bottom: 0,
+        right: self.horizontalInset
+      )
+
+      let isIPad = self.horizontalInset >= Styles.grid(20)
+      self.bannerState.horizontalContentPadding = isIPad ? Spacing.unit_04 : Spacing.unit_03
+    }
   }
 
   private var hostingController: UIHostingController<VideoFeedBannerView>?
@@ -51,6 +68,7 @@ internal final class VideoFeedBannerCell: UITableViewCell, ValueCell {
     self.selectionStyle = .none
     self.backgroundColor = .clear
     self.contentView.backgroundColor = .clear
+    self.contentView.preservesSuperviewLayoutMargins = false
 
     var bannerView = VideoFeedBannerView(state: self.bannerState)
 
@@ -67,12 +85,10 @@ internal final class VideoFeedBannerCell: UITableViewCell, ValueCell {
 
     NSLayoutConstraint.activate([
       host.view.leadingAnchor.constraint(
-        equalTo: self.contentView.leadingAnchor,
-        constant: Constants.horizontalPadding
+        equalTo: self.contentView.layoutMarginsGuide.leadingAnchor
       ),
       host.view.trailingAnchor.constraint(
-        equalTo: self.contentView.trailingAnchor,
-        constant: -Constants.horizontalPadding
+        equalTo: self.contentView.layoutMarginsGuide.trailingAnchor
       ),
       host.view.topAnchor.constraint(
         equalTo: self.contentView.topAnchor,
