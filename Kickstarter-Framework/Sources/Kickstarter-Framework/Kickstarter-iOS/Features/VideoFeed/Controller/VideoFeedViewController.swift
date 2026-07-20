@@ -294,6 +294,10 @@ final class VideoFeedViewController: UIViewController {
   }
 
   private func resumeVisibleCell() {
+    /// `willEnterForegroundNotification` fires app-wide, and this VC is retained after dismissal.
+    ///  Skip resume if the feed is no longer visible.
+    guard self.view.window != nil else { return }
+
     self.activateCurrentPageCell()
   }
 
