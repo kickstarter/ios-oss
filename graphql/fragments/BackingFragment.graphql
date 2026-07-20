@@ -29,6 +29,7 @@ fragment BackingFragment on Backing {
     country {
       ...CountryFragment
     }
+    ...NoRewardRewardFragment
   }
   reward {
     ...RewardFragment

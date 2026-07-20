@@ -8,7 +8,7 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FetchBackingWithIncrementsRefunded($id: ID!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment paymentIncrements { __typename ...PaymentIncrementBackingFragment } } }"#,
-      fragments: [BackingFragment.self, CountryFragment.self, LocationFragment.self, MoneyFragment.self, OrderFragment.self, PaymentIncrementBackingFragment.self, PaymentSourceFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
+      fragments: [BackingFragment.self, CountryFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentIncrementBackingFragment.self, PaymentSourceFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
     ))
 
   public var id: ID
@@ -1115,7 +1115,93 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
         }
       }
 
-      public typealias Project = BackingFragment.Project
+      /// Backing.Project
+      ///
+      /// Parent Type: `Project`
+      public struct Project: GraphAPI.SelectionSet {
+        public let __data: DataDict
+        public init(_dataDict: DataDict) { __data = _dataDict }
+
+        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Project }
+
+        /// The project's pid.
+        public var pid: Int { __data["pid"] }
+        /// Exchange rate for the current user's currency
+        public var fxRate: Double { __data["fxRate"] }
+        /// The min pledge amount for a single reward tier.
+        public var minPledge: Int { __data["minPledge"] }
+        /// The project's country
+        public var country: Country { __data["country"] }
+
+        public struct Fragments: FragmentContainer {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
+        }
+
+        public init(
+          pid: Int,
+          fxRate: Double,
+          minPledge: Int,
+          country: Country
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.Project.typename,
+              "pid": pid,
+              "fxRate": fxRate,
+              "minPledge": minPledge,
+              "country": country._fieldData,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Project.self),
+              ObjectIdentifier(BackingFragment.Project.self),
+              ObjectIdentifier(NoRewardRewardFragment.self)
+            ]
+          ))
+        }
+
+        /// Backing.Project.Country
+        ///
+        /// Parent Type: `Country`
+        public struct Country: GraphAPI.SelectionSet {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Country }
+
+          /// ISO ALPHA-2 code.
+          public var code: GraphQLEnum<GraphAPI.CountryCode> { __data["code"] }
+          /// Country name.
+          public var name: String { __data["name"] }
+
+          public struct Fragments: FragmentContainer {
+            public let __data: DataDict
+            public init(_dataDict: DataDict) { __data = _dataDict }
+
+            public var countryFragment: CountryFragment { _toFragment() }
+          }
+
+          public init(
+            code: GraphQLEnum<GraphAPI.CountryCode>,
+            name: String
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Country.typename,
+                "code": code,
+                "name": name,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Project.Country.self),
+                ObjectIdentifier(BackingFragment.Project.Country.self),
+                ObjectIdentifier(CountryFragment.self)
+              ]
+            ))
+          }
+        }
+      }
 
       /// Backing.Reward
       ///

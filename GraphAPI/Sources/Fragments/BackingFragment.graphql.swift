@@ -5,7 +5,7 @@
 
 public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment BackingFragment on Backing { __typename amount { __typename ...MoneyFragment } backer { __typename ...PublicUserFragment } backerCompleted bonusAmount { __typename ...MoneyFragment } cancelable paymentSource { __typename ...PaymentSourceFragment } id isLatePledge location { __typename ...LocationFragment } order { __typename ...OrderFragment } pledgedOn project { __typename pid fxRate minPledge country { __typename ...CountryFragment } } reward { __typename ...RewardFragment } rewardsAmount { __typename ...MoneyFragment } sequence shippingAmount { __typename ...MoneyFragment } status backingDetailsPageRoute(type: url, tab: survey_responses) }"#
+    #"fragment BackingFragment on Backing { __typename amount { __typename ...MoneyFragment } backer { __typename ...PublicUserFragment } backerCompleted bonusAmount { __typename ...MoneyFragment } cancelable paymentSource { __typename ...PaymentSourceFragment } id isLatePledge location { __typename ...LocationFragment } order { __typename ...OrderFragment } pledgedOn project { __typename pid fxRate minPledge country { __typename ...CountryFragment } ...NoRewardRewardFragment } reward { __typename ...RewardFragment } rewardsAmount { __typename ...MoneyFragment } sequence shippingAmount { __typename ...MoneyFragment } status backingDetailsPageRoute(type: url, tab: survey_responses) }"#
   }
 
   public let __data: DataDict
@@ -608,6 +608,7 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
       .field("fxRate", Double.self),
       .field("minPledge", Int.self),
       .field("country", Country.self),
+      .fragment(NoRewardRewardFragment.self),
     ] }
 
     /// The project's pid.
@@ -618,6 +619,13 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
     public var minPledge: Int { __data["minPledge"] }
     /// The project's country
     public var country: Country { __data["country"] }
+
+    public struct Fragments: FragmentContainer {
+      public let __data: DataDict
+      public init(_dataDict: DataDict) { __data = _dataDict }
+
+      public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
+    }
 
     public init(
       pid: Int,
