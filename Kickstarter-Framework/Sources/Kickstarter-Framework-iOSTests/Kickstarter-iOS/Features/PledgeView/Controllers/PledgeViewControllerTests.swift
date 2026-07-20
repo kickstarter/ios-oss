@@ -202,7 +202,7 @@ final class PledgeViewControllerTests: TestCase {
       |> ShippingRule.lens.estimatedMax .~ Money(amount: 10.0)
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shippingRules .~ [shippingRule]
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
       |> Reward.lens.id .~ 99
     let addOnReward1 = Reward.template
       |> Reward.lens.shipping.enabled .~ true
