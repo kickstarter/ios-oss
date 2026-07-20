@@ -9,24 +9,17 @@ extension ShippingRule {
     let estimatedMin = shippingRuleFragment.estimatedMin
     let estimatedMax = shippingRuleFragment.estimatedMax
 
-    // TODO(CHECK-356): ShippingRule.location is now nullable.
-    // The app will be updated to handle this.
-    // This is a temporary fix so that we can update the GraphQL schema and un-stick our app builds.
-    let location: Location?
-    if let locationFragment = shippingRuleFragment.location?.fragments.locationFragment {
-      location = Location.location(from: locationFragment)
-    } else {
-      assert(false, "Created a placeholder location.")
-      location = Location(
-        country: "",
-        displayableName: "",
-        id: -9_999,
-        localizedName: "",
-        name: ""
-      )
-    }
+    // ShippingRule.location may be null if a shipping rule is based on shipping zones.
+    // However, the apps only ever use *expanded* shipping rules, not raw shipping rules.
+    // An expanded shipping rule should never have a null location - even though
+    // it uses the same type as an unexpanded ShippingRule.
 
-    guard let location else { return nil }
+    guard let locationFragment = shippingRuleFragment.location?.fragments.locationFragment,
+          let location = Location.location(from: locationFragment)
+    else {
+      assert(false, "A shipping rule is missing its location.")
+      return nil
+    }
 
     let estimatedMinMoney = Money.init(
       amount: estimatedMin?.amount.flatMap(Double.init) ?? 0,

@@ -19,7 +19,6 @@ public struct Reward {
   public let remaining: Int?
   public let rewardsItems: [RewardsItem]
   public let shipping: Shipping // only v1
-  public let shippingRules: [ShippingRule]? // only GraphQL
   public let shippingRulesExpanded: [ShippingRule]? // only GraphQL
   public let startsAt: TimeInterval?
   public let title: String?
@@ -197,7 +196,6 @@ extension Reward: Decodable {
     self.remaining = try values.decodeIfPresent(Int.self, forKey: .remaining)
     self.rewardsItems = try values.decodeIfPresent([RewardsItem].self, forKey: .rewardsItems) ?? []
     self.shipping = try Shipping(from: decoder)
-    self.shippingRules = try values.decodeIfPresent([ShippingRule].self, forKey: .shippingRules) ?? []
     self.shippingRulesExpanded = try values.decodeIfPresent(
       [ShippingRule].self,
       forKey: .shippingRulesExpanded

@@ -133,80 +133,6 @@ public enum FetchProjectRewardsByIdQueryTemplate {
               "remainingQuantity": 9,
               "shippingPreference": "restricted",
               "shippingSummary": "Ships worldwide",
-              "shippingRules": [
-                {
-                  "__typename": "ShippingRule",
-                  "cost": {
-                    "__typename": "Money",
-                    "amount": "6.0",
-                    "currency": "EUR",
-                    "symbol": "€"
-                  },
-                  "id": "U2hpcHBpbmdSdWxlLTExNjk5NDQ4",
-                  "location": {
-                    "__typename": "Location",
-                    "country": "DE",
-                    "countryName": "Germany",
-                    "displayableName": "Germany",
-                    "id": "TG9jYXRpb24tMjM0MjQ4Mjk=",
-                    "name": "Germany"
-                  }
-                },
-                {
-                  "__typename": "ShippingRule",
-                  "cost": {
-                    "__typename": "Money",
-                    "amount": "15.0",
-                    "currency": "EUR",
-                    "symbol": "€"
-                  },
-                  "id": "U2hpcHBpbmdSdWxlLTExNjk5NDUy",
-                  "location": {
-                    "__typename": "Location",
-                    "country": "CH",
-                    "countryName": "Switzerland",
-                    "displayableName": "Switzerland",
-                    "id": "TG9jYXRpb24tMjM0MjQ5NTc=",
-                    "name": "Switzerland"
-                  }
-                },
-                {
-                  "__typename": "ShippingRule",
-                  "cost": {
-                    "__typename": "Money",
-                    "amount": "15.0",
-                    "currency": "EUR",
-                    "symbol": "€"
-                  },
-                  "id": "U2hpcHBpbmdSdWxlLTExNjk5NDUx",
-                  "location": {
-                    "__typename": "Location",
-                    "country": "GB",
-                    "countryName": "United Kingdom",
-                    "displayableName": "United Kingdom",
-                    "id": "TG9jYXRpb24tMjM0MjQ5NzU=",
-                    "name": "United Kingdom"
-                  }
-                },
-                {
-                  "__typename": "ShippingRule",
-                  "cost": {
-                    "__typename": "Money",
-                    "amount": "10.0",
-                    "currency": "EUR",
-                    "symbol": "€"
-                  },
-                  "id": "U2hpcHBpbmdSdWxlLTExNjk5NDQ5",
-                  "location": {
-                    "__typename": "Location",
-                    "country": "ZZ",
-                    "countryName": null,
-                    "displayableName": "European Union",
-                    "id": "TG9jYXRpb24tNTU5NDkwNjg=",
-                    "name": "European Union"
-                  }
-                }
-              ],
               "simpleShippingRulesExpanded": [
                 {
                   "__typename": "SimpleShippingRule",
@@ -562,28 +488,6 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                     "__typename": "Money"
                   },
                   "localReceiptLocation": null,
-                  "shippingRules": [
-                    {
-                      "estimatedMax": null,
-                      "location": {
-                        "name": "European Union",
-                        "id": "TG9jYXRpb24tNTU5NDkwNjg=",
-                        "country": "ZZ",
-                        "__typename": "Location",
-                        "countryName": null,
-                        "displayableName": "European Union"
-                      },
-                      "estimatedMin": null,
-                      "__typename": "ShippingRule",
-                      "id": "U2hpcHBpbmdSdWxlLTE1NjMwMjA2",
-                      "cost": {
-                        "amount": "5.0",
-                        "symbol": "$",
-                        "currency": "USD",
-                        "__typename": "Money"
-                      }
-                    }
-                  ],
                   "limitPerBacker": 1,
                   "description": "Charging shipping to EU $5",
                   "id": "UmV3YXJkLTEwMDU0MTI1",

@@ -55,7 +55,7 @@ final class PostCampaignCheckoutViewControllerTests: TestCase {
           |> ShippingRule.lens.estimatedMax .~ Money(amount: 0.0)
         let reward = Reward.template
           |> Reward.lens.shipping.enabled .~ true
-          |> Reward.lens.shippingRules .~ [shippingRule]
+
         let data = PledgeViewData(
           project: project,
           rewards: [reward],

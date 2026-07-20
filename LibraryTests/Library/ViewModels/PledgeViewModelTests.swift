@@ -1309,7 +1309,6 @@ final class PledgeViewModelTests: TestCase {
       let reward = Reward.template
         |> Reward.lens.minimum .~ 5
         |> Reward.lens.shipping.enabled .~ true
-        |> Reward.lens.shippingRules .~ [shippingRule]
 
       let data = PledgeViewData(
         project: project,
@@ -1508,14 +1507,12 @@ final class PledgeViewModelTests: TestCase {
         |> Reward.lens.minimum .~ 10.0
         |> Reward.lens.shipping.enabled .~ true
         |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.unrestricted
-        |> Reward.lens.shippingRules .~ [shippingRule]
 
       let addOn1 = Reward.template
         |> Reward.lens.id .~ 2
         |> Reward.lens.minimum .~ 5.0
         |> Reward.lens.shipping.enabled .~ true
         |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.restricted
-        |> Reward.lens.shippingRules .~ [shippingRule]
 
       let addOn2 = Reward.template
         |> Reward.lens.id .~ 3
@@ -4840,14 +4837,12 @@ final class PledgeViewModelTests: TestCase {
         |> Reward.lens.minimum .~ 10.0
         |> Reward.lens.shipping.enabled .~ true
         |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.unrestricted
-        |> Reward.lens.shippingRules .~ [shippingRule]
 
       let addOn1 = Reward.template
         |> Reward.lens.id .~ 2
         |> Reward.lens.minimum .~ 5.0
         |> Reward.lens.shipping.enabled .~ true
         |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.restricted
-        |> Reward.lens.shippingRules .~ [shippingRule]
 
       let addOn2 = Reward.template
         |> Reward.lens.id .~ 3

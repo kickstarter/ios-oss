@@ -54,7 +54,6 @@ final class Reward_RewardFragmentTests: XCTestCase {
       XCTAssertEqual(v1Reward.shipping.enabled, true)
       XCTAssertEqual(v1Reward.shipping.preference, .unrestricted)
       XCTAssertEqual(v1Reward.shipping.summary, "Ships worldwide")
-      XCTAssertEqual(v1Reward.shippingRules?.count, 2)
       XCTAssertEqual(v1Reward.startsAt, nil)
       XCTAssertEqual(v1Reward.title, "Soft Cover Book (Signed)")
 
@@ -158,67 +157,6 @@ private func rewardDictionary() -> [String: Any] {
     "remainingQuantity": null,
     "shippingSummary": "Ships worldwide",
     "shippingPreference": "unrestricted",
-    "shippingRules": [{
-        "__typename": "ShippingRule",
-        "cost": {
-          "__typename": "Money",
-          "amount": "0.0",
-          "currency": "USD",
-          "symbol": "$"
-        },
-        "id": "U2hpcHBpbmdSdWxlLTExNDEzMzc5",
-        "location": {
-          "__typename": "Location",
-          "country": "ZZ",
-          "countryName": null,
-          "displayableName": "Earth",
-          "id": "TG9jYXRpb24tMQ==",
-          "name": "Rest of World"
-        },
-        "estimatedMin": {
-          "__typename": "Money",
-          "amount": "25.0",
-          "currency": "USD",
-          "symbol": "$"
-        },
-        "estimatedMax": {
-          "__typename": "Money",
-          "amount": "25.0",
-          "currency": "USD",
-          "symbol": "$"
-        },
-      },
-      {
-        "__typename": "ShippingRule",
-        "cost": {
-          "__typename": "Money",
-          "amount": "0.0",
-          "currency": "USD",
-          "symbol": "$"
-        },
-        "id": "U2hpcHBpbmdSdWxlLTExMjc4NzUy",
-        "location": {
-          "__typename": "Location",
-          "country": "US",
-          "countryName": "United States",
-          "displayableName": "United States",
-          "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
-          "name": "United States"
-        },
-        "estimatedMin": {
-          "__typename": "Money",
-          "amount": "25.0",
-          "currency": "USD",
-          "symbol": "$"
-        },
-        "estimatedMax": {
-          "__typename": "Money",
-          "amount": "25.0",
-          "currency": "USD",
-          "symbol": "$"
-        },
-      }
-    ],
     "startsAt": null,
     "image": {
       "__typename": "Photo",
