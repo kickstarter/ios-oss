@@ -1,12 +1,17 @@
+import KDS
 import SwiftUI
 
 /// Custom frosted glass background view.
 struct FrostedGlassBackgroundView: View {
+  private enum Constants {
+    static let overlayOpacity: Double = 0.6
+  }
+
   var body: some View {
     ZStack {
       VideoFeedBlurView()
 
-      Color.white.opacity(0.3)
+      Color(Colors.Background.Accent.Gray.frosted.uiColor())
 
       LinearGradient(
         stops: [
@@ -18,9 +23,8 @@ struct FrostedGlassBackgroundView: View {
         startPoint: .top,
         endPoint: .bottom
       )
-      .opacity(0.45)
     }
-    .opacity(0.8)
+    .opacity(Constants.overlayOpacity)
   }
 }
 

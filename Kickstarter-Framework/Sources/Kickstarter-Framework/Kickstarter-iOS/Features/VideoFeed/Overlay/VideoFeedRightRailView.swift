@@ -41,7 +41,7 @@ struct VideoFeedRightRailView: View {
       self.avatarImage
         .frame(width: Constants.avatarSize, height: Constants.avatarSize)
         .clipShape(Circle())
-        .background(Circle().fill(Color.white))
+        .background(Circle().fill(Color(Colors.Icon.light.uiColor())))
     }
     .accessibilityLabel(Strings.Creator())
   }

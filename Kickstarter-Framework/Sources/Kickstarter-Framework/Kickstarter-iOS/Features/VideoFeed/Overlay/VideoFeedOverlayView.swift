@@ -26,6 +26,8 @@ struct VideoFeedOverlayView: View {
     /// Defining safe area values because `UIHostingConfiguration` returns 0 for safe area insets when in a collectionview.
     static let topSafeAreaPadding: CGFloat = 60
     static let bottomSafeAreaPadding: CGFloat = 37
+    static let playButtonStrokeBorderOpacity: Double = 0.75
+    static let playButtonStrokeBorderWidth: CGFloat = 1
   }
 
   static let closeButtonSize: CGFloat = 44
@@ -147,8 +149,8 @@ struct VideoFeedOverlayView: View {
           .frame(width: Constants.playIconSize, height: Constants.playIconSize)
           .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
           .background(FrostedGlassBackgroundView().overlay(Circle().strokeBorder(
-            Color.white.opacity(0.75),
-            lineWidth: 1
+            Color.white.opacity(Constants.playButtonStrokeBorderOpacity),
+            lineWidth: Constants.playButtonStrokeBorderWidth
           )))
           .clipShape(Circle())
       }
