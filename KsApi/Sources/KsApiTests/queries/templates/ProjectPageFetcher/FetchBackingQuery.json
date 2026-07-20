@@ -275,36 +275,6 @@
         "remainingQuantity": null,
         "shippingPreference": "restricted",
         "shippingSummary": "Only Canada",
-        "shippingRules": [
-          {
-            "__typename": "ShippingRule",
-            "cost": {
-              "__typename": "Money",
-              "amount": "15.0",
-              "currency": "USD",
-              "symbol": "$"
-            },
-            "id": "U2hpcHBpbmdSdWxlLTE2NDQwMjQw",
-            "location": {
-              "__typename": "Location",
-              "country": "CA",
-              "countryName": "Canada",
-              "displayableName": "Canada",
-              "id": "TG9jYXRpb24tMjM0MjQ3NzU=",
-              "name": "Canada"
-            },
-            "estimatedMin": {
-              "__typename": "Money",
-              "amount": "13",
-              "currency": "USD"
-            },
-            "estimatedMax": {
-              "__typename": "Money",
-              "amount": "16",
-              "currency": "USD"
-            }
-          }
-        ],
         "startsAt": null,
         "image": null,
         "audienceData": {

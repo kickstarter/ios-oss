@@ -33,6 +33,7 @@ fragment BackingFragment on Backing {
   }
   reward {
     ...RewardFragment
+    ...SimpleShippingRulesExpandedFragment
   }
   rewardsAmount {
     ...MoneyFragment

@@ -7,27 +7,23 @@ public class FetchBackingQuery: GraphQLQuery {
   public static let operationName: String = "FetchBacking"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchBacking($id: ID!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment project { __typename ...ProjectFragment } paymentIncrements { __typename ...PaymentIncrementFragment } } }"#,
-      fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
+      #"query FetchBacking($id: ID!, $includeLocalPickup: Boolean!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment project { __typename ...ProjectFragment } paymentIncrements { __typename ...PaymentIncrementFragment } } }"#,
+      fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RewardFragment.self, SimpleShippingRulesExpandedFragment.self]
     ))
 
   public var id: ID
-  public var includeShippingRules: Bool
   public var includeLocalPickup: Bool
 
   public init(
     id: ID,
-    includeShippingRules: Bool,
     includeLocalPickup: Bool
   ) {
     self.id = id
-    self.includeShippingRules = includeShippingRules
     self.includeLocalPickup = includeLocalPickup
   }
 
   public var __variables: Variables? { [
     "id": id,
-    "includeShippingRules": includeShippingRules,
     "includeLocalPickup": includeLocalPickup
   ] }
 
@@ -266,8 +262,6 @@ public class FetchBackingQuery: GraphQLQuery {
           public var shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? { __data["shippingPreference"] }
           /// A shipping summary
           public var shippingSummary: String? { __data["shippingSummary"] }
-          /// Shipping rules defined by the creator for this reward
-          public var shippingRules: [ShippingRule?]? { __data["shippingRules"] }
           /// When the reward is scheduled to start
           public var startsAt: GraphAPI.DateTime? { __data["startsAt"] }
           /// The reward image.
@@ -307,7 +301,6 @@ public class FetchBackingQuery: GraphQLQuery {
             remainingQuantity: Int? = nil,
             shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
             shippingSummary: String? = nil,
-            shippingRules: [ShippingRule?]? = nil,
             startsAt: GraphAPI.DateTime? = nil,
             image: Image? = nil,
             audienceData: AudienceData
@@ -339,7 +332,6 @@ public class FetchBackingQuery: GraphQLQuery {
                 "remainingQuantity": remainingQuantity,
                 "shippingPreference": shippingPreference,
                 "shippingSummary": shippingSummary,
-                "shippingRules": shippingRules._fieldData,
                 "startsAt": startsAt,
                 "image": image._fieldData,
                 "audienceData": audienceData._fieldData,
@@ -583,156 +575,6 @@ public class FetchBackingQuery: GraphQLQuery {
           }
 
           public typealias Project = RewardFragment.Project
-
-          /// Backing.AddOns.Node.ShippingRule
-          ///
-          /// Parent Type: `ShippingRule`
-          public struct ShippingRule: GraphAPI.SelectionSet {
-            public let __data: DataDict
-            public init(_dataDict: DataDict) { __data = _dataDict }
-
-            public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.ShippingRule }
-
-            /// The shipping cost for this location.
-            public var cost: Cost? { __data["cost"] }
-            public var id: GraphAPI.ID { __data["id"] }
-            /// The shipping location to which the rule pertains.
-            public var location: Location? { __data["location"] }
-            /// The estimated minimum shipping cost
-            public var estimatedMin: EstimatedMin? { __data["estimatedMin"] }
-            /// The estimated maximum shipping cost
-            public var estimatedMax: EstimatedMax? { __data["estimatedMax"] }
-
-            public struct Fragments: FragmentContainer {
-              public let __data: DataDict
-              public init(_dataDict: DataDict) { __data = _dataDict }
-
-              public var shippingRuleFragment: ShippingRuleFragment { _toFragment() }
-            }
-
-            public init(
-              cost: Cost? = nil,
-              id: GraphAPI.ID,
-              location: Location? = nil,
-              estimatedMin: EstimatedMin? = nil,
-              estimatedMax: EstimatedMax? = nil
-            ) {
-              self.init(_dataDict: DataDict(
-                data: [
-                  "__typename": GraphAPI.Objects.ShippingRule.typename,
-                  "cost": cost._fieldData,
-                  "id": id,
-                  "location": location._fieldData,
-                  "estimatedMin": estimatedMin._fieldData,
-                  "estimatedMax": estimatedMax._fieldData,
-                ],
-                fulfilledFragments: [
-                  ObjectIdentifier(FetchBackingQuery.Data.Backing.AddOns.Node.ShippingRule.self),
-                  ObjectIdentifier(RewardFragment.ShippingRule.self),
-                  ObjectIdentifier(ShippingRuleFragment.self)
-                ]
-              ))
-            }
-
-            /// Backing.AddOns.Node.ShippingRule.Cost
-            ///
-            /// Parent Type: `Money`
-            public struct Cost: GraphAPI.SelectionSet {
-              public let __data: DataDict
-              public init(_dataDict: DataDict) { __data = _dataDict }
-
-              public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Money }
-
-              /// Floating-point numeric value of monetary amount represented as a string
-              public var amount: String? { __data["amount"] }
-              /// Currency of the monetary amount
-              public var currency: GraphQLEnum<GraphAPI.CurrencyCode>? { __data["currency"] }
-              /// Symbol of the currency in which the monetary amount appears
-              public var symbol: String? { __data["symbol"] }
-
-              public struct Fragments: FragmentContainer {
-                public let __data: DataDict
-                public init(_dataDict: DataDict) { __data = _dataDict }
-
-                public var moneyFragment: MoneyFragment { _toFragment() }
-              }
-
-              public init(
-                amount: String? = nil,
-                currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
-                symbol: String? = nil
-              ) {
-                self.init(_dataDict: DataDict(
-                  data: [
-                    "__typename": GraphAPI.Objects.Money.typename,
-                    "amount": amount,
-                    "currency": currency,
-                    "symbol": symbol,
-                  ],
-                  fulfilledFragments: [
-                    ObjectIdentifier(FetchBackingQuery.Data.Backing.AddOns.Node.ShippingRule.Cost.self),
-                    ObjectIdentifier(ShippingRuleFragment.Cost.self),
-                    ObjectIdentifier(MoneyFragment.self)
-                  ]
-                ))
-              }
-            }
-
-            /// Backing.AddOns.Node.ShippingRule.Location
-            ///
-            /// Parent Type: `Location`
-            public struct Location: GraphAPI.SelectionSet {
-              public let __data: DataDict
-              public init(_dataDict: DataDict) { __data = _dataDict }
-
-              public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Location }
-
-              /// The country code.
-              public var country: String { __data["country"] }
-              /// The localized country name.
-              public var countryName: String? { __data["countryName"] }
-              /// The displayable name. It includes the state code for US cities. ex: 'Seattle, WA'
-              public var displayableName: String { __data["displayableName"] }
-              public var id: GraphAPI.ID { __data["id"] }
-              /// The localized name
-              public var name: String { __data["name"] }
-
-              public struct Fragments: FragmentContainer {
-                public let __data: DataDict
-                public init(_dataDict: DataDict) { __data = _dataDict }
-
-                public var locationFragment: LocationFragment { _toFragment() }
-              }
-
-              public init(
-                country: String,
-                countryName: String? = nil,
-                displayableName: String,
-                id: GraphAPI.ID,
-                name: String
-              ) {
-                self.init(_dataDict: DataDict(
-                  data: [
-                    "__typename": GraphAPI.Objects.Location.typename,
-                    "country": country,
-                    "countryName": countryName,
-                    "displayableName": displayableName,
-                    "id": id,
-                    "name": name,
-                  ],
-                  fulfilledFragments: [
-                    ObjectIdentifier(FetchBackingQuery.Data.Backing.AddOns.Node.ShippingRule.Location.self),
-                    ObjectIdentifier(ShippingRuleFragment.Location.self),
-                    ObjectIdentifier(LocationFragment.self)
-                  ]
-                ))
-              }
-            }
-
-            public typealias EstimatedMin = ShippingRuleFragment.EstimatedMin
-
-            public typealias EstimatedMax = ShippingRuleFragment.EstimatedMax
-          }
 
           public typealias Image = RewardFragment.Image
 
@@ -1896,20 +1738,21 @@ public class FetchBackingQuery: GraphQLQuery {
         public var shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? { __data["shippingPreference"] }
         /// A shipping summary
         public var shippingSummary: String? { __data["shippingSummary"] }
-        /// Shipping rules defined by the creator for this reward
-        public var shippingRules: [ShippingRule?]? { __data["shippingRules"] }
         /// When the reward is scheduled to start
         public var startsAt: GraphAPI.DateTime? { __data["startsAt"] }
         /// The reward image.
         public var image: Image? { __data["image"] }
         /// Data related to who can view/access this reward
         public var audienceData: AudienceData { __data["audienceData"] }
+        /// Simple shipping rules expanded as a faster alternative to shippingRulesExpanded since connection type is slow
+        public var simpleShippingRulesExpanded: [SimpleShippingRulesExpanded?] { __data["simpleShippingRulesExpanded"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict
           public init(_dataDict: DataDict) { __data = _dataDict }
 
           public var rewardFragment: RewardFragment { _toFragment() }
+          public var simpleShippingRulesExpandedFragment: SimpleShippingRulesExpandedFragment { _toFragment() }
         }
 
         public init(
@@ -1937,10 +1780,10 @@ public class FetchBackingQuery: GraphQLQuery {
           remainingQuantity: Int? = nil,
           shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
           shippingSummary: String? = nil,
-          shippingRules: [ShippingRule?]? = nil,
           startsAt: GraphAPI.DateTime? = nil,
           image: Image? = nil,
-          audienceData: AudienceData
+          audienceData: AudienceData,
+          simpleShippingRulesExpanded: [SimpleShippingRulesExpanded?]
         ) {
           self.init(_dataDict: DataDict(
             data: [
@@ -1969,15 +1812,16 @@ public class FetchBackingQuery: GraphQLQuery {
               "remainingQuantity": remainingQuantity,
               "shippingPreference": shippingPreference,
               "shippingSummary": shippingSummary,
-              "shippingRules": shippingRules._fieldData,
               "startsAt": startsAt,
               "image": image._fieldData,
               "audienceData": audienceData._fieldData,
+              "simpleShippingRulesExpanded": simpleShippingRulesExpanded._fieldData,
             ],
             fulfilledFragments: [
               ObjectIdentifier(FetchBackingQuery.Data.Backing.Reward.self),
               ObjectIdentifier(BackingFragment.Reward.self),
-              ObjectIdentifier(RewardFragment.self)
+              ObjectIdentifier(RewardFragment.self),
+              ObjectIdentifier(SimpleShippingRulesExpandedFragment.self)
             ]
           ))
         }
@@ -2215,159 +2059,11 @@ public class FetchBackingQuery: GraphQLQuery {
 
         public typealias Project = RewardFragment.Project
 
-        /// Backing.Reward.ShippingRule
-        ///
-        /// Parent Type: `ShippingRule`
-        public struct ShippingRule: GraphAPI.SelectionSet {
-          public let __data: DataDict
-          public init(_dataDict: DataDict) { __data = _dataDict }
-
-          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.ShippingRule }
-
-          /// The shipping cost for this location.
-          public var cost: Cost? { __data["cost"] }
-          public var id: GraphAPI.ID { __data["id"] }
-          /// The shipping location to which the rule pertains.
-          public var location: Location? { __data["location"] }
-          /// The estimated minimum shipping cost
-          public var estimatedMin: EstimatedMin? { __data["estimatedMin"] }
-          /// The estimated maximum shipping cost
-          public var estimatedMax: EstimatedMax? { __data["estimatedMax"] }
-
-          public struct Fragments: FragmentContainer {
-            public let __data: DataDict
-            public init(_dataDict: DataDict) { __data = _dataDict }
-
-            public var shippingRuleFragment: ShippingRuleFragment { _toFragment() }
-          }
-
-          public init(
-            cost: Cost? = nil,
-            id: GraphAPI.ID,
-            location: Location? = nil,
-            estimatedMin: EstimatedMin? = nil,
-            estimatedMax: EstimatedMax? = nil
-          ) {
-            self.init(_dataDict: DataDict(
-              data: [
-                "__typename": GraphAPI.Objects.ShippingRule.typename,
-                "cost": cost._fieldData,
-                "id": id,
-                "location": location._fieldData,
-                "estimatedMin": estimatedMin._fieldData,
-                "estimatedMax": estimatedMax._fieldData,
-              ],
-              fulfilledFragments: [
-                ObjectIdentifier(FetchBackingQuery.Data.Backing.Reward.ShippingRule.self),
-                ObjectIdentifier(RewardFragment.ShippingRule.self),
-                ObjectIdentifier(ShippingRuleFragment.self)
-              ]
-            ))
-          }
-
-          /// Backing.Reward.ShippingRule.Cost
-          ///
-          /// Parent Type: `Money`
-          public struct Cost: GraphAPI.SelectionSet {
-            public let __data: DataDict
-            public init(_dataDict: DataDict) { __data = _dataDict }
-
-            public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Money }
-
-            /// Floating-point numeric value of monetary amount represented as a string
-            public var amount: String? { __data["amount"] }
-            /// Currency of the monetary amount
-            public var currency: GraphQLEnum<GraphAPI.CurrencyCode>? { __data["currency"] }
-            /// Symbol of the currency in which the monetary amount appears
-            public var symbol: String? { __data["symbol"] }
-
-            public struct Fragments: FragmentContainer {
-              public let __data: DataDict
-              public init(_dataDict: DataDict) { __data = _dataDict }
-
-              public var moneyFragment: MoneyFragment { _toFragment() }
-            }
-
-            public init(
-              amount: String? = nil,
-              currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil,
-              symbol: String? = nil
-            ) {
-              self.init(_dataDict: DataDict(
-                data: [
-                  "__typename": GraphAPI.Objects.Money.typename,
-                  "amount": amount,
-                  "currency": currency,
-                  "symbol": symbol,
-                ],
-                fulfilledFragments: [
-                  ObjectIdentifier(FetchBackingQuery.Data.Backing.Reward.ShippingRule.Cost.self),
-                  ObjectIdentifier(ShippingRuleFragment.Cost.self),
-                  ObjectIdentifier(MoneyFragment.self)
-                ]
-              ))
-            }
-          }
-
-          /// Backing.Reward.ShippingRule.Location
-          ///
-          /// Parent Type: `Location`
-          public struct Location: GraphAPI.SelectionSet {
-            public let __data: DataDict
-            public init(_dataDict: DataDict) { __data = _dataDict }
-
-            public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Location }
-
-            /// The country code.
-            public var country: String { __data["country"] }
-            /// The localized country name.
-            public var countryName: String? { __data["countryName"] }
-            /// The displayable name. It includes the state code for US cities. ex: 'Seattle, WA'
-            public var displayableName: String { __data["displayableName"] }
-            public var id: GraphAPI.ID { __data["id"] }
-            /// The localized name
-            public var name: String { __data["name"] }
-
-            public struct Fragments: FragmentContainer {
-              public let __data: DataDict
-              public init(_dataDict: DataDict) { __data = _dataDict }
-
-              public var locationFragment: LocationFragment { _toFragment() }
-            }
-
-            public init(
-              country: String,
-              countryName: String? = nil,
-              displayableName: String,
-              id: GraphAPI.ID,
-              name: String
-            ) {
-              self.init(_dataDict: DataDict(
-                data: [
-                  "__typename": GraphAPI.Objects.Location.typename,
-                  "country": country,
-                  "countryName": countryName,
-                  "displayableName": displayableName,
-                  "id": id,
-                  "name": name,
-                ],
-                fulfilledFragments: [
-                  ObjectIdentifier(FetchBackingQuery.Data.Backing.Reward.ShippingRule.Location.self),
-                  ObjectIdentifier(ShippingRuleFragment.Location.self),
-                  ObjectIdentifier(LocationFragment.self)
-                ]
-              ))
-            }
-          }
-
-          public typealias EstimatedMin = ShippingRuleFragment.EstimatedMin
-
-          public typealias EstimatedMax = ShippingRuleFragment.EstimatedMax
-        }
-
         public typealias Image = RewardFragment.Image
 
         public typealias AudienceData = RewardFragment.AudienceData
+
+        public typealias SimpleShippingRulesExpanded = SimpleShippingRulesExpandedFragment.SimpleShippingRulesExpanded
       }
 
       /// Backing.RewardsAmount

@@ -227,7 +227,6 @@ final class RewardTests: XCTestCase {
       |> ShippingRule.lens.cost .~ 1.0
       |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 2)
     let reward = Reward.template
-      |> Reward.lens.shippingRules .~ [shippingRule1, shippingRule2]
 
     let match = ShippingRule.template
       |> ShippingRule.lens.cost .~ 500.0
