@@ -1,3 +1,4 @@
+# Query used to fetch the backing for the Manage Pledge page.
 query FetchBackingWithIncrementsRefunded($id: ID!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) {
   backing(id: $id) {
     addOns {
@@ -6,6 +7,9 @@ query FetchBackingWithIncrementsRefunded($id: ID!, $includeShippingRules: Boolea
       }
     }
     ...BackingFragment
+    reward {
+      ...SimpleShippingRulesExpandedFragment
+    }
     paymentIncrements {
       ...PaymentIncrementBackingFragment
     }
