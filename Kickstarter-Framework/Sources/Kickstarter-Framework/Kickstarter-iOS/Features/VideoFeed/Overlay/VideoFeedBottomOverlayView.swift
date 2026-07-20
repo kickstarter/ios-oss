@@ -100,7 +100,7 @@ private struct FeedPillView: View {
     static let horizontalPadding: CGFloat = 10
     static let verticalPadding: CGFloat = 6
     static let iconSpacing: CGFloat = 6
-    static let opacity: Double = 0.25
+    static let opacity: Double = 0.35
     static let cornerRadius: CGFloat = 8
     static let borderWidth: CGFloat = 1
   }
@@ -122,7 +122,7 @@ private struct FeedPillView: View {
     }
     .padding(.horizontal, Constants.horizontalPadding)
     .padding(.vertical, Constants.verticalPadding)
-    .background(FrostedGlassBackgroundView().opacity(Constants.opacity))
+    .background(FrostedGlassBackgroundView())
     .overlay(
       RoundedRectangle(cornerRadius: Constants.cornerRadius)
         .strokeBorder(Color.white.opacity(Constants.opacity), lineWidth: Constants.borderWidth)
@@ -134,7 +134,7 @@ private struct FeedPillView: View {
 private struct CTAButtonStyle: SwiftUI.ButtonStyle {
   private enum Constants {
     static let horizontalPadding: CGFloat = 16
-    static let verticalPadding: CGFloat = 12
+    static let verticalPadding: CGFloat = 8
     static let borderWidth: CGFloat = 1
     static let borderOpacity: Double = 0.9
     static let borderOpacityPressed: Double = 0.5
