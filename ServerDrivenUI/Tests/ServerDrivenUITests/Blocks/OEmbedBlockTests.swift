@@ -1,4 +1,3 @@
-@testable import LibraryTestHelpers
 @testable import ServerDrivenUI
 import ServerDrivenUITestHelpers
 import SwiftUI
@@ -7,7 +6,7 @@ import WebKit
 import XCTest
 
 @MainActor
-final class OEmbedBlockTests: TestCase {
+final class OEmbedBlockTests: XCTestCase {
   // MARK: - Valid iframe URL
 
   func testOEmbedBlockWithValidIframeURL_hasAccessibilityLabel() throws {

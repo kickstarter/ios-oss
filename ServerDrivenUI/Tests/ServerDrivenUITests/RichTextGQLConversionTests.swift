@@ -1,10 +1,9 @@
 import Foundation
 import GraphAPI
-@testable import LibraryTestHelpers
 @testable import ServerDrivenUI
 import XCTest
 
-final class RichTextGQLConversionTests: TestCase {
+final class RichTextGQLConversionTests: XCTestCase {
   /* AsRichText item -> .text element with styles, link, no children */
   func testAsRichTextItemAsRichText() throws {
     let gql = RichTextComponentFragment.Item.AsRichText(

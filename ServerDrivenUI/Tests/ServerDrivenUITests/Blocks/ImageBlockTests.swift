@@ -1,4 +1,3 @@
-@testable import LibraryTestHelpers
 @testable import ServerDrivenUI
 import ServerDrivenUITestHelpers
 import SwiftUI
@@ -6,7 +5,7 @@ import ViewInspector
 import XCTest
 
 @MainActor
-final class ImageBlockTests: TestCase {
+final class ImageBlockTests: XCTestCase {
   func testImageBlockWithValidURL_hasAccessibilityLabel() throws {
     let photo = makePhoto(
       altText: "Test image",
