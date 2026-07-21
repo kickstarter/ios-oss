@@ -26,7 +26,7 @@ struct VideoFeedOverlayView: View {
     /// Defining safe area values because `UIHostingConfiguration` returns 0 for safe area insets when in a collectionview.
     static let topSafeAreaPadding: CGFloat = 60
     static let bottomSafeAreaPadding: CGFloat = 37
-    static let playButtonStrokeBorderOpacity: Double = 0.75
+    static let playButtonStrokeBorderOpacity: Double = 0.5
     static let playButtonStrokeBorderWidth: CGFloat = 1
   }
 

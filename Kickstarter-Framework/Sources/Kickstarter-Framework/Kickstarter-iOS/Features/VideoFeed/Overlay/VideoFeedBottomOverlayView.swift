@@ -43,20 +43,19 @@ struct VideoFeedBottomOverlayView: View {
 
   @ViewBuilder
   private var pills: some View {
-    let visiblePills: [(icon: String, text: String)] = [
-      ("video-feed-category-icon", self.item.categoryPillText),
-      ("video-feed-clock-icon", self.item.secondaryPillText)
-    ]
-    .filter { !$0.text.isEmpty }
+    let badges = self.item.badges
 
-    if !visiblePills.isEmpty {
+    if !badges.isEmpty {
       HStack(spacing: Constants.pillRowSpacing) {
-        ForEach(visiblePills, id: \.text) { pill in
-          FeedPillView(icon: pill.icon, text: pill.text)
+        ForEach(badges, id: \.text) { badge in
+          FeedPillView(
+            icon: badge.type.iconAssetName,
+            text: badge.text
+          )
         }
       }
       .accessibilityElement(children: .combine)
-      .accessibilityLabel(visiblePills.map(\.text).joined(separator: ", "))
+      .accessibilityLabel(badges.map(\.text).joined(separator: ", "))
     }
   }
 
@@ -93,24 +92,24 @@ struct VideoFeedBottomOverlayView: View {
   }
 }
 
-/// Category and "days left" badges.
+/// Project badges
 private struct FeedPillView: View {
   private enum Constants {
     static let iconSize: CGFloat = 16
     static let horizontalPadding: CGFloat = 10
     static let verticalPadding: CGFloat = 6
     static let iconSpacing: CGFloat = 6
-    static let opacity: Double = 0.35
+    static let opacity: Double = 0.25
     static let cornerRadius: CGFloat = 8
     static let borderWidth: CGFloat = 1
   }
 
-  let icon: String
+  let icon: String?
   let text: String
 
   var body: some View {
     HStack(spacing: Constants.iconSpacing) {
-      if let icon = Library.image(named: self.icon) {
+      if let iconName = self.icon, let icon = Library.image(named: iconName) {
         Image(uiImage: icon)
           .resizable()
           .frame(width: Constants.iconSize, height: Constants.iconSize)
@@ -160,5 +159,24 @@ private struct CTAButtonStyle: SwiftUI.ButtonStyle {
       )
       .clipShape(Capsule())
       .opacity(configuration.isPressed ? Constants.pressedOpacity : 1.0)
+  }
+}
+
+// MARK: - Badge icon mapping
+
+private extension VideoFeedItem.BadgeType {
+  var iconAssetName: String? {
+    switch self {
+    case .projectWeLove:
+      return "video-feed-heart-icon"
+    case .daysLeft:
+      return "video-feed-clock-icon"
+    case .justLaunched:
+      return nil
+    case .trending:
+      return "video-feed-fire-icon"
+    case .unknown:
+      return nil
+    }
   }
 }
