@@ -7,31 +7,27 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
   public static let operationName: String = "FetchProjectRewardsById"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!, $includePledgeOverTime: Boolean!) { project(pid: $projectId) { __typename rewards { __typename nodes { __typename ...RewardFragment ...SimpleShippingRulesExpandedFragment @include(if: $includeShippingRules) } } ...PledgeOverTimeFragment @include(if: $includePledgeOverTime) } }"#,
+      #"query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includePledgeOverTime: Boolean!) { project(pid: $projectId) { __typename rewards { __typename nodes { __typename ...RewardFragment ...SimpleShippingRulesExpandedFragment @include(if: $includeShippingRules) } } ...PledgeOverTimeFragment @include(if: $includePledgeOverTime) } }"#,
       fragments: [LocationFragment.self, MoneyFragment.self, PledgeOverTimeFragment.self, RewardFragment.self, SimpleShippingRulesExpandedFragment.self]
     ))
 
   public var projectId: Int
   public var includeShippingRules: Bool
-  public var includeLocalPickup: Bool
   public var includePledgeOverTime: Bool
 
   public init(
     projectId: Int,
     includeShippingRules: Bool,
-    includeLocalPickup: Bool,
     includePledgeOverTime: Bool
   ) {
     self.projectId = projectId
     self.includeShippingRules = includeShippingRules
-    self.includeLocalPickup = includeLocalPickup
     self.includePledgeOverTime = includePledgeOverTime
   }
 
   public var __variables: Variables? { [
     "projectId": projectId,
     "includeShippingRules": includeShippingRules,
-    "includeLocalPickup": includeLocalPickup,
     "includePledgeOverTime": includePledgeOverTime
   ] }
 

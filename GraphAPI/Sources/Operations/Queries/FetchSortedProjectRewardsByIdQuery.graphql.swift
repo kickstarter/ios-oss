@@ -7,27 +7,23 @@ public class FetchSortedProjectRewardsByIdQuery: GraphQLQuery {
   public static let operationName: String = "FetchSortedProjectRewardsById"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchSortedProjectRewardsById($projectId: Int!, $includeLocalPickup: Boolean!, $location: CountryCode) { project(pid: $projectId) { __typename ...NoRewardRewardFragment rewards(location: $location, sort: ELIGIBILITY) { __typename nodes { __typename ...RewardFragment ...SimpleShippingRulesExpandedFragment } } } }"#,
+      #"query FetchSortedProjectRewardsById($projectId: Int!, $location: CountryCode) { project(pid: $projectId) { __typename ...NoRewardRewardFragment rewards(location: $location, sort: ELIGIBILITY) { __typename nodes { __typename ...RewardFragment ...SimpleShippingRulesExpandedFragment } } } }"#,
       fragments: [LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, RewardFragment.self, SimpleShippingRulesExpandedFragment.self]
     ))
 
   public var projectId: Int
-  public var includeLocalPickup: Bool
   public var location: GraphQLNullable<GraphQLEnum<CountryCode>>
 
   public init(
     projectId: Int,
-    includeLocalPickup: Bool,
     location: GraphQLNullable<GraphQLEnum<CountryCode>>
   ) {
     self.projectId = projectId
-    self.includeLocalPickup = includeLocalPickup
     self.location = location
   }
 
   public var __variables: Variables? { [
     "projectId": projectId,
-    "includeLocalPickup": includeLocalPickup,
     "location": location
   ] }
 

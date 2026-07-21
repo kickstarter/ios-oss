@@ -5,7 +5,7 @@
 
 public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment RewardFragment on Reward { __typename amount { __typename ...MoneyFragment } backersCount convertedAmount { __typename ...MoneyFragment } allowedAddons { __typename pageInfo { __typename startCursor } } description displayName endsAt estimatedDeliveryOn id isMaxPledge available featured items { __typename edges { __typename quantity node { __typename id name } } } limit limitPerBacker localReceiptLocation @include(if: $includeLocalPickup) { __typename ...LocationFragment } name pledgeAmount { __typename ...MoneyFragment } latePledgeAmount { __typename ...MoneyFragment } postCampaignPledgingEnabled project { __typename id } remainingQuantity shippingPreference shippingSummary startsAt image { __typename altText url(width: 1024) } audienceData { __typename secret } }"#
+    #"fragment RewardFragment on Reward { __typename amount { __typename ...MoneyFragment } backersCount convertedAmount { __typename ...MoneyFragment } allowedAddons { __typename pageInfo { __typename startCursor } } description displayName endsAt estimatedDeliveryOn id isMaxPledge available featured items { __typename edges { __typename quantity node { __typename id name } } } limit limitPerBacker localReceiptLocation { __typename ...LocationFragment } name pledgeAmount { __typename ...MoneyFragment } latePledgeAmount { __typename ...MoneyFragment } postCampaignPledgingEnabled project { __typename id } remainingQuantity shippingPreference shippingSummary startsAt image { __typename altText url(width: 1024) } audienceData { __typename secret } }"#
   }
 
   public let __data: DataDict
@@ -29,6 +29,7 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     .field("items", Items?.self),
     .field("limit", Int?.self),
     .field("limitPerBacker", Int?.self),
+    .field("localReceiptLocation", LocalReceiptLocation?.self),
     .field("name", String?.self),
     .field("pledgeAmount", PledgeAmount.self),
     .field("latePledgeAmount", LatePledgeAmount.self),
@@ -40,7 +41,6 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     .field("startsAt", GraphAPI.DateTime?.self),
     .field("image", Image?.self),
     .field("audienceData", AudienceData.self),
-    .include(if: "includeLocalPickup", .field("localReceiptLocation", LocalReceiptLocation?.self)),
   ] }
 
   /// Amount for claiming this reward.

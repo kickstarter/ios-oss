@@ -508,8 +508,7 @@ public struct Service: ServiceType {
       .fetch(
         query: GraphAPI
           .FetchUserBackingsQuery(
-            status: GraphQLEnum.case(status),
-            includeLocalPickup: false
+            status: GraphQLEnum.case(status)
           )
       )
       .flatMap(ErroredBackingsEnvelope.producer(from:))
@@ -521,8 +520,7 @@ public struct Service: ServiceType {
       .fetch(
         query: GraphAPI
           .FetchBackingQuery(
-            id: "\(id)",
-            includeLocalPickup: true
+            id: "\(id)"
           )
       )
       .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
@@ -546,8 +544,7 @@ public struct Service: ServiceType {
       .fetch(
         query: GraphAPI
           .FetchBackingWithIncrementsRefundedQuery(
-            id: "\(id)",
-            includeLocalPickup: true
+            id: "\(id)"
           )
       )
       .flatMap(Backing.producer(from:))
@@ -611,7 +608,6 @@ public struct Service: ServiceType {
       .FetchProjectRewardsByIdQuery(
         projectId: projectId,
         includeShippingRules: true,
-        includeLocalPickup: true,
         includePledgeOverTime: false
       )
 
@@ -634,7 +630,6 @@ public struct Service: ServiceType {
 
     let query = GraphAPI.FetchSortedProjectRewardsByIdQuery(
       projectId: projectId,
-      includeLocalPickup: true,
       location: GraphQLEnum.caseOrNil(graphCountryCode)
     )
 
@@ -651,7 +646,6 @@ public struct Service: ServiceType {
       .FetchProjectRewardsByIdQuery(
         projectId: projectId,
         includeShippingRules: true,
-        includeLocalPickup: true,
         includePledgeOverTime: true
       )
 
@@ -703,8 +697,7 @@ public struct Service: ServiceType {
     let query = GraphAPI.FetchAddOnsQuery(
       projectSlug: slug,
       shippingEnabled: shippingEnabled,
-      locationId: GraphQLNullable.someOrNil(locationId),
-      includeLocalPickup: true
+      locationId: GraphQLNullable.someOrNil(locationId)
     )
 
     return GraphQL.shared.client

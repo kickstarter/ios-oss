@@ -7,25 +7,17 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
   public static let operationName: String = "FetchBackingWithIncrementsRefunded"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchBackingWithIncrementsRefunded($id: ID!, $includeLocalPickup: Boolean!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment reward { __typename ...SimpleShippingRulesExpandedFragment } paymentIncrements { __typename ...PaymentIncrementBackingFragment } } }"#,
+      #"query FetchBackingWithIncrementsRefunded($id: ID!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment reward { __typename ...SimpleShippingRulesExpandedFragment } paymentIncrements { __typename ...PaymentIncrementBackingFragment } } }"#,
       fragments: [BackingFragment.self, CountryFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentIncrementBackingFragment.self, PaymentSourceFragment.self, PublicUserFragment.self, RewardFragment.self, SimpleShippingRulesExpandedFragment.self]
     ))
 
   public var id: ID
-  public var includeLocalPickup: Bool
 
-  public init(
-    id: ID,
-    includeLocalPickup: Bool
-  ) {
+  public init(id: ID) {
     self.id = id
-    self.includeLocalPickup = includeLocalPickup
   }
 
-  public var __variables: Variables? { [
-    "id": id,
-    "includeLocalPickup": includeLocalPickup
-  ] }
+  public var __variables: Variables? { ["id": id] }
 
   public struct Data: GraphAPI.SelectionSet {
     public let __data: DataDict

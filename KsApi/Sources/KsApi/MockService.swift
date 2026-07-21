@@ -1189,8 +1189,7 @@
       let fetchRewardAddOnsSelectionViewRewardsQuery = GraphAPI.FetchAddOnsQuery(
         projectSlug: slug,
         shippingEnabled: shippingEnabled,
-        locationId: GraphQLNullable.someOrNil(locationId),
-        includeLocalPickup: true
+        locationId: GraphQLNullable.someOrNil(locationId)
       )
 
       return client
@@ -1341,7 +1340,6 @@
         .FetchProjectRewardsByIdQuery(
           projectId: projectId,
           includeShippingRules: false,
-          includeLocalPickup: true,
           includePledgeOverTime: true
         )
 
@@ -1361,7 +1359,6 @@
         .FetchProjectRewardsByIdQuery(
           projectId: projectId,
           includeShippingRules: false,
-          includeLocalPickup: true,
           includePledgeOverTime: false
         )
 
@@ -1384,7 +1381,6 @@
       let fetchProjectRewardsQuery = GraphAPI
         .FetchSortedProjectRewardsByIdQuery(
           projectId: projectId,
-          includeLocalPickup: true,
           location: nil
         )
 

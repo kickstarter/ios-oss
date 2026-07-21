@@ -1,4 +1,4 @@
-query FetchUserBackings($status: BackingState!, $includeLocalPickup: Boolean!) {
+query FetchUserBackings($status: BackingState!) {
   me {
     backings(status: $status) {
       nodes {

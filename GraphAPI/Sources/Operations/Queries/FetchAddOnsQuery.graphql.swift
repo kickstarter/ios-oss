@@ -7,32 +7,28 @@ public class FetchAddOnsQuery: GraphQLQuery {
   public static let operationName: String = "FetchAddOns"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchAddOns($projectSlug: String!, $shippingEnabled: Boolean!, $locationId: ID, $includeLocalPickup: Boolean!) { project(slug: $projectSlug) { __typename ...ProjectFragment addOns { __typename nodes { __typename ...RewardFragment shippingRulesExpanded(forLocation: $locationId) @include(if: $shippingEnabled) { __typename nodes { __typename ...ShippingRuleFragment } } } } } }"#,
+      #"query FetchAddOns($projectSlug: String!, $shippingEnabled: Boolean!, $locationId: ID) { project(slug: $projectSlug) { __typename ...ProjectFragment addOns { __typename nodes { __typename ...RewardFragment shippingRulesExpanded(forLocation: $locationId) @include(if: $shippingEnabled) { __typename nodes { __typename ...ShippingRuleFragment } } } } } }"#,
       fragments: [CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
     ))
 
   public var projectSlug: String
   public var shippingEnabled: Bool
   public var locationId: GraphQLNullable<ID>
-  public var includeLocalPickup: Bool
 
   public init(
     projectSlug: String,
     shippingEnabled: Bool,
-    locationId: GraphQLNullable<ID>,
-    includeLocalPickup: Bool
+    locationId: GraphQLNullable<ID>
   ) {
     self.projectSlug = projectSlug
     self.shippingEnabled = shippingEnabled
     self.locationId = locationId
-    self.includeLocalPickup = includeLocalPickup
   }
 
   public var __variables: Variables? { [
     "projectSlug": projectSlug,
     "shippingEnabled": shippingEnabled,
-    "locationId": locationId,
-    "includeLocalPickup": includeLocalPickup
+    "locationId": locationId
   ] }
 
   public struct Data: GraphAPI.SelectionSet {

@@ -7,25 +7,17 @@ public class FetchUserBackingsQuery: GraphQLQuery {
   public static let operationName: String = "FetchUserBackings"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchUserBackings($status: BackingState!, $includeLocalPickup: Boolean!) { me { __typename backings(status: $status) { __typename nodes { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment project { __typename ...ProjectFragment } errorReason paymentIncrements { __typename ...PaymentIncrementFragment } } totalCount } id imageUrl: imageUrl(blur: false, width: 1024) name uid } }"#,
+      #"query FetchUserBackings($status: BackingState!) { me { __typename backings(status: $status) { __typename nodes { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment project { __typename ...ProjectFragment } errorReason paymentIncrements { __typename ...PaymentIncrementFragment } } totalCount } id imageUrl: imageUrl(blur: false, width: 1024) name uid } }"#,
       fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RewardFragment.self]
     ))
 
   public var status: GraphQLEnum<BackingState>
-  public var includeLocalPickup: Bool
 
-  public init(
-    status: GraphQLEnum<BackingState>,
-    includeLocalPickup: Bool
-  ) {
+  public init(status: GraphQLEnum<BackingState>) {
     self.status = status
-    self.includeLocalPickup = includeLocalPickup
   }
 
-  public var __variables: Variables? { [
-    "status": status,
-    "includeLocalPickup": includeLocalPickup
-  ] }
+  public var __variables: Variables? { ["status": status] }
 
   public struct Data: GraphAPI.SelectionSet {
     public let __data: DataDict
