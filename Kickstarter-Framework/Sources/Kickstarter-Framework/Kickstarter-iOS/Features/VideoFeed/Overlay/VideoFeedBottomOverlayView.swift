@@ -99,7 +99,7 @@ private struct FeedPillView: View {
     static let horizontalPadding: CGFloat = 10
     static let verticalPadding: CGFloat = 6
     static let iconSpacing: CGFloat = 6
-    static let opacity: Double = 0.35
+    static let opacity: Double = 0.25
     static let cornerRadius: CGFloat = 8
     static let borderWidth: CGFloat = 1
   }
