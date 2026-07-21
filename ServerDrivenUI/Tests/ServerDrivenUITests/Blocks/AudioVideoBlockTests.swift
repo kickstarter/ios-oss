@@ -1,5 +1,4 @@
 import AVKit
-@testable import LibraryTestHelpers
 @testable import ServerDrivenUI
 import ServerDrivenUITestHelpers
 import SwiftUI
@@ -7,7 +6,7 @@ import ViewInspector
 import XCTest
 
 @MainActor
-final class AudioVideoBlockTests: TestCase {
+final class AudioVideoBlockTests: XCTestCase {
   // MARK: - Placeholder (no player)
 
   func testAudioBlockWithoutURL_beforeOnAppear_rendersUnavailablePlaceholder() throws {
