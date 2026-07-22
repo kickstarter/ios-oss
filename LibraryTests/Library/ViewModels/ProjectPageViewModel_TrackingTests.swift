@@ -163,7 +163,7 @@ final class ProjectPageViewModel_TrackingTests: TestCase {
     let service = MockService(fetchProjectPamphletResult: .failure(.couldNotParseJSON))
 
     withEnvironment(apiService: service) {
-      self.configureInitialState(.init(left: .template))
+      self.vm.configureAndLoad(.init(left: .template))
 
       self.scheduler.advance()
 
@@ -184,7 +184,7 @@ final class ProjectPageViewModel_TrackingTests: TestCase {
     )) {
       XCTAssertEqual([], self.segmentTrackingClient.events)
 
-      self.configureInitialState(.init(left: .template))
+      self.vm.configureAndLoad(.init(left: .template))
 
       self.scheduler.advance()
 
@@ -503,20 +503,5 @@ final class ProjectPageViewModel_TrackingTests: TestCase {
       XCTAssertEqual(segmentClient.properties(forKey: "context_type"), ["initiate", "confirm"])
       XCTAssertEqual(segmentClient.properties(forKey: "interaction_target_uid"), ["111", "111"])
     }
-  }
-
-  // MARK: - Functions
-
-  private func configureInitialState(
-    _ projectOrParam: Either<Project, any ProjectPageParam>,
-    secretRewardToken: String? = nil
-  ) {
-    self.vm.inputs.configureWith(
-      projectOrParam: projectOrParam,
-      refInfo: RefInfo(.discovery),
-      secretRewardToken: secretRewardToken
-    )
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewDidAppear(animated: false)
   }
 }
