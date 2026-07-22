@@ -579,40 +579,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.viewModel.outputs.selectedContentView
       .observeForUI()
       .observeValues { [weak self] contentView in
-        guard let self else { return }
-        switch contentView {
-        case .tableView:
-          self.tableView.isHidden = false
-          if self.storyRichTextHostingController.parent != nil {
-            self.storyRichTextHostingController.willMove(toParent: nil)
-            self.storyRichTextHostingController.view.removeFromSuperview()
-            self.storyRichTextHostingController.removeFromParent()
-          }
-        case let .richTextView(elements):
-          self.storyRichTextHostingController.rootView =
-            ScrollView {
-              RichTextView(element: elements)
-            }
-
-          if self.storyRichTextHostingController.parent == nil {
-            self.storyRichTextHostingController.view.translatesAutoresizingMaskIntoConstraints = false
-            self.storyRichTextHostingController.view.backgroundColor = LegacyColors.ksr_white.uiColor()
-            self.addChild(self.storyRichTextHostingController)
-            self.view.addSubview(self.storyRichTextHostingController.view)
-            NSLayoutConstraint.activate([
-              self.storyRichTextHostingController.view.topAnchor
-                .constraint(equalTo: self.projectNavigationSelectorView.bottomAnchor),
-              self.storyRichTextHostingController.view.bottomAnchor
-                .constraint(equalTo: self.pledgeCTAContainerView.topAnchor, constant: -1),
-              self.storyRichTextHostingController.view.leftAnchor
-                .constraint(equalTo: self.view.leftAnchor),
-              self.storyRichTextHostingController.view.rightAnchor
-                .constraint(equalTo: self.view.rightAnchor)
-            ])
-            self.storyRichTextHostingController.didMove(toParent: self)
-          }
-          self.tableView.isHidden = true
-        }
+        self?.showContentView(contentView)
       }
 
     self.viewModel.outputs.updateFAQsInDataSource
@@ -687,6 +654,42 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         guard let self else { return }
         self.goToSimilarProject(project.projectPageParam)
       }
+  }
+
+  private func showContentView(_ contentView: ProjectPageContentView) {
+    let storyRichText = self.storyRichTextHostingController
+    switch contentView {
+    case .tableView:
+      self.tableView.isHidden = false
+      if storyRichText.parent != nil {
+        storyRichText.willMove(toParent: nil)
+        storyRichText.view.removeFromSuperview()
+        storyRichText.removeFromParent()
+      }
+    case let .richTextView(elements):
+      storyRichText.rootView = ScrollView {
+        RichTextView(element: elements)
+      }
+
+      if storyRichText.parent == nil {
+        storyRichText.view.translatesAutoresizingMaskIntoConstraints = false
+        storyRichText.view.backgroundColor = LegacyColors.ksr_white.uiColor()
+        self.addChild(storyRichText)
+        self.view.addSubview(storyRichText.view)
+        NSLayoutConstraint.activate([
+          storyRichText.view.topAnchor
+            .constraint(equalTo: self.projectNavigationSelectorView.bottomAnchor),
+          storyRichText.view.bottomAnchor
+            .constraint(equalTo: self.pledgeCTAContainerView.topAnchor, constant: -1),
+          storyRichText.view.leftAnchor
+            .constraint(equalTo: self.view.leftAnchor),
+          storyRichText.view.rightAnchor
+            .constraint(equalTo: self.view.rightAnchor)
+        ])
+        storyRichText.didMove(toParent: self)
+      }
+      self.tableView.isHidden = true
+    }
   }
 
   private func goToSimilarProject(_ param: any ProjectPageParam) {
