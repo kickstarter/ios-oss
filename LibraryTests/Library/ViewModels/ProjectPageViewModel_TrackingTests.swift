@@ -242,28 +242,32 @@ final class ProjectPageViewModel_TrackingTests: TestCase {
     let scheduler1 = TestScheduler(startDate: MockDate().date)
 
     withEnvironment(scheduler: scheduler1) {
-      let newVm: ProjectPageViewModelType = ProjectPageViewModel()
-      newVm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
-      newVm.inputs.viewDidLoad()
-      newVm.inputs.viewDidAppear(animated: true)
+      ProjectPageViewModelTests.mockNetworkRequests {
+        let newVm: ProjectPageViewModelType = ProjectPageViewModel()
+        newVm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
+        newVm.inputs.viewDidLoad()
+        newVm.inputs.viewDidAppear(animated: true)
 
-      scheduler1.advance()
+        scheduler1.advance()
 
-      XCTAssertEqual(1, self.cookieStorage.cookies?.count, "A single cookie has been set.")
+        XCTAssertEqual(1, self.cookieStorage.cookies?.count, "A single cookie has been set.")
+      }
     }
 
     withEnvironment(scheduler: scheduler1) {
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
-      newVm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.recommended))
-      newVm.inputs.viewDidLoad()
-      newVm.inputs.viewDidAppear(animated: true)
+      ProjectPageViewModelTests.mockNetworkRequests {
+        newVm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.recommended))
+        newVm.inputs.viewDidLoad()
+        newVm.inputs.viewDidAppear(animated: true)
 
-      scheduler1.advance()
+        scheduler1.advance()
 
-      XCTAssertEqual(
-        1, self.cookieStorage.cookies?.count,
-        "A single cookie has been set on the same scheduler."
-      )
+        XCTAssertEqual(
+          1, self.cookieStorage.cookies?.count,
+          "A single cookie has been set on the same scheduler."
+        )
+      }
     }
   }
 
