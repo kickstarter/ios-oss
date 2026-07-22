@@ -1343,7 +1343,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
-      self.projectFlagged.assertValue(false)
+      self.projectFlagged.assertValues([false, false])
     }
   }
 
@@ -1356,7 +1356,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
-      self.projectFlagged.assertValue(true)
+      self.projectFlagged.assertValues([false, true])
     }
   }
 
