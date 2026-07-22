@@ -434,6 +434,8 @@ final class ProjectPageViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
+      self.scheduler.advance()
+
       self.configureProjectNavigationSelectorView.assertDidEmitValue()
     }
   }
@@ -451,6 +453,8 @@ final class ProjectPageViewModelTests: TestCase {
       self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
 
       self.configureProjectNavigationSelectorView.assertDidEmitValue()
     }
@@ -566,6 +570,8 @@ final class ProjectPageViewModelTests: TestCase {
       let project = Project.template
 
       self.vm.configureAndLoad(.left(project))
+
+      self.scheduler.advance()
 
       self.goToRewardsProject.assertDidNotEmitValue()
       self.goToRewardsRefTag.assertDidNotEmitValue()
@@ -774,6 +780,8 @@ final class ProjectPageViewModelTests: TestCase {
       let project = Project.template
 
       self.vm.configureAndLoad(.left(project), secretRewardToken: "secret-reward-token")
+
+      self.scheduler.advance()
 
       self.goToRewardsProject.assertDidNotEmitValue()
       self.goToRewardsRefTag.assertDidNotEmitValue()
