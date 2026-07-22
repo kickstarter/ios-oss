@@ -580,7 +580,7 @@ final class ProjectPageViewModelTests: TestCase {
     withEnvironment(config: .template, currentUser: .template, mainBundle: self.releaseBundle) {
       let project = Project.template
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.goToRewardsProject.assertDidNotEmitValue()
       self.goToRewardsRefTag.assertDidNotEmitValue()
@@ -618,7 +618,7 @@ final class ProjectPageViewModelTests: TestCase {
     withEnvironment(config: .template, currentUser: nil, mainBundle: self.releaseBundle) {
       let project = Project.template
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.goToRewardsProject.assertDidNotEmitValue()
       self.goToRewardsRefTag.assertDidNotEmitValue()
@@ -671,7 +671,7 @@ final class ProjectPageViewModelTests: TestCase {
     let initialData = Either<Project, any ProjectPageParam>.right(param)
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.configureInitialState(initialData)
+      self.vm.configureAndLoad(initialData)
 
       self.configureChildViewControllersWithProject.assertDidNotEmitValue()
 
@@ -709,7 +709,7 @@ final class ProjectPageViewModelTests: TestCase {
     let initialData = Either<Project, any ProjectPageParam>.right(param)
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.configureInitialState(initialData, secretRewardToken: "foobar")
+      self.vm.configureAndLoad(initialData, secretRewardToken: "foobar")
 
       self.configureChildViewControllersWithProject.assertDidNotEmitValue()
 
@@ -746,7 +746,7 @@ final class ProjectPageViewModelTests: TestCase {
     let initialData = Either<Project, any ProjectPageParam>.right(param)
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.configureInitialState(initialData)
+      self.vm.configureAndLoad(initialData)
 
       self.configureChildViewControllersWithProject.assertDidNotEmitValue()
 
@@ -764,7 +764,7 @@ final class ProjectPageViewModelTests: TestCase {
       currentUser: .template,
       mainBundle: self.releaseBundle
     ) {
-      self.configureInitialState(.left(project), secretRewardToken: "secret-reward-token")
+      self.vm.configureAndLoad(.left(project), secretRewardToken: "secret-reward-token")
 
       self.goToRewardsProject.assertDidNotEmitValue()
       self.goToRewardsRefTag.assertDidNotEmitValue()
@@ -788,7 +788,7 @@ final class ProjectPageViewModelTests: TestCase {
     ) {
       let project = Project.template
 
-      self.configureInitialState(.left(project), secretRewardToken: "secret-reward-token")
+      self.vm.configureAndLoad(.left(project), secretRewardToken: "secret-reward-token")
 
       self.goToRewardsProject.assertDidNotEmitValue()
       self.goToRewardsRefTag.assertDidNotEmitValue()
@@ -812,7 +812,7 @@ final class ProjectPageViewModelTests: TestCase {
         |> \.watchesCount .~ 10
         |> \.personalization.isStarred .~ true
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.updateWatchProjectWithPrelaunchProjectState.assertDidNotEmitValue()
 
@@ -836,7 +836,7 @@ final class ProjectPageViewModelTests: TestCase {
         |> Project.lens.personalization.backing .~ backing
         |> Project.lens.personalization.isBacking .~ true
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.goToManagePledgeProjectParam.assertDidNotEmitValue()
       self.goToManagePledgeBackingParam.assertDidNotEmitValue()
@@ -862,7 +862,7 @@ final class ProjectPageViewModelTests: TestCase {
         |> Project.lens.personalization.backing .~ backing
         |> Project.lens.personalization.isBacking .~ true
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.goToManagePledgeProjectParam.assertDidNotEmitValue()
       self.goToManagePledgeBackingParam.assertDidNotEmitValue()
@@ -889,7 +889,7 @@ final class ProjectPageViewModelTests: TestCase {
 
       let backingDetailsPageURL = backing.backingDetailsPageRoute
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.goToManagePledgeProjectParam.assertDidNotEmitValue()
       self.goToManagePledgeBackingParam.assertDidNotEmitValue()
@@ -917,7 +917,7 @@ final class ProjectPageViewModelTests: TestCase {
 
       let backingDetailsPageURL = backing.backingDetailsPageRoute
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.goToManagePledgeProjectParam.assertDidNotEmitValue()
       self.goToManagePledgeBackingParam.assertDidNotEmitValue()
@@ -938,7 +938,7 @@ final class ProjectPageViewModelTests: TestCase {
       AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString +
       project.redemptionPageUrl
 
-    self.configureInitialState(.left(project))
+    self.vm.configureAndLoad(.left(project))
 
     self.goToPledgeManager.assertDidNotEmitValue()
 
@@ -982,7 +982,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
       self.configurePledgeCTAViewRefTag.assertValues([])
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.configurePledgeCTAViewProject.assertValues([project])
       self.configurePledgeCTAViewIsLoading.assertValues([true])
@@ -1011,7 +1011,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
       self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.configurePledgeCTAViewProject.assertValues([project])
       self.configurePledgeCTAViewIsLoading.assertValues([true])
@@ -1936,7 +1936,7 @@ final class ProjectPageViewModelTests: TestCase {
 
   // MARK: - selectedContentView
 
-  func testselectedContentView_defaultsToTableViewOnViewDidLoad() {
+  func testSelectedContentView_defaultsToTableViewOnViewDidLoad() {
     self.vm.inputs.configureWith(
       projectOrParam: .left(self.projectWithEmptyProperties),
       refInfo: RefInfo(.category)
@@ -1946,7 +1946,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.selectedContentView.assertValues([.tableView])
   }
 
-  func testselectedContentView_featureFlagOff_campaignSection_returnsTableView() {
+  func testSelectedContentView_featureFlagOff_campaignSection_returnsTableView() {
     let mockStatsig = MockStatsigWrapper()
     mockStatsig.features = [.projectStoryRichText: false]
 
@@ -1967,7 +1967,7 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  func testselectedContentView_featureFlagOn_noRichText_campaignSection_returnsTableView() {
+  func testSelectedContentView_featureFlagOn_noRichText_campaignSection_returnsTableView() {
     let mockStatsig = MockStatsigWrapper()
     mockStatsig.features = [.projectStoryRichText: true]
 
@@ -1985,7 +1985,7 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  func testselectedContentView_featureFlagOn_hasRichText_campaignSection_returnsRichTextView() {
+  func testSelectedContentView_featureFlagOn_hasRichText_campaignSection_returnsRichTextView() {
     let mockStatsig = MockStatsigWrapper()
     mockStatsig.features = [.projectStoryRichText: true]
 
@@ -2007,7 +2007,7 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  func testselectedContentView_switchingFromCampaignToOverview_returnsTableView() {
+  func testSelectedContentView_switchingFromCampaignToOverview_returnsTableView() {
     let mockStatsig = MockStatsigWrapper()
     mockStatsig.features = [.projectStoryRichText: true]
 
@@ -2033,7 +2033,7 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  func testselectedContentView_skipRepeats_doesNotReemitSameValue() {
+  func testSelectedContentView_skipRepeats_doesNotReemitSameValue() {
     let mockStatsig = MockStatsigWrapper()
     mockStatsig.features = [.projectStoryRichText: true]
 
@@ -2057,18 +2057,56 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  // MARK: - Functions
-
-  private func configureInitialState(
-    _ projectOrParam: Either<Project, any ProjectPageParam>,
-    secretRewardToken: String? = nil
+  static func mockNetworkRequests(
+    project: Project = Project.template,
+    rewards: [Reward] = [Reward.noReward, Reward.template],
+    backing: Backing? = nil,
+    action: () -> Void
   ) {
-    self.vm.inputs.configureWith(
-      projectOrParam: projectOrParam,
-      refInfo: RefInfo(.discovery),
+    if let backing {
+      let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: backing.id)
+      let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
+
+      AppEnvironment.pushEnvironment(
+        apiService: MockService(
+          addUserToSecretRewardGroup: .success(EmptyResponseEnvelope()),
+          fetchProjectAndBackingResult: .success(projectAndBacking),
+          fetchProjectPamphletResult: .success(projectPamphletData),
+          fetchProjectRewardsResult: .success(rewards),
+        )
+      )
+
+    } else {
+      let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
+
+      AppEnvironment.pushEnvironment(
+        apiService: MockService(
+          addUserToSecretRewardGroup: .success(EmptyResponseEnvelope()),
+          fetchProjectPamphletResult: .success(projectPamphletData),
+          fetchProjectRewardsResult: .success(rewards)
+        )
+      )
+    }
+
+    action()
+
+    AppEnvironment.popEnvironment()
+  }
+}
+
+extension ProjectPageViewModelType {
+  /// Convenience method which calls `configureWith`, `viewDidLoad` and `viewDidAppear`.
+  func configureAndLoad(
+    _ either: Either<Project, any ProjectPageParam>,
+    secretRewardToken: String? = nil,
+    refTag: RefTag? = .discovery
+  ) {
+    self.inputs.configureWith(
+      projectOrParam: either,
+      refInfo: RefInfo(refTag),
       secretRewardToken: secretRewardToken
     )
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewDidAppear(animated: false)
+    self.inputs.viewDidLoad()
+    self.inputs.viewDidAppear(animated: false)
   }
 }
