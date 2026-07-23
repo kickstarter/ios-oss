@@ -728,7 +728,6 @@
 		E190EB622E29944E006A6DB6 /* FetchRootCategories.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchRootCategories.graphql; sourceTree = "<group>"; };
 		E190EB632E29944E006A6DB6 /* FetchUpdateComments.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUpdateComments.graphql; sourceTree = "<group>"; };
 		E190EB642E29944E006A6DB6 /* FetchUser.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUser.graphql; sourceTree = "<group>"; };
-		E190EB652E29944E006A6DB6 /* FetchUserBackings.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUserBackings.graphql; sourceTree = "<group>"; };
 		E190EB662E29944E006A6DB6 /* FetchUserEmail.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUserEmail.graphql; sourceTree = "<group>"; };
 		E190EB672E29944E006A6DB6 /* FetchUserSetup.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUserSetup.graphql; sourceTree = "<group>"; };
 		E190EB682E29944E006A6DB6 /* FetchUserStoredCards.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUserStoredCards.graphql; sourceTree = "<group>"; };
@@ -1372,7 +1371,6 @@
 				E190EB622E29944E006A6DB6 /* FetchRootCategories.graphql */,
 				E190EB632E29944E006A6DB6 /* FetchUpdateComments.graphql */,
 				E190EB642E29944E006A6DB6 /* FetchUser.graphql */,
-				E190EB652E29944E006A6DB6 /* FetchUserBackings.graphql */,
 				E190EB662E29944E006A6DB6 /* FetchUserEmail.graphql */,
 				E190EB672E29944E006A6DB6 /* FetchUserSetup.graphql */,
 				E190EB682E29944E006A6DB6 /* FetchUserStoredCards.graphql */,
@@ -2056,7 +2054,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 5.33.0;
+				MARKETING_VERSION = 5.36.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D INTERNAL_BUILD";
@@ -2091,7 +2089,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.35.1;
+				MARKETING_VERSION = 5.36.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.beta;
@@ -2124,7 +2122,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.35.1;
+				MARKETING_VERSION = 5.36.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.debug;
@@ -2156,7 +2154,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.35.1;
+				MARKETING_VERSION = 5.36.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
@@ -2227,7 +2225,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 5.33.0;
+				MARKETING_VERSION = 5.36.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
@@ -2294,7 +2292,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 5.33.0;
+				MARKETING_VERSION = 5.36.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D RELEASE";
@@ -2505,7 +2503,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 5.33.0;
+				MARKETING_VERSION = 5.36.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D INTERNAL_BUILD";
@@ -2538,7 +2536,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.35.1;
+				MARKETING_VERSION = 5.36.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.kickalpha;

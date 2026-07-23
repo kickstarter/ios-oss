@@ -499,21 +499,6 @@ public struct Service: ServiceType {
       .flatMap(UserEnvelope<User>.envelopeProducer(from:))
   }
 
-  public func fetchErroredUserBackings(status: BackingState)
-    -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
-    guard let status = GraphAPI.BackingState.from(status)
-    else { return SignalProducer(error: .couldNotParseJSON) }
-
-    return GraphQL.shared.client
-      .fetch(
-        query: GraphAPI
-          .FetchUserBackingsQuery(
-            status: GraphQLEnum.case(status)
-          )
-      )
-      .flatMap(ErroredBackingsEnvelope.producer(from:))
-  }
-
   public func fetchBacking(id: Int)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client

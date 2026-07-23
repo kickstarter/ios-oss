@@ -101,7 +101,6 @@
     fileprivate let fetchGraphUserSelfResult: Result<UserEnvelope<User>, ErrorEnvelope>?
     fileprivate let fetchGraphUserEmailResult: Result<UserEnvelope<GraphUserEmail>, ErrorEnvelope>?
     fileprivate let fetchGraphUserSetupResult: Result<UserEnvelope<GraphUserSetup>, ErrorEnvelope>?
-    fileprivate let fetchErroredUserBackingsResult: Result<ErroredBackingsEnvelope, ErrorEnvelope>?
 
     fileprivate let addAttachmentResponse: UpdateDraft.Image?
     fileprivate let addAttachmentError: ErrorEnvelope?
@@ -302,7 +301,6 @@
       fetchGraphUserSelfResult: Result<UserEnvelope<User>, ErrorEnvelope>? = nil,
       fetchGraphUserEmailResult: Result<UserEnvelope<GraphUserEmail>, ErrorEnvelope>? = nil,
       fetchGraphUserSetupResult: Result<UserEnvelope<GraphUserSetup>, ErrorEnvelope>? = nil,
-      fetchErroredUserBackingsResult: Result<ErroredBackingsEnvelope, ErrorEnvelope>? = nil,
       addAttachmentResponse: UpdateDraft.Image? = nil,
       addAttachmentError: ErrorEnvelope? = nil,
       removeAttachmentResponse: UpdateDraft.Image? = nil,
@@ -450,8 +448,6 @@
       self.fetchGraphUserSelfResult = fetchGraphUserSelfResult
       self.fetchGraphUserEmailResult = fetchGraphUserEmailResult
       self.fetchGraphUserSetupResult = fetchGraphUserSetupResult
-
-      self.fetchErroredUserBackingsResult = fetchErroredUserBackingsResult
 
       self.fetchPledgedProjectsResult = fetchPledgedProjectsResult
 
@@ -1049,12 +1045,6 @@
 
       let fetchGraphUserSetupQuery = GraphAPI.FetchUserSetupQuery()
       return client.fetchWithResult(query: fetchGraphUserSetupQuery, result: self.fetchGraphUserSetupResult)
-    }
-
-    // TODO: Refactor this test to use `self.apolloClient`, `ErroredBackingsEnvelope` needs to be `Decodable` and tested in-app.
-    internal func fetchErroredUserBackings(status _: BackingState)
-      -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
-      return producer(for: self.fetchErroredUserBackingsResult)
     }
 
     internal func unfollowFriend(userId _: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {

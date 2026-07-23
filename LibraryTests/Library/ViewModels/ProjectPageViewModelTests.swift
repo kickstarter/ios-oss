@@ -146,99 +146,43 @@ final class ProjectPageViewModelTests: TestCase {
       .observe(self.updateWatchProjectWithPrelaunchProjectState.observer)
   }
 
-  func testConfigureChildViewControllersWithProject_WithFriendsNoBacking_ConfiguredWithProject() {
+  func testConfigureChildViewControllersWithProject_ConfiguredWithProject() {
+    let stubProject = self.projectWithEmptyProperties
     let project = Project.template
-    let friends = [User.template]
     let refTag = RefTag.category
-    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
-    withEnvironment(apiService: MockService(
-      fetchProjectAndBackingResult: .success(.template),
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .success(friends),
-      fetchProjectRewardsResult: .success([.template])
-    )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(refTag))
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewDidAppear(animated: false)
+    ProjectPageViewModelTests.mockNetworkRequests(project: project) {
+      self.vm.configureAndLoad(.left(stubProject), refTag: refTag)
 
-      self.configureChildViewControllersWithProject.assertValues([project])
+      self.configureChildViewControllersWithProject.assertValues([stubProject])
       self.configureChildViewControllersWithRefTag.assertValues([refTag])
 
       self.scheduler.advance()
 
-      self.configureChildViewControllersWithProject.assertValues([project, project])
+      self.configureChildViewControllersWithProject.assertValues([stubProject, project])
       self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag])
 
       self.vm.inputs.didBackProject()
 
       self.scheduler.advance()
 
-      self.configureChildViewControllersWithProject.assertValues([project, project, project])
+      self.configureChildViewControllersWithProject.assertValues([stubProject, project, project])
       self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag])
 
       self.vm.inputs.managePledgeViewControllerFinished(with: nil)
 
       self.scheduler.advance()
 
-      self.configureChildViewControllersWithProject.assertValues([project, project, project, project])
+      self.configureChildViewControllersWithProject.assertValues([stubProject, project, project, project])
       self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag, refTag])
     }
   }
 
-  func testConfigureChildViewControllersWithProject_FailedProjectFriendsNoBacking_ConfiguredWithProject() {
-    let project = Project.template
-    let refTag = RefTag.category
-    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
-
-    withEnvironment(apiService: MockService(
-      fetchProjectAndBackingResult: .success(.template),
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .failure(.couldNotParseJSON),
-      fetchProjectRewardsResult: .success([.template])
-    )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(refTag))
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewDidAppear(animated: false)
-
-      self.configureChildViewControllersWithProject.assertValues([project])
-      self.configureChildViewControllersWithRefTag.assertValues([refTag])
-
-      self.scheduler.advance()
-
-      self.configureChildViewControllersWithProject.assertValues([project, project])
-      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag])
-
-      self.vm.inputs.didBackProject()
-
-      self.scheduler.advance()
-
-      self.configureChildViewControllersWithProject.assertValues([project, project, project])
-      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag])
-
-      self.vm.inputs.managePledgeViewControllerFinished(with: nil)
-
-      self.scheduler.advance()
-
-      self.configureChildViewControllersWithProject.assertValues([project, project, project, project])
-      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag, refTag])
-    }
-  }
-
-  func testConfigureChildViewControllersWithProject_WithFriendsNoBacking_ConfiguredWithParam() {
+  func testConfigureChildViewControllersWithProject_ConfiguredWithParam() {
     let project = .template |> Project.lens.id .~ 42
-    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
-    let friends = [User.template]
 
-    withEnvironment(apiService: MockService(
-      fetchProjectAndBackingResult: .success(.template),
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .success(friends),
-      fetchProjectRewardsResult: .success([.template])
-    )) {
-      self.vm.inputs.configureWith(projectOrParam: .right(Param.id(project.id)), refInfo: nil)
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewDidAppear(animated: false)
+    ProjectPageViewModelTests.mockNetworkRequests(project: project) {
+      self.vm.configureAndLoad(.right(Param.id(project.id)), refTag: nil)
 
       self.configureChildViewControllersWithProject.assertValues([])
       self.configureChildViewControllersWithRefTag.assertValues([])
@@ -565,7 +509,7 @@ final class ProjectPageViewModelTests: TestCase {
     withEnvironment(config: .template, currentUser: .template, mainBundle: self.releaseBundle) {
       let project = Project.template
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.goToRewardsProject.assertDidNotEmitValue()
       self.goToRewardsRefTag.assertDidNotEmitValue()
@@ -603,7 +547,7 @@ final class ProjectPageViewModelTests: TestCase {
     withEnvironment(config: .template, currentUser: nil, mainBundle: self.releaseBundle) {
       let project = Project.template
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.goToRewardsProject.assertDidNotEmitValue()
       self.goToRewardsRefTag.assertDidNotEmitValue()
@@ -656,7 +600,7 @@ final class ProjectPageViewModelTests: TestCase {
     let initialData = Either<Project, any ProjectPageParam>.right(param)
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.configureInitialState(initialData)
+      self.vm.configureAndLoad(initialData)
 
       self.configureChildViewControllersWithProject.assertDidNotEmitValue()
 
@@ -694,7 +638,7 @@ final class ProjectPageViewModelTests: TestCase {
     let initialData = Either<Project, any ProjectPageParam>.right(param)
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.configureInitialState(initialData, secretRewardToken: "foobar")
+      self.vm.configureAndLoad(initialData, secretRewardToken: "foobar")
 
       self.configureChildViewControllersWithProject.assertDidNotEmitValue()
 
@@ -731,7 +675,7 @@ final class ProjectPageViewModelTests: TestCase {
     let initialData = Either<Project, any ProjectPageParam>.right(param)
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.configureInitialState(initialData)
+      self.vm.configureAndLoad(initialData)
 
       self.configureChildViewControllersWithProject.assertDidNotEmitValue()
 
@@ -749,7 +693,7 @@ final class ProjectPageViewModelTests: TestCase {
       currentUser: .template,
       mainBundle: self.releaseBundle
     ) {
-      self.configureInitialState(.left(project), secretRewardToken: "secret-reward-token")
+      self.vm.configureAndLoad(.left(project), secretRewardToken: "secret-reward-token")
 
       self.goToRewardsProject.assertDidNotEmitValue()
       self.goToRewardsRefTag.assertDidNotEmitValue()
@@ -773,7 +717,7 @@ final class ProjectPageViewModelTests: TestCase {
     ) {
       let project = Project.template
 
-      self.configureInitialState(.left(project), secretRewardToken: "secret-reward-token")
+      self.vm.configureAndLoad(.left(project), secretRewardToken: "secret-reward-token")
 
       self.goToRewardsProject.assertDidNotEmitValue()
       self.goToRewardsRefTag.assertDidNotEmitValue()
@@ -797,7 +741,7 @@ final class ProjectPageViewModelTests: TestCase {
         |> \.watchesCount .~ 10
         |> \.personalization.isStarred .~ true
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.updateWatchProjectWithPrelaunchProjectState.assertDidNotEmitValue()
 
@@ -821,7 +765,7 @@ final class ProjectPageViewModelTests: TestCase {
         |> Project.lens.personalization.backing .~ backing
         |> Project.lens.personalization.isBacking .~ true
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.goToManagePledgeProjectParam.assertDidNotEmitValue()
       self.goToManagePledgeBackingParam.assertDidNotEmitValue()
@@ -847,7 +791,7 @@ final class ProjectPageViewModelTests: TestCase {
         |> Project.lens.personalization.backing .~ backing
         |> Project.lens.personalization.isBacking .~ true
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.goToManagePledgeProjectParam.assertDidNotEmitValue()
       self.goToManagePledgeBackingParam.assertDidNotEmitValue()
@@ -874,7 +818,7 @@ final class ProjectPageViewModelTests: TestCase {
 
       let backingDetailsPageURL = backing.backingDetailsPageRoute
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.goToManagePledgeProjectParam.assertDidNotEmitValue()
       self.goToManagePledgeBackingParam.assertDidNotEmitValue()
@@ -902,7 +846,7 @@ final class ProjectPageViewModelTests: TestCase {
 
       let backingDetailsPageURL = backing.backingDetailsPageRoute
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.goToManagePledgeProjectParam.assertDidNotEmitValue()
       self.goToManagePledgeBackingParam.assertDidNotEmitValue()
@@ -923,7 +867,7 @@ final class ProjectPageViewModelTests: TestCase {
       AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString +
       project.redemptionPageUrl
 
-    self.configureInitialState(.left(project))
+    self.vm.configureAndLoad(.left(project))
 
     self.goToPledgeManager.assertDidNotEmitValue()
 
@@ -967,7 +911,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
       self.configurePledgeCTAViewRefTag.assertValues([])
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.configurePledgeCTAViewProject.assertValues([project])
       self.configurePledgeCTAViewIsLoading.assertValues([true])
@@ -996,7 +940,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
       self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
-      self.configureInitialState(.left(project))
+      self.vm.configureAndLoad(.left(project))
 
       self.configurePledgeCTAViewProject.assertValues([project])
       self.configurePledgeCTAViewIsLoading.assertValues([true])
@@ -1919,18 +1863,56 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  // MARK: - Functions
-
-  private func configureInitialState(
-    _ projectOrParam: Either<Project, any ProjectPageParam>,
-    secretRewardToken: String? = nil
+  static func mockNetworkRequests(
+    project: Project = Project.template,
+    rewards: [Reward] = [Reward.noReward, Reward.template],
+    backing: Backing? = nil,
+    action: () -> Void
   ) {
-    self.vm.inputs.configureWith(
-      projectOrParam: projectOrParam,
-      refInfo: RefInfo(.discovery),
+    if let backing {
+      let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: backing.id)
+      let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
+
+      AppEnvironment.pushEnvironment(
+        apiService: MockService(
+          addUserToSecretRewardGroup: .success(EmptyResponseEnvelope()),
+          fetchProjectAndBackingResult: .success(projectAndBacking),
+          fetchProjectPamphletResult: .success(projectPamphletData),
+          fetchProjectRewardsResult: .success(rewards),
+        )
+      )
+
+    } else {
+      let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
+
+      AppEnvironment.pushEnvironment(
+        apiService: MockService(
+          addUserToSecretRewardGroup: .success(EmptyResponseEnvelope()),
+          fetchProjectPamphletResult: .success(projectPamphletData),
+          fetchProjectRewardsResult: .success(rewards)
+        )
+      )
+    }
+
+    action()
+
+    AppEnvironment.popEnvironment()
+  }
+}
+
+extension ProjectPageViewModelType {
+  /// Convenience method which calls `configureWith`, `viewDidLoad` and `viewDidAppear`.
+  func configureAndLoad(
+    _ either: Either<Project, any ProjectPageParam>,
+    secretRewardToken: String? = nil,
+    refTag: RefTag? = .discovery
+  ) {
+    self.inputs.configureWith(
+      projectOrParam: either,
+      refInfo: RefInfo(refTag),
       secretRewardToken: secretRewardToken
     )
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewDidAppear(animated: false)
+    self.inputs.viewDidLoad()
+    self.inputs.viewDidAppear(animated: false)
   }
 }
