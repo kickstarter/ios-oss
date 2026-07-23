@@ -499,23 +499,6 @@ public struct Service: ServiceType {
       .flatMap(UserEnvelope<User>.envelopeProducer(from:))
   }
 
-  public func fetchErroredUserBackings(status: BackingState)
-    -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
-    guard let status = GraphAPI.BackingState.from(status)
-    else { return SignalProducer(error: .couldNotParseJSON) }
-
-    return GraphQL.shared.client
-      .fetch(
-        query: GraphAPI
-          .FetchUserBackingsQuery(
-            status: GraphQLEnum.case(status),
-            includeShippingRules: true,
-            includeLocalPickup: false
-          )
-      )
-      .flatMap(ErroredBackingsEnvelope.producer(from:))
-  }
-
   public func fetchBacking(id: Int)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
@@ -523,7 +506,6 @@ public struct Service: ServiceType {
         query: GraphAPI
           .FetchBackingQuery(
             id: "\(id)",
-            includeShippingRules: true,
             includeLocalPickup: true
           )
       )
@@ -549,7 +531,6 @@ public struct Service: ServiceType {
         query: GraphAPI
           .FetchBackingWithIncrementsRefundedQuery(
             id: "\(id)",
-            includeShippingRules: true,
             includeLocalPickup: true
           )
       )
@@ -637,7 +618,6 @@ public struct Service: ServiceType {
 
     let query = GraphAPI.FetchSortedProjectRewardsByIdQuery(
       projectId: projectId,
-      includeShippingRules: true,
       includeLocalPickup: true,
       location: GraphQLEnum.caseOrNil(graphCountryCode)
     )
@@ -708,7 +688,6 @@ public struct Service: ServiceType {
       projectSlug: slug,
       shippingEnabled: shippingEnabled,
       locationId: GraphQLNullable.someOrNil(locationId),
-      includeShippingRules: true,
       includeLocalPickup: true
     )
 

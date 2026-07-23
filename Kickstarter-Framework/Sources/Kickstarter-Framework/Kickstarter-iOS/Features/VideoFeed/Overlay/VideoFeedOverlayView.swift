@@ -26,6 +26,8 @@ struct VideoFeedOverlayView: View {
     /// Defining safe area values because `UIHostingConfiguration` returns 0 for safe area insets when in a collectionview.
     static let topSafeAreaPadding: CGFloat = 60
     static let bottomSafeAreaPadding: CGFloat = 37
+    static let playButtonStrokeBorderOpacity: Double = 0.5
+    static let playButtonStrokeBorderWidth: CGFloat = 1
   }
 
   static let closeButtonSize: CGFloat = 44
@@ -145,9 +147,11 @@ struct VideoFeedOverlayView: View {
           .foregroundColor(Color(Colors.Icon.light.uiColor()))
           .offset(x: Constants.playIconOffset)
           .frame(width: Constants.playIconSize, height: Constants.playIconSize)
-          /// Second larger frame to create the frosted glass ring.
           .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
-          .background(FrostedGlassBackgroundView())
+          .background(FrostedGlassBackgroundView().overlay(Circle().strokeBorder(
+            Color.white.opacity(Constants.playButtonStrokeBorderOpacity),
+            lineWidth: Constants.playButtonStrokeBorderWidth
+          )))
           .clipShape(Circle())
       }
       .opacity(self.playbackState.isPlayButtonVisible ? 1 : 0)

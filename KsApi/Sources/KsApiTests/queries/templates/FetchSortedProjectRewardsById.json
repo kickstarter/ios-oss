@@ -85,36 +85,6 @@
             "remainingQuantity": null,
             "shippingPreference": "restricted",
             "shippingSummary": "Nur in folgende Länder: Deutschland",
-            "shippingRules": [
-              {
-                "__typename": "ShippingRule",
-                "cost": {
-                  "__typename": "Money",
-                  "amount": "0.0",
-                  "currency": "USD",
-                  "symbol": "$"
-                },
-                "id": "U2hpcHBpbmdSdWxlLTE2NDQwMzc1",
-                "location": {
-                  "__typename": "Location",
-                  "country": "DE",
-                  "countryName": "Deutschland",
-                  "displayableName": "Deutschland",
-                  "id": "TG9jYXRpb24tMjM0MjQ4Mjk=",
-                  "name": "Deutschland"
-                },
-                "estimatedMin": {
-                  "__typename": "Money",
-                  "amount": "5",
-                  "currency": "USD"
-                },
-                "estimatedMax": {
-                  "__typename": "Money",
-                  "amount": "7",
-                  "currency": "USD"
-                }
-              }
-            ],
             "startsAt": null,
             "image": null,
             "audienceData": {

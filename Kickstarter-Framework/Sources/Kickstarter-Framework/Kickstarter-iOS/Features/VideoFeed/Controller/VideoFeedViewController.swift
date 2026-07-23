@@ -294,6 +294,10 @@ final class VideoFeedViewController: UIViewController {
   }
 
   private func resumeVisibleCell() {
+    /// `willEnterForegroundNotification` fires app-wide, and this VC is retained after dismissal.
+    ///  Skip resume if the feed is no longer visible.
+    guard self.view.window != nil else { return }
+
     self.activateCurrentPageCell()
   }
 
@@ -366,28 +370,7 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
 
     cell.onEvent = { [weak self] event in
       guard let self else { return }
-
-      switch event {
-      case .closeTapped:
-        self.dismiss(animated: true)
-      case .creatorTapped:
-        self.goToCreatorProfile(for: item)
-      case .shareTapped:
-        self.simpleAlert(title: "Share")
-        self.viewModel.trackCTAClicked(ctaContext: .videoFeedShare, item: item)
-      case .moreTapped:
-        self.simpleAlert(title: "More")
-      case .ctaTapped:
-        self.goToProjectPage(for: item)
-      case .pauseTapped:
-        self.viewModel.trackCTAClicked(ctaContext: .videoFeedPause, item: item)
-      case .resumeTapped:
-        self.viewModel.trackCTAClicked(ctaContext: .videoFeedPlay, item: item)
-      case let .progressBarTapped(percentageWatched):
-        self.trackProgressBarTapped(item: item, percentageWatched: percentageWatched)
-      case .videoReady, .videoFailed:
-        break
-      }
+      self.handleOnEvent(event, item: item)
     }
 
     cell.configureWith(
@@ -479,6 +462,30 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
   }
 
   // MARK: - Helpers
+
+  private func handleOnEvent(_ event: VideoFeedCell.Event, item: VideoFeedItem) {
+    switch event {
+    case .closeTapped:
+      self.dismiss(animated: true)
+    case .creatorTapped:
+      self.goToCreatorProfile(for: item)
+    case .shareTapped:
+      self.simpleAlert(title: "Share")
+      self.viewModel.trackCTAClicked(ctaContext: .videoFeedShare, item: item)
+    case .moreTapped:
+      self.simpleAlert(title: "More")
+    case .ctaTapped:
+      self.goToProjectPage(for: item)
+    case .pauseTapped:
+      self.viewModel.trackCTAClicked(ctaContext: .videoFeedPause, item: item)
+    case .resumeTapped:
+      self.viewModel.trackCTAClicked(ctaContext: .videoFeedPlay, item: item)
+    case let .progressBarTapped(percentageWatched):
+      self.trackProgressBarTapped(item: item, percentageWatched: percentageWatched)
+    case .videoReady, .videoFailed:
+      break
+    }
+  }
 
   private func trackProgressBarTapped(item: VideoFeedItem, percentageWatched: Float) {
     let pageHeight = self.collectionView.bounds.height

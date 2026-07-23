@@ -55,7 +55,6 @@ extension Reward {
       remaining: rewardFragment.remainingQuantity,
       rewardsItems: rewardItemsData(from: rewardFragment, with: projectId),
       shipping: shippingData(from: rewardFragment),
-      shippingRules: shippingRulesData(from: rewardFragment),
       shippingRulesExpanded: expandedShippingRules,
       startsAt: rewardFragment.startsAt.flatMap(TimeInterval.init),
       title: rewardFragment.name,
@@ -116,25 +115,6 @@ private func shippingPreference(from rewardFragment: GraphAPI.RewardFragment) ->
   case .unrestricted: return .unrestricted
   default: return .none
   }
-}
-
-private func shippingRulesData(
-  from rewardFragment: GraphAPI.RewardFragment
-) -> [ShippingRule]? {
-  guard let existingShippingRules: [GraphAPI.RewardFragment.ShippingRule?] = rewardFragment.shippingRules
-  else {
-    return nil
-  }
-
-  let shippingRules = existingShippingRules
-    .compactMap { shippingRule -> ShippingRule? in
-      guard let fragment = shippingRule?.fragments.shippingRuleFragment else { return nil }
-
-      return ShippingRule.shippingRule(from: fragment)
-    }
-    .flatMap { $0 }
-
-  return shippingRules
 }
 
 /// Converts a `GraphAPI.RewardFragment.Image` object into a `Photo` model.

@@ -9,7 +9,8 @@ extension Backing {
   static func backing(
     from backingFragment: GraphAPI.BackingFragment,
     addOns: [Reward]? = nil,
-    paymentIncrements: [PledgePaymentIncrement] = []
+    paymentIncrements: [PledgePaymentIncrement] = [],
+    rewardExpandedShippingRules: [ShippingRule]? = nil,
   ) -> Backing? {
     guard
       let id = decompose(id: backingFragment.id),
@@ -21,7 +22,10 @@ extension Backing {
       let user = backingFragment.backer?.fragments.publicUserFragment
     else { return nil }
 
-    let reward = backingReward(from: backingFragment)
+    let reward = backingReward(
+      from: backingFragment,
+      expandedShippingRules: rewardExpandedShippingRules
+    )
     /// Usually we only fetch your _own_ backings, but if you're a creator, it's possible to fetch the backings
     /// for one of your projects' backers.
     /// If you're fetching your own backing, and you need private fields, you should be getting them from `me` or
@@ -83,12 +87,18 @@ extension Backing {
         }
     }
 
+    var rewardShippingRules: [ShippingRule]? = nil
+    if let rewardShippingRulesFragment = data.backing?.reward?.fragments.simpleShippingRulesExpandedFragment {
+      rewardShippingRules = ShippingRule.simpleShippingRulesExpanded(from: rewardShippingRulesFragment)
+    }
+
     guard
       let backingFragment = data.backing?.fragments.backingFragment,
       let backing = Backing.backing(
         from: backingFragment,
         addOns: addOns,
-        paymentIncrements: paymentIncrements
+        paymentIncrements: paymentIncrements,
+        rewardExpandedShippingRules: rewardShippingRules
       )
     else {
       return SignalProducer(error: .couldNotParseJSON)
@@ -102,21 +112,20 @@ private func backingStatus(from backingFragment: GraphAPI.BackingFragment) -> Ba
   return Backing.Status(rawValue: backingFragment.status.rawValue)
 }
 
-private func backingReward(from backingFragment: GraphAPI.BackingFragment) -> Reward? {
+private func backingReward(
+  from backingFragment: GraphAPI.BackingFragment,
+  expandedShippingRules: [ShippingRule]? = nil
+) -> Reward? {
   guard let reward = backingFragment.reward?.fragments.rewardFragment else {
-    let projectMinimumPledgeAmount: Int = backingFragment.project?.minPledge ?? 1
-    let projectFXRate: Double = backingFragment.project?.fxRate ?? 1.0
+    guard let project = backingFragment.project else {
+      return Reward.noReward
+    }
 
-    let convertedMinimumAmount = projectFXRate * Double(projectMinimumPledgeAmount)
-
-    let emptyReward = Reward.noReward
-      |> Reward.lens.minimum .~ Double(projectMinimumPledgeAmount)
-      |> Reward.lens.convertedMinimum .~ convertedMinimumAmount
-
-    return emptyReward
+    let noRewardFragment = project.fragments.noRewardRewardFragment
+    return Reward.noRewardReward(from: noRewardFragment)
   }
 
-  return Reward.reward(from: reward)
+  return Reward.reward(from: reward, expandedShippingRules: expandedShippingRules)
 }
 
 private func backingPaymentSource(from backingFragment: GraphAPI.BackingFragment) -> Backing.PaymentSource? {

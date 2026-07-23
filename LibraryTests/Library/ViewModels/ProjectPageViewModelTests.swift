@@ -146,99 +146,43 @@ final class ProjectPageViewModelTests: TestCase {
       .observe(self.updateWatchProjectWithPrelaunchProjectState.observer)
   }
 
-  func testConfigureChildViewControllersWithProject_WithFriendsNoBacking_ConfiguredWithProject() {
+  func testConfigureChildViewControllersWithProject_ConfiguredWithProject() {
+    let stubProject = self.projectWithEmptyProperties
     let project = Project.template
-    let friends = [User.template]
     let refTag = RefTag.category
-    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
-    withEnvironment(apiService: MockService(
-      fetchProjectAndBackingResult: .success(.template),
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .success(friends),
-      fetchProjectRewardsResult: .success([.template])
-    )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(refTag))
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewDidAppear(animated: false)
+    ProjectPageViewModelTests.mockNetworkRequests(project: project) {
+      self.vm.configureAndLoad(.left(stubProject), refTag: refTag)
 
-      self.configureChildViewControllersWithProject.assertValues([project])
+      self.configureChildViewControllersWithProject.assertValues([stubProject])
       self.configureChildViewControllersWithRefTag.assertValues([refTag])
 
       self.scheduler.advance()
 
-      self.configureChildViewControllersWithProject.assertValues([project, project])
+      self.configureChildViewControllersWithProject.assertValues([stubProject, project])
       self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag])
 
       self.vm.inputs.didBackProject()
 
       self.scheduler.advance()
 
-      self.configureChildViewControllersWithProject.assertValues([project, project, project])
+      self.configureChildViewControllersWithProject.assertValues([stubProject, project, project])
       self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag])
 
       self.vm.inputs.managePledgeViewControllerFinished(with: nil)
 
       self.scheduler.advance()
 
-      self.configureChildViewControllersWithProject.assertValues([project, project, project, project])
+      self.configureChildViewControllersWithProject.assertValues([stubProject, project, project, project])
       self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag, refTag])
     }
   }
 
-  func testConfigureChildViewControllersWithProject_FailedProjectFriendsNoBacking_ConfiguredWithProject() {
-    let project = Project.template
-    let refTag = RefTag.category
-    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
-
-    withEnvironment(apiService: MockService(
-      fetchProjectAndBackingResult: .success(.template),
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .failure(.couldNotParseJSON),
-      fetchProjectRewardsResult: .success([.template])
-    )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(refTag))
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewDidAppear(animated: false)
-
-      self.configureChildViewControllersWithProject.assertValues([project])
-      self.configureChildViewControllersWithRefTag.assertValues([refTag])
-
-      self.scheduler.advance()
-
-      self.configureChildViewControllersWithProject.assertValues([project, project])
-      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag])
-
-      self.vm.inputs.didBackProject()
-
-      self.scheduler.advance()
-
-      self.configureChildViewControllersWithProject.assertValues([project, project, project])
-      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag])
-
-      self.vm.inputs.managePledgeViewControllerFinished(with: nil)
-
-      self.scheduler.advance()
-
-      self.configureChildViewControllersWithProject.assertValues([project, project, project, project])
-      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag, refTag])
-    }
-  }
-
-  func testConfigureChildViewControllersWithProject_WithFriendsNoBacking_ConfiguredWithParam() {
+  func testConfigureChildViewControllersWithProject_ConfiguredWithParam() {
     let project = .template |> Project.lens.id .~ 42
-    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
-    let friends = [User.template]
 
-    withEnvironment(apiService: MockService(
-      fetchProjectAndBackingResult: .success(.template),
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .success(friends),
-      fetchProjectRewardsResult: .success([.template])
-    )) {
-      self.vm.inputs.configureWith(projectOrParam: .right(Param.id(project.id)), refInfo: nil)
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewDidAppear(animated: false)
+    ProjectPageViewModelTests.mockNetworkRequests(project: project) {
+      self.vm.configureAndLoad(.right(Param.id(project.id)), refTag: nil)
 
       self.configureChildViewControllersWithProject.assertValues([])
       self.configureChildViewControllersWithRefTag.assertValues([])

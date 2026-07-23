@@ -11,18 +11,14 @@ public class UserBackingsConnection: MockObject {
 
   public struct MockFields {
     @Field<[Backing?]>("nodes") public var nodes
-    @available(*, deprecated, message: "Please use backingsCount instead.")
-    @Field<Int>("totalCount") public var totalCount
   }
 }
 
 public extension Mock where O == UserBackingsConnection {
   convenience init(
-    nodes: [Mock<Backing>?]? = nil,
-    totalCount: Int? = nil
+    nodes: [Mock<Backing>?]? = nil
   ) {
     self.init()
     _setList(nodes, for: \.nodes)
-    _setScalar(totalCount, for: \.totalCount)
   }
 }
