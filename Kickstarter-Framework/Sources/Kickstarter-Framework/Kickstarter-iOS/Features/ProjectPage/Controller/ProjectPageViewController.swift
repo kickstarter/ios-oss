@@ -5,6 +5,7 @@ import KDS
 import KsApi
 import Library
 import Prelude
+import ServerDrivenUI
 import SwiftUI
 import UIKit
 
@@ -47,6 +48,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     UITableView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
+  private let storyRichTextHostingController = UIHostingController(rootView: ScrollView {
+    RichTextView(element: [])
+  })
 
   weak var playbackDelegate: AudioVideoViewControllerPlaybackDelegate?
   public var messageBannerViewController: MessageBannerViewController?
@@ -571,6 +576,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         initialDatasourceLoad()
       }
 
+    self.viewModel.outputs.selectedContentView
+      .observeForUI()
+      .observeValues { [weak self] contentView in
+        self?.showContentView(contentView)
+      }
+
     self.viewModel.outputs.updateFAQsInDataSource
       .observeForUI()
       .observeValues { [weak self] project, refTag, isExpandedValues in
@@ -643,6 +654,42 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         guard let self else { return }
         self.goToSimilarProject(project.projectPageParam)
       }
+  }
+
+  private func showContentView(_ contentView: ProjectPageContentView) {
+    let storyRichText = self.storyRichTextHostingController
+    switch contentView {
+    case .tableView:
+      self.tableView.isHidden = false
+      if storyRichText.parent != nil {
+        storyRichText.willMove(toParent: nil)
+        storyRichText.view.removeFromSuperview()
+        storyRichText.removeFromParent()
+      }
+    case let .richTextView(elements):
+      storyRichText.rootView = ScrollView {
+        RichTextView(element: elements)
+      }
+
+      if storyRichText.parent == nil {
+        storyRichText.view.translatesAutoresizingMaskIntoConstraints = false
+        storyRichText.view.backgroundColor = LegacyColors.ksr_white.uiColor()
+        self.addChild(storyRichText)
+        self.view.addSubview(storyRichText.view)
+        NSLayoutConstraint.activate([
+          storyRichText.view.topAnchor
+            .constraint(equalTo: self.projectNavigationSelectorView.bottomAnchor),
+          storyRichText.view.bottomAnchor
+            .constraint(equalTo: self.pledgeCTAContainerView.topAnchor, constant: -1),
+          storyRichText.view.leftAnchor
+            .constraint(equalTo: self.view.leftAnchor),
+          storyRichText.view.rightAnchor
+            .constraint(equalTo: self.view.rightAnchor)
+        ])
+        storyRichText.didMove(toParent: self)
+      }
+      self.tableView.isHidden = true
+    }
   }
 
   private func goToSimilarProject(_ param: any ProjectPageParam) {

@@ -1,11 +1,11 @@
-@testable import LibraryTestHelpers
 @testable import ServerDrivenUI
 import ServerDrivenUITestHelpers
 import SnapshotTesting
 import SwiftUI
+import XCTest
 
 @MainActor
-final class TextBlockTests: TestCase {
+final class TextBlockTests: XCTestCase {
   func testBasicText() throws {
     let texts: [RichTextElement.Text] = [helloWorldPlain, longTextPlain]
 

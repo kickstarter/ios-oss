@@ -42,5 +42,6 @@ public struct RichTextView: View {
       }
     }
     .padding(.horizontal, self.style.contentHorizontalPadding)
+    .padding(.vertical)
   }
 }
