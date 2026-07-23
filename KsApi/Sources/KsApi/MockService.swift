@@ -1190,7 +1190,6 @@
         projectSlug: slug,
         shippingEnabled: shippingEnabled,
         locationId: GraphQLNullable.someOrNil(locationId),
-        includeShippingRules: true,
         includeLocalPickup: true
       )
 
@@ -1385,7 +1384,6 @@
       let fetchProjectRewardsQuery = GraphAPI
         .FetchSortedProjectRewardsByIdQuery(
           projectId: projectId,
-          includeShippingRules: false,
           includeLocalPickup: true,
           location: nil
         )

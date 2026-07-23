@@ -35,7 +35,6 @@ public class Reward: MockObject {
     @Field<Project>("project") public var project
     @Field<Int>("remainingQuantity") public var remainingQuantity
     @Field<GraphQLEnum<GraphAPI.ShippingPreference>>("shippingPreference") public var shippingPreference
-    @Field<[ShippingRule?]>("shippingRules") public var shippingRules
     @Field<RewardShippingRulesConnection>("shippingRulesExpanded") public var shippingRulesExpanded
     @Field<String>("shippingSummary") public var shippingSummary
     @Field<[SimpleShippingRule?]>("simpleShippingRulesExpanded") public var simpleShippingRulesExpanded
@@ -70,7 +69,6 @@ public extension Mock where O == Reward {
     project: Mock<Project>? = nil,
     remainingQuantity: Int? = nil,
     shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
-    shippingRules: [Mock<ShippingRule>?]? = nil,
     shippingRulesExpanded: Mock<RewardShippingRulesConnection>? = nil,
     shippingSummary: String? = nil,
     simpleShippingRulesExpanded: [Mock<SimpleShippingRule>?]? = nil,
@@ -102,7 +100,6 @@ public extension Mock where O == Reward {
     _setEntity(project, for: \.project)
     _setScalar(remainingQuantity, for: \.remainingQuantity)
     _setScalar(shippingPreference, for: \.shippingPreference)
-    _setList(shippingRules, for: \.shippingRules)
     _setEntity(shippingRulesExpanded, for: \.shippingRulesExpanded)
     _setScalar(shippingSummary, for: \.shippingSummary)
     _setList(simpleShippingRulesExpanded, for: \.simpleShippingRulesExpanded)

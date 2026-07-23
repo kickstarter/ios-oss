@@ -1,5 +1,5 @@
 # Query used to fetch the backing for the Manage Pledge page.
-query FetchBackingWithIncrementsRefunded($id: ID!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) {
+query FetchBackingWithIncrementsRefunded($id: ID!, $includeLocalPickup: Boolean!) {
   backing(id: $id) {
     addOns {
       nodes {
