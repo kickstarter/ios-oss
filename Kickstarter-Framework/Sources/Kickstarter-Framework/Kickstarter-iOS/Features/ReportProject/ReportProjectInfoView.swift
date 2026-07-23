@@ -4,6 +4,21 @@ import KsApi
 import Library
 import SwiftUI
 
+// MARK: - Constants
+
+private enum Constants {
+  static let animationDuration: Double = 0.25
+  static let hStackSpacing: CGFloat = 8
+  static let vStackSpacing: CGFloat = 4
+  static let verticalPadding: CGFloat = 4
+  static let chevronSymbol = "chevron.right"
+  static let chevronSize: CGFloat = 14
+  static let chevronExpandedDegrees: Double = 90
+  static let chevronCollapsedDegrees: Double = 0
+}
+
+// MARK: - Hyperlink helpers
+
 enum ReportProjectHyperLinkType: String, CaseIterable {
   case prohibitedItems
   case communityGuidelines
@@ -21,158 +36,142 @@ enum ReportProjectHyperLinkType: String, CaseIterable {
   }
 }
 
+private func hyperLink(in string: String) -> ReportProjectHyperLinkType? {
+  ReportProjectHyperLinkType.allCases.first {
+    string.lowercased().contains($0.stringLiteral().lowercased())
+  }
+}
+
+// MARK: - Main View
+
 struct ReportProjectInfoView: View {
   let projectID: String
   let projectUrl: String
   let onSuccessfulSubmit: () -> Void
 
   @SwiftUI.Environment(\.dismiss) private var dismiss
-  @State private var selection: Set<ReportProjectInfoListItem> = []
   @State private var popToRoot = false
+  @State private var expandedIDs: Set<ReportProjectInfoListItem.ID> = []
 
   var body: some View {
-    ScrollView {
+    List {
       ForEach(listItems) { item in
-        RowView(
-          item: item,
-          isExpanded: self.selection.contains(item),
-          projectID: self.projectID,
-          projectUrl: self.projectUrl,
-          popToRoot: self.$popToRoot
-        )
-        .modifier(ListRowModifier())
-        .onTapGesture {
-          withAnimation {
-            self.selectDeselect(item)
+        Button {
+          withAnimation(.easeInOut(duration: Constants.animationDuration)) {
+            if self.expandedIDs.contains(item.id) {
+              self.expandedIDs.remove(item.id)
+            } else {
+              self.expandedIDs.insert(item.id)
+            }
+          }
+        } label: {
+          ParentRowLabel(item: item, isExpanded: self.expandedIDs.contains(item.id))
+        }
+        .buttonStyle(.plain)
+
+        if self.expandedIDs.contains(item.id) {
+          ForEach(item.subItems ?? []) { subItem in
+            NavigationLink {
+              ReportProjectFormView(
+                popToRoot: self.$popToRoot,
+                projectID: self.projectID,
+                projectURL: self.projectUrl,
+                projectFlaggingKind: subItem.flaggingKind
+                  ?? GraphAPI.NonDeprecatedFlaggingKind.guidelinesViolation
+              )
+            } label: {
+              ChildRowLabel(item: subItem)
+            }
           }
         }
-        .padding(5)
-        .animation(.linear(duration: 0.3))
       }
     }
+    .listStyle(.plain)
     .navigationTitle(Strings.Report_this_project())
     .navigationBarTitleDisplayMode(.inline)
-    .onChange(of: self.popToRoot) { newValue in
-      if newValue == true {
+    .onChange(of: self.popToRoot) { _, newValue in
+      if newValue {
         self.dismiss()
         self.onSuccessfulSubmit()
       }
     }
   }
-
-  private func selectDeselect(_ item: ReportProjectInfoListItem) {
-    if self.selection.contains(item) {
-      self.selection.remove(item)
-    } else {
-      self.selection.insert(item)
-    }
-  }
 }
 
-// MARK: - Views
+// MARK: - ParentRowLabel
 
-private struct BaseRowView: View {
-  var item: ReportProjectInfoListItem
-  var isExpanded: Bool = false
+private struct ParentRowLabel: View {
+  let item: ReportProjectInfoListItem
+  let isExpanded: Bool
+
+  @ScaledMetric private var chevronSize: CGFloat = Constants.chevronSize
+  private let green = LegacyColors.ksr_create_700.swiftUIColor()
 
   var body: some View {
-    HStack {
-      VStack(spacing: 5) {
+    HStack(alignment: .center, spacing: Constants.hStackSpacing) {
+      VStack(alignment: .leading, spacing: Constants.vStackSpacing) {
         Text(self.item.title)
-          .font(self.item.type == .parent ? Font(UIFont.ksr_body()) : Font(UIFont.ksr_callout()))
+          .font(Font(UIFont.ksr_body()))
           .bold()
+          .foregroundColor(Color(UIColor.label))
           .frame(maxWidth: .infinity, alignment: .leading)
 
-        if let hyperLink = hyperLink(in: item.subtitle) {
-          Text(html: self.item.subtitle, with: [hyperLink.stringLiteral()])
-            .font(self.item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_footnote()))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .multilineTextAlignment(.leading)
-        } else {
-          Text(self.item.subtitle)
-            .font(self.item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_footnote()))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .multilineTextAlignment(.leading)
-        }
+        self.subtitleText
+          .font(Font(UIFont.ksr_subhead()))
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .multilineTextAlignment(.leading)
       }
 
-      Spacer()
+      Image(systemName: Constants.chevronSymbol)
+        .font(.system(size: self.chevronSize, weight: .semibold))
+        .foregroundColor(self.green)
+        .rotationEffect(.degrees(
+          self.isExpanded ? Constants.chevronExpandedDegrees : Constants
+            .chevronCollapsedDegrees
+        ))
+    }
+    .padding(.vertical, Constants.verticalPadding)
+    .contentShape(Rectangle())
+  }
 
-      Image(self.isExpanded ? "arrow-down" : "chevron-right")
-        .resizable()
-        .scaledToFit()
-        .frame(width: 15, height: 15)
-        .foregroundColor(
-          self.item.type == .parent ? LegacyColors.ksr_create_700
-            .swiftUIColor() : LegacyColors.ksr_support_400.swiftUIColor()
-        )
+  @ViewBuilder
+  private var subtitleText: some View {
+    if let link = hyperLink(in: item.subtitle) {
+      Text(html: self.item.subtitle, with: [link.stringLiteral()])
+    } else {
+      Text(self.item.subtitle)
     }
   }
 }
 
-struct RowView: View {
-  var item: ReportProjectInfoListItem
-  let isExpanded: Bool
-  let projectID: String
-  let projectUrl: String
+// MARK: - ChildRowLabel
 
-  @Binding var popToRoot: Bool
-
-  private let contentSpacing = 10.0
-  private let contentPadding = Spacing.unit_03
+private struct ChildRowLabel: View {
+  let item: ReportProjectInfoListItem
 
   var body: some View {
-    HStack {
-      VStack(alignment: .leading) {
-        BaseRowView(item: self.item, isExpanded: self.isExpanded)
+    VStack(alignment: .leading, spacing: Constants.vStackSpacing) {
+      Text(self.item.title)
+        .font(Font(UIFont.ksr_callout()))
+        .bold()
+        .foregroundColor(Color(UIColor.label))
+        .frame(maxWidth: .infinity, alignment: .leading)
 
-        if self.isExpanded {
-          ForEach(self.item.subItems ?? []) { item in
-            VStack(alignment: .leading, spacing: self.contentSpacing) {
-              NavigationLink(
-                destination: {
-                  ReportProjectFormView(
-                    popToRoot: self.$popToRoot,
-                    projectID: self.projectID,
-                    projectURL: self.projectUrl,
-                    projectFlaggingKind: item.flaggingKind ?? GraphAPI.NonDeprecatedFlaggingKind
-                      .guidelinesViolation
-                  )
-                },
-                label: { BaseRowView(item: item) }
-              )
-              .buttonStyle(PlainButtonStyle())
-            }
-            .padding(.vertical, 5)
-            .padding(.leading, self.contentPadding)
-          }
-        }
-      }
+      self.subtitleText
+        .font(Font(UIFont.ksr_footnote()))
+        .foregroundColor(Color(UIColor.secondaryLabel))
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .multilineTextAlignment(.leading)
     }
-    .padding(.trailing, 30)
-  }
-}
-
-// MARK: - Private Methods
-
-/// Returns a ReportProjectHyperLinkType if the given string contains a type's string literal
-private func hyperLink(in string: String) -> ReportProjectHyperLinkType? {
-  for linkType in ReportProjectHyperLinkType.allCases {
-    if string.lowercased().contains(linkType.stringLiteral().lowercased()) {
-      return linkType
-    }
+    .padding(.vertical, Constants.verticalPadding)
   }
 
-  return nil
-}
-
-// MARK: - Modifiers
-
-struct ListRowModifier: ViewModifier {
-  func body(content: Content) -> some View {
-    Group {
-      content
-      Divider()
-    }.offset(x: 20)
+  @ViewBuilder
+  private var subtitleText: some View {
+    if let link = hyperLink(in: item.subtitle) {
+      Text(html: self.item.subtitle, with: [link.stringLiteral()])
+    } else {
+      Text(self.item.subtitle)
+    }
   }
 }

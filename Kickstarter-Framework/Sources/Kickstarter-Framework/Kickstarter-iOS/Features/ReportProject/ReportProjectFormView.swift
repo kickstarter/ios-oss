@@ -4,6 +4,16 @@ import KsApi
 import Library
 import SwiftUI
 
+// MARK: - Constants
+
+private enum Constants {
+  static let textEditorMinHeight: CGFloat = 75
+  static let sectionHeaderLeadPadding: CGFloat = 20
+  static let bannerMaxHeight: CGFloat = 5
+}
+
+// MARK: -
+
 enum ReportFormFocusField {
   case details
 }
@@ -46,13 +56,13 @@ struct ReportProjectFormView: View {
 
         SwiftUI.Section {
           TextEditor(text: self.$viewModel.detailsText)
-            .frame(minHeight: 75)
+            .frame(minHeight: Constants.textEditorMinHeight)
             .font(Font(UIFont.ksr_body()))
             .focused(self.$focusField, equals: .details)
             .padding()
         } header: {
           Text(Strings.Tell_us_more_details())
-            .padding(.leading, 20)
+            .padding(.leading, Constants.sectionHeaderLeadPadding)
         }
         .listRowInsets(EdgeInsets())
       }
@@ -87,10 +97,10 @@ struct ReportProjectFormView: View {
           .frame(
             minWidth: proxy.size.width,
             idealWidth: proxy.size.width,
-            maxHeight: proxy.size.height / 5,
+            maxHeight: proxy.size.height / Constants.bannerMaxHeight,
             alignment: .bottom
           )
-          .animation(.easeInOut)
+          .animation(.easeInOut, value: self.viewModel.bannerMessage == nil)
       }
     }
   }
