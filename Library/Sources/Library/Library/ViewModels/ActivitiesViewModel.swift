@@ -185,18 +185,9 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       )
       .map { _ in AppEnvironment.current.currentUser }
 
-    let erroredBackingsEvent = currentUser
-      // TODO: Remove this whole set of Signals as these live in Backings Dashboard now.
-      // https://kickstarter.atlassian.net/browse/MBL-2255
-      .filter { _ in false }
-      .skipNil()
-      .switchMap { _ in
-        AppEnvironment.current.apiService.fetchErroredUserBackings(status: .errored)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-      }
-
-    self.erroredBackings = erroredBackingsEvent.values().map(\.projectsAndBackings)
+    // TODO: Remove this whole set of Signals as these live in Backings Dashboard now.
+    // https://kickstarter.atlassian.net/browse/MBL-2255
+    self.erroredBackings = Signal<[ProjectAndBackingEnvelope], Never>.never
 
     let loggedInForEmptyState = self.activities
       .filter { AppEnvironment.current.currentUser != nil && $0.isEmpty }

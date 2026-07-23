@@ -405,13 +405,7 @@ final class ActivitiesViewModelTests: TestCase {
   func testUpdateUserInEnvironmentOnManagePledgeViewDidFinish_DidReturnUser() {
     let user = User.template
 
-    let env = ErroredBackingsEnvelope(projectsAndBackings: [
-      ProjectAndBackingEnvelope.template
-    ])
-
-    let mockService = MockService(fetchErroredUserBackingsResult: .success(env))
-
-    withEnvironment(apiService: mockService, currentUser: user) {
+    withEnvironment(currentUser: user) {
       self.updateUserInEnvironment.assertDidNotEmitValue()
       self.erroredBackings.assertDidNotEmitValue()
 
@@ -434,9 +428,7 @@ final class ActivitiesViewModelTests: TestCase {
   func testUpdateUserInEnvironmentOnManagePledgeViewDidFinish_DidReturnUserAndNoErroredBackings() {
     let user = User.template
 
-    let mockService = MockService(fetchErroredUserBackingsResult: .failure(.couldNotParseJSON))
-
-    withEnvironment(apiService: mockService, currentUser: user) {
+    withEnvironment(currentUser: user) {
       self.updateUserInEnvironment.assertDidNotEmitValue()
       self.erroredBackings.assertDidNotEmitValue()
 
