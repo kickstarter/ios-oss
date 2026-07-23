@@ -214,10 +214,6 @@ public protocol ServiceType {
   func fetchGraphUserSelf()
     -> SignalProducer<UserEnvelope<User>, ErrorEnvelope>
 
-  /// Fetch errored User's backings with a specific status.
-  func fetchErroredUserBackings(status: BackingState)
-    -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope>
-
   /// Fetch `Backing` data, and the backing's `Project`, using a `Backing` ID.
   /// - Parameters:
   ///    - id: backing ID

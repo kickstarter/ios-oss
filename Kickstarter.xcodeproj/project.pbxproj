@@ -728,7 +728,6 @@
 		E190EB622E29944E006A6DB6 /* FetchRootCategories.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchRootCategories.graphql; sourceTree = "<group>"; };
 		E190EB632E29944E006A6DB6 /* FetchUpdateComments.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUpdateComments.graphql; sourceTree = "<group>"; };
 		E190EB642E29944E006A6DB6 /* FetchUser.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUser.graphql; sourceTree = "<group>"; };
-		E190EB652E29944E006A6DB6 /* FetchUserBackings.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUserBackings.graphql; sourceTree = "<group>"; };
 		E190EB662E29944E006A6DB6 /* FetchUserEmail.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUserEmail.graphql; sourceTree = "<group>"; };
 		E190EB672E29944E006A6DB6 /* FetchUserSetup.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUserSetup.graphql; sourceTree = "<group>"; };
 		E190EB682E29944E006A6DB6 /* FetchUserStoredCards.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUserStoredCards.graphql; sourceTree = "<group>"; };
@@ -1372,7 +1371,6 @@
 				E190EB622E29944E006A6DB6 /* FetchRootCategories.graphql */,
 				E190EB632E29944E006A6DB6 /* FetchUpdateComments.graphql */,
 				E190EB642E29944E006A6DB6 /* FetchUser.graphql */,
-				E190EB652E29944E006A6DB6 /* FetchUserBackings.graphql */,
 				E190EB662E29944E006A6DB6 /* FetchUserEmail.graphql */,
 				E190EB672E29944E006A6DB6 /* FetchUserSetup.graphql */,
 				E190EB682E29944E006A6DB6 /* FetchUserStoredCards.graphql */,
