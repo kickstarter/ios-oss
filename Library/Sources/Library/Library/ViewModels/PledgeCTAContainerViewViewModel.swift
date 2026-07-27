@@ -9,10 +9,10 @@ public typealias PledgeCTAPrelaunchState = (
   watchesCount: Int
 )
 
-public typealias PledgeCTAContainerViewData = (
-  projectOrError: Either<(Project, RefTag?), ErrorEnvelope>,
-  isLoading: Bool
-)
+public struct PledgeCTAContainerViewData {
+  let projectOrError: Either<Project, ErrorEnvelope>
+  let isLoading: Bool
+}
 
 public protocol PledgeCTAContainerViewViewModelInputs {
   func configureWith(value: PledgeCTAContainerViewData)
@@ -46,17 +46,16 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public init() {
     let projectOrError = self.configData.signal
       .skipNil()
-      .filter(second >>> isFalse)
-      .map(first)
+      .filter { $0.isLoading == false }
+      .map { $0.projectOrError }
 
     let isLoading = self.configData.signal
       .skipNil()
-      .map(second)
+      .map { $0.isLoading }
 
     let project = projectOrError
       .map(Either.left)
       .skipNil()
-      .map(first)
 
     let projectError = projectOrError
       .map(Either.right)

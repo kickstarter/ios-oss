@@ -367,13 +367,14 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
       .skipNil()
 
-    let projectError: Signal<ErrorEnvelope, Never> = freshProjectAndRefTagEvent.errors()
-
     self.configurePledgeCTAView = Signal.combineLatest(
-      Signal.merge(freshProjectAndRefTag.map(Either.left), projectError.map(Either.right)),
+      freshProjectAndRefTagEvent,
       isLoading.signal
     )
-    .map { ($0, $1) }
+    .map { event, isLoading -> PledgeCTAContainerViewData? in
+      PledgeCTAContainerViewData.from(event, isLoading: isLoading)
+    }
+    .skipNil()
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
@@ -955,6 +956,29 @@ private extension Either where A == Project, B == ProjectPageParam {
       return Param.id(project.id)
     case let .right(projectParam):
       return projectParam.param
+    }
+  }
+}
+
+private extension PledgeCTAContainerViewData {
+  /// Creates a `PledgeCTAContainerViewData` from the data type used for `freshProjectAndRefTag`
+  static func from(
+    _ event: Signal<(Project, RefTag?), ErrorEnvelope>.Event,
+    isLoading: Bool
+  ) -> PledgeCTAContainerViewData? {
+    if let value = event.value {
+      let project = value.0
+      return PledgeCTAContainerViewData(
+        projectOrError: .left(project),
+        isLoading: isLoading
+      )
+    } else if let error = event.error {
+      return PledgeCTAContainerViewData(
+        projectOrError: .right(error),
+        isLoading: isLoading
+      )
+    } else {
+      return nil
     }
   }
 }

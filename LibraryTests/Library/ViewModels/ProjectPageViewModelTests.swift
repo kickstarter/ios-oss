@@ -36,7 +36,6 @@ final class ProjectPageViewModelTests: TestCase {
   private let configurePledgeCTAViewErrorEnvelope = TestObserver<ErrorEnvelope, Never>()
   private let configurePledgeCTAViewProject = TestObserver<Project, Never>()
   private let configurePledgeCTAViewIsLoading = TestObserver<Bool, Never>()
-  private let configurePledgeCTAViewRefTag = TestObserver<RefTag?, Never>()
   private let configureProjectNavigationSelectorView = TestObserver<(Project, RefTag?), Never>()
   private let didBlockUser = TestObserver<(), Never>()
   private let didBlockUserError = TestObserver<(), Never>()
@@ -84,29 +83,22 @@ final class ProjectPageViewModelTests: TestCase {
       .observe(self.configureChildViewControllersWithRefTag.observer)
 
     self.vm.outputs.configurePledgeCTAView
-      .map(first)
-      .map(\.left)
+      .map { $0.projectOrError.left }
       .skipNil()
-      .map(first)
       .observe(self.configurePledgeCTAViewProject.observer)
-
-    self.vm.outputs.configurePledgeCTAView
-      .map(first)
-      .map(\.left)
-      .skipNil()
-      .map(second)
-      .observe(self.configurePledgeCTAViewRefTag.observer)
 
     self.vm.outputs.configureProjectNavigationSelectorView
       .observe(self.configureProjectNavigationSelectorView.observer)
 
     self.vm.outputs.configurePledgeCTAView
-      .map(first)
-      .map(\.right)
+      .map { $0.projectOrError.right }
       .skipNil()
       .observe(self.configurePledgeCTAViewErrorEnvelope.observer)
 
-    self.vm.outputs.configurePledgeCTAView.map(second).observe(self.configurePledgeCTAViewIsLoading.observer)
+    self.vm.outputs.configurePledgeCTAView
+      .map { $0.isLoading }
+      .observe(self.configurePledgeCTAViewIsLoading.observer)
+
     self.vm.outputs.didBlockUser.observe(self.didBlockUser.observer)
     self.vm.outputs.didBlockUserError.observe(self.didBlockUserError.observer)
     self.vm.outputs.dismissManagePledgeAndShowMessageBannerWithMessage
@@ -929,19 +921,16 @@ final class ProjectPageViewModelTests: TestCase {
       ) {
         self.configurePledgeCTAViewProject.assertDidNotEmitValue()
         self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
-        self.configurePledgeCTAViewRefTag.assertValues([])
 
         self.vm.configureAndLoad(.left(project))
 
         self.configurePledgeCTAViewProject.assertValues([project])
         self.configurePledgeCTAViewIsLoading.assertValues([true])
-        self.configurePledgeCTAViewRefTag.assertValues([.discovery])
 
         self.scheduler.run()
 
         self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull])
         self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
-        self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery])
       }
     }
   }
@@ -959,20 +948,17 @@ final class ProjectPageViewModelTests: TestCase {
     ) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
-      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
       self.vm.configureAndLoad(.left(project))
 
       self.configurePledgeCTAViewProject.assertValues([project])
       self.configurePledgeCTAViewIsLoading.assertValues([true])
-      self.configurePledgeCTAViewRefTag.assertValues([.discovery])
 
       self.scheduler.run()
 
       self.configurePledgeCTAViewProject.assertValues([project, project])
       self.configurePledgeCTAViewErrorEnvelope.assertValueCount(1)
       self.configurePledgeCTAViewIsLoading.assertValues([true, false, false])
-      self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery])
     }
   }
 
@@ -986,7 +972,6 @@ final class ProjectPageViewModelTests: TestCase {
       ProjectPageViewModelTests.mockNetworkRequests(project: projectFull, backing: nil) {
         self.configurePledgeCTAViewProject.assertDidNotEmitValue()
         self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
-        self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
         self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.discovery))
         self.vm.inputs.viewDidLoad()
@@ -994,13 +979,11 @@ final class ProjectPageViewModelTests: TestCase {
 
         self.configurePledgeCTAViewProject.assertValues([project])
         self.configurePledgeCTAViewIsLoading.assertValues([true])
-        self.configurePledgeCTAViewRefTag.assertValues([.discovery])
 
         self.scheduler.advance()
 
         self.configurePledgeCTAViewProject.assertValues([project, project, projectFull])
         self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
-        self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery])
       }
 
       ProjectPageViewModelTests.mockNetworkRequests(project: projectFull, backing: Backing.template) {
@@ -1008,7 +991,6 @@ final class ProjectPageViewModelTests: TestCase {
 
         self.configurePledgeCTAViewProject.assertValues([project, project, projectFull, projectFull])
         self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
-        self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery, .discovery])
 
         self.scheduler.advance()
 
@@ -1024,14 +1006,6 @@ final class ProjectPageViewModelTests: TestCase {
           projectWithBacking
         ])
         self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
-        self.configurePledgeCTAViewRefTag.assertValues([
-          .discovery,
-          .discovery,
-          .discovery,
-          .discovery,
-          .discovery,
-          .discovery
-        ])
       }
     }
   }
@@ -1055,20 +1029,17 @@ final class ProjectPageViewModelTests: TestCase {
       ) {
         self.configurePledgeCTAViewProject.assertDidNotEmitValue()
         self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
-        self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
         self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.discovery))
         self.vm.inputs.viewDidLoad()
 
         self.configurePledgeCTAViewProject.assertValues([project])
         self.configurePledgeCTAViewIsLoading.assertValues([true])
-        self.configurePledgeCTAViewRefTag.assertValues([.discovery])
 
         self.scheduler.advance()
 
         self.configurePledgeCTAViewProject.assertValues([project, project, projectFull])
         self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
-        self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery])
       }
 
       ProjectPageViewModelTests.mockNetworkRequests(
@@ -1079,7 +1050,6 @@ final class ProjectPageViewModelTests: TestCase {
 
         self.configurePledgeCTAViewProject.assertValues([project, project, projectFull, projectFull])
         self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
-        self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery, .discovery])
 
         self.scheduler.advance()
 
@@ -1092,14 +1062,6 @@ final class ProjectPageViewModelTests: TestCase {
           updatedProject
         ])
         self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
-        self.configurePledgeCTAViewRefTag.assertValues([
-          .discovery,
-          .discovery,
-          .discovery,
-          .discovery,
-          .discovery,
-          .discovery
-        ])
       }
     }
   }
@@ -1117,20 +1079,17 @@ final class ProjectPageViewModelTests: TestCase {
       ProjectPageViewModelTests.mockNetworkRequests(project: projectFull) {
         self.configurePledgeCTAViewProject.assertDidNotEmitValue()
         self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
-        self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
         self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.discovery))
         self.vm.inputs.viewDidLoad()
 
         self.configurePledgeCTAViewProject.assertValues([project])
         self.configurePledgeCTAViewIsLoading.assertValues([true])
-        self.configurePledgeCTAViewRefTag.assertValues([.discovery])
 
         self.scheduler.advance()
 
         self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull])
         self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
-        self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery])
       }
 
       ProjectPageViewModelTests.mockNetworkRequests(project: projectFull2) {
@@ -1150,14 +1109,6 @@ final class ProjectPageViewModelTests: TestCase {
           projectFull2
         ])
         self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
-        self.configurePledgeCTAViewRefTag.assertValues([
-          .discovery,
-          .discovery,
-          .discovery,
-          .discovery,
-          .discovery,
-          .discovery
-        ])
       }
     }
   }
