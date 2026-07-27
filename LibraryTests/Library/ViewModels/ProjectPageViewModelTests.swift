@@ -926,9 +926,8 @@ final class ProjectPageViewModelTests: TestCase {
     ProjectPageViewModelTests.mockNetworkRequests {
       self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
 
-      self.scheduler.advance()
-
       self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
       self.goToUpdates.assertDidNotEmitValue()
 
