@@ -1,4 +1,4 @@
-query FetchBacking($id: ID!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) {
+query FetchBacking($id: ID!) {
   backing(id: $id) {
     addOns {
       nodes {

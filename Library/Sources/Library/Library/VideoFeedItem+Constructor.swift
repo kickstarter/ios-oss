@@ -16,8 +16,7 @@ extension VideoFeedItem {
       creator: node.project.creator?.name ?? "",
       creatorImageURL: node.project.creator.flatMap { URL(string: $0.imageUrl) },
       statsText: Self.statsText(for: node.project),
-      categoryPillText: node.project.category?.name ?? "",
-      secondaryPillText: node.badges.first?.text ?? "",
+      badges: node.badges.map { .init(graphBadge: $0) },
       videoURL: video?.videoSources?.hls?.src.flatMap { URL(string: $0) },
       videoPreviewImageURL: video?.previewImageUrl.flatMap { URL(string: $0) },
       projectId: node.project.id,
@@ -51,5 +50,34 @@ extension VideoFeedItem {
       .flatMap { Double($0) } ?? 0
 
     return Self.statsTextInUserPreferredCurrency(pledgedAmount: amount, backersCount: project.backersCount)
+  }
+}
+
+// MARK: - Badge mapping
+
+private extension VideoFeedItem.Badge {
+  init(graphBadge: VideoFeedQuery.Data.VideoFeed.Node.Badge) {
+    self.init(
+      type: .init(graphType: graphBadge.type.value),
+      text: graphBadge.text,
+      icon: graphBadge.icon
+    )
+  }
+}
+
+private extension VideoFeedItem.BadgeType {
+  init(graphType: GraphAPI.BadgeTypeEnum?) {
+    switch graphType {
+    case .projectWeLove:
+      self = .projectWeLove
+    case .daysLeft:
+      self = .daysLeft
+    case .justLaunched:
+      self = .justLaunched
+    case .trending:
+      self = .trending
+    default:
+      self = .unknown
+    }
   }
 }

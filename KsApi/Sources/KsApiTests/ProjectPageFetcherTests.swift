@@ -58,7 +58,6 @@ public final class ProjectPageFetcherTests: XCTestCase {
     XCTAssertEqual(project?.stats.userCurrency, "EUR")
     XCTAssertEqual(project?.rewardsCount, 4)
     XCTAssertEqual(project?.rewards.count, 4)
-    XCTAssertNotNil(project?.rewards.first?.shippingRules)
     XCTAssertNotNil(project?.rewards.first?.shippingRulesExpanded)
     XCTAssertEqual(project?.rewards.first?.shippingRulesExpanded?.count, 246)
     XCTAssertEqual(project?.rewards[1].shippingRulesExpanded?.count, 1)

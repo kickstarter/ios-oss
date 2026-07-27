@@ -847,13 +847,9 @@ private func estimatedMinMax(
 
   rewards.forEach { reward in
     guard reward.shipping.enabled,
-          let shippingRules = reward.shippingRulesExpanded ?? reward.shippingRules else { return }
+          let shippingRules = reward.shippingRulesExpanded else { return }
 
     var shipping: ShippingRule? = shippingRules.first(where: { $0.location.id == locationId })
-
-    if shipping == nil && reward.shipping.preference == .unrestricted {
-      shipping = shippingRules.first
-    }
 
     /// Verify there are estimated amounts greater than 0
     guard let estimatedMin = shipping?.estimatedMin?.amount,

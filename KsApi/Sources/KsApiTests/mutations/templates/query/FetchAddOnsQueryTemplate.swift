@@ -132,48 +132,6 @@ public enum FetchAddsOnsQueryTemplate {
                   "remainingQuantity": null,
                   "shippingPreference": "unrestricted",
                   "shippingSummary": "Ships worldwide",
-                  "shippingRules": [
-                    {
-                      "__typename": "ShippingRule",
-                      "cost": {
-                        "__typename": "Money",
-                        "amount": "0.0",
-                        "currency": "AUD",
-                        "symbol": "$"
-                      },
-                      "id": "U2hpcHBpbmdSdWxlLTExMzIxNDA2",
-                      "location": {
-                        "__typename": "Location",
-                        "country": "ZZ",
-                        "countryName": null,
-                        "displayableName": "Earth",
-                        "id": "TG9jYXRpb24tMQ==",
-                        "name": "Rest of World"
-                      },
-                      "backersCount": 0,
-                      "hasBackers": false
-                    },
-                    {
-                      "__typename": "ShippingRule",
-                      "cost": {
-                        "__typename": "Money",
-                        "amount": "0.0",
-                        "currency": "AUD",
-                        "symbol": "$"
-                      },
-                      "id": "U2hpcHBpbmdSdWxlLTExMzIxNDA3",
-                      "location": {
-                        "__typename": "Location",
-                        "country": "AU",
-                        "countryName": "Australia",
-                        "displayableName": "Australia",
-                        "id": "TG9jYXRpb24tMjM0MjQ3NDg=",
-                        "name": "Australia"
-                      },
-                      "backersCount": 0,
-                      "hasBackers": false
-                    }
-                  ],
                   "startsAt": null,
                   "audienceData": {
                     "__typename": "ResourceAudience",

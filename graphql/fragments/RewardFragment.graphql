@@ -30,7 +30,7 @@ fragment RewardFragment on Reward {
   }
   limit
   limitPerBacker
-  localReceiptLocation @include(if: $includeLocalPickup) {
+  localReceiptLocation {
     ...LocationFragment
   }
   name
@@ -47,10 +47,7 @@ fragment RewardFragment on Reward {
   remainingQuantity
   shippingPreference
   shippingSummary
-  shippingRules @include(if: $includeShippingRules) {
-    ...ShippingRuleFragment
-  }
-  startsAt,
+  startsAt
   image {
     altText
     url(width: 1024)

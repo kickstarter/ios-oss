@@ -36,17 +36,10 @@ final class Project_FetchProjectRewardsByIdQueryDataTests: XCTestCase {
     XCTAssertEqual(reward.remaining, 9)
     XCTAssertNil(reward.startsAt)
     XCTAssertEqual(reward.title, "SIGNED BOOK + GALLERY PRINT (30x45cm)")
-    XCTAssertEqual(reward.shippingRules?.count, 4)
-    XCTAssertEqual(reward.shippingRules?[1].cost, 15.0)
-    XCTAssertEqual(reward.shippingRules?[1].location.country, "CH")
-    XCTAssertEqual(reward.shippingRules?[1].location.displayableName, "Switzerland")
-    XCTAssertEqual(reward.shippingRules?[1].location.localizedName, "Switzerland")
-    XCTAssertEqual(reward.shippingRules?[1].location.name, "Switzerland")
-    XCTAssertEqual(reward.shippingRules?[1].location.id, decompose(id: "TG9jYXRpb24tMjM0MjQ5NTc="))
     XCTAssertTrue(reward.shipping.enabled)
     XCTAssertEqual(reward.shipping.preference!, .restricted)
     XCTAssertEqual(reward.shipping.summary, "Ships worldwide")
-    XCTAssertNotNil(reward.shippingRulesExpanded)
+    XCTAssertEqual(reward.shippingRulesExpanded?.count, 29)
     XCTAssertNil(reward.shipping.location)
     XCTAssertNil(reward.shipping.type)
 
@@ -75,8 +68,6 @@ final class Project_FetchProjectRewardsByIdQueryDataTests: XCTestCase {
       return
     }
 
-    XCTAssertEqual(reward.shippingRules?.count, 1)
-    XCTAssertEqual(reward.shippingRules?[0].location.name, "European Union")
     XCTAssertEqual(reward.shippingRulesExpanded?.count, 27)
     XCTAssertEqual(reward.shippingRulesExpanded?[0].cost, 5.0)
     XCTAssertEqual(reward.shippingRulesExpanded?[0].estimatedMin, Money(amount: 2.0, currency: .usd))
@@ -105,7 +96,6 @@ final class Project_FetchProjectRewardsByIdQueryDataTests: XCTestCase {
       return
     }
 
-    XCTAssertNil(reward.shippingRules)
     XCTAssertNil(reward.shippingRulesExpanded)
   }
 }

@@ -1,26 +1,34 @@
+import KDS
 import SwiftUI
 
 /// Custom frosted glass background view.
-public struct FrostedGlassBackgroundView: UIViewRepresentable {
+struct FrostedGlassBackgroundView: View {
+  var body: some View {
+    VideoFeedBlurView()
+  }
+}
+
+struct VideoFeedBlurView: UIViewRepresentable {
   private enum Constants {
-    static let red: CGFloat = 32 / 255
-    static let green: CGFloat = 32 / 255
-    static let blue: CGFloat = 32 / 255
-    static let alpha: CGFloat = 0.60
+    static let alpha: Double = 0.15
   }
 
-  public func makeUIView(context _: Context) -> UIView {
-    let view = UIView()
+  var style: UIBlurEffect.Style = .systemUltraThinMaterial
 
-    view.backgroundColor = UIColor(
-      red: Constants.red,
-      green: Constants.green,
-      blue: Constants.blue,
-      alpha: Constants.alpha
-    )
+  func makeUIView(context _: Context) -> UIVisualEffectView {
+    let blurEffect = UIBlurEffect(style: style)
+    let view = UIVisualEffectView(effect: blurEffect)
+    view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+    let tintView = UIView()
+    tintView.backgroundColor = UIColor.black.withAlphaComponent(Constants.alpha)
+    tintView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    view.contentView.addSubview(tintView)
 
     return view
   }
 
-  public func updateUIView(_: UIView, context _: Context) {}
+  func updateUIView(_ uiView: UIVisualEffectView, context _: Context) {
+    uiView.effect = UIBlurEffect(style: self.style)
+  }
 }

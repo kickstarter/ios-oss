@@ -499,32 +499,13 @@ public struct Service: ServiceType {
       .flatMap(UserEnvelope<User>.envelopeProducer(from:))
   }
 
-  public func fetchErroredUserBackings(status: BackingState)
-    -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
-    guard let status = GraphAPI.BackingState.from(status)
-    else { return SignalProducer(error: .couldNotParseJSON) }
-
-    return GraphQL.shared.client
-      .fetch(
-        query: GraphAPI
-          .FetchUserBackingsQuery(
-            status: GraphQLEnum.case(status),
-            includeShippingRules: true,
-            includeLocalPickup: false
-          )
-      )
-      .flatMap(ErroredBackingsEnvelope.producer(from:))
-  }
-
   public func fetchBacking(id: Int)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
       .fetch(
         query: GraphAPI
           .FetchBackingQuery(
-            id: "\(id)",
-            includeShippingRules: true,
-            includeLocalPickup: true
+            id: "\(id)"
           )
       )
       .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
@@ -548,9 +529,7 @@ public struct Service: ServiceType {
       .fetch(
         query: GraphAPI
           .FetchBackingWithIncrementsRefundedQuery(
-            id: "\(id)",
-            includeShippingRules: true,
-            includeLocalPickup: true
+            id: "\(id)"
           )
       )
       .flatMap(Backing.producer(from:))
@@ -614,7 +593,6 @@ public struct Service: ServiceType {
       .FetchProjectRewardsByIdQuery(
         projectId: projectId,
         includeShippingRules: true,
-        includeLocalPickup: true,
         includePledgeOverTime: false
       )
 
@@ -637,8 +615,6 @@ public struct Service: ServiceType {
 
     let query = GraphAPI.FetchSortedProjectRewardsByIdQuery(
       projectId: projectId,
-      includeShippingRules: true,
-      includeLocalPickup: true,
       location: GraphQLEnum.caseOrNil(graphCountryCode)
     )
 
@@ -655,7 +631,6 @@ public struct Service: ServiceType {
       .FetchProjectRewardsByIdQuery(
         projectId: projectId,
         includeShippingRules: true,
-        includeLocalPickup: true,
         includePledgeOverTime: true
       )
 
@@ -707,9 +682,7 @@ public struct Service: ServiceType {
     let query = GraphAPI.FetchAddOnsQuery(
       projectSlug: slug,
       shippingEnabled: shippingEnabled,
-      locationId: GraphQLNullable.someOrNil(locationId),
-      includeShippingRules: true,
-      includeLocalPickup: true
+      locationId: GraphQLNullable.someOrNil(locationId)
     )
 
     return GraphQL.shared.client

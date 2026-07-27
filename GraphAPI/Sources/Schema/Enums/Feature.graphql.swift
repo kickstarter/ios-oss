@@ -7,6 +7,7 @@ import ApolloAPI
 public enum Feature: String, EnumType {
   case deviceComponents = "device_components"
   case passwordless = "passwordless"
+  case passwordlessEmailChange = "passwordless_email_change"
   case showPostsFeed = "show_posts_feed"
   case iosCrashlytics = "ios_crashlytics"
   case iosMixpanel = "ios_mixpanel"
@@ -176,4 +177,5 @@ public enum Feature: String, EnumType {
   case shopifyIntegration2026 = "shopify_integration_2026"
   case userMuting = "user_muting"
   case skuManagement2026 = "SKU_management_2026"
+  case pausePledgeManager2026 = "pause_pledge_manager_2026"
 }

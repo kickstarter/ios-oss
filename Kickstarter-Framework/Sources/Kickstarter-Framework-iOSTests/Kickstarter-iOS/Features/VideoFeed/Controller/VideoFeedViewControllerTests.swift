@@ -52,8 +52,10 @@ final class VideoFeedViewControllerTests: TestCase {
               pledgedAmount: 50_134,
               backersCount: 431
             ),
-            categoryPillText: "Project We Love",
-            secondaryPillText: "3 days left",
+            badges: [
+              .init(type: .projectWeLove, text: "Project We Love", icon: nil),
+              .init(type: .daysLeft, text: "3 days left", icon: nil)
+            ],
             videoURL: nil,
             videoPreviewImageURL: nil,
             projectId: "1",
@@ -110,8 +112,10 @@ final class VideoFeedViewControllerTests: TestCase {
               pledgedAmount: 50_134,
               backersCount: 431
             ),
-            categoryPillText: "Project We Love",
-            secondaryPillText: "3 days left",
+            badges: [
+              .init(type: .projectWeLove, text: "Project We Love", icon: nil),
+              .init(type: .daysLeft, text: "3 days left", icon: nil)
+            ],
             videoURL: nil,
             videoPreviewImageURL: nil,
             projectId: "1",
@@ -170,8 +174,9 @@ final class VideoFeedViewControllerTests: TestCase {
               pledgedAmount: 50_134,
               backersCount: 431
             ),
-            categoryPillText: "Project We Love",
-            secondaryPillText: "",
+            badges: [
+              .init(type: .projectWeLove, text: "Project We Love", icon: nil)
+            ],
             videoURL: nil,
             videoPreviewImageURL: nil,
             projectId: "1",
@@ -230,8 +235,10 @@ final class VideoFeedViewControllerTests: TestCase {
               pledgedAmount: 50_134,
               backersCount: 431
             ),
-            categoryPillText: "Project We Love",
-            secondaryPillText: "3 days left",
+            badges: [
+              .init(type: .projectWeLove, text: "Project We Love", icon: nil),
+              .init(type: .daysLeft, text: "3 days left", icon: nil)
+            ],
             videoURL: nil,
             videoPreviewImageURL: nil,
             projectId: "1",
@@ -292,8 +299,9 @@ final class VideoFeedViewControllerTests: TestCase {
               pledgedAmount: 50_134,
               backersCount: 431
             ),
-            categoryPillText: "Project We Love",
-            secondaryPillText: "",
+            badges: [
+              .init(type: .projectWeLove, text: "Project We Love", icon: nil)
+            ],
             videoURL: nil,
             videoPreviewImageURL: nil,
             projectId: "1",

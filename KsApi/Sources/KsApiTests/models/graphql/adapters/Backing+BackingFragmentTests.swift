@@ -162,68 +162,6 @@ private func backingDictionary() -> [String: Any] {
           "remainingQuantity": null,
           "shippingPreference": "unrestricted",
           "shippingSummary": "Ships worldwide",
-          "shippingRules": [
-            {
-              "__typename": "ShippingRule",
-              "cost": {
-                "__typename": "Money",
-                "amount": "0.0",
-                "currency": "USD",
-                "symbol": "$"
-              },
-              "id": "U2hpcHBpbmdSdWxlLTExNDEzMzg0",
-              "location": {
-                "__typename": "Location",
-                "country": "ZZ",
-                "countryName": null,
-                "displayableName": "Earth",
-                "id": "TG9jYXRpb24tMQ==",
-                "name": "Rest of World"
-              },
-              "estimatedMin": {
-                "__typename": "Money",
-                "amount": "25.0",
-                "currency": "USD",
-                "symbol": "$"
-              },
-              "estimatedMax": {
-                "__typename": "Money",
-                "amount": "25.0",
-                "currency": "USD",
-                "symbol": "$"
-              }
-            },
-            {
-              "__typename": "ShippingRule",
-              "cost": {
-                "__typename": "Money",
-                "amount": "0.0",
-                "currency": "USD",
-                "symbol": "$"
-              },
-              "id": "U2hpcHBpbmdSdWxlLTExMjc4ODEw",
-              "location": {
-                "__typename": "Location",
-                "country": "US",
-                "countryName": "United States",
-                "displayableName": "United States",
-                "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
-                "name": "United States"
-              },
-              "estimatedMin": {
-                "__typename": "Money",
-                "amount": "25.0",
-                "currency": "USD",
-                "symbol": "$"
-              },
-              "estimatedMax": {
-                "__typename": "Money",
-                "amount": "25.0",
-                "currency": "USD",
-                "symbol": "$"
-              }
-            }
-          ],
           "startsAt": null,
           "image": {
             "__typename": "Photo",
@@ -288,68 +226,6 @@ private func backingDictionary() -> [String: Any] {
           "remainingQuantity": null,
           "shippingPreference": "unrestricted",
           "shippingSummary": "Ships worldwide",
-          "shippingRules": [
-            {
-              "__typename": "ShippingRule",
-              "cost": {
-                "__typename": "Money",
-                "amount": "0.0",
-                "currency": "USD",
-                "symbol": "$"
-              },
-              "id": "U2hpcHBpbmdSdWxlLTExNDY2NTM4",
-              "location": {
-                "__typename": "Location",
-                "country": "ZZ",
-                "countryName": null,
-                "displayableName": "Earth",
-                "id": "TG9jYXRpb24tMQ==",
-                "name": "Rest of World"
-              },
-              "estimatedMin": {
-                "__typename": "Money",
-                "amount": "25.0",
-                "currency": "USD",
-                "symbol": "$"
-              },
-              "estimatedMax": {
-                "__typename": "Money",
-                "amount": "25.0",
-                "currency": "USD",
-                "symbol": "$"
-              }
-            },
-            {
-              "__typename": "ShippingRule",
-              "cost": {
-                "__typename": "Money",
-                "amount": "0.0",
-                "currency": "USD",
-                "symbol": "$"
-              },
-              "id": "U2hpcHBpbmdSdWxlLTExNDY2NTM5",
-              "location": {
-                "__typename": "Location",
-                "country": "US",
-                "countryName": "United States",
-                "displayableName": "United States",
-                "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
-                "name": "United States"
-              },
-              "estimatedMin": {
-                "__typename": "Money",
-                "amount": "25.0",
-                "currency": "USD",
-                "symbol": "$"
-              },
-              "estimatedMax": {
-                "__typename": "Money",
-                "amount": "25.0",
-                "currency": "USD",
-                "symbol": "$"
-              }
-            }
-          ],
           "startsAt": null,
           "image": {
             "__typename": "Photo",
@@ -414,68 +290,6 @@ private func backingDictionary() -> [String: Any] {
           "remainingQuantity": null,
           "shippingPreference": "unrestricted",
           "shippingSummary": "Ships worldwide",
-          "shippingRules": [
-            {
-              "__typename": "ShippingRule",
-              "cost": {
-                "__typename": "Money",
-                "amount": "0.0",
-                "currency": "USD",
-                "symbol": "$"
-              },
-              "id": "U2hpcHBpbmdSdWxlLTExNDY2NTM4",
-              "location": {
-                "__typename": "Location",
-                "country": "ZZ",
-                "countryName": null,
-                "displayableName": "Earth",
-                "id": "TG9jYXRpb24tMQ==",
-                "name": "Rest of World"
-              },
-              "estimatedMin": {
-                "__typename": "Money",
-                "amount": "25.0",
-                "currency": "USD",
-                "symbol": "$"
-              },
-              "estimatedMax": {
-                "__typename": "Money",
-                "amount": "25.0",
-                "currency": "USD",
-                "symbol": "$"
-              }
-            },
-            {
-              "__typename": "ShippingRule",
-              "cost": {
-                "__typename": "Money",
-                "amount": "0.0",
-                "currency": "USD",
-                "symbol": "$"
-              },
-              "id": "U2hpcHBpbmdSdWxlLTExNDY2NTM5",
-              "location": {
-                "__typename": "Location",
-                "country": "US",
-                "countryName": "United States",
-                "displayableName": "United States",
-                "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
-                "name": "United States"
-              },
-              "estimatedMin": {
-                "__typename": "Money",
-                "amount": "25.0",
-                "currency": "USD",
-                "symbol": "$"
-              },
-              "estimatedMax": {
-                "__typename": "Money",
-                "amount": "25.0",
-                "currency": "USD",
-                "symbol": "$"
-              }
-            }
-          ],
           "startsAt": null,
           "image": {
             "__typename": "Photo",
@@ -540,68 +354,6 @@ private func backingDictionary() -> [String: Any] {
           "remainingQuantity": null,
           "shippingPreference": "unrestricted",
           "shippingSummary": "Ships worldwide",
-          "shippingRules": [
-            {
-              "__typename": "ShippingRule",
-              "cost": {
-                "__typename": "Money",
-                "amount": "0.0",
-                "currency": "USD",
-                "symbol": "$"
-              },
-              "id": "U2hpcHBpbmdSdWxlLTExNDY2NTM4",
-              "location": {
-                "__typename": "Location",
-                "country": "ZZ",
-                "countryName": null,
-                "displayableName": "Earth",
-                "id": "TG9jYXRpb24tMQ==",
-                "name": "Rest of World"
-              },
-              "estimatedMin": {
-                "__typename": "Money",
-                "amount": "25.0",
-                "currency": "USD",
-                "symbol": "$"
-              },
-              "estimatedMax": {
-                "__typename": "Money",
-                "amount": "25.0",
-                "currency": "USD",
-                "symbol": "$"
-              }
-            },
-            {
-              "__typename": "ShippingRule",
-              "cost": {
-                "__typename": "Money",
-                "amount": "0.0",
-                "currency": "USD",
-                "symbol": "$"
-              },
-              "id": "U2hpcHBpbmdSdWxlLTExNDY2NTM5",
-              "location": {
-                "__typename": "Location",
-                "country": "US",
-                "countryName": "United States",
-                "displayableName": "United States",
-                "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
-                "name": "United States"
-              },
-              "estimatedMin": {
-                "__typename": "Money",
-                "amount": "25.0",
-                "currency": "USD",
-                "symbol": "$"
-              },
-              "estimatedMax": {
-                "__typename": "Money",
-                "amount": "25.0",
-                "currency": "USD",
-                "symbol": "$"
-              }
-            }
-          ],
           "startsAt": null,
           "image": {
             "__typename": "Photo",
@@ -1073,68 +825,6 @@ private func backingDictionary() -> [String: Any] {
       "remainingQuantity": null,
       "shippingPreference": "unrestricted",
       "shippingSummary": "Ships worldwide",
-      "shippingRules": [
-        {
-          "__typename": "ShippingRule",
-          "cost": {
-            "__typename": "Money",
-            "amount": "0.0",
-            "currency": "USD",
-            "symbol": "$"
-          },
-          "id": "U2hpcHBpbmdSdWxlLTExNDEzMzc5",
-          "location": {
-            "__typename": "Location",
-            "country": "ZZ",
-            "countryName": null,
-            "displayableName": "Earth",
-            "id": "TG9jYXRpb24tMQ==",
-            "name": "Rest of World"
-          },
-          "estimatedMin": {
-            "__typename": "Money",
-            "amount": "25.0",
-            "currency": "USD",
-            "symbol": "$"
-          },
-          "estimatedMax": {
-            "__typename": "Money",
-            "amount": "25.0",
-            "currency": "USD",
-            "symbol": "$"
-          }
-        },
-        {
-          "__typename": "ShippingRule",
-          "cost": {
-            "__typename": "Money",
-            "amount": "0.0",
-            "currency": "USD",
-            "symbol": "$"
-          },
-          "id": "U2hpcHBpbmdSdWxlLTExMjc4NzUy",
-          "location": {
-            "__typename": "Location",
-            "country": "US",
-            "countryName": "United States",
-            "displayableName": "United States",
-            "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
-            "name": "United States"
-          },
-          "estimatedMin": {
-            "__typename": "Money",
-            "amount": "25.0",
-            "currency": "USD",
-            "symbol": "$"
-          },
-          "estimatedMax": {
-            "__typename": "Money",
-            "amount": "25.0",
-            "currency": "USD",
-            "symbol": "$"
-          }
-        }
-      ],
       "startsAt": null,
       "image": {
         "__typename": "Photo",

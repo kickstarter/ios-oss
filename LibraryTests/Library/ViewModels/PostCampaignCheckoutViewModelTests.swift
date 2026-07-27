@@ -256,7 +256,7 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
   func testApplePayAuthorization_rewardAndShipping_isCorrect() {
     let project = Project.cosmicSurgery
     let reward = project.rewards.first!
-      |> Reward.lens.shippingRules .~ [ShippingRule.template]
+
       |> Reward.lens.shipping.enabled .~ true
 
     XCTAssertEqual(reward.minimum, 6)
@@ -307,10 +307,10 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
     let shippingRule = ShippingRule.template
     var project = Project.cosmicSurgery
     let reward1 = project.rewards[0]
-      |> Reward.lens.shippingRules .~ [shippingRule]
+
       |> Reward.lens.shipping.enabled .~ true
     let reward2 = project.rewards[1]
-      |> Reward.lens.shippingRules .~ [shippingRule]
+
       |> Reward.lens.shipping.enabled .~ true
 
     XCTAssertEqual(reward1.minimum, 6)
