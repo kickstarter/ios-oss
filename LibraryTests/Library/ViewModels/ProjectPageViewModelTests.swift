@@ -735,29 +735,32 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testSecretRewards_GoToLogin() {
-    withEnvironment(
-      config: .template,
-      currentUser: nil,
-      mainBundle: self.releaseBundle
-    ) {
-      let project = Project.template
+    ProjectPageViewModelTests.mockNetworkRequests(project: .template) {
+      withEnvironment(
+        config: .template,
+        currentUser: nil,
+        mainBundle: self.releaseBundle
+      ) {
+        self.vm.configureAndLoad(
+          .left(self.projectWithEmptyProperties),
+          secretRewardToken: "secret-reward-token"
+        )
 
-      self.vm.configureAndLoad(.left(project), secretRewardToken: "secret-reward-token")
+        self.scheduler.advance()
 
-      self.scheduler.advance()
+        self.goToRewardsProject.assertDidNotEmitValue()
+        self.goToRewardsRefTag.assertDidNotEmitValue()
+        self.goToLoginWithIntent.assertDidNotEmitValue()
 
-      self.goToRewardsProject.assertDidNotEmitValue()
-      self.goToRewardsRefTag.assertDidNotEmitValue()
-      self.goToLoginWithIntent.assertDidNotEmitValue()
+        self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
 
-      self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
-
-      self.self.goToLoginWithIntent.assertValues(
-        [.backProject],
-        "Tapping 'Back this project' emits the project"
-      )
-      self.goToRewardsProject.assertDidNotEmitValue()
-      self.goToRewardsRefTag.assertDidNotEmitValue()
+        self.self.goToLoginWithIntent.assertValues(
+          [.backProject],
+          "Tapping 'Back this project' emits the project"
+        )
+        self.goToRewardsProject.assertDidNotEmitValue()
+        self.goToRewardsRefTag.assertDidNotEmitValue()
+      }
     }
   }
 
