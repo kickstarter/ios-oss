@@ -483,107 +483,122 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testGoToComments() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
+    ProjectPageViewModelTests.mockNetworkRequests {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(self.projectWithEmptyProperties),
+        refInfo: RefInfo(.discovery)
+      )
 
-    self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-    self.goToComments.assertDidNotEmitValue()
+      self.goToComments.assertDidNotEmitValue()
 
-    self.vm.inputs.tappedComments()
+      self.vm.inputs.tappedComments()
 
-    self.goToComments.assertValues([.template])
+      self.goToComments.assertValues([.template])
+    }
   }
 
   func testGoToReportProject() {
     let project = Project.template
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.discovery))
+    ProjectPageViewModelTests.mockNetworkRequests(project: project) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(self.projectWithEmptyProperties),
+        refInfo: RefInfo(.discovery)
+      )
 
-    self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-    self.goToReportProject.assertDidNotEmitValue()
+      self.goToReportProject.assertDidNotEmitValue()
 
-    self.vm.inputs.tappedReportProject()
+      self.vm.inputs.tappedReportProject()
 
-    XCTAssertEqual(self.goToReportProject.lastValue?.0, false)
-    XCTAssertEqual(self.goToReportProject.lastValue?.1, project.graphID)
-    XCTAssertEqual(self.goToReportProject.lastValue?.2, project.urls.web.project)
+      XCTAssertEqual(self.goToReportProject.lastValue?.0, false)
+      XCTAssertEqual(self.goToReportProject.lastValue?.1, project.graphID)
+      XCTAssertEqual(self.goToReportProject.lastValue?.2, project.urls.web.project)
+    }
   }
 
   func testGoToRewards_withUserLoggedIn() {
     withEnvironment(config: .template, currentUser: .template, mainBundle: self.releaseBundle) {
       let project = Project.template
+      ProjectPageViewModelTests.mockNetworkRequests(project: project) {
+        self.vm.configureAndLoad(.left(self.projectWithEmptyProperties))
+        self.scheduler.advance()
 
-      self.vm.configureAndLoad(.left(project))
+        self.goToRewardsProject.assertDidNotEmitValue()
+        self.goToRewardsRefTag.assertDidNotEmitValue()
 
-      self.scheduler.advance()
+        self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
 
-      self.goToRewardsProject.assertDidNotEmitValue()
-      self.goToRewardsRefTag.assertDidNotEmitValue()
+        self.goToRewardsProject.assertValues([project], "Tapping 'Back this project' emits the project")
+        self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
 
-      self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
+        self.vm.inputs.pledgeCTAButtonTapped(with: .viewRewards)
 
-      self.goToRewardsProject.assertValues([project], "Tapping 'Back this project' emits the project")
-      self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
+        self.goToRewardsProject.assertValues(
+          [project, project],
+          "Tapping 'View rewards' emits the project"
+        )
+        self.goToRewardsRefTag.assertValues(
+          [.discovery, .discovery],
+          "Tapping 'View rewards' emits the refTag"
+        )
 
-      self.vm.inputs.pledgeCTAButtonTapped(with: .viewRewards)
+        self.vm.inputs.pledgeCTAButtonTapped(with: .viewYourRewards)
 
-      self.goToRewardsProject.assertValues(
-        [project, project],
-        "Tapping 'View rewards' emits the project"
-      )
-      self.goToRewardsRefTag.assertValues(
-        [.discovery, .discovery],
-        "Tapping 'View rewards' emits the refTag"
-      )
-
-      self.vm.inputs.pledgeCTAButtonTapped(with: .viewYourRewards)
-
-      self.goToRewardsProject.assertValues(
-        [project, project, project],
-        "Tapping 'View your rewards' emits the project"
-      )
-      self.goToRewardsRefTag.assertValues(
-        [.discovery, .discovery, .discovery],
-        "Tapping 'View your rewards' emits the refTag"
-      )
+        self.goToRewardsProject.assertValues(
+          [project, project, project],
+          "Tapping 'View your rewards' emits the project"
+        )
+        self.goToRewardsRefTag.assertValues(
+          [.discovery, .discovery, .discovery],
+          "Tapping 'View your rewards' emits the refTag"
+        )
+      }
     }
   }
 
   func testGoToRewards_withUserLoggedOut() {
-    withEnvironment(config: .template, currentUser: nil, mainBundle: self.releaseBundle) {
-      let project = Project.template
+    let project = Project.template
 
-      self.vm.configureAndLoad(.left(project))
+    ProjectPageViewModelTests.mockNetworkRequests(project: project) {
+      withEnvironment(config: .template, currentUser: nil, mainBundle: self.releaseBundle) {
+        self.vm.configureAndLoad(.left(self.projectWithEmptyProperties))
+        self.scheduler.advance()
 
-      self.goToRewardsProject.assertDidNotEmitValue()
-      self.goToRewardsRefTag.assertDidNotEmitValue()
+        self.goToRewardsProject.assertDidNotEmitValue()
+        self.goToRewardsRefTag.assertDidNotEmitValue()
 
-      self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
+        self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
 
-      self.goToRewardsProject.assertValues([project], "Tapping 'Back this project' emits the project")
-      self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
+        self.goToRewardsProject.assertValues([project], "Tapping 'Back this project' emits the project")
+        self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
 
-      self.vm.inputs.pledgeCTAButtonTapped(with: .viewRewards)
+        self.vm.inputs.pledgeCTAButtonTapped(with: .viewRewards)
 
-      self.goToRewardsProject.assertValues(
-        [project, project],
-        "Tapping 'View rewards' emits the project"
-      )
-      self.goToRewardsRefTag.assertValues(
-        [.discovery, .discovery],
-        "Tapping 'View rewards' emits the refTag"
-      )
+        self.goToRewardsProject.assertValues(
+          [project, project],
+          "Tapping 'View rewards' emits the project"
+        )
+        self.goToRewardsRefTag.assertValues(
+          [.discovery, .discovery],
+          "Tapping 'View rewards' emits the refTag"
+        )
 
-      self.vm.inputs.pledgeCTAButtonTapped(with: .viewYourRewards)
+        self.vm.inputs.pledgeCTAButtonTapped(with: .viewYourRewards)
 
-      self.goToRewardsProject.assertValues(
-        [project, project, project],
-        "Tapping 'View your rewards' emits the project"
-      )
-      self.goToRewardsRefTag.assertValues(
-        [.discovery, .discovery, .discovery],
-        "Tapping 'View your rewards' emits the refTag"
-      )
+        self.goToRewardsProject.assertValues(
+          [project, project, project],
+          "Tapping 'View your rewards' emits the project"
+        )
+        self.goToRewardsRefTag.assertValues(
+          [.discovery, .discovery, .discovery],
+          "Tapping 'View your rewards' emits the refTag"
+        )
+      }
     }
   }
 
@@ -693,52 +708,59 @@ final class ProjectPageViewModelTests: TestCase {
 
   func testSecretRewards_GoToRewards() {
     let project = Project.template
+    ProjectPageViewModelTests.mockNetworkRequests(project: project) {
+      withEnvironment(
+        config: .template,
+        currentUser: .template,
+        mainBundle: self.releaseBundle
+      ) {
+        self.vm.configureAndLoad(
+          .left(self.projectWithEmptyProperties),
+          secretRewardToken: "secret-reward-token"
+        )
 
-    withEnvironment(
-      config: .template,
-      currentUser: .template,
-      mainBundle: self.releaseBundle
-    ) {
-      self.vm.configureAndLoad(.left(project), secretRewardToken: "secret-reward-token")
+        self.goToRewardsProject.assertDidNotEmitValue()
+        self.goToRewardsRefTag.assertDidNotEmitValue()
+        self.goToLoginWithIntent.assertDidNotEmitValue()
 
-      self.goToRewardsProject.assertDidNotEmitValue()
-      self.goToRewardsRefTag.assertDidNotEmitValue()
-      self.goToLoginWithIntent.assertDidNotEmitValue()
+        self.scheduler.advance()
 
-      self.scheduler.advance()
+        self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
 
-      self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
-
-      self.goToRewardsProject.assertValues([project], "Tapping 'Back this project' emits the project")
-      self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
-      self.goToLoginWithIntent.assertDidNotEmitValue()
+        self.goToRewardsProject.assertValues([project], "Tapping 'Back this project' emits the project")
+        self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
+        self.goToLoginWithIntent.assertDidNotEmitValue()
+      }
     }
   }
 
   func testSecretRewards_GoToLogin() {
-    withEnvironment(
-      config: .template,
-      currentUser: nil,
-      mainBundle: self.releaseBundle
-    ) {
-      let project = Project.template
+    ProjectPageViewModelTests.mockNetworkRequests(project: .template) {
+      withEnvironment(
+        config: .template,
+        currentUser: nil,
+        mainBundle: self.releaseBundle
+      ) {
+        self.vm.configureAndLoad(
+          .left(self.projectWithEmptyProperties),
+          secretRewardToken: "secret-reward-token"
+        )
 
-      self.vm.configureAndLoad(.left(project), secretRewardToken: "secret-reward-token")
+        self.scheduler.advance()
 
-      self.scheduler.advance()
+        self.goToRewardsProject.assertDidNotEmitValue()
+        self.goToRewardsRefTag.assertDidNotEmitValue()
+        self.goToLoginWithIntent.assertDidNotEmitValue()
 
-      self.goToRewardsProject.assertDidNotEmitValue()
-      self.goToRewardsRefTag.assertDidNotEmitValue()
-      self.goToLoginWithIntent.assertDidNotEmitValue()
+        self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
 
-      self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
-
-      self.self.goToLoginWithIntent.assertValues(
-        [.backProject],
-        "Tapping 'Back this project' emits the project"
-      )
-      self.goToRewardsProject.assertDidNotEmitValue()
-      self.goToRewardsRefTag.assertDidNotEmitValue()
+        self.self.goToLoginWithIntent.assertValues(
+          [.backProject],
+          "Tapping 'Back this project' emits the project"
+        )
+        self.goToRewardsProject.assertDidNotEmitValue()
+        self.goToRewardsRefTag.assertDidNotEmitValue()
+      }
     }
   }
 
@@ -773,17 +795,21 @@ final class ProjectPageViewModelTests: TestCase {
         |> Project.lens.personalization.backing .~ backing
         |> Project.lens.personalization.isBacking .~ true
 
-      self.vm.configureAndLoad(.left(project))
+      ProjectPageViewModelTests.mockNetworkRequests(project: project, backing: backing) {
+        self.vm.configureAndLoad(.left(self.projectWithEmptyProperties))
 
-      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
-      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
-      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
+        self.scheduler.advance()
 
-      self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
+        self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+        self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+        self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
 
-      self.goToManagePledgeProjectParam.assertValues([.slug(project.slug)])
-      self.goToManagePledgeBackingParam.assertValues([.id(backing.id)])
-      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
+        self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
+
+        self.goToManagePledgeProjectParam.assertValues([.slug(project.slug)])
+        self.goToManagePledgeBackingParam.assertValues([.id(backing.id)])
+        self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
+      }
     }
   }
 
@@ -799,44 +825,52 @@ final class ProjectPageViewModelTests: TestCase {
         |> Project.lens.personalization.backing .~ backing
         |> Project.lens.personalization.isBacking .~ true
 
-      self.vm.configureAndLoad(.left(project))
+      ProjectPageViewModelTests.mockNetworkRequests(project: project, backing: backing) {
+        self.vm.configureAndLoad(.left(self.projectWithEmptyProperties))
 
-      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
-      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
-      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
+        self.scheduler.advance()
 
-      self.vm.inputs.pledgeCTAButtonTapped(with: .viewBacking)
+        self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+        self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+        self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
 
-      self.goToManagePledgeProjectParam.assertValues([.slug(project.slug)])
-      self.goToManagePledgeBackingParam.assertValues([.id(backing.id)])
-      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
+        self.vm.inputs.pledgeCTAButtonTapped(with: .viewBacking)
+
+        self.goToManagePledgeProjectParam.assertValues([.slug(project.slug)])
+        self.goToManagePledgeBackingParam.assertValues([.id(backing.id)])
+        self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
+      }
     }
   }
 
   func testGoToPledgeManagementWebview_ManagingPledge() {
-    withEnvironment(config: .template) {
-      let reward = Project.cosmicSurgery.rewards.first!
-      let backing = Backing.templateMadeWithPledgeManagment
-        |> Backing.lens.reward .~ reward
-        |> Backing.lens.rewardId .~ reward.id
+    let reward = Project.cosmicSurgery.rewards.first!
+    let backing = Backing.templateMadeWithPledgeManagment
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.rewardId .~ reward.id
 
-      let project = Project.cosmicSurgery
-        |> Project.lens.personalization.backing .~ backing
-        |> Project.lens.personalization.isBacking .~ true
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.personalization.isBacking .~ true
 
-      let backingDetailsPageURL = backing.backingDetailsPageRoute
+    ProjectPageViewModelTests.mockNetworkRequests(project: project, backing: backing) {
+      withEnvironment(config: .template) {
+        let backingDetailsPageURL = backing.backingDetailsPageRoute
 
-      self.vm.configureAndLoad(.left(project))
+        self.vm.configureAndLoad(.left(self.projectWithEmptyProperties))
 
-      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
-      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
-      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
+        self.scheduler.advance()
 
-      self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
+        self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+        self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+        self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
 
-      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
-      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
-      self.goToPledgeManagementViewPledge.assertLastValue(backingDetailsPageURL)
+        self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
+
+        self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+        self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+        self.goToPledgeManagementViewPledge.assertLastValue(backingDetailsPageURL)
+      }
     }
   }
 
@@ -854,17 +888,21 @@ final class ProjectPageViewModelTests: TestCase {
 
       let backingDetailsPageURL = backing.backingDetailsPageRoute
 
-      self.vm.configureAndLoad(.left(project))
+      ProjectPageViewModelTests.mockNetworkRequests(project: project, backing: backing) {
+        self.vm.configureAndLoad(.left(self.projectWithEmptyProperties))
 
-      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
-      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
-      self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
+        self.scheduler.advance()
 
-      self.vm.inputs.pledgeCTAButtonTapped(with: .viewBacking)
+        self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+        self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+        self.goToPledgeManagementViewPledge.assertDidNotEmitValue()
 
-      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
-      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
-      self.goToPledgeManagementViewPledge.assertLastValue(backingDetailsPageURL)
+        self.vm.inputs.pledgeCTAButtonTapped(with: .viewBacking)
+
+        self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+        self.goToManagePledgeBackingParam.assertDidNotEmitValue()
+        self.goToPledgeManagementViewPledge.assertLastValue(backingDetailsPageURL)
+      }
     }
   }
 
@@ -875,25 +913,31 @@ final class ProjectPageViewModelTests: TestCase {
       AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString +
       project.redemptionPageUrl
 
-    self.vm.configureAndLoad(.left(project))
+    ProjectPageViewModelTests.mockNetworkRequests(project: project) {
+      self.vm.configureAndLoad(.left(self.projectWithEmptyProperties))
+      self.scheduler.advance()
 
-    self.goToPledgeManager.assertDidNotEmitValue()
+      self.goToPledgeManager.assertDidNotEmitValue()
 
-    self.vm.inputs.pledgeCTAButtonTapped(with: .pledgeManager)
+      self.vm.inputs.pledgeCTAButtonTapped(with: .pledgeManager)
 
-    self.goToPledgeManager.assertLastValue(redemptionPageUrl)
+      self.goToPledgeManager.assertLastValue(redemptionPageUrl)
+    }
   }
 
   func testGoToUpdates() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
+    ProjectPageViewModelTests.mockNetworkRequests {
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
 
-    self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-    self.goToUpdates.assertDidNotEmitValue()
+      self.goToUpdates.assertDidNotEmitValue()
 
-    self.vm.inputs.tappedUpdates()
+      self.vm.inputs.tappedUpdates()
 
-    self.goToUpdates.assertValues([.template])
+      self.goToUpdates.assertValues([.template])
+    }
   }
 
   func testConfigurePledgeCTAView_FetchProjectSuccess() {
@@ -1203,127 +1247,103 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testManagePledgeViewControllerFinished() {
-    self.vm.inputs.configureWith(projectOrParam: .left(Project.template), refInfo: RefInfo(.discovery))
-    self.vm.inputs.viewDidLoad()
+    ProjectPageViewModelTests.mockNetworkRequests {
+      self.vm.inputs.configureWith(projectOrParam: .left(Project.template), refInfo: RefInfo(.discovery))
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-    self.dismissManagePledgeAndShowMessageBannerWithMessage.assertDidNotEmitValue()
+      self.dismissManagePledgeAndShowMessageBannerWithMessage.assertDidNotEmitValue()
 
-    self.vm.inputs.managePledgeViewControllerFinished(with: "Your changes have been saved")
+      self.vm.inputs.managePledgeViewControllerFinished(with: "Your changes have been saved")
 
-    self.dismissManagePledgeAndShowMessageBannerWithMessage.assertValues(["Your changes have been saved"])
+      self.dismissManagePledgeAndShowMessageBannerWithMessage.assertValues(["Your changes have been saved"])
+    }
   }
 
   func testnavigateBackToProjectPage() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: nil)
-    self.vm.inputs.viewDidLoad()
+    ProjectPageViewModelTests.mockNetworkRequests {
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: nil)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-    self.navigateBackToProjectPage.assertDidNotEmitValue()
+      self.navigateBackToProjectPage.assertDidNotEmitValue()
 
-    self.vm.inputs.didBackProject()
+      self.vm.inputs.didBackProject()
 
-    self.navigateBackToProjectPage.assertValueCount(1)
+      self.navigateBackToProjectPage.assertValueCount(1)
+    }
   }
 
   func testOutput_PresentMessageDialog() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: nil)
-    self.vm.inputs.viewDidLoad()
+    ProjectPageViewModelTests.mockNetworkRequests {
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: nil)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-    self.presentMessageDialog.assertDidNotEmitValue()
+      self.presentMessageDialog.assertDidNotEmitValue()
 
-    self.vm.inputs.askAQuestionCellTapped()
+      self.vm.inputs.askAQuestionCellTapped()
 
-    self.presentMessageDialog.assertValues([.template])
+      self.presentMessageDialog.assertValues([.template])
+    }
   }
 
   func testOutput_ProjectFlagged_False() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: nil)
-    self.vm.inputs.viewDidLoad()
+    ProjectPageViewModelTests.mockNetworkRequests {
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: nil)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-    self.projectFlagged.assertValue(false)
+      self.projectFlagged.assertValues([false, false])
+    }
   }
 
   func testOutput_ProjectFlagged_True() {
     var project = Project.template
     project.flagging = true
 
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: nil)
-    self.vm.inputs.viewDidLoad()
+    ProjectPageViewModelTests.mockNetworkRequests(project: project) {
+      self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: nil)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-    self.projectFlagged.assertValue(true)
+      self.projectFlagged.assertValues([false, true])
+    }
   }
 
   func testOutput_ShowHelpWebViewController() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: nil)
-    self.vm.inputs.viewDidLoad()
+    ProjectPageViewModelTests.mockNetworkRequests {
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: nil)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-    self.showHelpWebViewController.assertDidNotEmitValue()
+      self.showHelpWebViewController.assertDidNotEmitValue()
 
-    self.vm.inputs
-      .projectTabDisclaimerCellDidTapURL(URL(string: "https://www.kickstarter.com/environment")!)
+      self.vm.inputs
+        .projectTabDisclaimerCellDidTapURL(URL(string: "https://www.kickstarter.com/environment")!)
 
-    self.showHelpWebViewController.assertValues([.environment])
+      self.showHelpWebViewController.assertValues([.environment])
 
-    self.vm.inputs.projectRisksDisclaimerCellDidTapURL(URL(string: "https://www.kickstarter.com/trust")!)
+      self.vm.inputs.projectRisksDisclaimerCellDidTapURL(URL(string: "https://www.kickstarter.com/trust")!)
 
-    self.showHelpWebViewController.assertValues([.environment, .trust])
+      self.showHelpWebViewController.assertValues([.environment, .trust])
+    }
   }
 
   func testOutput_UpdateDataSourceNavigationSection() {
     let overviewSection = NavigationSection.overview.rawValue
     let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
 
-    self.vm.inputs
-      .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
-
-    self.updateDataSourceNavigationSection.assertDidNotEmitValue()
-
-    self.vm.inputs.viewDidLoad()
-
-    self.updateDataSourceNavigationSection.assertDidNotEmitValue()
-
-    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
-
-    self.updateDataSourceNavigationSection.assertValueCount(1)
-
-    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: environmentalCommitmentsSection)
-
-    self.updateDataSourceNavigationSection.assertValues([.overview, .environmentalCommitments])
-  }
-
-  func testOutput_UpdateDataSourceProject() {
-    let overviewSection = NavigationSection.overview.rawValue
-    let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
-
-    self.vm.inputs
-      .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
-
-    self.updateDataSourceProject.assertDidNotEmitValue()
-
-    self.vm.inputs.viewDidLoad()
-
-    self.updateDataSourceProject.assertDidNotEmitValue()
-    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
-
-    self.updateDataSourceNavigationSection.assertValueCount(1)
-
-    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: environmentalCommitmentsSection)
-
-    self.updateDataSourceProject.assertDidEmitValue()
-  }
-
-  func testOutput_UpdateDataSourceProject_ReloadsAfterUserSessionStarted() {
-    let overviewSection = NavigationSection.overview.rawValue
-    let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
-
-    withEnvironment(currentUser: nil) {
+    ProjectPageViewModelTests.mockNetworkRequests {
       self.vm.inputs
         .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
 
-      self.updateDataSourceProject.assertDidNotEmitValue()
+      self.updateDataSourceNavigationSection.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-      self.updateDataSourceProject.assertDidNotEmitValue()
+      self.updateDataSourceNavigationSection.assertDidNotEmitValue()
 
       self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
 
@@ -1331,12 +1351,63 @@ final class ProjectPageViewModelTests: TestCase {
 
       self.vm.inputs.projectNavigationSelectorViewDidSelect(index: environmentalCommitmentsSection)
 
-      self.updateDataSourceProject.assertDidEmitValue()
+      self.updateDataSourceNavigationSection.assertValues([.overview, .environmentalCommitments])
+    }
+  }
 
-      withEnvironment(currentUser: .template) {
-        self.vm.inputs.userSessionStarted()
+  func testOutput_UpdateDataSourceProject() {
+    let overviewSection = NavigationSection.overview.rawValue
+    let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
+
+    ProjectPageViewModelTests.mockNetworkRequests {
+      self.vm.inputs
+        .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
+      self.updateDataSourceProject.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.updateDataSourceProject.assertDidNotEmitValue()
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
+
+      self.updateDataSourceNavigationSection.assertValueCount(1)
+
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: environmentalCommitmentsSection)
+
+      self.updateDataSourceProject.assertDidEmitValue()
+    }
+  }
+
+  func testOutput_UpdateDataSourceProject_ReloadsAfterUserSessionStarted() {
+    let overviewSection = NavigationSection.overview.rawValue
+    let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
+
+    withEnvironment(currentUser: nil) {
+      ProjectPageViewModelTests.mockNetworkRequests {
+        self.vm.inputs
+          .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
+
+        self.updateDataSourceProject.assertDidNotEmitValue()
+
+        self.vm.inputs.viewDidLoad()
+
+        self.scheduler.advance()
+
+        self.updateDataSourceProject.assertDidNotEmitValue()
+
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
+
+        self.updateDataSourceNavigationSection.assertValueCount(1)
+
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(index: environmentalCommitmentsSection)
 
         self.updateDataSourceProject.assertDidEmitValue()
+
+        withEnvironment(currentUser: .template) {
+          self.vm.inputs.userSessionStarted()
+
+          self.updateDataSourceProject.assertDidEmitValue()
+        }
       }
     }
   }
@@ -1345,22 +1416,25 @@ final class ProjectPageViewModelTests: TestCase {
     let overviewSection = NavigationSection.overview.rawValue
     let campaignSection = NavigationSection.campaign.rawValue
 
-    self.vm.inputs
-      .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
+    ProjectPageViewModelTests.mockNetworkRequests {
+      self.vm.inputs
+        .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
 
-    self.updateDataSourceImageURLS.assertDidNotEmitValue()
+      self.updateDataSourceImageURLS.assertDidNotEmitValue()
 
-    self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-    self.updateDataSourceImageURLS.assertDidNotEmitValue()
-    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
+      self.updateDataSourceImageURLS.assertDidNotEmitValue()
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
 
-    self.updateDataSourceNavigationSection.assertValueCount(1)
+      self.updateDataSourceNavigationSection.assertValueCount(1)
 
-    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
 
-    self.updateDataSourceImageURLS.assertDidEmitValue()
-    self.updateDataSourceImageURLS.assertLastValue([])
+      self.updateDataSourceImageURLS.assertDidEmitValue()
+      self.updateDataSourceImageURLS.assertLastValue([])
+    }
   }
 
   func testOutputForNonEmptyImageURLS_UpdateDataSourceProject() {
@@ -1385,22 +1459,25 @@ final class ProjectPageViewModelTests: TestCase {
         projectNotice: nil
       )
 
-    self.vm.inputs
-      .configureWith(projectOrParam: .left(nonEmptyProjectProperties), refInfo: RefInfo(.category))
+    ProjectPageViewModelTests.mockNetworkRequests(project: nonEmptyProjectProperties) {
+      self.vm.inputs
+        .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
 
-    self.updateDataSourceImageURLS.assertDidNotEmitValue()
+      self.updateDataSourceImageURLS.assertDidNotEmitValue()
 
-    self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-    self.updateDataSourceImageURLS.assertDidNotEmitValue()
-    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
+      self.updateDataSourceImageURLS.assertDidNotEmitValue()
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
 
-    self.updateDataSourceNavigationSection.assertValueCount(1)
+      self.updateDataSourceNavigationSection.assertValueCount(1)
 
-    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
 
-    self.updateDataSourceImageURLS.assertDidEmitValue()
-    self.updateDataSourceImageURLS.assertLastValue([expectedUrl])
+      self.updateDataSourceImageURLS.assertDidEmitValue()
+      self.updateDataSourceImageURLS.assertLastValue([expectedUrl])
+    }
   }
 
   func testOutputForNonEmptyImageURLS_UpdatedPrepareImageIndexPath() {
@@ -1664,17 +1741,23 @@ final class ProjectPageViewModelTests: TestCase {
         projectNotice: nil
       )
 
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
+    ProjectPageViewModelTests.mockNetworkRequests(project: project) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(self.projectWithEmptyProperties),
+        refInfo: RefInfo(.category)
+      )
 
-    self.updateFAQsInDataSourceProject.assertDidNotEmitValue()
+      self.updateFAQsInDataSourceProject.assertDidNotEmitValue()
 
-    self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-    self.updateFAQsInDataSourceProject.assertDidNotEmitValue()
+      self.updateFAQsInDataSourceProject.assertDidNotEmitValue()
 
-    self.vm.inputs.didSelectFAQsRowAt(row: 1, values: [false, false, false, false])
+      self.vm.inputs.didSelectFAQsRowAt(row: 1, values: [false, false, false, false])
 
-    self.updateFAQsInDataSourceProject.assertDidEmitValue()
+      self.updateFAQsInDataSourceProject.assertDidEmitValue()
+    }
   }
 
   func testOutput_UpdateFAQsInDataSourceIsExpandedValues() {
@@ -1716,22 +1799,28 @@ final class ProjectPageViewModelTests: TestCase {
         projectNotice: nil
       )
 
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
+    ProjectPageViewModelTests.mockNetworkRequests(project: project) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(self.projectWithEmptyProperties),
+        refInfo: RefInfo(.category)
+      )
 
-    self.updateFAQsInDataSourceIsExpandedValues.assertDidNotEmitValue()
+      self.updateFAQsInDataSourceIsExpandedValues.assertDidNotEmitValue()
 
-    self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-    self.updateFAQsInDataSourceIsExpandedValues.assertDidNotEmitValue()
+      self.updateFAQsInDataSourceIsExpandedValues.assertDidNotEmitValue()
 
-    self.vm.inputs.didSelectFAQsRowAt(row: 1, values: [false, false, false, false])
+      self.vm.inputs.didSelectFAQsRowAt(row: 1, values: [false, false, false, false])
 
-    self.updateFAQsInDataSourceIsExpandedValues.assertValues([[false, true, false, false]])
+      self.updateFAQsInDataSourceIsExpandedValues.assertValues([[false, true, false, false]])
 
-    self.vm.inputs.didSelectFAQsRowAt(row: 0, values: [false, true, false, false])
+      self.vm.inputs.didSelectFAQsRowAt(row: 0, values: [false, true, false, false])
 
-    self.updateFAQsInDataSourceIsExpandedValues
-      .assertValues([[false, true, false, false], [true, true, false, false]])
+      self.updateFAQsInDataSourceIsExpandedValues
+        .assertValues([[false, true, false, false], [true, true, false, false]])
+    }
   }
 
   func testOutput_PauseMediaWhenAppIsBackgrounded_Success() {
@@ -1746,15 +1835,21 @@ final class ProjectPageViewModelTests: TestCase {
         projectNotice: nil
       )
 
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
+    ProjectPageViewModelTests.mockNetworkRequests(project: project) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(self.projectWithEmptyProperties),
+        refInfo: RefInfo(.category)
+      )
 
-    self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-    self.pauseMedia.assertDidNotEmitValue()
+      self.pauseMedia.assertDidNotEmitValue()
 
-    self.vm.inputs.applicationDidEnterBackground()
+      self.vm.inputs.applicationDidEnterBackground()
 
-    self.pauseMedia.assertDidEmitValue()
+      self.pauseMedia.assertDidEmitValue()
+    }
   }
 
   func testReloadCampaignData_WhenOrientationChangedOnlyForCampaignTab_Success() {
@@ -1772,27 +1867,33 @@ final class ProjectPageViewModelTests: TestCase {
         projectNotice: nil
       )
 
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
+    ProjectPageViewModelTests.mockNetworkRequests(project: project) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(self.projectWithEmptyProperties),
+        refInfo: RefInfo(.category)
+      )
 
-    self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-    self.reloadCampaignData.assertDidNotEmitValue()
+      self.reloadCampaignData.assertDidNotEmitValue()
 
-    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: faqSection)
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: faqSection)
 
-    self.reloadCampaignData.assertDidNotEmitValue()
+      self.reloadCampaignData.assertDidNotEmitValue()
 
-    self.vm.inputs.viewWillTransition()
+      self.vm.inputs.viewWillTransition()
 
-    self.reloadCampaignData.assertDidNotEmitValue()
+      self.reloadCampaignData.assertDidNotEmitValue()
 
-    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
 
-    self.reloadCampaignData.assertDidNotEmitValue()
+      self.reloadCampaignData.assertDidNotEmitValue()
 
-    self.vm.inputs.viewWillTransition()
+      self.vm.inputs.viewWillTransition()
 
-    self.reloadCampaignData.assertDidEmitValue()
+      self.reloadCampaignData.assertDidEmitValue()
+    }
   }
 
   func testSelectCampaignImageLink_WhenURLAvailable_ReturnsURL_Success() {
@@ -1809,15 +1910,21 @@ final class ProjectPageViewModelTests: TestCase {
         projectNotice: nil
       )
 
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
+    ProjectPageViewModelTests.mockNetworkRequests(project: project) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(self.projectWithEmptyProperties),
+        refInfo: RefInfo(.category)
+      )
 
-    self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-    self.goToURL.assertDidNotEmitValue()
+      self.goToURL.assertDidNotEmitValue()
 
-    self.vm.inputs.didSelectCampaignImageLink(url: url)
+      self.vm.inputs.didSelectCampaignImageLink(url: url)
 
-    self.goToURL.assertValue(url)
+      self.goToURL.assertValue(url)
+    }
   }
 
   func testPrefetchImageURLsOnFirstLoad_LoadingViaParam_Success() {
