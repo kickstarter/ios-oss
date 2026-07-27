@@ -238,16 +238,10 @@ final class ProjectPageViewModelTests: TestCase {
     let backing = Backing.template
       |> Backing.lens.id .~ 543
 
-    let projectPamphletData = Project
-      .ProjectPamphletData(project: USCurrencyProject, backingId: backing.id)
-
-    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: USCurrencyProject, backing: backing)
-
-    withEnvironment(apiService: MockService(
-      fetchProjectAndBackingResult: .success(projectFullAndEnvelope),
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectRewardsResult: .success([.template])
-    )) {
+    ProjectPageViewModelTests.mockNetworkRequests(
+      project: USCurrencyProject,
+      backing: backing
+    ) {
       self.vm.inputs.configureWith(projectOrParam: .left(USCurrencyProject), refInfo: RefInfo(.category))
 
       self.configureDataSourceProject.assertDidNotEmitValue()
@@ -328,16 +322,11 @@ final class ProjectPageViewModelTests: TestCase {
     let backing = Backing.template
       |> Backing.lens.id .~ 543
 
-    let projectPamphletData = Project
-      .ProjectPamphletData(project: USCurrencyProject, backingId: backing.id)
-
-    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: USCurrencyProject, backing: backing)
-
-    withEnvironment(apiService: MockService(
-      fetchProjectAndBackingResult: .success(projectFullAndEnvelope),
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectRewardsResult: .success([.template])
-    )) {
+    ProjectPageViewModelTests.mockNetworkRequests(
+      project: USCurrencyProject,
+      rewards: [Reward.template],
+      backing: backing
+    ) {
       self.vm.inputs.configureWith(projectOrParam: .left(USCurrencyProject), refInfo: RefInfo(.category))
 
       self.configureDataSourceProject.assertDidNotEmitValue()
@@ -364,13 +353,7 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testConfigureProjectNavigationSelectorView_ExtendedPropertiesEmpty_CreatesNavigationSelector_Success() {
-    let projectPamphletData = Project
-      .ProjectPamphletData(project: self.projectWithEmptyProperties, backingId: nil)
-
-    withEnvironment(apiService: MockService(
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectRewardsResult: .success([.template])
-    )) {
+    ProjectPageViewModelTests.mockNetworkRequests(project: Project.template) {
       self.vm.inputs
         .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
 
@@ -386,13 +369,11 @@ final class ProjectPageViewModelTests: TestCase {
 
   func testConfigureProjectNavigationSelectorView_ExtendedProjectPropertiesNil_CreatesNavigationSelector_Success(
   ) {
-    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
-
-    withEnvironment(apiService: MockService(
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectRewardsResult: .success([.template])
-    )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.category))
+    ProjectPageViewModelTests.mockNetworkRequests(project: .template) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(self.projectWithEmptyProperties),
+        refInfo: RefInfo(.category)
+      )
 
       self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
 
@@ -406,15 +387,13 @@ final class ProjectPageViewModelTests: TestCase {
 
   func testConfiguredProject_WithNoBacking_Succcessfully() {
     let project = Project.template
-    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
     let refTag = RefTag.category
 
-    withEnvironment(apiService: MockService(
-      fetchProjectAndBackingResult: .success(.template),
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectRewardsResult: .success([.template])
-    )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(refTag))
+    ProjectPageViewModelTests.mockNetworkRequests(project: project, backing: nil) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(self.projectWithEmptyProperties),
+        refInfo: RefInfo(refTag)
+      )
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
 
@@ -431,15 +410,15 @@ final class ProjectPageViewModelTests: TestCase {
   func testConfiguredProject_WithNoBacking_Unsuccessfully() {
     let project = Project.template
     let refTag = RefTag.category
-    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
-    withEnvironment(apiService: MockService(
-      // If there's no backingID, we won't fetch a backing.
-      // fetchProjectAndBackingResult: .success(.template),
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectRewardsResult: .success([.template])
-    )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(refTag))
+    ProjectPageViewModelTests.mockNetworkRequests(
+      project: project,
+      backing: nil
+    ) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(self.projectWithEmptyProperties),
+        refInfo: RefInfo(refTag)
+      )
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
 
@@ -455,14 +434,16 @@ final class ProjectPageViewModelTests: TestCase {
   func testConfiguredProject_WithBacking_Succcessfully() {
     let project = Project.template
     let refTag = RefTag.category
-    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: 1)
 
-    withEnvironment(apiService: MockService(
-      fetchProjectAndBackingResult: .success(ProjectAndBackingEnvelope.template),
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectRewardsResult: .success([Reward.template])
-    )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(refTag))
+    ProjectPageViewModelTests.mockNetworkRequests(
+      project: project,
+      rewards: [Reward.template],
+      backing: Backing.template
+    ) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(self.projectWithEmptyProperties),
+        refInfo: RefInfo(refTag)
+      )
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
 
@@ -605,37 +586,35 @@ final class ProjectPageViewModelTests: TestCase {
   func test_loadingFromParameter_loadsAllData() {
     let project = Project.template
 
+    // Rewards are fetched by rewards fetch, not the project fetch
     let projectFull = Project.template
       |> Project.lens.rewardData.rewards .~ []
-
-    let projectAndBacking = ProjectAndBackingEnvelope(project: projectFull, backing: Backing.template)
-    let initialProject = Project.ProjectPamphletData(project: projectFull, backingId: 1)
-
-    let mockService = MockService(
-      fetchProjectAndBackingResult: .success(projectAndBacking),
-      fetchProjectPamphletResult: .success(initialProject),
-      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template]),
-    )
 
     let param = ProjectPageParamBox(param: .id(project.id), initialProject: nil)
     let initialData = Either<Project, any ProjectPageParam>.right(param)
 
-    withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.configureAndLoad(initialData)
+    ProjectPageViewModelTests.mockNetworkRequests(
+      project: projectFull,
+      rewards: [Reward.noReward, Reward.template],
+      backing: Backing.template
+    ) {
+      withEnvironment(currentUser: .template) {
+        self.vm.configureAndLoad(initialData)
 
-      self.configureChildViewControllersWithProject.assertDidNotEmitValue()
+        self.configureChildViewControllersWithProject.assertDidNotEmitValue()
 
-      self.scheduler.advance()
+        self.scheduler.advance()
 
-      self.configureChildViewControllersWithProject.assertDidEmitValue()
-      guard let loadedProject = self.configureChildViewControllersWithProject.lastValue else {
-        XCTFail("Expected project to have loaded")
-        return
+        self.configureChildViewControllersWithProject.assertDidEmitValue()
+        guard let loadedProject = self.configureChildViewControllersWithProject.lastValue else {
+          XCTFail("Expected project to have loaded")
+          return
+        }
+
+        XCTAssertEqual(loadedProject.rewards.count, 2)
+        XCTAssertEqual(loadedProject.rewards.first, Reward.noReward)
+        XCTAssertEqual(loadedProject.personalization.backing, Backing.template)
       }
-
-      XCTAssertEqual(loadedProject.rewards.count, 2)
-      XCTAssertEqual(loadedProject.rewards.first, Reward.noReward)
-      XCTAssertEqual(loadedProject.personalization.backing, Backing.template)
     }
   }
 
@@ -645,35 +624,31 @@ final class ProjectPageViewModelTests: TestCase {
     let projectFull = Project.template
       |> Project.lens.rewardData.rewards .~ []
 
-    let projectAndBacking = ProjectAndBackingEnvelope(project: projectFull, backing: Backing.template)
-    let initialProject = Project.ProjectPamphletData(project: projectFull, backingId: 1)
-
-    let mockService = MockService(
-      addUserToSecretRewardGroup: .success(EmptyResponseEnvelope.init()),
-      fetchProjectAndBackingResult: .success(projectAndBacking),
-      fetchProjectPamphletResult: .success(initialProject),
-      fetchProjectRewardsResult: .success([Reward.secretRewardTemplate, Reward.noReward, Reward.template]),
-    )
-
     let param = ProjectPageParamBox(param: .id(project.id), initialProject: nil)
     let initialData = Either<Project, any ProjectPageParam>.right(param)
 
-    withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.configureAndLoad(initialData, secretRewardToken: "foobar")
+    withEnvironment(currentUser: .template) {
+      ProjectPageViewModelTests.mockNetworkRequests(
+        project: projectFull,
+        rewards: [Reward.noReward, Reward.secretRewardTemplate, Reward.template],
+        backing: Backing.template
+      ) {
+        self.vm.configureAndLoad(initialData, secretRewardToken: "foobar")
 
-      self.configureChildViewControllersWithProject.assertDidNotEmitValue()
+        self.configureChildViewControllersWithProject.assertDidNotEmitValue()
 
-      self.scheduler.advance()
+        self.scheduler.advance()
 
-      self.configureChildViewControllersWithProject.assertDidEmitValue()
-      guard let loadedProject = self.configureChildViewControllersWithProject.lastValue else {
-        XCTFail("Expected project to have loaded")
-        return
+        self.configureChildViewControllersWithProject.assertDidEmitValue()
+        guard let loadedProject = self.configureChildViewControllersWithProject.lastValue else {
+          XCTFail("Expected project to have loaded")
+          return
+        }
+
+        XCTAssertEqual(loadedProject.rewards.count, 3)
+        XCTAssertEqual(loadedProject.rewards[1], Reward.secretRewardTemplate)
+        XCTAssertEqual(loadedProject.personalization.backing, Backing.template)
       }
-
-      XCTAssertEqual(loadedProject.rewards.count, 3)
-      XCTAssertEqual(loadedProject.rewards.first, Reward.secretRewardTemplate)
-      XCTAssertEqual(loadedProject.personalization.backing, Backing.template)
     }
   }
 
@@ -683,7 +658,6 @@ final class ProjectPageViewModelTests: TestCase {
     let projectFull = Project.template
       |> Project.lens.rewardData.rewards .~ []
 
-    let projectAndBacking = ProjectAndBackingEnvelope(project: projectFull, backing: Backing.template)
     let initialProject = Project.ProjectPamphletData(project: projectFull, backingId: 1)
 
     let mockService = MockService(
@@ -944,36 +918,31 @@ final class ProjectPageViewModelTests: TestCase {
     let project = Project.template
     let projectFull = Project.template
       |> \.id .~ 2
-      |> Project.lens.personalization.isBacking .~ true
 
-    let projectPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
-
-    let mockService = MockService(
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
-    )
-
-    withEnvironment(
-      apiService: mockService,
-      apiDelayInterval: .seconds(1),
-      config: .template,
-      mainBundle: self.releaseBundle
+    ProjectPageViewModelTests.mockNetworkRequests(
+      project: projectFull
     ) {
-      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
-      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
-      self.configurePledgeCTAViewRefTag.assertValues([])
+      withEnvironment(
+        apiDelayInterval: .seconds(1),
+        config: .template,
+        mainBundle: self.releaseBundle
+      ) {
+        self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+        self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+        self.configurePledgeCTAViewRefTag.assertValues([])
 
-      self.vm.configureAndLoad(.left(project))
+        self.vm.configureAndLoad(.left(project))
 
-      self.configurePledgeCTAViewProject.assertValues([project])
-      self.configurePledgeCTAViewIsLoading.assertValues([true])
-      self.configurePledgeCTAViewRefTag.assertValues([.discovery])
+        self.configurePledgeCTAViewProject.assertValues([project])
+        self.configurePledgeCTAViewIsLoading.assertValues([true])
+        self.configurePledgeCTAViewRefTag.assertValues([.discovery])
 
-      self.scheduler.run()
+        self.scheduler.run()
 
-      self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull])
-      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
-      self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery])
+        self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull])
+        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
+        self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery])
+      }
     }
   }
 
@@ -1010,84 +979,66 @@ final class ProjectPageViewModelTests: TestCase {
   func testConfigurePledgeCTAView_ReloadsUponBackProject() {
     let config = Config.template
     let project = Project.template
-    let friends = [User.template]
     let projectFull = Project.template
       |> Project.lens.rewardData.rewards .~ []
 
-    let projectAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: Backing.template)
-    let projectPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: 1)
-    let mockService = MockService(
-      fetchProjectAndBackingResult: .success(projectAndEnvelope),
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .success(friends),
-      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
-    )
+    withEnvironment(config: config, mainBundle: self.releaseBundle) {
+      ProjectPageViewModelTests.mockNetworkRequests(project: projectFull, backing: nil) {
+        self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+        self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+        self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
-    withEnvironment(apiService: mockService, config: config, mainBundle: self.releaseBundle) {
-      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
-      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
-      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
+        self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.discovery))
+        self.vm.inputs.viewDidLoad()
+        self.vm.inputs.viewDidAppear(animated: true)
 
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.discovery))
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewDidAppear(animated: true)
+        self.configurePledgeCTAViewProject.assertValues([project])
+        self.configurePledgeCTAViewIsLoading.assertValues([true])
+        self.configurePledgeCTAViewRefTag.assertValues([.discovery])
 
-      self.configurePledgeCTAViewProject.assertValues([project])
-      self.configurePledgeCTAViewIsLoading.assertValues([true])
-      self.configurePledgeCTAViewRefTag.assertValues([.discovery])
+        self.scheduler.advance()
 
-      self.scheduler.advance()
+        self.configurePledgeCTAViewProject.assertValues([project, project, projectFull])
+        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
+        self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery])
+      }
 
-      self.configurePledgeCTAViewProject.assertValues([project, project, projectFull])
-      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
-      self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery])
-    }
+      ProjectPageViewModelTests.mockNetworkRequests(project: projectFull, backing: Backing.template) {
+        self.vm.inputs.didBackProject()
 
-    withEnvironment(
-      apiService: MockService(
-        fetchProjectAndBackingResult: .success(projectAndEnvelope),
-        fetchProjectPamphletResult: .success(projectPamphletData),
-        fetchProjectFriendsResult: .success(friends),
-        fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
-      ),
-      config: config,
-      mainBundle: self.releaseBundle
-    ) {
-      self.vm.inputs.didBackProject()
+        self.configurePledgeCTAViewProject.assertValues([project, project, projectFull, projectFull])
+        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
+        self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery, .discovery])
 
-      self.configurePledgeCTAViewProject.assertValues([project, project, projectFull, projectFull])
-      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
-      self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery, .discovery])
+        self.scheduler.advance()
 
-      self.scheduler.advance()
+        let projectWithBacking = project |> \.personalization.backing .~ .template
+          |> \.personalization.isBacking .~ true
 
-      let projectWithBacking = project |> \.personalization.backing .~ .template
-        |> \.personalization.isBacking .~ true
-
-      self.configurePledgeCTAViewProject.assertValues([
-        project,
-        project,
-        projectFull,
-        projectFull,
-        projectFull,
-        projectWithBacking
-      ])
-      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
-      self.configurePledgeCTAViewRefTag.assertValues([
-        .discovery,
-        .discovery,
-        .discovery,
-        .discovery,
-        .discovery,
-        .discovery
-      ])
+        self.configurePledgeCTAViewProject.assertValues([
+          project,
+          project,
+          projectFull,
+          projectFull,
+          projectFull,
+          projectWithBacking
+        ])
+        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
+        self.configurePledgeCTAViewRefTag.assertValues([
+          .discovery,
+          .discovery,
+          .discovery,
+          .discovery,
+          .discovery,
+          .discovery
+        ])
+      }
     }
   }
 
   func testConfigurePledgeCTAView_ReloadsUponUpdatePledge() {
     let config = Config.template
     let project = Project.template
-    let friends = [User.template]
     let backingFull = Backing.template |> Backing.lens.amount .~ 10.0
     let updatedBacking = Backing.template |> Backing.lens.amount .~ 15.0
     let projectFull = Project.template
@@ -1097,152 +1048,117 @@ final class ProjectPageViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ updatedBacking
       |> Project.lens.personalization.isBacking .~ true
 
-    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: backingFull)
-    let projectUpdatedAndEnvelope = ProjectAndBackingEnvelope(
-      project: updatedProject,
-      backing: updatedBacking
-    )
-    let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: 1)
-    let projectUpdatedPamphletData = Project.ProjectPamphletData(project: updatedProject, backingId: 1)
+    withEnvironment(config: config, mainBundle: self.releaseBundle) {
+      ProjectPageViewModelTests.mockNetworkRequests(
+        project: projectFull,
+        backing: backingFull
+      ) {
+        self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+        self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+        self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
-    let mockService = MockService(
-      fetchProjectAndBackingResult: .success(projectFullAndEnvelope),
-      fetchProjectPamphletResult: .success(projectFullPamphletData),
-      fetchProjectFriendsResult: .success(friends),
-      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
-    )
+        self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.discovery))
+        self.vm.inputs.viewDidLoad()
 
-    withEnvironment(apiService: mockService, config: config, mainBundle: self.releaseBundle) {
-      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
-      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
-      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
+        self.configurePledgeCTAViewProject.assertValues([project])
+        self.configurePledgeCTAViewIsLoading.assertValues([true])
+        self.configurePledgeCTAViewRefTag.assertValues([.discovery])
 
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.discovery))
-      self.vm.inputs.viewDidLoad()
+        self.scheduler.advance()
 
-      self.configurePledgeCTAViewProject.assertValues([project])
-      self.configurePledgeCTAViewIsLoading.assertValues([true])
-      self.configurePledgeCTAViewRefTag.assertValues([.discovery])
+        self.configurePledgeCTAViewProject.assertValues([project, project, projectFull])
+        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
+        self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery])
+      }
 
-      self.scheduler.advance()
+      ProjectPageViewModelTests.mockNetworkRequests(
+        project: updatedProject,
+        backing: updatedBacking
+      ) {
+        self.vm.inputs.managePledgeViewControllerFinished(with: nil)
 
-      self.configurePledgeCTAViewProject.assertValues([project, project, projectFull])
-      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
-      self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery])
-    }
+        self.configurePledgeCTAViewProject.assertValues([project, project, projectFull, projectFull])
+        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
+        self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery, .discovery])
 
-    withEnvironment(
-      apiService: MockService(
-        fetchProjectAndBackingResult: .success(projectUpdatedAndEnvelope),
-        fetchProjectPamphletResult: .success(projectUpdatedPamphletData),
-        fetchProjectFriendsResult: .success(friends),
-        fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
-      ),
-      config: config,
-      mainBundle: self.releaseBundle
-    ) {
-      self.vm.inputs.managePledgeViewControllerFinished(with: nil)
+        self.scheduler.advance()
 
-      self.configurePledgeCTAViewProject.assertValues([project, project, projectFull, projectFull])
-      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
-      self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery, .discovery])
-
-      self.scheduler.advance()
-
-      self.configurePledgeCTAViewProject.assertValues([
-        project,
-        project,
-        projectFull,
-        projectFull,
-        projectFull,
-        updatedProject
-      ])
-      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
-      self.configurePledgeCTAViewRefTag.assertValues([
-        .discovery,
-        .discovery,
-        .discovery,
-        .discovery,
-        .discovery,
-        .discovery
-      ])
+        self.configurePledgeCTAViewProject.assertValues([
+          project,
+          project,
+          projectFull,
+          projectFull,
+          projectFull,
+          updatedProject
+        ])
+        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
+        self.configurePledgeCTAViewRefTag.assertValues([
+          .discovery,
+          .discovery,
+          .discovery,
+          .discovery,
+          .discovery,
+          .discovery
+        ])
+      }
     }
   }
 
   func testConfigurePledgeCTAView_ReloadsUponRetryButtonTappedEvent() {
     let config = Config.template
     let project = Project.template
-    let friends = [User.template]
     let projectFull = Project.template
       |> \.id .~ 2
       |> Project.lens.personalization.isBacking .~ true
     let projectFull2 = Project.template
       |> \.id .~ 3
 
-    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: .template)
-    let projectFull2AndEnvelope = ProjectAndBackingEnvelope(project: projectFull2, backing: .template)
-    let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
-    let projectFull2PamphletData = Project.ProjectPamphletData(project: projectFull2, backingId: nil)
+    withEnvironment(config: config) {
+      ProjectPageViewModelTests.mockNetworkRequests(project: projectFull) {
+        self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+        self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+        self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
-    let mockService = MockService(
-      fetchProjectAndBackingResult: .success(projectFullAndEnvelope),
-      fetchProjectPamphletResult: .success(projectFullPamphletData),
-      fetchProjectFriendsResult: .success(friends),
-      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
-    )
+        self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.discovery))
+        self.vm.inputs.viewDidLoad()
 
-    withEnvironment(apiService: mockService, config: config) {
-      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
-      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
-      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
+        self.configurePledgeCTAViewProject.assertValues([project])
+        self.configurePledgeCTAViewIsLoading.assertValues([true])
+        self.configurePledgeCTAViewRefTag.assertValues([.discovery])
 
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.discovery))
-      self.vm.inputs.viewDidLoad()
+        self.scheduler.advance()
 
-      self.configurePledgeCTAViewProject.assertValues([project])
-      self.configurePledgeCTAViewIsLoading.assertValues([true])
-      self.configurePledgeCTAViewRefTag.assertValues([.discovery])
+        self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull])
+        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
+        self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery])
+      }
 
-      self.scheduler.advance()
+      ProjectPageViewModelTests.mockNetworkRequests(project: projectFull2) {
+        self.vm.inputs.pledgeRetryButtonTapped()
 
-      self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull])
-      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
-      self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery])
-    }
+        self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull, projectFull])
+        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
 
-    withEnvironment(
-      apiService: MockService(
-        fetchProjectAndBackingResult: .success(projectFull2AndEnvelope),
-        fetchProjectPamphletResult: .success(projectFull2PamphletData),
-        fetchProjectFriendsResult: .success(friends),
-        fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
-      ),
-      config: config
-    ) {
-      self.vm.inputs.pledgeRetryButtonTapped()
+        self.scheduler.advance()
 
-      self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull, projectFull])
-      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
-
-      self.scheduler.advance()
-
-      self.configurePledgeCTAViewProject.assertValues([
-        project,
-        projectFull,
-        projectFull,
-        projectFull,
-        projectFull2,
-        projectFull2
-      ])
-      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
-      self.configurePledgeCTAViewRefTag.assertValues([
-        .discovery,
-        .discovery,
-        .discovery,
-        .discovery,
-        .discovery,
-        .discovery
-      ])
+        self.configurePledgeCTAViewProject.assertValues([
+          project,
+          projectFull,
+          projectFull,
+          projectFull,
+          projectFull2,
+          projectFull2
+        ])
+        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
+        self.configurePledgeCTAViewRefTag.assertValues([
+          .discovery,
+          .discovery,
+          .discovery,
+          .discovery,
+          .discovery,
+          .discovery
+        ])
+      }
     }
   }
 
@@ -1504,28 +1420,24 @@ final class ProjectPageViewModelTests: TestCase {
         minimumPledgeAmount: 1,
         projectNotice: nil
       )
-    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: .template)
-    let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
 
-    let mockService = MockService(
-      fetchProjectAndBackingResult: .success(projectFullAndEnvelope),
-      fetchProjectPamphletResult: .success(projectFullPamphletData),
-      fetchProjectFriendsResult: .success(friends),
-      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
-    )
+    ProjectPageViewModelTests.mockNetworkRequests(project: projectFull) {
+      withEnvironment(config: config) {
+        self.vm.inputs.configureWith(
+          projectOrParam: .left(self.projectWithEmptyProperties),
+          refInfo: RefInfo(.discovery)
+        )
+        self.vm.inputs.viewDidLoad()
 
-    withEnvironment(apiService: mockService, config: config) {
-      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refInfo: RefInfo(.discovery))
-      self.vm.inputs.viewDidLoad()
+        self.scheduler.advance()
 
-      self.scheduler.advance()
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
 
-      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+        self.vm.inputs.prepareImageAt(expectedIndexPath)
 
-      self.vm.inputs.prepareImageAt(expectedIndexPath)
-
-      XCTAssertEqual(self.prefetchImageURLs.lastValue?.0, [expectedUrl])
-      XCTAssertEqual(self.prefetchImageURLs.lastValue?.1, expectedIndexPath)
+        XCTAssertEqual(self.prefetchImageURLs.lastValue?.0, [expectedUrl])
+        XCTAssertEqual(self.prefetchImageURLs.lastValue?.1, expectedIndexPath)
+      }
     }
   }
 
@@ -1555,39 +1467,35 @@ final class ProjectPageViewModelTests: TestCase {
         minimumPledgeAmount: 1,
         projectNotice: nil
       )
-    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: .template)
-    let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
 
-    let mockService = MockService(
-      fetchProjectAndBackingResult: .success(projectFullAndEnvelope),
-      fetchProjectPamphletResult: .success(projectFullPamphletData),
-      fetchProjectFriendsResult: .success(friends),
-      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
-    )
+    ProjectPageViewModelTests.mockNetworkRequests(project: projectFull) {
+      withEnvironment(config: config) {
+        self.vm.inputs.configureWith(
+          projectOrParam: .left(self.projectWithEmptyProperties),
+          refInfo: RefInfo(.discovery)
+        )
+        self.vm.inputs.viewDidLoad()
 
-    withEnvironment(apiService: mockService, config: config) {
-      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refInfo: RefInfo(.discovery))
-      self.vm.inputs.viewDidLoad()
+        self.scheduler.advance()
 
-      self.scheduler.advance()
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
 
-      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+        self.vm.inputs.prepareAudioVideoAt(
+          expectedIndexPath,
+          with: expectedAudioVideoElement
+        )
 
-      self.vm.inputs.prepareAudioVideoAt(
-        expectedIndexPath,
-        with: expectedAudioVideoElement
-      )
-
-      XCTAssertEqual(
-        self.precreateAudioVideoURLs.lastValue?.0.sourceURLString,
-        expectedAudioVideoElement.sourceURLString
-      )
-      XCTAssertEqual(
-        self.precreateAudioVideoURLs.lastValue?.0.thumbnailURLString,
-        expectedAudioVideoElement.thumbnailURLString
-      )
-      XCTAssertEqual(self.precreateAudioVideoURLs.lastValue?.0.seekPosition, expectedTime)
-      XCTAssertEqual(self.precreateAudioVideoURLs.lastValue?.1, expectedIndexPath)
+        XCTAssertEqual(
+          self.precreateAudioVideoURLs.lastValue?.0.sourceURLString,
+          expectedAudioVideoElement.sourceURLString
+        )
+        XCTAssertEqual(
+          self.precreateAudioVideoURLs.lastValue?.0.thumbnailURLString,
+          expectedAudioVideoElement.thumbnailURLString
+        )
+        XCTAssertEqual(self.precreateAudioVideoURLs.lastValue?.0.seekPosition, expectedTime)
+        XCTAssertEqual(self.precreateAudioVideoURLs.lastValue?.1, expectedIndexPath)
+      }
     }
   }
 
@@ -1618,33 +1526,29 @@ final class ProjectPageViewModelTests: TestCase {
         minimumPledgeAmount: 1,
         projectNotice: nil
       )
-    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: .template)
-    let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
 
-    let mockService = MockService(
-      fetchProjectAndBackingResult: .success(projectFullAndEnvelope),
-      fetchProjectPamphletResult: .success(projectFullPamphletData),
-      fetchProjectFriendsResult: .success(friends),
-      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
-    )
+    ProjectPageViewModelTests.mockNetworkRequests(project: projectFull) {
+      withEnvironment(config: config) {
+        self.vm.inputs.configureWith(
+          projectOrParam: .left(self.projectWithEmptyProperties),
+          refInfo: RefInfo(.discovery)
+        )
+        self.vm.inputs.viewDidLoad()
 
-    withEnvironment(apiService: mockService, config: config) {
-      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refInfo: RefInfo(.discovery))
-      self.vm.inputs.viewDidLoad()
+        self.scheduler.advance()
 
-      self.scheduler.advance()
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
 
-      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+        guard let audioVideoViewElement = self.precreateAudioVideoURLsFirstLoad.lastValue?.first else {
+          XCTFail()
 
-      guard let audioVideoViewElement = self.precreateAudioVideoURLsFirstLoad.lastValue?.first else {
-        XCTFail()
+          return
+        }
 
-        return
+        XCTAssertEqual(audioVideoViewElement.sourceURLString, expectedAudioVideoElement.sourceURLString)
+        XCTAssertEqual(audioVideoViewElement.thumbnailURLString, expectedAudioVideoElement.thumbnailURLString)
+        XCTAssertEqual(audioVideoViewElement.seekPosition, expectedTime)
       }
-
-      XCTAssertEqual(audioVideoViewElement.sourceURLString, expectedAudioVideoElement.sourceURLString)
-      XCTAssertEqual(audioVideoViewElement.thumbnailURLString, expectedAudioVideoElement.thumbnailURLString)
-      XCTAssertEqual(audioVideoViewElement.seekPosition, expectedTime)
     }
   }
 
@@ -1672,33 +1576,29 @@ final class ProjectPageViewModelTests: TestCase {
         minimumPledgeAmount: 1,
         projectNotice: nil
       )
-    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: .template)
-    let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
 
-    let mockService = MockService(
-      fetchProjectAndBackingResult: .success(projectFullAndEnvelope),
-      fetchProjectPamphletResult: .success(projectFullPamphletData),
-      fetchProjectFriendsResult: .success(friends),
-      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
-    )
+    ProjectPageViewModelTests.mockNetworkRequests(project: projectFull) {
+      withEnvironment(config: config) {
+        self.vm.inputs.configureWith(
+          projectOrParam: .left(self.projectWithEmptyProperties),
+          refInfo: RefInfo(.discovery)
+        )
+        self.vm.inputs.viewDidLoad()
 
-    withEnvironment(apiService: mockService, config: config) {
-      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refInfo: RefInfo(.discovery))
-      self.vm.inputs.viewDidLoad()
+        self.scheduler.advance()
 
-      self.scheduler.advance()
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
 
-      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+        guard let imageViewElement = self.prefetchImageURLsFirstLoad.lastValue?.first else {
+          XCTFail()
 
-      guard let imageViewElement = self.prefetchImageURLsFirstLoad.lastValue?.first else {
-        XCTFail()
+          return
+        }
 
-        return
+        XCTAssertEqual(imageViewElement.src, expectedImageViewElement.src)
+        XCTAssertEqual(imageViewElement.href, expectedImageViewElement.href)
+        XCTAssertEqual(imageViewElement.caption, expectedImageViewElement.caption)
       }
-
-      XCTAssertEqual(imageViewElement.src, expectedImageViewElement.src)
-      XCTAssertEqual(imageViewElement.href, expectedImageViewElement.href)
-      XCTAssertEqual(imageViewElement.caption, expectedImageViewElement.caption)
     }
   }
 
@@ -1947,15 +1847,10 @@ final class ProjectPageViewModelTests: TestCase {
         projectNotice: nil
       )
 
-    let projectPamphletData = Project.ProjectPamphletData(project: projectWithImageElement, backingId: nil)
-
     let prefetchImageElementsOnFirstLoad = TestObserver<[ImageViewElement], Never>()
     self.vm.outputs.prefetchImageURLsOnFirstLoad.observe(prefetchImageElementsOnFirstLoad.observer)
 
-    withEnvironment(apiService: MockService(
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectRewardsResult: .success([.template])
-    )) {
+    ProjectPageViewModelTests.mockNetworkRequests(project: projectWithImageElement) {
       // When we configure with a project ID parameter and load the view
       self.vm.inputs.configureWith(projectOrParam: .right(Param.id(42)), refInfo: nil)
       self.vm.inputs.viewDidLoad()
