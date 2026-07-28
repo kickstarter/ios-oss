@@ -23,15 +23,8 @@ final class ProjectPageViewModel_TrackingTests: TestCase {
   // Tests that ref tags and referral credit cookies are tracked and saved like we expect.
   func testTracksRefTag() {
     let project = Project.template
-    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
 
-    withEnvironment(apiService: MockService(
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectRewardsResult: .success([
-        Reward.noReward,
-        Reward.template
-      ])
-    )) {
+    ProjectPageViewModelTests.mockNetworkRequests(project: project) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
@@ -95,15 +88,8 @@ final class ProjectPageViewModel_TrackingTests: TestCase {
   // Tests that ref tags for similar projects and referral credit cookies are tracked and saved like we expect.
   func testTracksRefTag_SimilarProjects() {
     let project = Project.template
-    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
 
-    withEnvironment(apiService: MockService(
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectRewardsResult: .success([
-        Reward.noReward,
-        Reward.template
-      ])
-    )) {
+    ProjectPageViewModelTests.mockNetworkRequests(project: project) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.similarProjects))
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
@@ -176,12 +162,7 @@ final class ProjectPageViewModel_TrackingTests: TestCase {
   }
 
   func testProjectPageViewed_OnViewDidAppear() {
-    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
-
-    withEnvironment(apiService: MockService(
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
-    )) {
+    ProjectPageViewModelTests.mockNetworkRequests {
       XCTAssertEqual([], self.segmentTrackingClient.events)
 
       self.vm.configureAndLoad(.init(left: .template))
@@ -200,49 +181,11 @@ final class ProjectPageViewModel_TrackingTests: TestCase {
     let project = Project.template
     let scheduler1 = TestScheduler(startDate: MockDate().date)
     let scheduler2 = TestScheduler(startDate: scheduler1.currentDate.addingTimeInterval(1))
-    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
 
-    withEnvironment(
-      apiService: MockService(
-        fetchProjectPamphletResult: .success(projectPamphletData),
-        fetchProjectRewardsResult: .success([.template])
-      ),
-      scheduler: scheduler1
-    ) {
-      let newVm: ProjectPageViewModelType = ProjectPageViewModel()
-      newVm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
-      newVm.inputs.viewDidLoad()
-      newVm.inputs.viewDidAppear(animated: true)
-
-      scheduler1.advance()
-
-      XCTAssertEqual(1, self.cookieStorage.cookies?.count, "A single cookie has been set.")
-    }
-
-    withEnvironment(
-      apiService: MockService(
-        fetchProjectPamphletResult: .success(projectPamphletData),
-        fetchProjectRewardsResult: .success([.template])
-      ),
-      scheduler: scheduler2
-    ) {
-      let newVm: ProjectPageViewModelType = ProjectPageViewModel()
-      newVm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.recommended))
-      newVm.inputs.viewDidLoad()
-      newVm.inputs.viewDidAppear(animated: true)
-
-      scheduler2.advance()
-
-      XCTAssertEqual(2, self.cookieStorage.cookies?.count, "Two cookies are set on separate schedulers.")
-    }
-  }
-
-  func testMockCookieStorageSet_SameScheduler() {
-    let project = Project.template
-    let scheduler1 = TestScheduler(startDate: MockDate().date)
-
-    withEnvironment(scheduler: scheduler1) {
-      ProjectPageViewModelTests.mockNetworkRequests {
+    ProjectPageViewModelTests.mockNetworkRequests(project: project) {
+      withEnvironment(
+        scheduler: scheduler1
+      ) {
         let newVm: ProjectPageViewModelType = ProjectPageViewModel()
         newVm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
         newVm.inputs.viewDidLoad()
@@ -252,11 +195,40 @@ final class ProjectPageViewModel_TrackingTests: TestCase {
 
         XCTAssertEqual(1, self.cookieStorage.cookies?.count, "A single cookie has been set.")
       }
-    }
 
-    withEnvironment(scheduler: scheduler1) {
-      let newVm: ProjectPageViewModelType = ProjectPageViewModel()
-      ProjectPageViewModelTests.mockNetworkRequests {
+      withEnvironment(
+        scheduler: scheduler2
+      ) {
+        let newVm: ProjectPageViewModelType = ProjectPageViewModel()
+        newVm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.recommended))
+        newVm.inputs.viewDidLoad()
+        newVm.inputs.viewDidAppear(animated: true)
+
+        scheduler2.advance()
+
+        XCTAssertEqual(2, self.cookieStorage.cookies?.count, "Two cookies are set on separate schedulers.")
+      }
+    }
+  }
+
+  func testMockCookieStorageSet_SameScheduler() {
+    let project = Project.template
+    let scheduler1 = TestScheduler(startDate: MockDate().date)
+
+    ProjectPageViewModelTests.mockNetworkRequests {
+      withEnvironment(scheduler: scheduler1) {
+        let newVm: ProjectPageViewModelType = ProjectPageViewModel()
+        newVm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
+        newVm.inputs.viewDidLoad()
+        newVm.inputs.viewDidAppear(animated: true)
+
+        scheduler1.advance()
+
+        XCTAssertEqual(1, self.cookieStorage.cookies?.count, "A single cookie has been set.")
+      }
+
+      withEnvironment(scheduler: scheduler1) {
+        let newVm: ProjectPageViewModelType = ProjectPageViewModel()
         newVm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.recommended))
         newVm.inputs.viewDidLoad()
         newVm.inputs.viewDidAppear(animated: true)
@@ -366,23 +338,19 @@ final class ProjectPageViewModel_TrackingTests: TestCase {
       appTrackingTransparency: appTrackingTransparency
     )
 
-    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
+    ProjectPageViewModelTests.mockNetworkRequests {
+      withEnvironment(
+        currentUser: User.template,
+        ksrAnalytics: ksrAnalytics
+      ) {
+        self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
+        self.vm.inputs.viewDidLoad()
+        self.vm.inputs.viewDidAppear(animated: false)
 
-    withEnvironment(
-      apiService: MockService(
-        fetchProjectPamphletResult: .success(projectPamphletData),
-        fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
-      ),
-      currentUser: User.template,
-      ksrAnalytics: ksrAnalytics
-    ) {
-      self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewDidAppear(animated: false)
+        self.scheduler.advance()
 
-      self.scheduler.advance()
-
-      XCTAssertEqual(segmentClient.events, [])
+        XCTAssertEqual(segmentClient.events, [])
+      }
     }
   }
 
@@ -395,31 +363,27 @@ final class ProjectPageViewModel_TrackingTests: TestCase {
       appTrackingTransparency: MockAppTrackingTransparency()
     )
 
-    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
+    ProjectPageViewModelTests.mockNetworkRequests {
+      withEnvironment(
+        currentUser: User.template,
+        ksrAnalytics: ksrAnalytics
+      ) {
+        self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
+        self.vm.inputs.viewDidLoad()
+        self.vm.inputs.viewDidAppear(animated: false)
 
-    withEnvironment(
-      apiService: MockService(
-        fetchProjectPamphletResult: .success(projectPamphletData),
-        fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
-      ),
-      currentUser: User.template,
-      ksrAnalytics: ksrAnalytics
-    ) {
-      self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewDidAppear(animated: false)
+        self.scheduler.advance()
 
-      self.scheduler.advance()
+        XCTAssertEqual(segmentClient.events, ["Page Viewed"])
 
-      XCTAssertEqual(segmentClient.events, ["Page Viewed"])
-
-      XCTAssertEqual(segmentClient.properties(forKey: "session_user_is_logged_in", as: Bool.self), [true])
-      XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: String.self), ["1"])
-      XCTAssertEqual(segmentClient.properties(forKey: "session_ref_tag"), ["discovery"])
-      XCTAssertEqual(segmentClient.properties(forKey: "project_subcategory"), ["Ceramics"])
-      XCTAssertEqual(segmentClient.properties(forKey: "project_category"), ["Art"])
-      XCTAssertEqual(segmentClient.properties(forKey: "project_country"), ["US"])
-      XCTAssertEqual(segmentClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+        XCTAssertEqual(segmentClient.properties(forKey: "session_user_is_logged_in", as: Bool.self), [true])
+        XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: String.self), ["1"])
+        XCTAssertEqual(segmentClient.properties(forKey: "session_ref_tag"), ["discovery"])
+        XCTAssertEqual(segmentClient.properties(forKey: "project_subcategory"), ["Ceramics"])
+        XCTAssertEqual(segmentClient.properties(forKey: "project_category"), ["Art"])
+        XCTAssertEqual(segmentClient.properties(forKey: "project_country"), ["US"])
+        XCTAssertEqual(segmentClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+      }
     }
   }
 
@@ -435,32 +399,28 @@ final class ProjectPageViewModel_TrackingTests: TestCase {
       appTrackingTransparency: MockAppTrackingTransparency()
     )
 
-    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
+    ProjectPageViewModelTests.mockNetworkRequests {
+      withEnvironment(
+        currentUser: nil,
+        ksrAnalytics: ksrAnalytics
+      ) {
+        self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
+        self.vm.inputs.viewDidLoad()
+        self.vm.inputs.viewDidAppear(animated: false)
 
-    withEnvironment(
-      apiService: MockService(
-        fetchProjectPamphletResult: .success(projectPamphletData),
-        fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
-      ),
-      currentUser: nil,
-      ksrAnalytics: ksrAnalytics
-    ) {
-      self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewDidAppear(animated: false)
+        self.scheduler.advance()
 
-      self.scheduler.advance()
+        XCTAssertEqual(segmentClient.events, ["Page Viewed"])
 
-      XCTAssertEqual(segmentClient.events, ["Page Viewed"])
+        XCTAssertEqual(segmentClient.properties(forKey: "session_ref_tag"), ["discovery"])
 
-      XCTAssertEqual(segmentClient.properties(forKey: "session_ref_tag"), ["discovery"])
-
-      XCTAssertEqual(segmentClient.properties(forKey: "session_user_is_logged_in", as: Bool.self), [false])
-      XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: Int.self), [nil])
-      XCTAssertEqual(segmentClient.properties(forKey: "project_subcategory"), ["Ceramics"])
-      XCTAssertEqual(segmentClient.properties(forKey: "project_category"), ["Art"])
-      XCTAssertEqual(segmentClient.properties(forKey: "project_country"), ["US"])
-      XCTAssertEqual(segmentClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+        XCTAssertEqual(segmentClient.properties(forKey: "session_user_is_logged_in", as: Bool.self), [false])
+        XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: Int.self), [nil])
+        XCTAssertEqual(segmentClient.properties(forKey: "project_subcategory"), ["Ceramics"])
+        XCTAssertEqual(segmentClient.properties(forKey: "project_category"), ["Art"])
+        XCTAssertEqual(segmentClient.properties(forKey: "project_country"), ["US"])
+        XCTAssertEqual(segmentClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+      }
     }
   }
 
