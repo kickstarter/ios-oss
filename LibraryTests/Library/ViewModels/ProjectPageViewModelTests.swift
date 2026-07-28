@@ -133,27 +133,27 @@ final class ProjectPageViewModelTests: TestCase {
     ProjectPageViewModelTests.mockNetworkRequests(project: project) {
       self.vm.configureAndLoad(.left(stubProject), refTag: refTag)
 
-      self.configureChildViewControllersWithProject.assertValues([stubProject])
-      self.configureChildViewControllersWithRefTag.assertValues([refTag])
+      self.configureChildViewControllersWithProject.assertDidNotEmitValue()
+      self.configureChildViewControllersWithRefTag.assertDidNotEmitValue()
 
       self.scheduler.advance()
 
-      self.configureChildViewControllersWithProject.assertValues([stubProject, project])
-      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag])
+      self.configureChildViewControllersWithProject.assertValues([project])
+      self.configureChildViewControllersWithRefTag.assertValues([refTag])
 
       self.vm.inputs.didBackProject()
 
       self.scheduler.advance()
 
-      self.configureChildViewControllersWithProject.assertValues([stubProject, project, project])
-      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag])
+      self.configureChildViewControllersWithProject.assertValues([project, project])
+      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag])
 
       self.vm.inputs.managePledgeViewControllerFinished(with: nil)
 
       self.scheduler.advance()
 
-      self.configureChildViewControllersWithProject.assertValues([stubProject, project, project, project])
-      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag, refTag])
+      self.configureChildViewControllersWithProject.assertValues([project, project, project])
+      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag])
     }
   }
 
@@ -364,7 +364,7 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  func testConfiguredProject_WithNoBacking_Succcessfully() {
+  func testConfiguredProject_WithNoBacking_Successfully() {
     let project = Project.template
     let refTag = RefTag.category
 
@@ -378,11 +378,7 @@ final class ProjectPageViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      XCTAssertNil(
-        self.configureChildViewControllersWithProject.values.last!.personalization.friends,
-      )
-
-      self.configureChildViewControllersWithProject.assertValues([project, project])
+      self.configureChildViewControllersWithProject.assertValues([project])
     }
   }
 
@@ -403,10 +399,7 @@ final class ProjectPageViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      XCTAssertNil(
-        self.configureChildViewControllersWithProject.values.last!.personalization.friends
-      )
-      self.configureChildViewControllersWithProject.assertValues([project, project])
+      self.configureChildViewControllersWithProject.assertValues([project])
     }
   }
 
@@ -438,7 +431,7 @@ final class ProjectPageViewModelTests: TestCase {
       XCTAssertTrue(
         self.configureChildViewControllersWithProject.values.last!.personalization.isBacking!
       )
-      self.configureChildViewControllersWithProject.assertValues([projectWithBacking, projectWithBacking])
+      self.configureChildViewControllersWithProject.assertValues([projectWithBacking])
     }
   }
 
@@ -938,7 +931,7 @@ final class ProjectPageViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.configurePledgeCTAView.assertValues([.loading, .project(project), .error(.couldNotParseJSON)])
+      self.configurePledgeCTAView.assertValues([.loading, .error(.couldNotParseJSON)])
     }
   }
 
@@ -1132,7 +1125,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
-      self.projectFlagged.assertValues([false, false])
+      self.projectFlagged.assertValues([false])
     }
   }
 
@@ -1145,7 +1138,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
-      self.projectFlagged.assertValues([false, true])
+      self.projectFlagged.assertValues([true])
     }
   }
 
