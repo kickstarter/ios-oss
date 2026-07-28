@@ -367,13 +367,20 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
       .skipNil()
 
-    let projectError: Signal<ErrorEnvelope, Never> = freshProjectAndRefTagEvent.errors()
+    let freshProjectOrError: Signal<Either<Project, ErrorEnvelope>, Never> =
+      Signal.merge(
+        freshProject.map(Either.left),
+        freshProjectAndRefTagEvent.errors().map(Either.right)
+      )
 
     self.configurePledgeCTAView = Signal.combineLatest(
-      Signal.merge(freshProjectAndRefTag.map(Either.left), projectError.map(Either.right)),
+      freshProjectOrError,
       isLoading.signal
     )
-    .map { ($0, $1) }
+    .map { projectOrError, isLoading -> PledgeCTAContainerViewData? in
+      PledgeCTAContainerViewData(projectOrError: projectOrError, isLoading: isLoading)
+    }
+    .skipNil()
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
