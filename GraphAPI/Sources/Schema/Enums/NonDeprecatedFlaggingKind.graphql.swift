@@ -111,4 +111,6 @@ public enum NonDeprecatedFlaggingKind: String, EnumType {
   case backingSpam = "BACKING_SPAM"
   /// phishing
   case phishing = "PHISHING"
+  /// copyright
+  case copyright = "COPYRIGHT"
 }

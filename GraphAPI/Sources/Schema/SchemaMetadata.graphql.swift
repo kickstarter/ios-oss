@@ -142,6 +142,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "CommentEdge": return GraphAPI.Objects.CommentEdge
     case "PaymentIncrementBadge": return GraphAPI.Objects.PaymentIncrementBadge
     case "LocationsConnection": return GraphAPI.Objects.LocationsConnection
+    case "FlaggingNode": return GraphAPI.Objects.FlaggingNode
     case "RewardShippingRulesConnection": return GraphAPI.Objects.RewardShippingRulesConnection
     case "PledgeProjectsOverview": return GraphAPI.Objects.PledgeProjectsOverview
     case "PledgedProjectsOverviewPledgesConnection": return GraphAPI.Objects.PledgedProjectsOverviewPledgesConnection

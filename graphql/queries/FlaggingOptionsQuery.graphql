@@ -1,0 +1,11 @@
+query FlaggingOptions($contentType: FlaggingContent!) {
+  flaggingOptions(contentType: $contentType) {
+    id
+    parentId
+    kind
+    nodeType
+    title
+    subtitle
+    placeholder
+  }
+}
