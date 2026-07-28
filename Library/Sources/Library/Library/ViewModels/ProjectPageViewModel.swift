@@ -259,13 +259,13 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     let freshProjectAndRefTag: Signal<(Project, RefTag?), Never> = freshProjectAndRefTagEvent.values()
 
-    let project = freshProjectAndRefTag
+    let freshProject = freshProjectAndRefTag
       .map(first)
 
-    self.projectFlagged = project.signal
+    self.projectFlagged = freshProject.signal
       .map { $0.flagging ?? false }
 
-    self.prefetchImageURLs = project.signal
+    self.prefetchImageURLs = freshProject.signal
       .compactMap { $0.extendedProjectProperties }
       .combineLatest(with: self.prepareImageAtProperty.signal.skipNil())
       .filterWhenLatestFrom(
@@ -287,7 +287,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
       .skipNil()
 
-    self.prefetchImageURLsOnFirstLoad = project.signal
+    self.prefetchImageURLsOnFirstLoad = freshProject.signal
       .compactMap { $0.extendedProjectProperties }
       .switchMap { properties -> SignalProducer<[ImageViewElement], Never> in
         let imageViewElements = properties.story.htmlViewElements
@@ -296,7 +296,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         return SignalProducer(value: imageViewElements)
       }
 
-    self.precreateAudioVideoURLsOnFirstLoad = project.signal
+    self.precreateAudioVideoURLsOnFirstLoad = freshProject.signal
       .compactMap { $0.extendedProjectProperties }
       .switchMap { properties -> SignalProducer<[AudioVideoViewElement], Never> in
         let audioVideoViewElements = properties.story.htmlViewElements
@@ -333,7 +333,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
       .merge(with: initialProjectDataSource)
 
-    let projectAndBacking = project
+    let projectAndBacking = freshProject
       .filter { $0.personalization.isBacking ?? false }
       .compactMap { project -> (Project, Backing)? in
         guard let backing = project.personalization.backing else {
@@ -389,13 +389,13 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
       .take(first: 1)
 
-    self.goToComments = project
+    self.goToComments = freshProject
       .takeWhen(self.tappedCommentsProperty.signal)
 
-    self.goToUpdates = project
+    self.goToUpdates = freshProject
       .takeWhen(self.tappedUpdatesProperty.signal)
 
-    self.goToReportProject = project.signal
+    self.goToReportProject = freshProject.signal
       .map { ($0.flagging ?? false, "\($0.graphID)", $0.urls.web.project) }
       .takeWhen(self.tappedReportProjectProperty.signal)
 
@@ -499,7 +499,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .skipNil()
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
 
-    self.presentMessageDialog = project
+    self.presentMessageDialog = freshProject
       .takeWhen(self.askAQuestionCellTappedProperty.signal)
 
     let tappableCellURLs = Signal.merge(
@@ -582,7 +582,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     // MARK: Project notice
 
-    self.goToRestrictedCreator = project.takeWhen(self.projectNoticeDetailsRequestedProperty.signal)
+    self.goToRestrictedCreator = freshProject.takeWhen(self.projectNoticeDetailsRequestedProperty.signal)
       .map(\.extendedProjectProperties?.projectNotice)
       .skipNil()
 
@@ -606,7 +606,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     // MARK: User Blocking Analytics
 
     _ = self.blockUserProperty.signal
-      .combineLatest(with: project)
+      .combineLatest(with: freshProject)
       .observeValues { blockedUserId, project in
         AppEnvironment.current.ksrAnalytics
           .trackBlockedUser(
@@ -620,7 +620,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
 
     _ = self.blockUserProperty.signal
-      .combineLatest(with: project)
+      .combineLatest(with: freshProject)
       .takeWhen(blockUserEvent.values().ignoreValues())
       .observeValues { blockedUserId, project in
         AppEnvironment.current.ksrAnalytics
@@ -671,7 +671,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     let shouldGoToPledgeManager = ctaButtonTappedWithType
       .filter { $0 == .pledgeManager }
 
-    self.goToPledgeManager = project
+    self.goToPledgeManager = freshProject
       .takeWhen(shouldGoToPledgeManager)
       .compactMap { project -> String in
         AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + project
