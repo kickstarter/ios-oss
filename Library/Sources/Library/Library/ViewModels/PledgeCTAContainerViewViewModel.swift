@@ -283,25 +283,6 @@ private func formattedPledge(amount: Double, project: Project) -> String {
 /// These are some convenience methods that bridge the original interface
 /// with the new `enum` interface for this type.
 extension PledgeCTAContainerViewData {
-  init?(projectOrError: Either<Project, ErrorEnvelope>?, isLoading: Bool) {
-    if isLoading {
-      self = .loading
-      return
-    }
-
-    if case let .left(project) = projectOrError {
-      self = .project(project)
-      return
-    }
-
-    if case let .right(error) = projectOrError {
-      self = .error(error)
-      return
-    }
-
-    return nil
-  }
-
   var projectOrError: Either<Project, ErrorEnvelope>? {
     switch self {
     case .loading:
