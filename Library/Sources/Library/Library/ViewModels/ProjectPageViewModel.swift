@@ -369,7 +369,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     let freshProjectOrError: Signal<Either<Project, ErrorEnvelope>, Never> =
       Signal.merge(
-        project.map(Either.left),
+        freshProject.map(Either.left),
         freshProjectAndRefTagEvent.errors().map(Either.right)
       )
 
