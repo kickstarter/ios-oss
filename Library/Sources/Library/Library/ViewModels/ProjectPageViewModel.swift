@@ -965,26 +965,3 @@ private extension Either where A == Project, B == ProjectPageParam {
     }
   }
 }
-
-private extension PledgeCTAContainerViewData {
-  /// Creates a `PledgeCTAContainerViewData` from the data type used for `freshProjectAndRefTag`
-  static func from(
-    _ event: Signal<(Project, RefTag?), ErrorEnvelope>.Event,
-    isLoading: Bool
-  ) -> PledgeCTAContainerViewData? {
-    if let value = event.value {
-      let project = value.0
-      return PledgeCTAContainerViewData(
-        projectOrError: .left(project),
-        isLoading: isLoading
-      )
-    } else if let error = event.error {
-      return PledgeCTAContainerViewData(
-        projectOrError: .right(error),
-        isLoading: isLoading
-      )
-    } else {
-      return nil
-    }
-  }
-}
