@@ -9,9 +9,14 @@ public typealias PledgeCTAPrelaunchState = (
   watchesCount: Int
 )
 
-public struct PledgeCTAContainerViewData {
-  let projectOrError: Either<Project, ErrorEnvelope>
-  let isLoading: Bool
+/// The Pledge CTA can be in three states:
+/// - It can be loading
+/// - It can have a loaded project
+/// - It can have a loading error
+public enum PledgeCTAContainerViewData {
+  case loading
+  case project(Project)
+  case error(ErrorEnvelope)
 }
 
 public protocol PledgeCTAContainerViewViewModelInputs {
@@ -46,8 +51,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public init() {
     let projectOrError = self.configData.signal
       .skipNil()
-      .filter { $0.isLoading == false }
       .map { $0.projectOrError }
+      .skipNil()
 
     let isLoading = self.configData.signal
       .skipNil()
@@ -270,4 +275,65 @@ private func formattedPledge(amount: Double, project: Project) -> String {
     currencyCode: project.statsCurrency,
     omitCurrencyCode: project.stats.omitUSCurrencyCode
   )
+}
+
+/// PledgeCTAContainerViewData was originally a tuple like
+/// `(projectOrError: Either<Project, ErrorEnvelope>, isLoading: Bool)`
+///
+/// These are some convenience methods that bridge the original interface
+/// with the new `enum` interface for this type.
+extension PledgeCTAContainerViewData {
+  init?(projectOrError: Either<Project, ErrorEnvelope>?, isLoading: Bool) {
+    if isLoading {
+      self = .loading
+      return
+    }
+
+    if case let .left(project) = projectOrError {
+      self = .project(project)
+      return
+    }
+
+    if case let .right(error) = projectOrError {
+      self = .error(error)
+      return
+    }
+
+    return nil
+  }
+
+  var projectOrError: Either<Project, ErrorEnvelope>? {
+    switch self {
+    case .loading:
+      return nil
+    case let .project(project):
+      return Either.left(project)
+    case let .error(error):
+      return Either.right(error)
+    }
+  }
+
+  var isLoading: Bool {
+    switch self {
+    case .loading:
+      return true
+    default:
+      return false
+    }
+  }
+}
+
+extension PledgeCTAContainerViewData: Equatable {
+  public static func == (lhs: PledgeCTAContainerViewData, rhs: PledgeCTAContainerViewData) -> Bool {
+    switch (lhs, rhs) {
+    case (.loading, .loading):
+      return true
+    case let (.project(lProject), .project(rProject)):
+      return lProject == rProject
+    case let (.error(lError), .error(rError)):
+      return lError.errorMessages == rError.errorMessages
+    default:
+      return false
+    }
+  }
 }

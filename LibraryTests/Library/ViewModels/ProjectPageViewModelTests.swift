@@ -33,9 +33,7 @@ final class ProjectPageViewModelTests: TestCase {
   private let configureDataSourceProject = TestObserver<Either<Project, any ProjectPageParam>, Never>()
   private let configureChildViewControllersWithProject = TestObserver<Project, Never>()
   private let configureChildViewControllersWithRefTag = TestObserver<RefTag?, Never>()
-  private let configurePledgeCTAViewErrorEnvelope = TestObserver<ErrorEnvelope, Never>()
-  private let configurePledgeCTAViewProject = TestObserver<Project, Never>()
-  private let configurePledgeCTAViewIsLoading = TestObserver<Bool, Never>()
+  private let configurePledgeCTAView = TestObserver<PledgeCTAContainerViewData, Never>()
   private let configureProjectNavigationSelectorView = TestObserver<(Project, RefTag?), Never>()
   private let didBlockUser = TestObserver<(), Never>()
   private let didBlockUserError = TestObserver<(), Never>()
@@ -83,21 +81,10 @@ final class ProjectPageViewModelTests: TestCase {
       .observe(self.configureChildViewControllersWithRefTag.observer)
 
     self.vm.outputs.configurePledgeCTAView
-      .map { $0.projectOrError.left }
-      .skipNil()
-      .observe(self.configurePledgeCTAViewProject.observer)
+      .observe(self.configurePledgeCTAView.observer)
 
     self.vm.outputs.configureProjectNavigationSelectorView
       .observe(self.configureProjectNavigationSelectorView.observer)
-
-    self.vm.outputs.configurePledgeCTAView
-      .map { $0.projectOrError.right }
-      .skipNil()
-      .observe(self.configurePledgeCTAViewErrorEnvelope.observer)
-
-    self.vm.outputs.configurePledgeCTAView
-      .map { $0.isLoading }
-      .observe(self.configurePledgeCTAViewIsLoading.observer)
 
     self.vm.outputs.didBlockUser.observe(self.didBlockUser.observer)
     self.vm.outputs.didBlockUserError.observe(self.didBlockUserError.observer)
@@ -919,18 +906,15 @@ final class ProjectPageViewModelTests: TestCase {
         config: .template,
         mainBundle: self.releaseBundle
       ) {
-        self.configurePledgeCTAViewProject.assertDidNotEmitValue()
-        self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+        self.configurePledgeCTAView.assertDidNotEmitValue()
 
         self.vm.configureAndLoad(.left(project))
 
-        self.configurePledgeCTAViewProject.assertValues([project])
-        self.configurePledgeCTAViewIsLoading.assertValues([true])
+        self.configurePledgeCTAView.assertValues([.loading])
 
         self.scheduler.run()
 
-        self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull])
-        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
+        self.configurePledgeCTAView.assertValues([.loading, .project(projectFull)])
       }
     }
   }
@@ -946,19 +930,15 @@ final class ProjectPageViewModelTests: TestCase {
       config: config,
       mainBundle: self.releaseBundle
     ) {
-      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
-      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+      self.configurePledgeCTAView.assertDidNotEmitValue()
 
       self.vm.configureAndLoad(.left(project))
 
-      self.configurePledgeCTAViewProject.assertValues([project])
-      self.configurePledgeCTAViewIsLoading.assertValues([true])
+      self.configurePledgeCTAView.assertValues([.loading])
 
       self.scheduler.run()
 
-      self.configurePledgeCTAViewProject.assertValues([project, project])
-      self.configurePledgeCTAViewErrorEnvelope.assertValueCount(1)
-      self.configurePledgeCTAViewIsLoading.assertValues([true, false, false])
+      self.configurePledgeCTAView.assertValues([.loading, .project(project), .error(.couldNotParseJSON)])
     }
   }
 
@@ -970,42 +950,39 @@ final class ProjectPageViewModelTests: TestCase {
 
     withEnvironment(config: config, mainBundle: self.releaseBundle) {
       ProjectPageViewModelTests.mockNetworkRequests(project: projectFull, backing: nil) {
-        self.configurePledgeCTAViewProject.assertDidNotEmitValue()
-        self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+        self.configurePledgeCTAView.assertDidNotEmitValue()
 
         self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.discovery))
         self.vm.inputs.viewDidLoad()
         self.vm.inputs.viewDidAppear(animated: true)
 
-        self.configurePledgeCTAViewProject.assertValues([project])
-        self.configurePledgeCTAViewIsLoading.assertValues([true])
+        self.configurePledgeCTAView.assertValues([.loading])
 
         self.scheduler.advance()
 
-        self.configurePledgeCTAViewProject.assertValues([project, project, projectFull])
-        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
+        self.configurePledgeCTAView.assertValues([.loading, .project(projectFull)])
       }
 
       ProjectPageViewModelTests.mockNetworkRequests(project: projectFull, backing: Backing.template) {
         self.vm.inputs.didBackProject()
 
-        self.configurePledgeCTAViewProject.assertValues([project, project, projectFull, projectFull])
-        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
+        self.configurePledgeCTAView.assertValues([
+          .loading,
+          .project(projectFull),
+          .loading
+        ])
 
         self.scheduler.advance()
 
         let projectWithBacking = project |> \.personalization.backing .~ .template
           |> \.personalization.isBacking .~ true
 
-        self.configurePledgeCTAViewProject.assertValues([
-          project,
-          project,
-          projectFull,
-          projectFull,
-          projectFull,
-          projectWithBacking
+        self.configurePledgeCTAView.assertValues([
+          .loading,
+          .project(projectFull),
+          .loading,
+          .project(projectWithBacking)
         ])
-        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
       }
     }
   }
@@ -1027,19 +1004,16 @@ final class ProjectPageViewModelTests: TestCase {
         project: projectFull,
         backing: backingFull
       ) {
-        self.configurePledgeCTAViewProject.assertDidNotEmitValue()
-        self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+        self.configurePledgeCTAView.assertDidNotEmitValue()
 
         self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.discovery))
         self.vm.inputs.viewDidLoad()
 
-        self.configurePledgeCTAViewProject.assertValues([project])
-        self.configurePledgeCTAViewIsLoading.assertValues([true])
+        self.configurePledgeCTAView.assertValues([.loading])
 
         self.scheduler.advance()
 
-        self.configurePledgeCTAViewProject.assertValues([project, project, projectFull])
-        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
+        self.configurePledgeCTAView.assertValues([.loading, .project(projectFull)])
       }
 
       ProjectPageViewModelTests.mockNetworkRequests(
@@ -1048,20 +1022,20 @@ final class ProjectPageViewModelTests: TestCase {
       ) {
         self.vm.inputs.managePledgeViewControllerFinished(with: nil)
 
-        self.configurePledgeCTAViewProject.assertValues([project, project, projectFull, projectFull])
-        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
+        self.configurePledgeCTAView.assertValues([
+          .loading,
+          .project(projectFull),
+          .loading
+        ])
 
         self.scheduler.advance()
 
-        self.configurePledgeCTAViewProject.assertValues([
-          project,
-          project,
-          projectFull,
-          projectFull,
-          projectFull,
-          updatedProject
+        self.configurePledgeCTAView.assertValues([
+          .loading,
+          .project(projectFull),
+          .loading,
+          .project(updatedProject)
         ])
-        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
       }
     }
   }
@@ -1077,38 +1051,35 @@ final class ProjectPageViewModelTests: TestCase {
 
     withEnvironment(config: config) {
       ProjectPageViewModelTests.mockNetworkRequests(project: projectFull) {
-        self.configurePledgeCTAViewProject.assertDidNotEmitValue()
-        self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+        self.configurePledgeCTAView.assertDidNotEmitValue()
 
         self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.discovery))
         self.vm.inputs.viewDidLoad()
 
-        self.configurePledgeCTAViewProject.assertValues([project])
-        self.configurePledgeCTAViewIsLoading.assertValues([true])
+        self.configurePledgeCTAView.assertValues([.loading])
 
         self.scheduler.advance()
 
-        self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull])
-        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
+        self.configurePledgeCTAView.assertValues([.loading, .project(projectFull)])
       }
 
       ProjectPageViewModelTests.mockNetworkRequests(project: projectFull2) {
         self.vm.inputs.pledgeRetryButtonTapped()
 
-        self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull, projectFull])
-        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
+        self.configurePledgeCTAView.assertValues([
+          .loading,
+          .project(projectFull),
+          .loading
+        ])
 
         self.scheduler.advance()
 
-        self.configurePledgeCTAViewProject.assertValues([
-          project,
-          projectFull,
-          projectFull,
-          projectFull,
-          projectFull2,
-          projectFull2
+        self.configurePledgeCTAView.assertValues([
+          .loading,
+          .project(projectFull),
+          .loading,
+          .project(projectFull2)
         ])
-        self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
       }
     }
   }
