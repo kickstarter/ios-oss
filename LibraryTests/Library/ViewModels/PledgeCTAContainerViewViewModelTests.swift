@@ -299,8 +299,8 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     self.buttonTitleText.assertDidNotEmitValue()
     self.buttonStyleType.assertValues([])
-    self.spacerIsHidden.assertDidNotEmitValue()
-    self.stackViewIsHidden.assertDidNotEmitValue()
+    self.spacerIsHidden.assertValues([true])
+    self.stackViewIsHidden.assertValues([true])
 
     let value2 = PledgeCTAContainerViewData.project(project)
     self.vm.inputs.configureWith(value: value2)
@@ -310,8 +310,8 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     self.buttonTitleText.assertDidEmitValue()
     self.buttonStyleType.assertValues([ButtonStyleType.green])
-    self.spacerIsHidden.assertDidEmitValue()
-    self.stackViewIsHidden.assertDidEmitValue()
+    self.spacerIsHidden.assertValues([true, true])
+    self.stackViewIsHidden.assertValues([true, true])
   }
 
   func testPledgeCTA_pledgeRetryButtonIsVisible_AfterFailure() {
@@ -323,10 +323,14 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     let value = PledgeCTAContainerViewData.project(project)
     self.vm.inputs.configureWith(value: value)
     self.pledgeRetryButtonIsHidden.assertValues([true])
+    self.spacerIsHidden.assertValues([true])
+    self.stackViewIsHidden.assertValues([true])
 
     let value2 = PledgeCTAContainerViewData.error(.couldNotParseJSON)
     self.vm.inputs.configureWith(value: value2)
     self.pledgeRetryButtonIsHidden.assertValues([true, false])
+    self.spacerIsHidden.assertValues([true, true])
+    self.stackViewIsHidden.assertValues([true, true])
   }
 
   func testNotifyDelegateCTATapped() {
