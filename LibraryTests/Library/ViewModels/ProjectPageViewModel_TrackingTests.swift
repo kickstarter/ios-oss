@@ -177,6 +177,23 @@ final class ProjectPageViewModel_TrackingTests: TestCase {
     }
   }
 
+  func testProjectPageViewed_OnViewDidAppear_LoadedWithParam() {
+    ProjectPageViewModelTests.mockNetworkRequests {
+      XCTAssertEqual([], self.segmentTrackingClient.events)
+
+      let param = ProjectPageParamBox(param: .id(1), initialProject: nil)
+      self.vm.configureAndLoad(Either.right(param))
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+
+      XCTAssertEqual(["project"], self.segmentTrackingClient.properties(forKey: "context_page"))
+      XCTAssertEqual(["overview"], self.segmentTrackingClient.properties(forKey: "context_section"))
+      XCTAssertEqual(["discovery"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
+    }
+  }
+
   func testMockCookieStorageSet_SeparateSchedulers() {
     let project = Project.template
     let scheduler1 = TestScheduler(startDate: MockDate().date)
