@@ -34,11 +34,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
   }
 
   func test_UKProject_USUser_USLocation() {
-    let mockService = MockService(
-      fetchProjectResult: .success(self.cosmicSurgery)
-    )
-
-    withEnvironment(apiService: mockService, countryCode: "US") {
+    withEnvironment(apiService: self.mockService, countryCode: "US") {
       let vc = ProjectPageViewController.configuredWith(
         projectOrParam: .left(self.cosmicSurgery),
         refInfo: nil
@@ -58,11 +54,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
   }
 
   func test_UKProject_USUser_NonUSLocation() {
-    let mockService = MockService(
-      fetchProjectResult: .success(self.cosmicSurgery)
-    )
-
-    withEnvironment(apiService: mockService, countryCode: "AU") {
+    withEnvironment(apiService: self.mockService, countryCode: "AU") {
       let vc = ProjectPageViewController.configuredWith(
         projectOrParam: .left(self.cosmicSurgery),
         refInfo: nil
@@ -86,11 +78,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
       |> Project.lens.stats.projectCurrency .~ "USD"
       |> Project.lens.stats.userCurrencyRate .~ 1.0
 
-    let mockService = MockService(
-      fetchProjectResult: .success(self.cosmicSurgery)
-    )
-
-    withEnvironment(apiService: mockService, countryCode: "US") {
+    withEnvironment(apiService: self.mockService, countryCode: "US") {
       let vc = ProjectPageViewController.configuredWith(
         projectOrParam: .left(self.cosmicSurgery),
         refInfo: nil
@@ -114,11 +102,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
       |> Project.lens.stats.projectCurrency .~ "USD"
       |> Project.lens.stats.userCurrencyRate .~ 1.0
 
-    let mockService = MockService(
-      fetchProjectResult: .success(self.cosmicSurgery)
-    )
-
-    withEnvironment(apiService: mockService, countryCode: "CA") {
+    withEnvironment(apiService: self.mockService, countryCode: "CA") {
       let vc = ProjectPageViewController.configuredWith(
         projectOrParam: .left(self.cosmicSurgery),
         refInfo: nil
@@ -153,11 +137,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
       |> Project.lens.stats.userCurrencyRate .~ 1.0
       |> Project.lens.personalization.backing .~ backing
 
-    let mockService = MockService(
-      fetchProjectResult: .success(self.cosmicSurgery)
-    )
-
-    withEnvironment(apiService: mockService, countryCode: "CA") {
+    withEnvironment(apiService: self.mockService, countryCode: "CA") {
       let vc = ProjectPageViewController.configuredWith(
         projectOrParam: .left(self.cosmicSurgery),
         refInfo: nil
@@ -187,11 +167,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
       |> Project.lens.stats.userCurrencyRate .~ 3.0
       |> Project.lens.stats.convertedPledgedAmount .~ 49_500
 
-    let mockService = MockService(
-      fetchProjectResult: .success(self.cosmicSurgery)
-    )
-
-    withEnvironment(apiService: mockService, countryCode: "SE") {
+    withEnvironment(apiService: self.mockService, countryCode: "SE") {
       let vc = ProjectPageViewController.configuredWith(
         projectOrParam: .left(self.cosmicSurgery),
         refInfo: nil
@@ -199,7 +175,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
 
-      self.scheduler.run()
+      self.scheduler.advance()
 
       assertSnapshot(
         matching: parent.view,
@@ -216,11 +192,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
       |> Project.lens.stats.userCurrency .~ nil
       |> Project.lens.stats.userCurrencyRate .~ nil
 
-    let mockService = MockService(
-      fetchProjectResult: .success(self.cosmicSurgery)
-    )
-
-    withEnvironment(apiService: mockService, countryCode: "US") {
+    withEnvironment(apiService: self.mockService, countryCode: "US") {
       let vc = ProjectPageViewController.configuredWith(
         projectOrParam: .left(self.cosmicSurgery),
         refInfo: nil
@@ -245,11 +217,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
       |> Project.lens.stats.userCurrency .~ nil
       |> Project.lens.stats.userCurrencyRate .~ nil
 
-    let mockService = MockService(
-      fetchProjectResult: .success(self.cosmicSurgery)
-    )
-
-    withEnvironment(apiService: mockService, countryCode: "CA") {
+    withEnvironment(apiService: self.mockService, countryCode: "CA") {
       let vc = ProjectPageViewController.configuredWith(
         projectOrParam: .left(self.cosmicSurgery),
         refInfo: nil
@@ -274,11 +242,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
       |> Project.lens.stats.userCurrency .~ nil
       |> Project.lens.stats.userCurrencyRate .~ nil
 
-    let mockService = MockService(
-      fetchProjectResult: .success(self.cosmicSurgery)
-    )
-
-    withEnvironment(apiService: mockService, countryCode: "XX") {
+    withEnvironment(apiService: self.mockService, countryCode: "XX") {
       let vc = ProjectPageViewController.configuredWith(
         projectOrParam: .left(self.cosmicSurgery),
         refInfo: nil
@@ -294,5 +258,34 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
         named: "projectLocation_UK_userCurrency_nil_userLocation_SE"
       )
     }
+  }
+}
+
+extension ProjectPageViewControllerConversionTests {
+  private var mockService: MockService {
+    if let backing = self.cosmicSurgery.personalization.backing {
+      let projectPamphletData = Project.ProjectPamphletData(
+        project: self.cosmicSurgery,
+        backingId: backing.id
+      )
+
+      let projectAndBacking = ProjectAndBackingEnvelope(project: self.cosmicSurgery, backing: backing)
+
+      return MockService(
+        fetchProjectAndBackingResult: .success(projectAndBacking),
+        fetchProjectPamphletResult: .success(projectPamphletData),
+        fetchProjectRewardsResult: .success(self.cosmicSurgery.rewards),
+      )
+    }
+
+    let projectPamphletData = Project.ProjectPamphletData(
+      project: self.cosmicSurgery,
+      backingId: nil
+    )
+
+    return MockService(
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success(self.cosmicSurgery.rewards),
+    )
   }
 }
