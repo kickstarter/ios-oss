@@ -175,7 +175,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
 
-      self.scheduler.run()
+      self.scheduler.advance()
 
       assertSnapshot(
         matching: parent.view,
