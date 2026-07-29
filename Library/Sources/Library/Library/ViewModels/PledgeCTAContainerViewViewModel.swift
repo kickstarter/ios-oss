@@ -141,7 +141,11 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 
     self.buttonStyleType = self.pledgeState.signal.skipNil().map { $0.buttonStyle }
     self.buttonTitleText = self.pledgeState.signal.skipNil().map { $0.buttonTitle }
-    let stackViewAndSpacerAreHidden = self.pledgeState.signal.skipNil().map { $0.stackViewAndSpacerAreHidden }
+    let stackViewAndSpacerAreHidden = Signal.merge(
+      self.pledgeState.signal.skipNil().map { $0.stackViewAndSpacerAreHidden },
+      // Always hide the main stack view + spacer if we're not showing the pledge button
+      self.pledgeCTAButtonIsHidden.filter { $0 == true }
+    )
     self.spacerIsHidden = stackViewAndSpacerAreHidden
     self.stackViewIsHidden = stackViewAndSpacerAreHidden
     self.titleText = self.pledgeState.signal.skipNil().map { $0.titleLabel }.skipNil()
