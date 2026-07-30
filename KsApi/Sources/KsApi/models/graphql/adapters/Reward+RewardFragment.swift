@@ -27,7 +27,7 @@ extension Reward {
     let estimatedDeliveryOn = rewardFragment.estimatedDeliveryOn
       .flatMap(dateFormatter.date(from:))?.timeIntervalSince1970
 
-    let rewardHasAddons = rewardFragment.allowedAddons.pageInfo.startCursor != nil
+    let rewardHasAddons = false // rewardFragment.allowedAddons.pageInfo.startCursor != nil
 
     var location: Location?
 
@@ -53,44 +53,45 @@ extension Reward {
       pledgeAmount: rewardFragment.pledgeAmount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0,
       postCampaignPledgingEnabled: rewardFragment.postCampaignPledgingEnabled,
       remaining: rewardFragment.remainingQuantity,
-      rewardsItems: rewardItemsData(from: rewardFragment, with: projectId),
+      rewardsItems: [], // rewardItemsData(from: rewardFragment, with: projectId),
       shipping: shippingData(from: rewardFragment),
       shippingRulesExpanded: expandedShippingRules,
       startsAt: rewardFragment.startsAt.flatMap(TimeInterval.init),
       title: rewardFragment.name,
       localPickup: location,
       isAvailable: rewardFragment.available,
-      image: rewardPhoto(from: rewardFragment.image),
+      image: nil, // rewardPhoto(from: rewardFragment.image),
       audienceData: rewardAudienceData(from: rewardFragment.audienceData)
     )
   }
 }
 
-private func rewardItemsData(
-  from rewardFragment: GraphAPI.RewardFragment,
-  with projectId: Int
-) -> [RewardsItem] {
-  return rewardFragment.items?.edges?.compactMap { edge -> RewardsItem? in
-    guard
-      let quantity = edge?.quantity,
-      let item = edge?.node,
-      let id = decompose(id: item.id),
-      let rewardId = decompose(id: rewardFragment.id)
-    else { return nil }
+/*
+ private func rewardItemsData(
+   from rewardFragment: GraphAPI.RewardFragment,
+   with projectId: Int
+ ) -> [RewardsItem] {
+   return rewardFragment.items?.edges?.compactMap { edge -> RewardsItem? in
+     guard
+       let quantity = edge?.quantity,
+       let item = edge?.node,
+       let id = decompose(id: item.id),
+       let rewardId = decompose(id: rewardFragment.id)
+     else { return nil }
 
-    return RewardsItem(
-      id: 0, // not returned
-      item: Item(
-        description: nil, // not returned
-        id: id,
-        name: item.name,
-        projectId: projectId
-      ),
-      quantity: quantity,
-      rewardId: rewardId
-    )
-  } ?? []
-}
+     return RewardsItem(
+       id: 0, // not returned
+       item: Item(
+         description: nil, // not returned
+         id: id,
+         name: item.name,
+         projectId: projectId
+       ),
+       quantity: quantity,
+       rewardId: rewardId
+     )
+   } ?? []
+ }*/
 
 // FIXME: currently we don't get all of this information via GraphQL
 private func shippingData(
@@ -120,11 +121,12 @@ private func shippingPreference(from rewardFragment: GraphAPI.RewardFragment) ->
 /// Converts a `GraphAPI.RewardFragment.Image` object into a `Photo` model.
 /// - Parameter image: The optional `GraphAPI.RewardFragment.Image` instance.
 /// - Returns: A `Photo` model containing the image URL and accessibility alt text, or `nil` if no image is available.
-private func rewardPhoto(from image: GraphAPI.RewardFragment.Image?) -> Reward.Image? {
-  guard let image = image else { return nil }
 
-  return Reward.Image(altText: image.altText, url: image.url)
-}
+/* private func rewardPhoto(from image: GraphAPI.RewardFragment.Image?) -> Reward.Image? {
+   guard let image = image else { return nil }
+
+   return Reward.Image(altText: image.altText, url: image.url)
+ } */
 
 private func rewardAudienceData(from audienceData: GraphAPI.RewardFragment.AudienceData) -> Reward
   .AudienceData {

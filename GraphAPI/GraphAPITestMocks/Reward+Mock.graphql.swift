@@ -10,7 +10,6 @@ public class Reward: MockObject {
   public typealias MockValueCollectionType = Array<Mock<Reward>>
 
   public struct MockFields {
-    @Field<RewardConnection>("allowedAddons") public var allowedAddons
     @Field<Money>("amount") public var amount
     @Field<ResourceAudience>("audienceData") public var audienceData
     @Field<Bool>("available") public var available
@@ -22,9 +21,7 @@ public class Reward: MockObject {
     @Field<GraphAPI.Date>("estimatedDeliveryOn") public var estimatedDeliveryOn
     @Field<Bool>("featured") public var featured
     @Field<GraphAPI.ID>("id") public var id
-    @Field<Photo>("image") public var image
     @Field<Bool>("isMaxPledge") public var isMaxPledge
-    @Field<RewardItemsConnection>("items") public var items
     @Field<Money>("latePledgeAmount") public var latePledgeAmount
     @Field<Int>("limit") public var limit
     @Field<Int>("limitPerBacker") public var limitPerBacker
@@ -44,7 +41,6 @@ public class Reward: MockObject {
 
 public extension Mock where O == Reward {
   convenience init(
-    allowedAddons: Mock<RewardConnection>? = nil,
     amount: Mock<Money>? = nil,
     audienceData: Mock<ResourceAudience>? = nil,
     available: Bool? = nil,
@@ -56,9 +52,7 @@ public extension Mock where O == Reward {
     estimatedDeliveryOn: GraphAPI.Date? = nil,
     featured: Bool? = nil,
     id: GraphAPI.ID? = nil,
-    image: Mock<Photo>? = nil,
     isMaxPledge: Bool? = nil,
-    items: Mock<RewardItemsConnection>? = nil,
     latePledgeAmount: Mock<Money>? = nil,
     limit: Int? = nil,
     limitPerBacker: Int? = nil,
@@ -75,7 +69,6 @@ public extension Mock where O == Reward {
     startsAt: GraphAPI.DateTime? = nil
   ) {
     self.init()
-    _setEntity(allowedAddons, for: \.allowedAddons)
     _setEntity(amount, for: \.amount)
     _setEntity(audienceData, for: \.audienceData)
     _setScalar(available, for: \.available)
@@ -87,9 +80,7 @@ public extension Mock where O == Reward {
     _setScalar(estimatedDeliveryOn, for: \.estimatedDeliveryOn)
     _setScalar(featured, for: \.featured)
     _setScalar(id, for: \.id)
-    _setEntity(image, for: \.image)
     _setScalar(isMaxPledge, for: \.isMaxPledge)
-    _setEntity(items, for: \.items)
     _setEntity(latePledgeAmount, for: \.latePledgeAmount)
     _setScalar(limit, for: \.limit)
     _setScalar(limitPerBacker, for: \.limitPerBacker)

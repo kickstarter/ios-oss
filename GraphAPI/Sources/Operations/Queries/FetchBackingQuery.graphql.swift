@@ -210,11 +210,6 @@ public class FetchBackingQuery: GraphQLQuery {
           public var backersCount: Int? { __data["backersCount"] }
           /// Amount for claiming this reward, in the current user's chosen currency
           public var convertedAmount: ConvertedAmount { __data["convertedAmount"] }
-          /// Add-ons which can be combined with this reward.
-          /// Uses creator preferences and shipping rules to determine allow-ability.
-          /// Inclusion in this list does not necessarily indicate that the add-on is available for backing.
-          ///
-          public var allowedAddons: AllowedAddons { __data["allowedAddons"] }
           /// A reward description.
           public var description: String? { __data["description"] }
           /// A reward's title plus the amount, or a default title (the reward amount) if it doesn't have a title.
@@ -230,8 +225,6 @@ public class FetchBackingQuery: GraphQLQuery {
           public var available: Bool { __data["available"] }
           /// Whether or not the reward is featured
           public var featured: Bool { __data["featured"] }
-          /// Items in the reward.
-          public var items: Items? { __data["items"] }
           /// A reward limit.
           public var limit: Int? { __data["limit"] }
           /// Per backer reward limit.
@@ -256,8 +249,6 @@ public class FetchBackingQuery: GraphQLQuery {
           public var shippingSummary: String? { __data["shippingSummary"] }
           /// When the reward is scheduled to start
           public var startsAt: GraphAPI.DateTime? { __data["startsAt"] }
-          /// The reward image.
-          public var image: Image? { __data["image"] }
           /// Data related to who can view/access this reward
           public var audienceData: AudienceData { __data["audienceData"] }
 
@@ -272,7 +263,6 @@ public class FetchBackingQuery: GraphQLQuery {
             amount: Amount,
             backersCount: Int? = nil,
             convertedAmount: ConvertedAmount,
-            allowedAddons: AllowedAddons,
             description: String? = nil,
             displayName: String,
             endsAt: GraphAPI.DateTime? = nil,
@@ -281,7 +271,6 @@ public class FetchBackingQuery: GraphQLQuery {
             isMaxPledge: Bool,
             available: Bool,
             featured: Bool,
-            items: Items? = nil,
             limit: Int? = nil,
             limitPerBacker: Int? = nil,
             localReceiptLocation: LocalReceiptLocation? = nil,
@@ -294,7 +283,6 @@ public class FetchBackingQuery: GraphQLQuery {
             shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
             shippingSummary: String? = nil,
             startsAt: GraphAPI.DateTime? = nil,
-            image: Image? = nil,
             audienceData: AudienceData
           ) {
             self.init(_dataDict: DataDict(
@@ -303,7 +291,6 @@ public class FetchBackingQuery: GraphQLQuery {
                 "amount": amount._fieldData,
                 "backersCount": backersCount,
                 "convertedAmount": convertedAmount._fieldData,
-                "allowedAddons": allowedAddons._fieldData,
                 "description": description,
                 "displayName": displayName,
                 "endsAt": endsAt,
@@ -312,7 +299,6 @@ public class FetchBackingQuery: GraphQLQuery {
                 "isMaxPledge": isMaxPledge,
                 "available": available,
                 "featured": featured,
-                "items": items._fieldData,
                 "limit": limit,
                 "limitPerBacker": limitPerBacker,
                 "localReceiptLocation": localReceiptLocation._fieldData,
@@ -325,7 +311,6 @@ public class FetchBackingQuery: GraphQLQuery {
                 "shippingPreference": shippingPreference,
                 "shippingSummary": shippingSummary,
                 "startsAt": startsAt,
-                "image": image._fieldData,
                 "audienceData": audienceData._fieldData,
               ],
               fulfilledFragments: [
@@ -422,10 +407,6 @@ public class FetchBackingQuery: GraphQLQuery {
               ))
             }
           }
-
-          public typealias AllowedAddons = RewardFragment.AllowedAddons
-
-          public typealias Items = RewardFragment.Items
 
           /// Backing.AddOns.Node.LocalReceiptLocation
           ///
@@ -567,8 +548,6 @@ public class FetchBackingQuery: GraphQLQuery {
           }
 
           public typealias Project = RewardFragment.Project
-
-          public typealias Image = RewardFragment.Image
 
           public typealias AudienceData = RewardFragment.AudienceData
         }
@@ -1610,11 +1589,6 @@ public class FetchBackingQuery: GraphQLQuery {
         public var backersCount: Int? { __data["backersCount"] }
         /// Amount for claiming this reward, in the current user's chosen currency
         public var convertedAmount: ConvertedAmount { __data["convertedAmount"] }
-        /// Add-ons which can be combined with this reward.
-        /// Uses creator preferences and shipping rules to determine allow-ability.
-        /// Inclusion in this list does not necessarily indicate that the add-on is available for backing.
-        ///
-        public var allowedAddons: AllowedAddons { __data["allowedAddons"] }
         /// A reward description.
         public var description: String? { __data["description"] }
         /// A reward's title plus the amount, or a default title (the reward amount) if it doesn't have a title.
@@ -1630,8 +1604,6 @@ public class FetchBackingQuery: GraphQLQuery {
         public var available: Bool { __data["available"] }
         /// Whether or not the reward is featured
         public var featured: Bool { __data["featured"] }
-        /// Items in the reward.
-        public var items: Items? { __data["items"] }
         /// A reward limit.
         public var limit: Int? { __data["limit"] }
         /// Per backer reward limit.
@@ -1656,8 +1628,6 @@ public class FetchBackingQuery: GraphQLQuery {
         public var shippingSummary: String? { __data["shippingSummary"] }
         /// When the reward is scheduled to start
         public var startsAt: GraphAPI.DateTime? { __data["startsAt"] }
-        /// The reward image.
-        public var image: Image? { __data["image"] }
         /// Data related to who can view/access this reward
         public var audienceData: AudienceData { __data["audienceData"] }
 
@@ -1672,7 +1642,6 @@ public class FetchBackingQuery: GraphQLQuery {
           amount: Amount,
           backersCount: Int? = nil,
           convertedAmount: ConvertedAmount,
-          allowedAddons: AllowedAddons,
           description: String? = nil,
           displayName: String,
           endsAt: GraphAPI.DateTime? = nil,
@@ -1681,7 +1650,6 @@ public class FetchBackingQuery: GraphQLQuery {
           isMaxPledge: Bool,
           available: Bool,
           featured: Bool,
-          items: Items? = nil,
           limit: Int? = nil,
           limitPerBacker: Int? = nil,
           localReceiptLocation: LocalReceiptLocation? = nil,
@@ -1694,7 +1662,6 @@ public class FetchBackingQuery: GraphQLQuery {
           shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
           shippingSummary: String? = nil,
           startsAt: GraphAPI.DateTime? = nil,
-          image: Image? = nil,
           audienceData: AudienceData
         ) {
           self.init(_dataDict: DataDict(
@@ -1703,7 +1670,6 @@ public class FetchBackingQuery: GraphQLQuery {
               "amount": amount._fieldData,
               "backersCount": backersCount,
               "convertedAmount": convertedAmount._fieldData,
-              "allowedAddons": allowedAddons._fieldData,
               "description": description,
               "displayName": displayName,
               "endsAt": endsAt,
@@ -1712,7 +1678,6 @@ public class FetchBackingQuery: GraphQLQuery {
               "isMaxPledge": isMaxPledge,
               "available": available,
               "featured": featured,
-              "items": items._fieldData,
               "limit": limit,
               "limitPerBacker": limitPerBacker,
               "localReceiptLocation": localReceiptLocation._fieldData,
@@ -1725,7 +1690,6 @@ public class FetchBackingQuery: GraphQLQuery {
               "shippingPreference": shippingPreference,
               "shippingSummary": shippingSummary,
               "startsAt": startsAt,
-              "image": image._fieldData,
               "audienceData": audienceData._fieldData,
             ],
             fulfilledFragments: [
@@ -1823,10 +1787,6 @@ public class FetchBackingQuery: GraphQLQuery {
             ))
           }
         }
-
-        public typealias AllowedAddons = RewardFragment.AllowedAddons
-
-        public typealias Items = RewardFragment.Items
 
         /// Backing.Reward.LocalReceiptLocation
         ///
@@ -1968,8 +1928,6 @@ public class FetchBackingQuery: GraphQLQuery {
         }
 
         public typealias Project = RewardFragment.Project
-
-        public typealias Image = RewardFragment.Image
 
         public typealias AudienceData = RewardFragment.AudienceData
       }

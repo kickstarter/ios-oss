@@ -10,7 +10,6 @@ public class Photo: MockObject {
   public typealias MockValueCollectionType = Array<Mock<Photo>>
 
   public struct MockFields {
-    @Field<String>("altText") public var altText
     @Field<GraphAPI.ID>("id") public var id
     @Field<String>("url") public var url
   }
@@ -18,12 +17,10 @@ public class Photo: MockObject {
 
 public extension Mock where O == Photo {
   convenience init(
-    altText: String? = nil,
     id: GraphAPI.ID? = nil,
     url: String? = nil
   ) {
     self.init()
-    _setScalar(altText, for: \.altText)
     _setScalar(id, for: \.id)
     _setScalar(url, for: \.url)
   }

@@ -6,11 +6,11 @@ fragment RewardFragment on Reward {
   convertedAmount {
     ...MoneyFragment
   }
-  allowedAddons {
-    pageInfo {
-      startCursor
-    }
-  }
+  #allowedAddons {
+  #  pageInfo {
+  #    startCursor
+  #  }
+  #}
   description
   displayName
   endsAt
@@ -19,15 +19,15 @@ fragment RewardFragment on Reward {
   isMaxPledge
   available
   featured
-  items {
-    edges {
-      quantity
-      node {
-        id
-        name
-      }
-    }
-  }
+  #items {
+  #  edges {
+  #    quantity
+  #    node {
+  #      id
+  #      name
+  #    }
+  #  }
+  #}
   limit
   limitPerBacker
   localReceiptLocation {
@@ -48,10 +48,10 @@ fragment RewardFragment on Reward {
   shippingPreference
   shippingSummary
   startsAt
-  image {
-    altText
-    url(width: 1024)
-  },
+ # image {
+ #   altText
+ #   url(width: 1024)
+ # },
   audienceData {
     secret
   }
