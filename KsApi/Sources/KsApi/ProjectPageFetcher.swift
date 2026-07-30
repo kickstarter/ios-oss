@@ -9,11 +9,9 @@ public struct ProjectPageFetcher {
   }
 
   public func fastFetch(projectParam param: Param) -> SignalProducer<Project, ErrorEnvelope> {
-    return self.apiService.fetchProject(
+    return self.apiService.fastFetchProject(
       projectParam: param
-    ).map { data in
-      data.project
-    }
+    )
   }
 
   public func fetchProjectPage(

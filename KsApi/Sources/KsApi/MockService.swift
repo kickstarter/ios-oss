@@ -1301,6 +1301,12 @@
       }
     }
 
+    internal func fastFetchProject(projectParam _: Param)
+      -> SignalProducer<Project, ErrorEnvelope> {
+      // TODO: implement me
+      return .empty
+    }
+
     internal func fetchProject(projectParam: Param)
       -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope> {
       guard let client = self.apolloClient else {

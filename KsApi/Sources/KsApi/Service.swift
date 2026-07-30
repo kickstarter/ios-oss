@@ -574,6 +574,24 @@ public struct Service: ServiceType {
   }
 
   /**
+    Use case:
+   - `ProjectPageViewModel`
+
+   This is the only use case at the moment as it effects the `ProjectPageViewController` directly.
+   */
+  public func fastFetchProject(projectParam: Param)
+    -> SignalProducer<Project, ErrorEnvelope> {
+    let query = GraphAPI.FastFetchProjectByParamQuery(
+      projectId: .someOrNil(projectParam.id),
+      slug: .someOrNil(projectParam.slug)
+    )
+
+    return GraphQL.shared.client
+      .fetch(query: query)
+      .flatMap { Project.projectProducer(from: $0) }
+  }
+
+  /**
     Use cases:
    - `ManagePledgeViewModel`
    - `CommentsViewModel`

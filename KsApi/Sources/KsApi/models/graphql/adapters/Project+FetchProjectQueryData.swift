@@ -58,3 +58,41 @@ extension Project {
     return (project, projectBackingId)
   }
 }
+
+extension Project {
+  static func projectProducer(
+    from data: GraphAPI.FastFetchProjectByParamQuery.Data
+  ) -> SignalProducer<Project, ErrorEnvelope> {
+    guard let project = Project.project(from: data) else {
+      return .empty
+    }
+
+    return SignalProducer(value: project)
+  }
+
+  internal static func project(
+    from data: GraphAPI.FastFetchProjectByParamQuery.Data
+  ) -> Project? {
+    guard let project = data.project else { return nil }
+
+    var backing: Backing?
+    if let backingFragment = project.backing?.fragments.backingFragment {
+      backing = Backing.backing(from: backingFragment)
+    }
+
+    let rewards: [Reward] = project.rewards?.nodes?.compactMap { node in
+      guard let fragment = node?.fragments.rewardFragment else { return nil }
+      return Reward.reward(from: fragment)
+    } ?? []
+
+    let noRewardFragment = project.fragments.noRewardRewardFragment
+    let noReward = Reward.noRewardReward(from: noRewardFragment)
+
+    return Project.project(
+      from: project.fragments.projectFragment,
+      flagging: project.flagging != nil,
+      rewards: [noReward] + rewards,
+      backing: backing,
+    )
+  }
+}

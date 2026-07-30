@@ -109,6 +109,8 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "PostConnection": return GraphAPI.Objects.PostConnection
     case "VideoSources": return GraphAPI.Objects.VideoSources
     case "VideoSourceInfo": return GraphAPI.Objects.VideoSourceInfo
+    case "CheckoutWave": return GraphAPI.Objects.CheckoutWave
+    case "PledgeManager": return GraphAPI.Objects.PledgeManager
     case "VideoFeedConnection": return GraphAPI.Objects.VideoFeedConnection
     case "VideoFeedItem": return GraphAPI.Objects.VideoFeedItem
     case "Badge": return GraphAPI.Objects.Badge
@@ -118,8 +120,6 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "UserSavedProjectsConnection": return GraphAPI.Objects.UserSavedProjectsConnection
     case "SurveyResponsesConnection": return GraphAPI.Objects.SurveyResponsesConnection
     case "RewardTotalCountConnection": return GraphAPI.Objects.RewardTotalCountConnection
-    case "CheckoutWave": return GraphAPI.Objects.CheckoutWave
-    case "PledgeManager": return GraphAPI.Objects.PledgeManager
     case "PaymentIncrement": return GraphAPI.Objects.PaymentIncrement
     case "PaymentIncrementAmount": return GraphAPI.Objects.PaymentIncrementAmount
     case "RichTextComponent": return GraphAPI.Objects.RichTextComponent

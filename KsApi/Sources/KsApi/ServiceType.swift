@@ -250,6 +250,12 @@ public protocol ServiceType {
   func fetchProject(projectParam: Param)
     -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope>
 
+  /// Fetch the newest data for a particular project from its id or slug. Includes backings and rewards.
+  /// Does not included extended project properties, shipping, or project video.
+  /// Used by `ProjectPageViewModel` to quickly fetch the project data needed for Checkout.
+  func fastFetchProject(projectParam: Param)
+    -> SignalProducer<Project, ErrorEnvelope>
+
   /// Fetch the project's rewards and pledge over time data
   func fetchProjectRewardsAndPledgeOverTimeData(projectId: Int)
     -> SignalProducer<RewardsAndPledgeOverTimeEnvelope, ErrorEnvelope>

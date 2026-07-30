@@ -1,0 +1,18 @@
+# A faster Project fetch. Used by Checkout.
+query FastFetchProjectByParam($projectId: Int, $slug: String) {
+  project(pid: $projectId, slug: $slug) {
+    ...ProjectFragment
+    backing {
+      ...BackingFragment
+    }
+    rewards {
+      nodes {
+        ...RewardFragment
+      }
+    }
+    flagging {
+      id
+      kind
+    }
+  }
+}
