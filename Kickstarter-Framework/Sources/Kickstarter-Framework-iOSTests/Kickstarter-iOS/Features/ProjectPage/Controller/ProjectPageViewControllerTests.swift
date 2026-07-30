@@ -293,7 +293,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
     let mockService = MockService(
-      fetchProjectPamphletResult: .success(projectPamphletData)
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([Reward.noReward])
     )
     let language = Language.en
     let device = Device.phone5_8inch
@@ -725,7 +726,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
     let mockService = MockService(
-      fetchProjectPamphletResult: .success(projectPamphletData)
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([Reward.noReward])
     )
 
     orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
@@ -768,7 +770,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
     let mockService = MockService(
-      fetchProjectPamphletResult: .success(projectPamphletData)
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([Reward.noReward])
     )
 
     orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
@@ -972,8 +975,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
     let mockService = MockService(
-      fetchProjectAndBackingResult: .success(.template),
-      fetchProjectPamphletResult: .success(projectPamphletData)
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([Reward.noReward])
     )
 
     orthogonalCombos([Language.en], [Device.phone4inch, Device.pad]).forEach { language, device in
@@ -1005,7 +1008,6 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let config = Config.template
 
     let mockService = MockService(
-      fetchProjectAndBackingResult: .success(.template),
       fetchProjectPamphletResult: .failure(.couldNotParseJSON)
     )
 
@@ -1093,8 +1095,16 @@ internal final class ProjectPageViewControllerTests: TestCase {
       |> Project.lens.rewardData.rewards .~ []
       |> \.extendedProjectProperties .~ self.extendedProjectProperties
 
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
+
+    let mockService = MockService(
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([Reward.noReward])
+    )
+
     orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
+        apiService: mockService,
         config: config,
         language: language
       ) {
@@ -1131,11 +1141,19 @@ internal final class ProjectPageViewControllerTests: TestCase {
       |> Project.lens.rewardData.rewards .~ []
       |> \.extendedProjectProperties .~ self.extendedProjectProperties
 
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
+
+    let mockService = MockService(
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([Reward.noReward])
+    )
+
     orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
+        apiService: mockService,
         config: config,
         currentUser: .template,
-        language: language
+        language: language,
       ) {
         let vc = ProjectPageViewController.configuredWith(
           projectOrParam: .left(project), refInfo: nil
@@ -1258,8 +1276,16 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ ["use_of_ai": true]
 
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
+
+    let mockService = MockService(
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([Reward.noReward])
+    )
+
     orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
+        apiService: mockService,
         config: config,
         language: language,
         remoteConfigClient: mockRemoteConfigClient
@@ -1297,8 +1323,16 @@ internal final class ProjectPageViewControllerTests: TestCase {
       |> Project.lens.rewardData.rewards .~ []
       |> \.extendedProjectProperties .~ self.extendedProjectProperties
 
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
+
+    let mockService = MockService(
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([Reward.noReward])
+    )
+
     orthogonalCombos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
+        apiService: mockService,
         config: config,
         language: language
       ) {
