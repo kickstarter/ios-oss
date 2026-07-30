@@ -8,6 +8,14 @@ public struct ProjectPageFetcher {
     self.apiService = apiService
   }
 
+  public func fastFetch(projectParam param: Param) -> SignalProducer<Project, ErrorEnvelope> {
+    return self.apiService.fetchProject(
+      projectParam: param
+    ).map { data in
+      data.project
+    }
+  }
+
   public func fetchProjectPage(
     projectParam param: Param
   ) -> SignalProducer<Project, ErrorEnvelope> {

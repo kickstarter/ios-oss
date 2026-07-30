@@ -1,3 +1,4 @@
+import Experimentation
 import Foundation
 import GraphAPI
 import KsApi
@@ -256,6 +257,19 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     let freshProject = freshProjectAndRefTag
       .map(first)
 
+    let fastProject: Signal<Project, Never>
+    let experiment = InstantPledgeButtonExperiment()
+
+    if experiment.boolValue(forKey: .instant_pledge_enabled) == true {
+      fastProject = self.configDataProperty.signal
+        .skipNil()
+        .switchMap { projectOrParam, _, _ in
+          fastFetchProject(projectOrParam: projectOrParam).materialize()
+        }.values()
+    } else {
+      fastProject = Signal.never
+    }
+
     self.projectFlagged = freshProject.signal
       .map { $0.flagging ?? false }
 
@@ -359,6 +373,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .skipNil()
 
     self.configurePledgeCTAView = Signal.merge(
+      // Fast fetch
+      fastProject.map { .project($0) },
       // Successful fetch
       freshProject.map { .project($0) },
       // Errored fetch
@@ -913,11 +929,25 @@ private func fetchProject(
 
 private func fetchProject(
   projectOrParam: Either<Project, any ProjectPageParam>
-)
-  -> SignalProducer<Project, ErrorEnvelope> {
+) -> SignalProducer<Project, ErrorEnvelope> {
   let param = projectOrParam.param
   let fetcher = ProjectPageFetcher(withService: AppEnvironment.current.apiService)
+
   let producer = fetcher.fetchProjectPage(
+    projectParam: param.param
+  )
+  .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+
+  return producer
+}
+
+private func fastFetchProject(
+  projectOrParam: Either<Project, any ProjectPageParam>
+) -> SignalProducer<Project, ErrorEnvelope> {
+  let param = projectOrParam.param
+  let fetcher = ProjectPageFetcher(withService: AppEnvironment.current.apiService)
+
+  let producer = fetcher.fastFetch(
     projectParam: param.param
   )
   .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
