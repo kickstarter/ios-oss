@@ -381,6 +381,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       PledgeCTAContainerViewData(projectOrError: projectOrError, isLoading: isLoading)
     }
     .skipNil()
+    .skipRepeats()
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
