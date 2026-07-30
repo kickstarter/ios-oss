@@ -1,3 +1,4 @@
+import Experimentation
 import Prelude
 import ReactiveSwift
 
@@ -17,6 +18,22 @@ public struct ProjectPageFetcher {
   public func fetchProjectPage(
     projectParam param: Param
   ) -> SignalProducer<Project, ErrorEnvelope> {
+    let fastFetch = self.apiService.fastFetchProject(
+      projectParam: param
+    )
+
+    let slowFetch = self.apiService.fetchProject(
+      projectParam: param
+    )
+
+    return SignalProducer.combineLatest(fastFetch, slowFetch)
+      .map { p1, data in
+        let p2 = data.project
+        return p1
+          |> Project.lens.extendedProjectProperties .~ p2.extendedProjectProperties
+          |> Project.lens.video .~ p2.video
+      }
+
     let projectAndBackingIdProducer = self.apiService.fetchProject(
       projectParam: param
     )
