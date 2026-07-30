@@ -1,6 +1,11 @@
+# The full Project fetch, used by the Project page.
 query FetchProjectByParam($projectId: Int, $slug: String) {
   project(pid: $projectId, slug: $slug) {
     ...ProjectFragment
+    ...ExtendedProjectPropertiesFragment
+    video {
+      ...ProjectVideoFragment
+    }
     backing {
       id
     }

@@ -68,25 +68,6 @@
         "currency": "USD",
         "deadlineAt": 1775336112,
         "description": "test blurb",
-        "environmentalCommitments": [],
-        "aiDisclosure": {
-          "__typename": "AiDisclosure",
-          "id": "QWlEaXNjbG9zdXJlLTExMzczNg==",
-          "fundingForAiAttribution": null,
-          "fundingForAiConsent": null,
-          "fundingForAiOption": null,
-          "generatedByAiConsent": null,
-          "generatedByAiDetails": null,
-          "involvesAi": false,
-          "involvesFunding": false,
-          "involvesGeneration": false,
-          "involvesOther": false,
-          "otherAiDetails": null
-        },
-        "faqs": {
-          "__typename": "ProjectFaqConnection",
-          "nodes": []
-        },
         "finalCollectionDate": null,
         "goal": {
           "__typename": "Money",
@@ -136,7 +117,6 @@
         "prelaunchActivated": false,
         "projectNotice": null,
         "redemptionPageUrl": "/projects/amy-at-kickstarter/crossfit-think-tank-cooler/backing/redeem",
-        "risks": "May not deliver",
         "sendMetaCapiEvents": false,
         "slug": "amy-at-kickstarter/crossfit-think-tank-cooler",
         "state": "LIVE",

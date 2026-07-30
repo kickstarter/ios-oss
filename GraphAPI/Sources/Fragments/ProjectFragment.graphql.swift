@@ -5,7 +5,7 @@
 
 public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment ProjectFragment on Project { __typename availableCardTypes category { __typename ...CategoryFragment } canComment country { __typename ...CountryFragment } creator { __typename ...PublicUserFragment } description ...ExtendedProjectPropertiesFragment image { __typename id url(width: 1024) } isProjectWeLove isWatched isLaunched isInPostCampaignPledgingPhase lastWave { __typename ...LastWaveFragment } location { __typename ...LocationFragment } maxPledge minPledge name ...NoRewardRewardFragment pid pledgeManager { __typename ...PledgeManagerFragment } ...PledgeOverTimeFragment postCampaignPledgingEnabled prelaunchActivated ...ProjectStatsFragment ...ProjectDatesFragment redemptionPageUrl sendMetaCapiEvents slug state tags(scope: DISCOVER) { __typename name } url video { __typename ...ProjectVideoFragment } watchesCount }"#
+    #"fragment ProjectFragment on Project { __typename availableCardTypes category { __typename ...CategoryFragment } canComment country { __typename ...CountryFragment } creator { __typename ...PublicUserFragment } description image { __typename id url(width: 1024) } isProjectWeLove isWatched isLaunched isInPostCampaignPledgingPhase lastWave { __typename ...LastWaveFragment } location { __typename ...LocationFragment } maxPledge minPledge name ...NoRewardRewardFragment pid pledgeManager { __typename ...PledgeManagerFragment } ...PledgeOverTimeFragment postCampaignPledgingEnabled prelaunchActivated ...ProjectStatsFragment ...ProjectDatesFragment redemptionPageUrl sendMetaCapiEvents slug state tags(scope: DISCOVER) { __typename name } url watchesCount }"#
   }
 
   public let __data: DataDict
@@ -40,9 +40,7 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     .field("state", GraphQLEnum<GraphAPI.ProjectState>.self),
     .field("tags", [Tag?].self, arguments: ["scope": "DISCOVER"]),
     .field("url", String.self),
-    .field("video", Video?.self),
     .field("watchesCount", Int?.self),
-    .fragment(ExtendedProjectPropertiesFragment.self),
     .fragment(NoRewardRewardFragment.self),
     .fragment(PledgeOverTimeFragment.self),
     .fragment(ProjectStatsFragment.self),
@@ -101,21 +99,8 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
   public var tags: [Tag?] { __data["tags"] }
   /// A URL to the project's page.
   public var url: String { __data["url"] }
-  /// A project video.
-  public var video: Video? { __data["video"] }
   /// Number of watchers a project has.
   public var watchesCount: Int? { __data["watchesCount"] }
-  public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
-  /// The environmental commitments of the project.
-  public var environmentalCommitments: [EnvironmentalCommitment?]? { __data["environmentalCommitments"] }
-  /// List of FAQs of a project
-  public var faqs: Faqs? { __data["faqs"] }
-  /// The text of the currently applied project notice, empty if there is no notice
-  public var projectNotice: String? { __data["projectNotice"] }
-  /// Potential hurdles to project completion.
-  public var risks: String { __data["risks"] }
-  /// The story behind the project, parsed for presentation.
-  public var story: GraphAPI.HTML { __data["story"] }
   /// Exchange rate for the current user's currency
   public var fxRate: Double { __data["fxRate"] }
   /// Whether a project is enrolled in plot
@@ -159,7 +144,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     public let __data: DataDict
     public init(_dataDict: DataDict) { __data = _dataDict }
 
-    public var extendedProjectPropertiesFragment: ExtendedProjectPropertiesFragment { _toFragment() }
     public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
     public var pledgeOverTimeFragment: PledgeOverTimeFragment { _toFragment() }
     public var projectStatsFragment: ProjectStatsFragment { _toFragment() }
@@ -193,14 +177,7 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
     state: GraphQLEnum<GraphAPI.ProjectState>,
     tags: [Tag?],
     url: String,
-    video: Video? = nil,
     watchesCount: Int? = nil,
-    aiDisclosure: AiDisclosure? = nil,
-    environmentalCommitments: [EnvironmentalCommitment?]? = nil,
-    faqs: Faqs? = nil,
-    projectNotice: String? = nil,
-    risks: String,
-    story: GraphAPI.HTML,
     fxRate: Double,
     isPledgeOverTimeAllowed: Bool,
     pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
@@ -250,14 +227,7 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
         "state": state,
         "tags": tags._fieldData,
         "url": url,
-        "video": video._fieldData,
         "watchesCount": watchesCount,
-        "aiDisclosure": aiDisclosure._fieldData,
-        "environmentalCommitments": environmentalCommitments._fieldData,
-        "faqs": faqs._fieldData,
-        "projectNotice": projectNotice,
-        "risks": risks,
-        "story": story,
         "fxRate": fxRate,
         "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed,
         "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation,
@@ -280,7 +250,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
       ],
       fulfilledFragments: [
         ObjectIdentifier(ProjectFragment.self),
-        ObjectIdentifier(ExtendedProjectPropertiesFragment.self),
         ObjectIdentifier(NoRewardRewardFragment.self),
         ObjectIdentifier(PledgeOverTimeFragment.self),
         ObjectIdentifier(ProjectStatsFragment.self),
@@ -714,56 +683,6 @@ public struct ProjectFragment: GraphAPI.SelectionSet, Fragment {
       ))
     }
   }
-
-  /// Video
-  ///
-  /// Parent Type: `Video`
-  public struct Video: GraphAPI.SelectionSet {
-    public let __data: DataDict
-    public init(_dataDict: DataDict) { __data = _dataDict }
-
-    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Video }
-    public static var __selections: [ApolloAPI.Selection] { [
-      .field("__typename", String.self),
-      .fragment(ProjectVideoFragment.self),
-    ] }
-
-    public var id: GraphAPI.ID { __data["id"] }
-    /// A video's sources (hls, high, base)
-    public var videoSources: VideoSources? { __data["videoSources"] }
-
-    public struct Fragments: FragmentContainer {
-      public let __data: DataDict
-      public init(_dataDict: DataDict) { __data = _dataDict }
-
-      public var projectVideoFragment: ProjectVideoFragment { _toFragment() }
-    }
-
-    public init(
-      id: GraphAPI.ID,
-      videoSources: VideoSources? = nil
-    ) {
-      self.init(_dataDict: DataDict(
-        data: [
-          "__typename": GraphAPI.Objects.Video.typename,
-          "id": id,
-          "videoSources": videoSources._fieldData,
-        ],
-        fulfilledFragments: [
-          ObjectIdentifier(ProjectFragment.Video.self),
-          ObjectIdentifier(ProjectVideoFragment.self)
-        ]
-      ))
-    }
-
-    public typealias VideoSources = ProjectVideoFragment.VideoSources
-  }
-
-  public typealias AiDisclosure = ExtendedProjectPropertiesFragment.AiDisclosure
-
-  public typealias EnvironmentalCommitment = ExtendedProjectPropertiesFragment.EnvironmentalCommitment
-
-  public typealias Faqs = ExtendedProjectPropertiesFragment.Faqs
 
   /// Goal
   ///

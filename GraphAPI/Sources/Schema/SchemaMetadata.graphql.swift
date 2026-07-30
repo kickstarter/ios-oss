@@ -118,9 +118,6 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "UserSavedProjectsConnection": return GraphAPI.Objects.UserSavedProjectsConnection
     case "SurveyResponsesConnection": return GraphAPI.Objects.SurveyResponsesConnection
     case "RewardTotalCountConnection": return GraphAPI.Objects.RewardTotalCountConnection
-    case "EnvironmentalCommitment": return GraphAPI.Objects.EnvironmentalCommitment
-    case "ProjectFaqConnection": return GraphAPI.Objects.ProjectFaqConnection
-    case "ProjectFaq": return GraphAPI.Objects.ProjectFaq
     case "CheckoutWave": return GraphAPI.Objects.CheckoutWave
     case "PledgeManager": return GraphAPI.Objects.PledgeManager
     case "PaymentIncrement": return GraphAPI.Objects.PaymentIncrement
@@ -142,6 +139,9 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "CommentEdge": return GraphAPI.Objects.CommentEdge
     case "PaymentIncrementBadge": return GraphAPI.Objects.PaymentIncrementBadge
     case "LocationsConnection": return GraphAPI.Objects.LocationsConnection
+    case "EnvironmentalCommitment": return GraphAPI.Objects.EnvironmentalCommitment
+    case "ProjectFaqConnection": return GraphAPI.Objects.ProjectFaqConnection
+    case "ProjectFaq": return GraphAPI.Objects.ProjectFaq
     case "FlaggingNode": return GraphAPI.Objects.FlaggingNode
     case "RewardShippingRulesConnection": return GraphAPI.Objects.RewardShippingRulesConnection
     case "PledgeProjectsOverview": return GraphAPI.Objects.PledgeProjectsOverview

@@ -38,15 +38,20 @@ extension Project {
       projectBackingId = decompose(id: backingId)
     }
 
+    let videoFragment = data.project?.video?.fragments.projectVideoFragment
+
     guard
       let fragment = data.project?.fragments.projectFragment,
       let noRewardFragment = data.project?.fragments.noRewardRewardFragment,
+      let extendedFragment = data.project?.fragments.extendedProjectPropertiesFragment,
       let project = Project.project(
         from: fragment,
         flagging: data.project?.flagging != nil,
         rewards: [Reward.noRewardReward(from: noRewardFragment)],
         addOns: nil,
-        backing: nil
+        backing: nil,
+        extendedProjectProperties: ExtendedProjectProperties.extendedProject(from: extendedFragment),
+        video: Project.Video.projectVideo(from: videoFragment)
       )
     else { return (nil, nil) }
 
