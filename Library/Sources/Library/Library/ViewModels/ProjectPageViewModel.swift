@@ -668,7 +668,21 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       goToRewardsTapped: shouldGoToRewards
     )
 
-    self.goToRewards = freshProjectAndRefTag
+    let refTag: Signal<RefTag?, Never> = self.configDataProperty.signal
+      .skipNil()
+      .map { _, tag, _ in
+        tag?.refTag
+      }
+
+    let projectSignalForRewards: Signal<Project, Never>
+    if experiment.boolValue(forKey: .instant_pledge_enabled) == true {
+      projectSignalForRewards = fastProject
+    } else {
+      projectSignalForRewards = freshProject
+    }
+
+    self.goToRewards = projectSignalForRewards
+      .combineLatest(with: refTag)
       .combineLatest(with: secretRewardToken)
       .map(unpack)
       .takeWhen(
