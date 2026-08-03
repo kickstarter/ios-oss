@@ -47,6 +47,8 @@
 
     fileprivate let createFlaggingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
+    fileprivate let fetchFlaggingOptionsResult: Result<GraphAPI.FlaggingOptionsQuery.Data, ErrorEnvelope>?
+
     fileprivate let createPaymentIntentResult: Result<PaymentIntentEnvelope, ErrorEnvelope>?
 
     fileprivate let createPasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
@@ -263,6 +265,7 @@
       >? = nil,
       createCheckoutResult: Result<CreateCheckoutEnvelope, ErrorEnvelope>? = nil,
       createFlaggingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
+      fetchFlaggingOptionsResult: Result<GraphAPI.FlaggingOptionsQuery.Data, ErrorEnvelope>? = nil,
       createPaymentIntentResult: Result<PaymentIntentEnvelope, ErrorEnvelope>? = nil,
       createPasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createStripeSetupIntentResult: Result<ClientSecretEnvelope, ErrorEnvelope>? = nil,
@@ -405,6 +408,7 @@
       self.createCheckoutResult = createCheckoutResult
 
       self.createFlaggingResult = createFlaggingResult
+      self.fetchFlaggingOptionsResult = fetchFlaggingOptionsResult
 
       self.createPaymentIntentResult = createPaymentIntentResult
 
@@ -974,6 +978,16 @@
       let fetchGraphCategoriesQuery = GraphAPI.FetchRootCategoriesQuery()
 
       return client.fetchWithResult(query: fetchGraphCategoriesQuery, result: self.fetchGraphCategoriesResult)
+    }
+
+    internal func fetchFlaggingOptions(contentType: GraphAPI.FlaggingContent)
+      -> SignalProducer<GraphAPI.FlaggingOptionsQuery.Data, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let query = GraphAPI.FlaggingOptionsQuery(contentType: GraphQLEnum(contentType))
+      return client.fetchWithResult(query: query, result: self.fetchFlaggingOptionsResult)
     }
 
     internal func fetchGraphCategory(id: String)
@@ -1887,6 +1901,7 @@
             language: $1.language,
             buildVersion: $1.buildVersion,
             addNewCreditCardResult: $1.addNewCreditCardResult,
+            fetchFlaggingOptionsResult: $1.fetchFlaggingOptionsResult,
             changePaymentMethodResult: $1.changePaymentMethodResult,
             deletePaymentMethodResult: $1.deletePaymentMethodResult,
             clearUserUnseenActivityResult: $1.clearUserUnseenActivityResult,
@@ -1995,6 +2010,12 @@
   }
 
   extension GraphAPI.BuildPaymentPlanQuery.Data: Decodable {
+    public init(from _: Decoder) throws {
+      fatalError("The test code should not actually be decoding this object.")
+    }
+  }
+
+  extension GraphAPI.FlaggingOptionsQuery.Data: Decodable {
     public init(from _: Decoder) throws {
       fatalError("The test code should not actually be decoding this object.")
     }

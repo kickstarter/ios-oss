@@ -248,6 +248,12 @@ public struct Service: ServiceType {
       .eraseToAnyPublisher()
   }
 
+  public func fetchFlaggingOptions(contentType: GraphAPI.FlaggingContent)
+    -> SignalProducer<GraphAPI.FlaggingOptionsQuery.Data, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.FlaggingOptionsQuery(contentType: GraphQLEnum(contentType)))
+  }
+
   public func createPaymentIntentInput(input: CreatePaymentIntentInput) -> ReactiveSwift
     .SignalProducer<PaymentIntentEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
