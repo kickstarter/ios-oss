@@ -8,8 +8,8 @@ import SwiftUI
 
 private enum Constants {
   static let textEditorMinHeight: CGFloat = 75
-  static let sectionHeaderLeadPadding: CGFloat = 20
-  static let bannerMaxHeight: CGFloat = 5
+  static let sectionHeaderLeadingPadding: CGFloat = 20
+  static let bannerMaxHeightDivider: CGFloat = 5
 }
 
 // MARK: -
@@ -23,6 +23,7 @@ struct ReportProjectFormView: View {
   let projectID: String
   let projectURL: String
   let projectFlaggingKind: GraphAPI.NonDeprecatedFlaggingKind
+  let placeholder: String?
 
   @SwiftUI.Environment(\.dismiss) private var dismiss
   @StateObject private var viewModel = ReportProjectFormViewModel()
@@ -61,8 +62,8 @@ struct ReportProjectFormView: View {
             .focused(self.$focusField, equals: .details)
             .padding()
         } header: {
-          Text(Strings.Tell_us_more_details())
-            .padding(.leading, Constants.sectionHeaderLeadPadding)
+          Text(self.placeholder ?? Strings.Tell_us_more_details())
+            .padding(.leading, Constants.sectionHeaderLeadingPadding)
         }
         .listRowInsets(EdgeInsets())
       }
@@ -97,7 +98,7 @@ struct ReportProjectFormView: View {
           .frame(
             minWidth: proxy.size.width,
             idealWidth: proxy.size.width,
-            maxHeight: proxy.size.height / Constants.bannerMaxHeight,
+            maxHeight: proxy.size.height / Constants.bannerMaxHeightDivider,
             alignment: .bottom
           )
           .animation(.easeInOut, value: self.viewModel.bannerMessage == nil)

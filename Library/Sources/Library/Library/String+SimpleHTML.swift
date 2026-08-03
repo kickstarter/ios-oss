@@ -1,4 +1,6 @@
 import Foundation
+import KDS
+import SwiftUI
 import UIKit
 
 public extension String {
@@ -128,6 +130,43 @@ public extension String {
         parsedHtml()
       }
     }
+  }
+
+  /// Returns `true` if the string contains at least one `<a>` anchor tag.
+  var containsHTMLLink: Bool {
+    range(of: #"<a[\s>]"#, options: [.regularExpression, .caseInsensitive]) != nil
+  }
+
+  /// Converts `<a href="...">text</a>` to markdown and strips remaining HTML tags.
+  func htmlToMarkdown() -> String {
+    self
+      .replacingOccurrences(
+        of: #"<a[^>]*href="([^"]*)"[^>]*>([^<]*)</a>"#,
+        with: "[$2]($1)",
+        options: .regularExpression
+      )
+      .replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression)
+  }
+
+  /// Converts HTML to an `AttributedString` using Swift's built-in markdown parser.
+  func htmlAttributedString(font: UIFont, baseColor: Color) -> AttributedString {
+    let markdown = self.htmlToMarkdown()
+
+    var str = (try? AttributedString(
+      markdown: markdown,
+      options: .init(interpretedSyntax: .inlineOnlyPreservingWhitespace)
+    )) ?? AttributedString(markdown)
+
+    str.font = Font(font)
+    str.foregroundColor = baseColor
+
+    /// Collect link ranges first, then color them
+    let linkRanges = str.runs.filter { $0.link != nil }.map { $0.range }
+    for range in linkRanges {
+      str[range].foregroundColor = Colors.Text.Accent.green.swiftUIColor()
+    }
+
+    return str
   }
 }
 
