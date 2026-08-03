@@ -305,10 +305,10 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     // Used to show the Project overview page while we re-fetch the rest of the project data.
     let staleProjectData = self.configDataProperty.signal
       .takeWhen(self.viewDidLoadProperty.signal)
-      .filter {
-        canDisplayProjectPreview(withData: $0?.0)
-      }
       .skipNil()
+      .filter { projectOrParam, _, _ -> Bool in
+        projectOrParam.canDisplayProjectPreview
+      }
 
     let staleProjectDataSource = staleProjectData
       .map { projectOrParam, refInfo, _ in
@@ -945,20 +945,20 @@ private extension Either where A == Project, B == ProjectPageParam {
   }
 }
 
-/// Whether or not the view model can emit some initial (stale) data while we wait for the project to reload.
-private func canDisplayProjectPreview(withData either: Either<Project, ProjectPageParam>?) -> Bool {
-  guard let either else { return false }
+private extension Either where A == Project, B == any ProjectPageParam {
+  /// Whether or not the view model can emit some initial (stale) data while we wait for the project to reload.
+  var canDisplayProjectPreview: Bool {
+    // The VM was configured with a ProjectPageParam that has an initialProject set
+    if let right = self.right,
+       let _ = right.initialProject {
+      return true
+    }
 
-  // The VM was configured with a ProjectPageParam that has an initialProject set
-  if let right = either.right,
-     let _ = right.initialProject {
-    return true
+    // The VM was configured with a Project object
+    if let _ = self.left {
+      return true
+    }
+
+    return false
   }
-
-  // The VM was configured with a Project object
-  if let _ = either.left {
-    return true
-  }
-
-  return false
 }
