@@ -13,6 +13,7 @@ public class Query: MockObject {
     @Field<Backing>("backing") public var backing
     @Field<Checkout>("checkout") public var checkout
     @Field<Node>("comment") public var comment
+    @Field<[FlaggingNode]>("flaggingOptions") public var flaggingOptions
     @Field<LocationsConnection>("locations") public var locations
     @Field<User>("me") public var me
     @Field<Node>("node") public var node
@@ -30,6 +31,7 @@ public extension Mock where O == Query {
     backing: Mock<Backing>? = nil,
     checkout: Mock<Checkout>? = nil,
     comment: AnyMock? = nil,
+    flaggingOptions: [Mock<FlaggingNode>]? = nil,
     locations: Mock<LocationsConnection>? = nil,
     me: Mock<User>? = nil,
     node: AnyMock? = nil,
@@ -44,6 +46,7 @@ public extension Mock where O == Query {
     _setEntity(backing, for: \.backing)
     _setEntity(checkout, for: \.checkout)
     _setEntity(comment, for: \.comment)
+    _setList(flaggingOptions, for: \.flaggingOptions)
     _setEntity(locations, for: \.locations)
     _setEntity(me, for: \.me)
     _setEntity(node, for: \.node)
