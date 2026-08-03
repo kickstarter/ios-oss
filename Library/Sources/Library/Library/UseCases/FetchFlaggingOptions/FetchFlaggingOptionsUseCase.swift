@@ -43,10 +43,13 @@ public final class FetchFlaggingOptionsUseCase: FetchFlaggingOptionsUseCaseType,
     /// Map successful responses to list items.
     let loadedItems: Signal<[ReportProjectInfoListItem], Never> = response
       .values()
-      .map { data in ReportProjectInfoListItem.items(from: data) }
+      .map { ReportProjectInfoListItem.items(from: $0) }
 
-    /// Stop loading on any response (success or error).
-    let loadingFinished: Signal<Bool, Never> = response.mapConst(false)
+    /// Stop loading on a value or error, but not on the completed event.
+    let loadingFinished: Signal<Bool, Never> = Signal.merge(
+      response.values().mapConst(false),
+      response.errors().mapConst(false)
+    )
 
     self.flaggingOptions = Signal.merge(emptyOnTrigger, loadedItems)
     self.isLoading = Signal.merge(loadingStarted, loadingFinished)

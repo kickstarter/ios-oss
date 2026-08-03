@@ -2,7 +2,7 @@ import GraphAPI
 
 /// A single row in the Report Project info list, representing either an expandable
 /// group (parent node) or a selectable flagging action (leaf node).
-public struct ReportProjectInfoListItem: Identifiable {
+public struct ReportProjectInfoListItem: Identifiable, Equatable {
   public let id: String
   public let title: String
   public let subtitle: String
