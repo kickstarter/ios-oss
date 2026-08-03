@@ -98,6 +98,7 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
 
     // Called when a button is tapped or when the view is configured and we default to the first index
     let setFirstIndexOnConfigurationOrButtonTapped = Signal.merge(
+      initialTabs.mapConst(0),
       configureNavigationSelector.mapConst(0),
       self.buttonTappedProperty.signal
     )

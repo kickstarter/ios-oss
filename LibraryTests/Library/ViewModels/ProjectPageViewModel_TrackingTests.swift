@@ -177,6 +177,23 @@ final class ProjectPageViewModel_TrackingTests: TestCase {
     }
   }
 
+  func testProjectPageViewed_OnViewDidAppear_LoadedWithParam() {
+    ProjectPageViewModelTests.mockNetworkRequests {
+      XCTAssertEqual([], self.segmentTrackingClient.events)
+
+      let param = ProjectPageParamBox(param: .id(1), initialProject: nil)
+      self.vm.configureAndLoad(Either.right(param))
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+
+      XCTAssertEqual(["project"], self.segmentTrackingClient.properties(forKey: "context_page"))
+      XCTAssertEqual(["overview"], self.segmentTrackingClient.properties(forKey: "context_section"))
+      XCTAssertEqual(["discovery"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
+    }
+  }
+
   func testMockCookieStorageSet_SeparateSchedulers() {
     let project = Project.template
     let scheduler1 = TestScheduler(startDate: MockDate().date)
@@ -433,39 +450,47 @@ final class ProjectPageViewModel_TrackingTests: TestCase {
       appTrackingTransparency: MockAppTrackingTransparency()
     )
 
-    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
-
     withEnvironment(
       apiService: MockService(
-        blockUserResult: .success(EmptyResponseEnvelope()),
-        fetchProjectPamphletResult: .success(projectPamphletData)
+        blockUserResult: .success(EmptyResponseEnvelope())
       ),
       currentUser: User.template,
       ksrAnalytics: ksrAnalytics
     ) {
-      self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewDidAppear(animated: false)
+      ProjectPageViewModelTests.mockNetworkRequests {
+        self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
+        self.vm.inputs.viewDidLoad()
+
+        self.vm.inputs.viewDidAppear(animated: false)
+
+        self.scheduler.advance()
+      }
+
+      XCTAssertEqual(segmentClient.events, ["Page Viewed"])
+
       self.vm.inputs.blockUser(id: 111)
 
       self.scheduler.advance()
 
-      XCTAssertEqual(segmentClient.events, ["CTA Clicked", "CTA Clicked"])
+      XCTAssertEqual(segmentClient.events, ["Page Viewed", "CTA Clicked", "CTA Clicked"])
 
       XCTAssertEqual(
         segmentClient.properties(forKey: "session_user_is_logged_in", as: Bool.self),
-        [true, true]
+        [true, true, true]
       )
-      XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: String.self), ["1", "1"])
-      XCTAssertEqual(segmentClient.properties(forKey: "context_cta"), ["block_user", "block_user"])
+      XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: String.self), ["1", "1", "1"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_cta"), [nil, "block_user", "block_user"])
       XCTAssertEqual(
         segmentClient.properties(forKey: "context_location"),
-        ["creator_details_menu", "creator_details_menu"]
+        [nil, "creator_details_menu", "creator_details_menu"]
       )
-      XCTAssertEqual(segmentClient.properties(forKey: "context_page"), ["project", "project"])
-      XCTAssertEqual(segmentClient.properties(forKey: "context_section"), ["overview", "overview"])
-      XCTAssertEqual(segmentClient.properties(forKey: "context_type"), ["initiate", "confirm"])
-      XCTAssertEqual(segmentClient.properties(forKey: "interaction_target_uid"), ["111", "111"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_page"), ["project", "project", "project"])
+      XCTAssertEqual(
+        segmentClient.properties(forKey: "context_section"),
+        ["overview", "overview", "overview"]
+      )
+      XCTAssertEqual(segmentClient.properties(forKey: "context_type"), [nil, "initiate", "confirm"])
+      XCTAssertEqual(segmentClient.properties(forKey: "interaction_target_uid"), [nil, "111", "111"])
     }
   }
 }

@@ -141,7 +141,11 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 
     self.buttonStyleType = self.pledgeState.signal.skipNil().map { $0.buttonStyle }
     self.buttonTitleText = self.pledgeState.signal.skipNil().map { $0.buttonTitle }
-    let stackViewAndSpacerAreHidden = self.pledgeState.signal.skipNil().map { $0.stackViewAndSpacerAreHidden }
+    let stackViewAndSpacerAreHidden = Signal.merge(
+      self.pledgeState.signal.skipNil().map { $0.stackViewAndSpacerAreHidden },
+      // Always hide the main stack view + spacer if we're not showing the pledge button
+      self.pledgeCTAButtonIsHidden.filter { $0 == true }
+    )
     self.spacerIsHidden = stackViewAndSpacerAreHidden
     self.stackViewIsHidden = stackViewAndSpacerAreHidden
     self.titleText = self.pledgeState.signal.skipNil().map { $0.titleLabel }.skipNil()
@@ -283,25 +287,6 @@ private func formattedPledge(amount: Double, project: Project) -> String {
 /// These are some convenience methods that bridge the original interface
 /// with the new `enum` interface for this type.
 extension PledgeCTAContainerViewData {
-  init?(projectOrError: Either<Project, ErrorEnvelope>?, isLoading: Bool) {
-    if isLoading {
-      self = .loading
-      return
-    }
-
-    if case let .left(project) = projectOrError {
-      self = .project(project)
-      return
-    }
-
-    if case let .right(error) = projectOrError {
-      self = .error(error)
-      return
-    }
-
-    return nil
-  }
-
   var projectOrError: Either<Project, ErrorEnvelope>? {
     switch self {
     case .loading:
