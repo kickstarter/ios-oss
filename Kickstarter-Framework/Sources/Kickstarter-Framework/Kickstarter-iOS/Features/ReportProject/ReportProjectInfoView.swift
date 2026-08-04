@@ -57,45 +57,15 @@ struct ReportProjectInfoView: View {
         /// Top-level group row, tap to expand/collapse.
         Button {
           withAnimation(.easeInOut(duration: Constants.animationDuration)) {
-            if self.expandedIDs.contains(item.id) {
-              self.expandedIDs.remove(item.id)
-            } else {
-              self.expandedIDs.insert(item.id)
-            }
+            self.toggleExpanded(item)
           }
         } label: {
-          ParentRowLabel(item: item, isExpanded: self.expandedIDs.contains(item.id))
+          ParentRowLabel(item: item, isExpanded: self.isExpanded(item))
         }
         .buttonStyle(.plain)
 
-        if self.expandedIDs.contains(item.id) {
-          ForEach(item.subItems ?? []) { subItem in
-            if subItem.subItems != nil {
-              Button {
-                withAnimation(.easeInOut(duration: Constants.animationDuration)) {
-                  if self.expandedIDs.contains(subItem.id) {
-                    self.expandedIDs.remove(subItem.id)
-                  } else {
-                    self.expandedIDs.insert(subItem.id)
-                  }
-                }
-              } label: {
-                ParentRowLabel(item: subItem, isExpanded: self.expandedIDs.contains(subItem.id))
-              }
-              .buttonStyle(.plain)
-              .padding(.leading)
-
-              if self.expandedIDs.contains(subItem.id) {
-                ForEach(subItem.subItems ?? []) { leafItem in
-                  self.optionLink(for: leafItem)
-                    .padding(.leading)
-                }
-              }
-            } else {
-              /// Direct leaf option with no sub-group, goes straight to the submit form.
-              self.optionLink(for: subItem)
-            }
-          }
+        if self.isExpanded(item) {
+          self.subItemsView(for: item)
         }
       }
     }
@@ -103,7 +73,7 @@ struct ReportProjectInfoView: View {
     .navigationTitle(Strings.Report_this_project())
     .navigationBarTitleDisplayMode(.inline)
     .onAppear {
-      self.viewModel.inputs.viewDidLoad()
+      self.viewModel.viewDidLoad()
     }
     .onChange(of: self.popToRoot) { _, newValue in
       if newValue {
@@ -113,7 +83,52 @@ struct ReportProjectInfoView: View {
     }
   }
 
-  /// Navigates to the submit form, passing the flagging kind and placeholder text.
+  // MARK: Helpers
+
+  private func isExpanded(_ item: ReportProjectInfoListItem) -> Bool {
+    self.expandedIDs.contains(item.id)
+  }
+
+  private func toggleExpanded(_ item: ReportProjectInfoListItem) {
+    if self.expandedIDs.contains(item.id) {
+      self.expandedIDs.remove(item.id)
+    } else {
+      self.expandedIDs.insert(item.id)
+    }
+  }
+
+  // MARK: Sub-views
+
+  /// Renders the children of an expanded group row.
+  /// Sub-groups are themselves expandable; leaf options navigate to the report form.
+  @ViewBuilder
+  private func subItemsView(for item: ReportProjectInfoListItem) -> some View {
+    ForEach(item.subItems ?? []) { subItem in
+      if subItem.subItems != nil {
+        Button {
+          withAnimation(.easeInOut(duration: Constants.animationDuration)) {
+            self.toggleExpanded(subItem)
+          }
+        } label: {
+          ParentRowLabel(item: subItem, isExpanded: self.isExpanded(subItem))
+        }
+        .buttonStyle(.plain)
+        .padding(.leading)
+
+        if self.isExpanded(subItem) {
+          ForEach(subItem.subItems ?? []) { leafItem in
+            self.optionLink(for: leafItem)
+              .padding(.leading)
+          }
+        }
+      } else {
+        /// Direct leaf option with no sub-group, goes straight to the form.
+        self.optionLink(for: subItem)
+      }
+    }
+  }
+
+  /// Navigates to the report form, passing the flagging kind and placeholder text.
   @ViewBuilder
   private func optionLink(for item: ReportProjectInfoListItem) -> some View {
     NavigationLink {
@@ -176,7 +191,7 @@ private struct ParentRowLabel: View {
         baseColor: Colors.Text.primary.swiftUIColor()
       ))
     } else {
-      Text(self.item.title)
+      Text(self.item.title.htmlTagsRemoved)
         .font(Font(boldFont))
         .foregroundColor(Colors.Text.primary.swiftUIColor())
     }
@@ -191,7 +206,7 @@ private struct ParentRowLabel: View {
         baseColor: Colors.Text.primary.swiftUIColor()
       ))
     } else {
-      Text(self.item.subtitle)
+      Text(self.item.subtitle.htmlTagsRemoved)
         .font(Font(UIFont.ksr_subhead()))
         .foregroundColor(Colors.Text.secondary.swiftUIColor())
     }
@@ -224,7 +239,7 @@ private struct ChildRowLabel: View {
         baseColor: Colors.Text.secondary.swiftUIColor()
       ))
     } else {
-      Text(self.item.title)
+      Text(self.item.title.htmlTagsRemoved)
         .font(Font(UIFont.ksr_callout()))
         .bold()
         .foregroundColor(Colors.Text.primary.swiftUIColor())
@@ -239,7 +254,7 @@ private struct ChildRowLabel: View {
         baseColor: Colors.Text.secondary.swiftUIColor()
       ))
     } else {
-      Text(self.item.subtitle)
+      Text(self.item.subtitle.htmlTagsRemoved)
         .font(Font(UIFont.ksr_footnote()))
         .foregroundColor(Colors.Text.secondary.swiftUIColor())
     }
