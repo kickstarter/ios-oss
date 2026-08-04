@@ -108,6 +108,9 @@ public protocol ServiceType {
   func createFlaggingInputCombine(input: CreateFlaggingInput)
     -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope>
 
+  /// Fetches and maps flagging options for a given content type (e.g. project, comment, backing).
+  func fetchProjectFlaggingOptions() async throws -> [ReportProjectInfoListItem]
+
   /// Sends report project data for a specific project
   func createPaymentIntentInput(input: CreatePaymentIntentInput)
     -> SignalProducer<PaymentIntentEnvelope, ErrorEnvelope>

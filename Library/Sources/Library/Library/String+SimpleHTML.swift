@@ -1,4 +1,7 @@
 import Foundation
+import KDS
+import SwiftSoup
+import SwiftUI
 import UIKit
 
 public extension String {
@@ -128,6 +131,74 @@ public extension String {
         parsedHtml()
       }
     }
+  }
+
+  /// Returns `true` if the string contains at least one `<a href>` anchor tag.
+  var containsHTMLLink: Bool {
+    guard let doc = try? SwiftSoup.parse(self),
+          let links = try? doc.select("a[href]") else {
+      return false
+    }
+
+    return !links.isEmpty()
+  }
+
+  /// Returns the string with all HTML tags removed.
+  /// Used as a fallback for strings that contain unexpected HTML but no links. (found this issue in a case where we received a <span> from the backend for a string that we didn't have a localized translated string for).
+  var htmlTagsRemoved: String {
+    guard let doc = try? SwiftSoup.parse(self),
+          let body = doc.body(),
+          let text = try? body.text() else {
+      return self
+    }
+
+    return text
+  }
+
+  /// Converts `<a href="...">` to Markdown and strips remaining HTML tags.
+  func htmlToMarkdown() -> String {
+    guard let doc = try? SwiftSoup.parse(self),
+          let body = doc.body() else {
+      return self
+    }
+
+    /// Replace each anchor with its Markdown equivalent before replacing tags
+    if let anchors = try? body.select("a[href]") {
+      for anchor in anchors {
+        let href = (try? anchor.attr("href")) ?? ""
+        let text = (try? anchor.text()) ?? ""
+
+        try? anchor.replaceWith(TextNode("[\(text)](\(href))", nil))
+      }
+    }
+
+    /// body.text() strips all remaining HTML tags
+    return (try? body.text()) ?? self
+  }
+
+  /// Converts HTML to an `AttributedString` by first parsing with SwiftSoup,
+  /// then rendering the result using Swift's built in Markdown parser.
+  /// Should be safe to call from SwiftUI view bodies. No WebKit, no main thread blocking.
+  /// All `<a href>` links are then rendered in `Colors.Text.Accent.green`.
+  func htmlAttributedString(font: UIFont, baseColor: Color) -> AttributedString {
+    let markdown = self.htmlToMarkdown()
+
+    var str = (try? AttributedString(
+      markdown: markdown,
+      options: .init(interpretedSyntax: .inlineOnlyPreservingWhitespace)
+    )) ?? AttributedString(markdown)
+
+    str.font = Font(font)
+    str.foregroundColor = baseColor
+
+    /// Collect link ranges first, then add color
+    let linkRanges = str.runs.filter { $0.link != nil }.map { $0.range }
+
+    for range in linkRanges {
+      str[range].foregroundColor = Colors.Text.Accent.green.swiftUIColor()
+    }
+
+    return str
   }
 }
 

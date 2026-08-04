@@ -36,14 +36,10 @@ enum ReportProjectHyperLinkType: String, CaseIterable {
   }
 }
 
-private func hyperLink(in string: String) -> ReportProjectHyperLinkType? {
-  ReportProjectHyperLinkType.allCases.first {
-    string.lowercased().contains($0.stringLiteral().lowercased())
-  }
-}
-
 // MARK: - Main View
 
+/// Shows a plain list of expandable report categories fetched from the API.
+/// Tapping a top-level group expands it, sub-groups expand further, leaf options navigate to the submit form.
 struct ReportProjectInfoView: View {
   let projectID: String
   let projectUrl: String
@@ -51,44 +47,34 @@ struct ReportProjectInfoView: View {
 
   @SwiftUI.Environment(\.dismiss) private var dismiss
   @State private var popToRoot = false
+  /// Tracks which group rows are expanded. IDs are unique across the whole tree.
   @State private var expandedIDs: Set<ReportProjectInfoListItem.ID> = []
+  @StateObject private var viewModel = ReportProjectInfoViewModel()
 
   var body: some View {
     List {
-      ForEach(listItems) { item in
+      ForEach(self.viewModel.listItems) { item in
+        /// Top-level group row, tap to expand/collapse.
         Button {
           withAnimation(.easeInOut(duration: Constants.animationDuration)) {
-            if self.expandedIDs.contains(item.id) {
-              self.expandedIDs.remove(item.id)
-            } else {
-              self.expandedIDs.insert(item.id)
-            }
+            self.toggleExpanded(item)
           }
         } label: {
-          ParentRowLabel(item: item, isExpanded: self.expandedIDs.contains(item.id))
+          ParentRowLabel(item: item, isExpanded: self.isExpanded(item))
         }
         .buttonStyle(.plain)
 
-        if self.expandedIDs.contains(item.id) {
-          ForEach(item.subItems ?? []) { subItem in
-            NavigationLink {
-              ReportProjectFormView(
-                popToRoot: self.$popToRoot,
-                projectID: self.projectID,
-                projectURL: self.projectUrl,
-                projectFlaggingKind: subItem.flaggingKind
-                  ?? GraphAPI.NonDeprecatedFlaggingKind.guidelinesViolation
-              )
-            } label: {
-              ChildRowLabel(item: subItem)
-            }
-          }
+        if self.isExpanded(item) {
+          self.subItemsView(for: item)
         }
       }
     }
     .listStyle(.plain)
     .navigationTitle(Strings.Report_this_project())
     .navigationBarTitleDisplayMode(.inline)
+    .onAppear {
+      self.viewModel.viewDidLoad()
+    }
     .onChange(of: self.popToRoot) { _, newValue in
       if newValue {
         self.dismiss()
@@ -96,28 +82,86 @@ struct ReportProjectInfoView: View {
       }
     }
   }
+
+  // MARK: Helpers
+
+  private func isExpanded(_ item: ReportProjectInfoListItem) -> Bool {
+    self.expandedIDs.contains(item.id)
+  }
+
+  private func toggleExpanded(_ item: ReportProjectInfoListItem) {
+    if self.expandedIDs.contains(item.id) {
+      self.expandedIDs.remove(item.id)
+    } else {
+      self.expandedIDs.insert(item.id)
+    }
+  }
+
+  // MARK: Sub-views
+
+  /// Renders the children of an expanded group row.
+  /// Sub-groups are themselves expandable; leaf options navigate to the report form.
+  @ViewBuilder
+  private func subItemsView(for item: ReportProjectInfoListItem) -> some View {
+    ForEach(item.subItems ?? []) { subItem in
+      if subItem.subItems != nil {
+        Button {
+          withAnimation(.easeInOut(duration: Constants.animationDuration)) {
+            self.toggleExpanded(subItem)
+          }
+        } label: {
+          ParentRowLabel(item: subItem, isExpanded: self.isExpanded(subItem))
+        }
+        .buttonStyle(.plain)
+        .padding(.leading)
+
+        if self.isExpanded(subItem) {
+          ForEach(subItem.subItems ?? []) { leafItem in
+            self.optionLink(for: leafItem)
+              .padding(.leading)
+          }
+        }
+      } else {
+        /// Direct leaf option with no sub-group, goes straight to the form.
+        self.optionLink(for: subItem)
+      }
+    }
+  }
+
+  /// Navigates to the report form, passing the flagging kind and placeholder text.
+  @ViewBuilder
+  private func optionLink(for item: ReportProjectInfoListItem) -> some View {
+    NavigationLink {
+      ReportProjectFormView(
+        popToRoot: self.$popToRoot,
+        projectID: self.projectID,
+        projectURL: self.projectUrl,
+        projectFlaggingKind: item.flaggingKind ?? GraphAPI.NonDeprecatedFlaggingKind.guidelinesViolation,
+        placeholder: item.placeholder
+      )
+    } label: {
+      ChildRowLabel(item: item)
+    }
+  }
 }
 
 // MARK: - ParentRowLabel
 
+/// Expandable group row with a rotating chevron and optional html linked
 private struct ParentRowLabel: View {
   let item: ReportProjectInfoListItem
   let isExpanded: Bool
 
   @ScaledMetric private var chevronSize: CGFloat = Constants.chevronSize
-  private let green = LegacyColors.ksr_create_700.swiftUIColor()
+  private let green = Colors.Icon.green.swiftUIColor()
 
   var body: some View {
     HStack(alignment: .center, spacing: Constants.hStackSpacing) {
       VStack(alignment: .leading, spacing: Constants.vStackSpacing) {
-        Text(self.item.title)
-          .font(Font(UIFont.ksr_body()))
-          .bold()
-          .foregroundColor(Color(UIColor.label))
+        self.titleText
           .frame(maxWidth: .infinity, alignment: .leading)
 
         self.subtitleText
-          .font(Font(UIFont.ksr_subhead()))
           .frame(maxWidth: .infinity, alignment: .leading)
           .multilineTextAlignment(.leading)
       }
@@ -126,40 +170,61 @@ private struct ParentRowLabel: View {
         .font(.system(size: self.chevronSize, weight: .semibold))
         .foregroundColor(self.green)
         .rotationEffect(.degrees(
-          self.isExpanded ? Constants.chevronExpandedDegrees : Constants
-            .chevronCollapsedDegrees
+          self.isExpanded ? Constants.chevronExpandedDegrees : Constants.chevronCollapsedDegrees
         ))
     }
     .padding(.vertical, Constants.verticalPadding)
     .contentShape(Rectangle())
   }
 
+  /// Bold body text, renders as AttributedString if the title contains an <a> link.
+  @ViewBuilder
+  private var titleText: some View {
+    let base = UIFont.ksr_body()
+    let boldFont = UIFont(
+      descriptor: base.fontDescriptor.withSymbolicTraits(.traitBold) ?? base.fontDescriptor,
+      size: 0
+    )
+    if self.item.title.containsHTMLLink {
+      Text(self.item.title.htmlAttributedString(
+        font: boldFont,
+        baseColor: Colors.Text.primary.swiftUIColor()
+      ))
+    } else {
+      Text(self.item.title.htmlTagsRemoved)
+        .font(Font(boldFont))
+        .foregroundColor(Colors.Text.primary.swiftUIColor())
+    }
+  }
+
+  /// Subhead supporting text, secondary color unless it contains a link.
   @ViewBuilder
   private var subtitleText: some View {
-    if let link = hyperLink(in: item.subtitle) {
-      Text(html: self.item.subtitle, with: [link.stringLiteral()])
+    if self.item.subtitle.containsHTMLLink {
+      Text(self.item.subtitle.htmlAttributedString(
+        font: .ksr_subhead(),
+        baseColor: Colors.Text.primary.swiftUIColor()
+      ))
     } else {
-      Text(self.item.subtitle)
+      Text(self.item.subtitle.htmlTagsRemoved)
+        .font(Font(UIFont.ksr_subhead()))
+        .foregroundColor(Colors.Text.secondary.swiftUIColor())
     }
   }
 }
 
 // MARK: - ChildRowLabel
 
+/// Leaf option row, non-expandable, used inside a NavigationLink to the report form.
 private struct ChildRowLabel: View {
   let item: ReportProjectInfoListItem
 
   var body: some View {
     VStack(alignment: .leading, spacing: Constants.vStackSpacing) {
-      Text(self.item.title)
-        .font(Font(UIFont.ksr_callout()))
-        .bold()
-        .foregroundColor(Color(UIColor.label))
+      self.titleText
         .frame(maxWidth: .infinity, alignment: .leading)
 
       self.subtitleText
-        .font(Font(UIFont.ksr_footnote()))
-        .foregroundColor(Color(UIColor.secondaryLabel))
         .frame(maxWidth: .infinity, alignment: .leading)
         .multilineTextAlignment(.leading)
     }
@@ -167,11 +232,31 @@ private struct ChildRowLabel: View {
   }
 
   @ViewBuilder
-  private var subtitleText: some View {
-    if let link = hyperLink(in: item.subtitle) {
-      Text(html: self.item.subtitle, with: [link.stringLiteral()])
+  private var titleText: some View {
+    if self.item.title.containsHTMLLink {
+      Text(self.item.title.htmlAttributedString(
+        font: .ksr_subhead(),
+        baseColor: Colors.Text.secondary.swiftUIColor()
+      ))
     } else {
-      Text(self.item.subtitle)
+      Text(self.item.title.htmlTagsRemoved)
+        .font(Font(UIFont.ksr_callout()))
+        .bold()
+        .foregroundColor(Colors.Text.primary.swiftUIColor())
+    }
+  }
+
+  @ViewBuilder
+  private var subtitleText: some View {
+    if self.item.subtitle.containsHTMLLink {
+      Text(self.item.subtitle.htmlAttributedString(
+        font: .ksr_footnote(),
+        baseColor: Colors.Text.secondary.swiftUIColor()
+      ))
+    } else {
+      Text(self.item.subtitle.htmlTagsRemoved)
+        .font(Font(UIFont.ksr_footnote()))
+        .foregroundColor(Colors.Text.secondary.swiftUIColor())
     }
   }
 }
