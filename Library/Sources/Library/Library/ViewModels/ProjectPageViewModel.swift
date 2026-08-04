@@ -1,3 +1,4 @@
+import Experimentation
 import Foundation
 import GraphAPI
 import KsApi
@@ -223,43 +224,30 @@ public protocol ProjectPageViewModelType {
 public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageViewModelInputs,
   ProjectPageViewModelOutputs {
   public init() {
-    let isLoading = MutableProperty(false)
-
     self.navigateBackToProjectPage = self.didBackProjectProperty.signal.ignoreValues()
 
-    let freshProjectAndRefTagEvent = self.configDataProperty.signal
-      .skipNil()
-      .takeWhen(Signal.merge(
-        self.viewDidLoadProperty.signal.ignoreValues(),
-        self.userSessionStartedProperty.signal.ignoreValues(),
-        self.didBackProjectProperty.signal.ignoreValues(),
-        self.managePledgeViewControllerFinishedWithMessageProperty.signal.ignoreValues(),
-        self.pledgeRetryButtonTappedProperty.signal.ignoreValues()
-      ))
-      .switchMap { projectOrParam, refInfo, secretRewardToken in
-        fetchProject(
-          projectOrParam: projectOrParam,
-          afterAddingSecretRewardToken: secretRewardToken
-        )
-        .on(
-          starting: { isLoading.value = true },
-          terminated: { isLoading.value = false }
-        )
-        .map { project in
-          (project, refInfo?.refTag.map(cleanUp(refTag:)))
-        }
-        .materialize()
+    let shouldRefreshProject = Signal.merge(
+      self.viewDidLoadProperty.signal.ignoreValues(),
+      self.userSessionStartedProperty.signal.ignoreValues(),
+      self.didBackProjectProperty.signal.ignoreValues(),
+      self.managePledgeViewControllerFinishedWithMessageProperty.signal.ignoreValues(),
+      self.pledgeRetryButtonTappedProperty.signal.ignoreValues()
+    )
+
+    let fetchConfigData: Signal<(Param, RefTag?, String?), Never> =
+      self.configDataProperty.signal.skipNil().map { projectOrParam, refInfo, token in
+        (projectOrParam.param, refInfo?.refTag.map(cleanUp(refTag:)), token)
       }
 
-    let freshProjectAndRefTag: Signal<(Project, RefTag?), Never> = freshProjectAndRefTagEvent.values()
+    let fetchProject = ProjectPageViewModel_ProgressiveFetchUseCase(
+      configData: fetchConfigData,
+      shouldRefreshProject: shouldRefreshProject
+    )
 
-    let freshProject = freshProjectAndRefTag
-      .map(first)
-
-    self.projectFlagged = freshProject.signal
+    self.projectFlagged = fetchProject.project(.full)
       .map { $0.flagging ?? false }
 
-    self.prefetchImageURLs = freshProject.signal
+    self.prefetchImageURLs = fetchProject.project(.full)
       .compactMap { $0.extendedProjectProperties }
       .combineLatest(with: self.prepareImageAtProperty.signal.skipNil())
       .filterWhenLatestFrom(
@@ -281,7 +269,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
       .skipNil()
 
-    self.prefetchImageURLsOnFirstLoad = freshProject.signal
+    self.prefetchImageURLsOnFirstLoad = fetchProject.project(.full)
       .compactMap { $0.extendedProjectProperties }
       .switchMap { properties -> SignalProducer<[ImageViewElement], Never> in
         let imageViewElements = properties.story.htmlViewElements
@@ -290,7 +278,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         return SignalProducer(value: imageViewElements)
       }
 
-    self.precreateAudioVideoURLsOnFirstLoad = freshProject.signal
+    self.precreateAudioVideoURLsOnFirstLoad = fetchProject.project(.full)
       .compactMap { $0.extendedProjectProperties }
       .switchMap { properties -> SignalProducer<[AudioVideoViewElement], Never> in
         let audioVideoViewElements = properties.story.htmlViewElements
@@ -316,7 +304,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
 
     // The first tab we render by default is overview.
-    self.configureDataSource = freshProjectAndRefTag
+    self.configureDataSource = fetchProject.projectAndRefTag(.full)
       .combineLatest(with: self.viewDidLoadProperty.signal)
       .map { projectAndRefTag, _ in
         let (project, refTag) = projectAndRefTag
@@ -324,7 +312,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
       .merge(with: staleProjectDataSource)
 
-    let projectAndBacking = freshProject
+    let projectAndBacking = fetchProject.project(.partial)
       .filter { $0.personalization.isBacking ?? false }
       .compactMap { project -> (Project, Backing)? in
         guard let backing = project.personalization.backing else {
@@ -360,46 +348,46 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     self.configurePledgeCTAView = Signal.merge(
       // Successful fetch
-      freshProject.map { .project($0) },
+      fetchProject.project(.partial).map { .project($0) },
       // Errored fetch
-      freshProjectAndRefTagEvent.errors().map { .error($0) },
+      fetchProject.error(.partial).map { .error($0) },
       // Loading
-      isLoading.signal.filter { $0 == true }.mapConst(.loading)
+      fetchProject.isLoading.filter { $0 == true }.mapConst(.loading)
     )
     .skipRepeats()
 
-    self.configureChildViewControllersWithProject = freshProjectAndRefTag
+    self.configureChildViewControllersWithProject = fetchProject.projectAndRefTag(.full)
       .map { project, refTag in (project, refTag) }
 
     self.dismissManagePledgeAndShowMessageBannerWithMessage
       = self.managePledgeViewControllerFinishedWithMessageProperty.signal
       .skipNil()
 
-    let cookieRefTag: Signal<RefTag?, Never> = freshProjectAndRefTag
+    let cookieRefTag: Signal<RefTag?, Never> = fetchProject.projectAndRefTag(.full)
       .map { project, refTag -> RefTag? in
         let r = cookieRefTagFor(project: project) ?? refTag
         return r
       }
       .take(first: 1)
 
-    self.goToComments = freshProject
+    self.goToComments = fetchProject.project(.full)
       .takeWhen(self.tappedCommentsProperty.signal)
 
-    self.goToUpdates = freshProject
+    self.goToUpdates = fetchProject.project(.full)
       .takeWhen(self.tappedUpdatesProperty.signal)
 
-    self.goToReportProject = freshProject.signal
+    self.goToReportProject = fetchProject.project(.full)
       .map { ($0.flagging ?? false, "\($0.graphID)", $0.urls.web.project) }
       .takeWhen(self.tappedReportProjectProperty.signal)
 
-    self.configureProjectNavigationSelectorView = freshProjectAndRefTag
+    self.configureProjectNavigationSelectorView = fetchProject.projectAndRefTag(.full)
       .map { projectAndRefTag in
         let (project, refTag) = projectAndRefTag
         return (project: project, refTag: refTag)
       }
 
     let trackFreshProjectAndRefTagViewed: Signal<(Project, RefTag?), Never> = Signal.zip(
-      freshProjectAndRefTag,
+      fetchProject.projectAndRefTag(.full),
       self.viewDidAppearAnimatedProperty.signal.ignoreValues()
     )
     .map(unpack)
@@ -463,7 +451,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     // Event attribution tracking
     self.configDataProperty.signal
       .skipNil()
-      .combineLatest(with: freshProjectAndRefTag)
+      .combineLatest(with: fetchProject.projectAndRefTag(.full))
       .map { projectAndRefInfo, freshProjectAndRefTag in
         let (_, refInfo, _) = projectAndRefInfo
         let (project, _) = freshProjectAndRefTag
@@ -486,13 +474,13 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         // GraphQL mutation only runs if it is observed.
       }
 
-    Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndRefTag.map(first))
+    Signal.combineLatest(cookieRefTag.skipNil(), fetchProject.project(.full))
       .take(first: 1)
       .map(cookieFrom(refTag:project:))
       .skipNil()
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
 
-    self.presentMessageDialog = freshProject
+    self.presentMessageDialog = fetchProject.project(.full)
       .takeWhen(self.askAQuestionCellTappedProperty.signal)
 
     let tappableCellURLs = Signal.merge(
@@ -511,7 +499,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .skipRepeats()
       .map { index in NavigationSection(rawValue: index) }
       .skipNil()
-      .combineLatest(with: freshProjectAndRefTag)
+      .combineLatest(with: fetchProject.projectAndRefTag(.full))
       .map { navSection, projectAndRefTag in
         let (project, refTag) = projectAndRefTag
         let initialIsExpandedArray = Array(
@@ -554,7 +542,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       return (navSection, project, refTag, initialIsExpandedArray, urls, similarProjects)
     }
 
-    self.updateFAQsInDataSource = freshProjectAndRefTag
+    self.updateFAQsInDataSource = fetchProject.projectAndRefTag(.full)
       .combineLatest(with: self.didSelectFAQsRowAtProperty.signal.skipNil())
       .map { projectAndRefTag, indexAndDataSourceValues in
         let (project, refTag) = projectAndRefTag
@@ -575,7 +563,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     // MARK: Project notice
 
-    self.goToRestrictedCreator = freshProject.takeWhen(self.projectNoticeDetailsRequestedProperty.signal)
+    self.goToRestrictedCreator = fetchProject.project(.full)
+      .takeWhen(self.projectNoticeDetailsRequestedProperty.signal)
       .map(\.extendedProjectProperties?.projectNotice)
       .skipNil()
 
@@ -599,7 +588,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     // MARK: User Blocking Analytics
 
     _ = self.blockUserProperty.signal
-      .combineLatest(with: freshProject)
+      .combineLatest(with: fetchProject.project(.full))
       .observeValues { blockedUserId, project in
         AppEnvironment.current.ksrAnalytics
           .trackBlockedUser(
@@ -613,7 +602,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
 
     _ = self.blockUserProperty.signal
-      .combineLatest(with: freshProject)
+      .combineLatest(with: fetchProject.project(.full))
       .takeWhen(blockUserEvent.values().ignoreValues())
       .observeValues { blockedUserId, project in
         AppEnvironment.current.ksrAnalytics
@@ -652,7 +641,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       goToRewardsTapped: shouldGoToRewards
     )
 
-    self.goToRewards = freshProjectAndRefTag
+    self.goToRewards = fetchProject.projectAndRefTag(.partial)
       .combineLatest(with: secretRewardToken)
       .map(unpack)
       .takeWhen(
@@ -664,7 +653,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     let shouldGoToPledgeManager = ctaButtonTappedWithType
       .filter { $0 == .pledgeManager }
 
-    self.goToPledgeManager = freshProject
+    self.goToPledgeManager = fetchProject.project(.partial)
       .takeWhen(shouldGoToPledgeManager)
       .compactMap { project -> String in
         AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString + project
@@ -679,7 +668,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     // MARK: Similar Projects
 
-    freshProjectAndRefTag
+    fetchProject.projectAndRefTag(.full)
       .map { project, _ in "\(project.id)" }
       .skipRepeats()
       .observeForControllerAction()
@@ -893,38 +882,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   private let rewardsUseCase: RewardsUseCase
 }
 
-private func fetchProject(
-  projectOrParam: Either<Project, any ProjectPageParam>,
-  afterAddingSecretRewardToken token: String?
-) -> SignalProducer<Project, ErrorEnvelope> {
-  // TODO: We're posting this mutation more frequently than we need to.
-  // Instead of on every fetch, this should be moved out to only happen on `viewDidLoad`
-  // and session login.
-  return RewardsUseCase.addUserToSecretRewardGroupIfNeeded(
-    project: projectOrParam.param,
-    secretRewardToken: token
-  )
-  .then(
-    fetchProject(
-      projectOrParam: projectOrParam
-    )
-  )
-}
-
-private func fetchProject(
-  projectOrParam: Either<Project, any ProjectPageParam>
-)
-  -> SignalProducer<Project, ErrorEnvelope> {
-  let param = projectOrParam.param
-  let fetcher = ProjectPageFetcher(withService: AppEnvironment.current.apiService)
-  let producer = fetcher.fetchProjectPage(
-    projectParam: param.param
-  )
-  .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-
-  return producer
-}
-
 private func shouldGoToManagePledge(with ctaType: PledgeStateCTAType) -> Bool {
   switch ctaType {
   case .fix, .viewBacking, .manage:
@@ -934,7 +891,7 @@ private func shouldGoToManagePledge(with ctaType: PledgeStateCTAType) -> Bool {
   }
 }
 
-private extension Either where A == Project, B == ProjectPageParam {
+internal extension Either where A == Project, B == ProjectPageParam {
   var param: Param {
     switch self {
     case let .left(project):

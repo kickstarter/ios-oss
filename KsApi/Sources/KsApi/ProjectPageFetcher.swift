@@ -1,3 +1,4 @@
+import Experimentation
 import Prelude
 import ReactiveSwift
 
@@ -6,6 +7,13 @@ public struct ProjectPageFetcher {
 
   public init(withService apiService: any ServiceType) {
     self.apiService = apiService
+  }
+
+  public func fastFetchProjectForCheckout(projectParam param: Param)
+    -> SignalProducer<Project, ErrorEnvelope> {
+    return self.apiService.fastFetchProjectForCheckout(
+      projectParam: param
+    )
   }
 
   public func fetchProjectPage(
