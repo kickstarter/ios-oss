@@ -2019,10 +2019,4 @@
     }
   }
 
-  extension GraphAPI.FlaggingOptionsQuery.Data: Decodable {
-    public init(from _: Decoder) throws {
-      fatalError("The test code should not actually be decoding this object.")
-    }
-  }
-
 #endif
