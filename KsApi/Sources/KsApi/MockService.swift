@@ -980,10 +980,7 @@
       return client.fetchWithResult(query: fetchGraphCategoriesQuery, result: self.fetchGraphCategoriesResult)
     }
 
-    internal func fetchFlaggingOptions(
-      contentType _: GraphAPI
-        .FlaggingContent
-    ) async throws -> [ReportProjectInfoListItem] {
+    func fetchProjectFlaggingOptions() async throws -> [ReportProjectInfoListItem] {
       switch self.fetchFlaggingOptionsResult {
       case let .success(data):
         return ReportProjectInfoListItem.items(from: data)

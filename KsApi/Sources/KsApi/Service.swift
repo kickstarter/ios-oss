@@ -248,15 +248,12 @@ public struct Service: ServiceType {
       .eraseToAnyPublisher()
   }
 
-  public func fetchFlaggingOptions(
-    contentType: GraphAPI
-      .FlaggingContent
-  ) async throws -> [ReportProjectInfoListItem] {
-    guard let data = try await fetch(
-      query: GraphAPI.FlaggingOptionsQuery(contentType: GraphQLEnum(contentType))
-    ) else {
-      return []
-    }
+  public func fetchProjectFlaggingOptions() async throws -> [ReportProjectInfoListItem] {
+    let data: GraphAPI.FlaggingOptionsQuery.Data? = try await self.fetch(
+      query: GraphAPI.FlaggingOptionsQuery(contentType: GraphQLEnum(.project))
+    )
+
+    guard let data else { return [] }
 
     return ReportProjectInfoListItem.items(from: data)
   }

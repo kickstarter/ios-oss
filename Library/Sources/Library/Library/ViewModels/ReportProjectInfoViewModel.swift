@@ -18,7 +18,7 @@ public final class ReportProjectInfoViewModel: ObservableObject {
 
       do {
         self.listItems = try await AppEnvironment.current.apiService
-          .fetchFlaggingOptions(contentType: .project)
+          .fetchProjectFlaggingOptions()
       } catch {
         /// listItems stays empty on error
       }
