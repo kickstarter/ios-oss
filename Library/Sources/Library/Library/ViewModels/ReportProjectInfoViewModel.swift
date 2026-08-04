@@ -1,49 +1,27 @@
-import GraphAPI
-import ReactiveSwift
+import KsApi
 import SwiftUI
 
-public protocol ReportProjectInfoViewModelInputs {
-  func viewDidLoad()
-}
-
-public protocol ReportProjectInfoViewModelOutputs {}
-
-public protocol ReportProjectInfoViewModelType {
-  var inputs: ReportProjectInfoViewModelInputs { get }
-  var outputs: ReportProjectInfoViewModelOutputs { get }
-}
-
-/// View model for `ReportProjectInfoView`. Fetches flagging options from the API via `FetchFlaggingOptionsUseCase` and exposes them as `@Published` properties for SwiftUI views.
-public final class ReportProjectInfoViewModel: ReportProjectInfoViewModelType,
-  ReportProjectInfoViewModelInputs,
-  ReportProjectInfoViewModelOutputs,
-  ObservableObject {
+/// View model for `ReportProjectInfoView`.
+/// Fetches flagging options on `viewDidLoad` and publishes the result for SwiftUI.
+@MainActor
+public final class ReportProjectInfoViewModel: ObservableObject {
   @Published public var listItems: [ReportProjectInfoListItem] = []
-  @Published public var isLoading: Bool = false
+  @Published public var isLoading = false
 
-  private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<Void, Never>.pipe()
-
-  public init() {
-    let useCase = FetchFlaggingOptionsUseCase(
-      contentType: .project,
-      initialSignal: self.viewDidLoadSignal
-    )
-
-    useCase.outputs.flaggingOptions
-      .observe(on: UIScheduler())
-      .assign(toCombine: &self.$listItems)
-
-    useCase.outputs.isLoading
-      .observe(on: UIScheduler())
-      .assign(toCombine: &self.$isLoading)
-  }
-
-  // MARK: - Inputs
+  public init() {}
 
   public func viewDidLoad() {
-    self.viewDidLoadObserver.send(value: ())
-  }
+    Task {
+      self.isLoading = true
 
-  public var inputs: ReportProjectInfoViewModelInputs { return self }
-  public var outputs: ReportProjectInfoViewModelOutputs { return self }
+      defer { isLoading = false }
+
+      do {
+        self.listItems = try await AppEnvironment.current.apiService
+          .fetchFlaggingOptions(contentType: .project)
+      } catch {
+        /// listItems stays empty on error
+      }
+    }
+  }
 }

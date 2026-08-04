@@ -980,14 +980,18 @@
       return client.fetchWithResult(query: fetchGraphCategoriesQuery, result: self.fetchGraphCategoriesResult)
     }
 
-    internal func fetchFlaggingOptions(contentType: GraphAPI.FlaggingContent)
-      -> SignalProducer<GraphAPI.FlaggingOptionsQuery.Data, ErrorEnvelope> {
-      guard let client = self.apolloClient else {
-        return .empty
+    internal func fetchFlaggingOptions(
+      contentType _: GraphAPI
+        .FlaggingContent
+    ) async throws -> [ReportProjectInfoListItem] {
+      switch self.fetchFlaggingOptionsResult {
+      case let .success(data):
+        return ReportProjectInfoListItem.items(from: data)
+      case let .failure(error):
+        throw error
+      case .none:
+        return []
       }
-
-      let query = GraphAPI.FlaggingOptionsQuery(contentType: GraphQLEnum(contentType))
-      return client.fetchWithResult(query: query, result: self.fetchFlaggingOptionsResult)
     }
 
     internal func fetchGraphCategory(id: String)

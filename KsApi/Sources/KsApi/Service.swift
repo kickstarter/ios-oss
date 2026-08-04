@@ -248,10 +248,17 @@ public struct Service: ServiceType {
       .eraseToAnyPublisher()
   }
 
-  public func fetchFlaggingOptions(contentType: GraphAPI.FlaggingContent)
-    -> SignalProducer<GraphAPI.FlaggingOptionsQuery.Data, ErrorEnvelope> {
-    return GraphQL.shared.client
-      .fetch(query: GraphAPI.FlaggingOptionsQuery(contentType: GraphQLEnum(contentType)))
+  public func fetchFlaggingOptions(
+    contentType: GraphAPI
+      .FlaggingContent
+  ) async throws -> [ReportProjectInfoListItem] {
+    guard let data = try await fetch(
+      query: GraphAPI.FlaggingOptionsQuery(contentType: GraphQLEnum(contentType))
+    ) else {
+      return []
+    }
+
+    return ReportProjectInfoListItem.items(from: data)
   }
 
   public func createPaymentIntentInput(input: CreatePaymentIntentInput) -> ReactiveSwift
