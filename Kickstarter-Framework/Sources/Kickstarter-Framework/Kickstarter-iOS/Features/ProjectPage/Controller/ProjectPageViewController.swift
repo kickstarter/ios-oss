@@ -127,6 +127,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.configureTableView()
     self.configureNavigationShadowView()
     self.configureNavigationSelectorView()
+    self.configureRichTextView()
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
     self.messageBannerViewController?.delegate = self
@@ -188,6 +189,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.updateNavigationSelectorViewConstraints()
     self.updateNavigationShadowViewConstraints()
     self.updateTableViewConstraints()
+    self.updateRichTextViewConstraints()
   }
 
   public func configureNavigation() {
@@ -237,6 +239,21 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     _ = (self.tableView, self.view)
       |> ksr_addSubviewToParent()
+  }
+
+  private func configureRichTextView() {
+    _ = self.storyRichTextHostingController.view
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
+      |> \.isHidden .~ true
+
+    self.storyRichTextHostingController.view.setContentHuggingPriority(.defaultLow, for: .vertical)
+
+    _ = (self.storyRichTextHostingController.view, self.view)
+      |> ksr_addSubviewToParent()
+
+    self.addChild(self.storyRichTextHostingController)
+    self.storyRichTextHostingController.didMove(toParent: self)
   }
 
   private func configureNavigationSelectorView() {
@@ -330,6 +347,22 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     ]
 
     NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
+  }
+
+  private var richTextViewConstraints: [NSLayoutConstraint] = []
+  private func updateRichTextViewConstraints() {
+    let verticalConstraint = self.storyRichTextHostingController.view.bottomAnchor
+      .constraint(equalTo: self.pledgeCTAContainerView.topAnchor, constant: -1)
+    let richTextViewConstraints: [NSLayoutConstraint] = [
+      self.storyRichTextHostingController.view.topAnchor
+        .constraint(equalTo: self.projectNavigationSelectorView.bottomAnchor),
+      verticalConstraint,
+      self.storyRichTextHostingController.view.leftAnchor
+        .constraint(equalTo: self.view.leftAnchor),
+      self.storyRichTextHostingController.view.rightAnchor
+        .constraint(equalTo: self.view.rightAnchor)
+    ]
+    self.richTextViewConstraints = richTextViewConstraints
   }
 
   private func setupNotifications() {
@@ -652,39 +685,28 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       }
   }
 
+  private func showTableView() {
+    self.tableView.isHidden = false
+    self.storyRichTextHostingController.view.isHidden = true
+    NSLayoutConstraint.deactivate(self.richTextViewConstraints)
+  }
+
+  private func showRichTextView(elements: [RichTextElement]) {
+    self.storyRichTextHostingController.rootView = ScrollView {
+      RichTextView(element: elements)
+    }
+
+    self.tableView.isHidden = true
+    self.storyRichTextHostingController.view.isHidden = false
+    NSLayoutConstraint.activate(self.richTextViewConstraints)
+  }
+
   private func showContentView(_ contentView: ProjectPageContentView) {
-    let storyRichText = self.storyRichTextHostingController
     switch contentView {
     case .tableView:
-      self.tableView.isHidden = false
-      if storyRichText.parent != nil {
-        storyRichText.willMove(toParent: nil)
-        storyRichText.view.removeFromSuperview()
-        storyRichText.removeFromParent()
-      }
+      self.showTableView()
     case let .richTextView(elements):
-      storyRichText.rootView = ScrollView {
-        RichTextView(element: elements)
-      }
-
-      if storyRichText.parent == nil {
-        storyRichText.view.translatesAutoresizingMaskIntoConstraints = false
-        storyRichText.view.backgroundColor = LegacyColors.ksr_white.uiColor()
-        self.addChild(storyRichText)
-        self.view.addSubview(storyRichText.view)
-        NSLayoutConstraint.activate([
-          storyRichText.view.topAnchor
-            .constraint(equalTo: self.projectNavigationSelectorView.bottomAnchor),
-          storyRichText.view.bottomAnchor
-            .constraint(equalTo: self.pledgeCTAContainerView.topAnchor, constant: -1),
-          storyRichText.view.leftAnchor
-            .constraint(equalTo: self.view.leftAnchor),
-          storyRichText.view.rightAnchor
-            .constraint(equalTo: self.view.rightAnchor)
-        ])
-        storyRichText.didMove(toParent: self)
-      }
-      self.tableView.isHidden = true
+      self.showRichTextView(elements: elements)
     }
   }
 
