@@ -3,11 +3,11 @@
 
 @_exported import ApolloAPI
 
-public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
-  public static let operationName: String = "FastFetchProjectForCheckoutQuery"
+public class FastFetchProjectPage_CheckoutQuery: GraphQLQuery {
+  public static let operationName: String = "FastFetchProjectPage_CheckoutQuery"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FastFetchProjectForCheckoutQuery($projectId: Int, $slug: String) { project(pid: $projectId, slug: $slug) { __typename ...ProjectFragment backing { __typename ...BackingFragment } rewards { __typename nodes { __typename ...RewardFragment } } } }"#,
+      #"query FastFetchProjectPage_CheckoutQuery($projectId: Int, $slug: String) { project(pid: $projectId, slug: $slug) { __typename ...ProjectFragment backing { __typename ...BackingFragment } rewards { __typename nodes { __typename ...RewardFragment } } } }"#,
       fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RewardFragment.self]
     ))
 
@@ -51,7 +51,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
           "project": project._fieldData,
         ],
         fulfilledFragments: [
-          ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.self)
+          ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.self)
         ]
       ))
     }
@@ -310,7 +310,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
             "stateChangedAt": stateChangedAt,
           ],
           fulfilledFragments: [
-            ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.self),
+            ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.self),
             ObjectIdentifier(ProjectFragment.self),
             ObjectIdentifier(ExtendedProjectPropertiesFragment.self),
             ObjectIdentifier(NoRewardRewardFragment.self),
@@ -420,7 +420,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
               "backingDetailsPageRoute": backingDetailsPageRoute,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Backing.self),
+              ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Backing.self),
               ObjectIdentifier(BackingFragment.self)
             ]
           ))
@@ -462,7 +462,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                 "symbol": symbol,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Backing.Amount.self),
+                ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Backing.Amount.self),
                 ObjectIdentifier(BackingFragment.Amount.self),
                 ObjectIdentifier(MoneyFragment.self)
               ]
@@ -533,7 +533,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                 "createdProjects": createdProjects._fieldData,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Backing.Backer.self),
+                ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Backing.Backer.self),
                 ObjectIdentifier(BackingFragment.Backer.self),
                 ObjectIdentifier(PublicUserFragment.self)
               ]
@@ -583,7 +583,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                   "name": name,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Backing.Backer.Location.self),
+                  ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Backing.Backer.Location.self),
                   ObjectIdentifier(PublicUserFragment.Location.self),
                   ObjectIdentifier(LocationFragment.self)
                 ]
@@ -630,7 +630,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                 "symbol": symbol,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Backing.BonusAmount.self),
+                ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Backing.BonusAmount.self),
                 ObjectIdentifier(BackingFragment.BonusAmount.self),
                 ObjectIdentifier(MoneyFragment.self)
               ]
@@ -683,7 +683,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                 "name": name,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Backing.Location.self),
+                ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Backing.Location.self),
                 ObjectIdentifier(BackingFragment.Location.self),
                 ObjectIdentifier(LocationFragment.self)
               ]
@@ -730,7 +730,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                 "total": total,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Backing.Order.self),
+                ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Backing.Order.self),
                 ObjectIdentifier(BackingFragment.Order.self),
                 ObjectIdentifier(OrderFragment.self)
               ]
@@ -778,7 +778,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                 "country": country._fieldData,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Backing.Project.self),
+                ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Backing.Project.self),
                 ObjectIdentifier(BackingFragment.Project.self),
                 ObjectIdentifier(NoRewardRewardFragment.self)
               ]
@@ -817,7 +817,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                   "name": name,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Backing.Project.Country.self),
+                  ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Backing.Project.Country.self),
                   ObjectIdentifier(BackingFragment.Project.Country.self),
                   ObjectIdentifier(CountryFragment.self)
                 ]
@@ -960,7 +960,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                 "audienceData": audienceData._fieldData,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Backing.Reward.self),
+                ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Backing.Reward.self),
                 ObjectIdentifier(BackingFragment.Reward.self),
                 ObjectIdentifier(RewardFragment.self)
               ]
@@ -1003,7 +1003,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                   "symbol": symbol,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Backing.Reward.Amount.self),
+                  ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Backing.Reward.Amount.self),
                   ObjectIdentifier(RewardFragment.Amount.self),
                   ObjectIdentifier(MoneyFragment.self)
                 ]
@@ -1047,7 +1047,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                   "symbol": symbol,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Backing.Reward.ConvertedAmount.self),
+                  ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Backing.Reward.ConvertedAmount.self),
                   ObjectIdentifier(RewardFragment.ConvertedAmount.self),
                   ObjectIdentifier(MoneyFragment.self)
                 ]
@@ -1102,7 +1102,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                   "name": name,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Backing.Reward.LocalReceiptLocation.self),
+                  ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Backing.Reward.LocalReceiptLocation.self),
                   ObjectIdentifier(RewardFragment.LocalReceiptLocation.self),
                   ObjectIdentifier(LocationFragment.self)
                 ]
@@ -1146,7 +1146,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                   "symbol": symbol,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Backing.Reward.PledgeAmount.self),
+                  ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Backing.Reward.PledgeAmount.self),
                   ObjectIdentifier(RewardFragment.PledgeAmount.self),
                   ObjectIdentifier(MoneyFragment.self)
                 ]
@@ -1190,7 +1190,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                   "symbol": symbol,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Backing.Reward.LatePledgeAmount.self),
+                  ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Backing.Reward.LatePledgeAmount.self),
                   ObjectIdentifier(RewardFragment.LatePledgeAmount.self),
                   ObjectIdentifier(MoneyFragment.self)
                 ]
@@ -1241,7 +1241,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                 "symbol": symbol,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Backing.RewardsAmount.self),
+                ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Backing.RewardsAmount.self),
                 ObjectIdentifier(BackingFragment.RewardsAmount.self),
                 ObjectIdentifier(MoneyFragment.self)
               ]
@@ -1285,7 +1285,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                 "symbol": symbol,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Backing.ShippingAmount.self),
+                ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Backing.ShippingAmount.self),
                 ObjectIdentifier(BackingFragment.ShippingAmount.self),
                 ObjectIdentifier(MoneyFragment.self)
               ]
@@ -1319,7 +1319,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
               "nodes": nodes._fieldData,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Rewards.self)
+              ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Rewards.self)
             ]
           ))
         }
@@ -1462,7 +1462,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                 "audienceData": audienceData._fieldData,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Rewards.Node.self),
+                ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Rewards.Node.self),
                 ObjectIdentifier(RewardFragment.self)
               ]
             ))
@@ -1504,7 +1504,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                   "symbol": symbol,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Rewards.Node.Amount.self),
+                  ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Rewards.Node.Amount.self),
                   ObjectIdentifier(RewardFragment.Amount.self),
                   ObjectIdentifier(MoneyFragment.self)
                 ]
@@ -1548,7 +1548,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                   "symbol": symbol,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Rewards.Node.ConvertedAmount.self),
+                  ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Rewards.Node.ConvertedAmount.self),
                   ObjectIdentifier(RewardFragment.ConvertedAmount.self),
                   ObjectIdentifier(MoneyFragment.self)
                 ]
@@ -1603,7 +1603,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                   "name": name,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Rewards.Node.LocalReceiptLocation.self),
+                  ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Rewards.Node.LocalReceiptLocation.self),
                   ObjectIdentifier(RewardFragment.LocalReceiptLocation.self),
                   ObjectIdentifier(LocationFragment.self)
                 ]
@@ -1647,7 +1647,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                   "symbol": symbol,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Rewards.Node.PledgeAmount.self),
+                  ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Rewards.Node.PledgeAmount.self),
                   ObjectIdentifier(RewardFragment.PledgeAmount.self),
                   ObjectIdentifier(MoneyFragment.self)
                 ]
@@ -1691,7 +1691,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                   "symbol": symbol,
                 ],
                 fulfilledFragments: [
-                  ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Rewards.Node.LatePledgeAmount.self),
+                  ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Rewards.Node.LatePledgeAmount.self),
                   ObjectIdentifier(RewardFragment.LatePledgeAmount.self),
                   ObjectIdentifier(MoneyFragment.self)
                 ]
@@ -1746,7 +1746,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
               "parentCategory": parentCategory._fieldData,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Category.self),
+              ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Category.self),
               ObjectIdentifier(ProjectFragment.Category.self),
               ObjectIdentifier(CategoryFragment.self)
             ]
@@ -1788,7 +1788,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
               "name": name,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Country.self),
+              ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Country.self),
               ObjectIdentifier(ProjectFragment.Country.self),
               ObjectIdentifier(CountryFragment.self)
             ]
@@ -1859,7 +1859,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
               "createdProjects": createdProjects._fieldData,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Creator.self),
+              ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Creator.self),
               ObjectIdentifier(ProjectFragment.Creator.self),
               ObjectIdentifier(PublicUserFragment.self)
             ]
@@ -1909,7 +1909,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
                 "name": name,
               ],
               fulfilledFragments: [
-                ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Creator.Location.self),
+                ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Creator.Location.self),
                 ObjectIdentifier(PublicUserFragment.Location.self),
                 ObjectIdentifier(LocationFragment.self)
               ]
@@ -1953,7 +1953,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
               "active": active,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.LastWave.self),
+              ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.LastWave.self),
               ObjectIdentifier(ProjectFragment.LastWave.self),
               ObjectIdentifier(LastWaveFragment.self)
             ]
@@ -2004,7 +2004,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
               "name": name,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Location.self),
+              ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Location.self),
               ObjectIdentifier(ProjectFragment.Location.self),
               ObjectIdentifier(LocationFragment.self)
             ]
@@ -2043,7 +2043,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
               "acceptsNewBackers": acceptsNewBackers,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.PledgeManager.self),
+              ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.PledgeManager.self),
               ObjectIdentifier(ProjectFragment.PledgeManager.self),
               ObjectIdentifier(PledgeManagerFragment.self)
             ]
@@ -2084,7 +2084,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
               "videoSources": videoSources._fieldData,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Video.self),
+              ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Video.self),
               ObjectIdentifier(ProjectFragment.Video.self),
               ObjectIdentifier(ProjectVideoFragment.self)
             ]
@@ -2136,7 +2136,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
               "symbol": symbol,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Goal.self),
+              ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Goal.self),
               ObjectIdentifier(ProjectStatsFragment.Goal.self),
               ObjectIdentifier(MoneyFragment.self)
             ]
@@ -2180,7 +2180,7 @@ public class FastFetchProjectForCheckoutQuery: GraphQLQuery {
               "symbol": symbol,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FastFetchProjectForCheckoutQuery.Data.Project.Pledged.self),
+              ObjectIdentifier(FastFetchProjectPage_CheckoutQuery.Data.Project.Pledged.self),
               ObjectIdentifier(ProjectStatsFragment.Pledged.self),
               ObjectIdentifier(MoneyFragment.self)
             ]

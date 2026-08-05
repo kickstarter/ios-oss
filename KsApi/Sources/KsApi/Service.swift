@@ -581,7 +581,7 @@ public struct Service: ServiceType {
    */
   public func fastFetchProjectForCheckout(projectParam: Param)
     -> SignalProducer<Project, ErrorEnvelope> {
-    let query = GraphAPI.FastFetchProjectForCheckoutQuery(
+    let query = GraphAPI.FastFetchProjectPage_CheckoutQuery(
       projectId: .someOrNil(projectParam.id),
       slug: .someOrNil(projectParam.slug)
     )

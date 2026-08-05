@@ -55,9 +55,24 @@ extension Project {
   }
 }
 
+public struct ProjectPageExtraProperties {
+  let extendedProjectProperties: ExtendedProjectProperties
+  let video: Project.Video?
+  let flagging: Bool
+
+  public func addExtraProperties(toProject project: Project) -> Project {
+    var updatedProject = project
+    updatedProject.flagging = self.flagging
+    updatedProject.extendedProjectProperties = self.extendedProjectProperties
+    updatedProject.video = self.video
+
+    return updatedProject
+  }
+}
+
 extension Project {
   static func projectProducer(
-    from data: GraphAPI.FastFetchProjectForCheckoutQuery.Data
+    from data: GraphAPI.FastFetchProjectPage_CheckoutQuery.Data
   ) -> SignalProducer<Project, ErrorEnvelope> {
     guard let project = Project.project(from: data) else {
       return .empty
@@ -67,7 +82,7 @@ extension Project {
   }
 
   internal static func project(
-    from data: GraphAPI.FastFetchProjectForCheckoutQuery.Data
+    from data: GraphAPI.FastFetchProjectPage_CheckoutQuery.Data
   ) -> Project? {
     guard let project = data.project else { return nil }
 
@@ -88,6 +103,26 @@ extension Project {
       from: project.fragments.projectFragment,
       rewards: [noReward] + rewards,
       backing: backing,
+    )
+  }
+
+  internal static func projectData(
+    from data: GraphAPI.FastFetchProject_ExtendedPropertiesQuery.Data
+  ) -> ProjectPageExtraProperties? {
+    guard let project = data.project else { return nil }
+
+    let videoFragment = project.video?.fragments.projectVideoFragment
+    let video = Project.Video.from(videoFragment)
+
+    let extendedFragment = project.fragments.extendedProjectPropertiesFragment
+    let extendedProperties = ExtendedProjectProperties.from(extendedFragment)
+
+    let flagging = project.flagging?.kind.isSome ?? false
+
+    return ProjectPageExtraProperties(
+      extendedProjectProperties: extendedProperties,
+      video: video,
+      flagging: flagging
     )
   }
 }

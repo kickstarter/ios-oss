@@ -73,7 +73,7 @@ extension Project {
       .last
 
     let extendedFragment = projectFragment.fragments.extendedProjectPropertiesFragment
-    let extendedProjectProperties = extendedProject(from: extendedFragment)
+    let extendedProjectProperties = ExtendedProjectProperties.from(extendedFragment)
 
     let lastWave = projectFragment.lastWave
       .flatMap { LastWave(fromFragment: $0.fragments.lastWaveFragment) }
@@ -81,7 +81,7 @@ extension Project {
     let pledgeManager = projectFragment.pledgeManager
       .flatMap { PledgeManager(fromFragment: $0.fragments.pledgeManagerFragment) }
 
-    let video = projectVideo(from: projectFragment.video?.fragments.projectVideoFragment)
+    let video = Project.Video.from(projectFragment.video?.fragments.projectVideoFragment)
 
     let plotFragment = projectFragment.fragments.pledgeOverTimeFragment
 
@@ -250,43 +250,45 @@ private func projectStats(
  Returns a video `Project.video` from `ProjectVideoFragment`
  */
 
-private func projectVideo(from videoFragment: GraphAPI.ProjectVideoFragment?) -> Project.Video? {
-  guard let video = videoFragment,
-        let videoId = decompose(id: video.id),
-        let high = video.videoSources?.high?.src else {
-    return nil
-  }
+extension Project.Video {
+  static func from(_ videoFragment: GraphAPI.ProjectVideoFragment?) -> Project.Video? {
+    guard let video = videoFragment,
+          let videoId = decompose(id: video.id),
+          let high = video.videoSources?.high?.src else {
+      return nil
+    }
 
-  return Project.Video(
-    id: videoId,
-    high: high,
-    hls: video.videoSources?.hls?.src
-  )
+    return Project.Video(
+      id: videoId,
+      high: high,
+      hls: video.videoSources?.hls?.src
+    )
+  }
 }
 
 /**
  Returns a `ExtendedProjectProperties` object from `ExtendedProjectPropertiesFragment`
  */
-private func extendedProject(
-  from fragment: GraphAPI.ExtendedProjectPropertiesFragment
-) -> ExtendedProjectProperties {
-  let risks = fragment.risks
-  let environmentalCommitments = extendedProjectEnvironmentalCommitments(from: fragment)
-  let faqs = extendedProjectFAQs(from: fragment)
-  let minimumSingleTierPledgeAmount = fragment.minPledge
-  let aiDisclosure = extendedProjectAIDisclosure(from: fragment)
+extension ExtendedProjectProperties {
+  static func from(_ fragment: GraphAPI.ExtendedProjectPropertiesFragment) -> ExtendedProjectProperties {
+    let risks = fragment.risks
+    let environmentalCommitments = extendedProjectEnvironmentalCommitments(from: fragment)
+    let faqs = extendedProjectFAQs(from: fragment)
+    let minimumSingleTierPledgeAmount = fragment.minPledge
+    let aiDisclosure = extendedProjectAIDisclosure(from: fragment)
 
-  let extendedProjectProperties = ExtendedProjectProperties(
-    environmentalCommitments: environmentalCommitments,
-    faqs: faqs,
-    aiDisclosure: aiDisclosure,
-    risks: risks,
-    story: storyElements(from: fragment),
-    minimumPledgeAmount: minimumSingleTierPledgeAmount,
-    projectNotice: fragment.projectNotice
-  )
+    let extendedProjectProperties = ExtendedProjectProperties(
+      environmentalCommitments: environmentalCommitments,
+      faqs: faqs,
+      aiDisclosure: aiDisclosure,
+      risks: risks,
+      story: storyElements(from: fragment),
+      minimumPledgeAmount: minimumSingleTierPledgeAmount,
+      projectNotice: fragment.projectNotice
+    )
 
-  return extendedProjectProperties
+    return extendedProjectProperties
+  }
 }
 
 /**

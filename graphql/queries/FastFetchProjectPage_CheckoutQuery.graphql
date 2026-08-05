@@ -1,0 +1,15 @@
+# The first half of an optimized Project Page fetch.
+# Retrieves all the data needed to show the Checkout flow and the Pledge button.
+query FastFetchProjectPage_CheckoutQuery($projectId: Int, $slug: String) {
+  project(pid: $projectId, slug: $slug) {
+    ...ProjectFragment
+    backing {
+      ...BackingFragment
+    }
+    rewards {
+      nodes {
+        ...RewardFragment
+      }
+    }
+  }
+}
