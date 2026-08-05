@@ -554,10 +554,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
       }
 
-    self.viewModel.outputs.updateDataSource
+    self.viewModel.outputs.showProjectPageTabWithData
       .observeForUI()
       .observeValues { [weak self] data in
-        let (navSection, project, refTag, initialIsExpandedArray, _, similarProjectsState) = data
+        let (navSection, project, refTag, initialIsExpandedArray, _, similarProjectsState, contentView) = data
 
         self?.pausePlayingMainCellVideo(navSection: navSection)
 
@@ -574,11 +574,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         }
 
         initialDatasourceLoad()
-      }
 
-    self.viewModel.outputs.selectedContentView
-      .observeForUI()
-      .observeValues { [weak self] contentView in
         self?.showContentView(contentView)
       }
 

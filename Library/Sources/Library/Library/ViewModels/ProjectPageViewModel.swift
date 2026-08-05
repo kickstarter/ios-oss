@@ -127,9 +127,6 @@ public protocol ProjectPageViewModelInputs {
 }
 
 public protocol ProjectPageViewModelOutputs {
-  /// Emits a `ProjectPageContentView` to determine which content view to show in the campaign section.
-  var selectedContentView: Signal<ProjectPageContentView, Never> { get }
-
   /// Emits a tuple of a `NavigationSection`, `Project` and `RefTag?` to configure the data source
   var configureDataSource: Signal<
     (NavigationSection, Either<Project, any ProjectPageParam>, RefTag?),
@@ -211,8 +208,8 @@ public protocol ProjectPageViewModelOutputs {
 
   /// Emits a tuple of a `NavigationSection`, `Project`, `RefTag?`, `[Bool]` (isExpanded values) and `[URL]` for campaign data to instruct the data source which section it is loading. Also a
   /// `SimilarProjectsState` for loading the Similar Projects Carousel.
-  var updateDataSource: Signal<
-    (NavigationSection, Project, RefTag?, [Bool], [URL], SimilarProjectsState),
+  var showProjectPageTabWithData: Signal<
+    (NavigationSection, Project, RefTag?, [Bool], [URL], SimilarProjectsState, ProjectPageContentView),
     Never
   > { get }
 
@@ -539,10 +536,19 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
           count: project.extendedProjectProperties?.faqs.count ?? 0
         )
 
-        var dataSourceUpdate = (navSection, project, refTag, initialIsExpandedArray, [URL]())
+        var dataSourceUpdate = (navSection, project, refTag, initialIsExpandedArray, [URL](), ProjectPageContentView.tableView)
 
         switch navSection {
         case .campaign:
+          let contentView: ProjectPageContentView = ({
+            guard navSection == .campaign,
+                  featureProjectStoryRichTextEnabled(),
+                  let richText = project.extendedProjectProperties?.story.richText?.asRichTextElements() else {
+              return .tableView
+            }
+            return .richTextView(richText)
+          })()
+
           let imageViewElements = project.extendedProjectProperties?.story.htmlViewElements
             .compactMap { $0 as? ImageViewElement } ?? []
 
@@ -550,7 +556,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
             let urlStrings = imageViewElements.map { $0.src }
             let urls = urlStrings.compactMap { URL(string: $0) }
 
-            dataSourceUpdate = (navSection, project, refTag, initialIsExpandedArray, urls)
+            dataSourceUpdate = (navSection, project, refTag, initialIsExpandedArray, urls, contentView)
           }
         default:
           break
@@ -565,13 +571,13 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
           .takeWhen(self.viewDidLoadProperty.signal)
       )
 
-    self.updateDataSource = Signal.combineLatest(
+    self.showProjectPageTabWithData = Signal.combineLatest(
       dataSourceUpdate,
       similarProjectsState
     )
     .map { dataSource, similarProjects in
-      let (navSection, project, refTag, initialIsExpandedArray, urls) = dataSource
-      return (navSection, project, refTag, initialIsExpandedArray, urls, similarProjects)
+      let (navSection, project, refTag, initialIsExpandedArray, urls, contentView) = dataSource
+      return (navSection, project, refTag, initialIsExpandedArray, urls, similarProjects, contentView)
     }
 
     self.updateFAQsInDataSource = freshProjectAndRefTag
@@ -590,23 +596,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .takeWhen(self.viewWillTransitionProperty.signal)
       .filter { NavigationSection(rawValue: $0) == .campaign }
       .ignoreValues()
-
-    let campaignNavSectionSignal = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(NavigationSection.overview),
-      self.projectNavigationSelectorViewDidSelectProperty.signal.skipNil()
-        .compactMap { NavigationSection(rawValue: $0) }
-    )
-
-    self.selectedContentView = Signal.combineLatest(campaignNavSectionSignal, project)
-      .map { navSection, project -> ProjectPageContentView in
-        guard navSection == .campaign,
-              featureProjectStoryRichTextEnabled(),
-              let richText = project.extendedProjectProperties?.story.richText?.asRichTextElements() else {
-          return .tableView
-        }
-        return .richTextView(richText)
-      }
-      .skipRepeats()
 
     self.goToURL = self.didSelectCampaignImageLinkProperty.signal.skipNil()
 
@@ -858,7 +847,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
   private let viewPledgeUseCase: ViewPledgeUseCase
 
-  public let selectedContentView: Signal<ProjectPageContentView, Never>
   public let configureDataSource: Signal<
     (NavigationSection, Either<Project, any ProjectPageParam>, RefTag?),
     Never
@@ -898,8 +886,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let projectFlagged: Signal<Bool, Never>
   public let reloadCampaignData: Signal<Void, Never>
   public let showHelpWebViewController: Signal<HelpType, Never>
-  public let updateDataSource: Signal<
-    (NavigationSection, Project, RefTag?, [Bool], [URL], SimilarProjectsState),
+  public let showProjectPageTabWithData: Signal<
+    (NavigationSection, Project, RefTag?, [Bool], [URL], SimilarProjectsState, ProjectPageContentView),
     Never
   >
   public let updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never>
