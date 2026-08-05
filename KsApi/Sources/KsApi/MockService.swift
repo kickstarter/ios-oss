@@ -1316,6 +1316,18 @@
       }
     }
 
+    internal func fastFetchProjectPage_Checkout(projectParam _: Param)
+      -> SignalProducer<Project, ErrorEnvelope> {
+      // TODO: implement me
+      return .empty
+    }
+
+    internal func fastFetchProjectPage_ExtendedProperties(projectParam _: Param)
+      -> SignalProducer<ProjectPageExtraProperties, ErrorEnvelope> {
+      // TODO: implement me
+      return .empty
+    }
+
     internal func fetchProject(projectParam: Param)
       -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope> {
       guard let client = self.apolloClient else {

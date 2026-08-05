@@ -1,0 +1,13 @@
+# The second half of an optimized Project Page fetch.
+# Retrieves the rest of the data required to show the Project page.
+query FastFetchProjectPage_ExtendedPropertiesQuery($projectId: Int, $slug: String) {
+  project(pid: $projectId, slug: $slug) {
+    ...ExtendedProjectPropertiesFragment
+    video {
+      ...ProjectVideoFragment
+    }
+    flagging {
+      kind
+    }
+  }
+}

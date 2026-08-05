@@ -12,4 +12,5 @@ public enum ProjectSort: String, EnumType {
   case mostFunded = "MOST_FUNDED"
   case mostBacked = "MOST_BACKED"
   case distance = "DISTANCE"
+  case relevance = "RELEVANCE"
 }
