@@ -1818,7 +1818,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.showProjectPageTabWithDataContentView.assertValues([.tableView])
   }
 
-  func testselectedContentView_featureFlagOff_campaignSection_returnsTableView() {
+  func testSelectedContentView_featureFlagOff_campaignSection_returnsTableView() {
     let mockStatsig = MockStatsigWrapper()
     mockStatsig.features = [.projectStoryRichText: false]
 
@@ -1853,7 +1853,10 @@ final class ProjectPageViewModelTests: TestCase {
         index: NavigationSection.campaign.rawValue
       )
 
-      self.showProjectPageTabWithDataContentView.assertLastValue(.tableView, "No rich text → table view even with flag on.")
+      self.showProjectPageTabWithDataContentView.assertLastValue(
+        .tableView,
+        "No rich text → table view even with flag on."
+      )
     }
   }
 
@@ -1872,7 +1875,6 @@ final class ProjectPageViewModelTests: TestCase {
       )
 
       self.showProjectPageTabWithDataContentView.assertValueCount(1)
-      XCTAssertEqual(self.showProjectPageTabWithDataContentView.values.first, .tableView)
       guard case .richTextView = self.showProjectPageTabWithDataContentView.values[0] else {
         return XCTFail("Second value is not richTextView")
       }
@@ -1896,12 +1898,11 @@ final class ProjectPageViewModelTests: TestCase {
         index: NavigationSection.overview.rawValue
       )
 
-      self.showProjectPageTabWithDataContentView.assertValueCount(3)
-      XCTAssertEqual(self.showProjectPageTabWithDataContentView.values.first, .tableView)
-      XCTAssertEqual(self.showProjectPageTabWithDataContentView.values.last, .tableView)
-      guard case .richTextView = self.showProjectPageTabWithDataContentView.values[1] else {
+      self.showProjectPageTabWithDataContentView.assertValueCount(2)
+      guard case .richTextView = self.showProjectPageTabWithDataContentView.values[0] else {
         return XCTFail("Second value is not richTextView")
       }
+      XCTAssertEqual(self.showProjectPageTabWithDataContentView.values.last, .tableView)
     }
   }
 
@@ -1923,7 +1924,7 @@ final class ProjectPageViewModelTests: TestCase {
       )
 
       self.showProjectPageTabWithDataContentView.assertValueCount(
-        2,
+        1,
         "Repeated campaign selection is suppressed by skipRepeats."
       )
     }

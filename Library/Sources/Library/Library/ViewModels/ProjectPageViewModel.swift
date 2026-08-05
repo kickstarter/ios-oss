@@ -536,33 +536,33 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
           count: project.extendedProjectProperties?.faqs.count ?? 0
         )
 
-        var dataSourceUpdate = (navSection, project, refTag, initialIsExpandedArray, [URL](), ProjectPageContentView.tableView)
+        var urls: [URL] = []
+        var contentView: ProjectPageContentView = .tableView
 
         switch navSection {
         case .campaign:
-          let contentView: ProjectPageContentView = ({
+          contentView = {
             guard navSection == .campaign,
                   featureProjectStoryRichTextEnabled(),
-                  let richText = project.extendedProjectProperties?.story.richText?.asRichTextElements() else {
+                  let richText = project.extendedProjectProperties?.story.richText?.asRichTextElements()
+            else {
               return .tableView
             }
             return .richTextView(richText)
-          })()
+          }()
 
           let imageViewElements = project.extendedProjectProperties?.story.htmlViewElements
             .compactMap { $0 as? ImageViewElement } ?? []
 
           if imageViewElements.count > 0 {
             let urlStrings = imageViewElements.map { $0.src }
-            let urls = urlStrings.compactMap { URL(string: $0) }
-
-            dataSourceUpdate = (navSection, project, refTag, initialIsExpandedArray, urls, contentView)
+            urls = urlStrings.compactMap { URL(string: $0) }
           }
         default:
           break
         }
 
-        return dataSourceUpdate
+        return (navSection, project, refTag, initialIsExpandedArray, urls, contentView)
       }
 
     let similarProjectsState = self.similarProjectsUseCase.similarProjects.signal
