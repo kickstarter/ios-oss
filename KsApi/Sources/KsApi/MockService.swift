@@ -1316,16 +1316,30 @@
       }
     }
 
-    internal func fastFetchProjectPage_Checkout(projectParam _: Param)
+    internal func fastFetchProjectPage_Checkout(projectParam: Param)
       -> SignalProducer<Project, ErrorEnvelope> {
-      // TODO: implement me
-      return .empty
+      let query = GraphAPI.FastFetchProjectPage_CheckoutQuery(
+        projectId: .someOrNil(projectParam.id),
+        slug: .someOrNil(projectParam.slug)
+      )
+
+      // Use the GraphQL mocking infrastructure
+      return self
+        .fetch(query: query)
+        .flatMap { Project.projectProducer(from: $0) }
     }
 
-    internal func fastFetchProjectPage_ExtendedProperties(projectParam _: Param)
+    internal func fastFetchProjectPage_ExtendedProperties(projectParam: Param)
       -> SignalProducer<ProjectPageExtraProperties, ErrorEnvelope> {
-      // TODO: implement me
-      return .empty
+      let query = GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery(
+        projectId: .someOrNil(projectParam.id),
+        slug: .someOrNil(projectParam.slug)
+      )
+
+      // Use the GraphQL mocking infrastructure
+      return self
+        .fetch(query: query)
+        .flatMap { ProjectPageExtraProperties.extraPropertiesProducer(from: $0) }
     }
 
     internal func fetchProject(projectParam: Param)
