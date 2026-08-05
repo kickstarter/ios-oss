@@ -8,6 +8,22 @@ public struct ProjectPageFetcher {
     self.apiService = apiService
   }
 
+  public func fastFetchProjectPage(
+    projectParam param: Param
+  ) -> SignalProducer<Project, ErrorEnvelope> {
+    let baseFetch = self.apiService
+      .fastFetchProjectPage_Checkout(projectParam: param)
+    let extraFetch = self.apiService
+      .fastFetchProjectPage_ExtendedProperties(projectParam: param)
+
+    return SignalProducer.zip(
+      baseFetch,
+      extraFetch
+    ).map { project, extraProperties in
+      extraProperties.addExtraProperties(toProject: project)
+    }
+  }
+
   public func fetchProjectPage(
     projectParam param: Param
   ) -> SignalProducer<Project, ErrorEnvelope> {
