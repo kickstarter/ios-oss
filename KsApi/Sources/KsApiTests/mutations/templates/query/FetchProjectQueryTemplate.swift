@@ -110,6 +110,11 @@ public enum FetchProjectQueryTemplate {
           "currency":"EUR",
           "deadlineAt":1628622000,
           "description":"A photographic book about the daily life and work on board of a Russian research vessel during the MOSAiC expedition in the Arctic.",
+          "flagging": {
+            "__typename": "Flagging",
+            "id": "fake",
+            "kind": "MISREP_SUPPORT_OTHER"
+          },
           "finalCollectionDate":null,
           "fxRate":1.49547966,
           "fxRateCurrency": "CAD",
