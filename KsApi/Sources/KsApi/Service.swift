@@ -579,7 +579,7 @@ public struct Service: ServiceType {
 
    This is the only use case at the moment as it effects the `ProjectPageViewController` directly.
    */
-  public func fastFetchProjectForCheckout(projectParam: Param)
+  public func fastFetchProjectPage_Checkout(projectParam: Param)
     -> SignalProducer<Project, ErrorEnvelope> {
     let query = GraphAPI.FastFetchProjectPage_CheckoutQuery(
       projectId: .someOrNil(projectParam.id),
@@ -589,6 +589,18 @@ public struct Service: ServiceType {
     return GraphQL.shared.client
       .fetch(query: query)
       .flatMap { Project.projectProducer(from: $0) }
+  }
+
+  public func fastFetchProjectPage_ExtendedProperties(projectParam: Param)
+    -> SignalProducer<ProjectPageExtraProperties, ErrorEnvelope> {
+    let query = GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery(
+      projectId: .someOrNil(projectParam.id),
+      slug: .someOrNil(projectParam.slug)
+    )
+
+    return GraphQL.shared.client
+      .fetch(query: query)
+      .flatMap { ProjectPageExtraProperties.extraPropertiesProducer(from: $0) }
   }
 
   /**

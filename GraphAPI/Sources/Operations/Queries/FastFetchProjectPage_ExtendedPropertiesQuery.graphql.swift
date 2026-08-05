@@ -3,11 +3,11 @@
 
 @_exported import ApolloAPI
 
-public class FastFetchProject_ExtendedPropertiesQuery: GraphQLQuery {
-  public static let operationName: String = "FastFetchProject_ExtendedPropertiesQuery"
+public class FastFetchProjectPage_ExtendedPropertiesQuery: GraphQLQuery {
+  public static let operationName: String = "FastFetchProjectPage_ExtendedPropertiesQuery"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FastFetchProject_ExtendedPropertiesQuery($projectId: Int, $slug: String) { project(pid: $projectId, slug: $slug) { __typename ...ExtendedProjectPropertiesFragment video { __typename ...ProjectVideoFragment } flagging { __typename kind } } }"#,
+      #"query FastFetchProjectPage_ExtendedPropertiesQuery($projectId: Int, $slug: String) { project(pid: $projectId, slug: $slug) { __typename ...ExtendedProjectPropertiesFragment video { __typename ...ProjectVideoFragment } flagging { __typename kind } } }"#,
       fragments: [ExtendedProjectPropertiesFragment.self, ProjectVideoFragment.self]
     ))
 
@@ -51,7 +51,7 @@ public class FastFetchProject_ExtendedPropertiesQuery: GraphQLQuery {
           "project": project._fieldData,
         ],
         fulfilledFragments: [
-          ObjectIdentifier(FastFetchProject_ExtendedPropertiesQuery.Data.self)
+          ObjectIdentifier(FastFetchProjectPage_ExtendedPropertiesQuery.Data.self)
         ]
       ))
     }
@@ -121,7 +121,7 @@ public class FastFetchProject_ExtendedPropertiesQuery: GraphQLQuery {
             "story": story,
           ],
           fulfilledFragments: [
-            ObjectIdentifier(FastFetchProject_ExtendedPropertiesQuery.Data.Project.self),
+            ObjectIdentifier(FastFetchProjectPage_ExtendedPropertiesQuery.Data.Project.self),
             ObjectIdentifier(ExtendedProjectPropertiesFragment.self)
           ]
         ))
@@ -162,7 +162,7 @@ public class FastFetchProject_ExtendedPropertiesQuery: GraphQLQuery {
               "videoSources": videoSources._fieldData,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FastFetchProject_ExtendedPropertiesQuery.Data.Project.Video.self),
+              ObjectIdentifier(FastFetchProjectPage_ExtendedPropertiesQuery.Data.Project.Video.self),
               ObjectIdentifier(ProjectVideoFragment.self)
             ]
           ))
@@ -196,7 +196,7 @@ public class FastFetchProject_ExtendedPropertiesQuery: GraphQLQuery {
               "kind": kind,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FastFetchProject_ExtendedPropertiesQuery.Data.Project.Flagging.self)
+              ObjectIdentifier(FastFetchProjectPage_ExtendedPropertiesQuery.Data.Project.Flagging.self)
             ]
           ))
         }

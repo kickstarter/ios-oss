@@ -32,7 +32,7 @@ public struct ProjectPageViewModel_ProgressiveFetchUseCase {
             secretRewardToken: token
           ).switchMap { _ in
             fetchFullProjectPage(
-              projectOrParam: projectOrParam
+              param: projectOrParam
             )
           }
           .on(
@@ -61,9 +61,7 @@ public struct ProjectPageViewModel_ProgressiveFetchUseCase {
           project: param,
           secretRewardToken: token
         ).switchMap { _ in
-          fastFetchProjectForCheckout(
-            projectOrParam: param
-          )
+          progressiveFetchInitial(param: param)
         }
         .on(
           starting: { isLoading.value = true }
@@ -78,10 +76,8 @@ public struct ProjectPageViewModel_ProgressiveFetchUseCase {
       .takeWhen(shouldRefreshProject)
       .switchMap { param, _, _ in
         // TODO: just fetch the extra project props.
-        fetchFullProjectPage(
-          projectOrParam: param
-        )
-        .materialize()
+        progressiveFetchSecondary(param: param)
+          .materialize()
       }
 
     self.partialFetch = firstFetch.values()
@@ -92,7 +88,8 @@ public struct ProjectPageViewModel_ProgressiveFetchUseCase {
     ).map { projectAndRefTag, extraProperties in
       // TODO: actually combine this stuff
       let (initialProject, refTag) = projectAndRefTag
-      return (extraProperties, refTag)
+      let updatedProject = extraProperties.addExtraProperties(toProject: initialProject)
+      return (updatedProject, refTag)
     }.on(completed: {
       isLoading.value = false
     })
@@ -123,9 +120,8 @@ public struct ProjectPageViewModel_ProgressiveFetchUseCase {
 }
 
 private func fetchFullProjectPage(
-  projectOrParam: Param
+  param: Param
 ) -> SignalProducer<Project, ErrorEnvelope> {
-  let param = projectOrParam.param
   let fetcher = ProjectPageFetcher(withService: AppEnvironment.current.apiService)
 
   let producer = fetcher.fetchProjectPage(
@@ -136,16 +132,20 @@ private func fetchFullProjectPage(
   return producer
 }
 
-private func fastFetchProjectForCheckout(
-  projectOrParam: Param
+private func progressiveFetchInitial(
+  param: Param
 ) -> SignalProducer<Project, ErrorEnvelope> {
-  let param = projectOrParam.param
-  let fetcher = ProjectPageFetcher(withService: AppEnvironment.current.apiService)
-
-  let producer = fetcher.fastFetchProjectForCheckout(
+  return AppEnvironment.current.apiService.fastFetchProjectPage_Checkout(
     projectParam: param
   )
   .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+}
 
-  return producer
+private func progressiveFetchSecondary(
+  param: Param
+) -> SignalProducer<ProjectPageExtraProperties, ErrorEnvelope> {
+  return AppEnvironment.current.apiService.fastFetchProjectPage_ExtendedProperties(
+    projectParam: param
+  )
+  .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 }

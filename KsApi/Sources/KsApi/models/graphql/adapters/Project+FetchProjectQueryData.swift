@@ -68,6 +68,38 @@ public struct ProjectPageExtraProperties {
 
     return updatedProject
   }
+
+  internal static func extraPropertiesProducer(
+    from data: GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.Data
+  ) -> SignalProducer<ProjectPageExtraProperties, ErrorEnvelope> {
+    let properties = ProjectPageExtraProperties.extraProperties(from: data)
+
+    guard let properties else {
+      return SignalProducer(error: ErrorEnvelope.couldNotParseJSON)
+    }
+
+    return SignalProducer(value: properties)
+  }
+
+  internal static func extraProperties(
+    from data: GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.Data
+  ) -> ProjectPageExtraProperties? {
+    guard let project = data.project else { return nil }
+
+    let videoFragment = project.video?.fragments.projectVideoFragment
+    let video = Project.Video.from(videoFragment)
+
+    let extendedFragment = project.fragments.extendedProjectPropertiesFragment
+    let extendedProperties = ExtendedProjectProperties.from(extendedFragment)
+
+    let flagging = project.flagging?.kind.isSome ?? false
+
+    return ProjectPageExtraProperties(
+      extendedProjectProperties: extendedProperties,
+      video: video,
+      flagging: flagging
+    )
+  }
 }
 
 extension Project {
@@ -103,26 +135,6 @@ extension Project {
       from: project.fragments.projectFragment,
       rewards: [noReward] + rewards,
       backing: backing,
-    )
-  }
-
-  internal static func projectData(
-    from data: GraphAPI.FastFetchProject_ExtendedPropertiesQuery.Data
-  ) -> ProjectPageExtraProperties? {
-    guard let project = data.project else { return nil }
-
-    let videoFragment = project.video?.fragments.projectVideoFragment
-    let video = Project.Video.from(videoFragment)
-
-    let extendedFragment = project.fragments.extendedProjectPropertiesFragment
-    let extendedProperties = ExtendedProjectProperties.from(extendedFragment)
-
-    let flagging = project.flagging?.kind.isSome ?? false
-
-    return ProjectPageExtraProperties(
-      extendedProjectProperties: extendedProperties,
-      video: video,
-      flagging: flagging
     )
   }
 }

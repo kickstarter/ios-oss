@@ -9,13 +9,6 @@ public struct ProjectPageFetcher {
     self.apiService = apiService
   }
 
-  public func fastFetchProjectForCheckout(projectParam param: Param)
-    -> SignalProducer<Project, ErrorEnvelope> {
-    return self.apiService.fastFetchProjectForCheckout(
-      projectParam: param
-    )
-  }
-
   public func fetchProjectPage(
     projectParam param: Param
   ) -> SignalProducer<Project, ErrorEnvelope> {
