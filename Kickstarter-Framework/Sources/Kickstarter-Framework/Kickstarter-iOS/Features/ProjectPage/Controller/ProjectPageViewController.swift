@@ -687,8 +687,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   private func showTableView() {
     self.tableView.isHidden = false
-    self.storyRichTextHostingController.view.isHidden = true
     NSLayoutConstraint.deactivate(self.richTextViewConstraints)
+    self.storyRichTextHostingController.view.removeFromSuperview()
+    self.storyRichTextHostingController.removeFromParent()
+    self.storyRichTextHostingController.didMove(toParent: nil)
   }
 
   private func showRichTextView(elements: [RichTextElement]) {
@@ -697,6 +699,15 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     }
 
     self.tableView.isHidden = true
+
+    // AV players and OEmbeds stay active if we just hide the view, so
+    // we remove it and re-add it for a better UX
+    if self.storyRichTextHostingController.parent == nil {
+      self.addChild(self.storyRichTextHostingController)
+      self.view.addSubview(self.storyRichTextHostingController.view)
+      self.storyRichTextHostingController.didMove(toParent: self)
+    }
+
     self.storyRichTextHostingController.view.isHidden = false
     NSLayoutConstraint.activate(self.richTextViewConstraints)
   }

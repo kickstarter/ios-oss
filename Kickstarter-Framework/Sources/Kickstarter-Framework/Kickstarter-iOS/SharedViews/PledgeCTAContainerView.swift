@@ -244,6 +244,7 @@ final class PledgeCTAContainerView: UIView {
     _ = ([self.retryDescriptionLabel, self.retryButton], self.retryStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    self.setContentHuggingPriority(.required, for: .vertical)
     self.retryButton.setContentHuggingPriority(.required, for: .horizontal)
 
     _ = (
