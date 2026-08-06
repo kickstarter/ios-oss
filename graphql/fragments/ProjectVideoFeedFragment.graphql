@@ -10,8 +10,11 @@ fragment ProjectVideoFeedFragment on Project {
   launchedAt
   backersCount
   isWatched
+  fxRate
+  fxRateCurrency
   pledged {
     amount
+    currency
   }
   creator {
     name

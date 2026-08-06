@@ -5,7 +5,7 @@
 
 public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment ProjectVideoFeedFragment on Project { __typename id pid name slug url percentFunded deadlineAt launchedAt backersCount isWatched pledged { __typename amount } creator { __typename name imageUrl(blur: false, width: 200) } category { __typename name } verticalVideo { __typename id previewImageUrl videoSources { __typename hls { __typename src } } } sharesCount watchesCount }"#
+    #"fragment ProjectVideoFeedFragment on Project { __typename id pid name slug url percentFunded deadlineAt launchedAt backersCount isWatched fxRate fxRateCurrency pledged { __typename amount currency } creator { __typename name imageUrl(blur: false, width: 200) } category { __typename name } verticalVideo { __typename id previewImageUrl videoSources { __typename hls { __typename src } } } sharesCount watchesCount }"#
   }
 
   public let __data: DataDict
@@ -24,6 +24,8 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
     .field("launchedAt", GraphAPI.DateTime?.self),
     .field("backersCount", Int.self),
     .field("isWatched", Bool.self),
+    .field("fxRate", Double.self),
+    .field("fxRateCurrency", GraphQLEnum<GraphAPI.CurrencyCode>.self),
     .field("pledged", Pledged.self),
     .field("creator", Creator?.self),
     .field("category", Category?.self),
@@ -51,6 +53,10 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
   public var backersCount: Int { __data["backersCount"] }
   /// Is the current user watching this project?
   public var isWatched: Bool { __data["isWatched"] }
+  /// Exchange rate for the current user's currency
+  public var fxRate: Double { __data["fxRate"] }
+  /// Currency code for the current user's currency
+  public var fxRateCurrency: GraphQLEnum<GraphAPI.CurrencyCode> { __data["fxRateCurrency"] }
   /// How much money is pledged to the project.
   public var pledged: Pledged { __data["pledged"] }
   /// The project's creator.
@@ -75,6 +81,8 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
     launchedAt: GraphAPI.DateTime? = nil,
     backersCount: Int,
     isWatched: Bool,
+    fxRate: Double,
+    fxRateCurrency: GraphQLEnum<GraphAPI.CurrencyCode>,
     pledged: Pledged,
     creator: Creator? = nil,
     category: Category? = nil,
@@ -95,6 +103,8 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
         "launchedAt": launchedAt,
         "backersCount": backersCount,
         "isWatched": isWatched,
+        "fxRate": fxRate,
+        "fxRateCurrency": fxRateCurrency,
         "pledged": pledged._fieldData,
         "creator": creator._fieldData,
         "category": category._fieldData,
@@ -119,18 +129,23 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
     public static var __selections: [ApolloAPI.Selection] { [
       .field("__typename", String.self),
       .field("amount", String?.self),
+      .field("currency", GraphQLEnum<GraphAPI.CurrencyCode>?.self),
     ] }
 
     /// Floating-point numeric value of monetary amount represented as a string
     public var amount: String? { __data["amount"] }
+    /// Currency of the monetary amount
+    public var currency: GraphQLEnum<GraphAPI.CurrencyCode>? { __data["currency"] }
 
     public init(
-      amount: String? = nil
+      amount: String? = nil,
+      currency: GraphQLEnum<GraphAPI.CurrencyCode>? = nil
     ) {
       self.init(_dataDict: DataDict(
         data: [
           "__typename": GraphAPI.Objects.Money.typename,
           "amount": amount,
+          "currency": currency,
         ],
         fulfilledFragments: [
           ObjectIdentifier(ProjectVideoFeedFragment.Pledged.self)
