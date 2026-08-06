@@ -25,6 +25,8 @@ public extension StatsigExperimentName {
       return MoveNoRewardOptionExperiment()
     case .instant_pledge_button_experiment:
       return InstantPledgeButtonExperiment()
+    case .speedy_checkout_experiment:
+      return SpeedyCheckoutExperiment()
     }
   }
 }
