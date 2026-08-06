@@ -1,3 +1,4 @@
+import Experimentation
 import Foundation
 import GraphAPI
 import KsApi
@@ -943,12 +944,17 @@ private func fetchProject(
   -> SignalProducer<Project, ErrorEnvelope> {
   let param = projectOrParam.param
   let fetcher = ProjectPageFetcher(withService: AppEnvironment.current.apiService)
-  let producer = fetcher.fetchProjectPage(
+
+  let experiment = InstantPledgeButtonExperiment()
+  if experiment.boolValue(forKey: .instant_pledge_enabled) == true {
+    return fetcher.fastFetchProjectPage(projectParam: param.param)
+      .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+  }
+
+  return fetcher.fetchProjectPage(
     projectParam: param.param
   )
   .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-
-  return producer
 }
 
 private func shouldGoToManagePledge(with ctaType: PledgeStateCTAType) -> Bool {
