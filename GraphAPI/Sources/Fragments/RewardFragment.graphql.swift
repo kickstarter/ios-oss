@@ -5,7 +5,7 @@
 
 public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment RewardFragment on Reward { __typename amount { __typename ...MoneyFragment } backersCount convertedAmount { __typename ...MoneyFragment } allowedAddons { __typename pageInfo { __typename startCursor } } description displayName endsAt estimatedDeliveryOn id isMaxPledge available featured items { __typename edges { __typename quantity node { __typename id name } } } limit limitPerBacker localReceiptLocation { __typename ...LocationFragment } name pledgeAmount { __typename ...MoneyFragment } latePledgeAmount { __typename ...MoneyFragment } postCampaignPledgingEnabled project { __typename id } remainingQuantity shippingPreference shippingSummary startsAt image { __typename altText url(width: 1024) } audienceData { __typename secret } }"#
+    #"fragment RewardFragment on Reward { __typename amount { __typename ...MoneyFragment } backersCount convertedAmount { __typename ...MoneyFragment } allowedAddons { __typename pageInfo { __typename startCursor } } description displayName endsAt estimatedDeliveryOn id isMaxPledge available featured limit limitPerBacker localReceiptLocation { __typename ...LocationFragment } name pledgeAmount { __typename ...MoneyFragment } latePledgeAmount { __typename ...MoneyFragment } postCampaignPledgingEnabled project { __typename id } remainingQuantity ...RewardItemsFragment ...RewardImageFragment shippingPreference shippingSummary startsAt audienceData { __typename secret } }"#
   }
 
   public let __data: DataDict
@@ -26,7 +26,6 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     .field("isMaxPledge", Bool.self),
     .field("available", Bool.self),
     .field("featured", Bool.self),
-    .field("items", Items?.self),
     .field("limit", Int?.self),
     .field("limitPerBacker", Int?.self),
     .field("localReceiptLocation", LocalReceiptLocation?.self),
@@ -39,8 +38,9 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     .field("shippingPreference", GraphQLEnum<GraphAPI.ShippingPreference>?.self),
     .field("shippingSummary", String?.self),
     .field("startsAt", GraphAPI.DateTime?.self),
-    .field("image", Image?.self),
     .field("audienceData", AudienceData.self),
+    .fragment(RewardItemsFragment.self),
+    .fragment(RewardImageFragment.self),
   ] }
 
   /// Amount for claiming this reward.
@@ -69,8 +69,6 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
   public var available: Bool { __data["available"] }
   /// Whether or not the reward is featured
   public var featured: Bool { __data["featured"] }
-  /// Items in the reward.
-  public var items: Items? { __data["items"] }
   /// A reward limit.
   public var limit: Int? { __data["limit"] }
   /// Per backer reward limit.
@@ -95,10 +93,20 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
   public var shippingSummary: String? { __data["shippingSummary"] }
   /// When the reward is scheduled to start
   public var startsAt: GraphAPI.DateTime? { __data["startsAt"] }
-  /// The reward image.
-  public var image: Image? { __data["image"] }
   /// Data related to who can view/access this reward
   public var audienceData: AudienceData { __data["audienceData"] }
+  /// Items in the reward.
+  public var items: Items? { __data["items"] }
+  /// The reward image.
+  public var image: Image? { __data["image"] }
+
+  public struct Fragments: FragmentContainer {
+    public let __data: DataDict
+    public init(_dataDict: DataDict) { __data = _dataDict }
+
+    public var rewardItemsFragment: RewardItemsFragment { _toFragment() }
+    public var rewardImageFragment: RewardImageFragment { _toFragment() }
+  }
 
   public init(
     amount: Amount,
@@ -113,7 +121,6 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     isMaxPledge: Bool,
     available: Bool,
     featured: Bool,
-    items: Items? = nil,
     limit: Int? = nil,
     limitPerBacker: Int? = nil,
     localReceiptLocation: LocalReceiptLocation? = nil,
@@ -126,8 +133,9 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
     shippingSummary: String? = nil,
     startsAt: GraphAPI.DateTime? = nil,
-    image: Image? = nil,
-    audienceData: AudienceData
+    audienceData: AudienceData,
+    items: Items? = nil,
+    image: Image? = nil
   ) {
     self.init(_dataDict: DataDict(
       data: [
@@ -144,7 +152,6 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
         "isMaxPledge": isMaxPledge,
         "available": available,
         "featured": featured,
-        "items": items._fieldData,
         "limit": limit,
         "limitPerBacker": limitPerBacker,
         "localReceiptLocation": localReceiptLocation._fieldData,
@@ -157,11 +164,14 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
         "shippingPreference": shippingPreference,
         "shippingSummary": shippingSummary,
         "startsAt": startsAt,
-        "image": image._fieldData,
         "audienceData": audienceData._fieldData,
+        "items": items._fieldData,
+        "image": image._fieldData,
       ],
       fulfilledFragments: [
-        ObjectIdentifier(RewardFragment.self)
+        ObjectIdentifier(RewardFragment.self),
+        ObjectIdentifier(RewardItemsFragment.self),
+        ObjectIdentifier(RewardImageFragment.self)
       ]
     ))
   }
@@ -318,108 +328,6 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
             ObjectIdentifier(RewardFragment.AllowedAddons.PageInfo.self)
           ]
         ))
-      }
-    }
-  }
-
-  /// Items
-  ///
-  /// Parent Type: `RewardItemsConnection`
-  public struct Items: GraphAPI.SelectionSet {
-    public let __data: DataDict
-    public init(_dataDict: DataDict) { __data = _dataDict }
-
-    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RewardItemsConnection }
-    public static var __selections: [ApolloAPI.Selection] { [
-      .field("__typename", String.self),
-      .field("edges", [Edge?]?.self),
-    ] }
-
-    /// A list of edges.
-    public var edges: [Edge?]? { __data["edges"] }
-
-    public init(
-      edges: [Edge?]? = nil
-    ) {
-      self.init(_dataDict: DataDict(
-        data: [
-          "__typename": GraphAPI.Objects.RewardItemsConnection.typename,
-          "edges": edges._fieldData,
-        ],
-        fulfilledFragments: [
-          ObjectIdentifier(RewardFragment.Items.self)
-        ]
-      ))
-    }
-
-    /// Items.Edge
-    ///
-    /// Parent Type: `RewardItemEdge`
-    public struct Edge: GraphAPI.SelectionSet {
-      public let __data: DataDict
-      public init(_dataDict: DataDict) { __data = _dataDict }
-
-      public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RewardItemEdge }
-      public static var __selections: [ApolloAPI.Selection] { [
-        .field("__typename", String.self),
-        .field("quantity", Int.self),
-        .field("node", Node?.self),
-      ] }
-
-      /// The quantity of an item associated with a reward
-      public var quantity: Int { __data["quantity"] }
-      /// The item at the end of the edge.
-      public var node: Node? { __data["node"] }
-
-      public init(
-        quantity: Int,
-        node: Node? = nil
-      ) {
-        self.init(_dataDict: DataDict(
-          data: [
-            "__typename": GraphAPI.Objects.RewardItemEdge.typename,
-            "quantity": quantity,
-            "node": node._fieldData,
-          ],
-          fulfilledFragments: [
-            ObjectIdentifier(RewardFragment.Items.Edge.self)
-          ]
-        ))
-      }
-
-      /// Items.Edge.Node
-      ///
-      /// Parent Type: `RewardItem`
-      public struct Node: GraphAPI.SelectionSet {
-        public let __data: DataDict
-        public init(_dataDict: DataDict) { __data = _dataDict }
-
-        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RewardItem }
-        public static var __selections: [ApolloAPI.Selection] { [
-          .field("__typename", String.self),
-          .field("id", GraphAPI.ID.self),
-          .field("name", String.self),
-        ] }
-
-        public var id: GraphAPI.ID { __data["id"] }
-        /// An item name.
-        public var name: String { __data["name"] }
-
-        public init(
-          id: GraphAPI.ID,
-          name: String
-        ) {
-          self.init(_dataDict: DataDict(
-            data: [
-              "__typename": GraphAPI.Objects.RewardItem.typename,
-              "id": id,
-              "name": name,
-            ],
-            fulfilledFragments: [
-              ObjectIdentifier(RewardFragment.Items.Edge.Node.self)
-            ]
-          ))
-        }
       }
     }
   }
@@ -602,42 +510,6 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     }
   }
 
-  /// Image
-  ///
-  /// Parent Type: `Photo`
-  public struct Image: GraphAPI.SelectionSet {
-    public let __data: DataDict
-    public init(_dataDict: DataDict) { __data = _dataDict }
-
-    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Photo }
-    public static var __selections: [ApolloAPI.Selection] { [
-      .field("__typename", String.self),
-      .field("altText", String.self),
-      .field("url", String.self, arguments: ["width": 1024]),
-    ] }
-
-    /// Alt text on the image
-    public var altText: String { __data["altText"] }
-    /// URL of the photo
-    public var url: String { __data["url"] }
-
-    public init(
-      altText: String,
-      url: String
-    ) {
-      self.init(_dataDict: DataDict(
-        data: [
-          "__typename": GraphAPI.Objects.Photo.typename,
-          "altText": altText,
-          "url": url,
-        ],
-        fulfilledFragments: [
-          ObjectIdentifier(RewardFragment.Image.self)
-        ]
-      ))
-    }
-  }
-
   /// AudienceData
   ///
   /// Parent Type: `ResourceAudience`
@@ -668,4 +540,8 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
       ))
     }
   }
+
+  public typealias Items = RewardItemsFragment.Items
+
+  public typealias Image = RewardImageFragment.Image
 }

@@ -53,29 +53,34 @@ extension Reward {
       pledgeAmount: rewardFragment.pledgeAmount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0,
       postCampaignPledgingEnabled: rewardFragment.postCampaignPledgingEnabled,
       remaining: rewardFragment.remainingQuantity,
-      rewardsItems: rewardItemsData(from: rewardFragment, with: projectId),
+      rewardsItems: rewardItemsData(
+        from: rewardFragment.fragments.rewardItemsFragment
+      ),
       shipping: shippingData(from: rewardFragment),
       shippingRulesExpanded: expandedShippingRules,
       startsAt: rewardFragment.startsAt.flatMap(TimeInterval.init),
       title: rewardFragment.name,
       localPickup: location,
       isAvailable: rewardFragment.available,
-      image: rewardPhoto(from: rewardFragment.image),
+      image: rewardPhoto(
+        from: rewardFragment.fragments.rewardImageFragment
+      ),
       audienceData: rewardAudienceData(from: rewardFragment.audienceData)
     )
   }
 }
 
 private func rewardItemsData(
-  from rewardFragment: GraphAPI.RewardFragment,
-  with projectId: Int
+  from fragment: GraphAPI.RewardItemsFragment
 ) -> [RewardsItem] {
-  return rewardFragment.items?.edges?.compactMap { edge -> RewardsItem? in
+  return fragment.items?.edges?.compactMap { edge -> RewardsItem? in
     guard
       let quantity = edge?.quantity,
       let item = edge?.node,
       let id = decompose(id: item.id),
-      let rewardId = decompose(id: rewardFragment.id)
+      let rewardId = decompose(id: fragment.id),
+      let projectGraphId = fragment.project?.id,
+      let projectId = decompose(id: projectGraphId)
     else { return nil }
 
     return RewardsItem(
@@ -120,8 +125,8 @@ private func shippingPreference(from rewardFragment: GraphAPI.RewardFragment) ->
 /// Converts a `GraphAPI.RewardFragment.Image` object into a `Photo` model.
 /// - Parameter image: The optional `GraphAPI.RewardFragment.Image` instance.
 /// - Returns: A `Photo` model containing the image URL and accessibility alt text, or `nil` if no image is available.
-private func rewardPhoto(from image: GraphAPI.RewardFragment.Image?) -> Reward.Image? {
-  guard let image = image else { return nil }
+private func rewardPhoto(from fragment: GraphAPI.RewardImageFragment?) -> Reward.Image? {
+  guard let image = fragment?.image else { return nil }
 
   return Reward.Image(altText: image.altText, url: image.url)
 }
