@@ -21,26 +21,26 @@ final class ProjectPageViewModelTests: TestCase {
   fileprivate var vm: ProjectPageViewModelType!
 
   private let projectWithEmptyProperties = Project.template
-  |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-    environmentalCommitments: [],
-    faqs: [],
-    aiDisclosure: nil,
-    risks: "",
-    story: ProjectStoryElements(htmlViewElements: []),
-    minimumPledgeAmount: 1,
-    projectNotice: nil
-  )
+    |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+      environmentalCommitments: [],
+      faqs: [],
+      aiDisclosure: nil,
+      risks: "",
+      story: ProjectStoryElements(htmlViewElements: []),
+      minimumPledgeAmount: 1,
+      projectNotice: nil
+    )
 
   private let projectWithRichText = Project.template
-  |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-    environmentalCommitments: [],
-    faqs: [],
-    aiDisclosure: nil,
-    risks: "",
-    story: ProjectStoryElements(htmlViewElements: [], richText: RichTextComponentFragment(items: [])),
-    minimumPledgeAmount: 1,
-    projectNotice: nil
-  )
+    |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+      environmentalCommitments: [],
+      faqs: [],
+      aiDisclosure: nil,
+      risks: "",
+      story: ProjectStoryElements(htmlViewElements: [], richText: RichTextComponentFragment(items: [])),
+      minimumPledgeAmount: 1,
+      projectNotice: nil
+    )
 
   private let configureDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
   private let configureDataSourceProject = TestObserver<Either<Project, any ProjectPageParam>, Never>()
@@ -227,11 +227,11 @@ final class ProjectPageViewModelTests: TestCase {
 
   func testConfigureProjectPageViewControllerDataSourceProject_US_ProjectCurrency_US_ProjectCountry() {
     let USCurrencyProject = self.projectWithEmptyProperties
-    |> Project.lens.country .~ .us
-    |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.country .~ .us
+      |> Project.lens.stats.projectCurrency .~ Project.Country.us.currencyCode
 
     let backing = Backing.template
-    |> Backing.lens.id .~ 543
+      |> Backing.lens.id .~ 543
 
     ProjectPageViewModelTests.mockNetworkRequests(
       project: USCurrencyProject,
@@ -311,11 +311,11 @@ final class ProjectPageViewModelTests: TestCase {
 
   func testConfigureProjectPageViewControllerDataSourceProject_NonUS_ProjectCurrency_US_ProjectCountry() {
     let USCurrencyProject = self.projectWithEmptyProperties
-    |> Project.lens.country .~ .us
-    |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
+      |> Project.lens.country .~ .us
+      |> Project.lens.stats.projectCurrency .~ Project.Country.mx.currencyCode
 
     let backing = Backing.template
-    |> Backing.lens.id .~ 543
+      |> Backing.lens.id .~ 543
 
     ProjectPageViewModelTests.mockNetworkRequests(
       project: USCurrencyProject,
@@ -436,7 +436,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.vm.inputs.viewDidAppear(animated: false)
 
       let projectWithBacking = project |> \.personalization.backing .~ .template
-      |> \.personalization.isBacking .~ true
+        |> \.personalization.isBacking .~ true
 
       self.scheduler.advance()
 
@@ -576,7 +576,7 @@ final class ProjectPageViewModelTests: TestCase {
 
     // Rewards are fetched by rewards fetch, not the project fetch
     let projectFull = Project.template
-    |> Project.lens.rewardData.rewards .~ []
+      |> Project.lens.rewardData.rewards .~ []
 
     let param = ProjectPageParamBox(param: .id(project.id), initialProject: nil)
     let initialData = Either<Project, any ProjectPageParam>.right(param)
@@ -610,7 +610,7 @@ final class ProjectPageViewModelTests: TestCase {
     let project = Project.template
 
     let projectFull = Project.template
-    |> Project.lens.rewardData.rewards .~ []
+      |> Project.lens.rewardData.rewards .~ []
 
     let param = ProjectPageParamBox(param: .id(project.id), initialProject: nil)
     let initialData = Either<Project, any ProjectPageParam>.right(param)
@@ -644,7 +644,7 @@ final class ProjectPageViewModelTests: TestCase {
     let project = Project.template
 
     let projectFull = Project.template
-    |> Project.lens.rewardData.rewards .~ []
+      |> Project.lens.rewardData.rewards .~ []
 
     let initialProject = Project.ProjectPamphletData(project: projectFull, backingId: 1)
 
@@ -729,9 +729,9 @@ final class ProjectPageViewModelTests: TestCase {
   func testUpdateWatchProjectWithPrelaunchState() {
     withEnvironment(config: .template, mainBundle: self.releaseBundle) {
       let project = Project.template
-      |> \.displayPrelaunch .~ true
-      |> \.watchesCount .~ 10
-      |> \.personalization.isStarred .~ true
+        |> \.displayPrelaunch .~ true
+        |> \.watchesCount .~ 10
+        |> \.personalization.isStarred .~ true
 
       self.vm.configureAndLoad(.left(project))
 
@@ -750,12 +750,12 @@ final class ProjectPageViewModelTests: TestCase {
     withEnvironment(config: .template) {
       let reward = Project.cosmicSurgery.rewards.first!
       let backing = Backing.template
-      |> Backing.lens.reward .~ reward
-      |> Backing.lens.rewardId .~ reward.id
+        |> Backing.lens.reward .~ reward
+        |> Backing.lens.rewardId .~ reward.id
 
       let project = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
-      |> Project.lens.personalization.isBacking .~ true
+        |> Project.lens.personalization.backing .~ backing
+        |> Project.lens.personalization.isBacking .~ true
 
       ProjectPageViewModelTests.mockNetworkRequests(project: project, backing: backing) {
         self.vm.configureAndLoad(.left(self.projectWithEmptyProperties))
@@ -779,13 +779,13 @@ final class ProjectPageViewModelTests: TestCase {
     withEnvironment(config: .template, currentUser: .template) {
       let reward = Project.cosmicSurgery.rewards.first!
       let backing = Backing.template
-      |> Backing.lens.reward .~ reward
-      |> Backing.lens.rewardId .~ reward.id
+        |> Backing.lens.reward .~ reward
+        |> Backing.lens.rewardId .~ reward.id
 
       let project = Project.cosmicSurgery
-      |> Project.lens.state .~ .successful
-      |> Project.lens.personalization.backing .~ backing
-      |> Project.lens.personalization.isBacking .~ true
+        |> Project.lens.state .~ .successful
+        |> Project.lens.personalization.backing .~ backing
+        |> Project.lens.personalization.isBacking .~ true
 
       ProjectPageViewModelTests.mockNetworkRequests(project: project, backing: backing) {
         self.vm.configureAndLoad(.left(self.projectWithEmptyProperties))
@@ -808,12 +808,12 @@ final class ProjectPageViewModelTests: TestCase {
   func testGoToPledgeManagementWebview_ManagingPledge() {
     let reward = Project.cosmicSurgery.rewards.first!
     let backing = Backing.templateMadeWithPledgeManagment
-    |> Backing.lens.reward .~ reward
-    |> Backing.lens.rewardId .~ reward.id
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.rewardId .~ reward.id
 
     let project = Project.cosmicSurgery
-    |> Project.lens.personalization.backing .~ backing
-    |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.personalization.isBacking .~ true
 
     ProjectPageViewModelTests.mockNetworkRequests(project: project, backing: backing) {
       withEnvironment(config: .template) {
@@ -840,13 +840,13 @@ final class ProjectPageViewModelTests: TestCase {
     withEnvironment(config: .template, currentUser: .template) {
       let reward = Project.cosmicSurgery.rewards.first!
       let backing = Backing.templateMadeWithPledgeManagment
-      |> Backing.lens.reward .~ reward
-      |> Backing.lens.rewardId .~ reward.id
+        |> Backing.lens.reward .~ reward
+        |> Backing.lens.rewardId .~ reward.id
 
       let project = Project.cosmicSurgery
-      |> Project.lens.state .~ .successful
-      |> Project.lens.personalization.backing .~ backing
-      |> Project.lens.personalization.isBacking .~ true
+        |> Project.lens.state .~ .successful
+        |> Project.lens.personalization.backing .~ backing
+        |> Project.lens.personalization.isBacking .~ true
 
       let backingDetailsPageURL = backing.backingDetailsPageRoute
 
@@ -872,8 +872,8 @@ final class ProjectPageViewModelTests: TestCase {
     let project = Project.netNewBacker
 
     let redemptionPageUrl =
-    AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString +
-    project.redemptionPageUrl
+      AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString +
+      project.redemptionPageUrl
 
     ProjectPageViewModelTests.mockNetworkRequests(project: project) {
       self.vm.configureAndLoad(.left(self.projectWithEmptyProperties))
@@ -905,7 +905,7 @@ final class ProjectPageViewModelTests: TestCase {
   func testConfigurePledgeCTAView_FetchProjectSuccess() {
     let project = Project.template
     let projectFull = Project.template
-    |> \.id .~ 2
+      |> \.id .~ 2
 
     ProjectPageViewModelTests.mockNetworkRequests(
       project: projectFull
@@ -955,7 +955,7 @@ final class ProjectPageViewModelTests: TestCase {
     let config = Config.template
     let project = Project.template
     let projectFull = Project.template
-    |> Project.lens.rewardData.rewards .~ []
+      |> Project.lens.rewardData.rewards .~ []
 
     withEnvironment(config: config, mainBundle: self.releaseBundle) {
       ProjectPageViewModelTests.mockNetworkRequests(project: projectFull, backing: nil) {
@@ -984,7 +984,7 @@ final class ProjectPageViewModelTests: TestCase {
         self.scheduler.advance()
 
         let projectWithBacking = project |> \.personalization.backing .~ .template
-        |> \.personalization.isBacking .~ true
+          |> \.personalization.isBacking .~ true
 
         self.configurePledgeCTAView.assertValues([
           .loading,
@@ -1002,11 +1002,11 @@ final class ProjectPageViewModelTests: TestCase {
     let backingFull = Backing.template |> Backing.lens.amount .~ 10.0
     let updatedBacking = Backing.template |> Backing.lens.amount .~ 15.0
     let projectFull = Project.template
-    |> Project.lens.personalization.backing .~ backingFull
-    |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ backingFull
+      |> Project.lens.personalization.isBacking .~ true
     let updatedProject = Project.template
-    |> Project.lens.personalization.backing .~ updatedBacking
-    |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ updatedBacking
+      |> Project.lens.personalization.isBacking .~ true
 
     withEnvironment(config: config, mainBundle: self.releaseBundle) {
       ProjectPageViewModelTests.mockNetworkRequests(
@@ -1053,10 +1053,10 @@ final class ProjectPageViewModelTests: TestCase {
     let config = Config.template
     let project = Project.template
     let projectFull = Project.template
-    |> \.id .~ 2
-    |> Project.lens.personalization.isBacking .~ true
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
     let projectFull2 = Project.template
-    |> \.id .~ 3
+      |> \.id .~ 3
 
     withEnvironment(config: config) {
       ProjectPageViewModelTests.mockNetworkRequests(project: projectFull) {
@@ -1191,6 +1191,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.showProjectPageTabWithDataNavigationSection.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
       self.showProjectPageTabWithDataNavigationSection.assertDidNotEmitValue()
 
@@ -1292,21 +1293,21 @@ final class ProjectPageViewModelTests: TestCase {
     let expectedUrl = URL(string: "https://image.com")!
 
     let nonEmptyProjectProperties = Project.template
-    |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: [],
-      aiDisclosure: nil,
-      risks: "",
-      story: ProjectStoryElements(htmlViewElements: [
-        ImageViewElement(
-          src: expectedUrl.absoluteString,
-          href: nil,
-          caption: nil
-        )
-      ]),
-      minimumPledgeAmount: 1,
-      projectNotice: nil
-    )
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        aiDisclosure: nil,
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: [
+          ImageViewElement(
+            src: expectedUrl.absoluteString,
+            href: nil,
+            caption: nil
+          )
+        ]),
+        minimumPledgeAmount: 1,
+        projectNotice: nil
+      )
 
     ProjectPageViewModelTests.mockNetworkRequests(project: nonEmptyProjectProperties) {
       self.vm.inputs
@@ -1336,23 +1337,23 @@ final class ProjectPageViewModelTests: TestCase {
     let config = Config.template
     let friends = [User.template]
     let projectFull = Project.template
-    |> \.id .~ 2
-    |> Project.lens.personalization.isBacking .~ true
-    |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: [],
-      aiDisclosure: nil,
-      risks: "",
-      story: ProjectStoryElements(htmlViewElements: [
-        ImageViewElement(
-          src: expectedUrl.absoluteString,
-          href: nil,
-          caption: nil
-        )
-      ]),
-      minimumPledgeAmount: 1,
-      projectNotice: nil
-    )
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        aiDisclosure: nil,
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: [
+          ImageViewElement(
+            src: expectedUrl.absoluteString,
+            href: nil,
+            caption: nil
+          )
+        ]),
+        minimumPledgeAmount: 1,
+        projectNotice: nil
+      )
 
     ProjectPageViewModelTests.mockNetworkRequests(project: projectFull) {
       withEnvironment(config: config) {
@@ -1389,17 +1390,17 @@ final class ProjectPageViewModelTests: TestCase {
     let config = Config.template
     let friends = [User.template]
     let projectFull = Project.template
-    |> \.id .~ 2
-    |> Project.lens.personalization.isBacking .~ true
-    |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: [],
-      aiDisclosure: nil,
-      risks: "",
-      story: ProjectStoryElements(htmlViewElements: []),
-      minimumPledgeAmount: 1,
-      projectNotice: nil
-    )
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        aiDisclosure: nil,
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: []),
+        minimumPledgeAmount: 1,
+        projectNotice: nil
+      )
 
     ProjectPageViewModelTests.mockNetworkRequests(project: projectFull) {
       withEnvironment(config: config) {
@@ -1446,19 +1447,19 @@ final class ProjectPageViewModelTests: TestCase {
     let config = Config.template
     let friends = [User.template]
     let projectFull = Project.template
-    |> \.id .~ 2
-    |> Project.lens.personalization.isBacking .~ true
-    |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: [],
-      aiDisclosure: nil,
-      risks: "",
-      story: ProjectStoryElements(htmlViewElements: [
-        expectedAudioVideoElement
-      ]),
-      minimumPledgeAmount: 1,
-      projectNotice: nil
-    )
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        aiDisclosure: nil,
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: [
+          expectedAudioVideoElement
+        ]),
+        minimumPledgeAmount: 1,
+        projectNotice: nil
+      )
 
     ProjectPageViewModelTests.mockNetworkRequests(project: projectFull) {
       withEnvironment(config: config) {
@@ -1496,19 +1497,19 @@ final class ProjectPageViewModelTests: TestCase {
     let config = Config.template
     let friends = [User.template]
     let projectFull = Project.template
-    |> \.id .~ 2
-    |> Project.lens.personalization.isBacking .~ true
-    |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: [],
-      aiDisclosure: nil,
-      risks: "",
-      story: ProjectStoryElements(htmlViewElements: [
-        expectedImageViewElement
-      ]),
-      minimumPledgeAmount: 1,
-      projectNotice: nil
-    )
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        aiDisclosure: nil,
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: [
+          expectedImageViewElement
+        ]),
+        minimumPledgeAmount: 1,
+        projectNotice: nil
+      )
 
     ProjectPageViewModelTests.mockNetworkRequests(project: projectFull) {
       withEnvironment(config: config) {
@@ -1564,15 +1565,15 @@ final class ProjectPageViewModelTests: TestCase {
     ]
 
     let project = Project.template
-    |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: faqs,
-      aiDisclosure: nil,
-      risks: "",
-      story: ProjectStoryElements(htmlViewElements: []),
-      minimumPledgeAmount: 1,
-      projectNotice: nil
-    )
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: faqs,
+        aiDisclosure: nil,
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: []),
+        minimumPledgeAmount: 1,
+        projectNotice: nil
+      )
 
     ProjectPageViewModelTests.mockNetworkRequests(project: project) {
       self.vm.inputs.configureWith(
@@ -1622,15 +1623,15 @@ final class ProjectPageViewModelTests: TestCase {
     ]
 
     let project = Project.template
-    |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: faqs,
-      aiDisclosure: nil,
-      risks: "",
-      story: ProjectStoryElements(htmlViewElements: []),
-      minimumPledgeAmount: 1,
-      projectNotice: nil
-    )
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: faqs,
+        aiDisclosure: nil,
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: []),
+        minimumPledgeAmount: 1,
+        projectNotice: nil
+      )
 
     ProjectPageViewModelTests.mockNetworkRequests(project: project) {
       self.vm.inputs.configureWith(
@@ -1658,15 +1659,15 @@ final class ProjectPageViewModelTests: TestCase {
 
   func testOutput_PauseMediaWhenAppIsBackgrounded_Success() {
     let project = Project.template
-    |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: [],
-      aiDisclosure: nil,
-      risks: "",
-      story: ProjectStoryElements(htmlViewElements: []),
-      minimumPledgeAmount: 1,
-      projectNotice: nil
-    )
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        aiDisclosure: nil,
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: []),
+        minimumPledgeAmount: 1,
+        projectNotice: nil
+      )
 
     ProjectPageViewModelTests.mockNetworkRequests(project: project) {
       self.vm.inputs.configureWith(
@@ -1690,15 +1691,15 @@ final class ProjectPageViewModelTests: TestCase {
     let campaignSection = NavigationSection.campaign.rawValue
 
     let project = Project.template
-    |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: [],
-      aiDisclosure: nil,
-      risks: "",
-      story: ProjectStoryElements(htmlViewElements: []),
-      minimumPledgeAmount: 1,
-      projectNotice: nil
-    )
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        aiDisclosure: nil,
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: []),
+        minimumPledgeAmount: 1,
+        projectNotice: nil
+      )
 
     ProjectPageViewModelTests.mockNetworkRequests(project: project) {
       self.vm.inputs.configureWith(
@@ -1733,15 +1734,15 @@ final class ProjectPageViewModelTests: TestCase {
     let url = URL(string: "https://www.kickstarter.com")!
 
     let project = Project.template
-    |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: [],
-      aiDisclosure: nil,
-      risks: "",
-      story: ProjectStoryElements(htmlViewElements: []),
-      minimumPledgeAmount: 1,
-      projectNotice: nil
-    )
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        aiDisclosure: nil,
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: []),
+        minimumPledgeAmount: 1,
+        projectNotice: nil
+      )
 
     ProjectPageViewModelTests.mockNetworkRequests(project: project) {
       self.vm.inputs.configureWith(
@@ -1764,21 +1765,21 @@ final class ProjectPageViewModelTests: TestCase {
     // Given a mock API that returns a project with an image in its HTML content
     let imageUrl = URL(string: "https://placecats.com/millie/300/150")!
     let projectWithImageElement = Project.template
-    |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: [],
-      aiDisclosure: nil,
-      risks: "",
-      story: ProjectStoryElements(htmlViewElements: [
-        ImageViewElement(
-          src: imageUrl.absoluteString,
-          href: nil,
-          caption: nil
-        )
-      ]),
-      minimumPledgeAmount: 1,
-      projectNotice: nil
-    )
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        aiDisclosure: nil,
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: [
+          ImageViewElement(
+            src: imageUrl.absoluteString,
+            href: nil,
+            caption: nil
+          )
+        ]),
+        minimumPledgeAmount: 1,
+        projectNotice: nil
+      )
 
     let prefetchImageElementsOnFirstLoad = TestObserver<[ImageViewElement], Never>()
     self.vm.outputs.prefetchImageURLsOnFirstLoad.observe(prefetchImageElementsOnFirstLoad.observer)
@@ -1809,41 +1810,7 @@ final class ProjectPageViewModelTests: TestCase {
   // MARK: - selectedContentView
 
   func testselectedContentView_defaultsToTableViewOnViewDidLoad() {
-    self.vm.inputs.configureWith(
-      projectOrParam: .left(self.projectWithEmptyProperties),
-      refInfo: RefInfo(.category)
-    )
-    self.vm.inputs.viewDidLoad()
-
-    self.showProjectPageTabWithDataContentView.assertValues([.tableView])
-  }
-
-  func testSelectedContentView_featureFlagOff_campaignSection_returnsTableView() {
-    let mockStatsig = MockStatsigWrapper()
-    mockStatsig.features = [.projectStoryRichText: false]
-
-    withEnvironment(statsigClient: mockStatsig) {
-      self.vm.inputs.configureWith(
-        projectOrParam: .left(self.projectWithRichText),
-        refInfo: RefInfo(.category)
-      )
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.projectNavigationSelectorViewDidSelect(
-        index: NavigationSection.campaign.rawValue
-      )
-
-      self.showProjectPageTabWithDataContentView.assertLastValue(
-        .tableView,
-        "Feature flag off → table view even with rich text."
-      )
-    }
-  }
-
-  func testselectedContentView_featureFlagOn_noRichText_campaignSection_returnsTableView() {
-    let mockStatsig = MockStatsigWrapper()
-    mockStatsig.features = [.projectStoryRichText: true]
-
-    withEnvironment(statsigClient: mockStatsig) {
+    Self.mockNetworkRequests(project: self.projectWithEmptyProperties) {
       self.vm.inputs.configureWith(
         projectOrParam: .left(self.projectWithEmptyProperties),
         refInfo: RefInfo(.category)
@@ -1852,11 +1819,57 @@ final class ProjectPageViewModelTests: TestCase {
       self.vm.inputs.projectNavigationSelectorViewDidSelect(
         index: NavigationSection.campaign.rawValue
       )
+      self.scheduler.advance()
 
-      self.showProjectPageTabWithDataContentView.assertLastValue(
-        .tableView,
-        "No rich text → table view even with flag on."
-      )
+      self.showProjectPageTabWithDataContentView.assertValues([.tableView])
+    }
+  }
+
+  func testSelectedContentView_featureFlagOff_campaignSection_returnsTableView() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.projectStoryRichText: false]
+
+    Self.mockNetworkRequests(project: self.projectWithRichText) {
+      withEnvironment(statsigClient: mockStatsig) {
+        self.vm.inputs.configureWith(
+          projectOrParam: .left(self.projectWithRichText),
+          refInfo: RefInfo(.category)
+        )
+        self.vm.inputs.viewDidLoad()
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(
+          index: NavigationSection.campaign.rawValue
+        )
+        self.scheduler.advance()
+
+        self.showProjectPageTabWithDataContentView.assertLastValue(
+          .tableView,
+          "Feature flag off → table view even with rich text."
+        )
+      }
+    }
+  }
+
+  func testselectedContentView_featureFlagOn_noRichText_campaignSection_returnsTableView() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.projectStoryRichText: true]
+
+    Self.mockNetworkRequests(project: self.projectWithEmptyProperties) {
+      withEnvironment(statsigClient: mockStatsig) {
+        self.vm.inputs.configureWith(
+          projectOrParam: .left(self.projectWithEmptyProperties),
+          refInfo: RefInfo(.category)
+        )
+        self.vm.inputs.viewDidLoad()
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(
+          index: NavigationSection.campaign.rawValue
+        )
+        self.scheduler.advance()
+
+        self.showProjectPageTabWithDataContentView.assertLastValue(
+          .tableView,
+          "No rich text → table view even with flag on."
+        )
+      }
     }
   }
 
@@ -1864,19 +1877,22 @@ final class ProjectPageViewModelTests: TestCase {
     let mockStatsig = MockStatsigWrapper()
     mockStatsig.features = [.projectStoryRichText: true]
 
-    withEnvironment(statsigClient: mockStatsig) {
-      self.vm.inputs.configureWith(
-        projectOrParam: .left(self.projectWithRichText),
-        refInfo: RefInfo(.category)
-      )
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.projectNavigationSelectorViewDidSelect(
-        index: NavigationSection.campaign.rawValue
-      )
+    Self.mockNetworkRequests(project: self.projectWithRichText) {
+      withEnvironment(statsigClient: mockStatsig) {
+        self.vm.inputs.configureWith(
+          projectOrParam: .left(self.projectWithRichText),
+          refInfo: RefInfo(.category)
+        )
+        self.vm.inputs.viewDidLoad()
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(
+          index: NavigationSection.campaign.rawValue
+        )
+        self.scheduler.advance()
 
-      self.showProjectPageTabWithDataContentView.assertValueCount(1)
-      guard case .richTextView = self.showProjectPageTabWithDataContentView.values[0] else {
-        return XCTFail("Second value is not richTextView")
+        self.showProjectPageTabWithDataContentView.assertValueCount(1)
+        guard case .richTextView = self.showProjectPageTabWithDataContentView.values[0] else {
+          return XCTFail("Second value is not richTextView")
+        }
       }
     }
   }
@@ -1885,24 +1901,29 @@ final class ProjectPageViewModelTests: TestCase {
     let mockStatsig = MockStatsigWrapper()
     mockStatsig.features = [.projectStoryRichText: true]
 
-    withEnvironment(statsigClient: mockStatsig) {
-      self.vm.inputs.configureWith(
-        projectOrParam: .left(self.projectWithRichText),
-        refInfo: RefInfo(.category)
-      )
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.projectNavigationSelectorViewDidSelect(
-        index: NavigationSection.campaign.rawValue
-      )
-      self.vm.inputs.projectNavigationSelectorViewDidSelect(
-        index: NavigationSection.overview.rawValue
-      )
+    Self.mockNetworkRequests(project: self.projectWithRichText) {
+      withEnvironment(statsigClient: mockStatsig) {
+        self.vm.inputs.configureWith(
+          projectOrParam: .left(self.projectWithRichText),
+          refInfo: RefInfo(.category)
+        )
+        self.vm.inputs.viewDidLoad()
+        self.scheduler.advance()
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(
+          index: NavigationSection.campaign.rawValue
+        )
+        self.scheduler.advance()
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(
+          index: NavigationSection.overview.rawValue
+        )
+        self.scheduler.advance()
 
-      self.showProjectPageTabWithDataContentView.assertValueCount(2)
-      guard case .richTextView = self.showProjectPageTabWithDataContentView.values[0] else {
-        return XCTFail("Second value is not richTextView")
+        self.showProjectPageTabWithDataContentView.assertValueCount(2)
+        guard case .richTextView = self.showProjectPageTabWithDataContentView.values[0] else {
+          return XCTFail("Second value is not richTextView")
+        }
+        XCTAssertEqual(self.showProjectPageTabWithDataContentView.values.last, .tableView)
       }
-      XCTAssertEqual(self.showProjectPageTabWithDataContentView.values.last, .tableView)
     }
   }
 
@@ -1910,23 +1931,26 @@ final class ProjectPageViewModelTests: TestCase {
     let mockStatsig = MockStatsigWrapper()
     mockStatsig.features = [.projectStoryRichText: true]
 
-    withEnvironment(statsigClient: mockStatsig) {
-      self.vm.inputs.configureWith(
-        projectOrParam: .left(self.projectWithRichText),
-        refInfo: RefInfo(.category)
-      )
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.projectNavigationSelectorViewDidSelect(
-        index: NavigationSection.campaign.rawValue
-      )
-      self.vm.inputs.projectNavigationSelectorViewDidSelect(
-        index: NavigationSection.campaign.rawValue
-      )
+    Self.mockNetworkRequests(project: self.projectWithRichText) {
+      withEnvironment(statsigClient: mockStatsig) {
+        self.vm.inputs.configureWith(
+          projectOrParam: .left(self.projectWithRichText),
+          refInfo: RefInfo(.category)
+        )
+        self.vm.inputs.viewDidLoad()
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(
+          index: NavigationSection.campaign.rawValue
+        )
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(
+          index: NavigationSection.campaign.rawValue
+        )
+        self.scheduler.advance()
 
-      self.showProjectPageTabWithDataContentView.assertValueCount(
-        1,
-        "Repeated campaign selection is suppressed by skipRepeats."
-      )
+        self.showProjectPageTabWithDataContentView.assertValueCount(
+          1,
+          "Repeated campaign selection is suppressed by skipRepeats."
+        )
+      }
     }
   }
 
