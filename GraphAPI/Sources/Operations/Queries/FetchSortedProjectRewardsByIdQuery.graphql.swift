@@ -189,8 +189,6 @@ public class FetchSortedProjectRewardsByIdQuery: GraphQLQuery {
           public var latePledgeAmount: LatePledgeAmount { __data["latePledgeAmount"] }
           /// Is this reward available for post-campaign pledges?
           public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
-          /// The project
-          public var project: Project? { __data["project"] }
           /// Remaining reward quantity.
           public var remainingQuantity: Int? { __data["remainingQuantity"] }
           /// Shipping preference for this reward
@@ -203,6 +201,8 @@ public class FetchSortedProjectRewardsByIdQuery: GraphQLQuery {
           public var audienceData: AudienceData { __data["audienceData"] }
           /// The reward image.
           public var image: Image? { __data["image"] }
+          /// The project
+          public var project: Project? { __data["project"] }
           /// Items in the reward.
           public var items: Items? { __data["items"] }
           /// Simple shipping rules expanded as a faster alternative to shippingRulesExpanded since connection type is slow
@@ -238,13 +238,13 @@ public class FetchSortedProjectRewardsByIdQuery: GraphQLQuery {
             pledgeAmount: PledgeAmount,
             latePledgeAmount: LatePledgeAmount,
             postCampaignPledgingEnabled: Bool,
-            project: Project? = nil,
             remainingQuantity: Int? = nil,
             shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
             shippingSummary: String? = nil,
             startsAt: GraphAPI.DateTime? = nil,
             audienceData: AudienceData,
             image: Image? = nil,
+            project: Project? = nil,
             items: Items? = nil,
             simpleShippingRulesExpanded: [SimpleShippingRulesExpanded?]
           ) {
@@ -270,13 +270,13 @@ public class FetchSortedProjectRewardsByIdQuery: GraphQLQuery {
                 "pledgeAmount": pledgeAmount._fieldData,
                 "latePledgeAmount": latePledgeAmount._fieldData,
                 "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
-                "project": project._fieldData,
                 "remainingQuantity": remainingQuantity,
                 "shippingPreference": shippingPreference,
                 "shippingSummary": shippingSummary,
                 "startsAt": startsAt,
                 "audienceData": audienceData._fieldData,
                 "image": image._fieldData,
+                "project": project._fieldData,
                 "items": items._fieldData,
                 "simpleShippingRulesExpanded": simpleShippingRulesExpanded._fieldData,
               ],
@@ -519,37 +519,11 @@ public class FetchSortedProjectRewardsByIdQuery: GraphQLQuery {
             }
           }
 
-          /// Project.Rewards.Node.Project
-          ///
-          /// Parent Type: `Project`
-          public struct Project: GraphAPI.SelectionSet {
-            public let __data: DataDict
-            public init(_dataDict: DataDict) { __data = _dataDict }
-
-            public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Project }
-
-            public var id: GraphAPI.ID { __data["id"] }
-
-            public init(
-              id: GraphAPI.ID
-            ) {
-              self.init(_dataDict: DataDict(
-                data: [
-                  "__typename": GraphAPI.Objects.Project.typename,
-                  "id": id,
-                ],
-                fulfilledFragments: [
-                  ObjectIdentifier(FetchSortedProjectRewardsByIdQuery.Data.Project.Rewards.Node.Project.self),
-                  ObjectIdentifier(RewardFragment.Project.self),
-                  ObjectIdentifier(RewardItemsFragment.Project.self)
-                ]
-              ))
-            }
-          }
-
           public typealias AudienceData = RewardFragment.AudienceData
 
           public typealias Image = RewardImageFragment.Image
+
+          public typealias Project = RewardItemsFragment.Project
 
           public typealias Items = RewardItemsFragment.Items
 

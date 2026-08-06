@@ -21,9 +21,7 @@ extension Reward {
     rewardImage: Reward.Image?
   ) -> Reward? {
     guard
-      let rewardId = decompose(id: rewardFragment.id),
-      let projectRelayId = rewardFragment.project?.id,
-      let projectId = decompose(id: projectRelayId)
+      let rewardId = decompose(id: rewardFragment.id)
     else { return nil }
 
     let estimatedDeliveryOn = rewardFragment.estimatedDeliveryOn

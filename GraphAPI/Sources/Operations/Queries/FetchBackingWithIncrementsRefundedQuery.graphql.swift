@@ -246,8 +246,6 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
           public var latePledgeAmount: LatePledgeAmount { __data["latePledgeAmount"] }
           /// Is this reward available for post-campaign pledges?
           public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
-          /// The project
-          public var project: Project? { __data["project"] }
           /// Remaining reward quantity.
           public var remainingQuantity: Int? { __data["remainingQuantity"] }
           /// Shipping preference for this reward
@@ -260,6 +258,8 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
           public var audienceData: AudienceData { __data["audienceData"] }
           /// The reward image.
           public var image: Image? { __data["image"] }
+          /// The project
+          public var project: Project? { __data["project"] }
           /// Items in the reward.
           public var items: Items? { __data["items"] }
 
@@ -292,13 +292,13 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
             pledgeAmount: PledgeAmount,
             latePledgeAmount: LatePledgeAmount,
             postCampaignPledgingEnabled: Bool,
-            project: Project? = nil,
             remainingQuantity: Int? = nil,
             shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
             shippingSummary: String? = nil,
             startsAt: GraphAPI.DateTime? = nil,
             audienceData: AudienceData,
             image: Image? = nil,
+            project: Project? = nil,
             items: Items? = nil
           ) {
             self.init(_dataDict: DataDict(
@@ -323,13 +323,13 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
                 "pledgeAmount": pledgeAmount._fieldData,
                 "latePledgeAmount": latePledgeAmount._fieldData,
                 "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
-                "project": project._fieldData,
                 "remainingQuantity": remainingQuantity,
                 "shippingPreference": shippingPreference,
                 "shippingSummary": shippingSummary,
                 "startsAt": startsAt,
                 "audienceData": audienceData._fieldData,
                 "image": image._fieldData,
+                "project": project._fieldData,
                 "items": items._fieldData,
               ],
               fulfilledFragments: [
@@ -570,37 +570,11 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
             }
           }
 
-          /// Backing.AddOns.Node.Project
-          ///
-          /// Parent Type: `Project`
-          public struct Project: GraphAPI.SelectionSet {
-            public let __data: DataDict
-            public init(_dataDict: DataDict) { __data = _dataDict }
-
-            public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Project }
-
-            public var id: GraphAPI.ID { __data["id"] }
-
-            public init(
-              id: GraphAPI.ID
-            ) {
-              self.init(_dataDict: DataDict(
-                data: [
-                  "__typename": GraphAPI.Objects.Project.typename,
-                  "id": id,
-                ],
-                fulfilledFragments: [
-                  ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.AddOns.Node.Project.self),
-                  ObjectIdentifier(RewardFragment.Project.self),
-                  ObjectIdentifier(RewardItemsFragment.Project.self)
-                ]
-              ))
-            }
-          }
-
           public typealias AudienceData = RewardFragment.AudienceData
 
           public typealias Image = RewardImageFragment.Image
+
+          public typealias Project = RewardItemsFragment.Project
 
           public typealias Items = RewardItemsFragment.Items
         }
@@ -661,8 +635,6 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
         public var latePledgeAmount: LatePledgeAmount { __data["latePledgeAmount"] }
         /// Is this reward available for post-campaign pledges?
         public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
-        /// The project
-        public var project: Project? { __data["project"] }
         /// Remaining reward quantity.
         public var remainingQuantity: Int? { __data["remainingQuantity"] }
         /// Shipping preference for this reward
@@ -675,6 +647,8 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
         public var audienceData: AudienceData { __data["audienceData"] }
         /// The reward image.
         public var image: Image? { __data["image"] }
+        /// The project
+        public var project: Project? { __data["project"] }
         /// Items in the reward.
         public var items: Items? { __data["items"] }
 
@@ -709,13 +683,13 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
           pledgeAmount: PledgeAmount,
           latePledgeAmount: LatePledgeAmount,
           postCampaignPledgingEnabled: Bool,
-          project: Project? = nil,
           remainingQuantity: Int? = nil,
           shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
           shippingSummary: String? = nil,
           startsAt: GraphAPI.DateTime? = nil,
           audienceData: AudienceData,
           image: Image? = nil,
+          project: Project? = nil,
           items: Items? = nil
         ) {
           self.init(_dataDict: DataDict(
@@ -741,13 +715,13 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
               "pledgeAmount": pledgeAmount._fieldData,
               "latePledgeAmount": latePledgeAmount._fieldData,
               "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
-              "project": project._fieldData,
               "remainingQuantity": remainingQuantity,
               "shippingPreference": shippingPreference,
               "shippingSummary": shippingSummary,
               "startsAt": startsAt,
               "audienceData": audienceData._fieldData,
               "image": image._fieldData,
+              "project": project._fieldData,
               "items": items._fieldData,
             ],
             fulfilledFragments: [
@@ -992,37 +966,11 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
           }
         }
 
-        /// Backing.Reward.Project
-        ///
-        /// Parent Type: `Project`
-        public struct Project: GraphAPI.SelectionSet {
-          public let __data: DataDict
-          public init(_dataDict: DataDict) { __data = _dataDict }
-
-          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Project }
-
-          public var id: GraphAPI.ID { __data["id"] }
-
-          public init(
-            id: GraphAPI.ID
-          ) {
-            self.init(_dataDict: DataDict(
-              data: [
-                "__typename": GraphAPI.Objects.Project.typename,
-                "id": id,
-              ],
-              fulfilledFragments: [
-                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Reward.Project.self),
-                ObjectIdentifier(RewardFragment.Project.self),
-                ObjectIdentifier(RewardItemsFragment.Project.self)
-              ]
-            ))
-          }
-        }
-
         public typealias AudienceData = RewardFragment.AudienceData
 
         public typealias Image = RewardImageFragment.Image
+
+        public typealias Project = RewardItemsFragment.Project
 
         public typealias Items = RewardItemsFragment.Items
       }

@@ -32,9 +32,6 @@ fragment RewardFragment on Reward {
     ...MoneyFragment
   }
   postCampaignPledgingEnabled
-  project {
-    id
-  }
   remainingQuantity
   shippingPreference
   shippingSummary

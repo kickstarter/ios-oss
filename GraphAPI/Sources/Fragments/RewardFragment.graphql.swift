@@ -5,7 +5,7 @@
 
 public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment RewardFragment on Reward { __typename amount { __typename ...MoneyFragment } backersCount convertedAmount { __typename ...MoneyFragment } allowedAddons { __typename pageInfo { __typename startCursor } } description displayName endsAt estimatedDeliveryOn id isMaxPledge available featured limit limitPerBacker localReceiptLocation { __typename ...LocationFragment } name pledgeAmount { __typename ...MoneyFragment } latePledgeAmount { __typename ...MoneyFragment } postCampaignPledgingEnabled project { __typename id } remainingQuantity shippingPreference shippingSummary startsAt audienceData { __typename secret } }"#
+    #"fragment RewardFragment on Reward { __typename amount { __typename ...MoneyFragment } backersCount convertedAmount { __typename ...MoneyFragment } allowedAddons { __typename pageInfo { __typename startCursor } } description displayName endsAt estimatedDeliveryOn id isMaxPledge available featured limit limitPerBacker localReceiptLocation { __typename ...LocationFragment } name pledgeAmount { __typename ...MoneyFragment } latePledgeAmount { __typename ...MoneyFragment } postCampaignPledgingEnabled remainingQuantity shippingPreference shippingSummary startsAt audienceData { __typename secret } }"#
   }
 
   public let __data: DataDict
@@ -33,7 +33,6 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     .field("pledgeAmount", PledgeAmount.self),
     .field("latePledgeAmount", LatePledgeAmount.self),
     .field("postCampaignPledgingEnabled", Bool.self),
-    .field("project", Project?.self),
     .field("remainingQuantity", Int?.self),
     .field("shippingPreference", GraphQLEnum<GraphAPI.ShippingPreference>?.self),
     .field("shippingSummary", String?.self),
@@ -81,8 +80,6 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
   public var latePledgeAmount: LatePledgeAmount { __data["latePledgeAmount"] }
   /// Is this reward available for post-campaign pledges?
   public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
-  /// The project
-  public var project: Project? { __data["project"] }
   /// Remaining reward quantity.
   public var remainingQuantity: Int? { __data["remainingQuantity"] }
   /// Shipping preference for this reward
@@ -114,7 +111,6 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     pledgeAmount: PledgeAmount,
     latePledgeAmount: LatePledgeAmount,
     postCampaignPledgingEnabled: Bool,
-    project: Project? = nil,
     remainingQuantity: Int? = nil,
     shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
     shippingSummary: String? = nil,
@@ -143,7 +139,6 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
         "pledgeAmount": pledgeAmount._fieldData,
         "latePledgeAmount": latePledgeAmount._fieldData,
         "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
-        "project": project._fieldData,
         "remainingQuantity": remainingQuantity,
         "shippingPreference": shippingPreference,
         "shippingSummary": shippingSummary,
@@ -455,36 +450,6 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
         fulfilledFragments: [
           ObjectIdentifier(RewardFragment.LatePledgeAmount.self),
           ObjectIdentifier(MoneyFragment.self)
-        ]
-      ))
-    }
-  }
-
-  /// Project
-  ///
-  /// Parent Type: `Project`
-  public struct Project: GraphAPI.SelectionSet {
-    public let __data: DataDict
-    public init(_dataDict: DataDict) { __data = _dataDict }
-
-    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Project }
-    public static var __selections: [ApolloAPI.Selection] { [
-      .field("__typename", String.self),
-      .field("id", GraphAPI.ID.self),
-    ] }
-
-    public var id: GraphAPI.ID { __data["id"] }
-
-    public init(
-      id: GraphAPI.ID
-    ) {
-      self.init(_dataDict: DataDict(
-        data: [
-          "__typename": GraphAPI.Objects.Project.typename,
-          "id": id,
-        ],
-        fulfilledFragments: [
-          ObjectIdentifier(RewardFragment.Project.self)
         ]
       ))
     }
