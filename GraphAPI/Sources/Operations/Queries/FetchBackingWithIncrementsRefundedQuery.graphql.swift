@@ -7,8 +7,8 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
   public static let operationName: String = "FetchBackingWithIncrementsRefunded"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchBackingWithIncrementsRefunded($id: ID!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment reward { __typename ...SimpleShippingRulesExpandedFragment } paymentIncrements { __typename ...PaymentIncrementBackingFragment } } }"#,
-      fragments: [BackingFragment.self, CountryFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentIncrementBackingFragment.self, PaymentSourceFragment.self, PublicUserFragment.self, RewardFragment.self, SimpleShippingRulesExpandedFragment.self]
+      #"query FetchBackingWithIncrementsRefunded($id: ID!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment ...RewardImageFragment ...RewardItemsFragment } } ...BackingFragment reward { __typename ...SimpleShippingRulesExpandedFragment } paymentIncrements { __typename ...PaymentIncrementBackingFragment } } }"#,
+      fragments: [BackingFragment.self, CountryFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentIncrementBackingFragment.self, PaymentSourceFragment.self, PublicUserFragment.self, RewardFragment.self, RewardImageFragment.self, RewardItemsFragment.self, SimpleShippingRulesExpandedFragment.self]
     ))
 
   public var id: ID
@@ -202,6 +202,8 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
           public static var __selections: [ApolloAPI.Selection] { [
             .field("__typename", String.self),
             .fragment(RewardFragment.self),
+            .fragment(RewardImageFragment.self),
+            .fragment(RewardItemsFragment.self),
           ] }
 
           /// Amount for claiming this reward.
@@ -256,12 +258,18 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
           public var startsAt: GraphAPI.DateTime? { __data["startsAt"] }
           /// Data related to who can view/access this reward
           public var audienceData: AudienceData { __data["audienceData"] }
+          /// The reward image.
+          public var image: Image? { __data["image"] }
+          /// Items in the reward.
+          public var items: Items? { __data["items"] }
 
           public struct Fragments: FragmentContainer {
             public let __data: DataDict
             public init(_dataDict: DataDict) { __data = _dataDict }
 
             public var rewardFragment: RewardFragment { _toFragment() }
+            public var rewardImageFragment: RewardImageFragment { _toFragment() }
+            public var rewardItemsFragment: RewardItemsFragment { _toFragment() }
           }
 
           public init(
@@ -289,7 +297,9 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
             shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
             shippingSummary: String? = nil,
             startsAt: GraphAPI.DateTime? = nil,
-            audienceData: AudienceData
+            audienceData: AudienceData,
+            image: Image? = nil,
+            items: Items? = nil
           ) {
             self.init(_dataDict: DataDict(
               data: [
@@ -319,10 +329,14 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
                 "shippingSummary": shippingSummary,
                 "startsAt": startsAt,
                 "audienceData": audienceData._fieldData,
+                "image": image._fieldData,
+                "items": items._fieldData,
               ],
               fulfilledFragments: [
                 ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.AddOns.Node.self),
-                ObjectIdentifier(RewardFragment.self)
+                ObjectIdentifier(RewardFragment.self),
+                ObjectIdentifier(RewardImageFragment.self),
+                ObjectIdentifier(RewardItemsFragment.self)
               ]
             ))
           }
@@ -556,9 +570,39 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
             }
           }
 
-          public typealias Project = RewardFragment.Project
+          /// Backing.AddOns.Node.Project
+          ///
+          /// Parent Type: `Project`
+          public struct Project: GraphAPI.SelectionSet {
+            public let __data: DataDict
+            public init(_dataDict: DataDict) { __data = _dataDict }
+
+            public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Project }
+
+            public var id: GraphAPI.ID { __data["id"] }
+
+            public init(
+              id: GraphAPI.ID
+            ) {
+              self.init(_dataDict: DataDict(
+                data: [
+                  "__typename": GraphAPI.Objects.Project.typename,
+                  "id": id,
+                ],
+                fulfilledFragments: [
+                  ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.AddOns.Node.Project.self),
+                  ObjectIdentifier(RewardFragment.Project.self),
+                  ObjectIdentifier(RewardItemsFragment.Project.self)
+                ]
+              ))
+            }
+          }
 
           public typealias AudienceData = RewardFragment.AudienceData
+
+          public typealias Image = RewardImageFragment.Image
+
+          public typealias Items = RewardItemsFragment.Items
         }
       }
 
@@ -629,6 +673,10 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
         public var startsAt: GraphAPI.DateTime? { __data["startsAt"] }
         /// Data related to who can view/access this reward
         public var audienceData: AudienceData { __data["audienceData"] }
+        /// The reward image.
+        public var image: Image? { __data["image"] }
+        /// Items in the reward.
+        public var items: Items? { __data["items"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict
@@ -636,6 +684,8 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
 
           public var simpleShippingRulesExpandedFragment: SimpleShippingRulesExpandedFragment { _toFragment() }
           public var rewardFragment: RewardFragment { _toFragment() }
+          public var rewardImageFragment: RewardImageFragment { _toFragment() }
+          public var rewardItemsFragment: RewardItemsFragment { _toFragment() }
         }
 
         public init(
@@ -664,7 +714,9 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
           shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
           shippingSummary: String? = nil,
           startsAt: GraphAPI.DateTime? = nil,
-          audienceData: AudienceData
+          audienceData: AudienceData,
+          image: Image? = nil,
+          items: Items? = nil
         ) {
           self.init(_dataDict: DataDict(
             data: [
@@ -695,12 +747,16 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
               "shippingSummary": shippingSummary,
               "startsAt": startsAt,
               "audienceData": audienceData._fieldData,
+              "image": image._fieldData,
+              "items": items._fieldData,
             ],
             fulfilledFragments: [
               ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Reward.self),
               ObjectIdentifier(SimpleShippingRulesExpandedFragment.self),
               ObjectIdentifier(BackingFragment.Reward.self),
-              ObjectIdentifier(RewardFragment.self)
+              ObjectIdentifier(RewardFragment.self),
+              ObjectIdentifier(RewardImageFragment.self),
+              ObjectIdentifier(RewardItemsFragment.self)
             ]
           ))
         }
@@ -936,9 +992,39 @@ public class FetchBackingWithIncrementsRefundedQuery: GraphQLQuery {
           }
         }
 
-        public typealias Project = RewardFragment.Project
+        /// Backing.Reward.Project
+        ///
+        /// Parent Type: `Project`
+        public struct Project: GraphAPI.SelectionSet {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Project }
+
+          public var id: GraphAPI.ID { __data["id"] }
+
+          public init(
+            id: GraphAPI.ID
+          ) {
+            self.init(_dataDict: DataDict(
+              data: [
+                "__typename": GraphAPI.Objects.Project.typename,
+                "id": id,
+              ],
+              fulfilledFragments: [
+                ObjectIdentifier(FetchBackingWithIncrementsRefundedQuery.Data.Backing.Reward.Project.self),
+                ObjectIdentifier(RewardFragment.Project.self),
+                ObjectIdentifier(RewardItemsFragment.Project.self)
+              ]
+            ))
+          }
+        }
 
         public typealias AudienceData = RewardFragment.AudienceData
+
+        public typealias Image = RewardImageFragment.Image
+
+        public typealias Items = RewardItemsFragment.Items
       }
 
       /// Backing.PaymentIncrement

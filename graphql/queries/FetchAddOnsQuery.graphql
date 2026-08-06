@@ -4,6 +4,8 @@ query FetchAddOns($projectSlug: String!, $shippingEnabled: Boolean!, $locationId
     addOns {
       nodes {
         ...RewardFragment
+        ...RewardImageFragment
+        ...RewardItemsFragment
         shippingRulesExpanded(forLocation: $locationId) @include(if: $shippingEnabled) {
           nodes {
             ...ShippingRuleFragment

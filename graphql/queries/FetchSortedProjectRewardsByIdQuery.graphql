@@ -4,6 +4,8 @@ query FetchSortedProjectRewardsById($projectId: Int!, $location: CountryCode) {
     rewards(location: $location, sort: ELIGIBILITY) {
       nodes {
         ...RewardFragment
+        ...RewardImageFragment
+        ...RewardItemsFragment
         ...SimpleShippingRulesExpandedFragment
       }
     }

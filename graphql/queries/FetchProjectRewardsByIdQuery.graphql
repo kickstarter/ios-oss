@@ -3,7 +3,9 @@ query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!,
     rewards {
       nodes {
         ...RewardFragment
-        ...SimpleShippingRulesExpandedFragment @include(if: $includeShippingRules) 
+        ...RewardImageFragment
+        ...RewardItemsFragment
+        ...SimpleShippingRulesExpandedFragment @include(if: $includeShippingRules)
       }
     }
     ...PledgeOverTimeFragment @include(if: $includePledgeOverTime)
