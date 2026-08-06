@@ -43,12 +43,18 @@ final class Reward_RewardFragmentTests: XCTestCase {
       XCTAssertEqual(v1Reward.localPickup?.name, "San Jose")
       XCTAssertTrue(v1Reward.hasAddOns)
       XCTAssertEqual(v1Reward.remaining, nil)
-      XCTAssertEqual(v1Reward.rewardsItems[0].item.id, 1_170_799)
-      XCTAssertEqual(v1Reward.rewardsItems[0].item.name, "Soft-Cover Book (Signed)")
-      XCTAssertEqual(v1Reward.rewardsItems[0].quantity, 2)
-      XCTAssertEqual(v1Reward.rewardsItems[1].item.id, 1_170_813)
-      XCTAssertEqual(v1Reward.rewardsItems[1].item.name, "Custom Bookmark")
-      XCTAssertEqual(v1Reward.rewardsItems[1].quantity, 1)
+
+      if let items = v1Reward.rewardsItems {
+        XCTAssertEqual(items[0].item.id, 1_170_799)
+        XCTAssertEqual(items[0].item.name, "Soft-Cover Book (Signed)")
+        XCTAssertEqual(items[0].quantity, 2)
+        XCTAssertEqual(items[1].item.id, 1_170_813)
+        XCTAssertEqual(items[1].item.name, "Custom Bookmark")
+        XCTAssertEqual(items[1].quantity, 1)
+      } else {
+        XCTFail("Expected reward items to be fetched")
+      }
+
       XCTAssertNotNil(v1Reward.isAvailable)
 
       XCTAssertEqual(v1Reward.shipping.enabled, true)

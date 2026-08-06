@@ -33,7 +33,7 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
     XCTAssertEqual(addOn.description, "Translucent Sticker Sheet")
     XCTAssertEqual(addOn.estimatedDeliveryOn, 1_622_505_600.0)
     XCTAssertEqual(addOn.graphID, "UmV3YXJkLTgxOTAzMjA=")
-    XCTAssertEqual(addOn.rewardsItems.count, 1)
+    XCTAssertEqual(addOn.rewardsItems?.count, 1)
     XCTAssertEqual(addOn.limitPerBacker, 10)
     XCTAssertEqual(addOn.title, "Paper Sticker Sheet")
     XCTAssertNil(addOn.endsAt)

@@ -453,7 +453,7 @@ extension Reward {
       ) }
     )
 
-    public static let rewardsItems = Lens<Reward, [RewardsItem]>(
+    public static let rewardsItems = Lens<Reward, [RewardsItem]?>(
       view: { $0.rewardsItems },
       set: { Reward(
         backersCount: $1.backersCount,

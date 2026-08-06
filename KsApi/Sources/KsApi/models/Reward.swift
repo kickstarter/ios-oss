@@ -17,7 +17,7 @@ public struct Reward {
   public let pledgeAmount: Double
   public let postCampaignPledgingEnabled: Bool
   public let remaining: Int?
-  public let rewardsItems: [RewardsItem]
+  public let rewardsItems: [RewardsItem]? // Not always fetched for performance reasons.
   public let shipping: Shipping // only v1
   public let shippingRulesExpanded: [ShippingRule]? // only GraphQL
   public let startsAt: TimeInterval?

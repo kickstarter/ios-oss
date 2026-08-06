@@ -119,14 +119,23 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
     self.rewardTitleLabelAttributedText = projectAndReward
       .map(rewardTitle(project:reward:))
 
-    let rewardItemsIsEmpty = reward
-      .map { $0.rewardsItems.isEmpty }
+    let rewardItemsIsEmpty = reward.map { reward in
+      guard let items = reward.rewardsItems else {
+        assert(false, "Expected reward items to be fetched.")
+        return true
+      }
+      return items.isEmpty
+    }
 
     self.includedItemsStackViewHidden = rewardItemsIsEmpty.skipRepeats()
 
     self.items = reward
       .map { reward in
-        reward.rewardsItems.map { rewardsItem in
+        guard let items = reward.rewardsItems else {
+          assert(false, "Expected reward items to be fetched.")
+          return []
+        }
+        return items.map { rewardsItem in
           rewardsItem.quantity > 1
             ? "(\(Format.wholeNumber(rewardsItem.quantity))) \(rewardsItem.item.name)"
             : rewardsItem.item.name
