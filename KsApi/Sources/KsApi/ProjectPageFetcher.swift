@@ -8,6 +8,8 @@ public struct ProjectPageFetcher {
     self.apiService = apiService
   }
 
+  /// A faster project page fetch.
+  /// Runs two parallel fetches - one for basic project properties, and another for extras like the project story.
   public func fastFetchProjectPage(
     projectParam param: Param
   ) -> SignalProducer<Project, ErrorEnvelope> {

@@ -121,4 +121,131 @@ public final class ProjectPageFetcherTests: XCTestCase {
     XCTAssertEqual(project?.video?.id, 1_267_784)
     XCTAssertEqual(project?.flagging, true)
   }
+
+  func test_newProjectFetch_returnsAllData() {
+    let mockService = MockService(
+      fetchGraphQLResponses: [
+        (
+          GraphAPI.FastFetchProjectPage_CheckoutQuery.self,
+          GraphAPI.FastFetchProjectPage_CheckoutQuery.Data.template
+        ),
+        (
+          GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.self,
+          GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.Data.template
+        )
+      ]
+    )
+
+    let fetcher = ProjectPageFetcher(withService: mockService)
+
+    let producer = fetcher.fastFetchProjectPage(projectParam: .id(0))
+    guard let project = producer.allValues().first else {
+      XCTFail("Fetcher should have produced a project")
+      return
+    }
+
+    XCTAssertEqual(project.id, 987)
+    XCTAssertEqual(project.name, "The project")
+
+    XCTAssertEqual(project.personalization.isBacking, true)
+    XCTAssertNotNil(project.personalization.backing)
+
+    XCTAssertEqual(project.rewards.count, 2)
+    XCTAssertEqual(project.rewards.first, Reward.noReward)
+    XCTAssertEqual(project.rewards[1].id, 1)
+
+    XCTAssertNotNil(project.video)
+    XCTAssertEqual(project.video?.high, "high.mp4")
+    XCTAssertNotNil(project.extendedProjectProperties)
+    XCTAssertEqual(project.extendedProjectProperties?.risks, "This project has risks.")
+    XCTAssertEqual(project.flagging, true)
+  }
+
+  func test_newProjectFetch_returnsErrorIfFirstFetchHasErrors() {
+    let mockService = MockService(
+      fetchGraphQLResponses: [
+        // Intentionally missing the first mock to trigger an error
+        (
+          GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.self,
+          GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.Data.template
+        )
+      ]
+    )
+
+    let fetcher = ProjectPageFetcher(withService: mockService)
+    let producer = fetcher.fastFetchProjectPage(projectParam: .id(0))
+
+    XCTAssertEqual(producer.allValues().count, 0)
+    guard let errorResult = producer.collect().last(),
+          case let .failure(errorEnvelope) = errorResult else {
+      XCTFail("Expected error")
+      return
+    }
+
+    XCTAssertEqual(errorEnvelope.errorMessages, ["Unimplemented mock"])
+  }
+
+  func test_newProjectFetch_returnsErrorIfSecondFetchHasErrors() {
+    let mockService = MockService(
+      fetchGraphQLResponses: [
+        (
+          GraphAPI.FastFetchProjectPage_CheckoutQuery.self,
+          GraphAPI.FastFetchProjectPage_CheckoutQuery.Data.template
+        )
+        // Intentionally missing the second mock to trigger an error
+      ]
+    )
+
+    let fetcher = ProjectPageFetcher(withService: mockService)
+    let producer = fetcher.fastFetchProjectPage(projectParam: .id(0))
+
+    XCTAssertEqual(producer.allValues().count, 0)
+    guard let errorResult = producer.collect().last(),
+          case let .failure(errorEnvelope) = errorResult else {
+      XCTFail("Expected error")
+      return
+    }
+
+    XCTAssertEqual(errorEnvelope.errorMessages, ["Unimplemented mock"])
+  }
+}
+
+private extension GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.Data {
+  static var template: GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.Data {
+    let mockExtraProperties = Mock<GraphAPITestMocks.Project>()
+    mockExtraProperties.risks = "This project has risks."
+    mockExtraProperties.story = "Project story"
+    mockExtraProperties.minPledge = 27
+    mockExtraProperties.flagging = Mock<GraphAPITestMocks.Flagging>()
+    mockExtraProperties.flagging?.id = "fake_id"
+    mockExtraProperties.flagging?.kind = .some(.case(.charity))
+    mockExtraProperties.video = Mock<GraphAPITestMocks.Video>()
+    mockExtraProperties.video?.id = "VmlkZW8tMQ=="
+    mockExtraProperties.video?.videoSources = Mock<GraphAPITestMocks.VideoSources>()
+    mockExtraProperties.video?.videoSources?.high = Mock<GraphAPITestMocks.VideoSourceInfo>()
+    mockExtraProperties.video?.videoSources?.high?.src = "high.mp4"
+
+    return GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.Data(
+      project: FastFetchProjectPage_ExtendedPropertiesQuery.Data.Project.from(mockExtraProperties)
+    )
+  }
+}
+
+private extension GraphAPI.FastFetchProjectPage_CheckoutQuery.Data {
+  static var template: GraphAPI.FastFetchProjectPage_CheckoutQuery.Data {
+    let mockProject = GraphAPITestMocks.Project.mock
+    mockProject.posts = Mock<GraphAPITestMocks.PostConnection>()
+    mockProject.posts?.totalCount = 2
+
+    let mockBacking = GraphAPITestMocks.Backing.mock
+    mockProject.backing = mockBacking
+
+    let mockReward = GraphAPITestMocks.Reward.mock
+    mockProject.rewards = Mock<GraphAPITestMocks.ProjectRewardConnection>()
+    mockProject.rewards?.nodes = [mockReward]
+
+    return GraphAPI.FastFetchProjectPage_CheckoutQuery.Data(
+      project: FastFetchProjectPage_CheckoutQuery.Data.Project.from(mockProject)
+    )
+  }
 }
