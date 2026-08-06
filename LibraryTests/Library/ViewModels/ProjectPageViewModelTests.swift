@@ -1991,6 +1991,17 @@ final class ProjectPageViewModelTests: TestCase {
 
     AppEnvironment.popEnvironment()
   }
+
+  static func mockNetworkRequests_newQuery(
+    project _: Project = Project.template,
+    rewards _: [Reward] = [Reward.noReward, Reward.template],
+    backing _: Backing? = nil,
+    action: () -> Void
+  ) {
+    AppEnvironment.pushEnvironment(apiService: MockService())
+    action()
+    AppEnvironment.popEnvironment()
+  }
 }
 
 extension ProjectPageViewModelType {
