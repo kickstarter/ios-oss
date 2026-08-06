@@ -8,7 +8,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FetchAddOns($projectSlug: String!, $shippingEnabled: Boolean!, $locationId: ID) { project(slug: $projectSlug) { __typename ...ProjectFragment addOns { __typename nodes { __typename ...RewardFragment shippingRulesExpanded(forLocation: $locationId) @include(if: $shippingEnabled) { __typename nodes { __typename ...ShippingRuleFragment } } } } } }"#,
-      fragments: [CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, PublicUserFragment.self, RewardFragment.self, RewardImageFragment.self, RewardItemsFragment.self, ShippingRuleFragment.self]
+      fragments: [CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
     ))
 
   public var projectSlug: String
@@ -386,18 +386,12 @@ public class FetchAddOnsQuery: GraphQLQuery {
           public var startsAt: GraphAPI.DateTime? { __data["startsAt"] }
           /// Data related to who can view/access this reward
           public var audienceData: AudienceData { __data["audienceData"] }
-          /// Items in the reward.
-          public var items: Items? { __data["items"] }
-          /// The reward image.
-          public var image: Image? { __data["image"] }
 
           public struct Fragments: FragmentContainer {
             public let __data: DataDict
             public init(_dataDict: DataDict) { __data = _dataDict }
 
             public var rewardFragment: RewardFragment { _toFragment() }
-            public var rewardItemsFragment: RewardItemsFragment { _toFragment() }
-            public var rewardImageFragment: RewardImageFragment { _toFragment() }
           }
 
           public init(
@@ -426,9 +420,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
             shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
             shippingSummary: String? = nil,
             startsAt: GraphAPI.DateTime? = nil,
-            audienceData: AudienceData,
-            items: Items? = nil,
-            image: Image? = nil
+            audienceData: AudienceData
           ) {
             self.init(_dataDict: DataDict(
               data: [
@@ -459,14 +451,10 @@ public class FetchAddOnsQuery: GraphQLQuery {
                 "shippingSummary": shippingSummary,
                 "startsAt": startsAt,
                 "audienceData": audienceData._fieldData,
-                "items": items._fieldData,
-                "image": image._fieldData,
               ],
               fulfilledFragments: [
                 ObjectIdentifier(FetchAddOnsQuery.Data.Project.AddOns.Node.self),
-                ObjectIdentifier(RewardFragment.self),
-                ObjectIdentifier(RewardItemsFragment.self),
-                ObjectIdentifier(RewardImageFragment.self)
+                ObjectIdentifier(RewardFragment.self)
               ]
             ))
           }
@@ -884,39 +872,9 @@ public class FetchAddOnsQuery: GraphQLQuery {
             }
           }
 
-          /// Project.AddOns.Node.Project
-          ///
-          /// Parent Type: `Project`
-          public struct Project: GraphAPI.SelectionSet {
-            public let __data: DataDict
-            public init(_dataDict: DataDict) { __data = _dataDict }
-
-            public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Project }
-
-            public var id: GraphAPI.ID { __data["id"] }
-
-            public init(
-              id: GraphAPI.ID
-            ) {
-              self.init(_dataDict: DataDict(
-                data: [
-                  "__typename": GraphAPI.Objects.Project.typename,
-                  "id": id,
-                ],
-                fulfilledFragments: [
-                  ObjectIdentifier(FetchAddOnsQuery.Data.Project.AddOns.Node.Project.self),
-                  ObjectIdentifier(RewardFragment.Project.self),
-                  ObjectIdentifier(RewardItemsFragment.Project.self)
-                ]
-              ))
-            }
-          }
+          public typealias Project = RewardFragment.Project
 
           public typealias AudienceData = RewardFragment.AudienceData
-
-          public typealias Items = RewardItemsFragment.Items
-
-          public typealias Image = RewardImageFragment.Image
         }
       }
 

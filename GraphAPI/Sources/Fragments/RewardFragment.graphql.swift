@@ -5,7 +5,7 @@
 
 public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment RewardFragment on Reward { __typename amount { __typename ...MoneyFragment } backersCount convertedAmount { __typename ...MoneyFragment } allowedAddons { __typename pageInfo { __typename startCursor } } description displayName endsAt estimatedDeliveryOn id isMaxPledge available featured limit limitPerBacker localReceiptLocation { __typename ...LocationFragment } name pledgeAmount { __typename ...MoneyFragment } latePledgeAmount { __typename ...MoneyFragment } postCampaignPledgingEnabled project { __typename id } remainingQuantity ...RewardItemsFragment ...RewardImageFragment shippingPreference shippingSummary startsAt audienceData { __typename secret } }"#
+    #"fragment RewardFragment on Reward { __typename amount { __typename ...MoneyFragment } backersCount convertedAmount { __typename ...MoneyFragment } allowedAddons { __typename pageInfo { __typename startCursor } } description displayName endsAt estimatedDeliveryOn id isMaxPledge available featured limit limitPerBacker localReceiptLocation { __typename ...LocationFragment } name pledgeAmount { __typename ...MoneyFragment } latePledgeAmount { __typename ...MoneyFragment } postCampaignPledgingEnabled project { __typename id } remainingQuantity shippingPreference shippingSummary startsAt audienceData { __typename secret } }"#
   }
 
   public let __data: DataDict
@@ -39,8 +39,6 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     .field("shippingSummary", String?.self),
     .field("startsAt", GraphAPI.DateTime?.self),
     .field("audienceData", AudienceData.self),
-    .fragment(RewardItemsFragment.self),
-    .fragment(RewardImageFragment.self),
   ] }
 
   /// Amount for claiming this reward.
@@ -95,18 +93,6 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
   public var startsAt: GraphAPI.DateTime? { __data["startsAt"] }
   /// Data related to who can view/access this reward
   public var audienceData: AudienceData { __data["audienceData"] }
-  /// Items in the reward.
-  public var items: Items? { __data["items"] }
-  /// The reward image.
-  public var image: Image? { __data["image"] }
-
-  public struct Fragments: FragmentContainer {
-    public let __data: DataDict
-    public init(_dataDict: DataDict) { __data = _dataDict }
-
-    public var rewardItemsFragment: RewardItemsFragment { _toFragment() }
-    public var rewardImageFragment: RewardImageFragment { _toFragment() }
-  }
 
   public init(
     amount: Amount,
@@ -133,9 +119,7 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
     shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
     shippingSummary: String? = nil,
     startsAt: GraphAPI.DateTime? = nil,
-    audienceData: AudienceData,
-    items: Items? = nil,
-    image: Image? = nil
+    audienceData: AudienceData
   ) {
     self.init(_dataDict: DataDict(
       data: [
@@ -165,13 +149,9 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
         "shippingSummary": shippingSummary,
         "startsAt": startsAt,
         "audienceData": audienceData._fieldData,
-        "items": items._fieldData,
-        "image": image._fieldData,
       ],
       fulfilledFragments: [
-        ObjectIdentifier(RewardFragment.self),
-        ObjectIdentifier(RewardItemsFragment.self),
-        ObjectIdentifier(RewardImageFragment.self)
+        ObjectIdentifier(RewardFragment.self)
       ]
     ))
   }
@@ -540,8 +520,4 @@ public struct RewardFragment: GraphAPI.SelectionSet, Fragment {
       ))
     }
   }
-
-  public typealias Items = RewardItemsFragment.Items
-
-  public typealias Image = RewardImageFragment.Image
 }

@@ -99,8 +99,6 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "Money": return GraphAPI.Objects.Money
     case "RewardConnection": return GraphAPI.Objects.RewardConnection
     case "PageInfo": return GraphAPI.Objects.PageInfo
-    case "RewardItemsConnection": return GraphAPI.Objects.RewardItemsConnection
-    case "RewardItemEdge": return GraphAPI.Objects.RewardItemEdge
     case "ResourceAudience": return GraphAPI.Objects.ResourceAudience
     case "SimpleShippingRule": return GraphAPI.Objects.SimpleShippingRule
     case "ProjectsConnectionWithTotalCount": return GraphAPI.Objects.ProjectsConnectionWithTotalCount
@@ -149,6 +147,8 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "PledgeProjectOverviewItemEdge": return GraphAPI.Objects.PledgeProjectOverviewItemEdge
     case "PledgeProjectOverviewItem": return GraphAPI.Objects.PledgeProjectOverviewItem
     case "PledgedProjectsOverviewPledgeFlags": return GraphAPI.Objects.PledgedProjectsOverviewPledgeFlags
+    case "RewardItemsConnection": return GraphAPI.Objects.RewardItemsConnection
+    case "RewardItemEdge": return GraphAPI.Objects.RewardItemEdge
     default: return nil
     }
   }

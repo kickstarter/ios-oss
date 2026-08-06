@@ -8,7 +8,7 @@ public class FetchSortedProjectRewardsByIdQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FetchSortedProjectRewardsById($projectId: Int!, $location: CountryCode) { project(pid: $projectId) { __typename ...NoRewardRewardFragment rewards(location: $location, sort: ELIGIBILITY) { __typename nodes { __typename ...RewardFragment ...SimpleShippingRulesExpandedFragment } } } }"#,
-      fragments: [LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, RewardFragment.self, RewardImageFragment.self, RewardItemsFragment.self, SimpleShippingRulesExpandedFragment.self]
+      fragments: [LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, RewardFragment.self, SimpleShippingRulesExpandedFragment.self]
     ))
 
   public var projectId: Int
@@ -199,10 +199,6 @@ public class FetchSortedProjectRewardsByIdQuery: GraphQLQuery {
           public var startsAt: GraphAPI.DateTime? { __data["startsAt"] }
           /// Data related to who can view/access this reward
           public var audienceData: AudienceData { __data["audienceData"] }
-          /// Items in the reward.
-          public var items: Items? { __data["items"] }
-          /// The reward image.
-          public var image: Image? { __data["image"] }
           /// Simple shipping rules expanded as a faster alternative to shippingRulesExpanded since connection type is slow
           public var simpleShippingRulesExpanded: [SimpleShippingRulesExpanded?] { __data["simpleShippingRulesExpanded"] }
 
@@ -212,8 +208,6 @@ public class FetchSortedProjectRewardsByIdQuery: GraphQLQuery {
 
             public var rewardFragment: RewardFragment { _toFragment() }
             public var simpleShippingRulesExpandedFragment: SimpleShippingRulesExpandedFragment { _toFragment() }
-            public var rewardItemsFragment: RewardItemsFragment { _toFragment() }
-            public var rewardImageFragment: RewardImageFragment { _toFragment() }
           }
 
           public init(
@@ -242,8 +236,6 @@ public class FetchSortedProjectRewardsByIdQuery: GraphQLQuery {
             shippingSummary: String? = nil,
             startsAt: GraphAPI.DateTime? = nil,
             audienceData: AudienceData,
-            items: Items? = nil,
-            image: Image? = nil,
             simpleShippingRulesExpanded: [SimpleShippingRulesExpanded?]
           ) {
             self.init(_dataDict: DataDict(
@@ -274,15 +266,11 @@ public class FetchSortedProjectRewardsByIdQuery: GraphQLQuery {
                 "shippingSummary": shippingSummary,
                 "startsAt": startsAt,
                 "audienceData": audienceData._fieldData,
-                "items": items._fieldData,
-                "image": image._fieldData,
                 "simpleShippingRulesExpanded": simpleShippingRulesExpanded._fieldData,
               ],
               fulfilledFragments: [
                 ObjectIdentifier(FetchSortedProjectRewardsByIdQuery.Data.Project.Rewards.Node.self),
                 ObjectIdentifier(RewardFragment.self),
-                ObjectIdentifier(RewardItemsFragment.self),
-                ObjectIdentifier(RewardImageFragment.self),
                 ObjectIdentifier(SimpleShippingRulesExpandedFragment.self)
               ]
             ))
@@ -517,39 +505,9 @@ public class FetchSortedProjectRewardsByIdQuery: GraphQLQuery {
             }
           }
 
-          /// Project.Rewards.Node.Project
-          ///
-          /// Parent Type: `Project`
-          public struct Project: GraphAPI.SelectionSet {
-            public let __data: DataDict
-            public init(_dataDict: DataDict) { __data = _dataDict }
-
-            public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Project }
-
-            public var id: GraphAPI.ID { __data["id"] }
-
-            public init(
-              id: GraphAPI.ID
-            ) {
-              self.init(_dataDict: DataDict(
-                data: [
-                  "__typename": GraphAPI.Objects.Project.typename,
-                  "id": id,
-                ],
-                fulfilledFragments: [
-                  ObjectIdentifier(FetchSortedProjectRewardsByIdQuery.Data.Project.Rewards.Node.Project.self),
-                  ObjectIdentifier(RewardFragment.Project.self),
-                  ObjectIdentifier(RewardItemsFragment.Project.self)
-                ]
-              ))
-            }
-          }
+          public typealias Project = RewardFragment.Project
 
           public typealias AudienceData = RewardFragment.AudienceData
-
-          public typealias Items = RewardItemsFragment.Items
-
-          public typealias Image = RewardImageFragment.Image
 
           public typealias SimpleShippingRulesExpanded = SimpleShippingRulesExpandedFragment.SimpleShippingRulesExpanded
         }
