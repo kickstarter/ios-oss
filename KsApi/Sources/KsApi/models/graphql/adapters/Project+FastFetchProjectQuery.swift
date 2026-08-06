@@ -71,7 +71,8 @@ extension Project {
 
     let rewards: [Reward] = project.rewards?.nodes?.compactMap { node in
       guard let fragment = node?.fragments.rewardFragment else { return nil }
-      return Reward.reward(from: fragment)
+      // Intentionally not fetching the reward items and image, for performance
+      return Reward.reward(from: fragment, rewardItems: nil, rewardImage: nil)
     } ?? []
 
     let noRewardFragment = project.fragments.noRewardRewardFragment
