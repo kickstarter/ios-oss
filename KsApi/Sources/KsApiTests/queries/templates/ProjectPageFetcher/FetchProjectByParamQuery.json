@@ -145,7 +145,11 @@
       "url": "https://staging.kickstarter.com/projects/amy-at-kickstarter/crossfit-think-tank-cooler",
       "usdExchangeRate": 1,
       "video": null,
-      "watchesCount": 0
+      "watchesCount": 0,
+      "storyRichText": {
+        "__typename": "RichTextComponent",
+        "items": []
+      }
     }
   }
 }
