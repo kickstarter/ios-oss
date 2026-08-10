@@ -180,4 +180,5 @@ public enum Feature: String, EnumType {
   case allowEditingRewardAudienceInProjectBuild = "allow_editing_reward_audience_in_project_build"
   case projectNotice2026Updates = "project_notice_2026_updates"
   case customCountrySurcharges2026 = "custom_country_surcharges_2026"
+  case allowEditingRewardBasicsInProjectBuild = "allow_editing_reward_basics_in_project_build"
 }

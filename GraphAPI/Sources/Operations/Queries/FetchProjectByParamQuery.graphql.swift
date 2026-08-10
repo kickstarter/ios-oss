@@ -8,7 +8,7 @@ public class FetchProjectByParamQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FetchProjectByParam($projectId: Int, $slug: String) { project(pid: $projectId, slug: $slug) { __typename ...ProjectFragment ...ExtendedProjectPropertiesFragment video { __typename ...ProjectVideoFragment } backing { __typename id } flagging { __typename id kind } } }"#,
-      fragments: [CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, ProjectVideoFragment.self, PublicUserFragment.self]
+      fragments: [CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RichTextComponentFragment.self, RichTextItemFragment.self]
     ))
 
   public var projectId: GraphQLNullable<Int>
@@ -182,6 +182,8 @@ public class FetchProjectByParamQuery: GraphQLQuery {
       public var risks: String { __data["risks"] }
       /// The story behind the project, parsed for presentation.
       public var story: GraphAPI.HTML { __data["story"] }
+      /// Return an itemized version of the story. This feature is in BETA: types can change anytime!
+      public var storyRichText: StoryRichText { __data["storyRichText"] }
 
       public struct Fragments: FragmentContainer {
         public let __data: DataDict
@@ -250,7 +252,8 @@ public class FetchProjectByParamQuery: GraphQLQuery {
         faqs: Faqs? = nil,
         projectNotice: String? = nil,
         risks: String,
-        story: GraphAPI.HTML
+        story: GraphAPI.HTML,
+        storyRichText: StoryRichText
       ) {
         self.init(_dataDict: DataDict(
           data: [
@@ -310,6 +313,7 @@ public class FetchProjectByParamQuery: GraphQLQuery {
             "projectNotice": projectNotice,
             "risks": risks,
             "story": story,
+            "storyRichText": storyRichText._fieldData,
           ],
           fulfilledFragments: [
             ObjectIdentifier(FetchProjectByParamQuery.Data.Project.self),
@@ -873,6 +877,43 @@ public class FetchProjectByParamQuery: GraphQLQuery {
       public typealias EnvironmentalCommitment = ExtendedProjectPropertiesFragment.EnvironmentalCommitment
 
       public typealias Faqs = ExtendedProjectPropertiesFragment.Faqs
+
+      /// Project.StoryRichText
+      ///
+      /// Parent Type: `RichTextComponent`
+      public struct StoryRichText: GraphAPI.SelectionSet {
+        public let __data: DataDict
+        public init(_dataDict: DataDict) { __data = _dataDict }
+
+        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextComponent }
+
+        public var items: [Item] { __data["items"] }
+
+        public struct Fragments: FragmentContainer {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public var richTextComponentFragment: RichTextComponentFragment { _toFragment() }
+        }
+
+        public init(
+          items: [Item]
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.RichTextComponent.typename,
+              "items": items._fieldData,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchProjectByParamQuery.Data.Project.StoryRichText.self),
+              ObjectIdentifier(ExtendedProjectPropertiesFragment.StoryRichText.self),
+              ObjectIdentifier(RichTextComponentFragment.self)
+            ]
+          ))
+        }
+
+        public typealias Item = RichTextComponentFragment.Item
+      }
     }
   }
 }

@@ -29,4 +29,7 @@ fragment ExtendedProjectPropertiesFragment on Project {
   projectNotice
   risks
   story
+  storyRichText {
+    ...RichTextComponentFragment
+  }
 }

@@ -275,13 +275,14 @@ internal extension ExtendedProjectProperties {
     let faqs = extendedProjectFAQs(from: fragment)
     let minimumSingleTierPledgeAmount = fragment.minPledge
     let aiDisclosure = extendedProjectAIDisclosure(from: fragment)
+    let storyRichTextFragment = fragment.storyRichText.fragments.richTextComponentFragment
 
     let extendedProjectProperties = ExtendedProjectProperties(
       environmentalCommitments: environmentalCommitments,
       faqs: faqs,
       aiDisclosure: aiDisclosure,
       risks: risks,
-      story: storyElements(from: fragment),
+      story: storyElements(from: fragment, storyRichText: storyRichTextFragment),
       minimumPledgeAmount: minimumSingleTierPledgeAmount,
       projectNotice: fragment.projectNotice
     )
@@ -294,7 +295,8 @@ internal extension ExtendedProjectProperties {
  Returns a `ProjectStoryElements` object from `ExtendedProjectPropertiesFragment`
  */
 private func storyElements(
-  from fragment: GraphAPI.ExtendedProjectPropertiesFragment
+  from fragment: GraphAPI.ExtendedProjectPropertiesFragment,
+  storyRichText: GraphAPI.RichTextComponentFragment? = nil
 ) -> ProjectStoryElements {
   let viewElements = Project.htmlParser.parse(bodyHtml: fragment.story)
   var seenURLStrings = Set<String>()
@@ -313,7 +315,10 @@ private func storyElements(
     }
   }
 
-  let storyElements = ProjectStoryElements(htmlViewElements: htmlElementsWithUniqueAudioVideoViewElements)
+  let storyElements = ProjectStoryElements(
+    htmlViewElements: htmlElementsWithUniqueAudioVideoViewElements,
+    richText: storyRichText
+  )
 
   return storyElements
 }

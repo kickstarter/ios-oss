@@ -164,6 +164,10 @@
         }
       },
       "watchesCount": 0,
+      "storyRichText": {
+        "__typename": "RichTextComponent",
+        "items": []
+      }
     }
   }
 }

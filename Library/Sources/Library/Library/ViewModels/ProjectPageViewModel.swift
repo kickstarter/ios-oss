@@ -3,6 +3,23 @@ import GraphAPI
 import KsApi
 import Prelude
 import ReactiveSwift
+import ServerDrivenUI
+
+public enum ProjectPageContentView: Equatable {
+  case tableView
+  case richTextView([RichTextElement])
+
+  public static func == (lhs: ProjectPageContentView, rhs: ProjectPageContentView) -> Bool {
+    switch (lhs, rhs) {
+    case (.tableView, .tableView):
+      return true
+    case let (.richTextView(leftRichText), .richTextView(rightRichText)):
+      return leftRichText == rightRichText
+    default:
+      return false
+    }
+  }
+}
 
 public protocol ProjectPageParam {
   var param: Param { get }
@@ -191,8 +208,8 @@ public protocol ProjectPageViewModelOutputs {
 
   /// Emits a tuple of a `NavigationSection`, `Project`, `RefTag?`, `[Bool]` (isExpanded values) and `[URL]` for campaign data to instruct the data source which section it is loading. Also a
   /// `SimilarProjectsState` for loading the Similar Projects Carousel.
-  var updateDataSource: Signal<
-    (NavigationSection, Project, RefTag?, [Bool], [URL], SimilarProjectsState),
+  var showProjectPageTabWithData: Signal<
+    (NavigationSection, Project, RefTag?, [Bool], [URL], SimilarProjectsState, ProjectPageContentView),
     Never
   > { get }
 
@@ -519,24 +536,33 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
           count: project.extendedProjectProperties?.faqs.count ?? 0
         )
 
-        var dataSourceUpdate = (navSection, project, refTag, initialIsExpandedArray, [URL]())
+        var urls: [URL] = []
+        var contentView: ProjectPageContentView = .tableView
 
         switch navSection {
         case .campaign:
+          contentView = {
+            guard navSection == .campaign,
+                  featureProjectStoryRichTextEnabled(),
+                  let richText = project.extendedProjectProperties?.story.richText?.asRichTextElements()
+            else {
+              return .tableView
+            }
+            return .richTextView(richText)
+          }()
+
           let imageViewElements = project.extendedProjectProperties?.story.htmlViewElements
             .compactMap { $0 as? ImageViewElement } ?? []
 
           if imageViewElements.count > 0 {
             let urlStrings = imageViewElements.map { $0.src }
-            let urls = urlStrings.compactMap { URL(string: $0) }
-
-            dataSourceUpdate = (navSection, project, refTag, initialIsExpandedArray, urls)
+            urls = urlStrings.compactMap { URL(string: $0) }
           }
         default:
           break
         }
 
-        return dataSourceUpdate
+        return (navSection, project, refTag, initialIsExpandedArray, urls, contentView)
       }
 
     let similarProjectsState = self.similarProjectsUseCase.similarProjects.signal
@@ -545,13 +571,13 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
           .takeWhen(self.viewDidLoadProperty.signal)
       )
 
-    self.updateDataSource = Signal.combineLatest(
+    self.showProjectPageTabWithData = Signal.combineLatest(
       dataSourceUpdate,
       similarProjectsState
     )
     .map { dataSource, similarProjects in
-      let (navSection, project, refTag, initialIsExpandedArray, urls) = dataSource
-      return (navSection, project, refTag, initialIsExpandedArray, urls, similarProjects)
+      let (navSection, project, refTag, initialIsExpandedArray, urls, contentView) = dataSource
+      return (navSection, project, refTag, initialIsExpandedArray, urls, similarProjects, contentView)
     }
 
     self.updateFAQsInDataSource = freshProjectAndRefTag
@@ -860,8 +886,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let projectFlagged: Signal<Bool, Never>
   public let reloadCampaignData: Signal<Void, Never>
   public let showHelpWebViewController: Signal<HelpType, Never>
-  public let updateDataSource: Signal<
-    (NavigationSection, Project, RefTag?, [Bool], [URL], SimilarProjectsState),
+  public let showProjectPageTabWithData: Signal<
+    (NavigationSection, Project, RefTag?, [Bool], [URL], SimilarProjectsState, ProjectPageContentView),
     Never
   >
   public let updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never>
