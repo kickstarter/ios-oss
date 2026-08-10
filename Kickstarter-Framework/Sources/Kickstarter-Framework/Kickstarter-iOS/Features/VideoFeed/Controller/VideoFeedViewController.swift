@@ -270,6 +270,7 @@ final class VideoFeedViewController: UIViewController {
     let volumeView = MPVolumeView(frame: .zero)
     volumeView.alpha = 0.001
     volumeView.isUserInteractionEnabled = false
+    volumeView.accessibilityElementsHidden = true
     self.view.addSubview(volumeView)
 
     self.volumeObservation = AVAudioSession.sharedInstance()
