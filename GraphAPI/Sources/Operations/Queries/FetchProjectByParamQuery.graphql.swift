@@ -7,7 +7,7 @@ public class FetchProjectByParamQuery: GraphQLQuery {
   public static let operationName: String = "FetchProjectByParam"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchProjectByParam($projectId: Int, $slug: String) { project(pid: $projectId, slug: $slug) { __typename ...ProjectFragment storyRichText { __typename ...RichTextComponentFragment } backing { __typename id } flagging { __typename id kind } } }"#,
+      #"query FetchProjectByParam($projectId: Int, $slug: String) { project(pid: $projectId, slug: $slug) { __typename ...ProjectFragment ...ExtendedProjectPropertiesFragment video { __typename ...ProjectVideoFragment } backing { __typename id } flagging { __typename id kind } } }"#,
       fragments: [CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RichTextComponentFragment.self, RichTextItemFragment.self]
     ))
 
@@ -66,14 +66,15 @@ public class FetchProjectByParamQuery: GraphQLQuery {
       public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Project }
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
-        .field("storyRichText", StoryRichText.self),
+        .field("video", Video?.self),
         .field("backing", Backing?.self),
         .field("flagging", Flagging?.self),
         .fragment(ProjectFragment.self),
+        .fragment(ExtendedProjectPropertiesFragment.self),
       ] }
 
-      /// Return an itemized version of the story. This feature is in BETA: types can change anytime!
-      public var storyRichText: StoryRichText { __data["storyRichText"] }
+      /// A project video.
+      public var video: Video? { __data["video"] }
       /// The current user's backing of this project.  Does not include inactive backings.
       public var backing: Backing? { __data["backing"] }
       /// A report by the current user for the project.
@@ -130,21 +131,8 @@ public class FetchProjectByParamQuery: GraphQLQuery {
       public var tags: [Tag?] { __data["tags"] }
       /// A URL to the project's page.
       public var url: String { __data["url"] }
-      /// A project video.
-      public var video: Video? { __data["video"] }
       /// Number of watchers a project has.
       public var watchesCount: Int? { __data["watchesCount"] }
-      public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
-      /// The environmental commitments of the project.
-      public var environmentalCommitments: [EnvironmentalCommitment?]? { __data["environmentalCommitments"] }
-      /// List of FAQs of a project
-      public var faqs: Faqs? { __data["faqs"] }
-      /// The text of the currently applied project notice, empty if there is no notice
-      public var projectNotice: String? { __data["projectNotice"] }
-      /// Potential hurdles to project completion.
-      public var risks: String { __data["risks"] }
-      /// The story behind the project, parsed for presentation.
-      public var story: GraphAPI.HTML { __data["story"] }
       /// Exchange rate for the current user's currency
       public var fxRate: Double { __data["fxRate"] }
       /// Whether a project is enrolled in plot
@@ -183,6 +171,19 @@ public class FetchProjectByParamQuery: GraphQLQuery {
       public var launchedAt: GraphAPI.DateTime? { __data["launchedAt"] }
       /// The last time a project's state changed, time since epoch
       public var stateChangedAt: GraphAPI.DateTime { __data["stateChangedAt"] }
+      public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
+      /// The environmental commitments of the project.
+      public var environmentalCommitments: [EnvironmentalCommitment?]? { __data["environmentalCommitments"] }
+      /// List of FAQs of a project
+      public var faqs: Faqs? { __data["faqs"] }
+      /// The text of the currently applied project notice, empty if there is no notice
+      public var projectNotice: String? { __data["projectNotice"] }
+      /// Potential hurdles to project completion.
+      public var risks: String { __data["risks"] }
+      /// The story behind the project, parsed for presentation.
+      public var story: GraphAPI.HTML { __data["story"] }
+      /// Return an itemized version of the story. This feature is in BETA: types can change anytime!
+      public var storyRichText: StoryRichText { __data["storyRichText"] }
 
       public struct Fragments: FragmentContainer {
         public let __data: DataDict
@@ -197,7 +198,7 @@ public class FetchProjectByParamQuery: GraphQLQuery {
       }
 
       public init(
-        storyRichText: StoryRichText,
+        video: Video? = nil,
         backing: Backing? = nil,
         flagging: Flagging? = nil,
         availableCardTypes: [GraphQLEnum<GraphAPI.CreditCardTypes>],
@@ -226,14 +227,7 @@ public class FetchProjectByParamQuery: GraphQLQuery {
         state: GraphQLEnum<GraphAPI.ProjectState>,
         tags: [Tag?],
         url: String,
-        video: Video? = nil,
         watchesCount: Int? = nil,
-        aiDisclosure: AiDisclosure? = nil,
-        environmentalCommitments: [EnvironmentalCommitment?]? = nil,
-        faqs: Faqs? = nil,
-        projectNotice: String? = nil,
-        risks: String,
-        story: GraphAPI.HTML,
         fxRate: Double,
         isPledgeOverTimeAllowed: Bool,
         pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
@@ -252,12 +246,19 @@ public class FetchProjectByParamQuery: GraphQLQuery {
         deadlineAt: GraphAPI.DateTime? = nil,
         finalCollectionDate: GraphAPI.ISO8601DateTime? = nil,
         launchedAt: GraphAPI.DateTime? = nil,
-        stateChangedAt: GraphAPI.DateTime
+        stateChangedAt: GraphAPI.DateTime,
+        aiDisclosure: AiDisclosure? = nil,
+        environmentalCommitments: [EnvironmentalCommitment?]? = nil,
+        faqs: Faqs? = nil,
+        projectNotice: String? = nil,
+        risks: String,
+        story: GraphAPI.HTML,
+        storyRichText: StoryRichText
       ) {
         self.init(_dataDict: DataDict(
           data: [
             "__typename": GraphAPI.Objects.Project.typename,
-            "storyRichText": storyRichText._fieldData,
+            "video": video._fieldData,
             "backing": backing._fieldData,
             "flagging": flagging._fieldData,
             "availableCardTypes": availableCardTypes,
@@ -286,14 +287,7 @@ public class FetchProjectByParamQuery: GraphQLQuery {
             "state": state,
             "tags": tags._fieldData,
             "url": url,
-            "video": video._fieldData,
             "watchesCount": watchesCount,
-            "aiDisclosure": aiDisclosure._fieldData,
-            "environmentalCommitments": environmentalCommitments._fieldData,
-            "faqs": faqs._fieldData,
-            "projectNotice": projectNotice,
-            "risks": risks,
-            "story": story,
             "fxRate": fxRate,
             "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed,
             "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation,
@@ -313,57 +307,68 @@ public class FetchProjectByParamQuery: GraphQLQuery {
             "finalCollectionDate": finalCollectionDate,
             "launchedAt": launchedAt,
             "stateChangedAt": stateChangedAt,
+            "aiDisclosure": aiDisclosure._fieldData,
+            "environmentalCommitments": environmentalCommitments._fieldData,
+            "faqs": faqs._fieldData,
+            "projectNotice": projectNotice,
+            "risks": risks,
+            "story": story,
+            "storyRichText": storyRichText._fieldData,
           ],
           fulfilledFragments: [
             ObjectIdentifier(FetchProjectByParamQuery.Data.Project.self),
             ObjectIdentifier(ProjectFragment.self),
-            ObjectIdentifier(ExtendedProjectPropertiesFragment.self),
             ObjectIdentifier(NoRewardRewardFragment.self),
             ObjectIdentifier(PledgeOverTimeFragment.self),
             ObjectIdentifier(ProjectStatsFragment.self),
-            ObjectIdentifier(ProjectDatesFragment.self)
+            ObjectIdentifier(ProjectDatesFragment.self),
+            ObjectIdentifier(ExtendedProjectPropertiesFragment.self)
           ]
         ))
       }
 
-      /// Project.StoryRichText
+      /// Project.Video
       ///
-      /// Parent Type: `RichTextComponent`
-      public struct StoryRichText: GraphAPI.SelectionSet {
+      /// Parent Type: `Video`
+      public struct Video: GraphAPI.SelectionSet {
         public let __data: DataDict
         public init(_dataDict: DataDict) { __data = _dataDict }
 
-        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextComponent }
+        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Video }
         public static var __selections: [ApolloAPI.Selection] { [
           .field("__typename", String.self),
-          .fragment(RichTextComponentFragment.self),
+          .fragment(ProjectVideoFragment.self),
         ] }
 
-        public var items: [Item] { __data["items"] }
+        public var id: GraphAPI.ID { __data["id"] }
+        /// A video's sources (hls, high, base)
+        public var videoSources: VideoSources? { __data["videoSources"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict
           public init(_dataDict: DataDict) { __data = _dataDict }
 
-          public var richTextComponentFragment: RichTextComponentFragment { _toFragment() }
+          public var projectVideoFragment: ProjectVideoFragment { _toFragment() }
         }
 
         public init(
-          items: [Item]
+          id: GraphAPI.ID,
+          videoSources: VideoSources? = nil
         ) {
           self.init(_dataDict: DataDict(
             data: [
-              "__typename": GraphAPI.Objects.RichTextComponent.typename,
-              "items": items._fieldData,
+              "__typename": GraphAPI.Objects.Video.typename,
+              "id": id,
+              "videoSources": videoSources._fieldData,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FetchProjectByParamQuery.Data.Project.StoryRichText.self),
-              ObjectIdentifier(RichTextComponentFragment.self)
+              ObjectIdentifier(FetchProjectByParamQuery.Data.Project.Video.self),
+              ObjectIdentifier(ProjectVideoFragment.self)
             ]
           ))
         }
 
-        public typealias Item = RichTextComponentFragment.Item
+        public typealias VideoSources = ProjectVideoFragment.VideoSources
       }
 
       /// Project.Backing
@@ -777,53 +782,6 @@ public class FetchProjectByParamQuery: GraphQLQuery {
 
       public typealias Tag = ProjectFragment.Tag
 
-      /// Project.Video
-      ///
-      /// Parent Type: `Video`
-      public struct Video: GraphAPI.SelectionSet {
-        public let __data: DataDict
-        public init(_dataDict: DataDict) { __data = _dataDict }
-
-        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Video }
-
-        public var id: GraphAPI.ID { __data["id"] }
-        /// A video's sources (hls, high, base)
-        public var videoSources: VideoSources? { __data["videoSources"] }
-
-        public struct Fragments: FragmentContainer {
-          public let __data: DataDict
-          public init(_dataDict: DataDict) { __data = _dataDict }
-
-          public var projectVideoFragment: ProjectVideoFragment { _toFragment() }
-        }
-
-        public init(
-          id: GraphAPI.ID,
-          videoSources: VideoSources? = nil
-        ) {
-          self.init(_dataDict: DataDict(
-            data: [
-              "__typename": GraphAPI.Objects.Video.typename,
-              "id": id,
-              "videoSources": videoSources._fieldData,
-            ],
-            fulfilledFragments: [
-              ObjectIdentifier(FetchProjectByParamQuery.Data.Project.Video.self),
-              ObjectIdentifier(ProjectFragment.Video.self),
-              ObjectIdentifier(ProjectVideoFragment.self)
-            ]
-          ))
-        }
-
-        public typealias VideoSources = ProjectVideoFragment.VideoSources
-      }
-
-      public typealias AiDisclosure = ExtendedProjectPropertiesFragment.AiDisclosure
-
-      public typealias EnvironmentalCommitment = ExtendedProjectPropertiesFragment.EnvironmentalCommitment
-
-      public typealias Faqs = ExtendedProjectPropertiesFragment.Faqs
-
       /// Project.Goal
       ///
       /// Parent Type: `Money`
@@ -913,6 +871,49 @@ public class FetchProjectByParamQuery: GraphQLQuery {
       }
 
       public typealias Posts = ProjectStatsFragment.Posts
+
+      public typealias AiDisclosure = ExtendedProjectPropertiesFragment.AiDisclosure
+
+      public typealias EnvironmentalCommitment = ExtendedProjectPropertiesFragment.EnvironmentalCommitment
+
+      public typealias Faqs = ExtendedProjectPropertiesFragment.Faqs
+
+      /// Project.StoryRichText
+      ///
+      /// Parent Type: `RichTextComponent`
+      public struct StoryRichText: GraphAPI.SelectionSet {
+        public let __data: DataDict
+        public init(_dataDict: DataDict) { __data = _dataDict }
+
+        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextComponent }
+
+        public var items: [Item] { __data["items"] }
+
+        public struct Fragments: FragmentContainer {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public var richTextComponentFragment: RichTextComponentFragment { _toFragment() }
+        }
+
+        public init(
+          items: [Item]
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.RichTextComponent.typename,
+              "items": items._fieldData,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FetchProjectByParamQuery.Data.Project.StoryRichText.self),
+              ObjectIdentifier(ExtendedProjectPropertiesFragment.StoryRichText.self),
+              ObjectIdentifier(RichTextComponentFragment.self)
+            ]
+          ))
+        }
+
+        public typealias Item = RichTextComponentFragment.Item
+      }
     }
   }
 }

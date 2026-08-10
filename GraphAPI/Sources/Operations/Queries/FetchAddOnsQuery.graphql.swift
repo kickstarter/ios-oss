@@ -8,7 +8,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FetchAddOns($projectSlug: String!, $shippingEnabled: Boolean!, $locationId: ID) { project(slug: $projectSlug) { __typename ...ProjectFragment addOns { __typename nodes { __typename ...RewardFragment shippingRulesExpanded(forLocation: $locationId) @include(if: $shippingEnabled) { __typename nodes { __typename ...ShippingRuleFragment } } } } } }"#,
-      fragments: [CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
+      fragments: [CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, PublicUserFragment.self, RewardFragment.self, ShippingRuleFragment.self]
     ))
 
   public var projectSlug: String
@@ -125,21 +125,8 @@ public class FetchAddOnsQuery: GraphQLQuery {
       public var tags: [Tag?] { __data["tags"] }
       /// A URL to the project's page.
       public var url: String { __data["url"] }
-      /// A project video.
-      public var video: Video? { __data["video"] }
       /// Number of watchers a project has.
       public var watchesCount: Int? { __data["watchesCount"] }
-      public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
-      /// The environmental commitments of the project.
-      public var environmentalCommitments: [EnvironmentalCommitment?]? { __data["environmentalCommitments"] }
-      /// List of FAQs of a project
-      public var faqs: Faqs? { __data["faqs"] }
-      /// The text of the currently applied project notice, empty if there is no notice
-      public var projectNotice: String? { __data["projectNotice"] }
-      /// Potential hurdles to project completion.
-      public var risks: String { __data["risks"] }
-      /// The story behind the project, parsed for presentation.
-      public var story: GraphAPI.HTML { __data["story"] }
       /// Exchange rate for the current user's currency
       public var fxRate: Double { __data["fxRate"] }
       /// Whether a project is enrolled in plot
@@ -184,7 +171,6 @@ public class FetchAddOnsQuery: GraphQLQuery {
         public init(_dataDict: DataDict) { __data = _dataDict }
 
         public var projectFragment: ProjectFragment { _toFragment() }
-        public var extendedProjectPropertiesFragment: ExtendedProjectPropertiesFragment { _toFragment() }
         public var noRewardRewardFragment: NoRewardRewardFragment { _toFragment() }
         public var pledgeOverTimeFragment: PledgeOverTimeFragment { _toFragment() }
         public var projectStatsFragment: ProjectStatsFragment { _toFragment() }
@@ -219,14 +205,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
         state: GraphQLEnum<GraphAPI.ProjectState>,
         tags: [Tag?],
         url: String,
-        video: Video? = nil,
         watchesCount: Int? = nil,
-        aiDisclosure: AiDisclosure? = nil,
-        environmentalCommitments: [EnvironmentalCommitment?]? = nil,
-        faqs: Faqs? = nil,
-        projectNotice: String? = nil,
-        risks: String,
-        story: GraphAPI.HTML,
         fxRate: Double,
         isPledgeOverTimeAllowed: Bool,
         pledgeOverTimeCollectionPlanChargeExplanation: String? = nil,
@@ -277,14 +256,7 @@ public class FetchAddOnsQuery: GraphQLQuery {
             "state": state,
             "tags": tags._fieldData,
             "url": url,
-            "video": video._fieldData,
             "watchesCount": watchesCount,
-            "aiDisclosure": aiDisclosure._fieldData,
-            "environmentalCommitments": environmentalCommitments._fieldData,
-            "faqs": faqs._fieldData,
-            "projectNotice": projectNotice,
-            "risks": risks,
-            "story": story,
             "fxRate": fxRate,
             "isPledgeOverTimeAllowed": isPledgeOverTimeAllowed,
             "pledgeOverTimeCollectionPlanChargeExplanation": pledgeOverTimeCollectionPlanChargeExplanation,
@@ -308,7 +280,6 @@ public class FetchAddOnsQuery: GraphQLQuery {
           fulfilledFragments: [
             ObjectIdentifier(FetchAddOnsQuery.Data.Project.self),
             ObjectIdentifier(ProjectFragment.self),
-            ObjectIdentifier(ExtendedProjectPropertiesFragment.self),
             ObjectIdentifier(NoRewardRewardFragment.self),
             ObjectIdentifier(PledgeOverTimeFragment.self),
             ObjectIdentifier(ProjectStatsFragment.self),
@@ -1264,53 +1235,6 @@ public class FetchAddOnsQuery: GraphQLQuery {
       }
 
       public typealias Tag = ProjectFragment.Tag
-
-      /// Project.Video
-      ///
-      /// Parent Type: `Video`
-      public struct Video: GraphAPI.SelectionSet {
-        public let __data: DataDict
-        public init(_dataDict: DataDict) { __data = _dataDict }
-
-        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Video }
-
-        public var id: GraphAPI.ID { __data["id"] }
-        /// A video's sources (hls, high, base)
-        public var videoSources: VideoSources? { __data["videoSources"] }
-
-        public struct Fragments: FragmentContainer {
-          public let __data: DataDict
-          public init(_dataDict: DataDict) { __data = _dataDict }
-
-          public var projectVideoFragment: ProjectVideoFragment { _toFragment() }
-        }
-
-        public init(
-          id: GraphAPI.ID,
-          videoSources: VideoSources? = nil
-        ) {
-          self.init(_dataDict: DataDict(
-            data: [
-              "__typename": GraphAPI.Objects.Video.typename,
-              "id": id,
-              "videoSources": videoSources._fieldData,
-            ],
-            fulfilledFragments: [
-              ObjectIdentifier(FetchAddOnsQuery.Data.Project.Video.self),
-              ObjectIdentifier(ProjectFragment.Video.self),
-              ObjectIdentifier(ProjectVideoFragment.self)
-            ]
-          ))
-        }
-
-        public typealias VideoSources = ProjectVideoFragment.VideoSources
-      }
-
-      public typealias AiDisclosure = ExtendedProjectPropertiesFragment.AiDisclosure
-
-      public typealias EnvironmentalCommitment = ExtendedProjectPropertiesFragment.EnvironmentalCommitment
-
-      public typealias Faqs = ExtendedProjectPropertiesFragment.Faqs
 
       /// Project.Goal
       ///

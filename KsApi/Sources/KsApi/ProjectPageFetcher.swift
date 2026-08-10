@@ -25,13 +25,11 @@ public struct ProjectPageFetcher {
           .apiService
           .fetchBacking(id: backingId)
           .switchMap { projectWithBacking -> SignalProducer<Project, ErrorEnvelope> in
-            let updatedProjectWithBacking = projectWithBacking.project
+            let fullProject = projectPamphletData.project
+
+            let updatedProjectWithBacking = fullProject
               |> Project.lens.personalization.backing .~ projectWithBacking.backing
               |> Project.lens.personalization.isBacking .~ true
-              |> Project.lens.extendedProjectProperties .~ projectWithBacking.project
-              .extendedProjectProperties
-              // INFO: Seems like in the `fetchBacking` call we nil out the chosen currency set by `fetchProject` b/c the query for backing doesn't have `me { chosenCurrency }`, so its' being included here.
-              |> Project.lens.stats.userCurrency .~ projectPamphletData.project.stats.userCurrency
 
             return self.fetchProjectRewards(project: updatedProjectWithBacking)
           }
@@ -61,7 +59,6 @@ public struct ProjectPageFetcher {
 
         let projectWithBackingAndRewards = project
           |> Project.lens.rewardData.rewards .~ allRewards
-          |> Project.lens.extendedProjectProperties .~ project.extendedProjectProperties
 
         return SignalProducer(value: projectWithBackingAndRewards)
       }

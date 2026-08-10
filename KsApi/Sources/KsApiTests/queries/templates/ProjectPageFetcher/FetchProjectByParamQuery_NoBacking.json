@@ -2,11 +2,11 @@
   "data": {
     "project": {
       "__typename": "Project",
-      "backing": {
-        "__typename": "Backing",
-        "id": "QmFja2luZy0xODE5ODMxNjQ="
+      "flagging": {
+        "__typename": "Flagging",
+        "id": "fake",
+        "kind": "MISREP_SUPPORT_OTHER"
       },
-      "flagging": null,
       "availableCardTypes": [
         "VISA",
         "MASTERCARD",
@@ -144,7 +144,21 @@
       "tags": [],
       "url": "https://staging.kickstarter.com/projects/amy-at-kickstarter/crossfit-think-tank-cooler",
       "usdExchangeRate": 1,
-      "video": null,
+      "video": {
+        "__typename": "Video",
+        "id": "VmlkZW8tMTI2Nzc4NA==",
+        "videoSources": {
+          "__typename": "VideoSources",
+          "high": {
+            "__typename": "VideoSourceInfo",
+            "src": "fake.mp4"
+          },
+          "hls": {
+            "__typename": "VideoSourceInfo",
+            "src": "fake.m3u8"
+          }
+        }
+      },
       "watchesCount": 0,
       "storyRichText": {
         "__typename": "RichTextComponent",

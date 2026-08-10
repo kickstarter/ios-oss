@@ -131,7 +131,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertEqual(project.sendMetaCapiEvents, true)
 
     // Project Flagging
-    XCTAssertEqual(project.flagging, false)
+    XCTAssertEqual(project.flagging, true)
 
     /// Project User
     XCTAssertEqual(project.creator.avatar.large, "image-a")

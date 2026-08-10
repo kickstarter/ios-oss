@@ -7,18 +7,30 @@ import XCTest
 final class Project_ProjectFragmentTests: XCTestCase {
   func test() {
     do {
-      let variables = [
-        "withStoredCards": true
-      ]
+      let projectData = self.projectDictionary()
+
       let fragment: GraphAPI.ProjectFragment = try testGraphObject(
-        jsonObject: self.projectDictionary(),
-        variables: variables
+        jsonObject: projectData
       )
       XCTAssertNotNil(fragment)
 
+      // The extended properties and video aren't part of the main ProjectFragment any more, but testing them here is convenient because the test data was already set up.
+      // This is a little bit of a bodge to maintain the existing test.
+      let extendedFragment: GraphAPI.ExtendedProjectPropertiesFragment = try testGraphObject(
+        jsonObject: projectData
+      )
+      XCTAssertNotNil(extendedFragment)
+
+      let videoFragment: GraphAPI.ProjectVideoFragment = try testGraphObject(
+        jsonObject: projectData["video"] as! [String: Any]
+      )
+      XCTAssertNotNil(videoFragment)
+
       let project = Project.project(
         from: fragment,
-        flagging: false
+        flagging: false,
+        extendedProjectProperties: ExtendedProjectProperties.extendedProject(from: extendedFragment),
+        video: Project.Video.projectVideo(from: videoFragment)
       )
 
       guard let project = project else {
@@ -516,7 +528,11 @@ final class Project_ProjectFragmentTests: XCTestCase {
           }
        },
       "watchesCount": 18,
-      "isPledgeOverTimeAllowed": false
+      "isPledgeOverTimeAllowed": false,
+      "storyRichText": {
+        "__typename": "RichTextComponent",
+        "items": []
+      }
     }
     """
 

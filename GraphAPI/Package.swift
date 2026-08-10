@@ -1,4 +1,4 @@
-// swift-tools-version:6.2
+// swift-tools-version:5.7
 
 import PackageDescription
 
@@ -33,6 +33,5 @@ let package = Package(
       ],
       path: "./GraphAPITestMocks"
     ),
-  ],
-  swiftLanguageVersions: [.v5],
+  ]
 )
