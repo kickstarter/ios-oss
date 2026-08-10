@@ -4,6 +4,7 @@ import KDS
 import Kingfisher
 import KsApi
 import Library
+import MediaPlayer
 import SwiftUI
 import UIKit
 
@@ -27,6 +28,8 @@ final class VideoFeedViewController: UIViewController {
   private var isScrolling = false
   private var currentPageIndex: Int = 0
 
+  private var volumeObservation: NSKeyValueObservation?
+
   /// Called once the first batch of items has loaded and the feed is ready to present.
   var onReadyToPresent: (() -> Void)?
 
@@ -48,6 +51,7 @@ final class VideoFeedViewController: UIViewController {
     self.view.backgroundColor = Constants.backgroundColor
 
     self.configureAudioSession()
+    self.setupSilentModeOverride()
     self.observeAppLifecycle()
 
     self.setupCollectionView()
@@ -61,6 +65,7 @@ final class VideoFeedViewController: UIViewController {
 
   deinit {
     self.lifecycleObservers.forEach(NotificationCenter.default.removeObserver)
+    self.volumeObservation?.invalidate()
   }
 
   public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -94,6 +99,13 @@ final class VideoFeedViewController: UIViewController {
 
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
     self.pauseVisibleCell()
+
+    /// Only reset on dismiss not when a modal (project page, login, etc.) is presented.
+    if self.isBeingDismissed {
+      self.volumeObservation?.invalidate()
+      self.volumeObservation = nil
+      try? AVAudioSession.sharedInstance().setCategory(.soloAmbient, mode: .default)
+    }
   }
 
   // MARK: - CollectionView
@@ -237,7 +249,6 @@ final class VideoFeedViewController: UIViewController {
 
   // MARK: - Audio session
 
-  /// Auto play video audio
   private func configureAudioSession() {
     do {
       try AVAudioSession.sharedInstance().setCategory(.soloAmbient, mode: .default)
@@ -249,6 +260,33 @@ final class VideoFeedViewController: UIViewController {
 
       Crashlytics.crashlytics().record(error: error)
     }
+  }
+
+  /// Detects a volume up press to unmute the feed when the silent switch is on.
+  /// In silent mode, volume buttons control ringer (not media) volume, so `outputVolume` KVO never fires.
+  /// We can use a `MPVolumeView` to reroute buttons to media volume, fixing this.  it's the only way iOS exposes this AFAIK.
+  /// On the first volume-up, switches to `.playback` to bypass the silent switch, then tears itself down.
+  private func setupSilentModeOverride() {
+    let volumeView = MPVolumeView(frame: .zero)
+    volumeView.alpha = 0.001
+    volumeView.isUserInteractionEnabled = false
+    self.view.addSubview(volumeView)
+
+    self.volumeObservation = AVAudioSession.sharedInstance()
+      .observe(\.outputVolume, options: [.old, .new]) { [weak self] _, change in
+        guard let oldVolume = change.oldValue,
+              let newVolume = change.newValue,
+              newVolume > oldVolume else { return }
+
+        DispatchQueue.main.async { [weak self] in
+          guard let self else { return }
+
+          self.volumeObservation?.invalidate()
+          self.volumeObservation = nil
+
+          try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+        }
+      }
   }
 
   // MARK: - App lifecycle
