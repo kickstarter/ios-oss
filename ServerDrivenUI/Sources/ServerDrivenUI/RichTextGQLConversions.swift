@@ -244,7 +244,7 @@ extension RichTextComponentFragment.Item.AsRichTextPhoto {
       altText: altText,
       assetID: asset?.id,
       caption: caption,
-      url: url
+      url: asset?.url
     ))
   }
 }
@@ -255,7 +255,7 @@ extension RichTextComponentFragment.Item.AsRichText.Child.AsRichTextPhoto {
       altText: altText,
       assetID: asset?.id,
       caption: caption,
-      url: url
+      url: asset?.url
     ))
   }
 }
@@ -266,7 +266,7 @@ extension RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextPhoto 
       altText: altText,
       assetID: asset?.id,
       caption: caption,
-      url: url
+      url: asset?.url
     ))
   }
 }
@@ -277,7 +277,7 @@ extension RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextPhot
       altText: altText,
       assetID: asset?.id,
       caption: caption,
-      url: url
+      url: asset?.url
     ))
   }
 }

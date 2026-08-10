@@ -24,9 +24,9 @@ fragment RichTextItemFragment on RichTextItem {
     altText
     asset {
       id
+      url(width:99999)
     }
     caption
-    url
   }
   ... on RichTextAudio {
     altText

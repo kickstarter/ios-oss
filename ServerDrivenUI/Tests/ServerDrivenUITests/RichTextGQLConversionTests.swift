@@ -258,14 +258,13 @@ final class RichTextGQLConversionTests: XCTestCase {
   func testAsRichTextPhotoItem() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextPhoto(
       altText: "photo",
-      asset: nil,
-      caption: "cap",
-      url: "https://img"
+      asset: .init(id: "", url: "https://img"),
+      caption: "cap"
     )
     let el = gql.asRichTextElement
     guard case let .photo(p) = el else { XCTFail("expected .photo"); return }
     XCTAssertEqual(p.altText, "photo")
-    XCTAssertNil(p.assetID)
+    XCTAssertNotNil(p.assetID)
     XCTAssertEqual(p.url, "https://img")
   }
 
@@ -273,9 +272,8 @@ final class RichTextGQLConversionTests: XCTestCase {
   func testAsRichTextPhotoChild() throws {
     let gql = RichTextComponentFragment.Item.AsRichText.Child.AsRichTextPhoto(
       altText: "p",
-      asset: nil,
+      asset: .init(id: "", url: "u"),
       caption: "c",
-      url: "u"
     )
     let el = gql.asRichTextElement
     guard case let .photo(p) = el else { XCTFail("expected .photo"); return }
@@ -508,9 +506,8 @@ final class RichTextGQLConversionTests: XCTestCase {
   func testAsRichTextHeaderChildAsRichTextPhoto() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextPhoto(
       altText: "hp",
-      asset: nil,
-      caption: "",
-      url: ""
+      asset: .init(id: "", url: ""),
+      caption: ""
     )
     let el = gql.asRichTextElement
     guard case let .photo(p) = el else { XCTFail("expected .photo"); return }
@@ -521,9 +518,8 @@ final class RichTextGQLConversionTests: XCTestCase {
   func testAsRichTextListItemChildAsRichTextPhoto() throws {
     let gql = RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextPhoto(
       altText: "lip",
-      asset: nil,
-      caption: "",
-      url: ""
+      asset: .init(id: "", url: ""),
+      caption: ""
     )
     let el = gql.asRichTextElement
     guard case let .photo(p) = el else { XCTFail("expected .photo"); return }
