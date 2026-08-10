@@ -8,7 +8,7 @@ public class FastFetchProjectPage_ExtendedPropertiesQuery: GraphQLQuery {
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
       #"query FastFetchProjectPage_ExtendedPropertiesQuery($projectId: Int, $slug: String) { project(pid: $projectId, slug: $slug) { __typename ...ExtendedProjectPropertiesFragment video { __typename ...ProjectVideoFragment } flagging { __typename kind } } }"#,
-      fragments: [ExtendedProjectPropertiesFragment.self, ProjectVideoFragment.self]
+      fragments: [ExtendedProjectPropertiesFragment.self, ProjectVideoFragment.self, RichTextComponentFragment.self, RichTextItemFragment.self]
     ))
 
   public var projectId: GraphQLNullable<Int>
@@ -88,6 +88,8 @@ public class FastFetchProjectPage_ExtendedPropertiesQuery: GraphQLQuery {
       public var risks: String { __data["risks"] }
       /// The story behind the project, parsed for presentation.
       public var story: GraphAPI.HTML { __data["story"] }
+      /// Return an itemized version of the story. This feature is in BETA: types can change anytime!
+      public var storyRichText: StoryRichText { __data["storyRichText"] }
 
       public struct Fragments: FragmentContainer {
         public let __data: DataDict
@@ -105,7 +107,8 @@ public class FastFetchProjectPage_ExtendedPropertiesQuery: GraphQLQuery {
         minPledge: Int,
         projectNotice: String? = nil,
         risks: String,
-        story: GraphAPI.HTML
+        story: GraphAPI.HTML,
+        storyRichText: StoryRichText
       ) {
         self.init(_dataDict: DataDict(
           data: [
@@ -119,6 +122,7 @@ public class FastFetchProjectPage_ExtendedPropertiesQuery: GraphQLQuery {
             "projectNotice": projectNotice,
             "risks": risks,
             "story": story,
+            "storyRichText": storyRichText._fieldData,
           ],
           fulfilledFragments: [
             ObjectIdentifier(FastFetchProjectPage_ExtendedPropertiesQuery.Data.Project.self),
@@ -207,6 +211,43 @@ public class FastFetchProjectPage_ExtendedPropertiesQuery: GraphQLQuery {
       public typealias EnvironmentalCommitment = ExtendedProjectPropertiesFragment.EnvironmentalCommitment
 
       public typealias Faqs = ExtendedProjectPropertiesFragment.Faqs
+
+      /// Project.StoryRichText
+      ///
+      /// Parent Type: `RichTextComponent`
+      public struct StoryRichText: GraphAPI.SelectionSet {
+        public let __data: DataDict
+        public init(_dataDict: DataDict) { __data = _dataDict }
+
+        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextComponent }
+
+        public var items: [Item] { __data["items"] }
+
+        public struct Fragments: FragmentContainer {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public var richTextComponentFragment: RichTextComponentFragment { _toFragment() }
+        }
+
+        public init(
+          items: [Item]
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.RichTextComponent.typename,
+              "items": items._fieldData,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FastFetchProjectPage_ExtendedPropertiesQuery.Data.Project.StoryRichText.self),
+              ObjectIdentifier(ExtendedProjectPropertiesFragment.StoryRichText.self),
+              ObjectIdentifier(RichTextComponentFragment.self)
+            ]
+          ))
+        }
+
+        public typealias Item = RichTextComponentFragment.Item
+      }
     }
   }
 }

@@ -5,6 +5,7 @@ import KDS
 import KsApi
 import Library
 import Prelude
+import ServerDrivenUI
 import SwiftUI
 import UIKit
 
@@ -47,6 +48,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     UITableView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
+  private let storyRichTextHostingController = UIHostingController(rootView: ScrollView {
+    RichTextView(element: [])
+  })
 
   weak var playbackDelegate: AudioVideoViewControllerPlaybackDelegate?
   public var messageBannerViewController: MessageBannerViewController?
@@ -122,6 +127,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.configureTableView()
     self.configureNavigationShadowView()
     self.configureNavigationSelectorView()
+    self.configureRichTextView()
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
     self.messageBannerViewController?.delegate = self
@@ -183,6 +189,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.updateNavigationSelectorViewConstraints()
     self.updateNavigationShadowViewConstraints()
     self.updateTableViewConstraints()
+    self.updateRichTextViewConstraints()
   }
 
   public func configureNavigation() {
@@ -232,6 +239,21 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     _ = (self.tableView, self.view)
       |> ksr_addSubviewToParent()
+  }
+
+  private func configureRichTextView() {
+    _ = self.storyRichTextHostingController.view
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.backgroundColor .~ LegacyColors.ksr_white.uiColor()
+      |> \.isHidden .~ true
+
+    self.storyRichTextHostingController.view.setContentHuggingPriority(.defaultLow, for: .vertical)
+
+    _ = (self.storyRichTextHostingController.view, self.view)
+      |> ksr_addSubviewToParent()
+
+    self.addChild(self.storyRichTextHostingController)
+    self.storyRichTextHostingController.didMove(toParent: self)
   }
 
   private func configureNavigationSelectorView() {
@@ -325,6 +347,22 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     ]
 
     NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
+  }
+
+  private var richTextViewConstraints: [NSLayoutConstraint] = []
+  private func updateRichTextViewConstraints() {
+    let verticalConstraint = self.storyRichTextHostingController.view.bottomAnchor
+      .constraint(equalTo: self.pledgeCTAContainerView.topAnchor, constant: -1)
+    let richTextViewConstraints: [NSLayoutConstraint] = [
+      self.storyRichTextHostingController.view.topAnchor
+        .constraint(equalTo: self.projectNavigationSelectorView.bottomAnchor),
+      verticalConstraint,
+      self.storyRichTextHostingController.view.leftAnchor
+        .constraint(equalTo: self.view.leftAnchor),
+      self.storyRichTextHostingController.view.rightAnchor
+        .constraint(equalTo: self.view.rightAnchor)
+    ]
+    self.richTextViewConstraints = richTextViewConstraints
   }
 
   private func setupNotifications() {
@@ -549,10 +587,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
       }
 
-    self.viewModel.outputs.updateDataSource
+    self.viewModel.outputs.showProjectPageTabWithData
       .observeForUI()
       .observeValues { [weak self] data in
-        let (navSection, project, refTag, initialIsExpandedArray, _, similarProjectsState) = data
+        let (navSection, project, refTag, initialIsExpandedArray, _, similarProjectsState, contentView) = data
 
         self?.pausePlayingMainCellVideo(navSection: navSection)
 
@@ -569,6 +607,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         }
 
         initialDatasourceLoad()
+
+        self?.showContentView(contentView)
       }
 
     self.viewModel.outputs.updateFAQsInDataSource
@@ -643,6 +683,42 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         guard let self else { return }
         self.goToSimilarProject(project.projectPageParam)
       }
+  }
+
+  private func showTableView() {
+    self.tableView.isHidden = false
+    NSLayoutConstraint.deactivate(self.richTextViewConstraints)
+    self.storyRichTextHostingController.view.removeFromSuperview()
+    self.storyRichTextHostingController.removeFromParent()
+    self.storyRichTextHostingController.didMove(toParent: nil)
+  }
+
+  private func showRichTextView(elements: [RichTextElement]) {
+    self.storyRichTextHostingController.rootView = ScrollView {
+      RichTextView(element: elements)
+    }
+
+    self.tableView.isHidden = true
+
+    // AV players and OEmbeds stay active if we just hide the view, so
+    // we remove it and re-add it for a better UX
+    if self.storyRichTextHostingController.parent == nil {
+      self.addChild(self.storyRichTextHostingController)
+      self.view.addSubview(self.storyRichTextHostingController.view)
+      self.storyRichTextHostingController.didMove(toParent: self)
+    }
+
+    self.storyRichTextHostingController.view.isHidden = false
+    NSLayoutConstraint.activate(self.richTextViewConstraints)
+  }
+
+  private func showContentView(_ contentView: ProjectPageContentView) {
+    switch contentView {
+    case .tableView:
+      self.showTableView()
+    case let .richTextView(elements):
+      self.showRichTextView(elements: elements)
+    }
   }
 
   private func goToSimilarProject(_ param: any ProjectPageParam) {

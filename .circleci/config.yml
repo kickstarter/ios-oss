@@ -301,10 +301,10 @@ workflows:
       #         only: /beta-dist-.*/
       - deploy_alpha:
           context: aws
-          filters:
-            branches:
-              # matches all branches that contain 'feature' but do not contain 'alpha-dist'
-              only: /^((?!alpha\-dist).*feature.*)*$/
+          # matches all branches that contain 'feature' but do not contain 'alpha-dist'
+          filters: >-
+            pipeline.git.branch matches /.*feature.*/ and
+            not (pipeline.git.branch starts-with "alpha-dist")
           requires: *all_jobs
       - deploy_beta:
           context: aws

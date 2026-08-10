@@ -5,7 +5,7 @@
 
 public struct ExtendedProjectPropertiesFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment ExtendedProjectPropertiesFragment on Project { __typename aiDisclosure { __typename id fundingForAiAttribution fundingForAiConsent fundingForAiOption generatedByAiConsent generatedByAiDetails involvesAi involvesFunding involvesGeneration involvesOther otherAiDetails } environmentalCommitments { __typename commitmentCategory description id } faqs { __typename nodes { __typename question answer id createdAt } } minPledge projectNotice risks story }"#
+    #"fragment ExtendedProjectPropertiesFragment on Project { __typename aiDisclosure { __typename id fundingForAiAttribution fundingForAiConsent fundingForAiOption generatedByAiConsent generatedByAiDetails involvesAi involvesFunding involvesGeneration involvesOther otherAiDetails } environmentalCommitments { __typename commitmentCategory description id } faqs { __typename nodes { __typename question answer id createdAt } } minPledge projectNotice risks story storyRichText { __typename ...RichTextComponentFragment } }"#
   }
 
   public let __data: DataDict
@@ -21,6 +21,7 @@ public struct ExtendedProjectPropertiesFragment: GraphAPI.SelectionSet, Fragment
     .field("projectNotice", String?.self),
     .field("risks", String.self),
     .field("story", GraphAPI.HTML.self),
+    .field("storyRichText", StoryRichText.self),
   ] }
 
   public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
@@ -36,6 +37,8 @@ public struct ExtendedProjectPropertiesFragment: GraphAPI.SelectionSet, Fragment
   public var risks: String { __data["risks"] }
   /// The story behind the project, parsed for presentation.
   public var story: GraphAPI.HTML { __data["story"] }
+  /// Return an itemized version of the story. This feature is in BETA: types can change anytime!
+  public var storyRichText: StoryRichText { __data["storyRichText"] }
 
   public init(
     aiDisclosure: AiDisclosure? = nil,
@@ -44,7 +47,8 @@ public struct ExtendedProjectPropertiesFragment: GraphAPI.SelectionSet, Fragment
     minPledge: Int,
     projectNotice: String? = nil,
     risks: String,
-    story: GraphAPI.HTML
+    story: GraphAPI.HTML,
+    storyRichText: StoryRichText
   ) {
     self.init(_dataDict: DataDict(
       data: [
@@ -56,6 +60,7 @@ public struct ExtendedProjectPropertiesFragment: GraphAPI.SelectionSet, Fragment
         "projectNotice": projectNotice,
         "risks": risks,
         "story": story,
+        "storyRichText": storyRichText._fieldData,
       ],
       fulfilledFragments: [
         ObjectIdentifier(ExtendedProjectPropertiesFragment.self)
@@ -247,5 +252,45 @@ public struct ExtendedProjectPropertiesFragment: GraphAPI.SelectionSet, Fragment
         ))
       }
     }
+  }
+
+  /// StoryRichText
+  ///
+  /// Parent Type: `RichTextComponent`
+  public struct StoryRichText: GraphAPI.SelectionSet {
+    public let __data: DataDict
+    public init(_dataDict: DataDict) { __data = _dataDict }
+
+    public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextComponent }
+    public static var __selections: [ApolloAPI.Selection] { [
+      .field("__typename", String.self),
+      .fragment(RichTextComponentFragment.self),
+    ] }
+
+    public var items: [Item] { __data["items"] }
+
+    public struct Fragments: FragmentContainer {
+      public let __data: DataDict
+      public init(_dataDict: DataDict) { __data = _dataDict }
+
+      public var richTextComponentFragment: RichTextComponentFragment { _toFragment() }
+    }
+
+    public init(
+      items: [Item]
+    ) {
+      self.init(_dataDict: DataDict(
+        data: [
+          "__typename": GraphAPI.Objects.RichTextComponent.typename,
+          "items": items._fieldData,
+        ],
+        fulfilledFragments: [
+          ObjectIdentifier(ExtendedProjectPropertiesFragment.StoryRichText.self),
+          ObjectIdentifier(RichTextComponentFragment.self)
+        ]
+      ))
+    }
+
+    public typealias Item = RichTextComponentFragment.Item
   }
 }

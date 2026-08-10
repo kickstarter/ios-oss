@@ -1,4 +1,6 @@
 import AVFoundation
+import Experimentation
+import GraphAPI
 @testable import KsApi
 @testable import KsApiTestHelpers
 @testable import Library
@@ -25,6 +27,17 @@ final class ProjectPageViewModelTests: TestCase {
       aiDisclosure: nil,
       risks: "",
       story: ProjectStoryElements(htmlViewElements: []),
+      minimumPledgeAmount: 1,
+      projectNotice: nil
+    )
+
+  private let projectWithRichText = Project.template
+    |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+      environmentalCommitments: [],
+      faqs: [],
+      aiDisclosure: nil,
+      risks: "",
+      story: ProjectStoryElements(htmlViewElements: [], richText: RichTextComponentFragment(items: [])),
       minimumPledgeAmount: 1,
       projectNotice: nil
     )
@@ -59,9 +72,10 @@ final class ProjectPageViewModelTests: TestCase {
   private let projectFlagged = TestObserver<Bool, Never>()
   private let reloadCampaignData = TestObserver<(), Never>()
   private let showHelpWebViewController = TestObserver<HelpType, Never>()
-  private let updateDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
-  private let updateDataSourceProject = TestObserver<Project, Never>()
-  private let updateDataSourceImageURLS = TestObserver<[URL], Never>()
+  private let showProjectPageTabWithDataNavigationSection = TestObserver<NavigationSection, Never>()
+  private let showProjectPageTabWithDataProject = TestObserver<Project, Never>()
+  private let showProjectPageTabWithDataImageURLS = TestObserver<[URL], Never>()
+  private let showProjectPageTabWithDataContentView = TestObserver<ProjectPageContentView, Never>()
   private let updateFAQsInDataSourceProject = TestObserver<Project, Never>()
   private let updateFAQsInDataSourceIsExpandedValues = TestObserver<[Bool], Never>()
   private let updateWatchProjectWithPrelaunchProjectState = TestObserver<PledgeCTAPrelaunchState, Never>()
@@ -111,12 +125,14 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.projectFlagged.observe(self.projectFlagged.observer)
     self.vm.outputs.reloadCampaignData.observe(self.reloadCampaignData.observer)
     self.vm.outputs.showHelpWebViewController.observe(self.showHelpWebViewController.observer)
-    self.vm.outputs.updateDataSource.map { $0.0 }
-      .observe(self.updateDataSourceNavigationSection.observer)
-    self.vm.outputs.updateDataSource.map { $0.1 }
-      .observe(self.updateDataSourceProject.observer)
-    self.vm.outputs.updateDataSource.map { $0.4 }
-      .observe(self.updateDataSourceImageURLS.observer)
+    self.vm.outputs.showProjectPageTabWithData.map { $0.0 }
+      .observe(self.showProjectPageTabWithDataNavigationSection.observer)
+    self.vm.outputs.showProjectPageTabWithData.map { $0.1 }
+      .observe(self.showProjectPageTabWithDataProject.observer)
+    self.vm.outputs.showProjectPageTabWithData.map { $0.4 }
+      .observe(self.showProjectPageTabWithDataImageURLS.observer)
+    self.vm.outputs.showProjectPageTabWithData.map { $0.6 }
+      .observe(self.showProjectPageTabWithDataContentView.observer)
     self.vm.outputs.updateFAQsInDataSource.map { $0.0 }
       .observe(self.updateFAQsInDataSourceProject.observer)
     self.vm.outputs.updateFAQsInDataSource.map { $0.2 }
@@ -1161,7 +1177,7 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  func testOutput_UpdateDataSourceNavigationSection() {
+  func testOutput_showProjectPageTabWithDataNavigationSection() {
     let overviewSection = NavigationSection.overview.rawValue
     let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
 
@@ -1169,47 +1185,50 @@ final class ProjectPageViewModelTests: TestCase {
       self.vm.inputs
         .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
 
-      self.updateDataSourceNavigationSection.assertDidNotEmitValue()
+      self.vm.inputs
+        .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
+
+      self.showProjectPageTabWithDataNavigationSection.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
-      self.updateDataSourceNavigationSection.assertDidNotEmitValue()
+      self.showProjectPageTabWithDataNavigationSection.assertDidNotEmitValue()
 
       self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
 
-      self.updateDataSourceNavigationSection.assertValueCount(1)
+      self.showProjectPageTabWithDataNavigationSection.assertValueCount(1)
 
       self.vm.inputs.projectNavigationSelectorViewDidSelect(index: environmentalCommitmentsSection)
 
-      self.updateDataSourceNavigationSection.assertValues([.overview, .environmentalCommitments])
+      self.showProjectPageTabWithDataNavigationSection.assertValues([.overview, .environmentalCommitments])
     }
   }
 
-  func testOutput_UpdateDataSourceProject() {
+  func testOutput_showProjectPageTabWithDataProject() {
     let overviewSection = NavigationSection.overview.rawValue
     let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
 
     ProjectPageViewModelTests.mockNetworkRequests {
       self.vm.inputs
         .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
-      self.updateDataSourceProject.assertDidNotEmitValue()
+      self.showProjectPageTabWithDataProject.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
-      self.updateDataSourceProject.assertDidNotEmitValue()
+      self.showProjectPageTabWithDataProject.assertDidNotEmitValue()
       self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
 
-      self.updateDataSourceNavigationSection.assertValueCount(1)
+      self.showProjectPageTabWithDataNavigationSection.assertValueCount(1)
 
       self.vm.inputs.projectNavigationSelectorViewDidSelect(index: environmentalCommitmentsSection)
 
-      self.updateDataSourceProject.assertDidEmitValue()
+      self.showProjectPageTabWithDataProject.assertDidEmitValue()
     }
   }
 
-  func testOutput_UpdateDataSourceProject_ReloadsAfterUserSessionStarted() {
+  func testOutput_showProjectPageTabWithDataProject_ReloadsAfterUserSessionStarted() {
     let overviewSection = NavigationSection.overview.rawValue
     let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
 
@@ -1218,32 +1237,32 @@ final class ProjectPageViewModelTests: TestCase {
         self.vm.inputs
           .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
 
-        self.updateDataSourceProject.assertDidNotEmitValue()
+        self.showProjectPageTabWithDataProject.assertDidNotEmitValue()
 
         self.vm.inputs.viewDidLoad()
 
         self.scheduler.advance()
 
-        self.updateDataSourceProject.assertDidNotEmitValue()
+        self.showProjectPageTabWithDataProject.assertDidNotEmitValue()
 
         self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
 
-        self.updateDataSourceNavigationSection.assertValueCount(1)
+        self.showProjectPageTabWithDataNavigationSection.assertValueCount(1)
 
         self.vm.inputs.projectNavigationSelectorViewDidSelect(index: environmentalCommitmentsSection)
 
-        self.updateDataSourceProject.assertDidEmitValue()
+        self.showProjectPageTabWithDataProject.assertDidEmitValue()
 
         withEnvironment(currentUser: .template) {
           self.vm.inputs.userSessionStarted()
 
-          self.updateDataSourceProject.assertDidEmitValue()
+          self.showProjectPageTabWithDataProject.assertDidEmitValue()
         }
       }
     }
   }
 
-  func testOutputForEmptyImageURLS_UpdateDataSourceProject() {
+  func testOutputForEmptyImageURLS_showProjectPageTabWithDataProject() {
     let overviewSection = NavigationSection.overview.rawValue
     let campaignSection = NavigationSection.campaign.rawValue
 
@@ -1251,24 +1270,24 @@ final class ProjectPageViewModelTests: TestCase {
       self.vm.inputs
         .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
 
-      self.updateDataSourceImageURLS.assertDidNotEmitValue()
+      self.showProjectPageTabWithDataImageURLS.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
-      self.updateDataSourceImageURLS.assertDidNotEmitValue()
+      self.showProjectPageTabWithDataImageURLS.assertDidNotEmitValue()
       self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
 
-      self.updateDataSourceNavigationSection.assertValueCount(1)
+      self.showProjectPageTabWithDataNavigationSection.assertValueCount(1)
 
       self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
 
-      self.updateDataSourceImageURLS.assertDidEmitValue()
-      self.updateDataSourceImageURLS.assertLastValue([])
+      self.showProjectPageTabWithDataImageURLS.assertDidEmitValue()
+      self.showProjectPageTabWithDataImageURLS.assertLastValue([])
     }
   }
 
-  func testOutputForNonEmptyImageURLS_UpdateDataSourceProject() {
+  func testOutputForNonEmptyImageURLS_showProjectPageTabWithDataProject() {
     let overviewSection = NavigationSection.overview.rawValue
     let campaignSection = NavigationSection.campaign.rawValue
     let expectedUrl = URL(string: "https://image.com")!
@@ -1294,20 +1313,20 @@ final class ProjectPageViewModelTests: TestCase {
       self.vm.inputs
         .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
 
-      self.updateDataSourceImageURLS.assertDidNotEmitValue()
+      self.showProjectPageTabWithDataImageURLS.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
-      self.updateDataSourceImageURLS.assertDidNotEmitValue()
+      self.showProjectPageTabWithDataImageURLS.assertDidNotEmitValue()
       self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
 
-      self.updateDataSourceNavigationSection.assertValueCount(1)
+      self.showProjectPageTabWithDataNavigationSection.assertValueCount(1)
 
       self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
 
-      self.updateDataSourceImageURLS.assertDidEmitValue()
-      self.updateDataSourceImageURLS.assertLastValue([expectedUrl])
+      self.showProjectPageTabWithDataImageURLS.assertDidEmitValue()
+      self.showProjectPageTabWithDataImageURLS.assertLastValue([expectedUrl])
     }
   }
 
@@ -1787,6 +1806,155 @@ final class ProjectPageViewModelTests: TestCase {
       XCTAssertNil(imageElement?.caption, "Image should not have a caption")
     }
   }
+
+  // MARK: - selectedContentView
+
+  func testselectedContentView_defaultsToTableViewOnViewDidLoad() {
+    Self.mockNetworkRequests(project: self.projectWithEmptyProperties) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(self.projectWithEmptyProperties),
+        refInfo: RefInfo(.category)
+      )
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(
+        index: NavigationSection.campaign.rawValue
+      )
+      self.scheduler.advance()
+
+      self.showProjectPageTabWithDataContentView.assertValues([.tableView])
+    }
+  }
+
+  func testSelectedContentView_featureFlagOff_campaignSection_returnsTableView() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.projectStoryRichText: false]
+
+    Self.mockNetworkRequests(project: self.projectWithRichText) {
+      withEnvironment(statsigClient: mockStatsig) {
+        self.vm.inputs.configureWith(
+          projectOrParam: .left(self.projectWithRichText),
+          refInfo: RefInfo(.category)
+        )
+        self.vm.inputs.viewDidLoad()
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(
+          index: NavigationSection.campaign.rawValue
+        )
+        self.scheduler.advance()
+
+        self.showProjectPageTabWithDataContentView.assertLastValue(
+          .tableView,
+          "Feature flag off → table view even with rich text."
+        )
+      }
+    }
+  }
+
+  func testselectedContentView_featureFlagOn_noRichText_campaignSection_returnsTableView() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.projectStoryRichText: true]
+
+    Self.mockNetworkRequests(project: self.projectWithEmptyProperties) {
+      withEnvironment(statsigClient: mockStatsig) {
+        self.vm.inputs.configureWith(
+          projectOrParam: .left(self.projectWithEmptyProperties),
+          refInfo: RefInfo(.category)
+        )
+        self.vm.inputs.viewDidLoad()
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(
+          index: NavigationSection.campaign.rawValue
+        )
+        self.scheduler.advance()
+
+        self.showProjectPageTabWithDataContentView.assertLastValue(
+          .tableView,
+          "No rich text → table view even with flag on."
+        )
+      }
+    }
+  }
+
+  func testselectedContentView_featureFlagOn_hasRichText_campaignSection_returnsRichTextView() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.projectStoryRichText: true]
+
+    Self.mockNetworkRequests(project: self.projectWithRichText) {
+      withEnvironment(statsigClient: mockStatsig) {
+        self.vm.inputs.configureWith(
+          projectOrParam: .left(self.projectWithRichText),
+          refInfo: RefInfo(.category)
+        )
+        self.vm.inputs.viewDidLoad()
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(
+          index: NavigationSection.campaign.rawValue
+        )
+        self.scheduler.advance()
+
+        self.showProjectPageTabWithDataContentView.assertValueCount(1)
+        guard case .richTextView = self.showProjectPageTabWithDataContentView.values[0] else {
+          return XCTFail("Second value is not richTextView")
+        }
+      }
+    }
+  }
+
+  func testselectedContentView_switchingFromCampaignToOverview_returnsTableView() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.projectStoryRichText: true]
+
+    Self.mockNetworkRequests(project: self.projectWithRichText) {
+      withEnvironment(statsigClient: mockStatsig) {
+        self.vm.inputs.configureWith(
+          projectOrParam: .left(self.projectWithRichText),
+          refInfo: RefInfo(.category)
+        )
+        self.vm.inputs.viewDidLoad()
+        self.scheduler.advance()
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(
+          index: NavigationSection.campaign.rawValue
+        )
+        self.scheduler.advance()
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(
+          index: NavigationSection.overview.rawValue
+        )
+        self.scheduler.advance()
+
+        self.showProjectPageTabWithDataContentView.assertValueCount(2)
+        guard case .richTextView = self.showProjectPageTabWithDataContentView.values[0] else {
+          return XCTFail("Second value is not richTextView")
+        }
+        XCTAssertEqual(self.showProjectPageTabWithDataContentView.values.last, .tableView)
+      }
+    }
+  }
+
+  func testselectedContentView_skipRepeats_doesNotReemitSameValue() {
+    let mockStatsig = MockStatsigWrapper()
+    mockStatsig.features = [.projectStoryRichText: true]
+
+    Self.mockNetworkRequests(project: self.projectWithRichText) {
+      withEnvironment(statsigClient: mockStatsig) {
+        self.vm.inputs.configureWith(
+          projectOrParam: .left(self.projectWithRichText),
+          refInfo: RefInfo(.category)
+        )
+        self.vm.inputs.viewDidLoad()
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(
+          index: NavigationSection.campaign.rawValue
+        )
+        self.vm.inputs.projectNavigationSelectorViewDidSelect(
+          index: NavigationSection.campaign.rawValue
+        )
+        self.scheduler.advance()
+
+        self.showProjectPageTabWithDataContentView.assertValueCount(
+          1,
+          "Repeated campaign selection is suppressed by skipRepeats."
+        )
+      }
+    }
+  }
+
+  // MARK: - Functions
 
   static func mockNetworkRequests(
     project: Project = Project.template,
