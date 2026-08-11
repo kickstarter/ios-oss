@@ -3,11 +3,11 @@
 
 @_exported import ApolloAPI
 
-public class FastFetchProjectPage_ExtendedPropertiesQuery: GraphQLQuery {
-  public static let operationName: String = "FastFetchProjectPage_ExtendedPropertiesQuery"
+public class FastFetchProjectPageExtendedPropertiesQuery: GraphQLQuery {
+  public static let operationName: String = "FastFetchProjectPageExtendedPropertiesQuery"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FastFetchProjectPage_ExtendedPropertiesQuery($projectId: Int, $slug: String) { project(pid: $projectId, slug: $slug) { __typename ...ExtendedProjectPropertiesFragment video { __typename ...ProjectVideoFragment } flagging { __typename kind } } }"#,
+      #"query FastFetchProjectPageExtendedPropertiesQuery($projectId: Int, $slug: String) { project(pid: $projectId, slug: $slug) { __typename ...ExtendedProjectPropertiesFragment video { __typename ...ProjectVideoFragment } flagging { __typename kind } } }"#,
       fragments: [ExtendedProjectPropertiesFragment.self, ProjectVideoFragment.self, RichTextComponentFragment.self, RichTextItemFragment.self]
     ))
 
@@ -51,7 +51,7 @@ public class FastFetchProjectPage_ExtendedPropertiesQuery: GraphQLQuery {
           "project": project._fieldData,
         ],
         fulfilledFragments: [
-          ObjectIdentifier(FastFetchProjectPage_ExtendedPropertiesQuery.Data.self)
+          ObjectIdentifier(FastFetchProjectPageExtendedPropertiesQuery.Data.self)
         ]
       ))
     }
@@ -125,7 +125,7 @@ public class FastFetchProjectPage_ExtendedPropertiesQuery: GraphQLQuery {
             "storyRichText": storyRichText._fieldData,
           ],
           fulfilledFragments: [
-            ObjectIdentifier(FastFetchProjectPage_ExtendedPropertiesQuery.Data.Project.self),
+            ObjectIdentifier(FastFetchProjectPageExtendedPropertiesQuery.Data.Project.self),
             ObjectIdentifier(ExtendedProjectPropertiesFragment.self)
           ]
         ))
@@ -166,7 +166,7 @@ public class FastFetchProjectPage_ExtendedPropertiesQuery: GraphQLQuery {
               "videoSources": videoSources._fieldData,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FastFetchProjectPage_ExtendedPropertiesQuery.Data.Project.Video.self),
+              ObjectIdentifier(FastFetchProjectPageExtendedPropertiesQuery.Data.Project.Video.self),
               ObjectIdentifier(ProjectVideoFragment.self)
             ]
           ))
@@ -200,7 +200,7 @@ public class FastFetchProjectPage_ExtendedPropertiesQuery: GraphQLQuery {
               "kind": kind,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FastFetchProjectPage_ExtendedPropertiesQuery.Data.Project.Flagging.self)
+              ObjectIdentifier(FastFetchProjectPageExtendedPropertiesQuery.Data.Project.Flagging.self)
             ]
           ))
         }
@@ -239,7 +239,7 @@ public class FastFetchProjectPage_ExtendedPropertiesQuery: GraphQLQuery {
               "items": items._fieldData,
             ],
             fulfilledFragments: [
-              ObjectIdentifier(FastFetchProjectPage_ExtendedPropertiesQuery.Data.Project.StoryRichText.self),
+              ObjectIdentifier(FastFetchProjectPageExtendedPropertiesQuery.Data.Project.StoryRichText.self),
               ObjectIdentifier(ExtendedProjectPropertiesFragment.StoryRichText.self),
               ObjectIdentifier(RichTextComponentFragment.self)
             ]

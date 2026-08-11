@@ -14,9 +14,9 @@ public struct ProjectPageFetcher {
     projectParam param: Param
   ) -> SignalProducer<Project, ErrorEnvelope> {
     let baseFetch = self.apiService
-      .fastFetchProjectPage_Checkout(projectParam: param)
+      .fastFetchProjectPageBase(projectParam: param)
     let extraFetch = self.apiService
-      .fastFetchProjectPage_ExtendedProperties(projectParam: param)
+      .fastFetchProjectPageExtendedProperties(projectParam: param)
 
     return SignalProducer.zip(
       baseFetch,

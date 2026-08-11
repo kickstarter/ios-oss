@@ -1316,9 +1316,9 @@
       }
     }
 
-    internal func fastFetchProjectPage_Checkout(projectParam: Param)
+    internal func fastFetchProjectPageBase(projectParam: Param)
       -> SignalProducer<Project, ErrorEnvelope> {
-      let query = GraphAPI.FastFetchProjectPage_CheckoutQuery(
+      let query = GraphAPI.FastFetchProjectPageBaseQuery(
         projectId: .someOrNil(projectParam.id),
         slug: .someOrNil(projectParam.slug)
       )
@@ -1329,9 +1329,9 @@
         .flatMap { Project.projectProducer(from: $0) }
     }
 
-    internal func fastFetchProjectPage_ExtendedProperties(projectParam: Param)
+    internal func fastFetchProjectPageExtendedProperties(projectParam: Param)
       -> SignalProducer<ProjectPageExtraProperties, ErrorEnvelope> {
-      let query = GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery(
+      let query = GraphAPI.FastFetchProjectPageExtendedPropertiesQuery(
         projectId: .someOrNil(projectParam.id),
         slug: .someOrNil(projectParam.slug)
       )

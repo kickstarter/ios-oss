@@ -251,12 +251,12 @@ public protocol ServiceType {
   /// Fetch the newest data for a particular project from its id or slug. Includes backings and rewards.
   /// Does not included extended project properties, shipping, or project video.
   /// Used by `ProjectPageFetcher` to run an optimized project page fetch.
-  func fastFetchProjectPage_Checkout(projectParam: Param)
+  func fastFetchProjectPageBase(projectParam: Param)
     -> SignalProducer<Project, ErrorEnvelope>
 
   /// Fetch the newest data for a particular project from its id or slug. Includes extended project properties.
   /// Used by `ProjectPageFetcher` to run an optimized project page fetch.
-  func fastFetchProjectPage_ExtendedProperties(projectParam: Param)
+  func fastFetchProjectPageExtendedProperties(projectParam: Param)
     -> SignalProducer<ProjectPageExtraProperties, ErrorEnvelope>
 
   /// Fetch the newest data for a particular project from its id or slug, including an optional backing id if current user is backing project

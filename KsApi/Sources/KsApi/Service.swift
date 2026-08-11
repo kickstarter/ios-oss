@@ -565,9 +565,9 @@ public struct Service: ServiceType {
     return requestPaginationDecodable(paginationUrl)
   }
 
-  public func fastFetchProjectPage_Checkout(projectParam: Param)
+  public func fastFetchProjectPageBase(projectParam: Param)
     -> SignalProducer<Project, ErrorEnvelope> {
-    let query = GraphAPI.FastFetchProjectPage_CheckoutQuery(
+    let query = GraphAPI.FastFetchProjectPageBaseQuery(
       projectId: .someOrNil(projectParam.id),
       slug: .someOrNil(projectParam.slug)
     )
@@ -577,9 +577,9 @@ public struct Service: ServiceType {
       .flatMap { Project.projectProducer(from: $0) }
   }
 
-  public func fastFetchProjectPage_ExtendedProperties(projectParam: Param)
+  public func fastFetchProjectPageExtendedProperties(projectParam: Param)
     -> SignalProducer<ProjectPageExtraProperties, ErrorEnvelope> {
-    let query = GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery(
+    let query = GraphAPI.FastFetchProjectPageExtendedPropertiesQuery(
       projectId: .someOrNil(projectParam.id),
       slug: .someOrNil(projectParam.slug)
     )

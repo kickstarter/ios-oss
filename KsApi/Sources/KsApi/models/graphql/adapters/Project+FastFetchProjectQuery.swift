@@ -16,7 +16,7 @@ public struct ProjectPageExtraProperties {
   }
 
   internal static func extraPropertiesProducer(
-    from data: GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.Data
+    from data: GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.Data
   ) -> SignalProducer<ProjectPageExtraProperties, ErrorEnvelope> {
     let properties = ProjectPageExtraProperties.extraProperties(from: data)
 
@@ -28,7 +28,7 @@ public struct ProjectPageExtraProperties {
   }
 
   internal static func extraProperties(
-    from data: GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.Data
+    from data: GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.Data
   ) -> ProjectPageExtraProperties? {
     guard let project = data.project else { return nil }
 
@@ -38,7 +38,7 @@ public struct ProjectPageExtraProperties {
     let extendedFragment = project.fragments.extendedProjectPropertiesFragment
     let extendedProperties = ExtendedProjectProperties.extendedProject(from: extendedFragment)
 
-    let flagging = project.flagging?.kind.isSome ?? false
+    let flagging = project.flagging.isSome
 
     return ProjectPageExtraProperties(
       extendedProjectProperties: extendedProperties,
@@ -50,7 +50,7 @@ public struct ProjectPageExtraProperties {
 
 extension Project {
   static func projectProducer(
-    from data: GraphAPI.FastFetchProjectPage_CheckoutQuery.Data
+    from data: GraphAPI.FastFetchProjectPageBaseQuery.Data
   ) -> SignalProducer<Project, ErrorEnvelope> {
     guard let project = Project.project(from: data) else {
       return .empty
@@ -60,7 +60,7 @@ extension Project {
   }
 
   internal static func project(
-    from data: GraphAPI.FastFetchProjectPage_CheckoutQuery.Data
+    from data: GraphAPI.FastFetchProjectPageBaseQuery.Data
   ) -> Project? {
     guard let project = data.project else { return nil }
 

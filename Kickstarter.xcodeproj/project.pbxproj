@@ -655,9 +655,9 @@
 		E113BD772B7D1B7700D3A809 /* KeychainTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
 		E113BD812B7D255000D3A809 /* Library-Keychain-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Library-Keychain-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E113BD832B7D255000D3A809 /* Library_Keychain_iOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library_Keychain_iOSTests.swift; sourceTree = "<group>"; };
-		E12923E0302394C2009D51A7 /* FastFetchProjectPage_ExtendedPropertiesQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FastFetchProjectPage_ExtendedPropertiesQuery.graphql; sourceTree = "<group>"; };
+		E12923E0302394C2009D51A7 /* FastFetchProjectPageExtendedPropertiesQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FastFetchProjectPageExtendedPropertiesQuery.graphql; sourceTree = "<group>"; };
 		E137D9AE2F3537F80089183D /* PublicUserFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PublicUserFragment.graphql; sourceTree = "<group>"; };
-		E13CEA6930224B50004F6A18 /* FastFetchProjectPage_CheckoutQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FastFetchProjectPage_CheckoutQuery.graphql; sourceTree = "<group>"; };
+		E13CEA6930224B50004F6A18 /* FastFetchProjectPageBaseQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FastFetchProjectPageBaseQuery.graphql; sourceTree = "<group>"; };
 		E15E22CD2E54B91B00EE6BB0 /* KDS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = KDS; sourceTree = "<group>"; };
 		E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppEnvironmentTests+OAuthInKeychain.swift"; sourceTree = "<group>"; };
 		E18CA2882F9A864E005C22AE /* StatsigExperiment+HelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsigExperiment+HelperTests.swift"; sourceTree = "<group>"; };
@@ -1359,8 +1359,8 @@
 			children = (
 				E190EB532E29944E006A6DB6 /* BuildPaymentPlanQuery.graphql */,
 				E190EB542E29944E006A6DB6 /* DefaultLocationsQuery.graphql */,
-				E13CEA6930224B50004F6A18 /* FastFetchProjectPage_CheckoutQuery.graphql */,
-				E12923E0302394C2009D51A7 /* FastFetchProjectPage_ExtendedPropertiesQuery.graphql */,
+				E13CEA6930224B50004F6A18 /* FastFetchProjectPageBaseQuery.graphql */,
+				E12923E0302394C2009D51A7 /* FastFetchProjectPageExtendedPropertiesQuery.graphql */,
 				E190EB552E29944E006A6DB6 /* FetchAddOnsQuery.graphql */,
 				E190EB562E29944E006A6DB6 /* FetchBackingQuery.graphql */,
 				33AA26C72E39E9BD002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql */,

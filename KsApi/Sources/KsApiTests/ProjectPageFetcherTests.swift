@@ -126,12 +126,12 @@ public final class ProjectPageFetcherTests: XCTestCase {
     let mockService = MockService(
       fetchGraphQLResponses: [
         (
-          GraphAPI.FastFetchProjectPage_CheckoutQuery.self,
-          GraphAPI.FastFetchProjectPage_CheckoutQuery.Data.template
+          GraphAPI.FastFetchProjectPageBaseQuery.self,
+          GraphAPI.FastFetchProjectPageBaseQuery.Data.template
         ),
         (
-          GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.self,
-          GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.Data.template
+          GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.self,
+          GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.Data.template
         )
       ]
     )
@@ -167,8 +167,8 @@ public final class ProjectPageFetcherTests: XCTestCase {
       fetchGraphQLResponses: [
         // Intentionally missing the first mock to trigger an error
         (
-          GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.self,
-          GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.Data.template
+          GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.self,
+          GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.Data.template
         )
       ]
     )
@@ -190,8 +190,8 @@ public final class ProjectPageFetcherTests: XCTestCase {
     let mockService = MockService(
       fetchGraphQLResponses: [
         (
-          GraphAPI.FastFetchProjectPage_CheckoutQuery.self,
-          GraphAPI.FastFetchProjectPage_CheckoutQuery.Data.template
+          GraphAPI.FastFetchProjectPageBaseQuery.self,
+          GraphAPI.FastFetchProjectPageBaseQuery.Data.template
         )
         // Intentionally missing the second mock to trigger an error
       ]
@@ -211,8 +211,8 @@ public final class ProjectPageFetcherTests: XCTestCase {
   }
 }
 
-private extension GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.Data {
-  static var template: GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.Data {
+private extension GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.Data {
+  static var template: GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.Data {
     let mockExtraProperties = Mock<GraphAPITestMocks.Project>()
     mockExtraProperties.risks = "This project has risks."
     mockExtraProperties.story = "Project story"
@@ -233,14 +233,14 @@ private extension GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.Data {
       header
     ]
 
-    return GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.Data(
-      project: FastFetchProjectPage_ExtendedPropertiesQuery.Data.Project.from(mockExtraProperties)
+    return GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.Data(
+      project: FastFetchProjectPageExtendedPropertiesQuery.Data.Project.from(mockExtraProperties)
     )
   }
 }
 
-private extension GraphAPI.FastFetchProjectPage_CheckoutQuery.Data {
-  static var template: GraphAPI.FastFetchProjectPage_CheckoutQuery.Data {
+private extension GraphAPI.FastFetchProjectPageBaseQuery.Data {
+  static var template: GraphAPI.FastFetchProjectPageBaseQuery.Data {
     let mockProject = GraphAPITestMocks.Project.mock
     mockProject.posts = Mock<GraphAPITestMocks.PostConnection>()
     mockProject.posts?.totalCount = 2
@@ -252,8 +252,8 @@ private extension GraphAPI.FastFetchProjectPage_CheckoutQuery.Data {
     mockProject.rewards = Mock<GraphAPITestMocks.ProjectRewardConnection>()
     mockProject.rewards?.nodes = [mockReward]
 
-    return GraphAPI.FastFetchProjectPage_CheckoutQuery.Data(
-      project: FastFetchProjectPage_CheckoutQuery.Data.Project.from(mockProject)
+    return GraphAPI.FastFetchProjectPageBaseQuery.Data(
+      project: FastFetchProjectPageBaseQuery.Data.Project.from(mockProject)
     )
   }
 }
