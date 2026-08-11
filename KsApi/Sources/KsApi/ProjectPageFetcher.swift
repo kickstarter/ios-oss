@@ -8,6 +8,24 @@ public struct ProjectPageFetcher {
     self.apiService = apiService
   }
 
+  /// A faster project page fetch.
+  /// Runs two parallel fetches - one for basic project properties, and another for extras like the project story.
+  public func fastFetchProjectPage(
+    projectParam param: Param
+  ) -> SignalProducer<Project, ErrorEnvelope> {
+    let baseFetch = self.apiService
+      .fastFetchProjectPageBase(projectParam: param)
+    let extraFetch = self.apiService
+      .fastFetchProjectPageExtendedProperties(projectParam: param)
+
+    return SignalProducer.zip(
+      baseFetch,
+      extraFetch
+    ).map { project, extraProperties in
+      extraProperties.addExtraProperties(toProject: project)
+    }
+  }
+
   public func fetchProjectPage(
     projectParam param: Param
   ) -> SignalProducer<Project, ErrorEnvelope> {

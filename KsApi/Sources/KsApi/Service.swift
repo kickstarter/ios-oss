@@ -565,6 +565,30 @@ public struct Service: ServiceType {
     return requestPaginationDecodable(paginationUrl)
   }
 
+  public func fastFetchProjectPageBase(projectParam: Param)
+    -> SignalProducer<Project, ErrorEnvelope> {
+    let query = GraphAPI.FastFetchProjectPageBaseQuery(
+      projectId: .someOrNil(projectParam.id),
+      slug: .someOrNil(projectParam.slug)
+    )
+
+    return GraphQL.shared.client
+      .fetch(query: query)
+      .flatMap { Project.projectProducer(from: $0) }
+  }
+
+  public func fastFetchProjectPageExtendedProperties(projectParam: Param)
+    -> SignalProducer<ProjectPageExtraProperties, ErrorEnvelope> {
+    let query = GraphAPI.FastFetchProjectPageExtendedPropertiesQuery(
+      projectId: .someOrNil(projectParam.id),
+      slug: .someOrNil(projectParam.slug)
+    )
+
+    return GraphQL.shared.client
+      .fetch(query: query)
+      .flatMap { ProjectPageExtraProperties.extraPropertiesProducer(from: $0) }
+  }
+
   /**
     Use case:
    - `ProjectPageViewModel`

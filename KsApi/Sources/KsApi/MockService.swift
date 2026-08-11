@@ -1316,6 +1316,32 @@
       }
     }
 
+    internal func fastFetchProjectPageBase(projectParam: Param)
+      -> SignalProducer<Project, ErrorEnvelope> {
+      let query = GraphAPI.FastFetchProjectPageBaseQuery(
+        projectId: .someOrNil(projectParam.id),
+        slug: .someOrNil(projectParam.slug)
+      )
+
+      // Use the GraphQL mocking infrastructure
+      return self
+        .fetch(query: query)
+        .flatMap { Project.projectProducer(from: $0) }
+    }
+
+    internal func fastFetchProjectPageExtendedProperties(projectParam: Param)
+      -> SignalProducer<ProjectPageExtraProperties, ErrorEnvelope> {
+      let query = GraphAPI.FastFetchProjectPageExtendedPropertiesQuery(
+        projectId: .someOrNil(projectParam.id),
+        slug: .someOrNil(projectParam.slug)
+      )
+
+      // Use the GraphQL mocking infrastructure
+      return self
+        .fetch(query: query)
+        .flatMap { ProjectPageExtraProperties.extraPropertiesProducer(from: $0) }
+    }
+
     internal func fetchProject(projectParam: Param)
       -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope> {
       guard let client = self.apolloClient else {
