@@ -250,6 +250,10 @@ public class VideoFeedQuery: GraphQLQuery {
           public var backersCount: Int { __data["backersCount"] }
           /// Is the current user watching this project?
           public var isWatched: Bool { __data["isWatched"] }
+          /// Exchange rate for the current user's currency
+          public var fxRate: Double { __data["fxRate"] }
+          /// Currency code for the current user's currency
+          public var fxRateCurrency: GraphQLEnum<GraphAPI.CurrencyCode> { __data["fxRateCurrency"] }
           /// How much money is pledged to the project.
           public var pledged: Pledged { __data["pledged"] }
           /// The project's creator.
@@ -281,6 +285,8 @@ public class VideoFeedQuery: GraphQLQuery {
             launchedAt: GraphAPI.DateTime? = nil,
             backersCount: Int,
             isWatched: Bool,
+            fxRate: Double,
+            fxRateCurrency: GraphQLEnum<GraphAPI.CurrencyCode>,
             pledged: Pledged,
             creator: Creator? = nil,
             category: Category? = nil,
@@ -301,6 +307,8 @@ public class VideoFeedQuery: GraphQLQuery {
                 "launchedAt": launchedAt,
                 "backersCount": backersCount,
                 "isWatched": isWatched,
+                "fxRate": fxRate,
+                "fxRateCurrency": fxRateCurrency,
                 "pledged": pledged._fieldData,
                 "creator": creator._fieldData,
                 "category": category._fieldData,

@@ -367,6 +367,8 @@ final class VideoFeedViewModelTests: TestCase {
         percentFunded: 75,
         backersCount: 100,
         isWatched: isWatched,
+        fxRate: 1.0,
+        fxRateCurrency: .case(.usd),
         pledged: pledged,
         creator: creator,
         category: category,

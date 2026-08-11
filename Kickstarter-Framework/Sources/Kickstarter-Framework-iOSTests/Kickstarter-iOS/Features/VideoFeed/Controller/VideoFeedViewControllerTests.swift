@@ -50,6 +50,7 @@ final class VideoFeedViewControllerTests: TestCase {
             creatorImageURL: nil,
             statsText: VideoFeedItem.statsTextInUserPreferredCurrency(
               pledgedAmount: 50_134,
+              currencyCode: "USD",
               backersCount: 431
             ),
             badges: [
@@ -110,6 +111,7 @@ final class VideoFeedViewControllerTests: TestCase {
             creatorImageURL: nil,
             statsText: VideoFeedItem.statsTextInUserPreferredCurrency(
               pledgedAmount: 50_134,
+              currencyCode: "USD",
               backersCount: 431
             ),
             badges: [
@@ -172,6 +174,7 @@ final class VideoFeedViewControllerTests: TestCase {
             creatorImageURL: nil,
             statsText: VideoFeedItem.statsTextInUserPreferredCurrency(
               pledgedAmount: 50_134,
+              currencyCode: "USD",
               backersCount: 431
             ),
             badges: [
@@ -233,6 +236,7 @@ final class VideoFeedViewControllerTests: TestCase {
             creatorImageURL: nil,
             statsText: VideoFeedItem.statsTextInUserPreferredCurrency(
               pledgedAmount: 50_134,
+              currencyCode: "USD",
               backersCount: 431
             ),
             badges: [
@@ -297,6 +301,7 @@ final class VideoFeedViewControllerTests: TestCase {
             creatorImageURL: nil,
             statsText: VideoFeedItem.statsTextInUserPreferredCurrency(
               pledgedAmount: 50_134,
+              currencyCode: "USD",
               backersCount: 431
             ),
             badges: [
