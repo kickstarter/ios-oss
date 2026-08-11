@@ -53,7 +53,7 @@ extension Project {
     from data: GraphAPI.FastFetchProjectPageBaseQuery.Data
   ) -> SignalProducer<Project, ErrorEnvelope> {
     guard let project = Project.project(from: data) else {
-      return .empty
+      return SignalProducer(error: ErrorEnvelope.couldNotParseJSON)
     }
 
     return SignalProducer(value: project)

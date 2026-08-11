@@ -209,6 +209,62 @@ public final class ProjectPageFetcherTests: XCTestCase {
 
     XCTAssertEqual(errorEnvelope.errorMessages, ["Unimplemented mock"])
   }
+
+  func test_newProjectFetch_returnsErrorIfBaseParsingFails() {
+    let mockService = MockService(
+      fetchGraphQLResponses: [
+        (
+          GraphAPI.FastFetchProjectPageBaseQuery.self,
+          // Data that won't parse
+          GraphAPI.FastFetchProjectPageBaseQuery.Data.failed
+        ),
+        (
+          GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.self,
+          GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.Data.template
+        )
+      ]
+    )
+
+    let fetcher = ProjectPageFetcher(withService: mockService)
+    let producer = fetcher.fastFetchProjectPage(projectParam: .id(0))
+
+    XCTAssertEqual(producer.allValues().count, 0)
+    guard let errorResult = producer.collect().last(),
+          case let .failure(errorEnvelope) = errorResult else {
+      XCTFail("Expected error")
+      return
+    }
+
+    XCTAssertEqual(errorEnvelope.ksrCode, .JSONParsingFailed)
+  }
+
+  func test_newProjectFetch_returnsErrorIfExtendedParsingFails() {
+    let mockService = MockService(
+      fetchGraphQLResponses: [
+        (
+          GraphAPI.FastFetchProjectPageBaseQuery.self,
+          GraphAPI.FastFetchProjectPageBaseQuery.Data.template
+        ),
+        (
+          GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.self,
+          // Data that won't parse
+          GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.Data.failed
+        )
+      ]
+    )
+
+    let fetcher = ProjectPageFetcher(withService: mockService)
+    let producer = fetcher.fastFetchProjectPage(projectParam: .id(0))
+
+    XCTAssertEqual(producer.allValues().count, 0)
+    guard let errorResult = producer.collect().last(),
+          case let .failure(errorEnvelope) = errorResult else {
+      XCTFail("Expected error")
+      return
+    }
+
+    XCTAssertEqual(errorEnvelope.ksrCode, .JSONParsingFailed)
+  }
 }
 
 private extension GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.Data {
@@ -237,6 +293,12 @@ private extension GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.Data {
       project: FastFetchProjectPageExtendedPropertiesQuery.Data.Project.from(mockExtraProperties)
     )
   }
+
+  static var failed: GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.Data {
+    return GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.Data(
+      project: nil
+    )
+  }
 }
 
 private extension GraphAPI.FastFetchProjectPageBaseQuery.Data {
@@ -254,6 +316,12 @@ private extension GraphAPI.FastFetchProjectPageBaseQuery.Data {
 
     return GraphAPI.FastFetchProjectPageBaseQuery.Data(
       project: FastFetchProjectPageBaseQuery.Data.Project.from(mockProject)
+    )
+  }
+
+  static var failed: GraphAPI.FastFetchProjectPageBaseQuery.Data {
+    return GraphAPI.FastFetchProjectPageBaseQuery.Data(
+      project: nil
     )
   }
 }
