@@ -1329,7 +1329,8 @@
       -> SignalProducer<Project, ErrorEnvelope> {
       // If a result was set, use the result for mocking.
       if let result = self.fastFetchProjectPageResult {
-        switch result.0 {
+        let baseProjectResult = result.0
+        switch baseProjectResult {
         case let .success(project):
           return SignalProducer(value: project)
         case let .failure(error):
@@ -1352,7 +1353,8 @@
       -> SignalProducer<ProjectPageExtraProperties, ErrorEnvelope> {
       // If a result was set, use the result for mocking.
       if let result = self.fastFetchProjectPageResult {
-        switch result.1 {
+        let extraPropertiesResult = result.1
+        switch extraPropertiesResult {
         case let .success(project):
           return SignalProducer(value: project)
         case let .failure(error):
