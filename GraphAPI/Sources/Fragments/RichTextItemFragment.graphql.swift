@@ -5,7 +5,7 @@
 
 public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment RichTextItemFragment on RichTextItem { __typename ... on RichText { text link styles } ... on RichTextHeader { text link styles } ... on RichTextListItem { text link styles } ... on RichTextListOpen { _present } ... on RichTextListClose { _present } ... on RichTextPhoto { altText asset { __typename id } caption url } ... on RichTextAudio { altText asset { __typename id } caption url } ... on RichTextVideo { altText asset { __typename id poster formats { __typename encoding height width profile url } } caption url } ... on RichTextOembed { width height version title type iframeUrl originalUrl thumbnailHeight thumbnailUrl thumbnailWidth } }"#
+    #"fragment RichTextItemFragment on RichTextItem { __typename ... on RichText { text link styles } ... on RichTextHeader { text link styles } ... on RichTextListItem { text link styles } ... on RichTextListOpen { _present } ... on RichTextListClose { _present } ... on RichTextPhoto { altText asset { __typename id url(width: 99999) } caption } ... on RichTextAudio { altText asset { __typename id } caption url } ... on RichTextVideo { altText asset { __typename id poster formats { __typename encoding height width profile url } } caption url } ... on RichTextOembed { width height version title type iframeUrl originalUrl thumbnailHeight thumbnailUrl thumbnailWidth } }"#
   }
 
   public let __data: DataDict
@@ -242,19 +242,16 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
       .field("altText", String.self),
       .field("asset", Asset?.self),
       .field("caption", String.self),
-      .field("url", String.self),
     ] }
 
     public var altText: String { __data["altText"] }
     public var asset: Asset? { __data["asset"] }
     public var caption: String { __data["caption"] }
-    public var url: String { __data["url"] }
 
     public init(
       altText: String,
       asset: Asset? = nil,
-      caption: String,
-      url: String
+      caption: String
     ) {
       self.init(_dataDict: DataDict(
         data: [
@@ -262,7 +259,6 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
           "altText": altText,
           "asset": asset._fieldData,
           "caption": caption,
-          "url": url,
         ],
         fulfilledFragments: [
           ObjectIdentifier(RichTextItemFragment.self),
@@ -282,17 +278,22 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
         .field("id", GraphAPI.ID.self),
+        .field("url", String.self, arguments: ["width": 99999]),
       ] }
 
       public var id: GraphAPI.ID { __data["id"] }
+      /// URL of the photo
+      public var url: String { __data["url"] }
 
       public init(
-        id: GraphAPI.ID
+        id: GraphAPI.ID,
+        url: String
       ) {
         self.init(_dataDict: DataDict(
           data: [
             "__typename": GraphAPI.Objects.Photo.typename,
             "id": id,
+            "url": url,
           ],
           fulfilledFragments: [
             ObjectIdentifier(RichTextItemFragment.AsRichTextPhoto.Asset.self)

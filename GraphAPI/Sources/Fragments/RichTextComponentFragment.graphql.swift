@@ -412,7 +412,6 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
           public var altText: String { __data["altText"] }
           public var asset: Asset? { __data["asset"] }
           public var caption: String { __data["caption"] }
-          public var url: String { __data["url"] }
 
           public struct Fragments: FragmentContainer {
             public let __data: DataDict
@@ -424,8 +423,7 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
           public init(
             altText: String,
             asset: Asset? = nil,
-            caption: String,
-            url: String
+            caption: String
           ) {
             self.init(_dataDict: DataDict(
               data: [
@@ -433,7 +431,6 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
                 "altText": altText,
                 "asset": asset._fieldData,
                 "caption": caption,
-                "url": url,
               ],
               fulfilledFragments: [
                 ObjectIdentifier(RichTextComponentFragment.Item.AsRichText.Child.self),
@@ -964,7 +961,6 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
           public var altText: String { __data["altText"] }
           public var asset: Asset? { __data["asset"] }
           public var caption: String { __data["caption"] }
-          public var url: String { __data["url"] }
 
           public struct Fragments: FragmentContainer {
             public let __data: DataDict
@@ -976,8 +972,7 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
           public init(
             altText: String,
             asset: Asset? = nil,
-            caption: String,
-            url: String
+            caption: String
           ) {
             self.init(_dataDict: DataDict(
               data: [
@@ -985,7 +980,6 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
                 "altText": altText,
                 "asset": asset._fieldData,
                 "caption": caption,
-                "url": url,
               ],
               fulfilledFragments: [
                 ObjectIdentifier(RichTextComponentFragment.Item.AsRichTextHeader.Child.self),
@@ -1516,7 +1510,6 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
           public var altText: String { __data["altText"] }
           public var asset: Asset? { __data["asset"] }
           public var caption: String { __data["caption"] }
-          public var url: String { __data["url"] }
 
           public struct Fragments: FragmentContainer {
             public let __data: DataDict
@@ -1528,8 +1521,7 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
           public init(
             altText: String,
             asset: Asset? = nil,
-            caption: String,
-            url: String
+            caption: String
           ) {
             self.init(_dataDict: DataDict(
               data: [
@@ -1537,7 +1529,6 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
                 "altText": altText,
                 "asset": asset._fieldData,
                 "caption": caption,
-                "url": url,
               ],
               fulfilledFragments: [
                 ObjectIdentifier(RichTextComponentFragment.Item.AsRichTextListItem.Child.self),
@@ -1836,7 +1827,6 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
       public var altText: String { __data["altText"] }
       public var asset: Asset? { __data["asset"] }
       public var caption: String { __data["caption"] }
-      public var url: String { __data["url"] }
 
       public struct Fragments: FragmentContainer {
         public let __data: DataDict
@@ -1848,8 +1838,7 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
       public init(
         altText: String,
         asset: Asset? = nil,
-        caption: String,
-        url: String
+        caption: String
       ) {
         self.init(_dataDict: DataDict(
           data: [
@@ -1857,7 +1846,6 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             "altText": altText,
             "asset": asset._fieldData,
             "caption": caption,
-            "url": url,
           ],
           fulfilledFragments: [
             ObjectIdentifier(RichTextComponentFragment.Item.self),
