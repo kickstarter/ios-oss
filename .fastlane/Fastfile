@@ -14,7 +14,7 @@ platform :ios do
     match_appstore
   end
 
-  desc "Fastlane Match Enterprise"
+  desc "(DEPRECATED) Fastlane Match Enterprise"
   lane :setup_match_enterprise do
     setup_circle_ci
     match_enterprise
@@ -25,6 +25,13 @@ platform :ios do
     setup_circle_ci
     match_development
   end  
+
+  desc "Fastlane Match Beta Adhoc"
+  lane :setup_match_adhoc do
+    setup_circle_ci
+    match_adhoc
+  end  
+
 
   desc "Fastlane Match - App Store"
   private_lane :match_appstore do
@@ -57,7 +64,7 @@ platform :ios do
     )
   end
 
-  desc "Fastlane Match - Enterprise"
+  desc "(DEPRECATED) Fastlane Match - Enterprise"
   private_lane :match_enterprise do
     match(
       app_identifier: [
@@ -74,6 +81,25 @@ platform :ios do
       force_for_new_devices: true
     )
   end
+
+  desc "Fastlane Match - Beta Adhoc"
+  private_lane :match_adhoc do
+    match(
+      app_identifier: [
+        "com.kickstarter.kickstarter.beta",
+        "com.kickstarter.kickstarter.beta.RichPushNotifications",
+        "com.kickstarter.kickstarter.kickalpha",
+        "com.kickstarter.kickstarter.kickalpha.RichPushNotifications",
+      ],
+      type: "adhoc",
+      git_url: "git@github.com:kickstarter/ios-certificates",
+      team_id: "48YBP49Y5N",
+      git_branch: "ksr",
+      username: ENV["ITUNES_CONNECT_ACCOUNT"],
+      force_for_new_devices: true
+    )
+  end
+
 
   ### BETA
 
