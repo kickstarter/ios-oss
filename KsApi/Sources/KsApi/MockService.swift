@@ -129,6 +129,10 @@
      FIXME: Eventually combine `fetchProjectEnvelopeResult` and `fetchProjectPamphletEnvelopeResult` once all calls returning `Project` are using GQL. https://kickstarter.atlassian.net/browse/NTV-219
      */
     fileprivate let fetchProjectEnvelopeResult: Result<Project, ErrorEnvelope>?
+    fileprivate let fastFetchProjectPageResult: (
+      Result<Project, ErrorEnvelope>,
+      Result<ProjectPageExtraProperties, ErrorEnvelope>
+    )?
     fileprivate let fetchProjectPamphletEnvelopeResult: Result<Project.ProjectPamphletData, ErrorEnvelope>?
     fileprivate let fetchProjectFriendsEnvelopeResult: Result<[User], ErrorEnvelope>?
     fileprivate let fetchProjectRewardsAndPledgeOverTimeDataResult: Result<
@@ -315,6 +319,10 @@
       fetchMessageThreadsResponse: [MessageThread]? = nil,
       fetchPledgedProjectsResult: Result<GraphAPI.FetchPledgedProjectsQuery.Data, ErrorEnvelope>? = nil,
       fetchProjectResult: Result<Project, ErrorEnvelope>? = nil,
+      fastFetchProjectPage: (
+        Result<Project, ErrorEnvelope>,
+        Result<ProjectPageExtraProperties, ErrorEnvelope>
+      )? = nil,
       fetchProjectPamphletResult: Result<Project.ProjectPamphletData, ErrorEnvelope>? = nil,
       fetchProjectFriendsResult: Result<[User], ErrorEnvelope>? = nil,
       fetchProjectRewardsAndPledgeOverTimeDataResult: Result<
@@ -515,6 +523,7 @@
       self.fetchProjectsError = fetchProjectsError
 
       self.fetchProjectEnvelopeResult = fetchProjectResult
+      self.fastFetchProjectPageResult = fastFetchProjectPage
       self.fetchProjectPamphletEnvelopeResult = fetchProjectPamphletResult
       self.fetchProjectFriendsEnvelopeResult = fetchProjectFriendsResult
       self.fetchProjectRewardsAndPledgeOverTimeDataResult = fetchProjectRewardsAndPledgeOverTimeDataResult
@@ -1318,12 +1327,23 @@
 
     internal func fastFetchProjectPageBase(projectParam: Param)
       -> SignalProducer<Project, ErrorEnvelope> {
+      // If a result was set, use the result for mocking.
+      if let result = self.fastFetchProjectPageResult {
+        let baseProjectResult = result.0
+        switch baseProjectResult {
+        case let .success(project):
+          return SignalProducer(value: project)
+        case let .failure(error):
+          return SignalProducer(error: error)
+        }
+      }
+
+      // Otherwise, fall back to the GraphQL mocking code.
       let query = GraphAPI.FastFetchProjectPageBaseQuery(
         projectId: .someOrNil(projectParam.id),
         slug: .someOrNil(projectParam.slug)
       )
 
-      // Use the GraphQL mocking infrastructure
       return self
         .fetch(query: query)
         .flatMap { Project.projectProducer(from: $0) }
@@ -1331,12 +1351,23 @@
 
     internal func fastFetchProjectPageExtendedProperties(projectParam: Param)
       -> SignalProducer<ProjectPageExtraProperties, ErrorEnvelope> {
+      // If a result was set, use the result for mocking.
+      if let result = self.fastFetchProjectPageResult {
+        let extraPropertiesResult = result.1
+        switch extraPropertiesResult {
+        case let .success(project):
+          return SignalProducer(value: project)
+        case let .failure(error):
+          return SignalProducer(error: error)
+        }
+      }
+
       let query = GraphAPI.FastFetchProjectPageExtendedPropertiesQuery(
         projectId: .someOrNil(projectParam.id),
         slug: .someOrNil(projectParam.slug)
       )
 
-      // Use the GraphQL mocking infrastructure
+      // Otherwise, fall back to the GraphQL mocking code.
       return self
         .fetch(query: query)
         .flatMap { ProjectPageExtraProperties.extraPropertiesProducer(from: $0) }
