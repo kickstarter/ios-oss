@@ -1,7 +1,7 @@
 import AVFoundation
 import Experimentation
-import GraphAPI
 import ExperimentationTestHelpers
+import GraphAPI
 @testable import KsApi
 @testable import KsApiTestHelpers
 @testable import Library
@@ -1829,7 +1829,7 @@ final class ProjectPageViewModelTests: TestCase {
   func testSelectedContentView_featureFlagOff_campaignSection_returnsTableView() {
     let mockStatsig = MockStatsigWrapper()
     mockStatsig.features = [.projectStoryRichText: false]
-    
+
     Self.mockNetworkRequests(project: self.projectWithRichText) {
       withEnvironment(statsigClient: mockStatsig) {
         self.vm.inputs.configureWith(
@@ -1841,7 +1841,7 @@ final class ProjectPageViewModelTests: TestCase {
           index: NavigationSection.campaign.rawValue
         )
         self.scheduler.advance()
-        
+
         self.showProjectPageTabWithDataContentView.assertLastValue(
           .tableView,
           "Feature flag off → table view even with rich text."
@@ -1849,7 +1849,7 @@ final class ProjectPageViewModelTests: TestCase {
       }
     }
   }
-  
+
   func testLoadingPage_whenInstantPledgeExperimentIsOn_UsesFastFetch() {
     let mockStatsigClient = MockStatsigWrapper()
 

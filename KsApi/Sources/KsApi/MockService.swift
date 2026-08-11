@@ -1338,7 +1338,7 @@
       }
 
       // Otherwise, fall back to the GraphQL mocking code.
-        let query = GraphAPI.FastFetchProjectPageBaseQuery(
+      let query = GraphAPI.FastFetchProjectPageBaseQuery(
         projectId: .someOrNil(projectParam.id),
         slug: .someOrNil(projectParam.slug)
       )
@@ -1360,7 +1360,7 @@
         }
       }
 
-        let query = GraphAPI.FastFetchProjectPageExtendedPropertiesQuery(
+      let query = GraphAPI.FastFetchProjectPageExtendedPropertiesQuery(
         projectId: .someOrNil(projectParam.id),
         slug: .someOrNil(projectParam.slug)
       )
