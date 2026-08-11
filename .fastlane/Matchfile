@@ -3,7 +3,7 @@ git_url("git@github.com:kickstarter/ios-certificates.git")
 type("development") # The default type, can be: appstore, adhoc, enterprise or development
 
 # app_identifier(["tools.fastlane.app", "tools.fastlane.app2"])
-username("native-ci@kickstarter.com") # Your Apple Developer Portal username
+username("devops@kickstarter.com") # Your Apple Developer Portal username
 
 # For all available options run `fastlane match --help`
 # Remove the # in the beginning of the line to enable the other options
