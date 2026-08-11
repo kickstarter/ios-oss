@@ -7,20 +7,34 @@ import XCTest
 final class Reward_RewardFragmentTests: XCTestCase {
   func test() {
     do {
-      let variables = ["includeShippingRules": true, "includeLocalPickup": true]
+      let data = rewardDictionary()
       let fragment: GraphAPI.RewardFragment = try testGraphObject(
-        jsonObject: rewardDictionary(),
-        variables: variables
+        jsonObject: data
       )
       XCTAssertNotNil(fragment)
+
+      let itemsFragment: GraphAPI.RewardItemsFragment = try testGraphObject(
+        jsonObject: data
+      )
+      XCTAssertNotNil(itemsFragment)
+
+      let imageFragment: GraphAPI.RewardImageFragment = try testGraphObject(
+        jsonObject: data
+      )
+      XCTAssertNotNil(imageFragment)
 
       let dateFormatter = DateFormatter()
       dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
       dateFormatter.dateFormat = "yyyy-MM-dd"
 
+      let items = RewardsItem.rewardItemsData(from: itemsFragment)
+      let image = Reward.Image.rewardPhoto(from: imageFragment)
+
       guard let v1Reward = Reward.reward(
         from: fragment,
-        dateFormatter: dateFormatter
+        dateFormatter: dateFormatter,
+        rewardItems: items,
+        rewardImage: image
       ) else {
         XCTFail("reward should be created from fragment")
 
