@@ -158,6 +158,7 @@ public final class ProjectPageFetcherTests: XCTestCase {
     XCTAssertEqual(project.video?.high, "high.mp4")
     XCTAssertNotNil(project.extendedProjectProperties)
     XCTAssertEqual(project.extendedProjectProperties?.risks, "This project has risks.")
+    XCTAssertEqual(project.extendedProjectProperties?.story.richText?.items.count, 1)
     XCTAssertEqual(project.flagging, true)
   }
 
@@ -224,6 +225,13 @@ private extension GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.Data {
     mockExtraProperties.video?.videoSources = Mock<GraphAPITestMocks.VideoSources>()
     mockExtraProperties.video?.videoSources?.high = Mock<GraphAPITestMocks.VideoSourceInfo>()
     mockExtraProperties.video?.videoSources?.high?.src = "high.mp4"
+
+    let header = Mock<GraphAPITestMocks.RichTextHeader>()
+    header.text = "Hello, world"
+    mockExtraProperties.storyRichText = Mock<GraphAPITestMocks.RichTextComponent>()
+    mockExtraProperties.storyRichText?.items = [
+      header
+    ]
 
     return GraphAPI.FastFetchProjectPage_ExtendedPropertiesQuery.Data(
       project: FastFetchProjectPage_ExtendedPropertiesQuery.Data.Project.from(mockExtraProperties)
