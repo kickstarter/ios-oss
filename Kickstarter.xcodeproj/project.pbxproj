@@ -43,6 +43,7 @@
 		600944E42E5CB3A7004A089F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 600944E22E5CB3A7004A089F /* InfoPlist.strings */; };
 		60253C0F2FA0F677008E30A6 /* VideoFeedViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60253C0E2FA0F677008E30A6 /* VideoFeedViewModelTests.swift */; };
 		6069CC542F5F66160029A67F /* Statsig in Frameworks */ = {isa = PBXBuildFile; productRef = 6069CC532F5F66160029A67F /* Statsig */; };
+		60A776A83020EFD80063D0A3 /* ReportProjectInfoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A776A73020EFD80063D0A3 /* ReportProjectInfoViewModelTests.swift */; };
 		60A80F532BD7F9A00052A829 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */; };
 		8A65E79E2501AE89006F81CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */; };
 		8A86D7F324FED01D00037A7B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A86D7F224FED01C00037A7B /* GoogleService-Info.plist */; };
@@ -390,6 +391,7 @@
 		60253C0D2FA0EF59008E30A6 /* VideoFeedQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = VideoFeedQuery.graphql; sourceTree = "<group>"; };
 		60253C0E2FA0F677008E30A6 /* VideoFeedViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFeedViewModelTests.swift; sourceTree = "<group>"; };
 		60A776A6301938EE0063D0A3 /* FlaggingOptionsQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FlaggingOptionsQuery.graphql; sourceTree = "<group>"; };
+		60A776A73020EFD80063D0A3 /* ReportProjectInfoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoViewModelTests.swift; sourceTree = "<group>"; };
 		60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		60C583812FA2462B00BD43AE /* ProjectVideoFeedFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProjectVideoFeedFragment.graphql; sourceTree = "<group>"; };
 		802800571C88F64D00141235 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Base.xcconfig; path = Configs/Base.xcconfig; sourceTree = "<group>"; };
@@ -655,9 +657,7 @@
 		E113BD772B7D1B7700D3A809 /* KeychainTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
 		E113BD812B7D255000D3A809 /* Library-Keychain-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Library-Keychain-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E113BD832B7D255000D3A809 /* Library_Keychain_iOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library_Keychain_iOSTests.swift; sourceTree = "<group>"; };
-		E12923E0302394C2009D51A7 /* FastFetchProjectPageExtendedPropertiesQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FastFetchProjectPageExtendedPropertiesQuery.graphql; sourceTree = "<group>"; };
 		E137D9AE2F3537F80089183D /* PublicUserFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PublicUserFragment.graphql; sourceTree = "<group>"; };
-		E13CEA6930224B50004F6A18 /* FastFetchProjectPageBaseQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FastFetchProjectPageBaseQuery.graphql; sourceTree = "<group>"; };
 		E15E22CD2E54B91B00EE6BB0 /* KDS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = KDS; sourceTree = "<group>"; };
 		E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppEnvironmentTests+OAuthInKeychain.swift"; sourceTree = "<group>"; };
 		E18CA2882F9A864E005C22AE /* StatsigExperiment+HelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsigExperiment+HelperTests.swift"; sourceTree = "<group>"; };
@@ -746,6 +746,8 @@
 		E19C55F02F4CB84D00C768F6 /* NoRewardRewardFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = NoRewardRewardFragment.graphql; sourceTree = "<group>"; };
 		E1B33F502E538157008903BA /* GraphAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = GraphAPI; sourceTree = "<group>"; };
 		E1BBB0472FDB0F320045D296 /* NoRewardInserterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoRewardInserterTests.swift; sourceTree = "<group>"; };
+		E1D04A92302B61D6005719DF /* FastFetchProjectPageBaseQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FastFetchProjectPageBaseQuery.graphql; sourceTree = "<group>"; };
+		E1D04A93302B61D6005719DF /* FastFetchProjectPageExtendedPropertiesQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FastFetchProjectPageExtendedPropertiesQuery.graphql; sourceTree = "<group>"; };
 		E1D529FC2ED4D21A00923AA9 /* ShippableLocationsForProjectQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ShippableLocationsForProjectQuery.graphql; sourceTree = "<group>"; };
 		E1FD854E2F9A7FF50095DBDB /* Experimentation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Experimentation; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1223,6 +1225,7 @@
 				AAF548CE2F2445C0001DB5AC /* UIViewController+URLTests.swift */,
 				AAF548CF2F2445C0001DB5AC /* UpdateActivityItemProviderTests.swift */,
 				AAF548D02F2445C0001DB5AC /* UpdateBackingInput+ConstructorTests.swift */,
+				60A776A73020EFD80063D0A3 /* ReportProjectInfoViewModelTests.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -1359,8 +1362,8 @@
 			children = (
 				E190EB532E29944E006A6DB6 /* BuildPaymentPlanQuery.graphql */,
 				E190EB542E29944E006A6DB6 /* DefaultLocationsQuery.graphql */,
-				E13CEA6930224B50004F6A18 /* FastFetchProjectPageBaseQuery.graphql */,
-				E12923E0302394C2009D51A7 /* FastFetchProjectPageExtendedPropertiesQuery.graphql */,
+				E1D04A92302B61D6005719DF /* FastFetchProjectPageBaseQuery.graphql */,
+				E1D04A93302B61D6005719DF /* FastFetchProjectPageExtendedPropertiesQuery.graphql */,
 				E190EB552E29944E006A6DB6 /* FetchAddOnsQuery.graphql */,
 				E190EB562E29944E006A6DB6 /* FetchBackingQuery.graphql */,
 				33AA26C72E39E9BD002DBD60 /* FetchBackingWithIncrementsRefundedQuery.graphql */,
@@ -1892,6 +1895,7 @@
 				AAF549962F2445C0001DB5AC /* NumberFormatterTests.swift in Sources */,
 				AAF549972F2445C0001DB5AC /* OAuthTests.swift in Sources */,
 				AAF549982F2445C0001DB5AC /* OnboardingUseCaseTests.swift in Sources */,
+				60A776A83020EFD80063D0A3 /* ReportProjectInfoViewModelTests.swift in Sources */,
 				AAF549992F2445C0001DB5AC /* OnboardingViewModelTests.swift in Sources */,
 				AAF5499A2F2445C0001DB5AC /* PaginateTests.swift in Sources */,
 				AAF5499B2F2445C0001DB5AC /* PaginatorTests.swift in Sources */,
