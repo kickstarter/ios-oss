@@ -121,7 +121,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
 
     let rewardItemsIsEmpty = reward.map { reward in
       guard let items = reward.rewardsItems else {
-        assert(false, "Expected reward items to be fetched.")
+        assertionFailure("Expected reward items to be fetched.")
         return true
       }
       return items.isEmpty
@@ -132,7 +132,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
     self.items = reward
       .map { reward in
         guard let items = reward.rewardsItems else {
-          assert(false, "Expected reward items to be fetched.")
+          assertionFailure("Expected reward items to be fetched.")
           return []
         }
         return items.map { rewardsItem in

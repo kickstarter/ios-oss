@@ -1919,7 +1919,7 @@ private func pledgeProperties(from reward: Reward, prefix: String = "pledge_back
   if let items = reward.rewardsItems {
     result["has_items"] = !items.isEmpty
   } else {
-    assert(false, "Expected items to be fetched for Reward on pledge.")
+    assertionFailure("Expected items to be fetched for the reward by the time the backer is making a pledge.")
   }
 
   result["id"] = reward.id
