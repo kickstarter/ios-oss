@@ -10,7 +10,8 @@ extension VideoFeedBannerPresenting {
   func presentVideoFeed(from cell: VideoFeedBannerCell) {
     guard self.videoFeedVC == nil else {
       /// Reuse an existing feed VC so VM state (optimistic saves, etc.) persists across opens.
-      if let existing = self.videoFeedVC, existing.isBeingPresented == false {
+      if let existing = self.videoFeedVC, existing.presentingViewController == nil,
+         !existing.isBeingPresented {
         existing.modalPresentationStyle = .fullScreen
         self.present(existing, animated: true)
       }
@@ -27,6 +28,12 @@ extension VideoFeedBannerPresenting {
 
     feedVC.onReadyToPresent = { [weak self, weak cell, weak feedVC] in
       guard let self, let feedVC else { return }
+
+      /// Prevent double-tap and cross tab race condition from presenting the same VC more than once.
+      guard feedVC.presentingViewController == nil, !feedVC.isBeingPresented else {
+        cell?.setLoading(false)
+        return
+      }
 
       cell?.setLoading(false)
 
