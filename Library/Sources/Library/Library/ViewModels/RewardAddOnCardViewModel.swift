@@ -99,14 +99,26 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
 
     self.rewardTitleLabelText = reward.map(\.title).skipNil()
 
-    let rewardItemsIsEmpty = reward
-      .map { $0.rewardsItems.isEmpty }
+    let rewardItemsIsEmpty = reward.map { reward in
+      guard let items = reward.rewardsItems else {
+        assertionFailure("Expected reward items to be fetched.")
+        return true
+      }
+      return items.isEmpty
+    }
 
     self.includedItemsStackViewHidden = rewardItemsIsEmpty.skipRepeats()
 
-    self.includedItemsLabelAttributedText = reward.map(\.rewardsItems)
-      .map(itemsLabelAttributedText)
-      .skipNil()
+    self.includedItemsLabelAttributedText = reward.map { reward in
+      guard let items = reward.rewardsItems else {
+        assertionFailure("Expected reward items to be fetched.")
+        return []
+      }
+
+      return items
+    }
+    .map(itemsLabelAttributedText)
+    .skipNil()
 
     self.estimatedShippingLabelText = Signal.combineLatest(reward, project, shippingRule)
       .map { reward, project, shippingRule in

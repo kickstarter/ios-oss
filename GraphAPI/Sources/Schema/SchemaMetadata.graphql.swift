@@ -99,9 +99,9 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "Money": return GraphAPI.Objects.Money
     case "RewardConnection": return GraphAPI.Objects.RewardConnection
     case "PageInfo": return GraphAPI.Objects.PageInfo
+    case "ResourceAudience": return GraphAPI.Objects.ResourceAudience
     case "RewardItemsConnection": return GraphAPI.Objects.RewardItemsConnection
     case "RewardItemEdge": return GraphAPI.Objects.RewardItemEdge
-    case "ResourceAudience": return GraphAPI.Objects.ResourceAudience
     case "SimpleShippingRule": return GraphAPI.Objects.SimpleShippingRule
     case "ProjectsConnectionWithTotalCount": return GraphAPI.Objects.ProjectsConnectionWithTotalCount
     case "Country": return GraphAPI.Objects.Country

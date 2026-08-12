@@ -4,6 +4,8 @@ query FetchBackingWithIncrementsRefunded($id: ID!) {
     addOns {
       nodes {
         ...RewardFragment
+        ...RewardImageFragment
+        ...RewardItemsFragment
       }
     }
     ...BackingFragment

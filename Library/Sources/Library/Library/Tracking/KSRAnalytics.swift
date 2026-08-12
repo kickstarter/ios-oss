@@ -1916,7 +1916,12 @@ private func pledgeProperties(from reward: Reward, prefix: String = "pledge_back
   -> [String: Any] {
   var result: [String: Any] = [:]
 
-  result["has_items"] = !reward.rewardsItems.isEmpty
+  if let items = reward.rewardsItems {
+    result["has_items"] = !items.isEmpty
+  } else {
+    assertionFailure("Expected items to be fetched for the reward by the time the backer is making a pledge.")
+  }
+
   result["id"] = reward.id
   result["minimum"] = reward.minimum
 

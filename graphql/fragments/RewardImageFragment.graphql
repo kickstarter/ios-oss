@@ -1,0 +1,6 @@
+fragment RewardImageFragment on Reward {
+  image {
+    altText
+    url(width: 1024)
+  }
+}

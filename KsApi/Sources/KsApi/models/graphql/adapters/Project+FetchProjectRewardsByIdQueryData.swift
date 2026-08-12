@@ -40,8 +40,15 @@ extension Project {
         let rewardFragment = node.fragments.rewardFragment
         let shippingRuleFragment = node.fragments.simpleShippingRulesExpandedFragment
         let expandedShippingRules = ShippingRule.simpleShippingRulesExpanded(from: shippingRuleFragment)
+        let imageFragment = node.fragments.rewardImageFragment
+        let itemFragment = node.fragments.rewardItemsFragment
 
-        return Reward.reward(from: rewardFragment, expandedShippingRules: expandedShippingRules)
+        return Reward.reward(
+          from: rewardFragment,
+          expandedShippingRules: expandedShippingRules,
+          rewardItems: RewardsItem.rewardItemsData(from: itemFragment),
+          rewardImage: Reward.Image.rewardPhoto(from: imageFragment)
+        )
       } ?? []
 
     let noReward = Reward.noRewardReward(from: project.fragments.noRewardRewardFragment)
@@ -56,13 +63,25 @@ extension Project {
         }
 
         let rewardFragment = node.fragments.rewardFragment
+        let imageFragment = node.fragments.rewardImageFragment
+        let itemFragment = node.fragments.rewardItemsFragment
 
         guard let shippingRuleFragment = node.fragments.simpleShippingRulesExpandedFragment else {
-          return Reward.reward(from: rewardFragment, expandedShippingRules: nil)
+          return Reward.reward(
+            from: rewardFragment,
+            expandedShippingRules: nil,
+            rewardItems: RewardsItem.rewardItemsData(from: itemFragment),
+            rewardImage: Reward.Image.rewardPhoto(from: imageFragment)
+          )
         }
 
         let expandedShippingRules = ShippingRule.simpleShippingRulesExpanded(from: shippingRuleFragment)
-        return Reward.reward(from: rewardFragment, expandedShippingRules: expandedShippingRules)
+        return Reward.reward(
+          from: rewardFragment,
+          expandedShippingRules: expandedShippingRules,
+          rewardItems: RewardsItem.rewardItemsData(from: itemFragment),
+          rewardImage: Reward.Image.rewardPhoto(from: imageFragment)
+        )
       }
     return projectRewards ?? []
   }

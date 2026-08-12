@@ -5,7 +5,7 @@
 
 public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment BackingFragment on Backing { __typename amount { __typename ...MoneyFragment } backer { __typename ...PublicUserFragment } backerCompleted bonusAmount { __typename ...MoneyFragment } cancelable paymentSource { __typename ...PaymentSourceFragment } id isLatePledge location { __typename ...LocationFragment } order { __typename ...OrderFragment } pledgedOn project { __typename pid fxRate minPledge country { __typename ...CountryFragment } ...NoRewardRewardFragment } reward { __typename ...RewardFragment } rewardsAmount { __typename ...MoneyFragment } sequence shippingAmount { __typename ...MoneyFragment } status backingDetailsPageRoute(type: url, tab: survey_responses) }"#
+    #"fragment BackingFragment on Backing { __typename amount { __typename ...MoneyFragment } backer { __typename ...PublicUserFragment } backerCompleted bonusAmount { __typename ...MoneyFragment } cancelable paymentSource { __typename ...PaymentSourceFragment } id isLatePledge location { __typename ...LocationFragment } order { __typename ...OrderFragment } pledgedOn project { __typename pid fxRate minPledge country { __typename ...CountryFragment } ...NoRewardRewardFragment } reward { __typename ...RewardFragment ...RewardImageFragment ...RewardItemsFragment } rewardsAmount { __typename ...MoneyFragment } sequence shippingAmount { __typename ...MoneyFragment } status backingDetailsPageRoute(type: url, tab: survey_responses) }"#
   }
 
   public let __data: DataDict
@@ -702,6 +702,8 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
     public static var __selections: [ApolloAPI.Selection] { [
       .field("__typename", String.self),
       .fragment(RewardFragment.self),
+      .fragment(RewardImageFragment.self),
+      .fragment(RewardItemsFragment.self),
     ] }
 
     /// Amount for claiming this reward.
@@ -730,8 +732,6 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
     public var available: Bool { __data["available"] }
     /// Whether or not the reward is featured
     public var featured: Bool { __data["featured"] }
-    /// Items in the reward.
-    public var items: Items? { __data["items"] }
     /// A reward limit.
     public var limit: Int? { __data["limit"] }
     /// Per backer reward limit.
@@ -746,8 +746,6 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
     public var latePledgeAmount: LatePledgeAmount { __data["latePledgeAmount"] }
     /// Is this reward available for post-campaign pledges?
     public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
-    /// The project
-    public var project: Project? { __data["project"] }
     /// Remaining reward quantity.
     public var remainingQuantity: Int? { __data["remainingQuantity"] }
     /// Shipping preference for this reward
@@ -756,16 +754,22 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
     public var shippingSummary: String? { __data["shippingSummary"] }
     /// When the reward is scheduled to start
     public var startsAt: GraphAPI.DateTime? { __data["startsAt"] }
-    /// The reward image.
-    public var image: Image? { __data["image"] }
     /// Data related to who can view/access this reward
     public var audienceData: AudienceData { __data["audienceData"] }
+    /// The reward image.
+    public var image: Image? { __data["image"] }
+    /// The project
+    public var project: Project? { __data["project"] }
+    /// Items in the reward.
+    public var items: Items? { __data["items"] }
 
     public struct Fragments: FragmentContainer {
       public let __data: DataDict
       public init(_dataDict: DataDict) { __data = _dataDict }
 
       public var rewardFragment: RewardFragment { _toFragment() }
+      public var rewardImageFragment: RewardImageFragment { _toFragment() }
+      public var rewardItemsFragment: RewardItemsFragment { _toFragment() }
     }
 
     public init(
@@ -781,7 +785,6 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
       isMaxPledge: Bool,
       available: Bool,
       featured: Bool,
-      items: Items? = nil,
       limit: Int? = nil,
       limitPerBacker: Int? = nil,
       localReceiptLocation: LocalReceiptLocation? = nil,
@@ -789,13 +792,14 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
       pledgeAmount: PledgeAmount,
       latePledgeAmount: LatePledgeAmount,
       postCampaignPledgingEnabled: Bool,
-      project: Project? = nil,
       remainingQuantity: Int? = nil,
       shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
       shippingSummary: String? = nil,
       startsAt: GraphAPI.DateTime? = nil,
+      audienceData: AudienceData,
       image: Image? = nil,
-      audienceData: AudienceData
+      project: Project? = nil,
+      items: Items? = nil
     ) {
       self.init(_dataDict: DataDict(
         data: [
@@ -812,7 +816,6 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
           "isMaxPledge": isMaxPledge,
           "available": available,
           "featured": featured,
-          "items": items._fieldData,
           "limit": limit,
           "limitPerBacker": limitPerBacker,
           "localReceiptLocation": localReceiptLocation._fieldData,
@@ -820,17 +823,20 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
           "pledgeAmount": pledgeAmount._fieldData,
           "latePledgeAmount": latePledgeAmount._fieldData,
           "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
-          "project": project._fieldData,
           "remainingQuantity": remainingQuantity,
           "shippingPreference": shippingPreference,
           "shippingSummary": shippingSummary,
           "startsAt": startsAt,
-          "image": image._fieldData,
           "audienceData": audienceData._fieldData,
+          "image": image._fieldData,
+          "project": project._fieldData,
+          "items": items._fieldData,
         ],
         fulfilledFragments: [
           ObjectIdentifier(BackingFragment.Reward.self),
-          ObjectIdentifier(RewardFragment.self)
+          ObjectIdentifier(RewardFragment.self),
+          ObjectIdentifier(RewardImageFragment.self),
+          ObjectIdentifier(RewardItemsFragment.self)
         ]
       ))
     }
@@ -924,8 +930,6 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
     }
 
     public typealias AllowedAddons = RewardFragment.AllowedAddons
-
-    public typealias Items = RewardFragment.Items
 
     /// Reward.LocalReceiptLocation
     ///
@@ -1066,11 +1070,13 @@ public struct BackingFragment: GraphAPI.SelectionSet, Fragment {
       }
     }
 
-    public typealias Project = RewardFragment.Project
-
-    public typealias Image = RewardFragment.Image
-
     public typealias AudienceData = RewardFragment.AudienceData
+
+    public typealias Image = RewardImageFragment.Image
+
+    public typealias Project = RewardItemsFragment.Project
+
+    public typealias Items = RewardItemsFragment.Items
   }
 
   /// RewardsAmount

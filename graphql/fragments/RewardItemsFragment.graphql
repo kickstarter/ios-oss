@@ -1,0 +1,15 @@
+fragment RewardItemsFragment on Reward {
+  id
+  project {
+   id
+  }
+  items {
+    edges {
+      quantity
+      node {
+        id
+        name
+      }
+    }
+  }
+}

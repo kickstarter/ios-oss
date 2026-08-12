@@ -15,8 +15,17 @@ extension ProjectAndBackingEnvelope {
   ) -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
     let addOns = data.backing?.addOns?.nodes?
       .compactMap { $0 }
-      .compactMap { $0.fragments.rewardFragment }
-      .compactMap { Reward.reward(from: $0) }
+      .compactMap { node -> Reward? in
+        let rewardFragment = node.fragments.rewardFragment
+        let itemFragment = node.fragments.rewardItemsFragment
+        let imageFragment = node.fragments.rewardImageFragment
+
+        return Reward.reward(
+          from: rewardFragment,
+          rewardItems: RewardsItem.rewardItemsData(from: itemFragment),
+          rewardImage: Reward.Image.rewardPhoto(from: imageFragment)
+        )
+      }
 
     var paymentIncrements: [PledgePaymentIncrement] = []
 

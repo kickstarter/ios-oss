@@ -75,8 +75,17 @@ extension Backing {
   ) -> SignalProducer<Backing, ErrorEnvelope> {
     let addOns = data.backing?.addOns?.nodes?
       .compactMap { $0 }
-      .compactMap { $0.fragments.rewardFragment }
-      .compactMap { Reward.reward(from: $0) }
+      .compactMap { node -> Reward? in
+        let rewardFragment = node.fragments.rewardFragment
+        let imageFragment = node.fragments.rewardImageFragment
+        let itemsFragment = node.fragments.rewardItemsFragment
+
+        return Reward.reward(
+          from: rewardFragment,
+          rewardItems: RewardsItem.rewardItemsData(from: itemsFragment),
+          rewardImage: Reward.Image.rewardPhoto(from: imageFragment)
+        )
+      }
 
     var paymentIncrements: [PledgePaymentIncrement] = []
 
@@ -116,7 +125,7 @@ private func backingReward(
   from backingFragment: GraphAPI.BackingFragment,
   expandedShippingRules: [ShippingRule]? = nil
 ) -> Reward? {
-  guard let reward = backingFragment.reward?.fragments.rewardFragment else {
+  guard let reward = backingFragment.reward else {
     guard let project = backingFragment.project else {
       return Reward.noReward
     }
@@ -125,7 +134,16 @@ private func backingReward(
     return Reward.noRewardReward(from: noRewardFragment)
   }
 
-  return Reward.reward(from: reward, expandedShippingRules: expandedShippingRules)
+  let rewardFragment = reward.fragments.rewardFragment
+  let itemsFragment = reward.fragments.rewardItemsFragment
+  let imageFragment = reward.fragments.rewardImageFragment
+
+  return Reward.reward(
+    from: rewardFragment,
+    expandedShippingRules: expandedShippingRules,
+    rewardItems: RewardsItem.rewardItemsData(from: itemsFragment),
+    rewardImage: Reward.Image.rewardPhoto(from: imageFragment)
+  )
 }
 
 private func backingPaymentSource(from backingFragment: GraphAPI.BackingFragment) -> Backing.PaymentSource? {

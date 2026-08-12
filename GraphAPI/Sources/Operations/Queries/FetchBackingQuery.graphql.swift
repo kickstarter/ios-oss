@@ -7,8 +7,8 @@ public class FetchBackingQuery: GraphQLQuery {
   public static let operationName: String = "FetchBacking"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchBacking($id: ID!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment } } ...BackingFragment project { __typename ...ProjectFragment } paymentIncrements { __typename ...PaymentIncrementFragment } } }"#,
-      fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, PublicUserFragment.self, RewardFragment.self]
+      #"query FetchBacking($id: ID!) { backing(id: $id) { __typename addOns { __typename nodes { __typename ...RewardFragment ...RewardImageFragment ...RewardItemsFragment } } ...BackingFragment project { __typename ...ProjectFragment } paymentIncrements { __typename ...PaymentIncrementFragment } } }"#,
+      fragments: [BackingFragment.self, CategoryFragment.self, CountryFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, OrderFragment.self, PaymentIncrementFragment.self, PaymentSourceFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, PublicUserFragment.self, RewardFragment.self, RewardImageFragment.self, RewardItemsFragment.self]
     ))
 
   public var id: ID
@@ -202,6 +202,8 @@ public class FetchBackingQuery: GraphQLQuery {
           public static var __selections: [ApolloAPI.Selection] { [
             .field("__typename", String.self),
             .fragment(RewardFragment.self),
+            .fragment(RewardImageFragment.self),
+            .fragment(RewardItemsFragment.self),
           ] }
 
           /// Amount for claiming this reward.
@@ -230,8 +232,6 @@ public class FetchBackingQuery: GraphQLQuery {
           public var available: Bool { __data["available"] }
           /// Whether or not the reward is featured
           public var featured: Bool { __data["featured"] }
-          /// Items in the reward.
-          public var items: Items? { __data["items"] }
           /// A reward limit.
           public var limit: Int? { __data["limit"] }
           /// Per backer reward limit.
@@ -246,8 +246,6 @@ public class FetchBackingQuery: GraphQLQuery {
           public var latePledgeAmount: LatePledgeAmount { __data["latePledgeAmount"] }
           /// Is this reward available for post-campaign pledges?
           public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
-          /// The project
-          public var project: Project? { __data["project"] }
           /// Remaining reward quantity.
           public var remainingQuantity: Int? { __data["remainingQuantity"] }
           /// Shipping preference for this reward
@@ -256,16 +254,22 @@ public class FetchBackingQuery: GraphQLQuery {
           public var shippingSummary: String? { __data["shippingSummary"] }
           /// When the reward is scheduled to start
           public var startsAt: GraphAPI.DateTime? { __data["startsAt"] }
-          /// The reward image.
-          public var image: Image? { __data["image"] }
           /// Data related to who can view/access this reward
           public var audienceData: AudienceData { __data["audienceData"] }
+          /// The reward image.
+          public var image: Image? { __data["image"] }
+          /// The project
+          public var project: Project? { __data["project"] }
+          /// Items in the reward.
+          public var items: Items? { __data["items"] }
 
           public struct Fragments: FragmentContainer {
             public let __data: DataDict
             public init(_dataDict: DataDict) { __data = _dataDict }
 
             public var rewardFragment: RewardFragment { _toFragment() }
+            public var rewardImageFragment: RewardImageFragment { _toFragment() }
+            public var rewardItemsFragment: RewardItemsFragment { _toFragment() }
           }
 
           public init(
@@ -281,7 +285,6 @@ public class FetchBackingQuery: GraphQLQuery {
             isMaxPledge: Bool,
             available: Bool,
             featured: Bool,
-            items: Items? = nil,
             limit: Int? = nil,
             limitPerBacker: Int? = nil,
             localReceiptLocation: LocalReceiptLocation? = nil,
@@ -289,13 +292,14 @@ public class FetchBackingQuery: GraphQLQuery {
             pledgeAmount: PledgeAmount,
             latePledgeAmount: LatePledgeAmount,
             postCampaignPledgingEnabled: Bool,
-            project: Project? = nil,
             remainingQuantity: Int? = nil,
             shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
             shippingSummary: String? = nil,
             startsAt: GraphAPI.DateTime? = nil,
+            audienceData: AudienceData,
             image: Image? = nil,
-            audienceData: AudienceData
+            project: Project? = nil,
+            items: Items? = nil
           ) {
             self.init(_dataDict: DataDict(
               data: [
@@ -312,7 +316,6 @@ public class FetchBackingQuery: GraphQLQuery {
                 "isMaxPledge": isMaxPledge,
                 "available": available,
                 "featured": featured,
-                "items": items._fieldData,
                 "limit": limit,
                 "limitPerBacker": limitPerBacker,
                 "localReceiptLocation": localReceiptLocation._fieldData,
@@ -320,17 +323,20 @@ public class FetchBackingQuery: GraphQLQuery {
                 "pledgeAmount": pledgeAmount._fieldData,
                 "latePledgeAmount": latePledgeAmount._fieldData,
                 "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
-                "project": project._fieldData,
                 "remainingQuantity": remainingQuantity,
                 "shippingPreference": shippingPreference,
                 "shippingSummary": shippingSummary,
                 "startsAt": startsAt,
-                "image": image._fieldData,
                 "audienceData": audienceData._fieldData,
+                "image": image._fieldData,
+                "project": project._fieldData,
+                "items": items._fieldData,
               ],
               fulfilledFragments: [
                 ObjectIdentifier(FetchBackingQuery.Data.Backing.AddOns.Node.self),
-                ObjectIdentifier(RewardFragment.self)
+                ObjectIdentifier(RewardFragment.self),
+                ObjectIdentifier(RewardImageFragment.self),
+                ObjectIdentifier(RewardItemsFragment.self)
               ]
             ))
           }
@@ -424,8 +430,6 @@ public class FetchBackingQuery: GraphQLQuery {
           }
 
           public typealias AllowedAddons = RewardFragment.AllowedAddons
-
-          public typealias Items = RewardFragment.Items
 
           /// Backing.AddOns.Node.LocalReceiptLocation
           ///
@@ -566,11 +570,13 @@ public class FetchBackingQuery: GraphQLQuery {
             }
           }
 
-          public typealias Project = RewardFragment.Project
-
-          public typealias Image = RewardFragment.Image
-
           public typealias AudienceData = RewardFragment.AudienceData
+
+          public typealias Image = RewardImageFragment.Image
+
+          public typealias Project = RewardItemsFragment.Project
+
+          public typealias Items = RewardItemsFragment.Items
         }
       }
 
@@ -1630,8 +1636,6 @@ public class FetchBackingQuery: GraphQLQuery {
         public var available: Bool { __data["available"] }
         /// Whether or not the reward is featured
         public var featured: Bool { __data["featured"] }
-        /// Items in the reward.
-        public var items: Items? { __data["items"] }
         /// A reward limit.
         public var limit: Int? { __data["limit"] }
         /// Per backer reward limit.
@@ -1646,8 +1650,6 @@ public class FetchBackingQuery: GraphQLQuery {
         public var latePledgeAmount: LatePledgeAmount { __data["latePledgeAmount"] }
         /// Is this reward available for post-campaign pledges?
         public var postCampaignPledgingEnabled: Bool { __data["postCampaignPledgingEnabled"] }
-        /// The project
-        public var project: Project? { __data["project"] }
         /// Remaining reward quantity.
         public var remainingQuantity: Int? { __data["remainingQuantity"] }
         /// Shipping preference for this reward
@@ -1656,16 +1658,22 @@ public class FetchBackingQuery: GraphQLQuery {
         public var shippingSummary: String? { __data["shippingSummary"] }
         /// When the reward is scheduled to start
         public var startsAt: GraphAPI.DateTime? { __data["startsAt"] }
-        /// The reward image.
-        public var image: Image? { __data["image"] }
         /// Data related to who can view/access this reward
         public var audienceData: AudienceData { __data["audienceData"] }
+        /// The reward image.
+        public var image: Image? { __data["image"] }
+        /// The project
+        public var project: Project? { __data["project"] }
+        /// Items in the reward.
+        public var items: Items? { __data["items"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict
           public init(_dataDict: DataDict) { __data = _dataDict }
 
           public var rewardFragment: RewardFragment { _toFragment() }
+          public var rewardImageFragment: RewardImageFragment { _toFragment() }
+          public var rewardItemsFragment: RewardItemsFragment { _toFragment() }
         }
 
         public init(
@@ -1681,7 +1689,6 @@ public class FetchBackingQuery: GraphQLQuery {
           isMaxPledge: Bool,
           available: Bool,
           featured: Bool,
-          items: Items? = nil,
           limit: Int? = nil,
           limitPerBacker: Int? = nil,
           localReceiptLocation: LocalReceiptLocation? = nil,
@@ -1689,13 +1696,14 @@ public class FetchBackingQuery: GraphQLQuery {
           pledgeAmount: PledgeAmount,
           latePledgeAmount: LatePledgeAmount,
           postCampaignPledgingEnabled: Bool,
-          project: Project? = nil,
           remainingQuantity: Int? = nil,
           shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
           shippingSummary: String? = nil,
           startsAt: GraphAPI.DateTime? = nil,
+          audienceData: AudienceData,
           image: Image? = nil,
-          audienceData: AudienceData
+          project: Project? = nil,
+          items: Items? = nil
         ) {
           self.init(_dataDict: DataDict(
             data: [
@@ -1712,7 +1720,6 @@ public class FetchBackingQuery: GraphQLQuery {
               "isMaxPledge": isMaxPledge,
               "available": available,
               "featured": featured,
-              "items": items._fieldData,
               "limit": limit,
               "limitPerBacker": limitPerBacker,
               "localReceiptLocation": localReceiptLocation._fieldData,
@@ -1720,18 +1727,21 @@ public class FetchBackingQuery: GraphQLQuery {
               "pledgeAmount": pledgeAmount._fieldData,
               "latePledgeAmount": latePledgeAmount._fieldData,
               "postCampaignPledgingEnabled": postCampaignPledgingEnabled,
-              "project": project._fieldData,
               "remainingQuantity": remainingQuantity,
               "shippingPreference": shippingPreference,
               "shippingSummary": shippingSummary,
               "startsAt": startsAt,
-              "image": image._fieldData,
               "audienceData": audienceData._fieldData,
+              "image": image._fieldData,
+              "project": project._fieldData,
+              "items": items._fieldData,
             ],
             fulfilledFragments: [
               ObjectIdentifier(FetchBackingQuery.Data.Backing.Reward.self),
               ObjectIdentifier(BackingFragment.Reward.self),
-              ObjectIdentifier(RewardFragment.self)
+              ObjectIdentifier(RewardFragment.self),
+              ObjectIdentifier(RewardImageFragment.self),
+              ObjectIdentifier(RewardItemsFragment.self)
             ]
           ))
         }
@@ -1825,8 +1835,6 @@ public class FetchBackingQuery: GraphQLQuery {
         }
 
         public typealias AllowedAddons = RewardFragment.AllowedAddons
-
-        public typealias Items = RewardFragment.Items
 
         /// Backing.Reward.LocalReceiptLocation
         ///
@@ -1967,11 +1975,13 @@ public class FetchBackingQuery: GraphQLQuery {
           }
         }
 
-        public typealias Project = RewardFragment.Project
-
-        public typealias Image = RewardFragment.Image
-
         public typealias AudienceData = RewardFragment.AudienceData
+
+        public typealias Image = RewardImageFragment.Image
+
+        public typealias Project = RewardItemsFragment.Project
+
+        public typealias Items = RewardItemsFragment.Items
       }
 
       /// Backing.RewardsAmount

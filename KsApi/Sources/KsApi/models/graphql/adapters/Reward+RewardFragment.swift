@@ -16,12 +16,12 @@ extension Reward {
   static func reward(
     from rewardFragment: GraphAPI.RewardFragment,
     dateFormatter: DateFormatter = DateFormatter.isoDateFormatter,
-    expandedShippingRules: [ShippingRule]? = nil
+    expandedShippingRules: [ShippingRule]? = nil,
+    rewardItems: [RewardsItem]?,
+    rewardImage: Reward.Image?
   ) -> Reward? {
     guard
-      let rewardId = decompose(id: rewardFragment.id),
-      let projectRelayId = rewardFragment.project?.id,
-      let projectId = decompose(id: projectRelayId)
+      let rewardId = decompose(id: rewardFragment.id)
     else { return nil }
 
     let estimatedDeliveryOn = rewardFragment.estimatedDeliveryOn
@@ -53,43 +53,46 @@ extension Reward {
       pledgeAmount: rewardFragment.pledgeAmount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0,
       postCampaignPledgingEnabled: rewardFragment.postCampaignPledgingEnabled,
       remaining: rewardFragment.remainingQuantity,
-      rewardsItems: rewardItemsData(from: rewardFragment, with: projectId),
+      rewardsItems: rewardItems,
       shipping: shippingData(from: rewardFragment),
       shippingRulesExpanded: expandedShippingRules,
       startsAt: rewardFragment.startsAt.flatMap(TimeInterval.init),
       title: rewardFragment.name,
       localPickup: location,
       isAvailable: rewardFragment.available,
-      image: rewardPhoto(from: rewardFragment.image),
+      image: rewardImage,
       audienceData: rewardAudienceData(from: rewardFragment.audienceData)
     )
   }
 }
 
-private func rewardItemsData(
-  from rewardFragment: GraphAPI.RewardFragment,
-  with projectId: Int
-) -> [RewardsItem] {
-  return rewardFragment.items?.edges?.compactMap { edge -> RewardsItem? in
-    guard
-      let quantity = edge?.quantity,
-      let item = edge?.node,
-      let id = decompose(id: item.id),
-      let rewardId = decompose(id: rewardFragment.id)
-    else { return nil }
+extension RewardsItem {
+  static func rewardItemsData(
+    from fragment: GraphAPI.RewardItemsFragment
+  ) -> [RewardsItem] {
+    return fragment.items?.edges?.compactMap { edge -> RewardsItem? in
+      guard
+        let quantity = edge?.quantity,
+        let item = edge?.node,
+        let id = decompose(id: item.id),
+        let rewardId = decompose(id: fragment.id),
+        let projectGraphId = fragment.project?.id,
+        let projectId = decompose(id: projectGraphId)
+      else { return nil }
 
-    return RewardsItem(
-      id: 0, // not returned
-      item: Item(
-        description: nil, // not returned
-        id: id,
-        name: item.name,
-        projectId: projectId
-      ),
-      quantity: quantity,
-      rewardId: rewardId
-    )
-  } ?? []
+      return RewardsItem(
+        id: 0, // not returned
+        item: Item(
+          description: nil, // not returned
+          id: id,
+          name: item.name,
+          projectId: projectId
+        ),
+        quantity: quantity,
+        rewardId: rewardId
+      )
+    } ?? []
+  }
 }
 
 // FIXME: currently we don't get all of this information via GraphQL
@@ -117,13 +120,15 @@ private func shippingPreference(from rewardFragment: GraphAPI.RewardFragment) ->
   }
 }
 
-/// Converts a `GraphAPI.RewardFragment.Image` object into a `Photo` model.
-/// - Parameter image: The optional `GraphAPI.RewardFragment.Image` instance.
-/// - Returns: A `Photo` model containing the image URL and accessibility alt text, or `nil` if no image is available.
-private func rewardPhoto(from image: GraphAPI.RewardFragment.Image?) -> Reward.Image? {
-  guard let image = image else { return nil }
+extension Reward.Image {
+  /// Converts a `GraphAPI.RewardFragment.Image` object into a `Photo` model.
+  /// - Parameter image: The optional `GraphAPI.RewardFragment.Image` instance.
+  /// - Returns: A `Photo` model containing the image URL and accessibility alt text, or `nil` if no image is available.
+  static func rewardPhoto(from fragment: GraphAPI.RewardImageFragment?) -> Reward.Image? {
+    guard let image = fragment?.image else { return nil }
 
-  return Reward.Image(altText: image.altText, url: image.url)
+    return Reward.Image(altText: image.altText, url: image.url)
+  }
 }
 
 private func rewardAudienceData(from audienceData: GraphAPI.RewardFragment.AudienceData) -> Reward

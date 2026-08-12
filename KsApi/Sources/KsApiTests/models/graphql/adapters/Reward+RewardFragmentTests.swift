@@ -7,20 +7,34 @@ import XCTest
 final class Reward_RewardFragmentTests: XCTestCase {
   func test() {
     do {
-      let variables = ["includeShippingRules": true, "includeLocalPickup": true]
+      let data = rewardDictionary()
       let fragment: GraphAPI.RewardFragment = try testGraphObject(
-        jsonObject: rewardDictionary(),
-        variables: variables
+        jsonObject: data
       )
       XCTAssertNotNil(fragment)
+
+      let itemsFragment: GraphAPI.RewardItemsFragment = try testGraphObject(
+        jsonObject: data
+      )
+      XCTAssertNotNil(itemsFragment)
+
+      let imageFragment: GraphAPI.RewardImageFragment = try testGraphObject(
+        jsonObject: data
+      )
+      XCTAssertNotNil(imageFragment)
 
       let dateFormatter = DateFormatter()
       dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
       dateFormatter.dateFormat = "yyyy-MM-dd"
 
+      let items = RewardsItem.rewardItemsData(from: itemsFragment)
+      let image = Reward.Image.rewardPhoto(from: imageFragment)
+
       guard let v1Reward = Reward.reward(
         from: fragment,
-        dateFormatter: dateFormatter
+        dateFormatter: dateFormatter,
+        rewardItems: items,
+        rewardImage: image
       ) else {
         XCTFail("reward should be created from fragment")
 
@@ -43,12 +57,18 @@ final class Reward_RewardFragmentTests: XCTestCase {
       XCTAssertEqual(v1Reward.localPickup?.name, "San Jose")
       XCTAssertTrue(v1Reward.hasAddOns)
       XCTAssertEqual(v1Reward.remaining, nil)
-      XCTAssertEqual(v1Reward.rewardsItems[0].item.id, 1_170_799)
-      XCTAssertEqual(v1Reward.rewardsItems[0].item.name, "Soft-Cover Book (Signed)")
-      XCTAssertEqual(v1Reward.rewardsItems[0].quantity, 2)
-      XCTAssertEqual(v1Reward.rewardsItems[1].item.id, 1_170_813)
-      XCTAssertEqual(v1Reward.rewardsItems[1].item.name, "Custom Bookmark")
-      XCTAssertEqual(v1Reward.rewardsItems[1].quantity, 1)
+
+      if let items = v1Reward.rewardsItems {
+        XCTAssertEqual(items[0].item.id, 1_170_799)
+        XCTAssertEqual(items[0].item.name, "Soft-Cover Book (Signed)")
+        XCTAssertEqual(items[0].quantity, 2)
+        XCTAssertEqual(items[1].item.id, 1_170_813)
+        XCTAssertEqual(items[1].item.name, "Custom Bookmark")
+        XCTAssertEqual(items[1].quantity, 1)
+      } else {
+        XCTFail("Expected reward items to be fetched")
+      }
+
       XCTAssertNotNil(v1Reward.isAvailable)
 
       XCTAssertEqual(v1Reward.shipping.enabled, true)

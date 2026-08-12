@@ -15,17 +15,23 @@ extension Project {
 
   static func project(from data: GraphAPI.FetchAddOnsQuery.Data) -> Project? {
     let addOns = data.project?.addOns?.nodes?
-      .compactMap { node -> (GraphAPI.RewardFragment, [ShippingRule]?)? in
-        guard let rewardFragment = node?.fragments.rewardFragment else { return nil }
+      .compactMap { node -> Reward? in
+        guard let node else { return nil }
 
-        let expandedShippingRules = node?.shippingRulesExpanded?.nodes?
+        let rewardFragment = node.fragments.rewardFragment
+        let imageFragment = node.fragments.rewardImageFragment
+        let itemFragment = node.fragments.rewardItemsFragment
+
+        let expandedShippingRules = node.shippingRulesExpanded?.nodes?
           .compactMap { node in node?.fragments.shippingRuleFragment }
           .compactMap(ShippingRule.shippingRule(from:))
 
-        return (rewardFragment, expandedShippingRules)
-      }
-      .compactMap { fragment, expandedShippingRules in
-        Reward.reward(from: fragment, expandedShippingRules: expandedShippingRules)
+        return Reward.reward(
+          from: rewardFragment,
+          expandedShippingRules: expandedShippingRules,
+          rewardItems: RewardsItem.rewardItemsData(from: itemFragment),
+          rewardImage: Reward.Image.rewardPhoto(from: imageFragment)
+        )
       }
 
     guard

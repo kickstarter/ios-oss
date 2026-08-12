@@ -33,6 +33,8 @@ fragment BackingFragment on Backing {
   }
   reward {
     ...RewardFragment
+    ...RewardImageFragment
+    ...RewardItemsFragment
   }
   rewardsAmount {
     ...MoneyFragment
