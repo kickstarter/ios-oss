@@ -18,7 +18,7 @@ struct VideoFeedOverlayView: View {
     static let playButtonSize: CGFloat = 62
     static let playIconSize: CGFloat = 33
     static let playIconOffset: CGFloat = 2
-    static let playButtonOffset: CGFloat = -45
+    static let playButtonOffset: CGFloat = -75
     static let closeButtonSize: CGFloat = 44
     static let previewFadeDuration: Double = 0.3
     /// Preview image opacity when the video has failed to load or a save request has failed.
@@ -28,6 +28,10 @@ struct VideoFeedOverlayView: View {
     static let bottomSafeAreaPadding: CGFloat = 37
     static let playButtonStrokeBorderOpacity: Double = 0.5
     static let playButtonStrokeBorderWidth: CGFloat = 1
+    static let muteButtonSize: CGFloat = 32
+    static let muteIconSize: CGFloat = 16
+    static let mutePlaySpacing: CGFloat = 12
+    static let playMuteGroupOffset: CGFloat = playButtonOffset + (mutePlaySpacing + muteButtonSize) / 2
   }
 
   static let closeButtonSize: CGFloat = 44
@@ -38,6 +42,9 @@ struct VideoFeedOverlayView: View {
 
   @Binding var item: VideoFeedItem
 
+  /// Reflects the global feed mute state. Controlled via `onMuteTapped`.
+  @Binding var isMuted: Bool
+
   let playbackState: VideoFeedPlaybackState
   let videoPlayer: VideoFeedVideoPlayer
 
@@ -47,6 +54,7 @@ struct VideoFeedOverlayView: View {
   var onMoreTapped: (() -> Void)?
   var onCTATapped: (() -> Void)?
   var onProgressBarTapped: ((Float) -> Void)?
+  var onMuteTapped: (() -> Void)?
 
   var body: some View {
     ZStack(alignment: .bottom) {
@@ -93,8 +101,13 @@ struct VideoFeedOverlayView: View {
       }
     }
     .overlay(alignment: .center) {
-      self.playButton
-        .offset(y: Constants.playButtonOffset)
+      VStack(spacing: Constants.mutePlaySpacing) {
+        self.playButton
+        self.muteButton
+      }
+      .opacity(self.playbackState.isPlayButtonVisible ? 1 : 0)
+      .animation(.easeInOut(duration: 0.15), value: self.playbackState.isPlayButtonVisible)
+      .offset(y: Constants.playMuteGroupOffset)
     }
     .background {
       /// Preview image shown while the video loads.
@@ -154,10 +167,30 @@ struct VideoFeedOverlayView: View {
           )))
           .clipShape(Circle())
       }
-      .opacity(self.playbackState.isPlayButtonVisible ? 1 : 0)
-      .animation(.easeInOut(duration: 0.15), value: self.playbackState.isPlayButtonVisible)
       .accessibilityLabel(Strings.Play())
-      .accessibilityHidden(!self.playbackState.isPlayButtonVisible)
+    }
+  }
+
+  // MARK: - Mute Button
+
+  @ViewBuilder
+  private var muteButton: some View {
+    let iconName = self.isMuted ? "video-feed-volume-off" : "video-feed-volume-on"
+
+    if let icon = Library.image(named: iconName) {
+      Button(action: { self.onMuteTapped?() }) {
+        Image(uiImage: icon)
+          .resizable()
+          .scaledToFit()
+          .foregroundColor(Color(Colors.Icon.light.uiColor()))
+          .frame(width: Constants.muteIconSize, height: Constants.muteIconSize)
+          .frame(width: Constants.muteButtonSize, height: Constants.muteButtonSize)
+          .background(FrostedGlassBackgroundView().overlay(Circle().strokeBorder(
+            Color.white.opacity(Constants.playButtonStrokeBorderOpacity),
+            lineWidth: Constants.playButtonStrokeBorderWidth
+          )))
+          .clipShape(Circle())
+      }
     }
   }
 

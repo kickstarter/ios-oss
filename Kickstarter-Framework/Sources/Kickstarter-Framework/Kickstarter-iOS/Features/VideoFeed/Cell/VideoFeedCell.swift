@@ -33,6 +33,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     case videoFailed
     case pauseTapped
     case resumeTapped
+    case muteTapped
     case progressBarTapped(Float)
   }
 
@@ -92,7 +93,8 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   func configureWith(
     item: Binding<VideoFeedItem>,
-    isSaved: Binding<Bool>
+    isSaved: Binding<Bool>,
+    isMuted: Binding<Bool>
   ) {
     self.currentItemId = item.wrappedValue.id
 
@@ -100,6 +102,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
       VideoFeedOverlayView(
         isSaved: isSaved,
         item: item,
+        isMuted: isMuted,
         playbackState: self.playbackState,
         videoPlayer: self.videoPlayer,
         onCloseTapped: { [weak self] in self?.onEvent?(.closeTapped) },
@@ -107,7 +110,8 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
         onShareTapped: { [weak self] in self?.onEvent?(.shareTapped) },
         onMoreTapped: { [weak self] in self?.onEvent?(.moreTapped) },
         onCTATapped: { [weak self] in self?.ctaTapped() },
-        onProgressBarTapped: { [weak self] progress in self?.onEvent?(.progressBarTapped(progress)) }
+        onProgressBarTapped: { [weak self] progress in self?.onEvent?(.progressBarTapped(progress)) },
+        onMuteTapped: { [weak self] in self?.onEvent?(.muteTapped) }
       )
     }
     .margins(.all, 0)
@@ -137,6 +141,10 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
 
   func pausePlayback() {
     self.playbackState.pause()
+  }
+
+  func mutePlayback(_ muted: Bool) {
+    self.videoPlayer.player.isMuted = muted
   }
 
   /// Duration of the current video in milliseconds
