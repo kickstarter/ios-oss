@@ -15,7 +15,8 @@ public protocol VideoFeedViewModelType: AnyObject {
   var isInitialLoadComplete: Bool { get }
   /// Project ID of the most recent failed save. Triggers the error toast on the selected cell.
   var saveFailedItemId: String? { get }
-
+  /// True when all videos in the feed are muted. Persists.
+  var isMuted: Bool { get }
   /// Kicks off the initial feed fetch.
   func viewDidLoad()
   /// Syncs save state from the project page cache on return to the feed.
@@ -30,6 +31,8 @@ public protocol VideoFeedViewModelType: AnyObject {
   func clearLoginIntent()
   /// Clears the save error after the toast has been shown.
   func clearSaveFailedItemId()
+  /// Toggles mute state for all videos and persists the new value.
+  func toggleMute()
   /// Tracks a swipe to a new video, then fires an impression for the incoming video.
   func trackPageViewed(atIndex index: Int, totalWatchTimeMs: Int, totalVideoDurationMs: Int)
   /// Tracks a CTA tap in the video feed (play, pause, save, share).
@@ -57,6 +60,10 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
   /// Set to the project ID of an item whose save/unsave request failed.
   /// Observed by `VideoFeedViewController` to trigger the error toast on the correct cell.
   public private(set) var saveFailedItemId: String? = nil
+
+  public private(set) var isMuted: Bool = VideoFeedViewModel.persistedIsMuted
+
+  private static var persistedIsMuted: Bool = false
 
   /// Store the item id when a logged-out user taps save. Finishes executing on `userSessionStarted` if login succeeded.
   private var pendingSaveItemId: String? = nil
@@ -195,6 +202,11 @@ public final class VideoFeedViewModel: VideoFeedViewModelType {
 
   public func clearSaveFailedItemId() {
     self.saveFailedItemId = nil
+  }
+
+  public func toggleMute() {
+    self.isMuted.toggle()
+    VideoFeedViewModel.persistedIsMuted = self.isMuted
   }
 
   public func trackPageViewed(atIndex index: Int, totalWatchTimeMs: Int, totalVideoDurationMs: Int) {

@@ -203,6 +203,22 @@ final class VideoFeedViewController: UIViewController {
         self?.bindViewModel()
       }
     }
+
+    withObservationTracking {
+      _ = self.viewModel.isMuted
+    } onChange: { [weak self] in
+      DispatchQueue.main.async { [weak self] in
+        guard let self else { return }
+
+        let muted = self.viewModel.isMuted
+
+        self.collectionView.visibleCells
+          .compactMap { $0 as? VideoFeedCell }
+          .forEach { $0.mutePlayback(muted) }
+
+        self.bindViewModel()
+      }
+    }
   }
 
   /// Reloads the collection view with a fresh set of fetched items.
@@ -233,7 +249,8 @@ final class VideoFeedViewController: UIViewController {
         get: { self.viewModel.items.first(where: { $0.id == item.id }) ?? item },
         set: { _ in }
       ),
-      isSaved: self.viewModel.isSaved(projectId: item.id)
+      isSaved: self.viewModel.isSaved(projectId: item.id),
+      isMuted: self.mutedBinding()
     )
   }
 
@@ -245,6 +262,13 @@ final class VideoFeedViewController: UIViewController {
     let currentPage = round(self.collectionView.contentOffset.y / pageHeight)
 
     self.collectionView.contentOffset.y = currentPage * pageHeight
+  }
+
+  private func mutedBinding() -> Binding<Bool> {
+    Binding(
+      get: { self.viewModel.isMuted },
+      set: { [weak self] _ in self?.viewModel.toggleMute() }
+    )
   }
 
   // MARK: - Audio session
@@ -417,12 +441,16 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
         get: { self.viewModel.items.first(where: { $0.id == item.id }) ?? item },
         set: { _ in }
       ),
-      isSaved: self.viewModel.isSaved(projectId: item.id)
+      isSaved: self.viewModel.isSaved(projectId: item.id),
+      isMuted: self.mutedBinding()
     )
 
     if let url = item.videoURL {
       cell.loadVideo(url: url)
     }
+
+    /// Apply persisted mute state to the newly loaded player.
+    cell.mutePlayback(self.viewModel.isMuted)
 
     let nextIndex = indexPath.item + 1
 
@@ -519,6 +547,8 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
       self.viewModel.trackCTAClicked(ctaContext: .videoFeedPause, item: item)
     case .resumeTapped:
       self.viewModel.trackCTAClicked(ctaContext: .videoFeedPlay, item: item)
+    case .muteTapped:
+      self.viewModel.toggleMute()
     case let .progressBarTapped(percentageWatched):
       self.trackProgressBarTapped(item: item, percentageWatched: percentageWatched)
     case .videoReady, .videoFailed:
