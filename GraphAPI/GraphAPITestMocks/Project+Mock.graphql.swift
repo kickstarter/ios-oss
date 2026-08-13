@@ -58,6 +58,7 @@ public class Project: MockObject {
     @Field<Bool>("postCampaignPledgingEnabled") public var postCampaignPledgingEnabled
     @Field<PostConnection>("posts") public var posts
     @Field<Bool>("prelaunchActivated") public var prelaunchActivated
+    @Field<RichTextComponent>("prelaunchStoryRichText") public var prelaunchStoryRichText
     @Field<String>("projectDescription") public var projectDescription
     @Field<GraphAPI.ID>("projectId") public var projectId
     @Field<GraphAPI.DateTime>("projectLaunchedAt") public var projectLaunchedAt
@@ -136,6 +137,7 @@ public extension Mock where O == Project {
     postCampaignPledgingEnabled: Bool? = nil,
     posts: Mock<PostConnection>? = nil,
     prelaunchActivated: Bool? = nil,
+    prelaunchStoryRichText: Mock<RichTextComponent>? = nil,
     projectDescription: String? = nil,
     projectId: GraphAPI.ID? = nil,
     projectLaunchedAt: GraphAPI.DateTime? = nil,
@@ -211,6 +213,7 @@ public extension Mock where O == Project {
     _setScalar(postCampaignPledgingEnabled, for: \.postCampaignPledgingEnabled)
     _setEntity(posts, for: \.posts)
     _setScalar(prelaunchActivated, for: \.prelaunchActivated)
+    _setEntity(prelaunchStoryRichText, for: \.prelaunchStoryRichText)
     _setScalar(projectDescription, for: \.projectDescription)
     _setScalar(projectId, for: \.projectId)
     _setScalar(projectLaunchedAt, for: \.projectLaunchedAt)
