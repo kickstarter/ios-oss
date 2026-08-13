@@ -18,7 +18,7 @@ struct VideoFeedOverlayView: View {
     static let playButtonSize: CGFloat = 62
     static let playIconSize: CGFloat = 33
     static let playIconOffset: CGFloat = 2
-    static let playButtonOffset: CGFloat = -45
+    static let playButtonOffset: CGFloat = -75
     static let closeButtonSize: CGFloat = 44
     static let previewFadeDuration: Double = 0.3
     /// Preview image opacity when the video has failed to load or a save request has failed.

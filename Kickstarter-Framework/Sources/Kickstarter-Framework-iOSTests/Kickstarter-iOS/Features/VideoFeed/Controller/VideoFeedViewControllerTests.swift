@@ -65,7 +65,8 @@ final class VideoFeedViewControllerTests: TestCase {
             watchesCount: 50,
             percentFunded: 100
           )),
-          isSaved: .constant(false)
+          isSaved: .constant(false),
+          isMuted: .constant(false)
         )
 
         assertSnapshot(
@@ -126,7 +127,8 @@ final class VideoFeedViewControllerTests: TestCase {
             watchesCount: 50,
             percentFunded: 42
           )),
-          isSaved: .constant(true)
+          isSaved: .constant(true),
+          isMuted: .constant(false)
         )
 
         assertSnapshot(
@@ -188,7 +190,8 @@ final class VideoFeedViewControllerTests: TestCase {
             watchesCount: 50,
             percentFunded: 42
           )),
-          isSaved: .constant(false)
+          isSaved: .constant(false),
+          isMuted: .constant(false)
         )
 
         player.simulateVideoFailure()
@@ -251,7 +254,8 @@ final class VideoFeedViewControllerTests: TestCase {
             watchesCount: 50,
             percentFunded: 42
           )),
-          isSaved: .constant(false)
+          isSaved: .constant(false),
+          isMuted: .constant(false)
         )
 
         cell.showSaveErrorToast()
@@ -315,11 +319,146 @@ final class VideoFeedViewControllerTests: TestCase {
             watchesCount: 50,
             percentFunded: 42
           )),
-          isSaved: .constant(false)
+          isSaved: .constant(false),
+          isMuted: .constant(false)
         )
 
         player.simulateVideoFailure()
         cell.showSaveErrorToast()
+
+        assertSnapshot(
+          of: cell,
+          as: .image(perceptualPrecision: 0.99),
+          named: "\(language.rawValue)_\(device)"
+        )
+      }
+    }
+  }
+
+  func testView_VideoFeedCell_Paused_Unmuted() {
+    orthogonalCombos(
+      Language.allLanguages,
+      Device.allCases
+    ).forEach {
+      language, device in
+
+      let appBundle = Bundle(identifier: KickstarterBundleIdentifier.debug.rawValue) ?? Bundle.main
+
+      withEnvironment(
+        language: language,
+        mainBundle: MockBundle(bundleIdentifier: appBundle.bundleIdentifier)
+      ) {
+        let player = MockVideoFeedVideoPlayer()
+
+        let cell = VideoFeedCell(
+          frame: CGRect(
+            x: 0,
+            y: 0,
+            width: device.deviceSize.width,
+            height: device.deviceSize.height
+          ),
+          videoPlayer: player
+        )
+
+        cell.configureWith(
+          item: .constant(VideoFeedItem(
+            id: "0",
+            pid: 3,
+            slug: "video_feed",
+            projectURL: "https://test.com",
+            title: "Ringo Move - The Ultimate Workout Bottle",
+            creator: "Creator Name",
+            creatorImageURL: nil,
+            statsText: VideoFeedItem.statsTextInUserPreferredCurrency(
+              pledgedAmount: 50_134,
+              currencyCode: "USD",
+              backersCount: 431
+            ),
+            badges: [
+              .init(type: .projectWeLove, text: "Project We Love", icon: nil),
+              .init(type: .daysLeft, text: "3 days left", icon: nil)
+            ],
+            videoURL: nil,
+            videoPreviewImageURL: nil,
+            projectId: "1",
+            isSaved: false,
+            sharesCount: 1,
+            watchesCount: 50,
+            percentFunded: 100
+          )),
+          isSaved: .constant(false),
+          isMuted: .constant(false)
+        )
+
+        player.simulateVideoReady()
+        cell.pausePlayback()
+
+        assertSnapshot(
+          of: cell,
+          as: .image(perceptualPrecision: 0.99),
+          named: "\(language.rawValue)_\(device)"
+        )
+      }
+    }
+  }
+
+  func testView_VideoFeedCell_Paused_Muted() {
+    orthogonalCombos(
+      Language.allLanguages,
+      Device.allCases
+    ).forEach {
+      language, device in
+
+      let appBundle = Bundle(identifier: KickstarterBundleIdentifier.debug.rawValue) ?? Bundle.main
+
+      withEnvironment(
+        language: language,
+        mainBundle: MockBundle(bundleIdentifier: appBundle.bundleIdentifier)
+      ) {
+        let player = MockVideoFeedVideoPlayer()
+
+        let cell = VideoFeedCell(
+          frame: CGRect(
+            x: 0,
+            y: 0,
+            width: device.deviceSize.width,
+            height: device.deviceSize.height
+          ),
+          videoPlayer: player
+        )
+
+        cell.configureWith(
+          item: .constant(VideoFeedItem(
+            id: "0",
+            pid: 3,
+            slug: "video_feed",
+            projectURL: "https://test.com",
+            title: "Ringo Move - The Ultimate Workout Bottle",
+            creator: "Creator Name",
+            creatorImageURL: nil,
+            statsText: VideoFeedItem.statsTextInUserPreferredCurrency(
+              pledgedAmount: 50_134,
+              currencyCode: "USD",
+              backersCount: 431
+            ),
+            badges: [
+              .init(type: .projectWeLove, text: "Project We Love", icon: nil),
+              .init(type: .daysLeft, text: "3 days left", icon: nil)
+            ],
+            videoURL: nil,
+            videoPreviewImageURL: nil,
+            projectId: "1",
+            isSaved: false,
+            sharesCount: 1,
+            watchesCount: 50,
+            percentFunded: 100
+          )),
+          isSaved: .constant(false),
+          isMuted: .constant(true)
+        )
+
+        player.simulateVideoReady()
+        cell.pausePlayback()
 
         assertSnapshot(
           of: cell,
@@ -338,6 +477,10 @@ final class MockVideoFeedVideoPlayer: VideoFeedVideoPlayer {
   override func play() {}
   override func pause() {}
   override func stop() {}
+
+  func simulateVideoReady() {
+    self.onVideoReady?()
+  }
 
   func simulateVideoFailure() {
     self.onVideoFailed?()
