@@ -288,6 +288,10 @@ public enum FetchProjectQueryTemplate {
     projectResultMap["faqs"] = updatedFaqs
     projectResultMap["environmentalCommitments"] = updatedEnvironmentalCommitments
     projectResultMap["creator"] = updatedCreatorResultMap
+    projectResultMap["prelaunchStoryRichText"] = [
+      "__typename": "RichTextComponent",
+      "items": [] as [[String: Any]]
+    ]
     projectResultMap["storyRichText"] = [
       "__typename": "RichTextComponent",
       "items": [] as [[String: Any]]
