@@ -88,6 +88,8 @@ public class FastFetchProjectPageExtendedPropertiesQuery: GraphQLQuery {
       public var risks: String { __data["risks"] }
       /// The story behind the project, parsed for presentation.
       public var story: GraphAPI.HTML { __data["story"] }
+      /// The project has launched
+      public var isLaunched: Bool { __data["isLaunched"] }
       /// Return an itemized version of the prelaunch story. This feature is in BETA: types can change anytime!
       public var prelaunchStoryRichText: PrelaunchStoryRichText { __data["prelaunchStoryRichText"] }
       /// Return an itemized version of the story. This feature is in BETA: types can change anytime!
@@ -110,6 +112,7 @@ public class FastFetchProjectPageExtendedPropertiesQuery: GraphQLQuery {
         projectNotice: String? = nil,
         risks: String,
         story: GraphAPI.HTML,
+        isLaunched: Bool,
         prelaunchStoryRichText: PrelaunchStoryRichText,
         storyRichText: StoryRichText
       ) {
@@ -125,6 +128,7 @@ public class FastFetchProjectPageExtendedPropertiesQuery: GraphQLQuery {
             "projectNotice": projectNotice,
             "risks": risks,
             "story": story,
+            "isLaunched": isLaunched,
             "prelaunchStoryRichText": prelaunchStoryRichText._fieldData,
             "storyRichText": storyRichText._fieldData,
           ],

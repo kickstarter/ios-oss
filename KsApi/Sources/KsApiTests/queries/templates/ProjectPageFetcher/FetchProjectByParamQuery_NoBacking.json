@@ -160,6 +160,7 @@
         }
       },
       "watchesCount": 0,
+      "isLaunched": true,
       "prelaunchStoryRichText": {
         "__typename": "RichTextComponent",
         "items": []

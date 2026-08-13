@@ -277,8 +277,9 @@ internal extension ExtendedProjectProperties {
     let aiDisclosure = extendedProjectAIDisclosure(from: fragment)
     let prelaunchStoryRichTextFragment = fragment.prelaunchStoryRichText.fragments.richTextComponentFragment
     let liveStoryRichTextFragment = fragment.storyRichText.fragments.richTextComponentFragment
+    let launched = fragment.isLaunched
 
-    let storyRichTextFragment = if prelaunchStoryRichTextFragment.items.isEmpty {
+    let storyRichTextFragment = if launched || prelaunchStoryRichTextFragment.items.isEmpty {
       liveStoryRichTextFragment
     } else {
       prelaunchStoryRichTextFragment
