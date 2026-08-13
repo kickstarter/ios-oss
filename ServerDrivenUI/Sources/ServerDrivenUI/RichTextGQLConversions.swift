@@ -3,7 +3,7 @@ import GraphAPI
 
 extension RichTextComponentFragment {
   public func asRichTextElements() -> [RichTextElement] {
-    self.items.map { $0.asRichTextElement }
+    self.items.map { $0.asRichTextElement }.withNormalizedNestedElements()
   }
 }
 
