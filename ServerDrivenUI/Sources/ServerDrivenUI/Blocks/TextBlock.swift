@@ -39,6 +39,9 @@ struct TextBlock: View {
   ) -> AttributedString {
     var attributes = AttributeContainer()
     attributes.font = self.font(for: header)
+    if let link = text.link {
+      attributes.link = .init(link)
+    }
     for style in text.styles {
       switch style {
       case .strong:
