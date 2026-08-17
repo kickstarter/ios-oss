@@ -27,18 +27,15 @@ extension VideoFeedBannerPresenting {
     feedVC.loadViewIfNeeded()
 
     feedVC.onReadyToPresent = { [weak self, weak cell, weak feedVC] in
-      guard let self, let feedVC else { return }
+      cell?.setLoading(false)
 
-      /// Prevent double-tap and cross tab race condition from presenting the same VC more than once.
-      guard feedVC.presentingViewController == nil, !feedVC.isBeingPresented else {
-        cell?.setLoading(false)
+      guard let self, let feedVC,
+            feedVC.presentingViewController == nil,
+            !feedVC.isBeingPresented else {
         return
       }
 
-      cell?.setLoading(false)
-
       feedVC.modalPresentationStyle = .fullScreen
-
       self.present(feedVC, animated: true)
     }
 
