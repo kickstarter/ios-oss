@@ -63,7 +63,11 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
       guard let extendedProjectProperties = project.extendedProjectProperties,
             let displayPrelaunch = project.displayPrelaunch,
             !displayPrelaunch else {
-        return baseTabs
+        if featureProjectStoryRichTextEnabled() {
+          return baseTabs + [.campaign]
+        } else {
+          return baseTabs
+        }
       }
 
       let moreTabs: [NavigationSection] = [.campaign, .faq, .risks]

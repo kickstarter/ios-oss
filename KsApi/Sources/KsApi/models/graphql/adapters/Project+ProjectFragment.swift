@@ -275,7 +275,15 @@ internal extension ExtendedProjectProperties {
     let faqs = extendedProjectFAQs(from: fragment)
     let minimumSingleTierPledgeAmount = fragment.minPledge
     let aiDisclosure = extendedProjectAIDisclosure(from: fragment)
-    let storyRichTextFragment = fragment.storyRichText.fragments.richTextComponentFragment
+    let prelaunchStoryRichTextFragment = fragment.prelaunchStoryRichText.fragments.richTextComponentFragment
+    let liveStoryRichTextFragment = fragment.storyRichText.fragments.richTextComponentFragment
+    let launched = fragment.isLaunched
+
+    let storyRichTextFragment = if launched || prelaunchStoryRichTextFragment.items.isEmpty {
+      liveStoryRichTextFragment
+    } else {
+      prelaunchStoryRichTextFragment
+    }
 
     let extendedProjectProperties = ExtendedProjectProperties(
       environmentalCommitments: environmentalCommitments,

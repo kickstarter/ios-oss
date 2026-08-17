@@ -88,6 +88,10 @@ public class FastFetchProjectPageExtendedPropertiesQuery: GraphQLQuery {
       public var risks: String { __data["risks"] }
       /// The story behind the project, parsed for presentation.
       public var story: GraphAPI.HTML { __data["story"] }
+      /// The project has launched
+      public var isLaunched: Bool { __data["isLaunched"] }
+      /// Return an itemized version of the prelaunch story. This feature is in BETA: types can change anytime!
+      public var prelaunchStoryRichText: PrelaunchStoryRichText { __data["prelaunchStoryRichText"] }
       /// Return an itemized version of the story. This feature is in BETA: types can change anytime!
       public var storyRichText: StoryRichText { __data["storyRichText"] }
 
@@ -108,6 +112,8 @@ public class FastFetchProjectPageExtendedPropertiesQuery: GraphQLQuery {
         projectNotice: String? = nil,
         risks: String,
         story: GraphAPI.HTML,
+        isLaunched: Bool,
+        prelaunchStoryRichText: PrelaunchStoryRichText,
         storyRichText: StoryRichText
       ) {
         self.init(_dataDict: DataDict(
@@ -122,6 +128,8 @@ public class FastFetchProjectPageExtendedPropertiesQuery: GraphQLQuery {
             "projectNotice": projectNotice,
             "risks": risks,
             "story": story,
+            "isLaunched": isLaunched,
+            "prelaunchStoryRichText": prelaunchStoryRichText._fieldData,
             "storyRichText": storyRichText._fieldData,
           ],
           fulfilledFragments: [
@@ -211,6 +219,43 @@ public class FastFetchProjectPageExtendedPropertiesQuery: GraphQLQuery {
       public typealias EnvironmentalCommitment = ExtendedProjectPropertiesFragment.EnvironmentalCommitment
 
       public typealias Faqs = ExtendedProjectPropertiesFragment.Faqs
+
+      /// Project.PrelaunchStoryRichText
+      ///
+      /// Parent Type: `RichTextComponent`
+      public struct PrelaunchStoryRichText: GraphAPI.SelectionSet {
+        public let __data: DataDict
+        public init(_dataDict: DataDict) { __data = _dataDict }
+
+        public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextComponent }
+
+        public var items: [Item] { __data["items"] }
+
+        public struct Fragments: FragmentContainer {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public var richTextComponentFragment: RichTextComponentFragment { _toFragment() }
+        }
+
+        public init(
+          items: [Item]
+        ) {
+          self.init(_dataDict: DataDict(
+            data: [
+              "__typename": GraphAPI.Objects.RichTextComponent.typename,
+              "items": items._fieldData,
+            ],
+            fulfilledFragments: [
+              ObjectIdentifier(FastFetchProjectPageExtendedPropertiesQuery.Data.Project.PrelaunchStoryRichText.self),
+              ObjectIdentifier(ExtendedProjectPropertiesFragment.PrelaunchStoryRichText.self),
+              ObjectIdentifier(RichTextComponentFragment.self)
+            ]
+          ))
+        }
+
+        public typealias Item = RichTextComponentFragment.Item
+      }
 
       /// Project.StoryRichText
       ///

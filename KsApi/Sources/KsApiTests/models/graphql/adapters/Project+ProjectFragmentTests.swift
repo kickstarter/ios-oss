@@ -529,6 +529,11 @@ final class Project_ProjectFragmentTests: XCTestCase {
        },
       "watchesCount": 18,
       "isPledgeOverTimeAllowed": false,
+      "isLaunched": true,
+      "prelaunchStoryRichText": {
+        "__typename": "RichTextComponent",
+        "items": []
+      },
       "storyRichText": {
         "__typename": "RichTextComponent",
         "items": []

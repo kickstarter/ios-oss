@@ -288,6 +288,11 @@ private extension GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.Data {
     mockExtraProperties.storyRichText?.items = [
       header
     ]
+    mockExtraProperties.isLaunched = true
+    mockExtraProperties.prelaunchStoryRichText = Mock<GraphAPITestMocks.RichTextComponent>()
+    mockExtraProperties.prelaunchStoryRichText?.items = [
+      header
+    ]
 
     return GraphAPI.FastFetchProjectPageExtendedPropertiesQuery.Data(
       project: FastFetchProjectPageExtendedPropertiesQuery.Data.Project.from(mockExtraProperties)

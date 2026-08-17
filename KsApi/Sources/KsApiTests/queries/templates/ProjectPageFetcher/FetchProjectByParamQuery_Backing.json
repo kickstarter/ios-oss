@@ -164,6 +164,11 @@
         }
       },
       "watchesCount": 0,
+      "isLaunched": true,
+      "prelaunchStoryRichText": {
+        "__typename": "RichTextComponent",
+        "items": []
+      },
       "storyRichText": {
         "__typename": "RichTextComponent",
         "items": []
