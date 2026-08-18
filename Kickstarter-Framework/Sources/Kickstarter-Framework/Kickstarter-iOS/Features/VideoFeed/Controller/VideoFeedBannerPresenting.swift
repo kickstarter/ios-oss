@@ -10,7 +10,8 @@ extension VideoFeedBannerPresenting {
   func presentVideoFeed(from cell: VideoFeedBannerCell) {
     guard self.videoFeedVC == nil else {
       /// Reuse an existing feed VC so VM state (optimistic saves, etc.) persists across opens.
-      if let existing = self.videoFeedVC, existing.isBeingPresented == false {
+      if let existing = self.videoFeedVC, existing.presentingViewController == nil,
+         !existing.isBeingPresented {
         existing.modalPresentationStyle = .fullScreen
         self.present(existing, animated: true)
       }
@@ -26,12 +27,15 @@ extension VideoFeedBannerPresenting {
     feedVC.loadViewIfNeeded()
 
     feedVC.onReadyToPresent = { [weak self, weak cell, weak feedVC] in
-      guard let self, let feedVC else { return }
-
       cell?.setLoading(false)
 
-      feedVC.modalPresentationStyle = .fullScreen
+      guard let self, let feedVC,
+            feedVC.presentingViewController == nil,
+            !feedVC.isBeingPresented else {
+        return
+      }
 
+      feedVC.modalPresentationStyle = .fullScreen
       self.present(feedVC, animated: true)
     }
 
