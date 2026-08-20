@@ -203,22 +203,6 @@ final class VideoFeedViewController: UIViewController {
         self?.bindViewModel()
       }
     }
-
-    withObservationTracking {
-      _ = self.viewModel.isMuted
-    } onChange: { [weak self] in
-      DispatchQueue.main.async { [weak self] in
-        guard let self else { return }
-
-        let muted = self.viewModel.isMuted
-
-        self.collectionView.visibleCells
-          .compactMap { $0 as? VideoFeedCell }
-          .forEach { $0.mutePlayback(muted) }
-
-        self.bindViewModel()
-      }
-    }
   }
 
   /// Reloads the collection view with a fresh set of fetched items.
@@ -250,7 +234,14 @@ final class VideoFeedViewController: UIViewController {
         set: { _ in }
       ),
       isSaved: self.viewModel.isSaved(projectId: item.id),
-      isMuted: self.mutedBinding()
+      isMuted: Binding(
+        get: { self.viewModel.isMuted },
+        set: { [weak self] newValue in
+          guard let self, newValue != self.viewModel.isMuted else { return }
+
+          self.toggleMute()
+        }
+      )
     )
   }
 
@@ -264,15 +255,9 @@ final class VideoFeedViewController: UIViewController {
     self.collectionView.contentOffset.y = currentPage * pageHeight
   }
 
-  private func mutedBinding() -> Binding<Bool> {
-    Binding(
-      get: { self.viewModel.isMuted },
-      set: { [weak self] _ in self?.viewModel.toggleMute() }
-    )
-  }
-
   // MARK: - Audio session
 
+  /// Starts silent. Respects the physical silent switch via .soloAmbient.
   private func configureAudioSession() {
     do {
       try AVAudioSession.sharedInstance().setCategory(.soloAmbient, mode: .default)
@@ -289,7 +274,7 @@ final class VideoFeedViewController: UIViewController {
   /// Detects a volume up press to unmute the feed when the silent switch is on.
   /// In silent mode, volume buttons control ringer (not media) volume, so `outputVolume` KVO never fires.
   /// We can use a `MPVolumeView` to reroute buttons to media volume, fixing this.  it's the only way iOS exposes this AFAIK.
-  /// On the first volume-up, switches to `.playback` to bypass the silent switch, then tears itself down.
+  /// On the first volume-up, switches to `.playback` to bypass the silent switch,.
   private func setupSilentModeOverride() {
     let volumeView = MPVolumeView(frame: .zero)
     volumeView.alpha = 0.001
@@ -306,10 +291,8 @@ final class VideoFeedViewController: UIViewController {
         DispatchQueue.main.async { [weak self] in
           guard let self else { return }
 
-          self.volumeObservation?.invalidate()
-          self.volumeObservation = nil
-
           try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+          try? AVAudioSession.sharedInstance().setActive(true)
         }
       }
   }
@@ -348,6 +331,21 @@ final class VideoFeedViewController: UIViewController {
         }
       }
     ]
+  }
+
+  private func toggleMute() {
+    self.viewModel.toggleMute()
+    self.muteVisibleCells()
+    self.reconfigureVisibleCell()
+  }
+
+  private func muteVisibleCells() {
+    let isMuted = self.viewModel.isMuted
+    let cells = self.collectionView.visibleCells.compactMap { $0 as? VideoFeedCell }
+
+    for cell in cells {
+      cell.mutePlayback(isMuted)
+    }
   }
 
   private func pauseVisibleCell() {
@@ -442,15 +440,19 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
         set: { _ in }
       ),
       isSaved: self.viewModel.isSaved(projectId: item.id),
-      isMuted: self.mutedBinding()
+      isMuted: Binding(
+        get: { self.viewModel.isMuted },
+        set: { [weak self] newValue in
+          guard let self, newValue != self.viewModel.isMuted else { return }
+
+          self.toggleMute()
+        }
+      )
     )
 
     if let url = item.videoURL {
       cell.loadVideo(url: url)
     }
-
-    /// Apply persisted mute state to the newly loaded player.
-    cell.mutePlayback(self.viewModel.isMuted)
 
     let nextIndex = indexPath.item + 1
 
@@ -547,10 +549,10 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
       self.viewModel.trackCTAClicked(ctaContext: .videoFeedPause, item: item)
     case .resumeTapped:
       self.viewModel.trackCTAClicked(ctaContext: .videoFeedPlay, item: item)
-    case .muteTapped:
-      self.viewModel.toggleMute()
     case let .progressBarTapped(percentageWatched):
       self.trackProgressBarTapped(item: item, percentageWatched: percentageWatched)
+    case .muteTapped:
+      self.toggleMute()
     case .videoReady, .videoFailed:
       break
     }
