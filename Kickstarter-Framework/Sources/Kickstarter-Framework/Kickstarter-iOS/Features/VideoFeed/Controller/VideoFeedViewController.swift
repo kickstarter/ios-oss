@@ -29,6 +29,7 @@ final class VideoFeedViewController: UIViewController {
   private var currentPageIndex: Int = 0
 
   private var volumeObservation: NSKeyValueObservation?
+  private var isResettingAudioSession = false
 
   /// Called once the first batch of items has loaded and the feed is ready to present.
   var onReadyToPresent: (() -> Void)?
@@ -234,15 +235,17 @@ final class VideoFeedViewController: UIViewController {
         set: { _ in }
       ),
       isSaved: self.viewModel.isSaved(projectId: item.id),
-      isMuted: Binding(
-        get: { self.viewModel.isMuted },
-        set: { [weak self] newValue in
-          guard let self, newValue != self.viewModel.isMuted else { return }
-
-          self.toggleMute()
-        }
-      )
+      isMuted: self.muteBinding
     )
+  }
+
+  private var muteBinding: Binding<Bool> {
+    Binding {
+      self.viewModel.isMuted
+    } set: { [weak self] newValue in
+      guard let self, newValue != self.viewModel.isMuted else { return }
+      self.toggleMute()
+    }
   }
 
   private func snapToCurrentPage() {
@@ -289,12 +292,24 @@ final class VideoFeedViewController: UIViewController {
               newVolume > oldVolume else { return }
 
         DispatchQueue.main.async { [weak self] in
-          guard let self else { return }
+          guard let self, !self.isResettingAudioSession else { return }
 
           try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
           try? AVAudioSession.sharedInstance().setActive(true)
+
+          self.muteVisibleCells()
         }
       }
+
+    let silentSwitch = NotificationCenter.default.addObserver(
+      forName: Notification.Name("com.apple.springboard.ringerstate"),
+      object: nil,
+      queue: .main
+    ) { [weak self] _ in
+      self?.resetAudioSession()
+    }
+
+    self.lifecycleObservers.append(silentSwitch)
   }
 
   // MARK: - App lifecycle
@@ -337,6 +352,12 @@ final class VideoFeedViewController: UIViewController {
     self.viewModel.toggleMute()
     self.muteVisibleCells()
     self.reconfigureVisibleCell()
+
+    /// Switching to .playback when unmuting ensures audio isn't blocked by the silent switch.
+    if !self.viewModel.isMuted {
+      try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+      try? AVAudioSession.sharedInstance().setActive(true)
+    }
   }
 
   private func muteVisibleCells() {
@@ -440,14 +461,7 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
         set: { _ in }
       ),
       isSaved: self.viewModel.isSaved(projectId: item.id),
-      isMuted: Binding(
-        get: { self.viewModel.isMuted },
-        set: { [weak self] newValue in
-          guard let self, newValue != self.viewModel.isMuted else { return }
-
-          self.toggleMute()
-        }
-      )
+      isMuted: self.muteBinding
     )
 
     if let url = item.videoURL {
@@ -523,10 +537,25 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
 
     for cell in self.collectionView.visibleCells.compactMap({ $0 as? VideoFeedCell }) {
       if self.collectionView.indexPath(for: cell) == activeIndexPath {
+        /// Reset the session before starting the new video so any prior volume-up override doesn't carry over.
+        self.resetAudioSession()
         cell.startPlayback()
       } else {
         cell.pausePlayback()
       }
+    }
+  }
+
+  /// Resets the audio session to `.soloAmbient` so the silent switch is respected.
+  private func resetAudioSession() {
+    self.isResettingAudioSession = true
+    /// Deactivate first to interrupt any in-flight audio, then reactivate under .soloAmbient.
+    try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+    try? AVAudioSession.sharedInstance().setCategory(.soloAmbient, mode: .default)
+    try? AVAudioSession.sharedInstance().setActive(true)
+
+    DispatchQueue.main.async {
+      self.isResettingAudioSession = false
     }
   }
 
