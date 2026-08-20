@@ -151,6 +151,35 @@ final class ImageBlockTests: XCTestCase {
     )
   }
 
+  func testImageBlockWithLink_wrapsImageInButton() throws {
+    let photo = makePhoto(
+      altText: "Linked image",
+      url: testImageURL().absoluteString,
+      link: URL(string: "https://backercrew.com/submit")
+    )
+
+    let view = imageBlock(photo: photo, colorScheme: .light)
+
+    XCTAssertNoThrow(
+      try view.inspect().find(ViewType.Button.self),
+      "Expected ImageBlock to wrap its image in a Button when photo.link is set."
+    )
+  }
+
+  func testImageBlockWithoutLink_doesNotWrapImageInButton() throws {
+    let photo = makePhoto(
+      altText: "Unlinked image",
+      url: testImageURL().absoluteString
+    )
+
+    let view = imageBlock(photo: photo, colorScheme: .light)
+
+    XCTAssertThrowsError(
+      try view.inspect().find(ViewType.Button.self),
+      "Expected ImageBlock not to wrap its image in a Button when photo.link is nil."
+    )
+  }
+
   func testImageBlockWithValidURL_respectsContainerFrame() throws {
     let photo = makePhoto(
       altText: "Test image",
@@ -180,12 +209,13 @@ final class ImageBlockTests: XCTestCase {
   }
 }
 
-private func makePhoto(altText: String?, url: String?) -> RichTextElement.Photo {
+private func makePhoto(altText: String?, url: String?, link: URL? = nil) -> RichTextElement.Photo {
   RichTextElement.Photo(
     altText: altText,
     assetID: "123",
     caption: "Test caption",
-    url: url
+    url: url,
+    link: link
   )
 }
 

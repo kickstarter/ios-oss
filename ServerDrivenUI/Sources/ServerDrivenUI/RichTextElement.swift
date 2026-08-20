@@ -88,6 +88,12 @@ public indirect enum RichTextElement: Sendable, Equatable {
     let assetID: String?
     let caption: String?
     let url: String?
+
+    /// The link this photo should navigate to when tapped. `RichTextPhoto` itself has no
+    /// `link` field; the server represents a linkable image as a `RichText` node whose `link`
+    /// wraps a `RichTextPhoto` child, so this is populated during normalization from the
+    /// enclosing text's link rather than from the photo's own GraphQL fields.
+    let link: URL?
   }
 
   public struct VideoFormat: Sendable, Equatable {

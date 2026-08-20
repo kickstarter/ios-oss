@@ -27,7 +27,7 @@ extension RichTextElement {
     for child in text.children {
       if child.isPhoto {
         elements.append(.text(RichTextElement.Text(text: "", children: currentChildren), header))
-        elements.append(child)
+        elements.append(child.withLink(text.link))
         currentChildren = []
       } else {
         currentChildren.append(child)
@@ -41,6 +41,29 @@ extension RichTextElement {
   private var isPhoto: Bool {
     if case .photo = self { return true }
     return false
+  }
+
+  /// Sometimes the server returns a Text block with a child
+  private func withLink(_ link: URL?) -> RichTextElement {
+    switch self {
+    case let .text(text, header):
+      return .text(RichTextElement.Text(
+        text: text.text,
+        link: link,
+        styles: text.styles,
+        children: text.children
+      ), header)
+    case let .photo(photo):
+      return .photo(RichTextElement.Photo(
+        altText: photo.altText,
+        assetID: photo.assetID,
+        caption: photo.caption,
+        url: photo.url,
+        link: link
+      ))
+    case .listItemOpen, .listItemClose, .listItem, .audio, .video, .oembed, .unknown:
+      return self
+    }
   }
 
   private var isEmptyText: Bool {

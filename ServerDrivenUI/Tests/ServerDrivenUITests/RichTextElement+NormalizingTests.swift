@@ -22,14 +22,20 @@ final class RichTextElementNormalizingTests: XCTestCase {
 
   /* Non-text elements are left unchanged */
   func testLeavesNonTextElementsUnchanged() throws {
-    let photo = RichTextElement.Photo(altText: nil, assetID: nil, caption: nil, url: nil)
+    let photo = RichTextElement.Photo(altText: nil, assetID: nil, caption: nil, url: nil, link: nil)
     let element = RichTextElement.photo(photo)
     XCTAssertEqual(element.withNormalizedNestedElements(), [element])
   }
 
   /* Text/Photo/Text children split into three sibling elements */
   func testSplitsTextPhotoTextIntoThreeElements() throws {
-    let photo = RichTextElement.Photo(altText: "alt", assetID: "1", caption: "cap", url: "https://img")
+    let photo = RichTextElement.Photo(
+      altText: "alt",
+      assetID: "1",
+      caption: "cap",
+      url: "https://img",
+      link: nil
+    )
     let element = RichTextElement.text(
       .init(text: "", children: [
         .text(.init(text: "Here's an image: "), nil),
@@ -54,7 +60,7 @@ final class RichTextElementNormalizingTests: XCTestCase {
 
   /* Leading Photo with no preceding text does not produce an empty leading Text */
   func testLeadingPhotoProducesNoEmptyLeadingText() throws {
-    let photo = RichTextElement.Photo(altText: nil, assetID: nil, caption: nil, url: nil)
+    let photo = RichTextElement.Photo(altText: nil, assetID: nil, caption: nil, url: nil, link: nil)
     let element = RichTextElement.text(
       .init(text: "", children: [.photo(photo), .text(.init(text: "after"), nil)]),
       nil
@@ -69,7 +75,7 @@ final class RichTextElementNormalizingTests: XCTestCase {
 
   /* Trailing Photo with no following text does not produce an empty trailing Text */
   func testTrailingPhotoProducesNoEmptyTrailingText() throws {
-    let photo = RichTextElement.Photo(altText: nil, assetID: nil, caption: nil, url: nil)
+    let photo = RichTextElement.Photo(altText: nil, assetID: nil, caption: nil, url: nil, link: nil)
     let element = RichTextElement.text(
       .init(text: "", children: [.text(.init(text: "before"), nil), .photo(photo)]),
       nil
@@ -84,8 +90,8 @@ final class RichTextElementNormalizingTests: XCTestCase {
 
   /* Consecutive Photos produce no empty Text between them */
   func testConsecutivePhotosProduceNoEmptyTextBetween() throws {
-    let photo1 = RichTextElement.Photo(altText: "1", assetID: nil, caption: nil, url: nil)
-    let photo2 = RichTextElement.Photo(altText: "2", assetID: nil, caption: nil, url: nil)
+    let photo1 = RichTextElement.Photo(altText: "1", assetID: nil, caption: nil, url: nil, link: nil)
+    let photo2 = RichTextElement.Photo(altText: "2", assetID: nil, caption: nil, url: nil, link: nil)
     let element = RichTextElement.text(.init(text: "", children: [.photo(photo1), .photo(photo2)]), nil)
 
     let result = element.withNormalizedNestedElements()
@@ -94,7 +100,7 @@ final class RichTextElementNormalizingTests: XCTestCase {
 
   /* The Text element's own text/link/styles are preserved as a leading segment */
   func testPreservesOwnTextAsLeadingSegment() throws {
-    let photo = RichTextElement.Photo(altText: nil, assetID: nil, caption: nil, url: nil)
+    let photo = RichTextElement.Photo(altText: nil, assetID: nil, caption: nil, url: nil, link: nil)
     let link = URL(string: "https://kickstarter.com")
     let element = RichTextElement.text(
       .init(text: "prefix", link: link, styles: [.strong], children: [.photo(photo)]),
@@ -108,9 +114,35 @@ final class RichTextElementNormalizingTests: XCTestCase {
     guard case .photo = result[1] else { return XCTFail("expected .photo second") }
   }
 
+  /* The enclosing text's link is applied to a Photo child, since RichTextPhoto itself has no
+   * link field — the server represents a linkable image as a RichText node whose link wraps
+   * a RichTextPhoto child. */
+  func testAppliesEnclosingLinkToPhotoChild() throws {
+    let photo = RichTextElement.Photo(altText: nil, assetID: nil, caption: nil, url: "https://img", link: nil)
+    let link = URL(string: "https://backercrew.com/submit")
+    let element = RichTextElement.text(.init(text: "", link: link, children: [.photo(photo)]), nil)
+
+    let result = element.withNormalizedNestedElements()
+    XCTAssertEqual(result.count, 1)
+    guard case let .photo(linkedPhoto) = result[0] else { return XCTFail("expected .photo") }
+    XCTAssertEqual(linkedPhoto.link, link)
+    XCTAssertEqual(linkedPhoto.url, photo.url)
+  }
+
+  /* A Photo child is left without a link when the enclosing text has none */
+  func testLeavesPhotoWithoutLinkWhenEnclosingTextHasNoLink() throws {
+    let photo = RichTextElement.Photo(altText: nil, assetID: nil, caption: nil, url: "https://img", link: nil)
+    let element = RichTextElement.text(.init(text: "", children: [.photo(photo)]), nil)
+
+    let result = element.withNormalizedNestedElements()
+    XCTAssertEqual(result.count, 1)
+    guard case let .photo(unlinkedPhoto) = result[0] else { return XCTFail("expected .photo") }
+    XCTAssertNil(unlinkedPhoto.link)
+  }
+
   /* Header level is preserved across all split segments */
   func testPreservesHeaderLevelAcrossSplits() throws {
-    let photo = RichTextElement.Photo(altText: nil, assetID: nil, caption: nil, url: nil)
+    let photo = RichTextElement.Photo(altText: nil, assetID: nil, caption: nil, url: nil, link: nil)
     let element = RichTextElement.text(
       .init(text: "", children: [.text(.init(text: "a"), nil), .photo(photo), .text(.init(text: "b"), nil)]),
       .two
@@ -126,7 +158,7 @@ final class RichTextElementNormalizingTests: XCTestCase {
 
   /* Array-level splitting flattens across multiple top-level elements, preserving surrounding elements */
   func testArraySplittingFlattensAcrossElements() throws {
-    let photo = RichTextElement.Photo(altText: nil, assetID: nil, caption: nil, url: nil)
+    let photo = RichTextElement.Photo(altText: nil, assetID: nil, caption: nil, url: nil, link: nil)
     let textWithNestedPhoto = RichTextElement.text(
       .init(text: "", children: [.text(.init(text: "a"), nil), .photo(photo), .text(.init(text: "b"), nil)]),
       nil

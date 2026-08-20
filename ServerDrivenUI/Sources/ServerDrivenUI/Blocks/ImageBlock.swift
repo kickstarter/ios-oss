@@ -5,6 +5,7 @@ import SwiftUI
 struct ImageBlock: View {
   var photo: RichTextElement.Photo
   @Environment(\.richTextStyle) var style: any RichTextStyle
+  @Environment(\.openURL) private var openURL
 
   private var imageURL: URL? {
     guard let urlString = photo.url, !urlString.isEmpty else {
@@ -13,7 +14,7 @@ struct ImageBlock: View {
     return URL(string: urlString)
   }
 
-  public var body: some View {
+  @ViewBuilder private var image: some View {
     Group {
       if let imageURL {
         KFAnimatedImage(imageURL)
@@ -31,6 +32,19 @@ struct ImageBlock: View {
           .frame(maxWidth: .infinity)
           .accessibilityLabel(self.photo.altText ?? "")
       }
+    }
+  }
+
+  public var body: some View {
+    if let link = photo.link {
+      Button {
+        self.openURL(link)
+      } label: {
+        self.image
+      }
+      .buttonStyle(.plain)
+    } else {
+      self.image
     }
   }
 }
