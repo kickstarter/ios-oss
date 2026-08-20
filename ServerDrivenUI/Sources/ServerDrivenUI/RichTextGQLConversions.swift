@@ -3,7 +3,7 @@ import GraphAPI
 
 extension RichTextComponentFragment {
   public func asRichTextElements() -> [RichTextElement] {
-    self.items.map { $0.asRichTextElement }
+    self.items.map { $0.asRichTextElement }.withNormalizedNestedElements()
   }
 }
 
@@ -244,7 +244,8 @@ extension RichTextComponentFragment.Item.AsRichTextPhoto {
       altText: altText,
       assetID: asset?.id,
       caption: caption,
-      url: asset?.url
+      url: asset?.url,
+      link: nil
     ))
   }
 }
@@ -255,7 +256,8 @@ extension RichTextComponentFragment.Item.AsRichText.Child.AsRichTextPhoto {
       altText: altText,
       assetID: asset?.id,
       caption: caption,
-      url: asset?.url
+      url: asset?.url,
+      link: nil
     ))
   }
 }
@@ -266,7 +268,8 @@ extension RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextPhoto 
       altText: altText,
       assetID: asset?.id,
       caption: caption,
-      url: asset?.url
+      url: asset?.url,
+      link: nil
     ))
   }
 }
@@ -277,7 +280,8 @@ extension RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextPhot
       altText: altText,
       assetID: asset?.id,
       caption: caption,
-      url: asset?.url
+      url: asset?.url,
+      link: nil
     ))
   }
 }
