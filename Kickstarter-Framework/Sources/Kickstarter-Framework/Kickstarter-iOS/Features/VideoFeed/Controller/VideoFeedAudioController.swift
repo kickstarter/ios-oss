@@ -42,8 +42,7 @@ final class VideoFeedAudioController {
   private var volumeObservation: NSKeyValueObservation?
   private var muteStateObserver: (any NSObjectProtocol)?
 
-@available(iOS 26, *)
-var onVolumeUpDetected: (() -> Void)?
+  var onVolumeUpDetected: (() -> Void)?
 
   init(session: AudioSessionManaging = LiveAudioSession.shared) {
     self.session = session
@@ -119,6 +118,7 @@ var onVolumeUpDetected: (() -> Void)?
 
   /// Called when the overlay mute button is tapped and the result is unmuted.
   /// Switches to `.playback` so the overlay can override the silent switch.
+  @available(iOS 26, *)
   func handleOverlayUnmute() {
     self.activatePlayback()
   }
