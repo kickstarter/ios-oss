@@ -1,10 +1,8 @@
-import AVFoundation
 import FirebaseCrashlytics
 import KDS
 import Kingfisher
 import KsApi
 import Library
-import MediaPlayer
 import SwiftUI
 import UIKit
 
@@ -15,7 +13,7 @@ import UIKit
 ///   - Playback only starts once a cell is fully settled (scroll has ended)
 ///   - Current cell audio plays until the next cell takes over
 ///   - Pauses video on background, resumes on foreground
-///   - On iOS 26+ we start audio in `.soloAmbient` so the silent switch is respected. But we still allow volume-up in silent mode to switch to `.playback` (unmute).
+///   - Audio session managed by `VideoFeedAudioController`.
 final class VideoFeedViewController: UIViewController {
   private enum Constants {
     static let backgroundColor = KDS.Colors.Icon.dark.uiColor()
@@ -29,8 +27,6 @@ final class VideoFeedViewController: UIViewController {
   private var previewImagePrefetcher: ImagePrefetcher?
   private var isScrolling = false
   private var currentPageIndex: Int = 0
-
-  private var volumeObservation: NSKeyValueObservation?
 
   /// Called once the first batch of items has loaded and the feed is ready to present.
   var onReadyToPresent: (() -> Void)?
@@ -56,7 +52,10 @@ final class VideoFeedViewController: UIViewController {
     self.observeAppLifecycle()
 
     if #available(iOS 26, *) {
-      self.setupSilentModeOverride()
+      self.audioController.onVolumeUpDetected = { [weak self] in
+        self?.muteVisibleCells()
+      }
+      self.audioController.setupObservers(in: self.view)
     }
 
     self.setupCollectionView()
@@ -70,7 +69,6 @@ final class VideoFeedViewController: UIViewController {
 
   deinit {
     self.lifecycleObservers.forEach(NotificationCenter.default.removeObserver)
-    self.volumeObservation?.invalidate()
   }
 
   public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -257,51 +255,6 @@ final class VideoFeedViewController: UIViewController {
     let currentPage = round(self.collectionView.contentOffset.y / pageHeight)
 
     self.collectionView.contentOffset.y = currentPage * pageHeight
-  }
-
-  // MARK: - Audio session
-
-  /// Sets up silent switch support on iOS 26+ using public AVAudioSession APIs.
-  /// `MPVolumeView` reroutes volume buttons to media volume so `outputVolume` KVO fires in silent mode.
-  /// On volume-up, switches to `.playback` to bypass the silent switch.
-  /// `outputMuteStateChangeNotification` replaces the rejected `com.apple.springboard.ringerstate` Darwin
-  /// notification for detecting when the physical switch is toggled.
-  @available(iOS 26, *)
-  private func setupSilentModeOverride() {
-    /// Reroutes hardware volume buttons from ringer to media volume so `outputVolume` KVO fires in silent mode.
-    let volumeView = MPVolumeView(frame: .zero)
-    volumeView.alpha = 0.001
-    volumeView.isUserInteractionEnabled = false
-    volumeView.accessibilityElementsHidden = true
-    self.view.addSubview(volumeView)
-
-    /// Fires when the user presses volume-up. Switch to .playback to bypass the silent switch,
-    /// then re-apply the user's current mute preference.
-    self.volumeObservation = AVAudioSession.sharedInstance()
-      .observe(\.outputVolume, options: [.old, .new]) { [weak self] _, change in
-        guard let oldVolume = change.oldValue,
-              let newVolume = change.newValue,
-              newVolume > oldVolume else { return }
-
-        DispatchQueue.main.async { [weak self] in
-          guard let self else { return }
-          self.audioController.handleVolumeUp()
-          guard self.audioController.isPlaybackSessionActive else { return }
-          self.muteVisibleCells()
-        }
-      }
-
-    /// Fires when the silent switch is toggled in either direction.
-    /// Reset to .soloAmbient so the switch state takes effect and clear the .playback override.
-    let muteStateObserver = NotificationCenter.default.addObserver(
-      forName: AVAudioSession.outputMuteStateChangeNotification,
-      object: nil,
-      queue: .main
-    ) { [weak self] _ in
-      self?.audioController.handleSilentSwitchChange()
-    }
-
-    self.lifecycleObservers.append(muteStateObserver)
   }
 
   // MARK: - App lifecycle

@@ -1,8 +1,7 @@
+import AVFoundation
 @testable import Library
 @testable import LibraryTestHelpers
-import AVFoundation
 import XCTest
-
 
 final class MockAudioSession: AudioSessionManaging {
   private(set) var categories: [AVAudioSession.Category] = []
@@ -10,7 +9,7 @@ final class MockAudioSession: AudioSessionManaging {
 
   var lastCategory: AVAudioSession.Category? { self.categories.last }
 
-  func setCategory(_ category: AVAudioSession.Category, mode: AVAudioSession.Mode) throws {
+  func setCategory(_ category: AVAudioSession.Category, mode _: AVAudioSession.Mode) throws {
     self.categories.append(category)
   }
 
@@ -24,22 +23,20 @@ final class MockAudioSession: AudioSessionManaging {
 }
 
 final class VideoFeedAudioControllerTests: TestCase {
-
   func testConfigure() {
-      let mock = MockAudioSession()
-      let controller = VideoFeedAudioController(session: mock)
-   
-      controller.configure()
-   
-      if #available(iOS 26, *) {
-        XCTAssertEqual(mock.lastCategory, .soloAmbient)
-      } else {
-        XCTAssertEqual(mock.lastCategory, .playback)
-      }
-    
-      XCTAssertEqual(mock.activeStates.last, true)
+    let mock = MockAudioSession()
+    let controller = VideoFeedAudioController(session: mock)
+
+    controller.configure()
+
+    if #available(iOS 26, *) {
+      XCTAssertEqual(mock.lastCategory, .soloAmbient)
+    } else {
+      XCTAssertEqual(mock.lastCategory, .playback)
     }
 
+    XCTAssertEqual(mock.activeStates.last, true)
+  }
 
   func testVolumeUp_SwitchesToPlaybackAndSetsFlag() {
     let mock = MockAudioSession()
@@ -56,7 +53,7 @@ final class VideoFeedAudioControllerTests: TestCase {
     let controller = VideoFeedAudioController(session: mock)
 
     controller.handleSilentSwitchChange()
-    
+
     let categoryAfterReset = mock.lastCategory
 
     controller.handleVolumeUp()

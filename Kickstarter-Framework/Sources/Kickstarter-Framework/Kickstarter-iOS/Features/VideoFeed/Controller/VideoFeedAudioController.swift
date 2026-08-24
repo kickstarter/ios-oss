@@ -1,4 +1,6 @@
 import AVFoundation
+import MediaPlayer
+import UIKit
 
 protocol AudioSessionManaging: AnyObject {
   func setCategory(_ category: AVAudioSession.Category, mode: AVAudioSession.Mode) throws
@@ -33,11 +35,24 @@ final class LiveAudioSession: AudioSessionManaging {
 /// On iOS versions below 26, the session stays in `.playback` so that mute state is managed via the overlay button.
 final class VideoFeedAudioController {
   private let session: AudioSessionManaging
+
   private(set) var isPlaybackSessionActive = false
-  private(set) var isResettingAudioSession = false
+  private var isResettingAudioSession = false
+
+  private var volumeObservation: NSKeyValueObservation?
+  private var muteStateObserver: (any NSObjectProtocol)?
+
+  var onVolumeUpDetected: (() -> Void)?
 
   init(session: AudioSessionManaging = LiveAudioSession.shared) {
     self.session = session
+  }
+
+  deinit {
+    self.volumeObservation?.invalidate()
+    if let observer = self.muteStateObserver {
+      NotificationCenter.default.removeObserver(observer)
+    }
   }
 
   func configure() {
@@ -50,6 +65,40 @@ final class VideoFeedAudioController {
       try self.session.setActive(true)
     } catch {
       assertionFailure("VideoFeedAudioController: Failed to configure audio session: \(error)")
+    }
+  }
+
+  /// Sets up volume up detection and silent switch observation on iOS 26+.
+  /// `MPVolumeView` reroutes hardware volume buttons to media volume so `outputVolume` KVO fires in silent mode.
+  @available(iOS 26, *)
+  func setupObservers(in view: UIView) {
+    let volumeView = MPVolumeView(frame: .zero)
+    volumeView.alpha = 0.001
+    volumeView.isUserInteractionEnabled = false
+    volumeView.accessibilityElementsHidden = true
+    view.addSubview(volumeView)
+
+    self.volumeObservation = AVAudioSession.sharedInstance()
+      .observe(\.outputVolume, options: [.old, .new]) { [weak self] _, change in
+        guard let oldVolume = change.oldValue,
+              let newVolume = change.newValue,
+              newVolume > oldVolume else { return }
+
+        DispatchQueue.main.async { [weak self] in
+          guard let self else { return }
+          self.handleVolumeUp()
+          if self.isPlaybackSessionActive {
+            self.onVolumeUpDetected?()
+          }
+        }
+      }
+
+    self.muteStateObserver = NotificationCenter.default.addObserver(
+      forName: AVAudioSession.outputMuteStateChangeNotification,
+      object: nil,
+      queue: .main
+    ) { [weak self] _ in
+      self?.handleSilentSwitchChange()
     }
   }
 
