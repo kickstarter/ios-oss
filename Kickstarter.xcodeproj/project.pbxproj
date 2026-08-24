@@ -42,6 +42,7 @@
 		39AE63502F6C581D00481A76 /* GraphAPITestMocks in Frameworks */ = {isa = PBXBuildFile; productRef = 39AE634F2F6C581D00481A76 /* GraphAPITestMocks */; };
 		600944E42E5CB3A7004A089F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 600944E22E5CB3A7004A089F /* InfoPlist.strings */; };
 		60253C0F2FA0F677008E30A6 /* VideoFeedViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60253C0E2FA0F677008E30A6 /* VideoFeedViewModelTests.swift */; };
+		6049E67D303C9B48004A9B79 /* VideoFeedAudioControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049E67C303C9B48004A9B79 /* VideoFeedAudioControllerTests.swift */; };
 		6069CC542F5F66160029A67F /* Statsig in Frameworks */ = {isa = PBXBuildFile; productRef = 6069CC532F5F66160029A67F /* Statsig */; };
 		60A776A83020EFD80063D0A3 /* ReportProjectInfoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A776A73020EFD80063D0A3 /* ReportProjectInfoViewModelTests.swift */; };
 		60A80F532BD7F9A00052A829 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */; };
@@ -390,6 +391,7 @@
 		600944E82E5CB3D8004A089F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		60253C0D2FA0EF59008E30A6 /* VideoFeedQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = VideoFeedQuery.graphql; sourceTree = "<group>"; };
 		60253C0E2FA0F677008E30A6 /* VideoFeedViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFeedViewModelTests.swift; sourceTree = "<group>"; };
+		6049E67C303C9B48004A9B79 /* VideoFeedAudioControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFeedAudioControllerTests.swift; sourceTree = "<group>"; };
 		60A776A6301938EE0063D0A3 /* FlaggingOptionsQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FlaggingOptionsQuery.graphql; sourceTree = "<group>"; };
 		60A776A73020EFD80063D0A3 /* ReportProjectInfoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoViewModelTests.swift; sourceTree = "<group>"; };
 		60A80F522BD7F9A00052A829 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -1227,6 +1229,7 @@
 				AAF548CE2F2445C0001DB5AC /* UIViewController+URLTests.swift */,
 				AAF548CF2F2445C0001DB5AC /* UpdateActivityItemProviderTests.swift */,
 				AAF548D02F2445C0001DB5AC /* UpdateBackingInput+ConstructorTests.swift */,
+				6049E67C303C9B48004A9B79 /* VideoFeedAudioControllerTests.swift */,
 				60A776A73020EFD80063D0A3 /* ReportProjectInfoViewModelTests.swift */,
 			);
 			path = Library;
@@ -1863,6 +1866,7 @@
 				AAF549732F2445C0001DB5AC /* SettingsRecommendationsCellViewModelTests.swift in Sources */,
 				AAF549742F2445C0001DB5AC /* ShareViewModelTests.swift in Sources */,
 				E1BBB0482FDB0F3C0045D296 /* NoRewardInserterTests.swift in Sources */,
+				6049E67D303C9B48004A9B79 /* VideoFeedAudioControllerTests.swift in Sources */,
 				AAF549762F2445C0001DB5AC /* SortPagerViewModelTests.swift in Sources */,
 				AAF549772F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift in Sources */,
 				AAF549782F2445C0001DB5AC /* ThanksViewModelTests.swift in Sources */,
