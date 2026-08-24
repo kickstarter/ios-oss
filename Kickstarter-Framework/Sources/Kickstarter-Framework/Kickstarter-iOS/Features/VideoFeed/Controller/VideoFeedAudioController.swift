@@ -42,7 +42,8 @@ final class VideoFeedAudioController {
   private var volumeObservation: NSKeyValueObservation?
   private var muteStateObserver: (any NSObjectProtocol)?
 
-  var onVolumeUpDetected: (() -> Void)?
+@available(iOS 26, *)
+var onVolumeUpDetected: (() -> Void)?
 
   init(session: AudioSessionManaging = LiveAudioSession.shared) {
     self.session = session
