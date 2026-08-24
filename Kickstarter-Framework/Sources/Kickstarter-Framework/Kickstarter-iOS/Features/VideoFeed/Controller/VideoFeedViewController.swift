@@ -1,10 +1,8 @@
-import AVFoundation
 import FirebaseCrashlytics
 import KDS
 import Kingfisher
 import KsApi
 import Library
-import MediaPlayer
 import SwiftUI
 import UIKit
 
@@ -15,6 +13,7 @@ import UIKit
 ///   - Playback only starts once a cell is fully settled (scroll has ended)
 ///   - Current cell audio plays until the next cell takes over
 ///   - Pauses video on background, resumes on foreground
+///   - Audio session managed by `VideoFeedAudioController`.
 final class VideoFeedViewController: UIViewController {
   private enum Constants {
     static let backgroundColor = KDS.Colors.Icon.dark.uiColor()
@@ -22,14 +21,12 @@ final class VideoFeedViewController: UIViewController {
 
   private let viewModel = VideoFeedViewModel()
   private let dataSource = VideoFeedDataSource()
+  private let audioController = VideoFeedAudioController()
 
   private var lifecycleObservers: [any NSObjectProtocol] = []
   private var previewImagePrefetcher: ImagePrefetcher?
   private var isScrolling = false
   private var currentPageIndex: Int = 0
-
-  private var volumeObservation: NSKeyValueObservation?
-  private var isResettingAudioSession = false
 
   /// Called once the first batch of items has loaded and the feed is ready to present.
   var onReadyToPresent: (() -> Void)?
@@ -51,9 +48,15 @@ final class VideoFeedViewController: UIViewController {
 
     self.view.backgroundColor = Constants.backgroundColor
 
-    self.configureAudioSession()
-    self.setupSilentModeOverride()
+    self.audioController.configure()
     self.observeAppLifecycle()
+
+    if #available(iOS 26, *) {
+      self.audioController.onVolumeUpDetected = { [weak self] in
+        self?.muteVisibleCells()
+      }
+      self.audioController.setupObservers(in: self.view)
+    }
 
     self.setupCollectionView()
     self.bindViewModel()
@@ -66,7 +69,6 @@ final class VideoFeedViewController: UIViewController {
 
   deinit {
     self.lifecycleObservers.forEach(NotificationCenter.default.removeObserver)
-    self.volumeObservation?.invalidate()
   }
 
   public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -101,11 +103,8 @@ final class VideoFeedViewController: UIViewController {
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
     self.pauseVisibleCell()
 
-    /// Only reset on dismiss not when a modal (project page, login, etc.) is presented.
-    if self.isBeingDismissed {
-      self.volumeObservation?.invalidate()
-      self.volumeObservation = nil
-      try? AVAudioSession.sharedInstance().setCategory(.soloAmbient, mode: .default)
+    if self.isBeingDismissed, #available(iOS 26, *) {
+      self.audioController.handleDismiss()
     }
   }
 
@@ -258,60 +257,6 @@ final class VideoFeedViewController: UIViewController {
     self.collectionView.contentOffset.y = currentPage * pageHeight
   }
 
-  // MARK: - Audio session
-
-  /// Starts silent. Respects the physical silent switch via .soloAmbient.
-  private func configureAudioSession() {
-    do {
-      try AVAudioSession.sharedInstance().setCategory(.soloAmbient, mode: .default)
-      try AVAudioSession.sharedInstance().setActive(true)
-    } catch {
-      #if DEBUG
-        print("`VideoFeedViewController`: Failed to configure audio session:", error.localizedDescription)
-      #endif
-
-      Crashlytics.crashlytics().record(error: error)
-    }
-  }
-
-  /// Detects a volume up press to unmute the feed when the silent switch is on.
-  /// In silent mode, volume buttons control ringer (not media) volume, so `outputVolume` KVO never fires.
-  /// We can use a `MPVolumeView` to reroute buttons to media volume, fixing this.  it's the only way iOS exposes this AFAIK.
-  /// On the first volume-up, switches to `.playback` to bypass the silent switch,.
-  private func setupSilentModeOverride() {
-    let volumeView = MPVolumeView(frame: .zero)
-    volumeView.alpha = 0.001
-    volumeView.isUserInteractionEnabled = false
-    volumeView.accessibilityElementsHidden = true
-    self.view.addSubview(volumeView)
-
-    self.volumeObservation = AVAudioSession.sharedInstance()
-      .observe(\.outputVolume, options: [.old, .new]) { [weak self] _, change in
-        guard let oldVolume = change.oldValue,
-              let newVolume = change.newValue,
-              newVolume > oldVolume else { return }
-
-        DispatchQueue.main.async { [weak self] in
-          guard let self, !self.isResettingAudioSession else { return }
-
-          try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
-          try? AVAudioSession.sharedInstance().setActive(true)
-
-          self.muteVisibleCells()
-        }
-      }
-
-    let silentSwitch = NotificationCenter.default.addObserver(
-      forName: Notification.Name("com.apple.springboard.ringerstate"),
-      object: nil,
-      queue: .main
-    ) { [weak self] _ in
-      self?.resetAudioSession()
-    }
-
-    self.lifecycleObservers.append(silentSwitch)
-  }
-
   // MARK: - App lifecycle
 
   /// Pause video on background, resume on foreground, and re-render the active cell after login.
@@ -353,10 +298,10 @@ final class VideoFeedViewController: UIViewController {
     self.muteVisibleCells()
     self.reconfigureVisibleCell()
 
-    /// Switching to .playback when unmuting ensures audio isn't blocked by the silent switch.
-    if !self.viewModel.isMuted {
-      try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
-      try? AVAudioSession.sharedInstance().setActive(true)
+    /// On iOS 26+: switching to .playback when unmuting ensures audio isn't blocked by the silent switch.
+    /// On iOS < 26: already in .playback, nothing to switch.
+    if #available(iOS 26, *), !self.viewModel.isMuted {
+      self.audioController.handleOverlayUnmute()
     }
   }
 
@@ -537,25 +482,14 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
 
     for cell in self.collectionView.visibleCells.compactMap({ $0 as? VideoFeedCell }) {
       if self.collectionView.indexPath(for: cell) == activeIndexPath {
-        /// Reset the session before starting the new video so any prior volume-up override doesn't carry over.
-        self.resetAudioSession()
+        if #available(iOS 26, *) {
+          self.audioController.handleNewVideoActivated()
+        }
         cell.startPlayback()
+        cell.mutePlayback(self.viewModel.isMuted)
       } else {
         cell.pausePlayback()
       }
-    }
-  }
-
-  /// Resets the audio session to `.soloAmbient` so the silent switch is respected.
-  private func resetAudioSession() {
-    self.isResettingAudioSession = true
-    /// Deactivate first to interrupt any in-flight audio, then reactivate under .soloAmbient.
-    try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
-    try? AVAudioSession.sharedInstance().setCategory(.soloAmbient, mode: .default)
-    try? AVAudioSession.sharedInstance().setActive(true)
-
-    DispatchQueue.main.async {
-      self.isResettingAudioSession = false
     }
   }
 
