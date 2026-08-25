@@ -3,8 +3,6 @@ import Kingfisher
 import Library
 import SwiftUI
 
-// MARK: - Sheet content
-
 struct VideoFeedShareSheetView: View {
   private enum Constants {
     static let horizontalPadding: CGFloat = 38
@@ -16,9 +14,7 @@ struct VideoFeedShareSheetView: View {
     static let gridBottomPadding: CGFloat = 32
 
     static let previewCornerRadius: CGFloat = 12
-    /// Uniform padding inside the preview card — matches Figma `padding: 12px`.
     static let previewPadding: CGFloat = 12
-    /// Gap between image, text, and wordmark inside the card — matches Figma `gap: 32px`.
     static let previewItemSpacing: CGFloat = 32
 
     static let iconSize: CGFloat = 28
@@ -82,18 +78,18 @@ struct VideoFeedShareSheetView: View {
       VStack(alignment: .leading, spacing: 8) {
         Text(self.item.title)
           .font(Font(UIFont.ksr_subhead().bolded))
-          .foregroundColor(Color(Colors.Text.primary.uiColor()))
+          .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
           .lineLimit(2)
 
         Text(self.item.creator)
           .font(Font(UIFont.ksr_caption1()))
-          .foregroundColor(Color(Colors.Text.secondary.uiColor()))
+          .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
       }
 
       self.kickstarterBanner
     }
     .padding(Constants.previewPadding)
-    .background(Color(Colors.Background.Surface.primary.uiColor()))
+    .background(Color(Colors.Icon.light.uiColor()))
     .clipShape(RoundedRectangle(cornerRadius: Constants.previewCornerRadius))
   }
 
