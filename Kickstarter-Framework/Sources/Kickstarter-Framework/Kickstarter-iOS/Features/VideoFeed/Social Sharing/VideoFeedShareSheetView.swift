@@ -1,0 +1,220 @@
+import KDS
+import Kingfisher
+import Library
+import SwiftUI
+
+// MARK: - Sheet content
+
+struct VideoFeedShareSheetView: View {
+  private enum Constants {
+    static let horizontalPadding: CGFloat = 38
+    static let gridColumns = 4
+    static let gridSpacing: CGFloat = 24
+    static let cardToGridSpacing: CGFloat = 47
+    static let titleTopPadding: CGFloat = 20
+    static let titleBottomPadding: CGFloat = 16
+    static let gridBottomPadding: CGFloat = 32
+
+    static let previewCornerRadius: CGFloat = 12
+    /// Uniform padding inside the preview card — matches Figma `padding: 12px`.
+    static let previewPadding: CGFloat = 12
+    /// Gap between image, text, and wordmark inside the card — matches Figma `gap: 32px`.
+    static let previewItemSpacing: CGFloat = 32
+
+    static let iconSize: CGFloat = 28
+    static let iconCircleSize: CGFloat = 56
+    static let iconLabelSpacing: CGFloat = 6
+  }
+
+  @SwiftUI.Environment(\.dismiss) private var dismiss
+
+  let item: VideoFeedItem
+  var onEmailTapped: (() -> Void)?
+  var onMoreTapped: (() -> Void)?
+
+  @State private var destinations: [VideoFeedShareDestination] = VideoFeedShareDestination.available()
+
+  var body: some View {
+    // GeometryReader captures the concrete sheet width. Without it, the sheet
+    // context (presented from UIHostingConfiguration) sends no width proposal,
+    // so .frame(maxWidth: .infinity) expands to infinity and padding has nothing
+    // concrete to subtract from.
+    GeometryReader { geometry in
+      VStack(spacing: 0) {
+        Text("Share project")
+          .font(Font(UIFont.ksr_headline()))
+          .foregroundColor(.black)
+          .frame(maxWidth: .infinity)
+          .padding(.top, Constants.titleTopPadding)
+          .padding(.bottom, Constants.titleBottomPadding)
+
+        self.previewCard
+          .padding(.horizontal, Constants.horizontalPadding)
+
+        self.appGrid
+          .padding(.horizontal, Constants.horizontalPadding)
+          .padding(.top, Constants.cardToGridSpacing)
+          .padding(.bottom, Constants.gridBottomPadding)
+      }
+      .frame(width: geometry.size.width, alignment: .top)
+    }
+    .background {
+      ZStack {
+        Color(UIColor(coreColor: .green_04))
+        Image(ImageResource.shareBackgroundSwirl)
+          .resizable()
+          .scaledToFill()
+          .clipped()
+      }
+      .ignoresSafeArea()
+    }
+  }
+
+  // MARK: - Preview card
+
+  private var previewCard: some View {
+    // Matches Figma: padding 12px all sides, gap 32px between children, column flex-start.
+    VStack(alignment: .leading, spacing: Constants.previewItemSpacing) {
+      // Image: 16:9, fills full content width (inset by card padding).
+      Color.clear
+        .aspectRatio(16 / 9, contentMode: .fit)
+        .overlay(
+          KFImage(self.item.videoPreviewImageURL)
+            .resizable()
+            .scaledToFill()
+        )
+        .clipped()
+        .accessibilityHidden(true)
+
+      // Title + creator.
+      VStack(alignment: .leading, spacing: 8) {
+        Text(self.item.title)
+          .font(Font(UIFont.ksr_subhead().bolded))
+          .foregroundColor(Color(Colors.Text.primary.uiColor()))
+          .lineLimit(2)
+
+        Text(self.item.creator)
+          .font(Font(UIFont.ksr_caption1()))
+          .foregroundColor(Color(Colors.Text.secondary.uiColor()))
+      }
+
+      // Kickstarter wordmark.
+      self.kickstarterBanner
+    }
+    .padding(Constants.previewPadding)
+    .background(Color(Colors.Background.Surface.primary.uiColor()))
+    .clipShape(RoundedRectangle(cornerRadius: Constants.previewCornerRadius))
+  }
+
+  @ViewBuilder
+  private var kickstarterBanner: some View {
+    if let image = Library.image(named: "share-kickstarter-wordmark") {
+      Image(uiImage: image)
+        .resizable()
+        .scaledToFit()
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+  }
+
+  // MARK: - App grid
+
+  private var appGrid: some View {
+    LazyVGrid(
+      columns: Array(
+        repeating: GridItem(.flexible(), spacing: Constants.gridSpacing),
+        count: Constants.gridColumns
+      ),
+      spacing: Constants.gridSpacing
+    ) {
+      ForEach(self.destinations) { destination in
+        ShareDestinationButton(destination: destination) { [destination] in
+          self.tapped(destination)
+        }
+      }
+    }
+  }
+
+  private func tapped(_ destination: VideoFeedShareDestination) {
+    switch destination {
+    case .email:
+      self.dismiss()
+      self.onEmailTapped?()
+    case .more:
+      self.dismiss()
+      self.onMoreTapped?()
+    default:
+      destination.perform(item: self.item)
+    }
+  }
+}
+
+// MARK: - ShareDestinationButton
+
+private struct ShareDestinationButton: View {
+  private enum Constants {
+    static let iconSize: CGFloat = 28
+    static let iconCircleSize: CGFloat = 56
+    static let iconLabelSpacing: CGFloat = 6
+  }
+
+  let destination: VideoFeedShareDestination
+  let action: () -> Void
+
+  var body: some View {
+    Button(action: self.action) {
+      VStack(spacing: Constants.iconLabelSpacing) {
+        ZStack {
+          Circle()
+            .fill(Color.white)
+            .frame(width: Constants.iconCircleSize, height: Constants.iconCircleSize)
+          self.icon
+        }
+        Text(self.destination.label)
+          .font(Font(UIFont.ksr_caption2()))
+          .foregroundColor(Color(Colors.Text.primary.uiColor()))
+          .multilineTextAlignment(.center)
+          .lineLimit(2)
+          .fixedSize(horizontal: false, vertical: true)
+      }
+    }
+    .accessibilityLabel(self.destination.label)
+    .buttonStyle(.plain)
+  }
+
+  @ViewBuilder
+  private var icon: some View {
+    if let image = Library.image(named: self.destination.iconAssetName) {
+      Image(uiImage: image)
+        .renderingMode(self.destination.usesDarkTint ? .template : .original)
+        .resizable()
+        .scaledToFit()
+        .frame(width: self.destination.iconSize, height: self.destination.iconSize)
+        .foregroundColor(self.destination.usesDarkTint ? Color(Colors.Icon.dark.uiColor()) : nil)
+    } else {
+      Image(systemName: self.destination.fallbackSystemIcon)
+        .resizable()
+        .scaledToFit()
+        .frame(width: Constants.iconSize, height: Constants.iconSize)
+        .foregroundColor(Color(Colors.Text.primary.uiColor()))
+    }
+  }
+}
+
+// MARK: - Fallback SF Symbols
+
+extension VideoFeedShareDestination {
+  var fallbackSystemIcon: String {
+    switch self {
+    case .copyLink: return "link"
+    case .instagramFeed: return "camera"
+    case .x: return "bird"
+    case .instagramStories: return "camera.circle"
+    case .facebookStories: return "f.circle"
+    case .whatsApp: return "bubble.left.fill"
+    case .facebookFeed: return "f.square"
+    case .messages: return "message"
+    case .email: return "envelope"
+    case .more: return "ellipsis"
+    }
+  }
+}
