@@ -35,13 +35,9 @@ struct VideoFeedShareSheetView: View {
   @State private var destinations: [VideoFeedShareDestination] = VideoFeedShareDestination.available()
 
   var body: some View {
-    // GeometryReader captures the concrete sheet width. Without it, the sheet
-    // context (presented from UIHostingConfiguration) sends no width proposal,
-    // so .frame(maxWidth: .infinity) expands to infinity and padding has nothing
-    // concrete to subtract from.
     GeometryReader { geometry in
       VStack(spacing: 0) {
-        Text("Share project")
+        Text(Strings.dashboard_accessibility_label_share_project())
           .font(Font(UIFont.ksr_headline()))
           .foregroundColor(.black)
           .frame(maxWidth: .infinity)
@@ -70,12 +66,8 @@ struct VideoFeedShareSheetView: View {
     }
   }
 
-  // MARK: - Preview card
-
   private var previewCard: some View {
-    // Matches Figma: padding 12px all sides, gap 32px between children, column flex-start.
     VStack(alignment: .leading, spacing: Constants.previewItemSpacing) {
-      // Image: 16:9, fills full content width (inset by card padding).
       Color.clear
         .aspectRatio(16 / 9, contentMode: .fit)
         .overlay(
@@ -86,7 +78,7 @@ struct VideoFeedShareSheetView: View {
         .clipped()
         .accessibilityHidden(true)
 
-      // Title + creator.
+      /// Title + creator.
       VStack(alignment: .leading, spacing: 8) {
         Text(self.item.title)
           .font(Font(UIFont.ksr_subhead().bolded))
@@ -98,7 +90,6 @@ struct VideoFeedShareSheetView: View {
           .foregroundColor(Color(Colors.Text.secondary.uiColor()))
       }
 
-      // Kickstarter wordmark.
       self.kickstarterBanner
     }
     .padding(Constants.previewPadding)
@@ -115,8 +106,6 @@ struct VideoFeedShareSheetView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
   }
-
-  // MARK: - App grid
 
   private var appGrid: some View {
     LazyVGrid(
