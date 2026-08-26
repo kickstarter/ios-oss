@@ -91,19 +91,12 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
         : Strings.Pledge_flow_navigation_bar_titles_Bonus_support()
     }
 
-    // Only fetch add-ons if the base reward has add-ons.
-    let fetchAddOns = Signal.combineLatest(
-      refreshAddons,
-      hasAddOns.filter(isTrue)
-    )
-    .map(first)
-
     let shippingRule = Signal.merge(
       selectedShippingRule,
       baseReward.filter { reward in !reward.shipping.enabled }.mapConst(nil)
     )
 
-    let addOnsEvent = fetchAddOns.switchMap { data in
+    let addOnsEvent = refreshAddons.switchMap { data in
       let slug = data.project.slug
       let baseReward = data.rewards.first
       let shippingRule = data.selectedShippingRule
@@ -118,13 +111,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     }
 
     self.startRefreshing = self.beginRefreshSignal
-    self.endRefreshing = Signal.merge(
-      addOnsEvent.filter { $0.isTerminating }.ignoreValues(),
-      // If there aren't add-ons to fetch, end refresh immediately.
-      hasAddOns.takeWhen(self.beginRefreshSignal).filter(isFalse)
-        .ksr_delay(.milliseconds(100), on: AppEnvironment.current.scheduler)
-        .ignoreValues()
-    )
+    self.endRefreshing = addOnsEvent.filter { $0.isTerminating }.ignoreValues()
 
     let addOns = addOnsEvent.values().skipNil()
     let requestErrored = addOnsEvent.map(\.error).map(isNotNil)
@@ -447,12 +434,18 @@ private func addOnsProducer(
   baseReward: Reward?,
   shippingRule: ShippingRule?
 ) -> SignalProducer<[Reward]?, ErrorEnvelope> {
+  // You can't add add-ons to No Reward.
+  guard let baseReward, baseReward.isNoReward == false else {
+    return SignalProducer(value: nil)
+  }
+
+  // Only fetch add-ons if the base reward has add-ons.
+  guard baseReward.hasAddOns else {
+    return SignalProducer(value: nil)
+  }
+
   let experiment = SpeedyCheckoutExperiment()
   if experiment.boolValue(forKey: .speedy_checkout_enabled) == true {
-    guard let baseReward, baseReward.isNoReward == false else {
-      return SignalProducer(value: nil)
-    }
-
     // Shipping rule may be nil if the backer selected no reward or a digital reward.
     let shippingCountryCode = shippingRule?.location.country ?? AppEnvironment.current.countryCode
 

@@ -90,10 +90,10 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.startRefreshing.assertValueCount(0)
-      self.endRefreshing.assertValueCount(2)
+      self.endRefreshing.assertValueCount(1)
 
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValueCount(1)
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([
-        [.rewardAddOn(expected)],
         [.rewardAddOn(expected)]
       ])
     }
@@ -209,7 +209,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.startRefreshing.assertValueCount(0)
-      self.endRefreshing.assertValueCount(2)
+      self.endRefreshing.assertValueCount(1)
 
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[.emptyState(.errorPullToRefresh)]])
     }
@@ -228,12 +228,12 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.vm.inputs.beginRefresh()
 
       self.startRefreshing.assertValueCount(1)
-      self.endRefreshing.assertValueCount(2)
+      self.endRefreshing.assertValueCount(1)
 
       self.scheduler.advance()
 
       self.startRefreshing.assertValueCount(1)
-      self.endRefreshing.assertValueCount(3)
+      self.endRefreshing.assertValueCount(2)
 
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([
         [.emptyState(.errorPullToRefresh)],
@@ -302,7 +302,6 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([
-        [.rewardAddOn(expected)],
         [.rewardAddOn(expected)]
       ])
       XCTAssertEqual(
@@ -441,7 +440,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([expected, expected])
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([expected])
     }
   }
 
