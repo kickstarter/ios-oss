@@ -152,7 +152,7 @@ private struct ShareDestinationButton: View {
         }
         Text(self.destination.label)
           .font(Font(UIFont.ksr_caption2()))
-          .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
+          .foregroundColor(.black)
           .multilineTextAlignment(.center)
           .lineLimit(2)
           .fixedSize(horizontal: false, vertical: true)
@@ -187,7 +187,6 @@ extension VideoFeedShareDestination {
   var fallbackSystemIcon: String {
     switch self {
     case .copyLink: return "link"
-    case .instagramFeed: return "camera"
     case .x: return "bird"
     case .instagramStories: return "camera.circle"
     case .facebookStories: return "f.circle"
