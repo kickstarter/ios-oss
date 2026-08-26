@@ -38,7 +38,7 @@ extension Project {
         }
 
         let rewardFragment = node.fragments.rewardFragment
-        let shippingRuleFragment = node.fragments.simpleShippingRulesExpandedFragment
+        let shippingRuleFragment = node.fragments.rewardSimpleShippingRulesExpandedFragment
         let expandedShippingRules = ShippingRule.simpleShippingRulesExpanded(from: shippingRuleFragment)
         let imageFragment = node.fragments.rewardImageFragment
         let itemFragment = node.fragments.rewardItemsFragment
@@ -66,7 +66,7 @@ extension Project {
         let imageFragment = node.fragments.rewardImageFragment
         let itemFragment = node.fragments.rewardItemsFragment
 
-        guard let shippingRuleFragment = node.fragments.simpleShippingRulesExpandedFragment else {
+        guard let shippingRuleFragment = node.fragments.rewardSimpleShippingRulesExpandedFragment else {
           return Reward.reward(
             from: rewardFragment,
             expandedShippingRules: nil,

@@ -7,8 +7,8 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
   public static let operationName: String = "FetchProjectRewardsById"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includePledgeOverTime: Boolean!) { project(pid: $projectId) { __typename rewards { __typename nodes { __typename ...RewardFragment ...RewardImageFragment ...RewardItemsFragment ...SimpleShippingRulesExpandedFragment @include(if: $includeShippingRules) } } ...PledgeOverTimeFragment @include(if: $includePledgeOverTime) } }"#,
-      fragments: [LocationFragment.self, MoneyFragment.self, PledgeOverTimeFragment.self, RewardFragment.self, RewardImageFragment.self, RewardItemsFragment.self, SimpleShippingRulesExpandedFragment.self]
+      #"query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includePledgeOverTime: Boolean!) { project(pid: $projectId) { __typename rewards { __typename nodes { __typename ...RewardFragment ...RewardImageFragment ...RewardItemsFragment ...RewardSimpleShippingRulesExpandedFragment @include(if: $includeShippingRules) } } ...PledgeOverTimeFragment @include(if: $includePledgeOverTime) } }"#,
+      fragments: [LocationFragment.self, MoneyFragment.self, PledgeOverTimeFragment.self, RewardFragment.self, RewardImageFragment.self, RewardItemsFragment.self, RewardSimpleShippingRulesExpandedFragment.self, SimpleShippingRuleFragment.self]
     ))
 
   public var projectId: Int
@@ -209,7 +209,7 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
             public var rewardFragment: RewardFragment { _toFragment() }
             public var rewardImageFragment: RewardImageFragment { _toFragment() }
             public var rewardItemsFragment: RewardItemsFragment { _toFragment() }
-            public var simpleShippingRulesExpandedFragment: SimpleShippingRulesExpandedFragment? { _toFragment() }
+            public var rewardSimpleShippingRulesExpandedFragment: RewardSimpleShippingRulesExpandedFragment? { _toFragment() }
           }
 
           public init(
@@ -528,7 +528,7 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
             public typealias RootEntityType = FetchProjectRewardsByIdQuery.Data.Project.Rewards.Node
             public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.Reward }
             public static var __selections: [ApolloAPI.Selection] { [
-              .fragment(SimpleShippingRulesExpandedFragment.self),
+              .fragment(RewardSimpleShippingRulesExpandedFragment.self),
             ] }
 
             /// Simple shipping rules expanded as a faster alternative to shippingRulesExpanded since connection type is slow
@@ -594,7 +594,7 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
               public let __data: DataDict
               public init(_dataDict: DataDict) { __data = _dataDict }
 
-              public var simpleShippingRulesExpandedFragment: SimpleShippingRulesExpandedFragment { _toFragment() }
+              public var rewardSimpleShippingRulesExpandedFragment: RewardSimpleShippingRulesExpandedFragment { _toFragment() }
               public var rewardFragment: RewardFragment { _toFragment() }
               public var rewardImageFragment: RewardImageFragment { _toFragment() }
               public var rewardItemsFragment: RewardItemsFragment { _toFragment() }
@@ -665,7 +665,7 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
                 fulfilledFragments: [
                   ObjectIdentifier(FetchProjectRewardsByIdQuery.Data.Project.Rewards.Node.self),
                   ObjectIdentifier(FetchProjectRewardsByIdQuery.Data.Project.Rewards.Node.IfIncludeShippingRules.self),
-                  ObjectIdentifier(SimpleShippingRulesExpandedFragment.self),
+                  ObjectIdentifier(RewardSimpleShippingRulesExpandedFragment.self),
                   ObjectIdentifier(RewardFragment.self),
                   ObjectIdentifier(RewardImageFragment.self),
                   ObjectIdentifier(RewardItemsFragment.self)
@@ -673,7 +673,58 @@ public class FetchProjectRewardsByIdQuery: GraphQLQuery {
               ))
             }
 
-            public typealias SimpleShippingRulesExpanded = SimpleShippingRulesExpandedFragment.SimpleShippingRulesExpanded
+            /// Project.Rewards.Node.IfIncludeShippingRules.SimpleShippingRulesExpanded
+            ///
+            /// Parent Type: `SimpleShippingRule`
+            public struct SimpleShippingRulesExpanded: GraphAPI.SelectionSet {
+              public let __data: DataDict
+              public init(_dataDict: DataDict) { __data = _dataDict }
+
+              public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.SimpleShippingRule }
+
+              public var cost: String? { __data["cost"] }
+              public var estimatedMin: String? { __data["estimatedMin"] }
+              public var estimatedMax: String? { __data["estimatedMax"] }
+              public var currency: String? { __data["currency"] }
+              public var locationId: GraphAPI.ID? { __data["locationId"] }
+              public var locationName: String? { __data["locationName"] }
+              public var country: String { __data["country"] }
+
+              public struct Fragments: FragmentContainer {
+                public let __data: DataDict
+                public init(_dataDict: DataDict) { __data = _dataDict }
+
+                public var simpleShippingRuleFragment: SimpleShippingRuleFragment { _toFragment() }
+              }
+
+              public init(
+                cost: String? = nil,
+                estimatedMin: String? = nil,
+                estimatedMax: String? = nil,
+                currency: String? = nil,
+                locationId: GraphAPI.ID? = nil,
+                locationName: String? = nil,
+                country: String
+              ) {
+                self.init(_dataDict: DataDict(
+                  data: [
+                    "__typename": GraphAPI.Objects.SimpleShippingRule.typename,
+                    "cost": cost,
+                    "estimatedMin": estimatedMin,
+                    "estimatedMax": estimatedMax,
+                    "currency": currency,
+                    "locationId": locationId,
+                    "locationName": locationName,
+                    "country": country,
+                  ],
+                  fulfilledFragments: [
+                    ObjectIdentifier(FetchProjectRewardsByIdQuery.Data.Project.Rewards.Node.IfIncludeShippingRules.SimpleShippingRulesExpanded.self),
+                    ObjectIdentifier(RewardSimpleShippingRulesExpandedFragment.SimpleShippingRulesExpanded.self),
+                    ObjectIdentifier(SimpleShippingRuleFragment.self)
+                  ]
+                ))
+              }
+            }
 
             /// Project.Rewards.Node.IfIncludeShippingRules.Amount
             ///

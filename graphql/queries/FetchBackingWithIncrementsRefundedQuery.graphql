@@ -10,7 +10,7 @@ query FetchBackingWithIncrementsRefunded($id: ID!) {
     }
     ...BackingFragment
     reward {
-      ...SimpleShippingRulesExpandedFragment
+      ...RewardSimpleShippingRulesExpandedFragment
     }
     paymentIncrements {
       ...PaymentIncrementBackingFragment

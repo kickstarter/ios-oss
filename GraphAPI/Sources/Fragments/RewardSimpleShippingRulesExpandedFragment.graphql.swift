@@ -3,9 +3,9 @@
 
 @_exported import ApolloAPI
 
-public struct SimpleShippingRulesExpandedFragment: GraphAPI.SelectionSet, Fragment {
+public struct RewardSimpleShippingRulesExpandedFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment SimpleShippingRulesExpandedFragment on Reward { __typename simpleShippingRulesExpanded { __typename cost estimatedMin estimatedMax currency locationId locationName country } }"#
+    #"fragment RewardSimpleShippingRulesExpandedFragment on Reward { __typename simpleShippingRulesExpanded { __typename ...SimpleShippingRuleFragment } }"#
   }
 
   public let __data: DataDict
@@ -29,7 +29,7 @@ public struct SimpleShippingRulesExpandedFragment: GraphAPI.SelectionSet, Fragme
         "simpleShippingRulesExpanded": simpleShippingRulesExpanded._fieldData,
       ],
       fulfilledFragments: [
-        ObjectIdentifier(SimpleShippingRulesExpandedFragment.self)
+        ObjectIdentifier(RewardSimpleShippingRulesExpandedFragment.self)
       ]
     ))
   }
@@ -44,13 +44,7 @@ public struct SimpleShippingRulesExpandedFragment: GraphAPI.SelectionSet, Fragme
     public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.SimpleShippingRule }
     public static var __selections: [ApolloAPI.Selection] { [
       .field("__typename", String.self),
-      .field("cost", String?.self),
-      .field("estimatedMin", String?.self),
-      .field("estimatedMax", String?.self),
-      .field("currency", String?.self),
-      .field("locationId", GraphAPI.ID?.self),
-      .field("locationName", String?.self),
-      .field("country", String.self),
+      .fragment(SimpleShippingRuleFragment.self),
     ] }
 
     public var cost: String? { __data["cost"] }
@@ -60,6 +54,13 @@ public struct SimpleShippingRulesExpandedFragment: GraphAPI.SelectionSet, Fragme
     public var locationId: GraphAPI.ID? { __data["locationId"] }
     public var locationName: String? { __data["locationName"] }
     public var country: String { __data["country"] }
+
+    public struct Fragments: FragmentContainer {
+      public let __data: DataDict
+      public init(_dataDict: DataDict) { __data = _dataDict }
+
+      public var simpleShippingRuleFragment: SimpleShippingRuleFragment { _toFragment() }
+    }
 
     public init(
       cost: String? = nil,
@@ -82,7 +83,8 @@ public struct SimpleShippingRulesExpandedFragment: GraphAPI.SelectionSet, Fragme
           "country": country,
         ],
         fulfilledFragments: [
-          ObjectIdentifier(SimpleShippingRulesExpandedFragment.SimpleShippingRulesExpanded.self)
+          ObjectIdentifier(RewardSimpleShippingRulesExpandedFragment.SimpleShippingRulesExpanded.self),
+          ObjectIdentifier(SimpleShippingRuleFragment.self)
         ]
       ))
     }

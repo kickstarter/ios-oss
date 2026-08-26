@@ -6,7 +6,7 @@ query FetchSortedProjectRewardsById($projectId: Int!, $location: CountryCode) {
         ...RewardFragment
         ...RewardImageFragment
         ...RewardItemsFragment
-        ...SimpleShippingRulesExpandedFragment
+        ...RewardSimpleShippingRulesExpandedFragment
       }
     }
   }
