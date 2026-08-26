@@ -96,7 +96,7 @@ extension Backing {
         }
     }
 
-    var rewardShippingRules: [ShippingRule]? = nil
+    var rewardShippingRules: [ShippingRule]?
     if let shippingFragment = data.backing?.reward?.fragments.rewardSimpleShippingRulesExpandedFragment {
       rewardShippingRules = ShippingRule.simpleShippingRulesExpanded(from: shippingFragment)
     }
