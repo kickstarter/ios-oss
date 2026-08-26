@@ -22,7 +22,7 @@ struct VideoFeedRightRailView: View {
   @Binding var item: VideoFeedItem
   @Binding var isSaved: Bool
 
-  @State private var isShowingShareSheet = false
+  @State private var shareSheetItem: VideoFeedItem? = nil
 
   var onCreatorTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
@@ -79,11 +79,11 @@ struct VideoFeedRightRailView: View {
   private var shareButton: some View {
     RailButtonView(imageName: Constants.shareIcon, label: self.item.formattedSharesCount) {
       self.onShareTapped?()
-      self.isShowingShareSheet = true
+      self.shareSheetItem = self.item
     }
     .accessibilityLabel(Strings.Share())
-    .sheet(isPresented: self.$isShowingShareSheet) {
-      VideoFeedShareSheetView(item: self.item)
+    .sheet(item: self.$shareSheetItem) { item in
+      VideoFeedShareSheetView(item: item)
         .presentationDragIndicator(.visible)
     }
   }

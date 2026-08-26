@@ -1,6 +1,6 @@
 import Foundation
 
-public struct VideoFeedItem: Hashable {
+public struct VideoFeedItem: Hashable, Identifiable {
   public let id: String
 
   public let pid: Int

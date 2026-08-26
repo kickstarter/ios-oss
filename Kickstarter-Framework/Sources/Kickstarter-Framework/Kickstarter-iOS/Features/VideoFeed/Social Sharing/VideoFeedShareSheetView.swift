@@ -25,7 +25,6 @@ struct VideoFeedShareSheetView: View {
   @SwiftUI.Environment(\.dismiss) private var dismiss
 
   let item: VideoFeedItem
-  var onEmailTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
 
   @State private var destinations: [VideoFeedShareDestination] = VideoFeedShareDestination.available()
@@ -121,9 +120,6 @@ struct VideoFeedShareSheetView: View {
 
   private func tapped(_ destination: VideoFeedShareDestination) {
     switch destination {
-    case .email:
-      self.dismiss()
-      self.onEmailTapped?()
     case .more:
       self.dismiss()
       self.onMoreTapped?()
