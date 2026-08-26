@@ -503,6 +503,7 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
       self.goToCreatorProfile(for: item)
     case .shareTapped:
       self.viewModel.trackCTAClicked(ctaContext: .videoFeedShare, item: item)
+      self.pauseVisibleCell()
     case .moreTapped:
       self.simpleAlert(title: "More")
     case .ctaTapped:
