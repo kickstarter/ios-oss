@@ -152,7 +152,7 @@ private struct ShareDestinationButton: View {
         }
         Text(self.destination.label)
           .font(Font(UIFont.ksr_caption2()))
-          .foregroundColor(Color(Colors.Text.primary.uiColor()))
+          .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
           .multilineTextAlignment(.center)
           .lineLimit(2)
           .fixedSize(horizontal: false, vertical: true)
