@@ -21,6 +21,7 @@ public class Query: MockObject {
     @Field<Postable>("post") public var post
     @Field<Project>("project") public var project
     @Field<ProjectsConnectionWithTotalCount>("projects") public var projects
+    @Field<Reward>("reward") public var reward
     @Field<[Category]>("rootCategories") public var rootCategories
     @Field<VideoFeedConnection>("videoFeed") public var videoFeed
   }
@@ -39,6 +40,7 @@ public extension Mock where O == Query {
     post: AnyMock? = nil,
     project: Mock<Project>? = nil,
     projects: Mock<ProjectsConnectionWithTotalCount>? = nil,
+    reward: Mock<Reward>? = nil,
     rootCategories: [Mock<Category>]? = nil,
     videoFeed: Mock<VideoFeedConnection>? = nil
   ) {
@@ -54,6 +56,7 @@ public extension Mock where O == Query {
     _setEntity(post, for: \.post)
     _setEntity(project, for: \.project)
     _setEntity(projects, for: \.projects)
+    _setEntity(reward, for: \.reward)
     _setList(rootCategories, for: \.rootCategories)
     _setEntity(videoFeed, for: \.videoFeed)
   }

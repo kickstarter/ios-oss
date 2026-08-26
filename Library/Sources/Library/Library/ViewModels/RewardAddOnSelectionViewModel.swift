@@ -1,3 +1,4 @@
+import Experimentation
 import Foundation
 import KsApi
 import Prelude
@@ -76,8 +77,8 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     let slug = project.map(\.slug)
 
     let refreshAddons = Signal.merge(
-      slug,
-      slug.takeWhen(self.beginRefreshSignal)
+      configData,
+      configData.takeWhen(self.beginRefreshSignal)
     )
 
     self.headerTitle = hasAddOns.map { (hasAddons: Bool) -> String in
@@ -93,7 +94,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     }
 
     // Only fetch add-ons if the base reward has add-ons.
-    let fetchAddOnsWithSlug = Signal.combineLatest(
+    let fetchAddOns = Signal.combineLatest(
       refreshAddons,
       hasAddOns.filter(isTrue)
     )
@@ -104,12 +105,18 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       baseReward.filter { reward in !reward.shipping.enabled }.mapConst(nil)
     )
 
-    let slugAndShippingRule = Signal.combineLatest(fetchAddOnsWithSlug, shippingRule)
+    let addOnsEvent = fetchAddOns.switchMap { data in
+      let slug = data.project.slug
+      let baseReward = data.rewards.first
+      let shippingRule = data.selectedShippingRule
 
-    let addOnsEvent = slugAndShippingRule.switchMap { slug, shippingRule in
-      addOnsProducer(slug: slug, shippingRule: shippingRule)
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .materialize()
+      return addOnsProducer(
+        slug: slug,
+        baseReward: baseReward,
+        shippingRule: shippingRule
+      )
+      .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+      .materialize()
     }
 
     self.startRefreshing = self.beginRefreshSignal
@@ -439,8 +446,24 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
 private func addOnsProducer(
   slug: String,
+  baseReward: Reward?,
   shippingRule: ShippingRule?
 ) -> SignalProducer<[Reward]?, ErrorEnvelope> {
+  let experiment = SpeedyCheckoutExperiment()
+  if experiment.boolValue(forKey: .speedy_checkout_enabled) == true {
+    guard let baseReward, baseReward.isNoReward == false else {
+      return SignalProducer(value: nil)
+    }
+
+    // Shipping rule may be nil if the backer selected no reward or a digital reward.
+    let shippingCountryCode = shippingRule?.location.country ?? AppEnvironment.current.countryCode
+
+    return AppEnvironment.current.apiService.fastFetchRewardAddOnsSelection(
+      baseRewardId: baseReward.id,
+      countryCode: shippingCountryCode
+    ).map { .some($0) }
+  }
+
   return AppEnvironment.current.apiService.fetchRewardAddOnsSelectionViewRewards(
     slug: slug,
     shippingEnabled: shippingRule?.location.graphID != nil,

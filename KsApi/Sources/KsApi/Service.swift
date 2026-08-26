@@ -724,6 +724,25 @@ public struct Service: ServiceType {
       .flatMap(Project.projectProducer(from:))
   }
 
+  public func fastFetchRewardAddOnsSelection(
+    baseRewardId: Int,
+    countryCode: String
+  ) -> SignalProducer<[Reward], ErrorEnvelope> {
+    guard let graphCountryCode = GraphAPI.CountryCode(rawValue: countryCode) else {
+      assertionFailure("Unable to map selected code to country")
+      return SignalProducer(error: .graphError("Invalid country code"))
+    }
+
+    let query = GraphAPI.FastFetchAddOnsQuery(
+      baseRewardId: "\(baseRewardId)",
+      country: .case(graphCountryCode)
+    )
+
+    return GraphQL.shared.client
+      .fetch(query: query)
+      .flatMap(Reward.addOnsProducer(from:))
+  }
+
   public func fetchBackedProjects(
     cursor: String? = nil,
     limit: Int? = nil

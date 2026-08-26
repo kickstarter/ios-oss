@@ -1,0 +1,16 @@
+query FastFetchAddOns($baseRewardId: ID!, $country: CountryCode!) {
+  reward(id: $baseRewardId) {
+    displayableAddons {
+      nodes {
+        ...RewardFragment
+        ...RewardImageFragment
+        ...RewardItemsFragment
+        shippingForLocation(countryCode: $country) {
+          shippingRule {
+            ...SimpleShippingRuleFragment
+          }
+        }
+      }
+    }
+  }
+}
