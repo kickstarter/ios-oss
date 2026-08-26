@@ -74,8 +74,6 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     let hasAddOns = baseReward.map(\.hasAddOns)
 
-    let slug = project.map(\.slug)
-
     let refreshAddons = Signal.merge(
       configData,
       configData.takeWhen(self.beginRefreshSignal)
