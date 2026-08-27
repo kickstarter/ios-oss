@@ -101,53 +101,46 @@ enum VideoFeedShareDestination: String, CaseIterable, Identifiable {
   }
 
   static func projectURL(for item: VideoFeedItem) -> URL? {
-    URL(string: "https://www.kickstarter.com/projects/\(item.slug)")
+    AppEnvironment.current.apiService.serverConfig.webBaseUrl
+      .appendingPathComponent("projects/\(item.slug)")
   }
 
-  /// Opens the appropriate system URL or performs a clipboard action.
-  /// Returns `true` if handled here returns `false` for destinations like (`.more`, `.email`)
-  @discardableResult
-  func perform(item: VideoFeedItem) -> Bool {
+  func perform(item: VideoFeedItem) {
     let encoded = Self.encodedProjectURL(for: item)
 
     switch self {
     case .copyLink:
       UIPasteboard.general.string = Self.projectURL(for: item)?.absoluteString
-      return true
     case .instagramFeed:
-      return Self.open("instagram://")
+      Self.open("instagram://")
     case .instagramStories:
-      return Self.open("instagram-stories://share")
+      Self.open("instagram-stories://share")
     case .facebookStories:
-      return Self.open("facebook-stories://share")
+      Self.open("facebook-stories://share")
     case .x:
-      guard let encoded else { return true }
-
-      return Self.open("x-twitter://post?message=\(encoded)")
+      guard let encoded else { return }
+      Self.open("x-twitter://post?message=\(encoded)")
     case .facebookFeed:
-      guard let encoded else { return true }
+      guard let encoded else { return }
 
-      return Self.open("https://www.facebook.com/sharer/sharer.php?u=\(encoded)")
+      Self.open("https://www.facebook.com/sharer/sharer.php?u=\(encoded)")
     case .whatsApp:
-      guard let encoded else { return true }
+      guard let encoded else { return }
 
-      return Self.open("whatsapp://send?text=\(encoded)")
+      Self.open("whatsapp://send?text=\(encoded)")
     case .messages:
-      guard let encoded else { return true }
+      guard let encoded else { return }
 
-      return Self.open("sms:?body=\(encoded)")
+      Self.open("sms:?body=\(encoded)")
     case .email, .more:
-      return false
+      break
     }
   }
 
-  @discardableResult
-  private static func open(_ urlString: String) -> Bool {
-    guard let url = URL(string: urlString) else { return true }
+  private static func open(_ urlString: String) {
+    guard let url = URL(string: urlString) else { return }
 
     UIApplication.shared.open(url)
-
-    return true
   }
 
   private static func encodedProjectURL(for item: VideoFeedItem) -> String? {
