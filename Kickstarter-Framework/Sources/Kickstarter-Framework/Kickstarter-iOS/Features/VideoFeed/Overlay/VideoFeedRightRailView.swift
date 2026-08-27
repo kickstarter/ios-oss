@@ -4,7 +4,7 @@ import Library
 import SwiftUI
 
 /// Used inside `VideoFeedOverlayView`.
-/// Contains the creator avatar, save, share, and more (…) buttons.
+/// Contains the creator avatar, save, and share buttons.
 struct VideoFeedRightRailView: View {
   private enum Constants {
     static let railSpacing: CGFloat = 12
@@ -22,6 +22,8 @@ struct VideoFeedRightRailView: View {
   @Binding var item: VideoFeedItem
   @Binding var isSaved: Bool
 
+  @State private var isShowingShareSheet = false
+
   var onCreatorTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
@@ -30,6 +32,7 @@ struct VideoFeedRightRailView: View {
     VStack(alignment: .center, spacing: Constants.railSpacing) {
       self.creatorAvatar
       self.saveButton
+      self.shareButton
     }
     .frame(width: Constants.avatarSize)
   }
@@ -76,8 +79,13 @@ struct VideoFeedRightRailView: View {
   private var shareButton: some View {
     RailButtonView(imageName: Constants.shareIcon, label: self.item.formattedSharesCount) {
       self.onShareTapped?()
+      self.isShowingShareSheet = true
     }
     .accessibilityLabel(Strings.Share())
+    .sheet(isPresented: self.$isShowingShareSheet) {
+      VideoFeedShareSheetView(item: self.item)
+        .presentationDragIndicator(.visible)
+    }
   }
 
   // Currently hidden. Will be added in VideoFeed V2.

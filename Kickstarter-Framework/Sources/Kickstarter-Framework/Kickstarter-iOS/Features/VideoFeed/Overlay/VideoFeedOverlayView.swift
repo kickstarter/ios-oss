@@ -79,8 +79,7 @@ struct VideoFeedOverlayView: View {
         VideoFeedRightRailView(
           item: self.$item,
           isSaved: self.$isSaved,
-          onCreatorTapped: self.onCreatorTapped,
-          onShareTapped: self.onShareTapped,
+          onCreatorTapped: self.onCreatorTapped, onShareTapped: self.onShareTapped,
           onMoreTapped: self.onMoreTapped
         )
 
