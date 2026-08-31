@@ -132,7 +132,11 @@ enum VideoFeedShareDestination: String, CaseIterable, Identifiable {
       guard let encoded else { return }
 
       Self.open("sms:?body=\(encoded)")
-    case .email, .more:
+    case .email:
+      guard let encoded else { return }
+
+      Self.open("mailto:?body=\(encoded)")
+    case .more:
       break
     }
   }
