@@ -113,7 +113,6 @@ struct VideoFeedShareSheetView: View {
 
   // MARK: - Image sharing
 
-  private func renderedPreviewCard() -> UIImage? {
   func renderedPreviewCard() -> UIImage? {
     guard let previewURL = self.item.videoPreviewImageURL,
           let thumbnailImage = KingfisherManager.shared.cache
@@ -183,9 +182,6 @@ struct VideoFeedShareSheetView: View {
   private func shareToX() {}
 }
 
-    .clipShape(RoundedRectangle(cornerRadius: 12))
-  }
-}
 // MARK: - ShareDestinationButton
 
 private struct ShareDestinationButton: View {
