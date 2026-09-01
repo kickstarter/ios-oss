@@ -106,27 +106,23 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     let slugAndShippingRule = Signal.combineLatest(fetchAddOnsWithSlug, shippingRule)
 
-    let projectEvent = slugAndShippingRule.switchMap { slug, shippingRule in
-      AppEnvironment.current.apiService.fetchRewardAddOnsSelectionViewRewards(
-        slug: slug,
-        shippingEnabled: shippingRule?.location.graphID != nil,
-        locationId: shippingRule?.location.graphID
-      )
-      .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-      .materialize()
+    let addOnsEvent = slugAndShippingRule.switchMap { slug, shippingRule in
+      addOnsProducer(slug: slug, shippingRule: shippingRule)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
     }
 
     self.startRefreshing = self.beginRefreshSignal
     self.endRefreshing = Signal.merge(
-      projectEvent.filter { $0.isTerminating }.ignoreValues(),
+      addOnsEvent.filter { $0.isTerminating }.ignoreValues(),
       // If there aren't add-ons to fetch, end refresh immediately.
       hasAddOns.takeWhen(self.beginRefreshSignal).filter(isFalse)
         .ksr_delay(.milliseconds(100), on: AppEnvironment.current.scheduler)
         .ignoreValues()
     )
 
-    let addOns = projectEvent.values().map(\.rewardData.addOns).skipNil()
-    let requestErrored = projectEvent.map(\.error).map(isNotNil)
+    let addOns = addOnsEvent.values().skipNil()
+    let requestErrored = addOnsEvent.map(\.error).map(isNotNil)
 
     // Quantities updated as the user selects them, merged with an empty initial value.
     let updatedSelectedQuantities = Signal.merge(
@@ -440,6 +436,20 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 }
 
 // MARK: - Functions
+
+private func addOnsProducer(
+  slug: String,
+  shippingRule: ShippingRule?
+) -> SignalProducer<[Reward]?, ErrorEnvelope> {
+  return AppEnvironment.current.apiService.fetchRewardAddOnsSelectionViewRewards(
+    slug: slug,
+    shippingEnabled: shippingRule?.location.graphID != nil,
+    locationId: shippingRule?.location.graphID
+  )
+  .map { project in
+    project.rewardData.addOns
+  }
+}
 
 private func unpack(
   rewardsData: ([Reward], Project, Reward, PledgeViewContext, ShippingRule?),
