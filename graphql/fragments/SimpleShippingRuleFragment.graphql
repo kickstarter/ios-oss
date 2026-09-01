@@ -1,0 +1,9 @@
+fragment SimpleShippingRuleFragment on SimpleShippingRule {
+  cost,
+  estimatedMin,
+  estimatedMax,
+  currency,
+  locationId,
+  locationName,
+  country
+}

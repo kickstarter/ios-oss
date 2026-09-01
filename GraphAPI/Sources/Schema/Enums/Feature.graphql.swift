@@ -6,9 +6,6 @@ import ApolloAPI
 /// The list of available public features
 public enum Feature: String, EnumType {
   case deviceComponents = "device_components"
-  case passwordless = "passwordless"
-  case passwordlessEmailChange = "passwordless_email_change"
-  case passwordlessStepUp = "passwordless_step_up"
   case showPostsFeed = "show_posts_feed"
   case iosCrashlytics = "ios_crashlytics"
   case iosMixpanel = "ios_mixpanel"
@@ -63,7 +60,6 @@ public enum Feature: String, EnumType {
   case si = "SI"
   case featuredProjectMobileOptimizations = "featured_project_mobile_optimizations"
   case ibanFlexibility = "IBAN_flexibility"
-  case insideVoicesFooter = "inside_voices_footer"
   case stackedRecsOnMobile = "stacked_recs_on_mobile"
   case projectPrelaunchSummaries = "project_prelaunch_summaries"
   case caCurrencySelector = "ca_currency_selector"
@@ -144,7 +140,6 @@ public enum Feature: String, EnumType {
   case sauceLoginSignup = "sauce_login_signup"
   case shipstationTwoWaySync = "shipstation_two_way_sync"
   case multipleTrackingNumbers = "multiple_tracking_numbers"
-  case sauceGlobalFooter = "sauce_global_footer"
   case editIntroPmConfigPostLaunch2026 = "edit_intro_pm_config_post_launch_2026"
   case editRewardPmConfigPostLaunch2026 = "edit_reward_pm_config_post_launch_2026"
   case editShippingPmConfigPostLaunch2026 = "edit_shipping_pm_config_post_launch_2026"
@@ -152,7 +147,6 @@ public enum Feature: String, EnumType {
   case collaboratorCreatorDashboardAccess = "collaborator_creator_dashboard_access"
   case backerTypeFilters2026 = "backer_type_filters_2026"
   case backgroundTaskManagement2026 = "background_task_management_2026"
-  case improvingRefundOrchestration2026 = "improving_refund_orchestration_2026"
   case pmOrderEditRefunds2026 = "pm_order_edit_refunds_2026"
   case pmUpdatesOnFulfillmentPage2026 = "pm_updates_on_fulfillment_page_2026"
   case vatFlexibility2026 = "vat_flexibility_2026"
@@ -181,4 +175,6 @@ public enum Feature: String, EnumType {
   case projectNotice2026Updates = "project_notice_2026_updates"
   case customCountrySurcharges2026 = "custom_country_surcharges_2026"
   case allowEditingRewardBasicsInProjectBuild = "allow_editing_reward_basics_in_project_build"
+  case collaboratorDmPermission2026 = "collaborator_dm_permission_2026"
+  case improvedCreatorUpgrades2026 = "improved_creator_upgrades_2026"
 }

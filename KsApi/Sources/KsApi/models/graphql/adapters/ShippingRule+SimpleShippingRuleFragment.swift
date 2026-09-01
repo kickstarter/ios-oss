@@ -5,16 +5,16 @@ extension ShippingRule {
   // They are expanded (i.e. EU -> Austria, Belgium, ...) to include all shippable countries.
   // They contain the data we need to calculate shipping, just in a different initial format.
   static func simpleShippingRulesExpanded(
-    from fragment: GraphAPI.SimpleShippingRulesExpandedFragment
+    from fragment: GraphAPI.RewardSimpleShippingRulesExpandedFragment
   ) -> [ShippingRule] {
     return fragment.simpleShippingRulesExpanded
       .compactMap { node -> ShippingRule? in
-        self.shippingRule(from: node)
+        self.shippingRule(from: node?.fragments.simpleShippingRuleFragment)
       }
   }
 
   internal static func shippingRule(
-    from node: SimpleShippingRulesExpandedFragment.SimpleShippingRulesExpanded?
+    from node: GraphAPI.SimpleShippingRuleFragment?
   ) -> ShippingRule? {
     guard let node,
           let idString = node.locationId,

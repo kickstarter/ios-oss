@@ -5,7 +5,7 @@ query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!,
         ...RewardFragment
         ...RewardImageFragment
         ...RewardItemsFragment
-        ...SimpleShippingRulesExpandedFragment @include(if: $includeShippingRules)
+        ...RewardSimpleShippingRulesExpandedFragment @include(if: $includeShippingRules)
       }
     }
     ...PledgeOverTimeFragment @include(if: $includePledgeOverTime)

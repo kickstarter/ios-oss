@@ -4,7 +4,7 @@ import XCTest
 
 final class ShippingRule_ShippingRulesExpandedFragmentTests: XCTestCase {
   func test_shippingRule_fromValidNode_noEstimates_isCorrect() {
-    let node = GraphAPI.SimpleShippingRulesExpandedFragment.SimpleShippingRulesExpanded(
+    let node = GraphAPI.SimpleShippingRuleFragment(
       cost: "3000.0",
       estimatedMin: nil,
       estimatedMax: nil,
@@ -30,7 +30,7 @@ final class ShippingRule_ShippingRulesExpandedFragmentTests: XCTestCase {
   }
 
   func test_shippingRule_fromValidNode_withEstimates_isCorrect() {
-    let node = GraphAPI.SimpleShippingRulesExpandedFragment.SimpleShippingRulesExpanded(
+    let node = GraphAPI.SimpleShippingRuleFragment(
       cost: "15.0",
       estimatedMin: "13",
       estimatedMax: "16",
@@ -57,7 +57,7 @@ final class ShippingRule_ShippingRulesExpandedFragmentTests: XCTestCase {
   }
 
   func test_shippingRule_fromInvalidFragmentNode_isNil() {
-    let node = GraphAPI.SimpleShippingRulesExpandedFragment.SimpleShippingRulesExpanded(
+    let node = GraphAPI.SimpleShippingRuleFragment(
       cost: "Hello, world",
       estimatedMin: "Not a number",
       estimatedMax: "Not a number",

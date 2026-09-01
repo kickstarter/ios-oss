@@ -651,7 +651,7 @@
 		AAF548D42F2445C0001DB5AC /* SearchQuery_FiveResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchQuery_FiveResults.json; sourceTree = "<group>"; };
 		D0C9BAD521B1AB920098CABA /* Alpha.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Alpha.entitlements; sourceTree = "<group>"; };
 		E1047B652F59D4240071584F /* FetchSortedProjectRewardsByIdQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchSortedProjectRewardsByIdQuery.graphql; sourceTree = "<group>"; };
-		E1047B662F59DAC80071584F /* SimpleShippingRulesExpandedFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = SimpleShippingRulesExpandedFragment.graphql; sourceTree = "<group>"; };
+		E1047B662F59DAC80071584F /* SimpleShippingRuleFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = SimpleShippingRuleFragment.graphql; sourceTree = "<group>"; };
 		E10831673024FA5400DC539C /* RewardItemsFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = RewardItemsFragment.graphql; sourceTree = "<group>"; };
 		E10831683024FA9300DC539C /* RewardImageFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = RewardImageFragment.graphql; sourceTree = "<group>"; };
 		E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RichPushNotifications.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -664,6 +664,7 @@
 		E137D9AE2F3537F80089183D /* PublicUserFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PublicUserFragment.graphql; sourceTree = "<group>"; };
 		E15E22CD2E54B91B00EE6BB0 /* KDS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = KDS; sourceTree = "<group>"; };
 		E182E5BB2B8D36FE0008DD69 /* AppEnvironmentTests+OAuthInKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppEnvironmentTests+OAuthInKeychain.swift"; sourceTree = "<group>"; };
+		E18B2547303F42170087CCA9 /* RewardSimpleShippingRulesExpandedFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = RewardSimpleShippingRulesExpandedFragment.graphql; sourceTree = "<group>"; };
 		E18CA2882F9A864E005C22AE /* StatsigExperiment+HelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsigExperiment+HelperTests.swift"; sourceTree = "<group>"; };
 		E18CA2892F9A864E005C22AE /* StatsigFeature+HelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsigFeature+HelperTests.swift"; sourceTree = "<group>"; };
 		E190EB1B2E29944E006A6DB6 /* BackerDashboardProjectCellFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BackerDashboardProjectCellFragment.graphql; sourceTree = "<group>"; };
@@ -1321,7 +1322,8 @@
 				E190EB332E29944E006A6DB6 /* RewardFragment.graphql */,
 				E10831673024FA5400DC539C /* RewardItemsFragment.graphql */,
 				E10831683024FA9300DC539C /* RewardImageFragment.graphql */,
-				E1047B662F59DAC80071584F /* SimpleShippingRulesExpandedFragment.graphql */,
+				E1047B662F59DAC80071584F /* SimpleShippingRuleFragment.graphql */,
+				E18B2547303F42170087CCA9 /* RewardSimpleShippingRulesExpandedFragment.graphql */,
 				E190EB342E29944E006A6DB6 /* ShippingRuleFragment.graphql */,
 				E190EB352E29944E006A6DB6 /* UserEmailFragment.graphql */,
 				E190EB362E29944E006A6DB6 /* UserFeaturesFragment.graphql */,
