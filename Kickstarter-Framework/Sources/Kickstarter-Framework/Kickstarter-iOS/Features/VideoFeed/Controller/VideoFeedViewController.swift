@@ -515,6 +515,8 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     case .shareTapped:
       self.viewModel.trackCTAClicked(ctaContext: .videoFeedShare, item: item)
       self.pauseVisibleCell()
+    case .sheetDismissedFromLinkCopied:
+      self.resumeVisibleCell()
     case .moreTapped:
       self.simpleAlert(title: "More")
     case .ctaTapped:
