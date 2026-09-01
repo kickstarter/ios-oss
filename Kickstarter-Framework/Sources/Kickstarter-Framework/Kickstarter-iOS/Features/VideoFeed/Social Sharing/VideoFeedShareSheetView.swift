@@ -21,17 +21,20 @@ struct VideoFeedShareSheetView: View {
     static let iconSize: CGFloat = 28
     static let iconCircleSize: CGFloat = 56
     static let iconLabelSpacing: CGFloat = 6
+  }
 
-    static let facebookAppIDKey = "FacebookAppID"
-    static let facebookStoriesURLScheme = "facebook-stories://share"
-    static let facebookStickerBackgroundImageKey = "com.facebook.sharedSticker.backgroundImage"
-    static let facebookStickerAppIDKey = "com.facebook.sharedSticker.appID"
+  private enum FacebookConstants {
+    static let appIDKey = "FacebookAppID"
+    static let storiesURLScheme = "facebook-stories://share"
+    static let stickerBackgroundImageKey = "com.facebook.sharedSticker.backgroundImage"
+    static let stickerAppIDKey = "com.facebook.sharedSticker.appID"
   }
 
   @SwiftUI.Environment(\.dismiss) private var dismiss
 
   let item: VideoFeedItem
   var onMoreTapped: (() -> Void)?
+  var getPresentingViewController: (() -> UIViewController?)?
 
   @State private var destinations: [VideoFeedShareDestination] = VideoFeedShareDestination.available()
 
@@ -111,9 +114,13 @@ struct VideoFeedShareSheetView: View {
   // MARK: - Image sharing
 
   private func renderedPreviewCard() -> UIImage? {
-    let thumbnailImage = self.item.videoPreviewImageURL.flatMap {
-      KingfisherManager.shared.cache.retrieveImageInMemoryCache(forKey: $0.absoluteString)
+  func renderedPreviewCard() -> UIImage? {
+    guard let previewURL = self.item.videoPreviewImageURL,
+          let thumbnailImage = KingfisherManager.shared.cache
+          .retrieveImageInMemoryCache(forKey: previewURL.absoluteString) else {
+      return nil
     }
+
     let screenWidth = UIScreen.main.bounds.width
     let storyHeight = screenWidth * 16 / 9
 
@@ -122,11 +129,7 @@ struct VideoFeedShareSheetView: View {
         Color(UIColor(coreColor: .green_04))
 
         VideoFeedSharePreviewCard(item: self.item) {
-          if let thumbnailImage {
-            Image(uiImage: thumbnailImage).resizable().scaledToFill()
-          } else {
-            Color.gray
-          }
+          Image(uiImage: thumbnailImage).resizable().scaledToFill()
         }
         .padding(.horizontal, Constants.horizontalPadding)
       }
@@ -138,45 +141,41 @@ struct VideoFeedShareSheetView: View {
     return renderer.uiImage
   }
 
-  private var topPresentedViewController: UIViewController? {
-    UIApplication.shared.connectedScenes
-      .compactMap { $0 as? UIWindowScene }
-      .flatMap { $0.windows }
-      .first { $0.isKeyWindow }
-      .flatMap {
-        var vc = $0.rootViewController
-        while let presented = vc?.presentedViewController { vc = presented }
-        return vc
-      }
-  }
+  // MARK: - Facebook Feed
 
   private func shareToFacebookFeed() {
     guard let url = VideoFeedShareDestination.projectURL(for: self.item),
-          let topVC = self.topPresentedViewController else { return }
+          let presentingVC = self.getPresentingViewController?() else { return }
 
     let content = ShareLinkContent()
     content.contentURL = url
 
     /// imported from FacebookShare SDK
-    ShareDialog(viewController: topVC, content: content, delegate: nil).show()
+    ShareDialog(viewController: presentingVC, content: content, delegate: nil).show()
   }
+
+  // MARK: - Facebook Stories
 
   private func shareToFacebookStories() {
     guard let imageData = self.renderedPreviewCard()?.pngData() else { return }
 
-    let facebookAppID = Bundle.main.object(forInfoDictionaryKey: Constants.facebookAppIDKey) as? String ?? ""
+    guard let facebookAppID = Bundle.main.object(forInfoDictionaryKey: FacebookConstants.appIDKey) as? String
+    else {
+      assertionFailure("FacebookAppID is missing from Info.plist")
+      return
+    }
 
     UIPasteboard.general.setItems(
       [[
-        Constants.facebookStickerBackgroundImageKey: imageData,
-        Constants.facebookStickerAppIDKey: facebookAppID
+        FacebookConstants.stickerBackgroundImageKey: imageData,
+        FacebookConstants.stickerAppIDKey: facebookAppID
       ]],
       options: [.expirationDate: Date().addingTimeInterval(60 * 5)]
     )
 
     self.dismiss()
 
-    guard let url = URL(string: Constants.facebookStoriesURLScheme) else { return }
+    guard let url = URL(string: FacebookConstants.storiesURLScheme) else { return }
 
     UIApplication.shared.open(url)
   }
@@ -184,47 +183,9 @@ struct VideoFeedShareSheetView: View {
   private func shareToX() {}
 }
 
-// MARK: - VideoFeedSharePreviewCard
-
-private struct VideoFeedSharePreviewCard<Thumbnail: View>: View {
-  private enum Constants {
-    static var kickstarterWordmarkAssetName: String { "share-kickstarter-wordmark" }
-  }
-
-  let item: VideoFeedItem
-  @ViewBuilder let thumbnail: () -> Thumbnail
-
-  var body: some View {
-    VStack(alignment: .leading, spacing: 32) {
-      Color.clear
-        .aspectRatio(16 / 9, contentMode: .fit)
-        .overlay(self.thumbnail())
-        .clipped()
-
-      VStack(alignment: .leading, spacing: 8) {
-        Text(self.item.title)
-          .font(Font(UIFont.ksr_subhead().bolded))
-          .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
-          .lineLimit(2)
-
-        Text(self.item.creator)
-          .font(Font(UIFont.ksr_caption1()))
-          .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
-      }
-
-      if let image = Library.image(named: Constants.kickstarterWordmarkAssetName) {
-        Image(uiImage: image)
-          .resizable()
-          .scaledToFit()
-          .frame(maxWidth: .infinity, alignment: .leading)
-      }
-    }
-    .padding(12)
-    .background(Color(Colors.Icon.light.uiColor()))
     .clipShape(RoundedRectangle(cornerRadius: 12))
   }
 }
-
 // MARK: - ShareDestinationButton
 
 private struct ShareDestinationButton: View {
@@ -232,6 +193,7 @@ private struct ShareDestinationButton: View {
     static let iconSize: CGFloat = 28
     static let iconCircleSize: CGFloat = 56
     static let iconLabelSpacing: CGFloat = 6
+    static let labelHeight: CGFloat = 28
   }
 
   let destination: VideoFeedShareDestination
@@ -253,7 +215,8 @@ private struct ShareDestinationButton: View {
           .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
           .multilineTextAlignment(.center)
           .lineLimit(2)
-          .fixedSize(horizontal: false, vertical: true)
+          .minimumScaleFactor(0.75)
+          .frame(height: Constants.labelHeight, alignment: .top)
       }
     }
     .accessibilityLabel(self.destination.label)

@@ -27,6 +27,7 @@ struct VideoFeedRightRailView: View {
   var onCreatorTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
+  var getPresentingViewController: (() -> UIViewController?)?
 
   var body: some View {
     VStack(alignment: .center, spacing: Constants.railSpacing) {
@@ -83,7 +84,7 @@ struct VideoFeedRightRailView: View {
     }
     .accessibilityLabel(Strings.Share())
     .sheet(item: self.$shareSheetItem) { item in
-      VideoFeedShareSheetView(item: item)
+      VideoFeedShareSheetView(item: item, getPresentingViewController: self.getPresentingViewController)
         .presentationDragIndicator(.visible)
     }
   }
