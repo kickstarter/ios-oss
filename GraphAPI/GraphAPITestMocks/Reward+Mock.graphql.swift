@@ -18,6 +18,7 @@ public class Reward: MockObject {
     @Field<Money>("convertedAmount") public var convertedAmount
     @Field<String>("description") public var description
     @Field<String>("displayName") public var displayName
+    @Field<RewardConnection>("displayableAddons") public var displayableAddons
     @Field<GraphAPI.DateTime>("endsAt") public var endsAt
     @Field<GraphAPI.Date>("estimatedDeliveryOn") public var estimatedDeliveryOn
     @Field<Bool>("featured") public var featured
@@ -34,6 +35,7 @@ public class Reward: MockObject {
     @Field<Bool>("postCampaignPledgingEnabled") public var postCampaignPledgingEnabled
     @Field<Project>("project") public var project
     @Field<Int>("remainingQuantity") public var remainingQuantity
+    @Field<ShippingForLocation>("shippingForLocation") public var shippingForLocation
     @Field<GraphQLEnum<GraphAPI.ShippingPreference>>("shippingPreference") public var shippingPreference
     @Field<RewardShippingRulesConnection>("shippingRulesExpanded") public var shippingRulesExpanded
     @Field<String>("shippingSummary") public var shippingSummary
@@ -52,6 +54,7 @@ public extension Mock where O == Reward {
     convertedAmount: Mock<Money>? = nil,
     description: String? = nil,
     displayName: String? = nil,
+    displayableAddons: Mock<RewardConnection>? = nil,
     endsAt: GraphAPI.DateTime? = nil,
     estimatedDeliveryOn: GraphAPI.Date? = nil,
     featured: Bool? = nil,
@@ -68,6 +71,7 @@ public extension Mock where O == Reward {
     postCampaignPledgingEnabled: Bool? = nil,
     project: Mock<Project>? = nil,
     remainingQuantity: Int? = nil,
+    shippingForLocation: Mock<ShippingForLocation>? = nil,
     shippingPreference: GraphQLEnum<GraphAPI.ShippingPreference>? = nil,
     shippingRulesExpanded: Mock<RewardShippingRulesConnection>? = nil,
     shippingSummary: String? = nil,
@@ -83,6 +87,7 @@ public extension Mock where O == Reward {
     _setEntity(convertedAmount, for: \.convertedAmount)
     _setScalar(description, for: \.description)
     _setScalar(displayName, for: \.displayName)
+    _setEntity(displayableAddons, for: \.displayableAddons)
     _setScalar(endsAt, for: \.endsAt)
     _setScalar(estimatedDeliveryOn, for: \.estimatedDeliveryOn)
     _setScalar(featured, for: \.featured)
@@ -99,6 +104,7 @@ public extension Mock where O == Reward {
     _setScalar(postCampaignPledgingEnabled, for: \.postCampaignPledgingEnabled)
     _setEntity(project, for: \.project)
     _setScalar(remainingQuantity, for: \.remainingQuantity)
+    _setEntity(shippingForLocation, for: \.shippingForLocation)
     _setScalar(shippingPreference, for: \.shippingPreference)
     _setEntity(shippingRulesExpanded, for: \.shippingRulesExpanded)
     _setScalar(shippingSummary, for: \.shippingSummary)

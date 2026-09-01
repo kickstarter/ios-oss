@@ -1213,6 +1213,13 @@
         )
     }
 
+    func fastFetchRewardAddOnsSelection(
+      baseRewardId _: Int,
+      countryCode _: String
+    ) -> SignalProducer<[Reward], ErrorEnvelope> {
+      return SignalProducer(error: ErrorEnvelope.graphError("Unimplemented mock"))
+    }
+
     internal func fetchMessageThread(messageThreadId _: Int)
       -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope> {
       if let error = self.fetchMessageThreadResult?.error {

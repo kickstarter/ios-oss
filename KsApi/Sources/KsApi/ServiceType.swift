@@ -310,6 +310,11 @@ public protocol ServiceType {
   func fetchRewardAddOnsSelectionViewRewards(slug: String, shippingEnabled: Bool, locationId: String?)
     -> SignalProducer<Project, ErrorEnvelope>
 
+  func fastFetchRewardAddOnsSelection(
+    baseRewardId: Int,
+    countryCode: String
+  ) -> SignalProducer<[Reward], ErrorEnvelope>
+
   /// Fetches a reward's shipping rules for a project and reward id.
   func fetchRewardShippingRules(projectId: Int, rewardId: Int)
     -> SignalProducer<ShippingRulesEnvelope, ErrorEnvelope>
