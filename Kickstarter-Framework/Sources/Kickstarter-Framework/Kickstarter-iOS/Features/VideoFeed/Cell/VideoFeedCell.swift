@@ -39,6 +39,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   }
 
   var onEvent: ((Event) -> Void)?
+  var getPresentingViewController: (() -> UIViewController?)?
 
   private(set) var currentItemId: String?
 
@@ -82,6 +83,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
   override func prepareForReuse() {
     super.prepareForReuse()
     self.onEvent = nil
+    self.getPresentingViewController = nil
     self.currentItemId = nil
     self.resetToasts()
     self.playbackState.reset()
@@ -114,6 +116,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
         onProgressBarTapped: { [weak self] progress in self?.onEvent?(.progressBarTapped(progress)) },
         onMuteTapped: { [weak self] in self?.onEvent?(.muteTapped) },
         onSheetDismissedFromLinkCopied: { [weak self] in self?.onEvent?(.sheetDismissedFromLinkCopied) },
+        getPresentingViewController: self.getPresentingViewController
       )
     }
     .margins(.all, 0)

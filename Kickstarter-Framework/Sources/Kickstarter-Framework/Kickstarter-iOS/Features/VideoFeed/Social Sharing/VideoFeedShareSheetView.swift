@@ -201,7 +201,6 @@ struct VideoFeedShareSheetView: View {
     while let presented = vc?.presentedViewController {
       vc = presented
     }
-
     return vc
   }
 

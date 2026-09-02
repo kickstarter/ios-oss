@@ -56,6 +56,7 @@ struct VideoFeedOverlayView: View {
   var onProgressBarTapped: ((Float) -> Void)?
   var onMuteTapped: (() -> Void)?
   var onSheetDismissedFromLinkCopied: (() -> Void)?
+  var getPresentingViewController: (() -> UIViewController?)?
 
   var body: some View {
     ZStack(alignment: .bottom) {
@@ -63,14 +64,13 @@ struct VideoFeedOverlayView: View {
         .ignoresSafeArea()
         .accessibilityHidden(true)
 
-      Button(action: { self.onCloseTapped?() }, label: {
+      Button(action: { self.onCloseTapped?() }) {
         if let icon = Library.image(named: "video-feed-close-icon") {
           Image(uiImage: icon)
             .foregroundColor(Color(Colors.Icon.light.uiColor()))
             .frame(width: Constants.closeButtonSize, height: Constants.closeButtonSize)
-            .accessibilityHidden(true)
         }
-      })
+      }
       .contentShape(Rectangle())
       .padding(.leading, Constants.horizontalPadding)
       .padding(.top, Constants.topSafeAreaPadding)
@@ -85,6 +85,7 @@ struct VideoFeedOverlayView: View {
           onShareTapped: self.onShareTapped,
           onMoreTapped: self.onMoreTapped,
           onSheetDismissedFromLinkCopied: self.onSheetDismissedFromLinkCopied,
+          getPresentingViewController: self.getPresentingViewController
         )
 
         VideoFeedBottomOverlayView(
@@ -156,7 +157,7 @@ struct VideoFeedOverlayView: View {
     let icon = Library.image(named: "video-feed-play-icon")
 
     if let icon {
-      Button(action: { self.playbackState.resume() }, label: {
+      Button(action: { self.playbackState.resume() }) {
         Image(uiImage: icon)
           .resizable()
           .scaledToFit()
@@ -169,8 +170,7 @@ struct VideoFeedOverlayView: View {
             lineWidth: Constants.playButtonStrokeBorderWidth
           )))
           .clipShape(Circle())
-          .accessibilityHidden(true)
-      })
+      }
       .accessibilityLabel(Strings.Play())
     }
   }
@@ -182,7 +182,7 @@ struct VideoFeedOverlayView: View {
     let iconName = self.isMuted ? "video-feed-volume-off" : "video-feed-volume-on"
 
     if let icon = Library.image(named: iconName) {
-      Button(action: { self.onMuteTapped?() }, label: {
+      Button(action: { self.onMuteTapped?() }) {
         Image(uiImage: icon)
           .resizable()
           .scaledToFit()
@@ -194,8 +194,7 @@ struct VideoFeedOverlayView: View {
             lineWidth: Constants.playButtonStrokeBorderWidth
           )))
           .clipShape(Circle())
-          .accessibilityHidden(true)
-      })
+      }
     }
   }
 
