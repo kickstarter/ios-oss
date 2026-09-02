@@ -22,11 +22,12 @@ struct VideoFeedRightRailView: View {
   @Binding var item: VideoFeedItem
   @Binding var isSaved: Bool
 
-  @State private var shareSheetItem: VideoFeedItem? = nil
+  @State private var shareSheetItem: VideoFeedItem?
 
   var onCreatorTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
+  var onSheetDismissedFromLinkCopied: (() -> Void)?
   var getPresentingViewController: (() -> UIViewController?)?
 
   var body: some View {
@@ -41,12 +42,12 @@ struct VideoFeedRightRailView: View {
   // MARK: - Buttons
 
   private var creatorAvatar: some View {
-    Button(action: { self.onCreatorTapped?() }) {
+    Button(action: { self.onCreatorTapped?() }, label: {
       self.avatarImage
         .frame(width: Constants.avatarSize, height: Constants.avatarSize)
         .clipShape(Circle())
         .background(Circle().fill(Color(Colors.Icon.light.uiColor())))
-    }
+    })
     .accessibilityLabel(Strings.Creator())
   }
 
@@ -59,6 +60,7 @@ struct VideoFeedRightRailView: View {
           Image(uiImage: image)
             .resizable()
             .scaledToFill()
+            .accessibilityHidden(true)
         } else {
           Color(Colors.Text.placeholder.uiColor())
         }
@@ -83,21 +85,26 @@ struct VideoFeedRightRailView: View {
       self.shareSheetItem = self.item
     }
     .accessibilityLabel(Strings.Share())
-    .sheet(item: self.$shareSheetItem) { item in
-      VideoFeedShareSheetView(item: item, getPresentingViewController: self.getPresentingViewController)
-        .presentationDragIndicator(.visible)
-    }
+    .sheet(
+      item: self.$shareSheetItem,
+      onDismiss: { self.onSheetDismissedFromLinkCopied?() },
+      content: { item in
+        VideoFeedShareSheetView(item: item, getPresentingViewController: self.getPresentingViewController)
+          .presentationDragIndicator(.visible)
+      }
+    )
   }
 
   // Currently hidden. Will be added in VideoFeed V2.
   private var moreButton: some View {
-    Button(action: { self.onMoreTapped?() }) {
+    Button(action: { self.onMoreTapped?() }, label: {
       if let icon = Library.image(named: Constants.moreIcon) {
         Image(uiImage: icon)
           .foregroundColor(.white)
           .frame(width: Constants.moreButtonSize, height: Constants.moreButtonSize)
+          .accessibilityHidden(true)
       }
-    }
+    })
     .accessibilityLabel(Strings.More_options())
   }
 }
@@ -122,6 +129,7 @@ private struct RailButtonView: View {
           Image(uiImage: icon)
             .foregroundColor(.white)
             .frame(width: Constants.buttonSize, height: Constants.buttonSize)
+            .accessibilityHidden(true)
         }
       }
 
