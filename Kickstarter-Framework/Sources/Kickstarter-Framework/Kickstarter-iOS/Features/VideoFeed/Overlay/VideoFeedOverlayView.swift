@@ -55,6 +55,7 @@ struct VideoFeedOverlayView: View {
   var onCTATapped: (() -> Void)?
   var onProgressBarTapped: ((Float) -> Void)?
   var onMuteTapped: (() -> Void)?
+  var getPresentingViewController: (() -> UIViewController?)?
 
   var body: some View {
     ZStack(alignment: .bottom) {
@@ -79,8 +80,10 @@ struct VideoFeedOverlayView: View {
         VideoFeedRightRailView(
           item: self.$item,
           isSaved: self.$isSaved,
-          onCreatorTapped: self.onCreatorTapped, onShareTapped: self.onShareTapped,
-          onMoreTapped: self.onMoreTapped
+          onCreatorTapped: self.onCreatorTapped,
+          onShareTapped: self.onShareTapped,
+          onMoreTapped: self.onMoreTapped,
+          getPresentingViewController: self.getPresentingViewController
         )
 
         VideoFeedBottomOverlayView(

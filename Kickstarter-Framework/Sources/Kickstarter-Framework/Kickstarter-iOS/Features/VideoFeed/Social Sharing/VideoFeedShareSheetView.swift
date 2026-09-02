@@ -1,3 +1,4 @@
+import FBSDKShareKit
 import KDS
 import Kingfisher
 import Library
@@ -22,11 +23,18 @@ struct VideoFeedShareSheetView: View {
     static let iconLabelSpacing: CGFloat = 6
   }
 
+  private enum FacebookConstants {
+    static let appIDKey = "FacebookAppID"
+    static let storiesURLScheme = "facebook-stories://share"
+    static let stickerBackgroundImageKey = "com.facebook.sharedSticker.backgroundImage"
+    static let stickerAppIDKey = "com.facebook.sharedSticker.appID"
+  }
+
   @SwiftUI.Environment(\.dismiss) private var dismiss
 
   let item: VideoFeedItem
-  var onEmailTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
+  var getPresentingViewController: (() -> UIViewController?)?
 
   @State private var destinations: [VideoFeedShareDestination] = VideoFeedShareDestination.available()
 
@@ -63,43 +71,11 @@ struct VideoFeedShareSheetView: View {
   }
 
   private var previewCard: some View {
-    VStack(alignment: .leading, spacing: Constants.previewItemSpacing) {
-      Color.clear
-        .aspectRatio(16 / 9, contentMode: .fit)
-        .overlay(
-          KFImage(self.item.videoPreviewImageURL)
-            .resizable()
-            .scaledToFill()
-        )
-        .clipped()
-        .accessibilityHidden(true)
-
-      /// Title + creator.
-      VStack(alignment: .leading, spacing: 8) {
-        Text(self.item.title)
-          .font(Font(UIFont.ksr_subhead().bolded))
-          .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
-          .lineLimit(2)
-
-        Text(self.item.creator)
-          .font(Font(UIFont.ksr_caption1()))
-          .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
-      }
-
-      self.kickstarterBanner
-    }
-    .padding(Constants.previewPadding)
-    .background(Color(Colors.Icon.light.uiColor()))
-    .clipShape(RoundedRectangle(cornerRadius: Constants.previewCornerRadius))
-  }
-
-  @ViewBuilder
-  private var kickstarterBanner: some View {
-    if let image = Library.image(named: "share-kickstarter-wordmark") {
-      Image(uiImage: image)
+    VideoFeedSharePreviewCard(item: self.item) {
+      KFImage(self.item.videoPreviewImageURL)
         .resizable()
-        .scaledToFit()
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .scaledToFill()
+        .accessibilityHidden(true)
     }
   }
 
@@ -121,9 +97,12 @@ struct VideoFeedShareSheetView: View {
 
   private func tapped(_ destination: VideoFeedShareDestination) {
     switch destination {
-    case .email:
-      self.dismiss()
-      self.onEmailTapped?()
+    case .facebookFeed:
+      self.shareToFacebookFeed()
+    case .facebookStories:
+      self.shareToFacebookStories()
+    case .x:
+      self.shareToX()
     case .more:
       self.dismiss()
       self.onMoreTapped?()
@@ -131,6 +110,76 @@ struct VideoFeedShareSheetView: View {
       destination.perform(item: self.item)
     }
   }
+
+  // MARK: - Image sharing
+
+  func renderedPreviewCard() -> UIImage? {
+    guard let previewURL = self.item.videoPreviewImageURL,
+          let thumbnailImage = KingfisherManager.shared.cache
+          .retrieveImageInMemoryCache(forKey: previewURL.absoluteString) else {
+      return nil
+    }
+
+    let screenWidth = UIScreen.main.bounds.width
+    let storyHeight = screenWidth * 16 / 9
+
+    let renderer = ImageRenderer(
+      content: ZStack {
+        Color(UIColor(coreColor: .green_04))
+
+        VideoFeedSharePreviewCard(item: self.item) {
+          Image(uiImage: thumbnailImage).resizable().scaledToFill()
+        }
+        .padding(.horizontal, Constants.horizontalPadding)
+      }
+      .frame(width: screenWidth, height: storyHeight)
+    )
+
+    renderer.scale = UIScreen.main.scale
+
+    return renderer.uiImage
+  }
+
+  // MARK: - Facebook Feed
+
+  private func shareToFacebookFeed() {
+    guard let url = VideoFeedShareDestination.projectURL(for: self.item),
+          let presentingVC = self.getPresentingViewController?() else { return }
+
+    let content = ShareLinkContent()
+    content.contentURL = url
+
+    /// imported from FacebookShare SDK
+    ShareDialog(viewController: presentingVC, content: content, delegate: nil).show()
+  }
+
+  // MARK: - Facebook Stories
+
+  private func shareToFacebookStories() {
+    guard let imageData = self.renderedPreviewCard()?.pngData() else { return }
+
+    guard let facebookAppID = Bundle.main.object(forInfoDictionaryKey: FacebookConstants.appIDKey) as? String
+    else {
+      assertionFailure("FacebookAppID is missing from Info.plist")
+      return
+    }
+
+    UIPasteboard.general.setItems(
+      [[
+        FacebookConstants.stickerBackgroundImageKey: imageData,
+        FacebookConstants.stickerAppIDKey: facebookAppID
+      ]],
+      options: [.expirationDate: Date().addingTimeInterval(60 * 5)]
+    )
+
+    self.dismiss()
+
+    guard let url = URL(string: FacebookConstants.storiesURLScheme) else { return }
+
+    UIApplication.shared.open(url)
+  }
+
+  private func shareToX() {}
 }
 
 // MARK: - ShareDestinationButton
@@ -140,6 +189,7 @@ private struct ShareDestinationButton: View {
     static let iconSize: CGFloat = 28
     static let iconCircleSize: CGFloat = 56
     static let iconLabelSpacing: CGFloat = 6
+    static let labelHeight: CGFloat = 28
   }
 
   let destination: VideoFeedShareDestination
@@ -152,14 +202,17 @@ private struct ShareDestinationButton: View {
           Circle()
             .fill(Color.white)
             .frame(width: Constants.iconCircleSize, height: Constants.iconCircleSize)
+
           self.icon
         }
+
         Text(self.destination.label)
           .font(Font(UIFont.ksr_caption2()))
-          .foregroundColor(Color(Colors.Text.primary.uiColor()))
+          .foregroundColor(Color(Colors.Text.constantPrimary.uiColor()))
           .multilineTextAlignment(.center)
           .lineLimit(2)
-          .fixedSize(horizontal: false, vertical: true)
+          .minimumScaleFactor(0.75)
+          .frame(height: Constants.labelHeight, alignment: .top)
       }
     }
     .accessibilityLabel(self.destination.label)

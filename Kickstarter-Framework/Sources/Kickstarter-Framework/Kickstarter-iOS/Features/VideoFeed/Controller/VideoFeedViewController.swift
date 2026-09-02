@@ -400,6 +400,17 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
       self.handleOnEvent(event, item: item)
     }
 
+    cell.getPresentingViewController = { [weak self] in
+      guard let self else { return nil }
+
+      var vc: UIViewController? = self
+      while let presented = vc?.presentedViewController {
+        vc = presented
+      }
+
+      return vc
+    }
+
     cell.configureWith(
       item: Binding(
         get: { self.viewModel.items.first(where: { $0.id == item.id }) ?? item },
@@ -503,6 +514,7 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
       self.goToCreatorProfile(for: item)
     case .shareTapped:
       self.viewModel.trackCTAClicked(ctaContext: .videoFeedShare, item: item)
+      self.pauseVisibleCell()
     case .moreTapped:
       self.simpleAlert(title: "More")
     case .ctaTapped:

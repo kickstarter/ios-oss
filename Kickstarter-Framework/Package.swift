@@ -43,6 +43,7 @@ let package = Package(
         .product(name: "Kingfisher", package: "Kingfisher"),
         .product(name: "FacebookCore", package: "facebook-ios-sdk"),
         .product(name: "FacebookLogin", package: "facebook-ios-sdk"),
+        .product(name: "FacebookShare", package: "facebook-ios-sdk"),
         .product(name: "FirebaseCrashlytics", package: "firebase-ios-sdk"),
         .product(name: "FirebasePerformance", package: "firebase-ios-sdk"),
         .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
