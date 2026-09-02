@@ -322,7 +322,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     ], self.loginContextStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.appleLoginButton, self.fbLoginButton, self.getNotifiedLabel], self.fbLoginStackView)
+    _ = ([self.appleLoginButton, self.getNotifiedLabel], self.fbLoginStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     self.emailLoginStackView.addArrangedSubview(self.signupOrLoginWithOAuthButton)
