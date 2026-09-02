@@ -2,7 +2,6 @@ import FBSDKShareKit
 import KDS
 import Kingfisher
 import Library
-import Lottie
 import SwiftUI
 
 struct VideoFeedShareSheetView: View {
@@ -115,7 +114,7 @@ struct VideoFeedShareSheetView: View {
           .fill(Color(UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)))
           .frame(width: Constants.iconCircleSize, height: Constants.iconCircleSize)
 
-        ShareCheckmarkLottieView(animationName: Constants.linkCopiedAnimationName)
+        VideoFeedCopyLinkConfirmationView(animationName: Constants.linkCopiedAnimationName)
           .frame(width: Constants.linkCopiedAnimationSize, height: Constants.linkCopiedAnimationSize)
       }
 
@@ -150,7 +149,9 @@ struct VideoFeedShareSheetView: View {
 
   private func copyLink() {
     UIPasteboard.general.string = VideoFeedShareDestination.projectURL(for: self.item)?.absoluteString
+
     withAnimation { self.linkCopied = true }
+
     DispatchQueue.main.asyncAfter(deadline: .now() + Constants.linkCopiedDismissDelay) {
       self.dismiss()
     }
@@ -227,25 +228,6 @@ struct VideoFeedShareSheetView: View {
   // MARK: - X
 
   private func shareToX() {}
-}
-
-// MARK: - ShareCheckmarkLottieView
-
-private struct ShareCheckmarkLottieView: UIViewRepresentable {
-  let animationName: String
-
-  func makeUIView(context _: Context) -> LottieAnimationView {
-    let animation = LottieAnimation.named(self.animationName, bundle: .library)
-
-    let view = LottieAnimationView(animation: animation)
-    view.contentMode = .scaleAspectFit
-    view.loopMode = .playOnce
-    view.play()
-
-    return view
-  }
-
-  func updateUIView(_: LottieAnimationView, context _: Context) {}
 }
 
 // MARK: - ShareDestinationButton
