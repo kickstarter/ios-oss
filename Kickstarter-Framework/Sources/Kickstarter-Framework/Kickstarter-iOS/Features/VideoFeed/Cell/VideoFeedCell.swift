@@ -35,6 +35,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
     case resumeTapped
     case muteTapped
     case progressBarTapped(Float)
+    case sheetDismissedFromLinkCopied
   }
 
   var onEvent: ((Event) -> Void)?
@@ -114,6 +115,7 @@ final class VideoFeedCell: UICollectionViewCell, ValueCell {
         onCTATapped: { [weak self] in self?.ctaTapped() },
         onProgressBarTapped: { [weak self] progress in self?.onEvent?(.progressBarTapped(progress)) },
         onMuteTapped: { [weak self] in self?.onEvent?(.muteTapped) },
+        onSheetDismissedFromLinkCopied: { [weak self] in self?.onEvent?(.sheetDismissedFromLinkCopied) },
         getPresentingViewController: self.getPresentingViewController
       )
     }

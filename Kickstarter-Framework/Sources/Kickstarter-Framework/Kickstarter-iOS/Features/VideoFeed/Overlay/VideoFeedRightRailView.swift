@@ -27,6 +27,7 @@ struct VideoFeedRightRailView: View {
   var onCreatorTapped: (() -> Void)?
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
+  var onSheetDismissedFromLinkCopied: (() -> Void)?
   var getPresentingViewController: (() -> UIViewController?)?
 
   var body: some View {
@@ -83,7 +84,10 @@ struct VideoFeedRightRailView: View {
       self.shareSheetItem = self.item
     }
     .accessibilityLabel(Strings.Share())
-    .sheet(item: self.$shareSheetItem) { item in
+    .sheet(
+      item: self.$shareSheetItem,
+      onDismiss: { self.onSheetDismissedFromLinkCopied?() }
+    ) { item in
       VideoFeedShareSheetView(item: item, getPresentingViewController: self.getPresentingViewController)
         .presentationDragIndicator(.visible)
     }

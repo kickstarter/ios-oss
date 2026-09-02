@@ -55,6 +55,7 @@ struct VideoFeedOverlayView: View {
   var onCTATapped: (() -> Void)?
   var onProgressBarTapped: ((Float) -> Void)?
   var onMuteTapped: (() -> Void)?
+  var onSheetDismissedFromLinkCopied: (() -> Void)?
   var getPresentingViewController: (() -> UIViewController?)?
 
   var body: some View {
@@ -83,6 +84,7 @@ struct VideoFeedOverlayView: View {
           onCreatorTapped: self.onCreatorTapped,
           onShareTapped: self.onShareTapped,
           onMoreTapped: self.onMoreTapped,
+          onSheetDismissedFromLinkCopied: self.onSheetDismissedFromLinkCopied,
           getPresentingViewController: self.getPresentingViewController
         )
 
