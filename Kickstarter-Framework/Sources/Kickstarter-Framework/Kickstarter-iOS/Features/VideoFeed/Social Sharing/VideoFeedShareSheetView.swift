@@ -77,6 +77,7 @@ struct VideoFeedShareSheetView: View {
           .resizable()
           .scaledToFill()
           .clipped()
+          .accessibilityHidden(true)
       }
       .ignoresSafeArea()
     }
@@ -149,9 +150,7 @@ struct VideoFeedShareSheetView: View {
 
   private func copyLink() {
     UIPasteboard.general.string = VideoFeedShareDestination.projectURL(for: self.item)?.absoluteString
-
     withAnimation { self.linkCopied = true }
-
     DispatchQueue.main.asyncAfter(deadline: .now() + Constants.linkCopiedDismissDelay) {
       self.dismiss()
     }
@@ -174,7 +173,10 @@ struct VideoFeedShareSheetView: View {
         Color(UIColor(coreColor: .green_04))
 
         VideoFeedSharePreviewCard(item: self.item) {
-          Image(uiImage: thumbnailImage).resizable().scaledToFill()
+          Image(uiImage: thumbnailImage)
+            .resizable()
+            .scaledToFill()
+            .accessibilityHidden(true)
         }
         .padding(.horizontal, Constants.horizontalPadding)
       }
@@ -276,12 +278,14 @@ private struct ShareDestinationButton: View {
         .scaledToFit()
         .frame(width: self.destination.iconSize, height: self.destination.iconSize)
         .foregroundColor(self.destination.usesDarkTint ? Color(Colors.Icon.dark.uiColor()) : nil)
+        .accessibilityHidden(true)
     } else {
       Image(systemName: self.destination.fallbackSystemIcon)
         .resizable()
         .scaledToFit()
         .frame(width: Constants.iconSize, height: Constants.iconSize)
         .foregroundColor(Color(Colors.Text.primary.uiColor()))
+        .accessibilityHidden(true)
     }
   }
 }

@@ -402,12 +402,10 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
 
     cell.getPresentingViewController = { [weak self] in
       guard let self else { return nil }
-
       var vc: UIViewController? = self
       while let presented = vc?.presentedViewController {
         vc = presented
       }
-
       return vc
     }
 
@@ -521,15 +519,24 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
       self.simpleAlert(title: "More")
     case .ctaTapped:
       self.goToProjectPage(for: item)
-    case .pauseTapped:
-      self.viewModel.trackCTAClicked(ctaContext: .videoFeedPause, item: item)
-    case .resumeTapped:
-      self.viewModel.trackCTAClicked(ctaContext: .videoFeedPlay, item: item)
+    case .pauseTapped, .resumeTapped:
+      self.handlePlaybackTapped(for: event, item: item)
     case let .progressBarTapped(percentageWatched):
       self.trackProgressBarTapped(item: item, percentageWatched: percentageWatched)
     case .muteTapped:
       self.toggleMute()
     case .videoReady, .videoFailed:
+      break
+    }
+  }
+
+  private func handlePlaybackTapped(for event: VideoFeedCell.Event, item: VideoFeedItem) {
+    switch event {
+    case .pauseTapped:
+      self.viewModel.trackCTAClicked(ctaContext: .videoFeedPause, item: item)
+    case .resumeTapped:
+      self.viewModel.trackCTAClicked(ctaContext: .videoFeedPlay, item: item)
+    default:
       break
     }
   }
