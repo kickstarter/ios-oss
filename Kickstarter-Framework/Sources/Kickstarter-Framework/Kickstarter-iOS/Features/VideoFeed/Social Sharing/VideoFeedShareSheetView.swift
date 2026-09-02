@@ -149,9 +149,7 @@ struct VideoFeedShareSheetView: View {
 
   private func copyLink() {
     UIPasteboard.general.string = VideoFeedShareDestination.projectURL(for: self.item)?.absoluteString
-
     withAnimation { self.linkCopied = true }
-
     DispatchQueue.main.asyncAfter(deadline: .now() + Constants.linkCopiedDismissDelay) {
       self.dismiss()
     }
