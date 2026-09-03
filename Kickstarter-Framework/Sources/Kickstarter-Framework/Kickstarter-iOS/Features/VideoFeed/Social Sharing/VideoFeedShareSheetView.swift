@@ -138,12 +138,37 @@ struct VideoFeedShareSheetView: View {
       self.shareToFacebookStories()
     case .x:
       self.shareToX()
+    case .messages:
+      self.shareToMessages()
     case .more:
-      self.dismiss()
-      self.onMoreTapped?()
+      self.moreShareOptions()
     default:
       destination.perform(item: self.item)
     }
+  }
+
+  // MARK: - More Options
+
+  private func moreShareOptions() {
+    guard let url = VideoFeedShareDestination.projectURL(for: self.item),
+          let sheetHostingVC = self.getPresentingViewController?() else {
+      return
+    }
+
+    let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+
+    if let popover = activityVC.popoverPresentationController {
+      popover.sourceView = sheetHostingVC.view
+      popover.sourceRect = CGRect(
+        x: sheetHostingVC.view.bounds.midX,
+        y: sheetHostingVC.view.bounds.midY,
+        width: 0,
+        height: 0
+      )
+      popover.permittedArrowDirections = []
+    }
+
+    sheetHostingVC.present(activityVC, animated: true)
   }
 
   // MARK: - Copy Link
@@ -225,6 +250,20 @@ struct VideoFeedShareSheetView: View {
     guard let url = URL(string: FacebookConstants.storiesURLScheme) else { return }
 
     UIApplication.shared.open(url)
+  }
+
+  // MARK: - Messages
+
+  private func shareToMessages() {
+    guard let url = VideoFeedShareDestination.projectURL(for: self.item),
+          let encoded = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+          let smsURL = URL(string: "sms:?body=\(encoded)") else {
+      return
+    }
+
+    self.dismiss()
+
+    UIApplication.shared.open(smsURL)
   }
 
   // MARK: - X
