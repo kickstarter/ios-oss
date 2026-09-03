@@ -139,11 +139,34 @@ struct VideoFeedShareSheetView: View {
     case .x:
       self.shareToX()
     case .more:
-      self.dismiss()
-      self.onMoreTapped?()
+      self.moreShareOptions()
     default:
       destination.perform(item: self.item)
     }
+  }
+
+  // MARK: - More Options
+
+  private func moreShareOptions() {
+    guard let url = VideoFeedShareDestination.projectURL(for: self.item),
+          let sheetHostingVC = self.getPresentingViewController?() else {
+      return
+    }
+
+    let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+
+    if let popover = activityVC.popoverPresentationController {
+      popover.sourceView = sheetHostingVC.view
+      popover.sourceRect = CGRect(
+        x: sheetHostingVC.view.bounds.midX,
+        y: sheetHostingVC.view.bounds.midY,
+        width: 0,
+        height: 0
+      )
+      popover.permittedArrowDirections = []
+    }
+
+    sheetHostingVC.present(activityVC, animated: true)
   }
 
   // MARK: - Copy Link
