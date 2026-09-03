@@ -138,6 +138,8 @@ struct VideoFeedShareSheetView: View {
       self.shareToFacebookStories()
     case .x:
       self.shareToX()
+    case .messages:
+      self.shareToMessages()
     case .more:
       self.moreShareOptions()
     default:
@@ -248,6 +250,20 @@ struct VideoFeedShareSheetView: View {
     guard let url = URL(string: FacebookConstants.storiesURLScheme) else { return }
 
     UIApplication.shared.open(url)
+  }
+
+  // MARK: - Messages
+
+  private func shareToMessages() {
+    guard let url = VideoFeedShareDestination.projectURL(for: self.item),
+          let encoded = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+          let smsURL = URL(string: "sms:?body=\(encoded)") else {
+      return
+    }
+
+    self.dismiss()
+
+    UIApplication.shared.open(smsURL)
   }
 
   // MARK: - X
