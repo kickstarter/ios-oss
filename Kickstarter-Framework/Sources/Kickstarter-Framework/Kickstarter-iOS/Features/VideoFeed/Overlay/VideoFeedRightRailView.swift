@@ -28,7 +28,6 @@ struct VideoFeedRightRailView: View {
   var onShareTapped: (() -> Void)?
   var onMoreTapped: (() -> Void)?
   var onSheetDismissedFromLinkCopied: (() -> Void)?
-  var getPresentingViewController: (() -> UIViewController?)?
 
   var body: some View {
     VStack(alignment: .center, spacing: Constants.railSpacing) {
@@ -89,7 +88,7 @@ struct VideoFeedRightRailView: View {
       item: self.$shareSheetItem,
       onDismiss: { self.onSheetDismissedFromLinkCopied?() },
       content: { item in
-        VideoFeedShareSheetView(item: item, getPresentingViewController: self.getPresentingViewController)
+        VideoFeedShareSheetView(item: item)
           .presentationDragIndicator(.visible)
       }
     )

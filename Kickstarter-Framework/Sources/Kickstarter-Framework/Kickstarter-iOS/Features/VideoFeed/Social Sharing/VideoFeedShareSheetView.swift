@@ -37,7 +37,6 @@ struct VideoFeedShareSheetView: View {
   @SwiftUI.Environment(\.dismiss) private var dismiss
 
   let item: VideoFeedItem
-  var onMoreTapped: (() -> Void)?
 
   @State private var destinations: [VideoFeedShareDestination] = VideoFeedShareDestination.available()
   @State private var linkCopied = false
@@ -150,24 +149,22 @@ struct VideoFeedShareSheetView: View {
 
   private func moreShareOptions() {
     guard let url = VideoFeedShareDestination.projectURL(for: self.item),
-          let sheetHostingVC = self.getPresentingViewController?() else {
-      return
-    }
+          let presentingVC = self.presentingViewController() else { return }
 
     let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
 
     if let popover = activityVC.popoverPresentationController {
-      popover.sourceView = sheetHostingVC.view
+      popover.sourceView = presentingVC.view
       popover.sourceRect = CGRect(
-        x: sheetHostingVC.view.bounds.midX,
-        y: sheetHostingVC.view.bounds.midY,
+        x: presentingVC.view.bounds.midX,
+        y: presentingVC.view.bounds.midY,
         width: 0,
         height: 0
       )
       popover.permittedArrowDirections = []
     }
 
-    sheetHostingVC.present(activityVC, animated: true)
+    presentingVC.present(activityVC, animated: true)
   }
 
   // MARK: - Copy Link

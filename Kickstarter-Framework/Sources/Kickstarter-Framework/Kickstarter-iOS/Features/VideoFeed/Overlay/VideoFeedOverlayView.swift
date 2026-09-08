@@ -56,7 +56,6 @@ struct VideoFeedOverlayView: View {
   var onProgressBarTapped: ((Float) -> Void)?
   var onMuteTapped: (() -> Void)?
   var onSheetDismissedFromLinkCopied: (() -> Void)?
-  var getPresentingViewController: (() -> UIViewController?)?
 
   var body: some View {
     ZStack(alignment: .bottom) {
@@ -86,7 +85,6 @@ struct VideoFeedOverlayView: View {
           onShareTapped: self.onShareTapped,
           onMoreTapped: self.onMoreTapped,
           onSheetDismissedFromLinkCopied: self.onSheetDismissedFromLinkCopied,
-          getPresentingViewController: self.getPresentingViewController
         )
 
         VideoFeedBottomOverlayView(
