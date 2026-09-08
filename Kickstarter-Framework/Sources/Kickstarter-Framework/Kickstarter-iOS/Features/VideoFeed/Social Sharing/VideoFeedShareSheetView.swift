@@ -37,7 +37,6 @@ struct VideoFeedShareSheetView: View {
   @SwiftUI.Environment(\.dismiss) private var dismiss
 
   let item: VideoFeedItem
-  var onMoreTapped: (() -> Void)?
 
   @State private var destinations: [VideoFeedShareDestination] = VideoFeedShareDestination.available()
   @State private var linkCopied = false
@@ -137,12 +136,35 @@ struct VideoFeedShareSheetView: View {
       self.shareToFacebookStories()
     case .x:
       self.shareToX()
+    case .messages:
+      self.shareToMessages()
     case .more:
-      self.dismiss()
-      self.onMoreTapped?()
+      self.moreShareOptions()
     default:
       destination.perform(item: self.item)
     }
+  }
+
+  // MARK: - More Options
+
+  private func moreShareOptions() {
+    guard let url = VideoFeedShareDestination.projectURL(for: self.item),
+          let presentingVC = self.presentingViewController() else { return }
+
+    let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+
+    if let popover = activityVC.popoverPresentationController {
+      popover.sourceView = presentingVC.view
+      popover.sourceRect = CGRect(
+        x: presentingVC.view.bounds.midX,
+        y: presentingVC.view.bounds.midY,
+        width: 0,
+        height: 0
+      )
+      popover.permittedArrowDirections = []
+    }
+
+    presentingVC.present(activityVC, animated: true)
   }
 
   // MARK: - Copy Link
@@ -201,7 +223,6 @@ struct VideoFeedShareSheetView: View {
     while let presented = vc?.presentedViewController {
       vc = presented
     }
-
     return vc
   }
 
@@ -242,6 +263,20 @@ struct VideoFeedShareSheetView: View {
     guard let url = URL(string: FacebookConstants.storiesURLScheme) else { return }
 
     UIApplication.shared.open(url)
+  }
+
+  // MARK: - Messages
+
+  private func shareToMessages() {
+    guard let url = VideoFeedShareDestination.projectURL(for: self.item),
+          let encoded = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+          let smsURL = URL(string: "sms:?body=\(encoded)") else {
+      return
+    }
+
+    self.dismiss()
+
+    UIApplication.shared.open(smsURL)
   }
 
   // MARK: - X
