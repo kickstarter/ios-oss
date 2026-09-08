@@ -176,6 +176,7 @@
 "Continue_with_quantity_count_add_ons.two" = "Continue with %{quantity_count} add-ons";
 "Continue_with_quantity_count_add_ons.zero" = "Continue with %{quantity_count} add-ons";
 "Continue_with_this_reward" = "Continue with this reward?";
+"Copy_link" = "Copy link";
 "Copying_reselling" = "Copying, reselling or plagiarism";
 "Couldnt_add_attachment" = "Couldn't add attachment";
 "Couldnt_load_more_comments_Tap_to_retry" = "Couldn't load more comments.\nTap to retry";
@@ -280,6 +281,7 @@
 "Failed_to_update_subscription" = "Failed to update subscription";
 "Faq" = "FAQ";
 "Featured" = "Featured";
+"Feed" = "Feed";
 "Filter" = "Filter";
 "Filter_by_all_projects" = "Filter by all projects";
 "Filter_by_category_name" = "Filter by %{category_name}";
@@ -436,6 +438,7 @@
 "Left_count_left.two" = "%{left_count} left";
 "Left_count_left.zero" = "%{left_count} left";
 "Limited_shipping" = "Limited shipping";
+"Link_copied_spread_the_word" = "Link copied. Spread the word!";
 "Live" = "Live";
 "Live_Stream" = "Live Stream";
 "Live_and_unsuccessful_backings_can_currently_be_viewed_in_the_profile_tab" = "Live and unsuccessful backings can currently be viewed in the Profile tab.";
@@ -793,6 +796,7 @@
 "Stay_updated_on_the_projects_youve_backed_and_learn_about_how_these_creative_works_are_produced" = "Stay updated on the projects you've backed and learn about how these creative works are produced.";
 "Stay_updated_on_this_project" = "Stay updated on this project?";
 "Step_number" = "Step %{current_step} of %{total_steps}";
+"Stories" = "Stories";
 "Subscribe" = "Subscribe";
 "Subscribed" = "Subscribed";
 "Subscribes_to_upcoming_lives_streams" = "Subscribes to upcoming live streams.";
@@ -944,6 +948,7 @@
 "Well_import_your_name_and_profile_photo_and_access_your_friend_list" = "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile.";
 "What_parts_of_your_project_will_use_AI_generated_content" = "What parts of your project will use AI-generated content? Please be as specific as possible.";
+"Whatsapp" = "Whatsapp";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data.";
 "When_projects_youve_backed_have_successfully_funded_youll_see_them_here" = "When projects you've backed have successfully funded, you'll see them here.";
 "When_projects_youve_backed_need_your_attention_youll_see_them_here" = "When projects you’ve backed need your attention, you’ll see them here.";
@@ -953,6 +958,7 @@
 "Working_on_it" = "Working on it";
 "Write_a_bio" = "Write a short bio. Just a sentence or two is great.";
 "Write_a_comment" = "Write a comment...";
+"X" = "X";
 "Yes" = "Yes";
 "Yes_cancel_it" = "Yes, cancel it";
 "Yes_cancel_my_pledge" = "Yes, cancel my pledge";
