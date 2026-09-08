@@ -601,6 +601,23 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
+  func testOpenNotification_Follow_GoesToActivity() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    self.goToActivity.assertValueCount(0)
+
+    var pushData = genericActivityPushData
+    pushData["activity"]?["category"] = Activity.Category.follow.rawValue
+
+    self.vm.inputs.didReceive(remoteNotification: pushData)
+
+    self.goToActivity.assertValueCount(1)
+    self.presentViewController.assertValueCount(0)
+  }
+
   func testSetApplicationShortcutItems() {
     self.setApplicationShortcutItems.assertValues([])
 
