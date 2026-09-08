@@ -38,7 +38,6 @@ struct VideoFeedShareSheetView: View {
 
   let item: VideoFeedItem
   var onMoreTapped: (() -> Void)?
-  var getPresentingViewController: (() -> UIViewController?)?
 
   @State private var destinations: [VideoFeedShareDestination] = VideoFeedShareDestination.available()
   @State private var linkCopied = false
@@ -188,11 +187,29 @@ struct VideoFeedShareSheetView: View {
     return renderer.uiImage
   }
 
+  // MARK: - Presenting View Controller
+
+  private func presentingViewController() -> UIViewController? {
+    guard let windowScene = UIApplication.shared.connectedScenes
+      .compactMap({ $0 as? UIWindowScene })
+      .first(where: { $0.activationState == .foregroundActive }),
+      let window = windowScene.windows.first(where: { $0.isKeyWindow }) else {
+      return nil
+    }
+
+    var vc = window.rootViewController
+    while let presented = vc?.presentedViewController {
+      vc = presented
+    }
+
+    return vc
+  }
+
   // MARK: - Facebook Feed
 
   private func shareToFacebookFeed() {
     guard let url = VideoFeedShareDestination.projectURL(for: self.item),
-          let presentingVC = self.getPresentingViewController?() else { return }
+          let presentingVC = self.presentingViewController() else { return }
 
     let content = ShareLinkContent()
     content.contentURL = url

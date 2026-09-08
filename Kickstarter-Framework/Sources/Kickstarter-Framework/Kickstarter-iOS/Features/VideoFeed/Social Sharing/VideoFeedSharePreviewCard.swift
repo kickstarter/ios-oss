@@ -13,8 +13,12 @@ struct VideoFeedSharePreviewCard<Thumbnail: View>: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 32) {
       Color.clear
+        .frame(maxWidth: .infinity)
         .aspectRatio(16 / 9, contentMode: .fit)
-        .overlay(self.thumbnail())
+        .overlay(
+          self.thumbnail()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        )
         .clipped()
 
       VStack(alignment: .leading, spacing: 8) {
