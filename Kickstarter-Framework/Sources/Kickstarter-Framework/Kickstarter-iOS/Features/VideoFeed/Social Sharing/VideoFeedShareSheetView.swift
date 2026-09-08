@@ -21,6 +21,10 @@ struct VideoFeedShareSheetView: View {
     static let iconSize: CGFloat = 28
     static let iconCircleSize: CGFloat = 56
     static let iconLabelSpacing: CGFloat = 6
+
+    static let linkCopiedAnimationName = "video-feed-copy-link-checkmark"
+    static let linkCopiedAnimationSize: CGFloat = 32
+    static let linkCopiedDismissDelay: TimeInterval = 2.5
   }
 
   private enum FacebookConstants {
@@ -34,9 +38,9 @@ struct VideoFeedShareSheetView: View {
 
   let item: VideoFeedItem
   var onMoreTapped: (() -> Void)?
-  var getPresentingViewController: (() -> UIViewController?)?
 
   @State private var destinations: [VideoFeedShareDestination] = VideoFeedShareDestination.available()
+  @State private var linkCopied = false
 
   var body: some View {
     GeometryReader { geometry in
@@ -51,10 +55,17 @@ struct VideoFeedShareSheetView: View {
         self.previewCard
           .padding(.horizontal, Constants.horizontalPadding)
 
-        self.appGrid
-          .padding(.horizontal, Constants.horizontalPadding)
-          .padding(.top, Constants.cardToGridSpacing)
-          .padding(.bottom, Constants.gridBottomPadding)
+        if self.linkCopied {
+          self.linkCopiedConfirmation
+            .padding(.horizontal, Constants.horizontalPadding)
+            .padding(.top, Constants.cardToGridSpacing)
+            .padding(.bottom, Constants.gridBottomPadding)
+        } else {
+          self.appGrid
+            .padding(.horizontal, Constants.horizontalPadding)
+            .padding(.top, Constants.cardToGridSpacing)
+            .padding(.bottom, Constants.gridBottomPadding)
+        }
       }
       .frame(width: geometry.size.width, alignment: .top)
     }
@@ -65,6 +76,7 @@ struct VideoFeedShareSheetView: View {
           .resizable()
           .scaledToFill()
           .clipped()
+          .accessibilityHidden(true)
       }
       .ignoresSafeArea()
     }
@@ -95,8 +107,30 @@ struct VideoFeedShareSheetView: View {
     }
   }
 
+  private var linkCopiedConfirmation: some View {
+    VStack(spacing: 12) {
+      ZStack {
+        Circle()
+          .fill(Color(UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)))
+          .frame(width: Constants.iconCircleSize, height: Constants.iconCircleSize)
+
+        VideoFeedCopyLinkConfirmationView(animationName: Constants.linkCopiedAnimationName)
+          .frame(width: Constants.linkCopiedAnimationSize, height: Constants.linkCopiedAnimationSize)
+      }
+
+      // TODO: Add translations
+      Text("Link copied. Spread the word!")
+        .font(Font(UIFont.ksr_subhead()))
+        .foregroundColor(.black)
+        .multilineTextAlignment(.center)
+    }
+    .frame(maxWidth: .infinity)
+  }
+
   private func tapped(_ destination: VideoFeedShareDestination) {
     switch destination {
+    case .copyLink:
+      self.copyLink()
     case .facebookFeed:
       self.shareToFacebookFeed()
     case .facebookStories:
@@ -111,7 +145,17 @@ struct VideoFeedShareSheetView: View {
     }
   }
 
-  // MARK: - Image sharing
+  // MARK: - Copy Link
+
+  private func copyLink() {
+    UIPasteboard.general.string = VideoFeedShareDestination.projectURL(for: self.item)?.absoluteString
+    withAnimation { self.linkCopied = true }
+    DispatchQueue.main.asyncAfter(deadline: .now() + Constants.linkCopiedDismissDelay) {
+      self.dismiss()
+    }
+  }
+
+  // MARK: - Image Rendering
 
   func renderedPreviewCard() -> UIImage? {
     guard let previewURL = self.item.videoPreviewImageURL,
@@ -128,7 +172,10 @@ struct VideoFeedShareSheetView: View {
         Color(UIColor(coreColor: .green_04))
 
         VideoFeedSharePreviewCard(item: self.item) {
-          Image(uiImage: thumbnailImage).resizable().scaledToFill()
+          Image(uiImage: thumbnailImage)
+            .resizable()
+            .scaledToFill()
+            .accessibilityHidden(true)
         }
         .padding(.horizontal, Constants.horizontalPadding)
       }
@@ -140,11 +187,29 @@ struct VideoFeedShareSheetView: View {
     return renderer.uiImage
   }
 
+  // MARK: - Presenting View Controller
+
+  private func presentingViewController() -> UIViewController? {
+    guard let windowScene = UIApplication.shared.connectedScenes
+      .compactMap({ $0 as? UIWindowScene })
+      .first(where: { $0.activationState == .foregroundActive }),
+      let window = windowScene.windows.first(where: { $0.isKeyWindow }) else {
+      return nil
+    }
+
+    var vc = window.rootViewController
+    while let presented = vc?.presentedViewController {
+      vc = presented
+    }
+
+    return vc
+  }
+
   // MARK: - Facebook Feed
 
   private func shareToFacebookFeed() {
     guard let url = VideoFeedShareDestination.projectURL(for: self.item),
-          let presentingVC = self.getPresentingViewController?() else { return }
+          let presentingVC = self.presentingViewController() else { return }
 
     let content = ShareLinkContent()
     content.contentURL = url
@@ -178,6 +243,8 @@ struct VideoFeedShareSheetView: View {
 
     UIApplication.shared.open(url)
   }
+
+  // MARK: - X
 
   private func shareToX() {}
 }
@@ -228,12 +295,14 @@ private struct ShareDestinationButton: View {
         .scaledToFit()
         .frame(width: self.destination.iconSize, height: self.destination.iconSize)
         .foregroundColor(self.destination.usesDarkTint ? Color(Colors.Icon.dark.uiColor()) : nil)
+        .accessibilityHidden(true)
     } else {
       Image(systemName: self.destination.fallbackSystemIcon)
         .resizable()
         .scaledToFit()
         .frame(width: Constants.iconSize, height: Constants.iconSize)
         .foregroundColor(Color(Colors.Text.primary.uiColor()))
+        .accessibilityHidden(true)
     }
   }
 }
