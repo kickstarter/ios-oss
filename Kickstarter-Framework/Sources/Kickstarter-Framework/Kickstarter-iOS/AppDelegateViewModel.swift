@@ -103,14 +103,8 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits a message thread when we should navigate to it.
   var goToMessageThread: Signal<MessageThread, Never> { get }
 
-  /// Emits when the root view controller should navigate to the user's profile.
-  var goToProfile: Signal<(), Never> { get }
-
   /// Emits a URL when we should open it in the safari browser.
   var goToMobileSafari: Signal<URL, Never> { get }
-
-  /// Emits when the root view controller should navigate to search.
-  var goToSearch: Signal<(), Never> { get }
 
   /// Emits an Notification that should be immediately posted.
   var postNotification: Signal<Notification, Never> { get }
@@ -359,12 +353,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.goToMessageThread = deepLinkOutputs.goToMessageThread
 
-    self.goToProfile = deepLinkOutputs.goToProfile
-
     self.goToMobileSafari = urlFromBraze
       .filter(shouldOpenUrlInBrowser)
-
-    self.goToSearch = deepLinkOutputs.goToSearch
 
     self.presentViewController = deepLinkOutputs.presentViewController
 
@@ -556,9 +546,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let goToDiscovery: Signal<DiscoveryParams?, Never>
   public let goToLoginWithIntent: Signal<LoginIntent, Never>
   public let goToMessageThread: Signal<MessageThread, Never>
-  public let goToProfile: Signal<(), Never>
   public let goToMobileSafari: Signal<URL, Never>
-  public let goToSearch: Signal<(), Never>
   public let postNotification: Signal<Notification, Never>
   public let presentViewController: Signal<UIViewController, Never>
   public let pushTokenRegistrationStarted: Signal<(), Never>
@@ -697,11 +685,6 @@ private func shortcutItems(isProjectMember _: Bool, hasRecommendations: Bool)
   }
 
   return items
-}
-
-private func dictionary(fromUrlComponents urlComponents: URLComponents) -> [String: String] {
-  let queryItems = urlComponents.queryItems ?? []
-  return [String: String?].keyValuePairs(queryItems.map { ($0.name, $0.value) }).compact()
 }
 
 extension ShortcutItem {
