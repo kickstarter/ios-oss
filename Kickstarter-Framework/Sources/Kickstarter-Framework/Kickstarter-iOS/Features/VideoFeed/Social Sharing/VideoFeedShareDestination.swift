@@ -26,16 +26,15 @@ enum VideoFeedShareDestination: String, CaseIterable, Identifiable {
     }
   }
 
-  // TODO: Add Translations
   var label: String {
     switch self {
-    case .copyLink: return "Copy link"
-    case .instagramFeed: return "Feed"
-    case .x: return "X"
-    case .instagramStories: return "Stories"
-    case .facebookStories: return "Stories"
-    case .whatsApp: return "Whatsapp"
-    case .facebookFeed: return "Feed"
+    case .copyLink: return Strings.Copy_link()
+    case .instagramFeed: return Strings.Feed()
+    case .x: return Strings.X()
+    case .instagramStories: return Strings.Stories()
+    case .facebookStories: return Strings.Stories()
+    case .whatsApp: return Strings.Whatsapp()
+    case .facebookFeed: return Strings.Feed()
     case .messages: return Strings.Messages()
     case .email: return Strings.Email()
     case .more: return Strings.project_checkout_share_buttons_more()
