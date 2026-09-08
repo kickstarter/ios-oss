@@ -15,9 +15,6 @@ public enum NotificationAuthorizationStatus {
 }
 
 public protocol AppDelegateViewModelInputs {
-  /// Call when the application is handed off to.
-  func applicationContinueUserActivity(_ userActivity: NSUserActivity) -> Bool
-
   /// Call when the application finishes launching.
   func applicationDidFinishLaunching(
     application: UIApplication?, launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -34,16 +31,6 @@ public protocol AppDelegateViewModelInputs {
 
   /// Call when the aplication receives memory warning from the system.
   func applicationDidReceiveMemoryWarning()
-
-  /// Call to open a url that was sent to the app
-  func applicationOpenUrl(
-    application: UIApplication?,
-    url: URL,
-    options: [UIApplication.OpenURLOptionsKey: Any]
-  ) -> Bool
-
-  /// Call when the application receives a request to perform a shortcut action.
-  func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem)
 
   /// Call after having invoked AppEnvironment.updateCurrentUser with a fresh user.
   func currentUserUpdatedInEnvironment()
@@ -65,9 +52,6 @@ public protocol AppDelegateViewModelInputs {
 
   /// Call when the Remote Config client has been updated in the AppEnvironment
   func didUpdateRemoteConfigClient()
-
-  /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
-  func foundRedirectUrl(_ url: URL)
 
   /// Call when the users taps 'Log in or Sign up' from the onboarding flow (`OnboardingView`).
   func goToLoginSignup(from intent: LoginIntent)
@@ -103,16 +87,6 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits when the application should configure Statsig
   var configureStatsig: Signal<StatsigClientSDKKey, Never> { get }
-
-  /// Return this value in the delegate method.
-  var continueUserActivityReturnValue: MutableProperty<Bool> { get }
-
-  /// Emits the response from email verification with a message and success/failure.
-  var emailVerificationCompleted: Signal<(String, Bool), Never> { get }
-
-  /// Emits when the view needs to figure out the redirect URL for the emitted URL.
-  /// Required in order to handle email links.
-  var findRedirectUrl: Signal<URL, Never> { get }
 
   /// Emits when opening the app with an invalid access token.
   var forceLogout: Signal<(), Never> { get }
@@ -284,8 +258,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       appEnteredBackgroundNotification
     )
 
-    let openUrl = self.applicationOpenUrlProperty.signal.skipNil()
-
     // iCloud
 
     self.synchronizeUbiquitousStore = self.applicationLaunchOptionsProperty.signal.ignoreValues()
@@ -362,198 +334,39 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let deepLinkFromBraze = urlFromBraze.map(Navigation.deepLinkMatch)
 
-    let continueUserActivity = self.applicationContinueUserActivityProperty.signal.skipNil()
-
-    let continueUserActivityWithNavigation = continueUserActivity
-      .filter { $0.activityType == NSUserActivityTypeBrowsingWeb }
-      .map { activity in (activity, activity.webpageURL.flatMap(Navigation.match)) }
-
-    self.continueUserActivityReturnValue <~ continueUserActivityWithNavigation.map(second >>> isNotNil)
-
-    let deepLinkUrl = Signal
+    let deepLink = Signal
       .merge(
-        openUrl.map { $0.url },
-        self.foundRedirectUrlProperty.signal.skipNil(),
-        continueUserActivity
-          .filter { $0.activityType == NSUserActivityTypeBrowsingWeb }
-          .map { $0.webpageURL }
-          .skipNil()
-      )
-
-    let deepLinkFromUrl = deepLinkUrl.map(Navigation.match)
-
-    let performShortcutItem = Signal.merge(
-      self.performActionForShortcutItemProperty.signal.skipNil(),
-      self.applicationLaunchOptionsProperty.signal
-        .map { $0?.options?[UIApplication.LaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem }
-        .skipNil()
-    )
-    .map { ShortcutItem(typeString: $0.type) }
-    .skipNil()
-
-    let deepLinkFromShortcut = performShortcutItem
-      .switchMap(navigation(fromShortcutItem:))
-
-    let deeplinkActivated = Signal
-      .merge(
-        deepLinkFromUrl,
         deepLinkFromNotification,
-        deepLinkFromBraze,
-        deepLinkFromShortcut
+        deepLinkFromBraze
       )
       .skipNil()
 
-    let deepLink = deeplinkActivated
-
-    let updatedUserNotificationSettings = deepLink.filter { nav in
-      guard case .settings(.notifications) = nav else { return false }
-      return true
-    }
-    .flatMap(updateUserNotificationSetting)
+    let deepLinkOutputs = deepLinkNavigationOutputs(deepLink: deepLink)
 
     self.updateCurrentUserInEnvironment = Signal.merge(
       currentUserEvent.values().skipNil(),
-      updatedUserNotificationSettings
+      deepLinkOutputs.updateCurrentUserInEnvironment
     )
 
-    let emailVerificationEvent = deepLinkUrl
-      .filter { Navigation.match($0) == .profile(.verifyEmail) }
-      .map(accessTokenFromUrl)
-      .skipNil()
-      .switchMap { accessToken in
-        AppEnvironment.current.apiService.verifyEmail(withToken: accessToken)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-      }
+    self.goToDiscovery = deepLinkOutputs.goToDiscovery
 
-    self.emailVerificationCompleted = emailVerificationEvent
-      .map(emailVerificationCompletionData)
-      .skipNil()
-
-    self.findRedirectUrl = deepLinkUrl
-      .filter { Navigation.match($0) == .emailClick }
-
-    self.goToDiscovery = deepLink
-      .map { link -> [String: String]?? in
-        guard case let .tab(.discovery(rawParams)) = link else { return nil }
-        return .some(rawParams)
-      }
-      .skipNil()
-      .switchMap { rawParams -> SignalProducer<DiscoveryParams?, Never> in
-
-        guard
-          let rawParams = rawParams,
-          let params = DiscoveryParams.decodeJSONDictionary(rawParams)
-        else {
-          return .init(value: nil)
-        }
-
-        let deepLinkCategories = deepLinkCategories(rawParams: rawParams)
-
-        guard let categoryParam = deepLinkCategories.0 else {
-          return .init(value: params)
-        }
-
-        return AppEnvironment.current.apiService.fetchGraphCategories()
-          .map { envelope in
-            findCategoryFromRootCategories(
-              envelope: envelope,
-              categoryParam: categoryParam,
-              subcategoryParam: deepLinkCategories.1
-            )
-          }
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .demoteErrors()
-          .map { params |> DiscoveryParams.lens.category .~ $0 }
-      }
-
-    let fixErroredPledgeLinkAndNeedsToLogIn = deepLink
-      .filter { link in
-        guard case let .project(_, subpage, _, _) = link else { return false }
-        guard case .pledge(.manage) = subpage else { return false }
-
-        return AppEnvironment.current.currentUser == nil
-      }
-
-    self.goToActivity = deepLink
-      .filter { $0 == .tab(.activity) }
-      .ignoreValues()
-
-    self.goToSearch = deepLink
-      .filter { $0 == .tab(.search) }
-      .ignoreValues()
-
-    let goToLogin = deepLink
-      .filter { $0 == .tab(.login) }
-      .ignoreValues()
+    self.goToActivity = deepLinkOutputs.goToActivity
 
     self.goToLoginWithIntent = Signal.merge(
-      fixErroredPledgeLinkAndNeedsToLogIn.mapConst(.erroredPledge),
-      goToLogin.mapConst(.generic),
+      deepLinkOutputs.goToLoginWithIntent,
       self.goToLoginSignupProperty.signal.skipNil()
     )
 
-    self.goToMessageThread = deepLink
-      .map { navigation -> Int? in
-        guard case let .messages(messageThreadId) = navigation else { return nil }
-        return .some(messageThreadId)
-      }
-      .skipNil()
-      .switchMap {
-        AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0)
-          .demoteErrors()
-          .map { $0.messageThread }
-      }
+    self.goToMessageThread = deepLinkOutputs.goToMessageThread
 
-    self.goToProfile = deepLink
-      .filter { $0 == .tab(.me) }
-      .ignoreValues()
+    self.goToProfile = deepLinkOutputs.goToProfile
 
-    self.goToMobileSafari = Signal.merge(
-      deepLinkUrl,
-      urlFromBraze
-    )
-    .filter(shouldOpenUrlInBrowser)
+    self.goToMobileSafari = urlFromBraze
+      .filter(shouldOpenUrlInBrowser)
 
-    let surveyUrlFromUserLink = deepLink
-      .map { link -> Int? in
-        if case let .user(_, .survey(surveyResponseId)) = link { return surveyResponseId }
-        return nil
-      }
-      .skipNil()
-      .switchMap { surveyResponseId in
-        AppEnvironment.current.apiService.fetchSurveyResponse(surveyResponseId: surveyResponseId)
-          .demoteErrors()
-          .map { surveyResponse -> String in
-            surveyResponse.urls.web.survey
-          }
-      }
+    self.goToSearch = deepLinkOutputs.goToSearch
 
-    let surveyUrlFromProjectLink = deepLink
-      .map { link -> String? in
-        if case let .project(_, .pledgeManagerWebview(surveyUrl), _, _) = link {
-          return surveyUrl
-        }
-        return nil
-      }
-      .skipNil()
-
-    let pledgeManagerLink = Signal.merge(surveyUrlFromProjectLink, surveyUrlFromUserLink)
-      .observeForUI()
-      .map { url -> UINavigationController in
-        let pm = PledgeManagerWebViewController.configuredWith(url: url)
-        let nav = UINavigationController(rootViewController: pm)
-        // See PR #2650 for additional context. This used to be added in the view controller.
-        nav.modalPresentationStyle = .pageSheet
-        return nav
-      }
-
-    let projectLinks = ProjectDeepLink.projectViewControllers(fromDeepLink: deepLink)
-
-    self.presentViewController = Signal.merge(
-      projectLinks,
-      pledgeManagerLink
-    ).map { $0 as UIViewController }
+    self.presentViewController = deepLinkOutputs.presentViewController
 
     self.configureFirebase = self.applicationLaunchOptionsProperty.signal.ignoreValues()
 
@@ -568,7 +381,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.applicationDidFinishLaunchingReturnValueProperty <~ self.applicationLaunchOptionsProperty.signal
       .skipNil()
-      .map { _, options in options?[UIApplication.LaunchOptionsKey.shortcutItem] == nil }
+      .mapConst(true)
 
     self.applicationIconBadgeNumber = Signal.merge(
       self.applicationWillEnterForegroundProperty.signal,
@@ -632,12 +445,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public var inputs: AppDelegateViewModelInputs { return self }
   public var outputs: AppDelegateViewModelOutputs { return self }
 
-  fileprivate let applicationContinueUserActivityProperty = MutableProperty<NSUserActivity?>(nil)
-  public func applicationContinueUserActivity(_ userActivity: NSUserActivity) -> Bool {
-    self.applicationContinueUserActivityProperty.value = userActivity
-    return self.continueUserActivityReturnValue.value
-  }
-
   fileprivate typealias ApplicationWithOptions = (
     application: UIApplication?, options: [UIApplication.LaunchOptionsKey: Any]?
   )
@@ -667,11 +474,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   fileprivate let applicationDidReceiveMemoryWarningProperty = MutableProperty(())
   public func applicationDidReceiveMemoryWarning() {
     self.applicationDidReceiveMemoryWarningProperty.value = ()
-  }
-
-  fileprivate let performActionForShortcutItemProperty = MutableProperty<UIApplicationShortcutItem?>(nil)
-  public func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem) {
-    self.performActionForShortcutItemProperty.value = item
   }
 
   fileprivate let currentUserUpdatedInEnvironmentProperty = MutableProperty(())
@@ -709,29 +511,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.didUpdateRemoteConfigClientProperty.value = ()
   }
 
-  private let foundRedirectUrlProperty = MutableProperty<URL?>(nil)
-  public func foundRedirectUrl(_ url: URL) {
-    self.foundRedirectUrlProperty.value = url
-  }
-
   private let goToLoginSignupProperty = MutableProperty<LoginIntent?>(nil)
   public func goToLoginSignup(from intent: LoginIntent) {
     self.goToLoginSignupProperty.value = intent
-  }
-
-  fileprivate typealias ApplicationOpenUrl = (
-    application: UIApplication?,
-    url: URL,
-    options: [UIApplication.OpenURLOptionsKey: Any]
-  )
-  fileprivate let applicationOpenUrlProperty = MutableProperty<ApplicationOpenUrl?>(nil)
-  public func applicationOpenUrl(
-    application: UIApplication?,
-    url: URL,
-    options: [UIApplication.OpenURLOptionsKey: Any]
-  ) -> Bool {
-    self.applicationOpenUrlProperty.value = (application, url, options)
-    return true
   }
 
   fileprivate let showNotificationDialogProperty = MutableProperty<Notification?>(nil)
@@ -768,9 +550,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let configureFirebase: Signal<(), Never>
   public let configureSegmentWithBraze: Signal<String, Never>
   public let configureStatsig: Signal<StatsigClientSDKKey, Never>
-  public let continueUserActivityReturnValue = MutableProperty(false)
-  public let emailVerificationCompleted: Signal<(String, Bool), Never>
-  public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
   private let fetchUserEmail: Signal<(), Never>
   public let goToActivity: Signal<(), Never>
@@ -797,100 +576,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let updateConfigInEnvironment: Signal<Config, Never>
 }
 
-/// Handles the deeplink route with both an id and text based name for a deeplink to categories.
-private func deepLinkCategories(rawParams: [String: String]) -> (Param?, Param?) {
-  let parentCategoryParams = rawParams["parent_category_id"]
-  let subCategoryParams = rawParams["category_id"]
-  var categoryParam: Param?
-  var subcategoryParam: Param?
-
-  let rawId: (String?) -> Int? = { rawParam in
-    guard let rawParamValue = rawParam else {
-      return .none
-    }
-
-    return Int(rawParamValue)
-  }
-
-  let rawName: (String?) -> String? = { rawParam in
-    guard let rawParamValue = rawParam else {
-      return .none
-    }
-
-    return String(rawParamValue)
-  }
-
-  if let categoryId = rawId(parentCategoryParams) {
-    categoryParam = Param.id(categoryId)
-  } else if let categoryName = rawName(parentCategoryParams) {
-    categoryParam = Param.slug(categoryName)
-  }
-
-  if let subcategoryId = rawId(subCategoryParams) {
-    subcategoryParam = Param.id(subcategoryId)
-  } else if let subcategoryName = rawName(subCategoryParams) {
-    subcategoryParam = Param.slug(subcategoryName)
-  }
-
-  let subCategoryWithNoParentCategory = categoryParam == nil && subcategoryParam != nil
-
-  categoryParam = subCategoryWithNoParentCategory ? subcategoryParam : categoryParam
-  subcategoryParam = subCategoryWithNoParentCategory ? nil : subcategoryParam
-
-  return (categoryParam, subcategoryParam)
-}
-
-/// Will check id and name of category and subcategory against all available categories and subcategories inside envelope
-private func findCategoryFromRootCategories(
-  envelope: RootCategoriesEnvelope,
-  categoryParam: Param,
-  subcategoryParam: Param?
-) -> KsApi.Category? {
-  let allRootCategoryIdsAndNames = envelope.rootCategories.compactMap { $0 }
-
-  let allSubcategoryIdsAndNames = envelope.rootCategories.compactMap { $0.subcategories?.nodes }
-    .flatMap { $0 }
-
-  let allCategoryIdsAndNames = allRootCategoryIdsAndNames + allSubcategoryIdsAndNames
-
-  let routableCategory = allCategoryIdsAndNames.first(where: { category in
-    category.intID == categoryParam.id || category.name.lowercased() == categoryParam.slug?.lowercased()
-  })
-
-  let routableSubcategory = routableCategory != nil ? allCategoryIdsAndNames.first(where: { category in
-    category.intID == subcategoryParam?.id || category.name.lowercased() == subcategoryParam?.slug?
-      .lowercased()
-  }) : nil
-
-  return routableSubcategory ?? routableCategory
-}
-
 private func deviceToken(fromData data: Data) -> String {
   return data
     .map { String(format: "%02.2hhx", $0 as CVarArg) }
     .joined()
-}
-
-private func shouldOpenUrlInBrowser(_ url: URL) -> Bool {
-  // If url has a deeplink match, never attempt to open the url in the browser.
-  if Navigation.deepLinkMatch(url) != nil {
-    return false
-  }
-  // Never attempt to open `ksr` urls in the browser; they'll redirect straight back to our app.
-  if let scheme = url.scheme, scheme == "ksr" {
-    print(
-      "Error: Unable to open 'ksr' deeplink. Please doublecheck that the url "
-        + "is included in the list of deeplinks and that you're not trying to "
-        + "use a staging url in prod (or vice versa)."
-    )
-    let error = NSError(domain: "Kickstarter.Deeplink", code: 0, userInfo: [
-      NSLocalizedDescriptionKey: "Unable to open unsupported ksr deeplink."
-    ])
-    Crashlytics.crashlytics().record(error: error)
-    return false
-  }
-  // Otherwise, open url in browser.
-  return true
 }
 
 private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? {
@@ -964,26 +653,6 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   }
 
   return nil
-}
-
-// Figures out a `Navigation` to route the user to from a shortcut item.
-private func navigation(fromShortcutItem shortcutItem: ShortcutItem) -> SignalProducer<Navigation?, Never> {
-  switch shortcutItem {
-  case .recommendedForYou:
-    let params = .defaults
-      |> DiscoveryParams.lens.recommended .~ true
-      |> DiscoveryParams.lens.sort .~ .magic
-    return SignalProducer(value: .tab(.discovery(params.queryParams)))
-
-  case .projectsWeLove:
-    let params = .defaults
-      |> DiscoveryParams.lens.staffPicks .~ true
-      |> DiscoveryParams.lens.sort .~ .magic
-    return SignalProducer(value: .tab(.discovery(params.queryParams)))
-
-  case .search:
-    return SignalProducer(value: .tab(.search))
-  }
 }
 
 // Figures out which shortcut items to show to a user.
@@ -1097,28 +766,6 @@ private func visitorCookies() -> [HTTPCookie] {
   .compact()
 }
 
-private func accessTokenFromUrl(_ url: URL?) -> String? {
-  return url.flatMap { url in
-    URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems
-  }?
-    .first { item in item.name == "at" }?
-    .value
-}
-
-private func emailVerificationCompletionData(
-  event: Signal<EmailVerificationResponseEnvelope, ErrorEnvelope>.Event
-) -> (String, Bool)? {
-  guard !event.isCompleted else { return nil }
-
-  guard isNil(event.error), let message = event.value?.message else {
-    let message = event.error?.errorMessages.first ?? Strings.Something_went_wrong_please_try_again()
-
-    return (message, false)
-  }
-
-  return (message, true)
-}
-
 private func configRetainingDebugFeatureFlags(_ config: Config) -> Config {
   guard AppEnvironment.current.mainBundle.isRelease == false else { return config }
 
@@ -1129,218 +776,6 @@ private func configRetainingDebugFeatureFlags(_ config: Config) -> Config {
     .filter { key, _ in currentFeatureKeys.contains(key) }
 
   return config |> Config.lens.features .~ currentFeatures.withAllValuesFrom(storedFeatures)
-}
-
-private func updateUserNotificationSetting(navigation: Navigation) -> SignalProducer<User, Never> {
-  guard
-    case let .settings(.notifications(notification, enabled)) = navigation,
-    let currentUser = AppEnvironment.current.currentUser
-  else { return .empty }
-
-  let currentNotifications = AppEnvironment.current.currentUser?.notifications.encode()
-  let updatedNotifications = currentNotifications?.withAllValuesFrom([notification: enabled])
-
-  guard
-    let data = try? JSONSerialization.data(withJSONObject: updatedNotifications as Any, options: []),
-    let userNotifications = try? JSONDecoder().decode(User.Notifications.self, from: data)
-  else { return .empty }
-
-  let updatedUser = currentUser |> User.lens.notifications .~ userNotifications
-
-  return AppEnvironment.current.apiService.updateUserSelf(updatedUser)
-    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-    .demoteErrors()
-}
-
-/// A utility for handling all of the `.project` deep links.
-/// These deep links can make stacks of view controllers - like Project > Comment > Thread.
-/// I pulled these out of `AppDelegateViewModel.init` to them easier to reason about.
-private struct ProjectDeepLink {
-  /// TODO: This could be cleaned up to be more imperative. It's basically mapping a project deep link and its subpages
-  /// into an array of `UIViewController`s.
-  static func projectViewControllers(fromDeepLink deepLink: Signal<Navigation, Never>)
-    -> Signal<UINavigationController, Never> {
-    let projectLinkValues = deepLink
-      .map { link -> (Param, Navigation.Project, RefInfo?, secretRewardToken: String?)? in
-        guard case let .project(param, subpage, refInfo, secretRewardToken) = link else { return nil }
-        return (param, subpage, refInfo, secretRewardToken)
-      }
-      .skipNil()
-      .switchMap { param, subpage, refInfo, secretRewardToken in
-        AppEnvironment.current.apiService.fetchProject(param: param)
-          .demoteErrors()
-          .observeForUI()
-          .map { project -> (Project, Navigation.Project, [UIViewController], RefInfo?) in
-            let projectParam = Either<Project, any ProjectPageParam>(left: project)
-            let vc = ProjectPageViewController.configuredWith(
-              projectOrParam: projectParam,
-              refInfo: refInfo,
-              secretRewardToken: secretRewardToken
-            )
-
-            return (
-              project, subpage,
-              [vc],
-              refInfo
-            )
-          }
-      }
-
-    let projectLink = projectLinkValues
-      .filter { project, _, _, _ in project.displayPrelaunch != true }
-
-    let projectPreviewLink = projectLinkValues
-      .filter { project, _, _, _ in project.displayPrelaunch == true }
-
-    let fixErroredPledgeLinkAndIsLoggedIn = projectLink
-      .filter { _, subpage, _, _ in subpage == .pledge(.manage) }
-      .map { project, _, vcs, _ in
-        (project, vcs, AppEnvironment.current.currentUser != nil)
-      }
-
-    let fixErroredPledgeLink = fixErroredPledgeLinkAndIsLoggedIn
-      .filter(third >>> isTrue)
-      .map { project, vcs, _ -> [UIViewController]? in
-        guard let backingId = project.personalization.backing?.id else { return nil }
-        let vc = ManagePledgeViewController.instantiate()
-        let params: ManagePledgeViewParamConfigData = (.id(project.id), .id(backingId))
-        vc.configureWith(params: params)
-        return vcs + [vc]
-      }
-      .skipNil()
-      .map { vcs -> RewardPledgeNavigationController in
-        let nav = RewardPledgeNavigationController(nibName: nil, bundle: nil)
-        nav.viewControllers = vcs
-        // See PR #2650 for additional context. This used to be added in the view controller.
-        nav.modalPresentationStyle = .pageSheet
-        return nav
-      }
-
-    let projectRootLink = Signal.merge(projectLink, projectPreviewLink)
-      .filter { _, subpage, _, _ in subpage == .root }
-      .map { _, _, vcs, _ in vcs }
-
-    let projectCommentsLink = projectLink
-      .filter { _, subpage, _, _ in subpage == .comments }
-      .map { project, _, vcs, _ in
-        vcs + [commentsViewController(for: project, update: nil)]
-      }
-
-    let projectCommentThreadLink = projectLink
-      .observeForUI()
-      .switchMap { project, subpage, vcs, _ -> SignalProducer<[UIViewController], Never> in
-        guard case let .commentThread(commentId, replyId) = subpage,
-              let commentId = commentId else {
-          return .empty
-        }
-
-        return AppEnvironment.current.apiService
-          .fetchCommentReplies(
-            id: commentId,
-            cursor: nil,
-            limit: CommentRepliesEnvelope.paginationLimit
-          )
-          .demoteErrors()
-          .observeForUI()
-          .map { envelope in
-            vcs + [
-              commentsViewController(for: project, update: nil),
-              CommentRepliesViewController.configuredWith(
-                comment: envelope.comment,
-                project: project,
-                update: nil,
-                inputAreaBecomeFirstResponder: false,
-                replyId: replyId
-              )
-            ]
-          }
-      }
-
-    let updatesLink = projectLink
-      .filter { _, subpage, _, _ in subpage == .updates }
-      .map { project, _, vcs, _ in vcs + [ProjectUpdatesViewController.configuredWith(project: project)] }
-
-    let updateLink = projectLink
-      .map { project, subpage, vcs, _ -> (Project, Int, Navigation.Project.Update, [UIViewController])? in
-        guard case let .update(id, updateSubpage) = subpage else { return nil }
-        return (project, id, updateSubpage, vcs)
-      }
-      .skipNil()
-      .switchMap { project, id, updateSubpage, vcs in
-        AppEnvironment.current.apiService.fetchUpdate(updateId: id, projectParam: .id(project.id))
-          .demoteErrors()
-          .observeForUI()
-          .map { update -> (Project, Update, Navigation.Project.Update, [UIViewController]) in
-            (
-              project,
-              update,
-              updateSubpage,
-              vcs + [
-                UpdateViewController.configuredWith(
-                  project: project,
-                  update: update,
-                  context: .deepLink
-                )
-              ]
-            )
-          }
-      }
-
-    let updateRootLink = updateLink
-      .filter { _, _, subpage, _ in subpage == .root }
-      .map { _, _, _, vcs in vcs }
-
-    let updateCommentsLink = updateLink
-      .observeForUI()
-      .map { _, update, subpage, vcs -> [UIViewController]? in
-        guard case .comments = subpage else { return nil }
-        return vcs + [commentsViewController(update: update)]
-      }
-      .skipNil()
-
-    let updateCommentThreadLink = updateLink
-      .observeForUI()
-      .switchMap { project, update, subpage, vcs -> SignalProducer<[UIViewController], Never> in
-        guard case let .commentThread(commentId, replyId) = subpage,
-              let commentId = commentId else {
-          return .empty
-        }
-        return AppEnvironment.current.apiService
-          .fetchCommentReplies(
-            id: commentId,
-            cursor: nil,
-            limit: CommentRepliesEnvelope.paginationLimit
-          )
-          .demoteErrors()
-          .observeForUI()
-          .map { envelope in
-            vcs + [
-              commentsViewController(for: nil, update: update),
-              CommentRepliesViewController.configuredWith(
-                comment: envelope.comment,
-                project: project,
-                update: update,
-                inputAreaBecomeFirstResponder: false,
-                replyId: replyId
-              )
-            ]
-          }
-      }
-
-    return Signal
-      .merge(
-        projectRootLink,
-        projectCommentsLink,
-        projectCommentThreadLink,
-        updatesLink,
-        updateRootLink,
-        updateCommentsLink,
-        updateCommentThreadLink
-      )
-      .map { ProjectPageViewController.navigationController(withViewControllers: $0) }
-      // This one is already in its own nav controller, `RewardPledgeNavigationController`
-      .merge(with: fixErroredPledgeLink.map { $0 as UINavigationController })
-  }
 }
 
 private func statsigSDKKey() -> StatsigClientSDKKey {

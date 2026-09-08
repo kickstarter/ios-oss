@@ -23,8 +23,7 @@ import UserNotifications
 
 @UIApplicationMain
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
-  var window: UIWindow?
-  fileprivate let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
+  internal let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
   fileprivate var disposables: [any Disposable] = []
   // Custom Braze cancellable type. As long as we keep a reference to this active, Braze will
   // use this to tell us about any Braze push notifications the app handles.
@@ -34,7 +33,17 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   private weak var braze: Braze?
 
   internal var rootTabBarController: RootTabBarViewController? {
-    return self.window?.rootViewController as? RootTabBarViewController
+    // Search the scene's windows rather than using `keyWindow`: during cold launch, deep-link inputs
+    // can be forwarded to the view model (from `SceneDelegate.scene(_:willConnectTo:options:)`) before
+    // the window has been marked key, which would otherwise make this resolve to nil. Match on the
+    // root view controller's type rather than taking the first window, because `UIWindowScene.windows`
+    // has no guaranteed order and also holds system windows — the keyboard's `UITextEffectsWindow`,
+    // alert presentation windows — any of which can sit at index 0.
+    return UIApplication.shared.connectedScenes
+      .compactMap { $0 as? UIWindowScene }
+      .flatMap { $0.windows }
+      .compactMap { $0.rootViewController as? RootTabBarViewController }
+      .first
   }
 
   func application(
@@ -247,18 +256,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.shortcutItems = shortcutItems.map { $0.applicationShortcutItem }
       }
 
-    self.viewModel.outputs.findRedirectUrl
-      .observeForUI()
-      .observeValues { [weak self] in self?.findRedirectUrl($0) }
-
-    self.viewModel.outputs.emailVerificationCompleted
-      .observeForUI()
-      .observeValues { [weak self] message, success in
-        self?.rootTabBarController?.dismiss(animated: false, completion: nil)
-        self?.rootTabBarController?
-          .messageBannerViewController?.showBanner(with: success ? .success : .error, message: message)
-      }
-
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
@@ -309,8 +306,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.viewModel.inputs.configUpdatedNotificationObserved()
       }
 
-    self.window?.tintColor = LegacyColors.ksr_create_700.uiColor()
-
     self.viewModel.inputs.applicationDidFinishLaunching(
       application: application,
       launchOptions: launchOptions
@@ -321,45 +316,17 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
 
-  func applicationDidBecomeActive(_: UIApplication) {
-    self.viewModel.inputs.applicationActive(state: true)
-  }
-
-  func applicationWillResignActive(_: UIApplication) {
-    self.viewModel.inputs.applicationActive(state: false)
-  }
-
-  func applicationWillEnterForeground(_: UIApplication) {
-    self.viewModel.inputs.applicationWillEnterForeground()
-  }
-
-  func applicationDidEnterBackground(_: UIApplication) {
-    self.viewModel.inputs.applicationDidEnterBackground()
-  }
+  // Note: UIKit does not call the `UIApplicationDelegate` foreground / background / active callbacks
+  // in an app that adopts scenes. `SceneDelegate` receives the scene equivalents and forwards them
+  // to this view model's `applicationActive(state:)`, `applicationWillEnterForeground()` and
+  // `applicationDidEnterBackground()` inputs instead.
 
   func application(
-    _: UIApplication,
-    continue userActivity: NSUserActivity,
-    restorationHandler _: @escaping ([UIUserActivityRestoring]?) -> Void
-  ) -> Bool {
-    return self.viewModel.inputs.applicationContinueUserActivity(userActivity)
-  }
-
-  func application(
-    _ app: UIApplication,
-    open url: URL,
-    options: [UIApplication.OpenURLOptionsKey: Any] = [:]
-  ) -> Bool {
-    // If this is not a Facebook login call, handle the potential deep-link
-    guard !AppEnvironment.current.facebookSDK.handleOpenURL(app, open: url, options: options) else {
-      return true
-    }
-
-    return self.viewModel.inputs.applicationOpenUrl(
-      application: app,
-      url: url,
-      options: options
-    )
+    _ application: UIApplication,
+    configurationForConnecting connectingSceneSession: UISceneSession,
+    options: UIScene.ConnectionOptions
+  ) -> UISceneConfiguration {
+    return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
   }
 
   // MARK: - Remote notifications
@@ -380,15 +347,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   internal func applicationDidReceiveMemoryWarning(_: UIApplication) {
     self.viewModel.inputs.applicationDidReceiveMemoryWarning()
-  }
-
-  internal func application(
-    _: UIApplication,
-    performActionFor shortcutItem: UIApplicationShortcutItem,
-    completionHandler: @escaping (Bool) -> Void
-  ) {
-    self.viewModel.inputs.applicationPerformActionForShortcutItem(shortcutItem)
-    completionHandler(true)
   }
 
   // MARK: - Functions
@@ -427,12 +385,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   private func goToMessageThread(_ messageThread: MessageThread) {
     self.rootTabBarController?.switchToMessageThread(messageThread)
-  }
-
-  private func findRedirectUrl(_ url: URL) {
-    let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-    let task = session.dataTask(with: url)
-    task.resume()
   }
 
   private func appTrackingAuthorizationChanged(status: AppTrackingAuthorization) {
@@ -553,21 +505,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     automation.requestAuthorizationAtLaunch = false
     automation.registerDeviceToken = false
     return automation
-  }
-}
-
-// MARK: - URLSessionTaskDelegate
-
-extension AppDelegate: URLSessionTaskDelegate {
-  public func urlSession(
-    _: URLSession,
-    task _: URLSessionTask,
-    willPerformHTTPRedirection _: HTTPURLResponse,
-    newRequest request: URLRequest,
-    completionHandler: @escaping (URLRequest?) -> Void
-  ) {
-    request.url.doIfSome(self.viewModel.inputs.foundRedirectUrl)
-    completionHandler(nil)
   }
 }
 
