@@ -196,6 +196,7 @@ public final class SceneDelegateViewModel: SceneDelegateViewModelType, SceneDele
     return self.continueUserActivityReturnValue.value
   }
 
+  // swiftlint:disable:next large_tuple
   fileprivate typealias ApplicationOpenUrl = (
     application: UIApplication?,
     url: URL,

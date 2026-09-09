@@ -273,6 +273,7 @@ internal struct ProjectDeepLink {
   static func projectViewControllers(fromDeepLink deepLink: Signal<Navigation, Never>)
     -> Signal<UINavigationController, Never> {
     let projectLinkValues = deepLink
+      // swiftlint:disable:next large_tuple
       .map { link -> (Param, Navigation.Project, RefInfo?, secretRewardToken: String?)? in
         guard case let .project(param, subpage, refInfo, secretRewardToken) = link else { return nil }
         return (param, subpage, refInfo, secretRewardToken)
@@ -282,6 +283,7 @@ internal struct ProjectDeepLink {
         AppEnvironment.current.apiService.fetchProject(param: param)
           .demoteErrors()
           .observeForUI()
+          // swiftlint:disable:next large_tuple
           .map { project -> (Project, Navigation.Project, [UIViewController], RefInfo?) in
             let projectParam = Either<Project, any ProjectPageParam>(left: project)
             let vc = ProjectPageViewController.configuredWith(
@@ -373,6 +375,7 @@ internal struct ProjectDeepLink {
       .map { project, _, vcs, _ in vcs + [ProjectUpdatesViewController.configuredWith(project: project)] }
 
     let updateLink = projectLink
+      // swiftlint:disable:next large_tuple
       .map { project, subpage, vcs, _ -> (Project, Int, Navigation.Project.Update, [UIViewController])? in
         guard case let .update(id, updateSubpage) = subpage else { return nil }
         return (project, id, updateSubpage, vcs)
@@ -382,6 +385,7 @@ internal struct ProjectDeepLink {
         AppEnvironment.current.apiService.fetchUpdate(updateId: id, projectParam: .id(project.id))
           .demoteErrors()
           .observeForUI()
+          // swiftlint:disable:next large_tuple
           .map { update -> (Project, Update, Navigation.Project.Update, [UIViewController]) in
             (
               project,
