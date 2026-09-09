@@ -93,7 +93,7 @@ public protocol SceneDelegateViewModelType {
 /// activities (universal links / Handoff), shortcut-item invocations, and the scene's foreground /
 /// background / active lifecycle. This is the SceneDelegate's counterpart to `AppDelegateViewModel`,
 /// which instead handles push-notification and Braze deep links.
-/// Both funnel their resolved `Navigation` values through the shared `deepLinkNavigationOutputs(deepLink:)`
+/// Both funnel their resolved `Navigation` values through the shared `DeepLinkNavigationOutputs`
 /// router so the navigation-resolution logic isn't duplicated.
 public final class SceneDelegateViewModel: SceneDelegateViewModelType, SceneDelegateViewModelInputs,
   SceneDelegateViewModelOutputs {
@@ -154,7 +154,7 @@ public final class SceneDelegateViewModel: SceneDelegateViewModelType, SceneDele
     self.goToMobileSafari = deepLinkUrl
       .filter(shouldOpenUrlInBrowser)
 
-    let deepLinkOutputs = deepLinkNavigationOutputs(deepLink: deepLink)
+    let deepLinkOutputs = DeepLinkNavigationOutputs(deepLink: deepLink)
 
     self.goToActivity = deepLinkOutputs.goToActivity
     self.goToDiscovery = deepLinkOutputs.goToDiscovery

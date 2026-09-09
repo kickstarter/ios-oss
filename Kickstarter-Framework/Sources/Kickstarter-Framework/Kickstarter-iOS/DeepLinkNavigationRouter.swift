@@ -5,10 +5,10 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-/// Bundles the outputs produced by resolving a stream of `Navigation` values (deep links) into
-/// concrete UI actions. Both `AppDelegateViewModel` (fed by push-notification and Braze deep links)
-/// and `SceneDelegateViewModel` (fed by URL/continue-user-activity/shortcut-item deep links) run their
-/// own `deepLink` signal through this, so the navigation-resolution logic isn't duplicated between them.
+/// Resolves a stream of `Navigation` values (deep links) into concrete UI actions. Both
+/// `AppDelegateViewModel` (fed by push-notification and Braze deep links) and `SceneDelegateViewModel`
+/// (fed by URL/continue-user-activity/shortcut-item deep links) run their own `deepLink` signal
+/// through this, so the navigation-resolution logic isn't duplicated between them.
 internal struct DeepLinkNavigationOutputs {
   internal let goToActivity: Signal<(), Never>
   internal let goToDiscovery: Signal<DiscoveryParams?, Never>
@@ -18,140 +18,138 @@ internal struct DeepLinkNavigationOutputs {
   internal let goToSearch: Signal<(), Never>
   internal let presentViewController: Signal<UIViewController, Never>
   internal let updateCurrentUserInEnvironment: Signal<User, Never>
-}
 
-internal func deepLinkNavigationOutputs(deepLink: Signal<Navigation, Never>) -> DeepLinkNavigationOutputs {
-  let fixErroredPledgeLinkAndNeedsToLogin = deepLink
-    .filter { link in
-      guard case let .project(_, subpage, _, _) = link else { return false }
-      guard case .pledge(.manage) = subpage else { return false }
+  internal init(deepLink: Signal<Navigation, Never>) {
+    let fixErroredPledgeLinkAndNeedsToLogin = deepLink
+      .filter { link in
+        guard case let .project(_, subpage, _, _) = link else { return false }
+        guard case .pledge(.manage) = subpage else { return false }
 
-      return AppEnvironment.current.currentUser == nil
-    }
-
-  let goToActivity = deepLink
-    .filter { $0 == .tab(.activity) }
-    .ignoreValues()
-
-  let goToSearch = deepLink
-    .filter { $0 == .tab(.search) }
-    .ignoreValues()
-
-  let goToLogin = deepLink
-    .filter { $0 == .tab(.login) }
-    .ignoreValues()
-
-  let goToLoginWithIntent: Signal<LoginIntent, Never> = Signal.merge(
-    fixErroredPledgeLinkAndNeedsToLogin.mapConst(.erroredPledge),
-    goToLogin.mapConst(.generic)
-  )
-
-  let goToProfile = deepLink
-    .filter { $0 == .tab(.me) }
-    .ignoreValues()
-
-  let goToDiscovery = deepLink
-    .map { link -> [String: String]?? in
-      guard case let .tab(.discovery(rawParams)) = link else { return nil }
-      return .some(rawParams)
-    }
-    .skipNil()
-    .switchMap { rawParams -> SignalProducer<DiscoveryParams?, Never> in
-
-      guard
-        let rawParams = rawParams,
-        let params = DiscoveryParams.decodeJSONDictionary(rawParams)
-      else {
-        return .init(value: nil)
+        return AppEnvironment.current.currentUser == nil
       }
 
-      let categories = deepLinkCategories(rawParams: rawParams)
+    let goToActivity = deepLink
+      .filter { $0 == .tab(.activity) }
+      .ignoreValues()
 
-      guard let categoryParam = categories.0 else {
-        return .init(value: params)
+    let goToSearch = deepLink
+      .filter { $0 == .tab(.search) }
+      .ignoreValues()
+
+    let goToLogin = deepLink
+      .filter { $0 == .tab(.login) }
+      .ignoreValues()
+
+    let goToLoginWithIntent: Signal<LoginIntent, Never> = Signal.merge(
+      fixErroredPledgeLinkAndNeedsToLogin.mapConst(.erroredPledge),
+      goToLogin.mapConst(.generic)
+    )
+
+    let goToProfile = deepLink
+      .filter { $0 == .tab(.me) }
+      .ignoreValues()
+
+    let goToDiscovery = deepLink
+      .map { link -> [String: String]?? in
+        guard case let .tab(.discovery(rawParams)) = link else { return nil }
+        return .some(rawParams)
       }
+      .skipNil()
+      .switchMap { rawParams -> SignalProducer<DiscoveryParams?, Never> in
 
-      return AppEnvironment.current.apiService.fetchGraphCategories()
-        .map { envelope in
-          findCategoryFromRootCategories(
-            envelope: envelope,
-            categoryParam: categoryParam,
-            subcategoryParam: categories.1
-          )
+        guard
+          let rawParams = rawParams,
+          let params = DiscoveryParams.decodeJSONDictionary(rawParams)
+        else {
+          return .init(value: nil)
         }
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .demoteErrors()
-        .map { params |> DiscoveryParams.lens.category .~ $0 }
-    }
 
-  let goToMessageThread = deepLink
-    .map { navigation -> Int? in
-      guard case let .messages(messageThreadId) = navigation else { return nil }
-      return .some(messageThreadId)
-    }
-    .skipNil()
-    .switchMap {
-      AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0)
-        .demoteErrors()
-        .map { $0.messageThread }
-    }
+        let categories = deepLinkCategories(rawParams: rawParams)
 
-  let updatedUserNotificationSettings = deepLink.filter { nav in
-    guard case .settings(.notifications) = nav else { return false }
-    return true
+        guard let categoryParam = categories.0 else {
+          return .init(value: params)
+        }
+
+        return AppEnvironment.current.apiService.fetchGraphCategories()
+          .map { envelope in
+            findCategoryFromRootCategories(
+              envelope: envelope,
+              categoryParam: categoryParam,
+              subcategoryParam: categories.1
+            )
+          }
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .demoteErrors()
+          .map { params |> DiscoveryParams.lens.category .~ $0 }
+      }
+
+    let goToMessageThread = deepLink
+      .map { navigation -> Int? in
+        guard case let .messages(messageThreadId) = navigation else { return nil }
+        return .some(messageThreadId)
+      }
+      .skipNil()
+      .switchMap {
+        AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0)
+          .demoteErrors()
+          .map { $0.messageThread }
+      }
+
+    let updatedUserNotificationSettings = deepLink.filter { nav in
+      guard case .settings(.notifications) = nav else { return false }
+      return true
+    }
+    .flatMap(updateUserNotificationSetting)
+
+    let surveyUrlFromUserLink = deepLink
+      .map { link -> Int? in
+        if case let .user(_, .survey(surveyResponseId)) = link { return surveyResponseId }
+        return nil
+      }
+      .skipNil()
+      .switchMap { surveyResponseId in
+        AppEnvironment.current.apiService.fetchSurveyResponse(surveyResponseId: surveyResponseId)
+          .demoteErrors()
+          .map { surveyResponse -> String in
+            surveyResponse.urls.web.survey
+          }
+      }
+
+    let surveyUrlFromProjectLink = deepLink
+      .map { link -> String? in
+        if case let .project(_, .pledgeManagerWebview(surveyUrl), _, _) = link {
+          return surveyUrl
+        }
+        return nil
+      }
+      .skipNil()
+
+    let pledgeManagerLink = Signal.merge(surveyUrlFromProjectLink, surveyUrlFromUserLink)
+      .observeForUI()
+      .map { url -> UINavigationController in
+        let pm = PledgeManagerWebViewController.configuredWith(url: url)
+        let nav = UINavigationController(rootViewController: pm)
+        // See PR #2650 for additional context. This used to be added in the view controller.
+        nav.modalPresentationStyle = .pageSheet
+        return nav
+      }
+
+    let projectLinks = ProjectDeepLink.projectViewControllers(fromDeepLink: deepLink)
+
+    let presentViewController = Signal.merge(
+      projectLinks,
+      pledgeManagerLink
+    ).map { $0 as UIViewController }
+
+    self.goToActivity = goToActivity
+    self.goToDiscovery = goToDiscovery
+    self.goToLoginWithIntent = goToLoginWithIntent
+    self.goToMessageThread = goToMessageThread
+    self.goToProfile = goToProfile
+    self.goToSearch = goToSearch
+    self.presentViewController = presentViewController
+    self.updateCurrentUserInEnvironment = updatedUserNotificationSettings
   }
-  .flatMap(updateUserNotificationSetting)
-
-  let surveyUrlFromUserLink = deepLink
-    .map { link -> Int? in
-      if case let .user(_, .survey(surveyResponseId)) = link { return surveyResponseId }
-      return nil
-    }
-    .skipNil()
-    .switchMap { surveyResponseId in
-      AppEnvironment.current.apiService.fetchSurveyResponse(surveyResponseId: surveyResponseId)
-        .demoteErrors()
-        .map { surveyResponse -> String in
-          surveyResponse.urls.web.survey
-        }
-    }
-
-  let surveyUrlFromProjectLink = deepLink
-    .map { link -> String? in
-      if case let .project(_, .pledgeManagerWebview(surveyUrl), _, _) = link {
-        return surveyUrl
-      }
-      return nil
-    }
-    .skipNil()
-
-  let pledgeManagerLink = Signal.merge(surveyUrlFromProjectLink, surveyUrlFromUserLink)
-    .observeForUI()
-    .map { url -> UINavigationController in
-      let pm = PledgeManagerWebViewController.configuredWith(url: url)
-      let nav = UINavigationController(rootViewController: pm)
-      // See PR #2650 for additional context. This used to be added in the view controller.
-      nav.modalPresentationStyle = .pageSheet
-      return nav
-    }
-
-  let projectLinks = ProjectDeepLink.projectViewControllers(fromDeepLink: deepLink)
-
-  let presentViewController = Signal.merge(
-    projectLinks,
-    pledgeManagerLink
-  ).map { $0 as UIViewController }
-
-  return DeepLinkNavigationOutputs(
-    goToActivity: goToActivity,
-    goToDiscovery: goToDiscovery,
-    goToLoginWithIntent: goToLoginWithIntent,
-    goToMessageThread: goToMessageThread,
-    goToProfile: goToProfile,
-    goToSearch: goToSearch,
-    presentViewController: presentViewController,
-    updateCurrentUserInEnvironment: updatedUserNotificationSettings
-  )
 }
 
 /// If a URL doesn't match a deep link, whether it should be opened in the browser instead.

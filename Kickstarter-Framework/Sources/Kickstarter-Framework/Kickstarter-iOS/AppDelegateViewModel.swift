@@ -335,7 +335,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       )
       .skipNil()
 
-    let deepLinkOutputs = deepLinkNavigationOutputs(deepLink: deepLink)
+    let deepLinkOutputs = DeepLinkNavigationOutputs(deepLink: deepLink)
 
     self.updateCurrentUserInEnvironment = Signal.merge(
       currentUserEvent.values().skipNil(),
