@@ -281,7 +281,15 @@ struct VideoFeedShareSheetView: View {
 
   // MARK: - X
 
-  private func shareToX() {}
+  private func shareToX() {
+    guard let url = VideoFeedShareDestination.projectURL(for: self.item),
+          let encoded = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+          let xURL = URL(string: "https://x.com/intent/tweet?text=\(encoded)") else {
+      return
+    }
+
+    UIApplication.shared.open(xURL)
+  }
 }
 
 // MARK: - ShareDestinationButton

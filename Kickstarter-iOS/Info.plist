@@ -75,6 +75,7 @@
 		<string>facebook-stories</string>
 		<string>whatsapp</string>
 		<string>x-twitter</string>
+		<string>twitter</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
