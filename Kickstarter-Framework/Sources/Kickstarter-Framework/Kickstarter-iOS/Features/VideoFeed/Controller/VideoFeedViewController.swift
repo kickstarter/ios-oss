@@ -27,6 +27,7 @@ final class VideoFeedViewController: UIViewController {
   private var previewImagePrefetcher: ImagePrefetcher?
   private var isScrolling = false
   private var currentPageIndex: Int = 0
+  private var isShareSheetPresented = false
 
   /// Called once the first batch of items has loaded and the feed is ready to present.
   var onReadyToPresent: (() -> Void)?
@@ -322,8 +323,8 @@ final class VideoFeedViewController: UIViewController {
 
   private func resumeVisibleCell() {
     /// `willEnterForegroundNotification` fires app-wide, and this VC is retained after dismissal.
-    ///  Skip resume if the feed is no longer visible.
-    guard self.view.window != nil else { return }
+    ///  Skip resume if the feed is no longer visible or the share sheet is still presented.
+    guard self.view.window != nil, !self.isShareSheetPresented else { return }
 
     self.activateCurrentPageCell()
   }
@@ -503,7 +504,9 @@ extension VideoFeedViewController: UICollectionViewDelegateFlowLayout {
     case .shareTapped:
       self.viewModel.trackCTAClicked(ctaContext: .videoFeedShare, item: item)
       self.pauseVisibleCell()
+      self.isShareSheetPresented = true
     case .sheetDismissedFromLinkCopied:
+      self.isShareSheetPresented = false
       self.resumeVisibleCell()
     case .moreTapped:
       self.simpleAlert(title: "More")
