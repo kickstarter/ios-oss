@@ -23,7 +23,7 @@ import UserNotifications
 
 @UIApplicationMain
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
-  internal let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
+  fileprivate let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
   fileprivate var disposables: [any Disposable] = []
   // Custom Braze cancellable type. As long as we keep a reference to this active, Braze will
   // use this to tell us about any Braze push notifications the app handles.
@@ -312,15 +312,24 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
 
-  // Note: UIKit does not call the `UIApplicationDelegate` foreground / background / active callbacks
-  // in an app that adopts scenes. `SceneDelegate` receives the scene equivalents and forwards them
-  // to this view model's `applicationActive(state:)`, `applicationWillEnterForeground()` and
-  // `applicationDidEnterBackground()` inputs instead.
+  // MARK: - Scene lifecycle
+
+  internal func applicationActive(state: Bool) {
+    self.viewModel.inputs.applicationActive(state: state)
+  }
+
+  internal func applicationWillEnterForeground() {
+    self.viewModel.inputs.applicationWillEnterForeground()
+  }
+
+  internal func applicationDidEnterBackground() {
+    self.viewModel.inputs.applicationDidEnterBackground()
+  }
 
   func application(
-    _ application: UIApplication,
+    _: UIApplication,
     configurationForConnecting connectingSceneSession: UISceneSession,
-    options: UIScene.ConnectionOptions
+    options _: UIScene.ConnectionOptions
   ) -> UISceneConfiguration {
     return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
   }

@@ -17,12 +17,12 @@ internal final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     self.window?.rootViewController as? RootTabBarViewController
   }
 
-  /// The app-scoped view model. UIKit stops calling the `UIApplicationDelegate` foreground /
-  /// background / active callbacks once an app adopts scenes, but the behavior they drive is still
-  /// app-scoped and still lives in `AppDelegateViewModel`, so this scene delegate forwards them on.
+  /// UIKit stops calling the `UIApplicationDelegate` foreground / background / active callbacks once
+  /// an app adopts scenes, but the behavior they drive is app-scoped and still belongs to
+  /// `AppDelegate`, so this scene delegate calls back through to it.
   /// Safe while `UIApplicationSupportsMultipleScenes` is false and there is only ever one scene.
-  private var appDelegateViewModel: AppDelegateViewModelType? {
-    (UIApplication.shared.delegate as? AppDelegate)?.viewModel
+  private var appDelegate: AppDelegate? {
+    UIApplication.shared.delegate as? AppDelegate
   }
 
   func scene(
@@ -100,19 +100,19 @@ internal final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     self.viewModel.outputs.applicationActive
       .observeForUI()
       .observeValues { [weak self] state in
-        self?.appDelegateViewModel?.inputs.applicationActive(state: state)
+        self?.appDelegate?.applicationActive(state: state)
       }
 
     self.viewModel.outputs.applicationDidEnterBackground
       .observeForUI()
       .observeValues { [weak self] in
-        self?.appDelegateViewModel?.inputs.applicationDidEnterBackground()
+        self?.appDelegate?.applicationDidEnterBackground()
       }
 
     self.viewModel.outputs.applicationWillEnterForeground
       .observeForUI()
       .observeValues { [weak self] in
-        self?.appDelegateViewModel?.inputs.applicationWillEnterForeground()
+        self?.appDelegate?.applicationWillEnterForeground()
       }
 
     // Cold launch entry points: the app was not running, so these deep-link sources
