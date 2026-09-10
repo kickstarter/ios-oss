@@ -60,7 +60,7 @@ public extension Mock where O == Mutation {
     updateUserAccount: Mock<UpdateUserAccountPayload>? = nil,
     updateUserProfile: Mock<UpdateUserProfilePayload>? = nil,
     userSendEmailVerification: Mock<UserSendEmailVerificationPayload>? = nil,
-    watchProject: Mock<UnwatchProjectPayload>? = nil
+    watchProject: Mock<WatchProjectPayload>? = nil
   ) {
     self.init()
     _setEntity(addUserToSecretRewardGroup, for: \.addUserToSecretRewardGroup)
