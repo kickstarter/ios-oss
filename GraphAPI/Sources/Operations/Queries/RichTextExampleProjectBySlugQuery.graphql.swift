@@ -7,17 +7,25 @@ public class RichTextExampleProjectBySlugQuery: GraphQLQuery {
   public static let operationName: String = "RichTextExampleProjectBySlugQuery"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query RichTextExampleProjectBySlugQuery($slug: String!) { project(slug: $slug) { __typename id name storyRichText { __typename ...RichTextComponentFragment } } }"#,
+      #"query RichTextExampleProjectBySlugQuery($slug: String!, $storyRichText: Boolean = false) { project(slug: $slug) { __typename id name storyRichText { __typename ...RichTextComponentFragment } } }"#,
       fragments: [RichTextComponentFragment.self, RichTextItemFragment.self]
     ))
 
   public var slug: String
+  public var storyRichText: GraphQLNullable<Bool>
 
-  public init(slug: String) {
+  public init(
+    slug: String,
+    storyRichText: GraphQLNullable<Bool> = false
+  ) {
     self.slug = slug
+    self.storyRichText = storyRichText
   }
 
-  public var __variables: Variables? { ["slug": slug] }
+  public var __variables: Variables? { [
+    "slug": slug,
+    "storyRichText": storyRichText
+  ] }
 
   public struct Data: GraphAPI.SelectionSet {
     public let __data: DataDict
@@ -97,7 +105,7 @@ public class RichTextExampleProjectBySlugQuery: GraphQLQuery {
           .fragment(RichTextComponentFragment.self),
         ] }
 
-        public var items: [Item] { __data["items"] }
+        public var items: [Item]? { __data["items"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict
@@ -107,7 +115,7 @@ public class RichTextExampleProjectBySlugQuery: GraphQLQuery {
         }
 
         public init(
-          items: [Item]
+          items: [Item]? = nil
         ) {
           self.init(_dataDict: DataDict(
             data: [

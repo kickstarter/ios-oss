@@ -279,7 +279,7 @@ internal extension ExtendedProjectProperties {
     let liveStoryRichTextFragment = fragment.storyRichText.fragments.richTextComponentFragment
     let launched = fragment.isLaunched
 
-    let storyRichTextFragment = if launched || prelaunchStoryRichTextFragment.items.isEmpty {
+    let storyRichTextFragment = if launched || (prelaunchStoryRichTextFragment.items?.isEmpty ?? false) {
       liveStoryRichTextFragment
     } else {
       prelaunchStoryRichTextFragment

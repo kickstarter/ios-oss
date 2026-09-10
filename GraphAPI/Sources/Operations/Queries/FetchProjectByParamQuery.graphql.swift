@@ -7,24 +7,28 @@ public class FetchProjectByParamQuery: GraphQLQuery {
   public static let operationName: String = "FetchProjectByParam"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchProjectByParam($projectId: Int, $slug: String) { project(pid: $projectId, slug: $slug) { __typename ...ProjectFragment ...ExtendedProjectPropertiesFragment video { __typename ...ProjectVideoFragment } backing { __typename id } flagging { __typename id kind } } }"#,
+      #"query FetchProjectByParam($projectId: Int, $slug: String, $storyRichText: Boolean = false) { project(pid: $projectId, slug: $slug) { __typename ...ProjectFragment ...ExtendedProjectPropertiesFragment video { __typename ...ProjectVideoFragment } backing { __typename id } flagging { __typename id kind } } }"#,
       fragments: [CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RichTextComponentFragment.self, RichTextItemFragment.self]
     ))
 
   public var projectId: GraphQLNullable<Int>
   public var slug: GraphQLNullable<String>
+  public var storyRichText: GraphQLNullable<Bool>
 
   public init(
     projectId: GraphQLNullable<Int>,
-    slug: GraphQLNullable<String>
+    slug: GraphQLNullable<String>,
+    storyRichText: GraphQLNullable<Bool> = false
   ) {
     self.projectId = projectId
     self.slug = slug
+    self.storyRichText = storyRichText
   }
 
   public var __variables: Variables? { [
     "projectId": projectId,
-    "slug": slug
+    "slug": slug,
+    "storyRichText": storyRichText
   ] }
 
   public struct Data: GraphAPI.SelectionSet {
@@ -891,7 +895,7 @@ public class FetchProjectByParamQuery: GraphQLQuery {
 
         public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextComponent }
 
-        public var items: [Item] { __data["items"] }
+        public var items: [Item]? { __data["items"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict
@@ -901,7 +905,7 @@ public class FetchProjectByParamQuery: GraphQLQuery {
         }
 
         public init(
-          items: [Item]
+          items: [Item]? = nil
         ) {
           self.init(_dataDict: DataDict(
             data: [
@@ -928,7 +932,7 @@ public class FetchProjectByParamQuery: GraphQLQuery {
 
         public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextComponent }
 
-        public var items: [Item] { __data["items"] }
+        public var items: [Item]? { __data["items"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict
@@ -938,7 +942,7 @@ public class FetchProjectByParamQuery: GraphQLQuery {
         }
 
         public init(
-          items: [Item]
+          items: [Item]? = nil
         ) {
           self.init(_dataDict: DataDict(
             data: [

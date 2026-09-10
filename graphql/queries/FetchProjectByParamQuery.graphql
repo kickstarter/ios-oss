@@ -1,5 +1,5 @@
 # The full Project fetch, used by the Project page.
-query FetchProjectByParam($projectId: Int, $slug: String) {
+query FetchProjectByParam($projectId: Int, $slug: String, $storyRichText: Boolean = false) {
   project(pid: $projectId, slug: $slug) {
     ...ProjectFragment
     ...ExtendedProjectPropertiesFragment
