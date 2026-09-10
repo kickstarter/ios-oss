@@ -5,7 +5,7 @@
 
 public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment RichTextItemFragment on RichTextItem { __typename ... on RichText { text link styles } ... on RichTextHeader { text link styles } ... on RichTextListItem { text link styles } ... on RichTextListOpen { _present } ... on RichTextListClose { _present } ... on RichTextPhoto { altText asset { __typename id url(width: 99999) } caption } ... on RichTextAudio { altText asset { __typename id } caption url } ... on RichTextVideo { altText asset { __typename id poster formats { __typename encoding height width profile url } } caption url } ... on RichTextOembed { width height version title type iframeUrl originalUrl thumbnailHeight thumbnailUrl thumbnailWidth } }"#
+    #"fragment RichTextItemFragment on RichTextItem { __typename ... on RichText { text link styles } ... on RichTextHeader { text link styles } ... on RichTextListItem { text link styles } ... on RichTextListOpen { _present } ... on RichTextListClose { _present } ... on RichTextPhoto { altText asset { __typename id url(width: 99999) } caption } ... on RichTextAudio { altText asset { __typename id } caption url } ... on RichTextVideo { altText asset { __typename id poster formats { __typename encoding height width profile url } } caption url } ... on RichTextOembed { width height version title type iframeUrl originalUrl } }"#
   }
 
   public let __data: DataDict
@@ -521,9 +521,6 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
       .field("type", String.self),
       .field("iframeUrl", String.self),
       .field("originalUrl", String.self),
-      .field("thumbnailHeight", Int.self),
-      .field("thumbnailUrl", String.self),
-      .field("thumbnailWidth", Int.self),
     ] }
 
     /// ex: 480
@@ -540,12 +537,6 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
     public var iframeUrl: String { __data["iframeUrl"] }
     /// ex: https://youtu.be/ijeaVn8znJ8
     public var originalUrl: String { __data["originalUrl"] }
-    /// ex: 360
-    public var thumbnailHeight: Int { __data["thumbnailHeight"] }
-    /// ex: https://i.ytimg.com/vi/ijeaVn8znJ8/hqdefault.jpg
-    public var thumbnailUrl: String { __data["thumbnailUrl"] }
-    /// ex: 480
-    public var thumbnailWidth: Int { __data["thumbnailWidth"] }
 
     public init(
       width: Int,
@@ -554,10 +545,7 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
       title: String,
       type: String,
       iframeUrl: String,
-      originalUrl: String,
-      thumbnailHeight: Int,
-      thumbnailUrl: String,
-      thumbnailWidth: Int
+      originalUrl: String
     ) {
       self.init(_dataDict: DataDict(
         data: [
@@ -569,9 +557,6 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
           "type": type,
           "iframeUrl": iframeUrl,
           "originalUrl": originalUrl,
-          "thumbnailHeight": thumbnailHeight,
-          "thumbnailUrl": thumbnailUrl,
-          "thumbnailWidth": thumbnailWidth,
         ],
         fulfilledFragments: [
           ObjectIdentifier(RichTextItemFragment.self),

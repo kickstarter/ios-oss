@@ -347,10 +347,7 @@ extension RichTextComponentFragment.Item.AsRichTextOembed {
       title: title,
       type: type,
       iframeUrl: iframeUrl,
-      originalUrl: originalUrl,
-      thumbnailUrl: thumbnailUrl,
-      thumbnailWidth: thumbnailWidth,
-      thumbnailHeight: thumbnailHeight
+      originalUrl: originalUrl
     ))
   }
 }
@@ -364,10 +361,7 @@ extension RichTextComponentFragment.Item.AsRichText.Child.AsRichTextOembed {
       title: title,
       type: type,
       iframeUrl: iframeUrl,
-      originalUrl: originalUrl,
-      thumbnailUrl: thumbnailUrl,
-      thumbnailWidth: thumbnailWidth,
-      thumbnailHeight: thumbnailHeight
+      originalUrl: originalUrl
     ))
   }
 }
@@ -381,10 +375,7 @@ extension RichTextComponentFragment.Item.AsRichTextHeader.Child.AsRichTextOembed
       title: title,
       type: type,
       iframeUrl: iframeUrl,
-      originalUrl: originalUrl,
-      thumbnailUrl: thumbnailUrl,
-      thumbnailWidth: thumbnailWidth,
-      thumbnailHeight: thumbnailHeight
+      originalUrl: originalUrl
     ))
   }
 }
@@ -398,10 +389,7 @@ extension RichTextComponentFragment.Item.AsRichTextListItem.Child.AsRichTextOemb
       title: title,
       type: type,
       iframeUrl: iframeUrl,
-      originalUrl: originalUrl,
-      thumbnailUrl: thumbnailUrl,
-      thumbnailWidth: thumbnailWidth,
-      thumbnailHeight: thumbnailHeight
+      originalUrl: originalUrl
     ))
   }
 }

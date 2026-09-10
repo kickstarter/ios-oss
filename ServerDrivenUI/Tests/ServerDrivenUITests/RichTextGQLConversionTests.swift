@@ -435,10 +435,7 @@ final class RichTextGQLConversionTests: XCTestCase {
       title: "Title",
       type: "video",
       iframeUrl: "https://iframe",
-      originalUrl: "https://orig",
-      thumbnailHeight: 50,
-      thumbnailUrl: "https://thumb",
-      thumbnailWidth: 60
+      originalUrl: "https://orig"
     )
     let el = gql.asRichTextElement
     guard case let .oembed(o) = el else { XCTFail("expected .oembed"); return }
@@ -449,9 +446,6 @@ final class RichTextGQLConversionTests: XCTestCase {
     XCTAssertEqual(o.version, "1.0")
     XCTAssertEqual(o.iframeUrl, "https://iframe")
     XCTAssertEqual(o.originalUrl, "https://orig")
-    XCTAssertEqual(o.thumbnailUrl, "https://thumb")
-    XCTAssertEqual(o.thumbnailWidth, 60)
-    XCTAssertEqual(o.thumbnailHeight, 50)
   }
 
   /* Child.AsRichTextOembed -> .oembed element */
@@ -463,10 +457,7 @@ final class RichTextGQLConversionTests: XCTestCase {
       title: "T",
       type: "rich",
       iframeUrl: "i",
-      originalUrl: "o",
-      thumbnailHeight: 2,
-      thumbnailUrl: "t",
-      thumbnailWidth: 3
+      originalUrl: "o"
     )
     let el = gql.asRichTextElement
     guard case let .oembed(o) = el else { XCTFail("expected .oembed"); return }
@@ -577,10 +568,7 @@ final class RichTextGQLConversionTests: XCTestCase {
       title: "H",
       type: "link",
       iframeUrl: "",
-      originalUrl: "",
-      thumbnailHeight: 10,
-      thumbnailUrl: "",
-      thumbnailWidth: 10
+      originalUrl: ""
     )
     let el = gql.asRichTextElement
     guard case let .oembed(o) = el else { XCTFail("expected .oembed"); return }
@@ -596,10 +584,7 @@ final class RichTextGQLConversionTests: XCTestCase {
       title: "L",
       type: "photo",
       iframeUrl: "",
-      originalUrl: "",
-      thumbnailHeight: 5,
-      thumbnailUrl: "",
-      thumbnailWidth: 5
+      originalUrl: ""
     )
     let el = gql.asRichTextElement
     guard case let .oembed(o) = el else { XCTFail("expected .oembed"); return }
