@@ -24,5 +24,8 @@ public struct DarkRichTextStyle: RichTextStyle, Sendable {
   public var listIndentation: CGFloat { self.parent.listIndentation }
   public var contentHorizontalPadding: CGFloat { self.parent.contentHorizontalPadding }
   public var mediaCornerRadius: CGFloat { self.parent.mediaCornerRadius }
+  public var mediaCaptionFont: Font { self.parent.mediaCaptionFont }
+  public var mediaCaptionColor: AdaptiveColor { self.parent.mediaCaptionColor.resolvedForDarkMode() }
+  public var mediaCaptionAlignment: TextAlignment { self.parent.mediaCaptionAlignment }
   public var mediaPlaceholderColor: AdaptiveColor { self.parent.mediaPlaceholderColor.resolvedForDarkMode() }
 }
