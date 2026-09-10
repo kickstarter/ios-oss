@@ -7,18 +7,18 @@ public class FastFetchProjectPageExtendedPropertiesQuery: GraphQLQuery {
   public static let operationName: String = "FastFetchProjectPageExtendedPropertiesQuery"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FastFetchProjectPageExtendedPropertiesQuery($projectId: Int, $slug: String, $storyRichText: Boolean = false) { project(pid: $projectId, slug: $slug) { __typename ...ExtendedProjectPropertiesFragment video { __typename ...ProjectVideoFragment } flagging { __typename kind } } }"#,
+      #"query FastFetchProjectPageExtendedPropertiesQuery($projectId: Int, $slug: String, $storyRichText: Boolean!) { project(pid: $projectId, slug: $slug) { __typename ...ExtendedProjectPropertiesFragment video { __typename ...ProjectVideoFragment } flagging { __typename kind } } }"#,
       fragments: [ExtendedProjectPropertiesFragment.self, ProjectVideoFragment.self, RichTextComponentFragment.self, RichTextItemFragment.self]
     ))
 
   public var projectId: GraphQLNullable<Int>
   public var slug: GraphQLNullable<String>
-  public var storyRichText: GraphQLNullable<Bool>
+  public var storyRichText: Bool
 
   public init(
     projectId: GraphQLNullable<Int>,
     slug: GraphQLNullable<String>,
-    storyRichText: GraphQLNullable<Bool> = false
+    storyRichText: Bool
   ) {
     self.projectId = projectId
     self.slug = slug

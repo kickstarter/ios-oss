@@ -7,13 +7,13 @@ public class RichTextExampleProjectsQuery: GraphQLQuery {
   public static let operationName: String = "RichTextExampleProjectsQuery"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query RichTextExampleProjectsQuery($storyRichText: Boolean = false) { projects(recommended: true, first: 10) { __typename nodes { __typename id name storyRichText { __typename ...RichTextComponentFragment } } } }"#,
+      #"query RichTextExampleProjectsQuery($storyRichText: Boolean!) { projects(recommended: true, first: 10) { __typename nodes { __typename id name storyRichText { __typename ...RichTextComponentFragment } } } }"#,
       fragments: [RichTextComponentFragment.self, RichTextItemFragment.self]
     ))
 
-  public var storyRichText: GraphQLNullable<Bool>
+  public var storyRichText: Bool
 
-  public init(storyRichText: GraphQLNullable<Bool> = false) {
+  public init(storyRichText: Bool) {
     self.storyRichText = storyRichText
   }
 

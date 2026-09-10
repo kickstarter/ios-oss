@@ -1375,7 +1375,7 @@
       let query = GraphAPI.FastFetchProjectPageExtendedPropertiesQuery(
         projectId: .someOrNil(projectParam.id),
         slug: .someOrNil(projectParam.slug),
-        storyRichText: .someOrNil(includeStoryRichText)
+        storyRichText: includeStoryRichText
       )
 
       // Otherwise, fall back to the GraphQL mocking code.
@@ -1392,7 +1392,7 @@
       let query = GraphAPI.FetchProjectByParamQuery(
         projectId: .someOrNil(projectParam.id),
         slug: .someOrNil(projectParam.slug),
-        storyRichText: .someOrNil(includeStoryRichText)
+        storyRichText: includeStoryRichText
       )
 
       return client.fetchWithResult(

@@ -7,18 +7,18 @@ public class FetchProjectByParamQuery: GraphQLQuery {
   public static let operationName: String = "FetchProjectByParam"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FetchProjectByParam($projectId: Int, $slug: String, $storyRichText: Boolean = false) { project(pid: $projectId, slug: $slug) { __typename ...ProjectFragment ...ExtendedProjectPropertiesFragment video { __typename ...ProjectVideoFragment } backing { __typename id } flagging { __typename id kind } } }"#,
+      #"query FetchProjectByParam($projectId: Int, $slug: String, $storyRichText: Boolean!) { project(pid: $projectId, slug: $slug) { __typename ...ProjectFragment ...ExtendedProjectPropertiesFragment video { __typename ...ProjectVideoFragment } backing { __typename id } flagging { __typename id kind } } }"#,
       fragments: [CategoryFragment.self, CountryFragment.self, ExtendedProjectPropertiesFragment.self, LastWaveFragment.self, LocationFragment.self, MoneyFragment.self, NoRewardRewardFragment.self, PledgeManagerFragment.self, PledgeOverTimeFragment.self, ProjectDatesFragment.self, ProjectFragment.self, ProjectStatsFragment.self, ProjectVideoFragment.self, PublicUserFragment.self, RichTextComponentFragment.self, RichTextItemFragment.self]
     ))
 
   public var projectId: GraphQLNullable<Int>
   public var slug: GraphQLNullable<String>
-  public var storyRichText: GraphQLNullable<Bool>
+  public var storyRichText: Bool
 
   public init(
     projectId: GraphQLNullable<Int>,
     slug: GraphQLNullable<String>,
-    storyRichText: GraphQLNullable<Bool> = false
+    storyRichText: Bool
   ) {
     self.projectId = projectId
     self.slug = slug

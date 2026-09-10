@@ -7,16 +7,16 @@ public class RichTextExampleProjectBySlugQuery: GraphQLQuery {
   public static let operationName: String = "RichTextExampleProjectBySlugQuery"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query RichTextExampleProjectBySlugQuery($slug: String!, $storyRichText: Boolean = false) { project(slug: $slug) { __typename id name storyRichText { __typename ...RichTextComponentFragment } } }"#,
+      #"query RichTextExampleProjectBySlugQuery($slug: String!, $storyRichText: Boolean!) { project(slug: $slug) { __typename id name storyRichText { __typename ...RichTextComponentFragment } } }"#,
       fragments: [RichTextComponentFragment.self, RichTextItemFragment.self]
     ))
 
   public var slug: String
-  public var storyRichText: GraphQLNullable<Bool>
+  public var storyRichText: Bool
 
   public init(
     slug: String,
-    storyRichText: GraphQLNullable<Bool> = false
+    storyRichText: Bool
   ) {
     self.slug = slug
     self.storyRichText = storyRichText

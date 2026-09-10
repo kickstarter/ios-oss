@@ -1,4 +1,4 @@
-query RichTextExampleProjectsQuery($storyRichText: Boolean = false){
+query RichTextExampleProjectsQuery($storyRichText: Boolean!){
   projects(recommended: true, first: 10) {
     nodes{
       id
@@ -10,7 +10,7 @@ query RichTextExampleProjectsQuery($storyRichText: Boolean = false){
   }
 }
 
-query RichTextExampleProjectBySlugQuery($slug: String!, $storyRichText: Boolean = false){
+query RichTextExampleProjectBySlugQuery($slug: String!, $storyRichText: Boolean!){
   project(slug: $slug) {
     id
     name

@@ -582,7 +582,7 @@ public struct Service: ServiceType {
     let query = GraphAPI.FastFetchProjectPageExtendedPropertiesQuery(
       projectId: .someOrNil(projectParam.id),
       slug: .someOrNil(projectParam.slug),
-      storyRichText: .someOrNil(includeStoryRichText)
+      storyRichText: includeStoryRichText
     )
 
     return GraphQL.shared.client
@@ -601,7 +601,7 @@ public struct Service: ServiceType {
     let query = GraphAPI.FetchProjectByParamQuery(
       projectId: .someOrNil(projectParam.id),
       slug: .someOrNil(projectParam.slug),
-      storyRichText: .someOrNil(includeStoryRichText)
+      storyRichText: includeStoryRichText
     )
 
     return GraphQL.shared.client
