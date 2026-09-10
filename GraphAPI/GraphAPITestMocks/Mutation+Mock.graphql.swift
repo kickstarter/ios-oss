@@ -32,7 +32,7 @@ public class Mutation: MockObject {
     @Field<UpdateUserAccountPayload>("updateUserAccount") public var updateUserAccount
     @Field<UpdateUserProfilePayload>("updateUserProfile") public var updateUserProfile
     @Field<UserSendEmailVerificationPayload>("userSendEmailVerification") public var userSendEmailVerification
-    @Field<WatchProjectPayload>("watchProject") public var watchProject
+    @Field<UnwatchProjectPayload>("watchProject") public var watchProject
   }
 }
 

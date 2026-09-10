@@ -376,10 +376,7 @@ private func makeOembed(
     title: title,
     type: type,
     iframeUrl: iframeUrl,
-    originalUrl: originalUrl,
-    thumbnailUrl: nil,
-    thumbnailWidth: nil,
-    thumbnailHeight: nil
+    originalUrl: originalUrl
   )
 }
 

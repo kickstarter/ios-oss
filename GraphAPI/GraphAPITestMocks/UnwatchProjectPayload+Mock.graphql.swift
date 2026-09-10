@@ -7,7 +7,7 @@ import GraphAPI
 public class UnwatchProjectPayload: MockObject {
   public static let objectType: ApolloAPI.Object = GraphAPI.Objects.UnwatchProjectPayload
   public static let _mockFields = MockFields()
-  public typealias MockValueCollectionType = Array<Mock<UnwatchProjectPayload>>
+  public typealias MockValueCollectionType = Array<Mock<WatchProjectPayload>>
 
   public struct MockFields {
     @Field<String>("clientMutationId") public var clientMutationId
