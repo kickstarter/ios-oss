@@ -23,7 +23,6 @@ import UserNotifications
 
 @UIApplicationMain
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
-  var window: UIWindow?
   fileprivate let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
   fileprivate var disposables: [any Disposable] = []
   // Custom Braze cancellable type. As long as we keep a reference to this active, Braze will
@@ -34,7 +33,17 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   private weak var braze: Braze?
 
   internal var rootTabBarController: RootTabBarViewController? {
-    return self.window?.rootViewController as? RootTabBarViewController
+    // Search the scene's windows rather than using `keyWindow`: during cold launch, deep-link inputs
+    // can be forwarded to the view model before the window has been marked key, which would
+    // otherwise make this resolve to nil. Match on the root view controller's type rather than taking
+    // the first window, because `UIWindowScene.windows` has no guaranteed order and also holds system
+    // windows — the keyboard's `UITextEffectsWindow`, alert presentation windows — any of which can
+    // sit at index 0.
+    return UIApplication.shared.connectedScenes
+      .compactMap { $0 as? UIWindowScene }
+      .flatMap { $0.windows }
+      .compactMap { $0.rootViewController as? RootTabBarViewController }
+      .first
   }
 
   func application(
@@ -309,8 +318,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.viewModel.inputs.configUpdatedNotificationObserved()
       }
 
-    self.window?.tintColor = LegacyColors.ksr_create_700.uiColor()
-
     self.viewModel.inputs.applicationDidFinishLaunching(
       application: application,
       launchOptions: launchOptions
@@ -319,6 +326,14 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     UNUserNotificationCenter.current().delegate = self
 
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
+  }
+
+  func application(
+    _ application: UIApplication,
+    configurationForConnecting connectingSceneSession: UISceneSession,
+    options: UIScene.ConnectionOptions
+  ) -> UISceneConfiguration {
+    return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
   }
 
   func applicationDidBecomeActive(_: UIApplication) {
