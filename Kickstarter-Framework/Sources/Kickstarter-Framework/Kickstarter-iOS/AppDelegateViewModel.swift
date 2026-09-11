@@ -15,9 +15,6 @@ public enum NotificationAuthorizationStatus {
 }
 
 public protocol AppDelegateViewModelInputs {
-  /// Call when the application is handed off to.
-  func applicationContinueUserActivity(_ userActivity: NSUserActivity) -> Bool
-
   /// Call when the application finishes launching.
   func applicationDidFinishLaunching(
     application: UIApplication?, launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -34,13 +31,6 @@ public protocol AppDelegateViewModelInputs {
 
   /// Call when the aplication receives memory warning from the system.
   func applicationDidReceiveMemoryWarning()
-
-  /// Call to open a url that was sent to the app
-  func applicationOpenUrl(
-    application: UIApplication?,
-    url: URL,
-    options: [UIApplication.OpenURLOptionsKey: Any]
-  ) -> Bool
 
   /// Call when the application receives a request to perform a shortcut action.
   func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem)
@@ -65,9 +55,6 @@ public protocol AppDelegateViewModelInputs {
 
   /// Call when the Remote Config client has been updated in the AppEnvironment
   func didUpdateRemoteConfigClient()
-
-  /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
-  func foundRedirectUrl(_ url: URL)
 
   /// Call when the users taps 'Log in or Sign up' from the onboarding flow (`OnboardingView`).
   func goToLoginSignup(from intent: LoginIntent)
@@ -104,16 +91,6 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the application should configure Statsig
   var configureStatsig: Signal<StatsigClientSDKKey, Never> { get }
 
-  /// Return this value in the delegate method.
-  var continueUserActivityReturnValue: MutableProperty<Bool> { get }
-
-  /// Emits the response from email verification with a message and success/failure.
-  var emailVerificationCompleted: Signal<(String, Bool), Never> { get }
-
-  /// Emits when the view needs to figure out the redirect URL for the emitted URL.
-  /// Required in order to handle email links.
-  var findRedirectUrl: Signal<URL, Never> { get }
-
   /// Emits when opening the app with an invalid access token.
   var forceLogout: Signal<(), Never> { get }
 
@@ -128,9 +105,6 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits a message thread when we should navigate to it.
   var goToMessageThread: Signal<MessageThread, Never> { get }
-
-  /// Emits when the root view controller should navigate to the user's profile.
-  var goToProfile: Signal<(), Never> { get }
 
   /// Emits a URL when we should open it in the safari browser.
   var goToMobileSafari: Signal<URL, Never> { get }
@@ -284,8 +258,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       appEnteredBackgroundNotification
     )
 
-    let openUrl = self.applicationOpenUrlProperty.signal.skipNil()
-
     // iCloud
 
     self.synchronizeUbiquitousStore = self.applicationLaunchOptionsProperty.signal.ignoreValues()
@@ -362,26 +334,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let deepLinkFromBraze = urlFromBraze.map(Navigation.deepLinkMatch)
 
-    let continueUserActivity = self.applicationContinueUserActivityProperty.signal.skipNil()
-
-    let continueUserActivityWithNavigation = continueUserActivity
-      .filter { $0.activityType == NSUserActivityTypeBrowsingWeb }
-      .map { activity in (activity, activity.webpageURL.flatMap(Navigation.match)) }
-
-    self.continueUserActivityReturnValue <~ continueUserActivityWithNavigation.map(second >>> isNotNil)
-
-    let deepLinkUrl = Signal
-      .merge(
-        openUrl.map { $0.url },
-        self.foundRedirectUrlProperty.signal.skipNil(),
-        continueUserActivity
-          .filter { $0.activityType == NSUserActivityTypeBrowsingWeb }
-          .map { $0.webpageURL }
-          .skipNil()
-      )
-
-    let deepLinkFromUrl = deepLinkUrl.map(Navigation.match)
-
     let performShortcutItem = Signal.merge(
       self.performActionForShortcutItemProperty.signal.skipNil(),
       self.applicationLaunchOptionsProperty.signal
@@ -396,7 +348,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let deeplinkActivated = Signal
       .merge(
-        deepLinkFromUrl,
         deepLinkFromNotification,
         deepLinkFromBraze,
         deepLinkFromShortcut
@@ -412,28 +363,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       deepLinkOutputs.updateCurrentUserInEnvironment
     )
 
-    let emailVerificationEvent = deepLinkUrl
-      .filter { Navigation.match($0) == .profile(.verifyEmail) }
-      .map(accessTokenFromUrl)
-      .skipNil()
-      .switchMap { accessToken in
-        AppEnvironment.current.apiService.verifyEmail(withToken: accessToken)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-      }
-
-    self.emailVerificationCompleted = emailVerificationEvent
-      .map(emailVerificationCompletionData)
-      .skipNil()
-
-    self.findRedirectUrl = deepLinkUrl
-      .filter { Navigation.match($0) == .emailClick }
-
-    self.goToMobileSafari = Signal.merge(
-      deepLinkUrl,
-      urlFromBraze
-    )
-    .filter(shouldOpenUrlInBrowser)
+    self.goToMobileSafari = urlFromBraze
+      .filter(shouldOpenUrlInBrowser)
 
     self.goToDiscovery = deepLinkOutputs.goToDiscovery
     self.goToActivity = deepLinkOutputs.goToActivity
@@ -444,7 +375,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     )
 
     self.goToMessageThread = deepLinkOutputs.goToMessageThread
-    self.goToProfile = deepLinkOutputs.goToProfile
     self.goToSearch = deepLinkOutputs.goToSearch
     self.presentViewController = deepLinkOutputs.presentViewController
 
@@ -525,12 +455,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public var inputs: AppDelegateViewModelInputs { return self }
   public var outputs: AppDelegateViewModelOutputs { return self }
 
-  fileprivate let applicationContinueUserActivityProperty = MutableProperty<NSUserActivity?>(nil)
-  public func applicationContinueUserActivity(_ userActivity: NSUserActivity) -> Bool {
-    self.applicationContinueUserActivityProperty.value = userActivity
-    return self.continueUserActivityReturnValue.value
-  }
-
   fileprivate typealias ApplicationWithOptions = (
     application: UIApplication?, options: [UIApplication.LaunchOptionsKey: Any]?
   )
@@ -602,29 +526,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.didUpdateRemoteConfigClientProperty.value = ()
   }
 
-  private let foundRedirectUrlProperty = MutableProperty<URL?>(nil)
-  public func foundRedirectUrl(_ url: URL) {
-    self.foundRedirectUrlProperty.value = url
-  }
-
   private let goToLoginSignupProperty = MutableProperty<LoginIntent?>(nil)
   public func goToLoginSignup(from intent: LoginIntent) {
     self.goToLoginSignupProperty.value = intent
-  }
-
-  fileprivate typealias ApplicationOpenUrl = (
-    application: UIApplication?,
-    url: URL,
-    options: [UIApplication.OpenURLOptionsKey: Any]
-  )
-  fileprivate let applicationOpenUrlProperty = MutableProperty<ApplicationOpenUrl?>(nil)
-  public func applicationOpenUrl(
-    application: UIApplication?,
-    url: URL,
-    options: [UIApplication.OpenURLOptionsKey: Any]
-  ) -> Bool {
-    self.applicationOpenUrlProperty.value = (application, url, options)
-    return true
   }
 
   fileprivate let showNotificationDialogProperty = MutableProperty<Notification?>(nil)
@@ -661,16 +565,12 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let configureFirebase: Signal<(), Never>
   public let configureSegmentWithBraze: Signal<String, Never>
   public let configureStatsig: Signal<StatsigClientSDKKey, Never>
-  public let continueUserActivityReturnValue = MutableProperty(false)
-  public let emailVerificationCompleted: Signal<(String, Bool), Never>
-  public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
   private let fetchUserEmail: Signal<(), Never>
   public let goToActivity: Signal<(), Never>
   public let goToDiscovery: Signal<DiscoveryParams?, Never>
   public let goToLoginWithIntent: Signal<LoginIntent, Never>
   public let goToMessageThread: Signal<MessageThread, Never>
-  public let goToProfile: Signal<(), Never>
   public let goToMobileSafari: Signal<URL, Never>
   public let goToSearch: Signal<(), Never>
   public let postNotification: Signal<Notification, Never>
@@ -898,28 +798,6 @@ private func visitorCookies() -> [HTTPCookie] {
     )
   )
   .compact()
-}
-
-private func accessTokenFromUrl(_ url: URL?) -> String? {
-  return url.flatMap { url in
-    URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems
-  }?
-    .first { item in item.name == "at" }?
-    .value
-}
-
-private func emailVerificationCompletionData(
-  event: Signal<EmailVerificationResponseEnvelope, ErrorEnvelope>.Event
-) -> (String, Bool)? {
-  guard !event.isCompleted else { return nil }
-
-  guard isNil(event.error), let message = event.value?.message else {
-    let message = event.error?.errorMessages.first ?? Strings.Something_went_wrong_please_try_again()
-
-    return (message, false)
-  }
-
-  return (message, true)
 }
 
 private func configRetainingDebugFeatureFlags(_ config: Config) -> Config {
