@@ -14,8 +14,23 @@ struct ImageBlock: View {
     return URL(string: urlString)
   }
 
+  private var caption: AttributedString? {
+    guard let caption = self.photo.caption else {
+      return nil
+    }
+
+    var attributes = AttributeContainer()
+    attributes.font = self.style.mediaCaptionFont
+    attributes.foregroundColor = self.style.mediaCaptionColor.swiftUIColor()
+    if let link = self.photo.link {
+      attributes.link = link
+      attributes.underlineStyle = self.style.linkUnderlined ? .single : .none
+    }
+    return AttributedString(caption, attributes: attributes)
+  }
+
   @ViewBuilder private var image: some View {
-    Group {
+    VStack {
       if let imageURL {
         KFAnimatedImage(imageURL)
           .placeholder { _ in
@@ -31,6 +46,10 @@ struct ImageBlock: View {
         Color.clear
           .frame(maxWidth: .infinity)
           .accessibilityLabel(self.photo.altText ?? "")
+      }
+      if let caption = self.caption {
+        Text(caption)
+          .multilineTextAlignment(self.style.mediaCaptionAlignment)
       }
     }
   }

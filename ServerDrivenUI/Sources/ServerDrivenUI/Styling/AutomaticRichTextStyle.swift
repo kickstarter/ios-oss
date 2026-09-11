@@ -60,6 +60,19 @@ public struct AutomaticRichTextStyle: RichTextStyle, Sendable {
     Spacing.unit_04
   }
 
+  public var mediaCaptionFont: Font {
+    InterFont.caption1.swiftUIFont(size: nil)
+      .italic()
+  }
+
+  public var mediaCaptionColor: AdaptiveColor {
+    Colors.Text.secondary
+  }
+
+  public var mediaCaptionAlignment: TextAlignment {
+    .center
+  }
+
   public var mediaCornerRadius: CGFloat {
     Dimension.CornerRadius.medium
   }
