@@ -599,6 +599,48 @@ final class SceneDelegateViewModelTests: TestCase {
     }
   }
 
+  func testPerformShortcutItem_ProjectsWeLove() {
+    self.goToDiscovery.assertValueCount(0)
+
+    self.vm.inputs.applicationPerformActionForShortcutItem(
+      ShortcutItem.projectsWeLove.applicationShortcutItem
+    )
+
+    let params = .defaults
+      |> DiscoveryParams.lens.staffPicks .~ true
+      |> DiscoveryParams.lens.sort .~ .magic
+    self.goToDiscovery.assertValues([params])
+  }
+
+  func testPerformShortcutItem_RecommendedForYou() {
+    self.goToDiscovery.assertValueCount(0)
+
+    self.vm.inputs.applicationPerformActionForShortcutItem(
+      ShortcutItem.recommendedForYou.applicationShortcutItem
+    )
+
+    let params = .defaults
+      |> DiscoveryParams.lens.recommended .~ true
+      |> DiscoveryParams.lens.sort .~ .magic
+    self.goToDiscovery.assertValues([params])
+  }
+
+  func testPerformShortcutItem_Search() {
+    self.goToSearch.assertValueCount(0)
+
+    self.vm.inputs.applicationPerformActionForShortcutItem(ShortcutItem.search.applicationShortcutItem)
+
+    self.goToSearch.assertValueCount(1)
+  }
+
+  func testPerformShortcutItem_Success() {
+    withEnvironment(currentUser: nil) {
+      self.vm.inputs.applicationPerformActionForShortcutItem(ShortcutItem.search.applicationShortcutItem)
+
+      self.goToSearch.assertValueCount(1)
+    }
+  }
+
   func testProjectSurveyDeepLink() {
     self.presentViewController.assertValues([])
 
