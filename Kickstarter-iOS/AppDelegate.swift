@@ -152,10 +152,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { [weak self] in self?.goToMessageThread($0) }
 
-    self.viewModel.outputs.goToSearch
-      .observeForUI()
-      .observeValues { [weak self] in self?.rootTabBarController?.switchToSearch() }
-
     self.viewModel.outputs.goToMobileSafari
       .observeForUI()
       .observeValues { UIApplication.shared.open($0) }
@@ -358,15 +354,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   internal func applicationDidReceiveMemoryWarning(_: UIApplication) {
     self.viewModel.inputs.applicationDidReceiveMemoryWarning()
-  }
-
-  internal func application(
-    _: UIApplication,
-    performActionFor shortcutItem: UIApplicationShortcutItem,
-    completionHandler: @escaping (Bool) -> Void
-  ) {
-    self.viewModel.inputs.applicationPerformActionForShortcutItem(shortcutItem)
-    completionHandler(true)
   }
 
   // MARK: - Functions
