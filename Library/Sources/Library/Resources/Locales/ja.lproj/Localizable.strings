@@ -176,6 +176,7 @@
 "Continue_with_quantity_count_add_ons.two" = "%{quantity_count} 個のアドオンで続行する";
 "Continue_with_quantity_count_add_ons.zero" = "%{quantity_count} 個のアドオンで続行する";
 "Continue_with_this_reward" = "このリワードで続けますか？";
+"Copy_link" = "リンクをコピー";
 "Copying_reselling" = "複製、再販、または盗作";
 "Couldnt_add_attachment" = "添付ファイルを追加できませんでした";
 "Couldnt_load_more_comments_Tap_to_retry" = "他のコメントを読み込めませんでした。\nタップして再試行してください";
@@ -280,6 +281,7 @@
 "Failed_to_update_subscription" = "定期購読の更新に失敗しました";
 "Faq" = "FAQ";
 "Featured" = "注目";
+"Feed" = "フィード";
 "Filter" = "絞り込む";
 "Filter_by_all_projects" = "全てのプロジェクトに絞る";
 "Filter_by_category_name" = "%{category_name} に絞る";
@@ -436,6 +438,7 @@
 "Left_count_left.two" = "残り%{left_count}";
 "Left_count_left.zero" = "残り%{left_count}";
 "Limited_shipping" = "限定配送";
+"Link_copied_spread_the_word" = "リンクをコピーしました。ぜひシェアしてください！";
 "Live" = "ライブ";
 "Live_Stream" = "ライブ配信";
 "Live_and_unsuccessful_backings_can_currently_be_viewed_in_the_profile_tab" = "進行中の支援とファンディングに成功しなかった支援については［プロフィール］タブから確認できます。";
@@ -793,6 +796,7 @@
 "Stay_updated_on_the_projects_youve_backed_and_learn_about_how_these_creative_works_are_produced" = "バックしたプロジェクトの最新情報を把握し、これらクリエイティブ作品がどのように製作されているかを確認しましょう。";
 "Stay_updated_on_this_project" = "このプロジェクトの最新情報を受け取りたい？";
 "Step_number" = "ステップ%{current_step} (合計%{total_steps}ステップ中)";
+"Stories" = "ストーリー";
 "Subscribe" = "購読する";
 "Subscribed" = "購読済";
 "Subscribes_to_upcoming_lives_streams" = "ライブ配信を購読";
@@ -944,6 +948,7 @@
 "Well_import_your_name_and_profile_photo_and_access_your_friend_list" = "Kickstarter はあなたの名前とプロフィール写真をインポートし、友達リストにアクセスできるようになります。Kickstarter があなたの許可なしに Facebook に投稿することは決してありません。";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "終了48時間前に通知が届きます。保存アイテムをみるにはプロフィールをご覧ください。";
 "What_parts_of_your_project_will_use_AI_generated_content" = "プロジェクトのどの部分で AI 生成のコンテンツを使用しますか？できるだけ詳しく説明してください。";
+"Whatsapp" = "Whatsapp";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "フォローがオンになっていると、他の人のアクティビティをフォローすることができ、また、他の人もあなたのアクティビティをフォローすることができます。このようなデータを永久に削除するためにはフォローをオフにしてください。";
 "When_projects_youve_backed_have_successfully_funded_youll_see_them_here" = "バックしたプロジェクトのファンディングが成功すると、こちらに表示されます。";
 "When_projects_youve_backed_need_your_attention_youll_see_them_here" = "バックしたプロジェクトに関してお知らせやアラートがある場合はこちらに表示されます。";
@@ -953,6 +958,7 @@
 "Working_on_it" = "Working on it";
 "Write_a_bio" = "簡単な自己紹介を書いてください。ほんの１～２文で構いません。";
 "Write_a_comment" = "コメントを残す...";
+"X" = "X";
 "Yes" = "はい";
 "Yes_cancel_it" = "はい、取り消します";
 "Yes_cancel_my_pledge" = "はい、プレッジをキャンセルします";

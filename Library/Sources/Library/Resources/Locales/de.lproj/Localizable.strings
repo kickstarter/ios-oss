@@ -176,6 +176,7 @@
 "Continue_with_quantity_count_add_ons.two" = "Weiter mit %{quantity_count} Add-ons";
 "Continue_with_quantity_count_add_ons.zero" = "Weiter mit %{quantity_count} Add-ons";
 "Continue_with_this_reward" = "Weiter mit dieser Belohnung?";
+"Copy_link" = "Link kopieren";
 "Copying_reselling" = "Kopie, Wiederverkauf oder Plagiat";
 "Couldnt_add_attachment" = "Anhang konnte nicht hinzugefügt werden";
 "Couldnt_load_more_comments_Tap_to_retry" = "Weitere Kommentare konnten nicht geladen werden.\nAntippen und erneut versuchen";
@@ -280,6 +281,7 @@
 "Failed_to_update_subscription" = "Abo konnte nicht aktualisiert werden";
 "Faq" = "FAQ";
 "Featured" = "Highlights";
+"Feed" = "Feed";
 "Filter" = "Filter";
 "Filter_by_all_projects" = "Filter: Alle Projekte";
 "Filter_by_category_name" = "Filter: %{category_name}";
@@ -436,6 +438,7 @@
 "Left_count_left.two" = "%{left_count} übrig";
 "Left_count_left.zero" = "%{left_count} übrig";
 "Limited_shipping" = "Nur bestimmte Versandziele";
+"Link_copied_spread_the_word" = "Link copied. Spread the word!";
 "Live" = "Live";
 "Live_Stream" = "Live-Stream";
 "Live_and_unsuccessful_backings_can_currently_be_viewed_in_the_profile_tab" = "Derzeit findest du aktuelle und nicht erfolgreiche Beiträge auf dem Tab „Profil“.";
@@ -793,6 +796,7 @@
 "Stay_updated_on_the_projects_youve_backed_and_learn_about_how_these_creative_works_are_produced" = "Bleib immer informiert über die Projekte, die du unterstützt hast, und erfahre mehr zu ihrer Entstehung.";
 "Stay_updated_on_this_project" = "Möchtest du bei diesem Projekt auf dem Laufenden bleiben?";
 "Step_number" = "Schritt %{current_step} von %{total_steps}";
+"Stories" = "Geschichten";
 "Subscribe" = "Abonnieren";
 "Subscribed" = "Abo aktiviert";
 "Subscribes_to_upcoming_lives_streams" = "Zukünftige Live-Streams abonnieren.";
@@ -944,6 +948,7 @@
 "Well_import_your_name_and_profile_photo_and_access_your_friend_list" = "Wir importieren deinen Namen und dein Profilfoto und können auf die Liste deiner Freunde zugreifen. Wir werden jedoch niemals etwas ohne deine Zustimmung posten.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Wir werden dir 48 Stunden vor Ablauf dieses Projekts eine Benachrichtigung senden, sowie für alle Projekte, die du in Zukunft speicherst. Um alle gespeicherten Projekte anzusehen, gehe bitte zu deiner Profilseite.";
 "What_parts_of_your_project_will_use_AI_generated_content" = "Bei welchen Teilen deines Projekts kommen KI-generierte Inhalte zum Einsatz? Bitte beantworte die Frage so konkret wie möglich.";
+"Whatsapp" = "WhatsApp";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Wenn die Funktion Folgen aktiviert wurde, kannst du die Aktivitäten von anderen einsehen und diese sehen deine Aktivitäten. Wenn die Funktion deaktiviert wurde, werden diese Daten endgültig gelöscht.";
 "When_projects_youve_backed_have_successfully_funded_youll_see_them_here" = "Wenn Projekte, die du unterstützt hast, erfolgreich finanziert wurden, erscheinen sie hier.";
 "When_projects_youve_backed_need_your_attention_youll_see_them_here" = "Wenn Projekte, die du unterstützt, deine Aufmerksamkeit brauchen, siehst du sie hier.";
@@ -953,6 +958,7 @@
 "Working_on_it" = "Working on it";
 "Write_a_bio" = "Schreibe eine kurze Biografie, ein oder zwei Sätze genügen.";
 "Write_a_comment" = "Hinterlasse einen Kommentar ...";
+"X" = "X";
 "Yes" = "Ja";
 "Yes_cancel_it" = "Ja, abbrechen";
 "Yes_cancel_my_pledge" = "Ja, ich möchte meinen Beitrag zurückziehen";
