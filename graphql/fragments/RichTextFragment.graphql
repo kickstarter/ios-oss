@@ -65,7 +65,7 @@ fragment RichTextItemFragment on RichTextItem {
 }
 
 fragment RichTextComponentFragment on RichTextComponent {
-  items {
+  items @include(if: $storyRichText) {
     ...RichTextItemFragment
     ... on RichText {
       children {

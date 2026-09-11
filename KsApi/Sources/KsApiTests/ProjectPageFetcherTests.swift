@@ -47,7 +47,7 @@ public final class ProjectPageFetcherTests: XCTestCase {
 
     let fetcher = ProjectPageFetcher(withService: mockService)
 
-    let producer = fetcher.fetchProjectPage(projectParam: .id(0))
+    let producer = fetcher.fetchProjectPage(projectParam: .id(0), includeStoryRichText: false)
     let project = producer.allValues().first
 
     XCTAssertNotNil(project)
@@ -101,7 +101,7 @@ public final class ProjectPageFetcherTests: XCTestCase {
 
     let fetcher = ProjectPageFetcher(withService: mockService)
 
-    let producer = fetcher.fetchProjectPage(projectParam: .id(0))
+    let producer = fetcher.fetchProjectPage(projectParam: .id(0), includeStoryRichText: false)
     let project = producer.allValues().first
 
     XCTAssertNotNil(project)
@@ -138,7 +138,7 @@ public final class ProjectPageFetcherTests: XCTestCase {
 
     let fetcher = ProjectPageFetcher(withService: mockService)
 
-    let producer = fetcher.fastFetchProjectPage(projectParam: .id(0))
+    let producer = fetcher.fastFetchProjectPage(projectParam: .id(0), includeStoryRichText: false)
     guard let project = producer.allValues().first else {
       XCTFail("Fetcher should have produced a project")
       return
@@ -158,7 +158,6 @@ public final class ProjectPageFetcherTests: XCTestCase {
     XCTAssertEqual(project.video?.high, "high.mp4")
     XCTAssertNotNil(project.extendedProjectProperties)
     XCTAssertEqual(project.extendedProjectProperties?.risks, "This project has risks.")
-    XCTAssertEqual(project.extendedProjectProperties?.story.richText?.items.count, 1)
     XCTAssertEqual(project.flagging, true)
   }
 
@@ -174,7 +173,7 @@ public final class ProjectPageFetcherTests: XCTestCase {
     )
 
     let fetcher = ProjectPageFetcher(withService: mockService)
-    let producer = fetcher.fastFetchProjectPage(projectParam: .id(0))
+    let producer = fetcher.fastFetchProjectPage(projectParam: .id(0), includeStoryRichText: false)
 
     XCTAssertEqual(producer.allValues().count, 0)
     guard let errorResult = producer.collect().last(),
@@ -198,7 +197,7 @@ public final class ProjectPageFetcherTests: XCTestCase {
     )
 
     let fetcher = ProjectPageFetcher(withService: mockService)
-    let producer = fetcher.fastFetchProjectPage(projectParam: .id(0))
+    let producer = fetcher.fastFetchProjectPage(projectParam: .id(0), includeStoryRichText: false)
 
     XCTAssertEqual(producer.allValues().count, 0)
     guard let errorResult = producer.collect().last(),
@@ -226,7 +225,7 @@ public final class ProjectPageFetcherTests: XCTestCase {
     )
 
     let fetcher = ProjectPageFetcher(withService: mockService)
-    let producer = fetcher.fastFetchProjectPage(projectParam: .id(0))
+    let producer = fetcher.fastFetchProjectPage(projectParam: .id(0), includeStoryRichText: false)
 
     XCTAssertEqual(producer.allValues().count, 0)
     guard let errorResult = producer.collect().last(),
@@ -254,7 +253,7 @@ public final class ProjectPageFetcherTests: XCTestCase {
     )
 
     let fetcher = ProjectPageFetcher(withService: mockService)
-    let producer = fetcher.fastFetchProjectPage(projectParam: .id(0))
+    let producer = fetcher.fastFetchProjectPage(projectParam: .id(0), includeStoryRichText: false)
 
     XCTAssertEqual(producer.allValues().count, 0)
     guard let errorResult = producer.collect().last(),

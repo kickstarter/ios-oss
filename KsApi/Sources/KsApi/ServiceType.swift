@@ -256,12 +256,12 @@ public protocol ServiceType {
 
   /// Fetch the newest data for a particular project from its id or slug. Includes extended project properties.
   /// Used by `ProjectPageFetcher` to run an optimized project page fetch.
-  func fastFetchProjectPageExtendedProperties(projectParam: Param)
+  func fastFetchProjectPageExtendedProperties(projectParam: Param, includeStoryRichText: Bool)
     -> SignalProducer<ProjectPageExtraProperties, ErrorEnvelope>
 
   /// Fetch the newest data for a particular project from its id or slug, including an optional backing id if current user is backing project
   /// (currently only used on `ProjectPamphetViewModel`and `ProjectPageViewModel`  because it's a GQL query)
-  func fetchProject(projectParam: Param)
+  func fetchProject(projectParam: Param, includeStoryRichText: Bool)
     -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope>
 
   /// Fetch the project's rewards and pledge over time data

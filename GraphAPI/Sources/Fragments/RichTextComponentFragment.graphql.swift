@@ -5,7 +5,7 @@
 
 public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment RichTextComponentFragment on RichTextComponent { __typename items { __typename ...RichTextItemFragment ... on RichText { children { __typename ...RichTextItemFragment } } ... on RichTextHeader { children { __typename ...RichTextItemFragment } } ... on RichTextListItem { children { __typename ...RichTextItemFragment } } } }"#
+    #"fragment RichTextComponentFragment on RichTextComponent { __typename items @include(if: $storyRichText) { __typename ...RichTextItemFragment ... on RichText { children { __typename ...RichTextItemFragment } } ... on RichTextHeader { children { __typename ...RichTextItemFragment } } ... on RichTextListItem { children { __typename ...RichTextItemFragment } } } }"#
   }
 
   public let __data: DataDict
@@ -14,13 +14,13 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
   public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextComponent }
   public static var __selections: [ApolloAPI.Selection] { [
     .field("__typename", String.self),
-    .field("items", [Item].self),
+    .include(if: "storyRichText", .field("items", [Item].self)),
   ] }
 
-  public var items: [Item] { __data["items"] }
+  public var items: [Item]? { __data["items"] }
 
   public init(
-    items: [Item]
+    items: [Item]? = nil
   ) {
     self.init(_dataDict: DataDict(
       data: [

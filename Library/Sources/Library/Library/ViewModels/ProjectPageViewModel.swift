@@ -947,12 +947,16 @@ private func fetchProject(
 
   let experiment = InstantPledgeButtonExperiment()
   if experiment.boolValue(forKey: .instant_pledge_enabled) == true {
-    return fetcher.fastFetchProjectPage(projectParam: param.param)
-      .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+    return fetcher.fastFetchProjectPage(
+      projectParam: param.param,
+      includeStoryRichText: featureProjectStoryRichTextEnabled()
+    )
+    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
   }
 
   return fetcher.fetchProjectPage(
-    projectParam: param.param
+    projectParam: param.param,
+    includeStoryRichText: featureProjectStoryRichTextEnabled()
   )
   .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 }

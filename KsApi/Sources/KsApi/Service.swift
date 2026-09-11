@@ -577,11 +577,12 @@ public struct Service: ServiceType {
       .flatMap { Project.projectProducer(from: $0) }
   }
 
-  public func fastFetchProjectPageExtendedProperties(projectParam: Param)
+  public func fastFetchProjectPageExtendedProperties(projectParam: Param, includeStoryRichText: Bool)
     -> SignalProducer<ProjectPageExtraProperties, ErrorEnvelope> {
     let query = GraphAPI.FastFetchProjectPageExtendedPropertiesQuery(
       projectId: .someOrNil(projectParam.id),
-      slug: .someOrNil(projectParam.slug)
+      slug: .someOrNil(projectParam.slug),
+      storyRichText: includeStoryRichText
     )
 
     return GraphQL.shared.client
@@ -595,11 +596,12 @@ public struct Service: ServiceType {
 
    This is the only use case at the moment as it effects the `ProjectPageViewController` directly.
    */
-  public func fetchProject(projectParam: Param)
+  public func fetchProject(projectParam: Param, includeStoryRichText: Bool)
     -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope> {
     let query = GraphAPI.FetchProjectByParamQuery(
       projectId: .someOrNil(projectParam.id),
-      slug: .someOrNil(projectParam.slug)
+      slug: .someOrNil(projectParam.slug),
+      storyRichText: includeStoryRichText
     )
 
     return GraphQL.shared.client

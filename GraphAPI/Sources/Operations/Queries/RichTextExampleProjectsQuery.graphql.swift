@@ -7,11 +7,17 @@ public class RichTextExampleProjectsQuery: GraphQLQuery {
   public static let operationName: String = "RichTextExampleProjectsQuery"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query RichTextExampleProjectsQuery { projects(recommended: true, first: 10) { __typename nodes { __typename id name storyRichText { __typename ...RichTextComponentFragment } } } }"#,
+      #"query RichTextExampleProjectsQuery($storyRichText: Boolean!) { projects(recommended: true, first: 10) { __typename nodes { __typename id name storyRichText { __typename ...RichTextComponentFragment } } } }"#,
       fragments: [RichTextComponentFragment.self, RichTextItemFragment.self]
     ))
 
-  public init() {}
+  public var storyRichText: Bool
+
+  public init(storyRichText: Bool) {
+    self.storyRichText = storyRichText
+  }
+
+  public var __variables: Variables? { ["storyRichText": storyRichText] }
 
   public struct Data: GraphAPI.SelectionSet {
     public let __data: DataDict
@@ -124,7 +130,7 @@ public class RichTextExampleProjectsQuery: GraphQLQuery {
             .fragment(RichTextComponentFragment.self),
           ] }
 
-          public var items: [Item] { __data["items"] }
+          public var items: [Item]? { __data["items"] }
 
           public struct Fragments: FragmentContainer {
             public let __data: DataDict
@@ -134,7 +140,7 @@ public class RichTextExampleProjectsQuery: GraphQLQuery {
           }
 
           public init(
-            items: [Item]
+            items: [Item]? = nil
           ) {
             self.init(_dataDict: DataDict(
               data: [

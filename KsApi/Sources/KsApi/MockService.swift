@@ -1356,7 +1356,10 @@
         .flatMap { Project.projectProducer(from: $0) }
     }
 
-    internal func fastFetchProjectPageExtendedProperties(projectParam: Param)
+    internal func fastFetchProjectPageExtendedProperties(
+      projectParam: Param,
+      includeStoryRichText: Bool
+    )
       -> SignalProducer<ProjectPageExtraProperties, ErrorEnvelope> {
       // If a result was set, use the result for mocking.
       if let result = self.fastFetchProjectPageResult {
@@ -1371,7 +1374,8 @@
 
       let query = GraphAPI.FastFetchProjectPageExtendedPropertiesQuery(
         projectId: .someOrNil(projectParam.id),
-        slug: .someOrNil(projectParam.slug)
+        slug: .someOrNil(projectParam.slug),
+        storyRichText: includeStoryRichText
       )
 
       // Otherwise, fall back to the GraphQL mocking code.
@@ -1380,14 +1384,15 @@
         .flatMap { ProjectPageExtraProperties.extraPropertiesProducer(from: $0) }
     }
 
-    internal func fetchProject(projectParam: Param)
+    internal func fetchProject(projectParam: Param, includeStoryRichText: Bool)
       -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope> {
       guard let client = self.apolloClient else {
         return .empty
       }
       let query = GraphAPI.FetchProjectByParamQuery(
         projectId: .someOrNil(projectParam.id),
-        slug: .someOrNil(projectParam.slug)
+        slug: .someOrNil(projectParam.slug),
+        storyRichText: includeStoryRichText
       )
 
       return client.fetchWithResult(

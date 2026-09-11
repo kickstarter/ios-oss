@@ -277,7 +277,7 @@ public struct ExtendedProjectPropertiesFragment: GraphAPI.SelectionSet, Fragment
       .fragment(RichTextComponentFragment.self),
     ] }
 
-    public var items: [Item] { __data["items"] }
+    public var items: [Item]? { __data["items"] }
 
     public struct Fragments: FragmentContainer {
       public let __data: DataDict
@@ -287,7 +287,7 @@ public struct ExtendedProjectPropertiesFragment: GraphAPI.SelectionSet, Fragment
     }
 
     public init(
-      items: [Item]
+      items: [Item]? = nil
     ) {
       self.init(_dataDict: DataDict(
         data: [
@@ -317,7 +317,7 @@ public struct ExtendedProjectPropertiesFragment: GraphAPI.SelectionSet, Fragment
       .fragment(RichTextComponentFragment.self),
     ] }
 
-    public var items: [Item] { __data["items"] }
+    public var items: [Item]? { __data["items"] }
 
     public struct Fragments: FragmentContainer {
       public let __data: DataDict
@@ -327,7 +327,7 @@ public struct ExtendedProjectPropertiesFragment: GraphAPI.SelectionSet, Fragment
     }
 
     public init(
-      items: [Item]
+      items: [Item]? = nil
     ) {
       self.init(_dataDict: DataDict(
         data: [
