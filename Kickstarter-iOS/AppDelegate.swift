@@ -256,18 +256,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.shortcutItems = shortcutItems.map { $0.applicationShortcutItem }
       }
 
-    self.viewModel.outputs.findRedirectUrl
-      .observeForUI()
-      .observeValues { [weak self] in self?.findRedirectUrl($0) }
-
-    self.viewModel.outputs.emailVerificationCompleted
-      .observeForUI()
-      .observeValues { [weak self] message, success in
-        self?.rootTabBarController?.dismiss(animated: false, completion: nil)
-        self?.rootTabBarController?
-          .messageBannerViewController?.showBanner(with: success ? .success : .error, message: message)
-      }
-
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
@@ -352,31 +340,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.inputs.applicationDidEnterBackground()
   }
 
-  func application(
-    _: UIApplication,
-    continue userActivity: NSUserActivity,
-    restorationHandler _: @escaping ([UIUserActivityRestoring]?) -> Void
-  ) -> Bool {
-    return self.viewModel.inputs.applicationContinueUserActivity(userActivity)
-  }
-
-  func application(
-    _ app: UIApplication,
-    open url: URL,
-    options: [UIApplication.OpenURLOptionsKey: Any] = [:]
-  ) -> Bool {
-    // If this is not a Facebook login call, handle the potential deep-link
-    guard !AppEnvironment.current.facebookSDK.handleOpenURL(app, open: url, options: options) else {
-      return true
-    }
-
-    return self.viewModel.inputs.applicationOpenUrl(
-      application: app,
-      url: url,
-      options: options
-    )
-  }
-
   // MARK: - Remote notifications
 
   internal func application(
@@ -442,12 +405,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   private func goToMessageThread(_ messageThread: MessageThread) {
     self.rootTabBarController?.switchToMessageThread(messageThread)
-  }
-
-  private func findRedirectUrl(_ url: URL) {
-    let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-    let task = session.dataTask(with: url)
-    task.resume()
   }
 
   private func appTrackingAuthorizationChanged(status: AppTrackingAuthorization) {
@@ -568,21 +525,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     automation.requestAuthorizationAtLaunch = false
     automation.registerDeviceToken = false
     return automation
-  }
-}
-
-// MARK: - URLSessionTaskDelegate
-
-extension AppDelegate: URLSessionTaskDelegate {
-  public func urlSession(
-    _: URLSession,
-    task _: URLSessionTask,
-    willPerformHTTPRedirection _: HTTPURLResponse,
-    newRequest request: URLRequest,
-    completionHandler: @escaping (URLRequest?) -> Void
-  ) {
-    request.url.doIfSome(self.viewModel.inputs.foundRedirectUrl)
-    completionHandler(nil)
   }
 }
 
