@@ -14,6 +14,9 @@ import XCTest
 final class SceneDelegateViewModelTests: TestCase {
   var vm: SceneDelegateViewModelType!
 
+  private let applicationActive = TestObserver<Bool, Never>()
+  private let applicationDidEnterBackground = TestObserver<(), Never>()
+  private let applicationWillEnterForeground = TestObserver<(), Never>()
   private let emailVerificationCompletedMessage = TestObserver<String, Never>()
   private let emailVerificationCompletedSuccess = TestObserver<Bool, Never>()
   private let findRedirectUrl = TestObserver<URL, Never>()
@@ -41,6 +44,9 @@ final class SceneDelegateViewModelTests: TestCase {
 
     self.vm = SceneDelegateViewModel()
 
+    self.vm.outputs.applicationActive.observe(self.applicationActive.observer)
+    self.vm.outputs.applicationDidEnterBackground.observe(self.applicationDidEnterBackground.observer)
+    self.vm.outputs.applicationWillEnterForeground.observe(self.applicationWillEnterForeground.observer)
     self.vm.outputs.emailVerificationCompleted.map(first)
       .observe(self.emailVerificationCompletedMessage.observer)
     self.vm.outputs.emailVerificationCompleted.map(second)
@@ -986,4 +992,56 @@ final class SceneDelegateViewModelTests: TestCase {
     }
   }
 
+  func testApplicationWillEnterForeground_IgnoresSceneConnectionEvent() {
+    // UIKit sends a foreground event while the scene is connecting, which duplicates work that
+    // `applicationDidFinishLaunching` already drives, so it should not be forwarded.
+    self.vm.inputs.sceneWillEnterForeground()
+
+    self.applicationWillEnterForeground.assertValueCount(
+      0,
+      "The foreground event sent while the scene connects is ignored."
+    )
+
+    self.vm.inputs.sceneDidEnterBackground()
+    self.vm.inputs.sceneWillEnterForeground()
+
+    self.applicationWillEnterForeground.assertValueCount(
+      1,
+      "Returning to the foreground from the background emits."
+    )
+
+    self.vm.inputs.sceneDidEnterBackground()
+    self.vm.inputs.sceneWillEnterForeground()
+
+    self.applicationWillEnterForeground.assertValueCount(2, "Each subsequent return emits.")
+  }
+
+  func testApplicationDidEnterBackground() {
+    self.applicationDidEnterBackground.assertValueCount(0)
+
+    self.vm.inputs.sceneDidEnterBackground()
+
+    self.applicationDidEnterBackground.assertValueCount(1)
+
+    self.vm.inputs.sceneWillEnterForeground()
+    self.vm.inputs.sceneDidEnterBackground()
+
+    self.applicationDidEnterBackground.assertValueCount(2)
+  }
+
+  func testApplicationActive() {
+    self.applicationActive.assertValues([])
+
+    self.vm.inputs.sceneDidBecomeActive()
+
+    self.applicationActive.assertValues([true])
+
+    self.vm.inputs.sceneWillResignActive()
+
+    self.applicationActive.assertValues([true, false])
+
+    self.vm.inputs.sceneDidBecomeActive()
+
+    self.applicationActive.assertValues([true, false, true])
+  }
 }
