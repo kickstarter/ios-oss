@@ -23,7 +23,6 @@ final class AppDelegateViewModelTests: TestCase {
   private let goToDiscovery = TestObserver<DiscoveryParams?, Never>()
   private let goToLoginWithIntent = TestObserver<LoginIntent, Never>()
   private let goToMobileSafari = TestObserver<URL, Never>()
-  private let goToSearch = TestObserver<(), Never>()
   private let postNotificationName = TestObserver<Notification.Name, Never>()
   private let presentViewController = TestObserver<Int, Never>()
   private let pushRegistrationStarted = TestObserver<(), Never>()
@@ -63,7 +62,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
     self.vm.outputs.goToLoginWithIntent.observe(self.goToLoginWithIntent.observer)
     self.vm.outputs.goToMobileSafari.observe(self.goToMobileSafari.observer)
-    self.vm.outputs.goToSearch.observe(self.goToSearch.observer)
     self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
     self.vm.outputs.presentViewController.map { ($0 as! UINavigationController).viewControllers.count }
       .observe(self.presentViewController.observer)
@@ -679,123 +677,6 @@ final class AppDelegateViewModelTests: TestCase {
       self.setApplicationShortcutItems.assertValues([
         [.recommendedForYou, .projectsWeLove, .search]
       ])
-    }
-  }
-
-  func testPerformShortcutItem_ProjectsWeLove() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
-
-    self.goToDiscovery.assertValueCount(0)
-
-    self.vm.inputs.applicationPerformActionForShortcutItem(
-      ShortcutItem.projectsWeLove.applicationShortcutItem
-    )
-
-    let params = .defaults
-      |> DiscoveryParams.lens.staffPicks .~ true
-      |> DiscoveryParams.lens.sort .~ .magic
-    self.goToDiscovery.assertValues([params])
-  }
-
-  func testLaunchShortcutItem_ProjectsWeLove() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [
-        UIApplication.LaunchOptionsKey.shortcutItem: ShortcutItem.projectsWeLove.applicationShortcutItem
-      ]
-    )
-
-    let params = .defaults
-      |> DiscoveryParams.lens.staffPicks .~ true
-      |> DiscoveryParams.lens.sort .~ .magic
-    self.goToDiscovery.assertValues([params])
-    XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
-  }
-
-  func testPerformShortcutItem_RecommendedForYou() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
-
-    self.goToDiscovery.assertValueCount(0)
-
-    self.vm.inputs.applicationPerformActionForShortcutItem(
-      ShortcutItem.recommendedForYou.applicationShortcutItem
-    )
-
-    let params = .defaults
-      |> DiscoveryParams.lens.recommended .~ true
-      |> DiscoveryParams.lens.sort .~ .magic
-    self.goToDiscovery.assertValues([params])
-  }
-
-  func testLaunchShortcutItem_RecommendedForYou() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [
-        UIApplication.LaunchOptionsKey.shortcutItem: ShortcutItem.recommendedForYou.applicationShortcutItem
-      ]
-    )
-
-    let params = .defaults
-      |> DiscoveryParams.lens.recommended .~ true
-      |> DiscoveryParams.lens.sort .~ .magic
-    self.goToDiscovery.assertValues([params])
-    XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
-  }
-
-  func testPerformShortcutItem_Search() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
-
-    self.goToSearch.assertValueCount(0)
-
-    self.vm.inputs.applicationPerformActionForShortcutItem(ShortcutItem.search.applicationShortcutItem)
-
-    self.goToSearch.assertValueCount(1)
-  }
-
-  func testPerformShortcutItem_Success() {
-    withEnvironment(currentUser: nil) {
-      self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.shared,
-        launchOptions: [:]
-      )
-      self.vm.inputs.applicationPerformActionForShortcutItem(ShortcutItem.search.applicationShortcutItem)
-
-      self.goToSearch.assertValueCount(1)
-    }
-  }
-
-  func testLaunchShortcutItem_Search() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [
-        UIApplication.LaunchOptionsKey.shortcutItem: ShortcutItem.search.applicationShortcutItem
-      ]
-    )
-
-    self.goToSearch.assertValueCount(1)
-    XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
-  }
-
-  func testLaunchShortcutItem_Failure() {
-    withEnvironment(currentUser: nil) {
-      self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.shared,
-        launchOptions: [
-          UIApplication.LaunchOptionsKey.shortcutItem: ShortcutItem.search.applicationShortcutItem
-        ]
-      )
-
-      self.goToSearch.assertValueCount(1)
-      XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
     }
   }
 
