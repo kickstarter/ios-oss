@@ -20,9 +20,23 @@ public protocol SceneDelegateViewModelInputs {
 
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
+
+  /// Call when the scene enters the background.
+  func sceneDidEnterBackground()
+
+  /// Call when the scene is about to enter the foreground.
+  func sceneWillEnterForeground()
 }
 
 public protocol SceneDelegateViewModelOutputs {
+  /// Emits when the app has entered the background, to be forwarded to `AppDelegateViewModel`.
+  var applicationDidEnterBackground: Signal<(), Never> { get }
+
+  /// Emits when the app is entering the foreground from the background, to be forwarded to
+  /// `AppDelegateViewModel`. Does not emit for the foreground event UIKit sends while the scene is
+  /// first connecting, which duplicates work already driven by `applicationDidFinishLaunching`.
+  var applicationWillEnterForeground: Signal<(), Never> { get }
+
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
 
@@ -67,9 +81,9 @@ public protocol SceneDelegateViewModelType {
 }
 
 /// Handles everything that arrives through a `UIWindowScene`'s delegate: URL opens, continued user
-/// activities (universal links / Handoff), and shortcut-item invocations, for now. This is the
-/// SceneDelegate's counterpart to `AppDelegateViewModel`, which instead handles push-notification and
-/// Braze deep links.
+/// activities (universal links / Handoff), shortcut-item invocations, and the scene's foreground /
+/// background lifecycle. This is the SceneDelegate's counterpart to `AppDelegateViewModel`,
+/// which instead handles push-notification and Braze deep links.
 /// Both funnel their resolved `Navigation` values through the shared `DeepLinkNavigationRouter`
 /// router so the navigation-resolution logic isn't duplicated.
 public final class SceneDelegateViewModel: SceneDelegateViewModelType, SceneDelegateViewModelInputs,
@@ -141,6 +155,22 @@ public final class SceneDelegateViewModel: SceneDelegateViewModelType, SceneDele
     self.goToSearch = deepLinkOutputs.goToSearch
     self.presentViewController = deepLinkOutputs.presentViewController
     self.updateCurrentUserInEnvironment = deepLinkOutputs.updateCurrentUserInEnvironment
+
+    // MARK: - Scene lifecycle
+
+    // Once an app adopts scenes, UIKit stops calling the `UIApplicationDelegate` foreground /
+    // background callbacks entirely. The behavior they drive (refreshing the current user and config,
+    // resetting the icon badge, re-reading app-tracking authorization) is app-scoped and still lives
+    // in `AppDelegateViewModel`, so these outputs exist purely to be forwarded to it.
+
+    self.applicationDidEnterBackground = self.sceneDidEnterBackgroundProperty.signal
+
+    // UIKit also sends a foreground event while the scene is first connecting, which would duplicate
+    // the work `applicationDidFinishLaunching` already kicks off, so drop it. The app declares no
+    // `UIBackgroundModes` and so is never launched straight into the background, which means the
+    // first event is always that connect-time one.
+    self.applicationWillEnterForeground = self.sceneWillEnterForegroundProperty.signal
+      .skip(first: 1)
   }
 
   public var inputs: SceneDelegateViewModelInputs { return self }
@@ -178,6 +208,18 @@ public final class SceneDelegateViewModel: SceneDelegateViewModelType, SceneDele
     self.foundRedirectUrlProperty.value = url
   }
 
+  fileprivate let sceneDidEnterBackgroundProperty = MutableProperty(())
+  public func sceneDidEnterBackground() {
+    self.sceneDidEnterBackgroundProperty.value = ()
+  }
+
+  fileprivate let sceneWillEnterForegroundProperty = MutableProperty(())
+  public func sceneWillEnterForeground() {
+    self.sceneWillEnterForegroundProperty.value = ()
+  }
+
+  public let applicationDidEnterBackground: Signal<(), Never>
+  public let applicationWillEnterForeground: Signal<(), Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let emailVerificationCompleted: Signal<(String, Bool), Never>
   public let findRedirectUrl: Signal<URL, Never>

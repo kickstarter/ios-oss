@@ -327,11 +327,18 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
   }
 
-  func applicationWillEnterForeground(_: UIApplication) {
+  // MARK: - Scene lifecycle
+
+  // UIKit does not call the `UIApplicationDelegate` foreground / background callbacks in an app that
+  // adopts scenes. `SceneDelegate` receives the scene equivalents and calls through to these methods,
+  // which forward to the app-scoped view model that still owns the work they drive. The active /
+  // resign-active state is tracked in `AppDelegate` through `UIApplication` notifications instead.
+
+  internal func applicationWillEnterForeground() {
     self.viewModel.inputs.applicationWillEnterForeground()
   }
 
-  func applicationDidEnterBackground(_: UIApplication) {
+  internal func applicationDidEnterBackground() {
     self.viewModel.inputs.applicationDidEnterBackground()
   }
 
