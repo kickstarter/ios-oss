@@ -7,7 +7,6 @@ import UIKit
 /// All destinations in the VideoFeed share sheet.
 enum VideoFeedShareDestination: String, CaseIterable, Identifiable {
   case copyLink
-  case instagramFeed
   case x
   case instagramStories
   case facebookStories
@@ -30,7 +29,6 @@ enum VideoFeedShareDestination: String, CaseIterable, Identifiable {
   var label: String {
     switch self {
     case .copyLink: return "Copy link"
-    case .instagramFeed: return "Feed"
     case .x: return "X"
     case .instagramStories: return "Stories"
     case .facebookStories: return "Stories"
@@ -45,7 +43,6 @@ enum VideoFeedShareDestination: String, CaseIterable, Identifiable {
   var iconAssetName: String {
     switch self {
     case .copyLink: return "share-icon-copy-link"
-    case .instagramFeed: return "share-icon-instagram"
     case .x: return "share-icon-x"
     case .instagramStories: return "share-icon-instagram"
     case .facebookStories: return "share-icon-facebook"
@@ -60,7 +57,7 @@ enum VideoFeedShareDestination: String, CaseIterable, Identifiable {
   /// Override for icons whose assets have extra padding.
   var iconSize: CGFloat {
     switch self {
-    case .instagramFeed, .instagramStories: return 44
+    case .instagramStories: return 44
     default: return 28
     }
   }
@@ -73,7 +70,7 @@ enum VideoFeedShareDestination: String, CaseIterable, Identifiable {
     switch self {
     case .copyLink, .messages, .email, .more:
       return []
-    case .instagramFeed, .instagramStories:
+    case .instagramStories:
       return ["instagram://"]
     case .x:
       // X rebranded from Twitter; newer builds register x-twitter://, older ones twitter://.
@@ -85,7 +82,7 @@ enum VideoFeedShareDestination: String, CaseIterable, Identifiable {
     }
   }
 
-  /// Returns only the destinations that are available on the current device,
+  /// Returns only the destinations that are available on the current device.
   static func available() -> [VideoFeedShareDestination] {
     allCases.filter { $0.isAvailable }
   }
@@ -100,10 +97,56 @@ enum VideoFeedShareDestination: String, CaseIterable, Identifiable {
     }.contains { UIApplication.shared.canOpenURL($0) }
   }
 
+  // MARK: - Project URL
+
   static func projectURL(for item: VideoFeedItem) -> URL? {
     AppEnvironment.current.apiService.serverConfig.webBaseUrl
       .appendingPathComponent("projects/\(item.slug)")
   }
+
+  /// Returns the project URL with a `ref` query parameter appended for attribution tracking.
+  static func projectURL(for item: VideoFeedItem, refTag: RefTag) -> URL? {
+    guard let base = projectURL(for: item),
+          var components = URLComponents(url: base, resolvingAgainstBaseURL: false) else {
+      return nil
+    }
+    var queryItems = components.queryItems ?? []
+    queryItems.append(URLQueryItem(name: "ref", value: refTag.stringTag))
+    components.queryItems = queryItems
+    return components.url
+  }
+
+  // MARK: - Analytics
+
+  var refTag: RefTag {
+    switch self {
+    case .copyLink: return .videoFeedShareCopyLink
+    case .instagramStories: return .videoFeedShareInstagramStories
+    case .x: return .videoFeedShareX
+    case .facebookFeed: return .videoFeedShareFacebookFeed
+    case .facebookStories: return .videoFeedShareFacebookStories
+    case .whatsApp: return .videoFeedShareWhatsApp
+    case .messages: return .videoFeedShareMessages
+    case .email: return .videoFeedShareEmail
+    case .more: return .videoFeedShareMore
+    }
+  }
+
+  var analyticsContext: KSRAnalytics.TypeContext.VideoFeedShareDestinationContext {
+    switch self {
+    case .copyLink: return .copyLink
+    case .instagramStories: return .instagramStories
+    case .x: return .x
+    case .facebookFeed: return .facebookFeed
+    case .facebookStories: return .facebookStories
+    case .whatsApp: return .whatsApp
+    case .messages: return .messages
+    case .email: return .email
+    case .more: return .more
+    }
+  }
+
+  // MARK: - Perform
 
   func perform(item: VideoFeedItem) {
     let encoded = Self.encodedProjectURL(for: item)
@@ -111,8 +154,6 @@ enum VideoFeedShareDestination: String, CaseIterable, Identifiable {
     switch self {
     case .copyLink:
       UIPasteboard.general.string = Self.projectURL(for: item)?.absoluteString
-    case .instagramFeed:
-      Self.open("instagram://")
     case .instagramStories:
       Self.open("instagram-stories://share")
     case .facebookStories:
@@ -122,19 +163,15 @@ enum VideoFeedShareDestination: String, CaseIterable, Identifiable {
       Self.open("x-twitter://post?message=\(encoded)")
     case .facebookFeed:
       guard let encoded else { return }
-
       Self.open("https://www.facebook.com/sharer/sharer.php?u=\(encoded)")
     case .whatsApp:
       guard let encoded else { return }
-
       Self.open("whatsapp://send?text=\(encoded)")
     case .messages:
       guard let encoded else { return }
-
       Self.open("sms:?body=\(encoded)")
     case .email:
       guard let encoded else { return }
-
       Self.open("mailto:?body=\(encoded)")
     case .more:
       break
