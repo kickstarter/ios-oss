@@ -207,6 +207,26 @@ private func navigation(fromShortcutItem shortcutItem: ShortcutItem) -> SignalPr
   }
 }
 
+// Figures out a `Navigation` to route the user to from a shortcut item.
+private func navigation(fromShortcutItem shortcutItem: ShortcutItem) -> SignalProducer<Navigation?, Never> {
+  switch shortcutItem {
+  case .recommendedForYou:
+    let params = .defaults
+      |> DiscoveryParams.lens.recommended .~ true
+      |> DiscoveryParams.lens.sort .~ .magic
+    return SignalProducer(value: .tab(.discovery(params.queryParams)))
+
+  case .projectsWeLove:
+    let params = .defaults
+      |> DiscoveryParams.lens.staffPicks .~ true
+      |> DiscoveryParams.lens.sort .~ .magic
+    return SignalProducer(value: .tab(.discovery(params.queryParams)))
+
+  case .search:
+    return SignalProducer(value: .tab(.search))
+  }
+}
+
 private func accessTokenFromUrl(_ url: URL?) -> String? {
   return url.flatMap { url in
     URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems
