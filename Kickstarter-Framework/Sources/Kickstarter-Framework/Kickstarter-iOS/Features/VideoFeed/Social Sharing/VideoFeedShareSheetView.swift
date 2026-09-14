@@ -117,8 +117,7 @@ struct VideoFeedShareSheetView: View {
           .frame(width: Constants.linkCopiedAnimationSize, height: Constants.linkCopiedAnimationSize)
       }
 
-      // TODO: Add translations
-      Text("Link copied. Spread the word!")
+      Text(Strings.Link_copied_spread_the_word())
         .font(Font(UIFont.ksr_subhead()))
         .foregroundColor(.black)
         .multilineTextAlignment(.center)

@@ -61,15 +61,11 @@ fragment RichTextItemFragment on RichTextItem {
 
     iframeUrl
     originalUrl
-
-    thumbnailHeight
-    thumbnailUrl
-    thumbnailWidth
   }
 }
 
 fragment RichTextComponentFragment on RichTextComponent {
-  items {
+  items @include(if: $storyRichText) {
     ...RichTextItemFragment
     ... on RichText {
       children {

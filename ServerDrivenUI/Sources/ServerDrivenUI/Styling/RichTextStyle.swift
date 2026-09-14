@@ -40,6 +40,11 @@ public protocol RichTextStyle: Sendable {
 
   // MARK: - Media blocks
 
+  /// Attributes for captions in image blocks
+  var mediaCaptionFont: Font { get }
+  var mediaCaptionColor: AdaptiveColor { get }
+  var mediaCaptionAlignment: TextAlignment { get }
+
   /// Corner radius for image, audio/video, and oEmbed blocks
   var mediaCornerRadius: CGFloat { get }
 

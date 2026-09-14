@@ -42,8 +42,8 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "Conversation": return GraphAPI.Objects.Conversation
     case "Message": return GraphAPI.Objects.Message
     case "Order": return GraphAPI.Objects.Order
-    case "AdjustmentSummary": return GraphAPI.Objects.AdjustmentSummary
     case "Refund": return GraphAPI.Objects.Refund
+    case "AdjustmentSummary": return GraphAPI.Objects.AdjustmentSummary
     case "AttachedAudio": return GraphAPI.Objects.AttachedAudio
     case "AttachedVideo": return GraphAPI.Objects.AttachedVideo
     case "AiDisclosure": return GraphAPI.Objects.AiDisclosure

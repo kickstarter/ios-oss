@@ -7,24 +7,28 @@ public class FastFetchProjectPageExtendedPropertiesQuery: GraphQLQuery {
   public static let operationName: String = "FastFetchProjectPageExtendedPropertiesQuery"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query FastFetchProjectPageExtendedPropertiesQuery($projectId: Int, $slug: String) { project(pid: $projectId, slug: $slug) { __typename ...ExtendedProjectPropertiesFragment video { __typename ...ProjectVideoFragment } flagging { __typename kind } } }"#,
+      #"query FastFetchProjectPageExtendedPropertiesQuery($projectId: Int, $slug: String, $storyRichText: Boolean!) { project(pid: $projectId, slug: $slug) { __typename ...ExtendedProjectPropertiesFragment video { __typename ...ProjectVideoFragment } flagging { __typename kind } } }"#,
       fragments: [ExtendedProjectPropertiesFragment.self, ProjectVideoFragment.self, RichTextComponentFragment.self, RichTextItemFragment.self]
     ))
 
   public var projectId: GraphQLNullable<Int>
   public var slug: GraphQLNullable<String>
+  public var storyRichText: Bool
 
   public init(
     projectId: GraphQLNullable<Int>,
-    slug: GraphQLNullable<String>
+    slug: GraphQLNullable<String>,
+    storyRichText: Bool
   ) {
     self.projectId = projectId
     self.slug = slug
+    self.storyRichText = storyRichText
   }
 
   public var __variables: Variables? { [
     "projectId": projectId,
-    "slug": slug
+    "slug": slug,
+    "storyRichText": storyRichText
   ] }
 
   public struct Data: GraphAPI.SelectionSet {
@@ -229,7 +233,7 @@ public class FastFetchProjectPageExtendedPropertiesQuery: GraphQLQuery {
 
         public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextComponent }
 
-        public var items: [Item] { __data["items"] }
+        public var items: [Item]? { __data["items"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict
@@ -239,7 +243,7 @@ public class FastFetchProjectPageExtendedPropertiesQuery: GraphQLQuery {
         }
 
         public init(
-          items: [Item]
+          items: [Item]? = nil
         ) {
           self.init(_dataDict: DataDict(
             data: [
@@ -266,7 +270,7 @@ public class FastFetchProjectPageExtendedPropertiesQuery: GraphQLQuery {
 
         public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextComponent }
 
-        public var items: [Item] { __data["items"] }
+        public var items: [Item]? { __data["items"] }
 
         public struct Fragments: FragmentContainer {
           public let __data: DataDict
@@ -276,7 +280,7 @@ public class FastFetchProjectPageExtendedPropertiesQuery: GraphQLQuery {
         }
 
         public init(
-          items: [Item]
+          items: [Item]? = nil
         ) {
           self.init(_dataDict: DataDict(
             data: [

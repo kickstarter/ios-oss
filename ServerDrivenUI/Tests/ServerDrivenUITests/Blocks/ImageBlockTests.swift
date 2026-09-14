@@ -207,13 +207,54 @@ final class ImageBlockTests: XCTestCase {
       "Expected ImageBlock height to respect the container height \(containerHeight). Actual: \(String(describing: frame.height))"
     )
   }
+
+  func testImageBlockWithCaption_rendersCaptionText() throws {
+    // Given a photo with a non-empty caption
+    let photo = makePhoto(
+      altText: "Test image",
+      url: testImageURL().absoluteString,
+      caption: "A descriptive caption"
+    )
+
+    // When rendering the ImageBlock
+    let view = imageBlock(photo: photo, colorScheme: .light)
+
+    // Then the caption should be present as a Text view with the expected string
+    XCTAssertNoThrow(
+      try view.inspect().find(text: "A descriptive caption"),
+      "Expected ImageBlock to render the provided caption text."
+    )
+  }
+
+  func testImageBlockWithoutCaption_doesNotRenderCaptionText() throws {
+    // Given a photo whose caption is nil
+    var photo = makePhoto(
+      altText: "Test image",
+      url: testImageURL().absoluteString,
+      caption: nil
+    )
+
+    // When rendering the ImageBlock
+    let view = imageBlock(photo: photo, colorScheme: .light)
+
+    // Then no Text with an empty string or a placeholder should be found for caption
+    XCTAssertThrowsError(
+      try view.inspect().find(text: ""),
+      "Expected ImageBlock not to render an empty caption Text when caption is nil."
+    )
+  }
 }
 
-private func makePhoto(altText: String?, url: String?, link: URL? = nil) -> RichTextElement.Photo {
+private func makePhoto(
+  altText: String?,
+  url: String?,
+  link: URL? = nil,
+  caption: String? = "Test caption"
+) -> RichTextElement.Photo {
   RichTextElement.Photo(
     altText: altText,
     assetID: "123",
-    caption: "Test caption",
+    caption: caption,
     url: url,
     link: link
   )

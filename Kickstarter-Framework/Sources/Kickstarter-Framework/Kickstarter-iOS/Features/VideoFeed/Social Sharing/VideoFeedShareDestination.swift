@@ -25,7 +25,6 @@ enum VideoFeedShareDestination: String, CaseIterable, Identifiable {
     }
   }
 
-  // TODO: Add Translations
   var label: String {
     switch self {
     case .copyLink: return "Copy link"

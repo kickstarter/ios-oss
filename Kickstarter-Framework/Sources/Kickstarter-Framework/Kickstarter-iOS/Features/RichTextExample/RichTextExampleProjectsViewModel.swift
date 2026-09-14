@@ -52,7 +52,7 @@ internal final class RichTextExampleProjectsViewModel {
     }
 
     let result = try? await AppEnvironment.current.apiService.fetch(
-      query: RichTextExampleProjectBySlugQuery(slug: slug)
+      query: RichTextExampleProjectBySlugQuery(slug: slug, storyRichText: true)
     )
     guard let project = result?.project else { return nil }
     let item = ProjectItem(
@@ -70,7 +70,8 @@ internal final class RichTextExampleProjectsViewModel {
     self.errorMessage = nil
 
     do {
-      let results = try await AppEnvironment.current.apiService.fetch(query: RichTextExampleProjectsQuery())
+      let results = try await AppEnvironment.current.apiService
+        .fetch(query: RichTextExampleProjectsQuery(storyRichText: true))
       let nodes = results?.projects?.nodes?.compactMap { $0 } ?? []
       self.projects = nodes.map { node in
         ProjectItem(

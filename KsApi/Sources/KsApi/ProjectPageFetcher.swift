@@ -11,12 +11,13 @@ public struct ProjectPageFetcher {
   /// A faster project page fetch.
   /// Runs two parallel fetches - one for basic project properties, and another for extras like the project story.
   public func fastFetchProjectPage(
-    projectParam param: Param
+    projectParam param: Param,
+    includeStoryRichText: Bool
   ) -> SignalProducer<Project, ErrorEnvelope> {
     let baseFetch = self.apiService
       .fastFetchProjectPageBase(projectParam: param)
     let extraFetch = self.apiService
-      .fastFetchProjectPageExtendedProperties(projectParam: param)
+      .fastFetchProjectPageExtendedProperties(projectParam: param, includeStoryRichText: includeStoryRichText)
 
     return SignalProducer.zip(
       baseFetch,
@@ -27,10 +28,12 @@ public struct ProjectPageFetcher {
   }
 
   public func fetchProjectPage(
-    projectParam param: Param
+    projectParam param: Param,
+    includeStoryRichText: Bool
   ) -> SignalProducer<Project, ErrorEnvelope> {
     let projectAndBackingIdProducer = self.apiService.fetchProject(
-      projectParam: param
+      projectParam: param,
+      includeStoryRichText: includeStoryRichText
     )
 
     let projectAndBackingProducer = projectAndBackingIdProducer

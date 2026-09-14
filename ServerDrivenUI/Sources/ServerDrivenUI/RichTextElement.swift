@@ -122,9 +122,5 @@ public indirect enum RichTextElement: Sendable, Equatable {
 
     let iframeUrl: String?
     let originalUrl: String?
-
-    let thumbnailUrl: String?
-    let thumbnailWidth: Int?
-    let thumbnailHeight: Int?
   }
 }

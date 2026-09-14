@@ -13,9 +13,6 @@ public class RichTextOembed: MockObject {
     @Field<Int>("height") public var height
     @Field<String>("iframeUrl") public var iframeUrl
     @Field<String>("originalUrl") public var originalUrl
-    @Field<Int>("thumbnailHeight") public var thumbnailHeight
-    @Field<String>("thumbnailUrl") public var thumbnailUrl
-    @Field<Int>("thumbnailWidth") public var thumbnailWidth
     @Field<String>("title") public var title
     @Field<String>("type") public var type
     @Field<String>("version") public var version
@@ -28,9 +25,6 @@ public extension Mock where O == RichTextOembed {
     height: Int? = nil,
     iframeUrl: String? = nil,
     originalUrl: String? = nil,
-    thumbnailHeight: Int? = nil,
-    thumbnailUrl: String? = nil,
-    thumbnailWidth: Int? = nil,
     title: String? = nil,
     type: String? = nil,
     version: String? = nil,
@@ -40,9 +34,6 @@ public extension Mock where O == RichTextOembed {
     _setScalar(height, for: \.height)
     _setScalar(iframeUrl, for: \.iframeUrl)
     _setScalar(originalUrl, for: \.originalUrl)
-    _setScalar(thumbnailHeight, for: \.thumbnailHeight)
-    _setScalar(thumbnailUrl, for: \.thumbnailUrl)
-    _setScalar(thumbnailWidth, for: \.thumbnailWidth)
     _setScalar(title, for: \.title)
     _setScalar(type, for: \.type)
     _setScalar(version, for: \.version)

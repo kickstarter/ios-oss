@@ -5,7 +5,7 @@
 
 public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment RichTextComponentFragment on RichTextComponent { __typename items { __typename ...RichTextItemFragment ... on RichText { children { __typename ...RichTextItemFragment } } ... on RichTextHeader { children { __typename ...RichTextItemFragment } } ... on RichTextListItem { children { __typename ...RichTextItemFragment } } } }"#
+    #"fragment RichTextComponentFragment on RichTextComponent { __typename items @include(if: $storyRichText) { __typename ...RichTextItemFragment ... on RichText { children { __typename ...RichTextItemFragment } } ... on RichTextHeader { children { __typename ...RichTextItemFragment } } ... on RichTextListItem { children { __typename ...RichTextItemFragment } } } }"#
   }
 
   public let __data: DataDict
@@ -14,13 +14,13 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
   public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextComponent }
   public static var __selections: [ApolloAPI.Selection] { [
     .field("__typename", String.self),
-    .field("items", [Item].self),
+    .include(if: "storyRichText", .field("items", [Item].self)),
   ] }
 
-  public var items: [Item] { __data["items"] }
+  public var items: [Item]? { __data["items"] }
 
   public init(
-    items: [Item]
+    items: [Item]? = nil
   ) {
     self.init(_dataDict: DataDict(
       data: [
@@ -576,12 +576,6 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
           public var iframeUrl: String { __data["iframeUrl"] }
           /// ex: https://youtu.be/ijeaVn8znJ8
           public var originalUrl: String { __data["originalUrl"] }
-          /// ex: 360
-          public var thumbnailHeight: Int { __data["thumbnailHeight"] }
-          /// ex: https://i.ytimg.com/vi/ijeaVn8znJ8/hqdefault.jpg
-          public var thumbnailUrl: String { __data["thumbnailUrl"] }
-          /// ex: 480
-          public var thumbnailWidth: Int { __data["thumbnailWidth"] }
 
           public struct Fragments: FragmentContainer {
             public let __data: DataDict
@@ -597,10 +591,7 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             title: String,
             type: String,
             iframeUrl: String,
-            originalUrl: String,
-            thumbnailHeight: Int,
-            thumbnailUrl: String,
-            thumbnailWidth: Int
+            originalUrl: String
           ) {
             self.init(_dataDict: DataDict(
               data: [
@@ -612,9 +603,6 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
                 "type": type,
                 "iframeUrl": iframeUrl,
                 "originalUrl": originalUrl,
-                "thumbnailHeight": thumbnailHeight,
-                "thumbnailUrl": thumbnailUrl,
-                "thumbnailWidth": thumbnailWidth,
               ],
               fulfilledFragments: [
                 ObjectIdentifier(RichTextComponentFragment.Item.AsRichText.Child.self),
@@ -1125,12 +1113,6 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
           public var iframeUrl: String { __data["iframeUrl"] }
           /// ex: https://youtu.be/ijeaVn8znJ8
           public var originalUrl: String { __data["originalUrl"] }
-          /// ex: 360
-          public var thumbnailHeight: Int { __data["thumbnailHeight"] }
-          /// ex: https://i.ytimg.com/vi/ijeaVn8znJ8/hqdefault.jpg
-          public var thumbnailUrl: String { __data["thumbnailUrl"] }
-          /// ex: 480
-          public var thumbnailWidth: Int { __data["thumbnailWidth"] }
 
           public struct Fragments: FragmentContainer {
             public let __data: DataDict
@@ -1146,10 +1128,7 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             title: String,
             type: String,
             iframeUrl: String,
-            originalUrl: String,
-            thumbnailHeight: Int,
-            thumbnailUrl: String,
-            thumbnailWidth: Int
+            originalUrl: String
           ) {
             self.init(_dataDict: DataDict(
               data: [
@@ -1161,9 +1140,6 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
                 "type": type,
                 "iframeUrl": iframeUrl,
                 "originalUrl": originalUrl,
-                "thumbnailHeight": thumbnailHeight,
-                "thumbnailUrl": thumbnailUrl,
-                "thumbnailWidth": thumbnailWidth,
               ],
               fulfilledFragments: [
                 ObjectIdentifier(RichTextComponentFragment.Item.AsRichTextHeader.Child.self),
@@ -1674,12 +1650,6 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
           public var iframeUrl: String { __data["iframeUrl"] }
           /// ex: https://youtu.be/ijeaVn8znJ8
           public var originalUrl: String { __data["originalUrl"] }
-          /// ex: 360
-          public var thumbnailHeight: Int { __data["thumbnailHeight"] }
-          /// ex: https://i.ytimg.com/vi/ijeaVn8znJ8/hqdefault.jpg
-          public var thumbnailUrl: String { __data["thumbnailUrl"] }
-          /// ex: 480
-          public var thumbnailWidth: Int { __data["thumbnailWidth"] }
 
           public struct Fragments: FragmentContainer {
             public let __data: DataDict
@@ -1695,10 +1665,7 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             title: String,
             type: String,
             iframeUrl: String,
-            originalUrl: String,
-            thumbnailHeight: Int,
-            thumbnailUrl: String,
-            thumbnailWidth: Int
+            originalUrl: String
           ) {
             self.init(_dataDict: DataDict(
               data: [
@@ -1710,9 +1677,6 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
                 "type": type,
                 "iframeUrl": iframeUrl,
                 "originalUrl": originalUrl,
-                "thumbnailHeight": thumbnailHeight,
-                "thumbnailUrl": thumbnailUrl,
-                "thumbnailWidth": thumbnailWidth,
               ],
               fulfilledFragments: [
                 ObjectIdentifier(RichTextComponentFragment.Item.AsRichTextListItem.Child.self),
@@ -1991,12 +1955,6 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
       public var iframeUrl: String { __data["iframeUrl"] }
       /// ex: https://youtu.be/ijeaVn8znJ8
       public var originalUrl: String { __data["originalUrl"] }
-      /// ex: 360
-      public var thumbnailHeight: Int { __data["thumbnailHeight"] }
-      /// ex: https://i.ytimg.com/vi/ijeaVn8znJ8/hqdefault.jpg
-      public var thumbnailUrl: String { __data["thumbnailUrl"] }
-      /// ex: 480
-      public var thumbnailWidth: Int { __data["thumbnailWidth"] }
 
       public struct Fragments: FragmentContainer {
         public let __data: DataDict
@@ -2012,10 +1970,7 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
         title: String,
         type: String,
         iframeUrl: String,
-        originalUrl: String,
-        thumbnailHeight: Int,
-        thumbnailUrl: String,
-        thumbnailWidth: Int
+        originalUrl: String
       ) {
         self.init(_dataDict: DataDict(
           data: [
@@ -2027,9 +1982,6 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             "type": type,
             "iframeUrl": iframeUrl,
             "originalUrl": originalUrl,
-            "thumbnailHeight": thumbnailHeight,
-            "thumbnailUrl": thumbnailUrl,
-            "thumbnailWidth": thumbnailWidth,
           ],
           fulfilledFragments: [
             ObjectIdentifier(RichTextComponentFragment.Item.self),
