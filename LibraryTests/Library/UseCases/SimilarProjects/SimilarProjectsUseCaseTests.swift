@@ -202,7 +202,8 @@ final class SimilarProjectsUseCaseTests: TestCase {
       id: 789,
       name: "Derived Properties Test",
       goal: 100_000,
-      pledged: 75_000
+      pledged: 75_000,
+      projectUsdExchangeRate: 0.127515614
     )
 
     // Get the ProjectPamphletMainCellProperties from the node
@@ -216,6 +217,7 @@ final class SimilarProjectsUseCaseTests: TestCase {
     XCTAssertFalse(properties.goalMet)
 
     // Test USD conversion properties
+    XCTAssertEqual(properties.usdExchangeRate, 0.127515614)
     XCTAssertEqual(properties.pledgedUsd, Float(75_000) * properties.usdExchangeRate)
     XCTAssertEqual(properties.goalUsd, Float(100_000) * properties.usdExchangeRate)
 
