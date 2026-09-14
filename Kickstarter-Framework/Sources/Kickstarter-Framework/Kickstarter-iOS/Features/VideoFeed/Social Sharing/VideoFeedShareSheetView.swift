@@ -100,7 +100,7 @@ struct VideoFeedShareSheetView: View {
     ) {
       ForEach(self.destinations) { destination in
         ShareDestinationButton(destination: destination) { [destination] in
-          self.tapped(destination)
+          self.destinationTapped(destination)
         }
       }
     }
@@ -125,7 +125,13 @@ struct VideoFeedShareSheetView: View {
     .frame(maxWidth: .infinity)
   }
 
-  private func tapped(_ destination: VideoFeedShareDestination) {
+  private func destinationTapped(_ destination: VideoFeedShareDestination) {
+    AppEnvironment.current.ksrAnalytics.trackVideoFeedShareDestinationClicked(
+      destination: destination.analyticsContext,
+      videoId: self.item.id,
+      projectId: self.item.projectId
+    )
+
     switch destination {
     case .copyLink:
       self.copyLink()
@@ -135,8 +141,12 @@ struct VideoFeedShareSheetView: View {
       self.shareToFacebookStories()
     case .x:
       self.shareToX()
+    case .whatsApp:
+      self.shareToWhatsApp()
     case .messages:
       self.shareToMessages()
+    case .email:
+      self.shareToEmail()
     case .more:
       self.moreShareOptions()
     default:
@@ -147,7 +157,7 @@ struct VideoFeedShareSheetView: View {
   // MARK: - More Options
 
   private func moreShareOptions() {
-    guard let url = VideoFeedShareDestination.projectURL(for: self.item),
+    guard let url = VideoFeedShareDestination.projectURL(for: self.item, refTag: .videoFeedShareMore),
           let presentingVC = self.presentingViewController() else { return }
 
     let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
@@ -169,7 +179,8 @@ struct VideoFeedShareSheetView: View {
   // MARK: - Copy Link
 
   private func copyLink() {
-    UIPasteboard.general.string = VideoFeedShareDestination.projectURL(for: self.item)?.absoluteString
+    UIPasteboard.general.string = VideoFeedShareDestination
+      .projectURL(for: self.item, refTag: .videoFeedShareCopyLink)?.absoluteString
     withAnimation { self.linkCopied = true }
     DispatchQueue.main.asyncAfter(deadline: .now() + Constants.linkCopiedDismissDelay) {
       self.dismiss()
@@ -228,7 +239,7 @@ struct VideoFeedShareSheetView: View {
   // MARK: - Facebook Feed
 
   private func shareToFacebookFeed() {
-    guard let url = VideoFeedShareDestination.projectURL(for: self.item),
+    guard let url = VideoFeedShareDestination.projectURL(for: self.item, refTag: .videoFeedShareFacebookFeed),
           let presentingVC = self.presentingViewController() else { return }
 
     let content = ShareLinkContent()
@@ -267,7 +278,7 @@ struct VideoFeedShareSheetView: View {
   // MARK: - Messages
 
   private func shareToMessages() {
-    guard let url = VideoFeedShareDestination.projectURL(for: self.item),
+    guard let url = VideoFeedShareDestination.projectURL(for: self.item, refTag: .videoFeedShareMessages),
           let encoded = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
           let smsURL = URL(string: "sms:?body=\(encoded)") else {
       return
@@ -278,15 +289,32 @@ struct VideoFeedShareSheetView: View {
     UIApplication.shared.open(smsURL)
   }
 
+  // MARK: - WhatsApp
+
+  private func shareToWhatsApp() {
+    guard let url = VideoFeedShareDestination.projectURL(for: self.item, refTag: .videoFeedShareWhatsApp),
+          let encoded = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+          let whatsAppURL = URL(string: "whatsapp://send?text=\(encoded)") else { return }
+
+    UIApplication.shared.open(whatsAppURL)
+  }
+
+  // MARK: - Email
+
+  private func shareToEmail() {
+    guard let url = VideoFeedShareDestination.projectURL(for: self.item, refTag: .videoFeedShareEmail),
+          let encoded = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+          let mailURL = URL(string: "mailto:?body=\(encoded)") else { return }
+
+    UIApplication.shared.open(mailURL)
+  }
+
   // MARK: - X
 
   private func shareToX() {
-    guard let url = VideoFeedShareDestination.projectURL(for: self.item),
+    guard let url = VideoFeedShareDestination.projectURL(for: self.item, refTag: .videoFeedShareX),
           let encoded = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-          let xURL = URL(string: "https://x.com/intent/tweet?text=\(encoded)") else {
-      return
-    }
-
+          let xURL = URL(string: "https://x.com/intent/tweet?text=\(encoded)") else { return }
     UIApplication.shared.open(xURL)
   }
 }
@@ -355,7 +383,6 @@ extension VideoFeedShareDestination {
   var fallbackSystemIcon: String {
     switch self {
     case .copyLink: return "link"
-    case .instagramFeed: return "camera"
     case .x: return "bird"
     case .instagramStories: return "camera.circle"
     case .facebookStories: return "f.circle"

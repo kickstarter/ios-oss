@@ -43,6 +43,15 @@ public enum RefTag {
   case unrecognized(String)
   case update
   case videoFeed
+  case videoFeedShareCopyLink
+  case videoFeedShareInstagramStories
+  case videoFeedShareX
+  case videoFeedShareFacebookFeed
+  case videoFeedShareFacebookStories
+  case videoFeedShareWhatsApp
+  case videoFeedShareMessages
+  case videoFeedShareEmail
+  case videoFeedShareMore
 
   /**
    Create a RefTag value from a code string. If a ref tag cannot be matched, an `.unrecognized` tag is
@@ -103,6 +112,15 @@ public enum RefTag {
     case "thanks": self = .thanks
     case "update": self = .update
     case "video_feed": self = .videoFeed
+    case "ios_project_share_copy_link": self = .videoFeedShareCopyLink
+    case "ios_project_share_instagram_stories": self = .videoFeedShareInstagramStories
+    case "ios_project_share_x": self = .videoFeedShareX
+    case "ios_project_share_facebook_feed": self = .videoFeedShareFacebookFeed
+    case "ios_project_share_facebook_stories": self = .videoFeedShareFacebookStories
+    case "ios_project_share_whatsapp": self = .videoFeedShareWhatsApp
+    case "ios_project_share_messages": self = .videoFeedShareMessages
+    case "ios_project_share_email": self = .videoFeedShareEmail
+    case "ios_project_share_more": self = .videoFeedShareMore
     default: self = .unrecognized(code)
     }
   }
@@ -174,6 +192,24 @@ public enum RefTag {
       return "update"
     case .videoFeed:
       return "video_feed"
+    case .videoFeedShareCopyLink:
+      return "ios_project_share_copy_link"
+    case .videoFeedShareInstagramStories:
+      return "ios_project_share_instagram_stories"
+    case .videoFeedShareX:
+      return "ios_project_share_x"
+    case .videoFeedShareFacebookFeed:
+      return "ios_project_share_facebook_feed"
+    case .videoFeedShareFacebookStories:
+      return "ios_project_share_facebook_stories"
+    case .videoFeedShareWhatsApp:
+      return "ios_project_share_whatsapp"
+    case .videoFeedShareMessages:
+      return "ios_project_share_messages"
+    case .videoFeedShareEmail:
+      return "ios_project_share_email"
+    case .videoFeedShareMore:
+      return "ios_project_share_more"
     }
   }
 }

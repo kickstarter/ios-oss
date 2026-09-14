@@ -194,6 +194,7 @@ public final class KSRAnalytics {
     case videoFeedPause
     case videoFeedSave
     case videoFeedShare
+    case videoFeedShareDestinationClicked
     case videoFeedProgressBar
     case watchProject
     /// Onboarding CTA Context
@@ -249,6 +250,7 @@ public final class KSRAnalytics {
       case .videoFeedPause: return "video_feed_pause"
       case .videoFeedSave: return "video_feed_save"
       case .videoFeedShare: return "video_feed_share"
+      case .videoFeedShareDestinationClicked: return "share_platform_clicked"
       case .videoFeedProgressBar: return "video_feed_progress_bar"
       case .watchProject: return "watch_project"
       }
@@ -429,6 +431,7 @@ public final class KSRAnalytics {
     case unwatch
     case watch
     case watched
+    case videoFeedShareDestination(VideoFeedShareDestinationContext)
 
     /**
      Initialize a `TypeContext` value with `DiscoveryParams` for use with discovery filters..
@@ -477,6 +480,33 @@ public final class KSRAnalytics {
       }
     }
 
+    /// Maps each video feed share destination to its analytics tracking string.
+    public enum VideoFeedShareDestinationContext {
+      case copyLink
+      case instagramStories
+      case x
+      case facebookFeed
+      case facebookStories
+      case whatsApp
+      case messages
+      case email
+      case more
+
+      var trackingString: String {
+        switch self {
+        case .copyLink: return "copy_link"
+        case .instagramStories: return "instagram_stories"
+        case .x: return "x"
+        case .facebookFeed: return "facebook_feed"
+        case .facebookStories: return "facebook_stories"
+        case .whatsApp: return "whatsapp"
+        case .messages: return "messages"
+        case .email: return "email"
+        case .more: return "more"
+        }
+      }
+    }
+
     var trackingString: String {
       switch self {
       case .allProjects: return "all"
@@ -511,6 +541,8 @@ public final class KSRAnalytics {
       case .watch: return "watch"
       case .watched: return "watched"
       case .address: return "address"
+      case let .videoFeedShareDestination(videoFeedShareDestinationContext): return videoFeedShareDestinationContext
+        .trackingString
       }
     }
   }
@@ -1500,6 +1532,24 @@ public final class KSRAnalytics {
     props["video_feed_project_id"] = projectId
     props["video_feed_position_in_session"] = positionInSession
     props["video_feed_percentage_watched"] = percentageWatched
+
+    self.track(event: SegmentEvent.ctaClicked.rawValue, properties: props)
+  }
+
+  /// Call when the user taps a share destination in the video feed share sheet.
+  public func trackVideoFeedShareDestinationClicked(
+    destination: TypeContext.VideoFeedShareDestinationContext,
+    videoId: String,
+    projectId: String
+  ) {
+    var props = contextProperties(
+      ctaContext: .videoFeedShareDestinationClicked,
+      page: .videoFeed,
+      typeContext: .videoFeedShareDestination(destination)
+    )
+
+    props["video_feed_video_id"] = videoId
+    props["video_feed_project_id"] = projectId
 
     self.track(event: SegmentEvent.ctaClicked.rawValue, properties: props)
   }

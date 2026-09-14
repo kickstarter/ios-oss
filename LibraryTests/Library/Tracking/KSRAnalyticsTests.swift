@@ -1921,6 +1921,10 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(KSRAnalytics.CTAContext.videoFeedSave.trackingString, "video_feed_save")
     XCTAssertEqual(KSRAnalytics.CTAContext.videoFeedShare.trackingString, "video_feed_share")
     XCTAssertEqual(KSRAnalytics.CTAContext.videoFeedProgressBar.trackingString, "video_feed_progress_bar")
+    XCTAssertEqual(
+      KSRAnalytics.CTAContext.videoFeedShareDestinationClicked.trackingString,
+      "share_platform_clicked"
+    )
   }
 
   func testSectionContextTrackingStrings() {
@@ -1974,6 +1978,24 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(KSRAnalytics.LocationContext.recommendations.trackingString, "recommendations")
     XCTAssertEqual(KSRAnalytics.LocationContext.searchResults.trackingString, "search_results")
     XCTAssertEqual(KSRAnalytics.LocationContext.videoFeed.trackingString, "video_feed")
+    XCTAssertEqual(KSRAnalytics.TypeContext.videoFeedShareDestination(.copyLink).trackingString, "copy_link")
+    XCTAssertEqual(
+      KSRAnalytics.TypeContext.videoFeedShareDestination(.instagramStories).trackingString,
+      "instagram_stories"
+    )
+    XCTAssertEqual(KSRAnalytics.TypeContext.videoFeedShareDestination(.x).trackingString, "x")
+    XCTAssertEqual(
+      KSRAnalytics.TypeContext.videoFeedShareDestination(.facebookFeed).trackingString,
+      "facebook_feed"
+    )
+    XCTAssertEqual(
+      KSRAnalytics.TypeContext.videoFeedShareDestination(.facebookStories).trackingString,
+      "facebook_stories"
+    )
+    XCTAssertEqual(KSRAnalytics.TypeContext.videoFeedShareDestination(.whatsApp).trackingString, "whatsapp")
+    XCTAssertEqual(KSRAnalytics.TypeContext.videoFeedShareDestination(.messages).trackingString, "messages")
+    XCTAssertEqual(KSRAnalytics.TypeContext.videoFeedShareDestination(.email).trackingString, "email")
+    XCTAssertEqual(KSRAnalytics.TypeContext.videoFeedShareDestination(.more).trackingString, "more")
   }
 
   func testPaymentTypeTrackingStrings() {
@@ -2233,6 +2255,69 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("project_456", segmentClient.properties.last?["video_feed_project_id"] as? String)
     XCTAssertEqual(1, segmentClient.properties.last?["video_feed_position_in_session"] as? Int)
     XCTAssertEqual(0.45, segmentClient.properties.last?["video_feed_percentage_watched"] as? Float)
+  }
+
+  // MARK: - Video Feed Share Sheet
+
+  func testTrackVideoFeedShareDestinationClicked_CopyLink() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      segmentClient: segmentClient,
+      appTrackingTransparency: self.appTrackingTransparency
+    )
+
+    ksrAnalytics.trackVideoFeedShareDestinationClicked(
+      destination: .copyLink,
+      videoId: "video_123",
+      projectId: "project_456"
+    )
+
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual("video_feed", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("share_platform_clicked", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("copy_link", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("video_123", segmentClient.properties.last?["video_feed_video_id"] as? String)
+    XCTAssertEqual("project_456", segmentClient.properties.last?["video_feed_project_id"] as? String)
+  }
+
+  func testTrackVideoFeedShareDestinationClicked_X() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      segmentClient: segmentClient,
+      appTrackingTransparency: self.appTrackingTransparency
+    )
+
+    ksrAnalytics.trackVideoFeedShareDestinationClicked(
+      destination: .x,
+      videoId: "video_123",
+      projectId: "project_456"
+    )
+
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual("share_platform_clicked", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("x", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("video_123", segmentClient.properties.last?["video_feed_video_id"] as? String)
+    XCTAssertEqual("project_456", segmentClient.properties.last?["video_feed_project_id"] as? String)
+  }
+
+  func testTrackVideoFeedShareDestinationClicked_FacebookFeed() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      segmentClient: segmentClient,
+      appTrackingTransparency: self.appTrackingTransparency
+    )
+
+    ksrAnalytics.trackVideoFeedShareDestinationClicked(
+      destination: .facebookFeed,
+      videoId: "video_123",
+      projectId: "project_456"
+    )
+
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual("share_platform_clicked", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("facebook_feed", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("video_123", segmentClient.properties.last?["video_feed_video_id"] as? String)
+    XCTAssertEqual("project_456", segmentClient.properties.last?["video_feed_project_id"] as? String)
   }
 
   /*
