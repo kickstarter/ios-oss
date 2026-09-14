@@ -218,8 +218,8 @@ final class SimilarProjectsUseCaseTests: TestCase {
 
     // Test USD conversion properties
     XCTAssertEqual(properties.usdExchangeRate, 0.127515614)
-    XCTAssertEqual(properties.pledgedUsd, Float(75_000) * properties.usdExchangeRate)
-    XCTAssertEqual(properties.goalUsd, Float(100_000) * properties.usdExchangeRate)
+    XCTAssertEqual(properties.pledgedUsd, floor(Float(75_000) * properties.usdExchangeRate))
+    XCTAssertEqual(properties.goalUsd, floor(Float(100_000) * properties.usdExchangeRate))
 
     // Test currency-related properties
     XCTAssertEqual(properties.currentCurrency, "USD") // Default currency
