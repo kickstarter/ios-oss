@@ -96,6 +96,10 @@ open class PagedContainerViewController<Page: TabBarPage>: UIViewController {
     self.renderTabBar()
   }
 
+  public func selectPage(_ page: Page) {
+    self.viewModel.didSelect(page: page)
+  }
+
   private func showChildController(_ controller: UIViewController) {
     if let activeController = self.activeController {
       self.stopDisplayingChildViewController(activeController)
