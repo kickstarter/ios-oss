@@ -37,6 +37,11 @@ public class PPOContainerViewController: PagedContainerViewController<PPOContain
       (.activityFeed(.none), activitiesViewController)
     ])
 
+    /// Select Activity Feed if the user has unseen activity.
+    if (AppEnvironment.current.currentUser?.unseenActivityCount ?? 0) > 0 {
+      self.selectPage(.activityFeed(.none))
+    }
+
     // Update badges in the paging tab bar at the top of the view
     Publishers.CombineLatest(
       self.viewModel.projectAlertsBadge,
