@@ -943,5 +943,4 @@ final class SceneDelegateViewModelTests: TestCase {
       self.updateCurrentUserInEnvironment.assertValues([updatedUser])
     }
   }
-
 }
