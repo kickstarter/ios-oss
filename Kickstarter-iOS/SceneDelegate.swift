@@ -66,6 +66,10 @@ internal final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       .observeForUI()
       .observeValues { [weak self] in self?.rootTabBarController?.switchToSearch() }
 
+    self.viewModel.outputs.goToProfile
+      .observeForUI()
+      .observeValues { [weak self] in self?.rootTabBarController?.switchToProfile() }
+
     self.viewModel.outputs.goToMobileSafari
       .observeForUI()
       .observeValues { UIApplication.shared.open($0) }
