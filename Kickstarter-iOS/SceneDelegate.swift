@@ -20,7 +20,7 @@ internal final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   func scene(
     _ scene: UIScene,
     willConnectTo _: UISceneSession,
-    options _: UIScene.ConnectionOptions
+    options connectionOptions: UIScene.ConnectionOptions
   ) {
     guard scene is UIWindowScene else { return }
 
