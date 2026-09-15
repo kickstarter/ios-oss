@@ -17,6 +17,14 @@ internal final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     self.window?.rootViewController as? RootTabBarViewController
   }
 
+  /// UIKit stops calling the `UIApplicationDelegate` foreground / background / active callbacks once
+  /// an app adopts scenes, but the behavior they drive is app-scoped and still belongs to
+  /// `AppDelegate`, so this scene delegate calls back through to it.
+  /// Safe while `UIApplicationSupportsMultipleScenes` is false and there is only ever one scene.
+  private var appDelegate: AppDelegate? {
+    UIApplication.shared.delegate as? AppDelegate
+  }
+
   func scene(
     _ scene: UIScene,
     willConnectTo _: UISceneSession,
@@ -89,6 +97,24 @@ internal final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         AppEnvironment.current.identify(user: user)
       }
 
+    self.viewModel.outputs.applicationActive
+      .observeForUI()
+      .observeValues { [weak self] state in
+        self?.appDelegate?.applicationActive(state: state)
+      }
+
+    self.viewModel.outputs.applicationDidEnterBackground
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.appDelegate?.applicationDidEnterBackground()
+      }
+
+    self.viewModel.outputs.applicationWillEnterForeground
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.appDelegate?.applicationWillEnterForeground()
+      }
+
     // Cold launch entry points: the app was not running, so these deep-link sources
     // arrive here instead of via the warm-launch scene delegate methods below. At this point
     // the scene is still `.unattached` and the window/root view controller's view has not
@@ -126,6 +152,24 @@ internal final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   ) {
     self.viewModel.inputs.applicationPerformActionForShortcutItem(shortcutItem)
     completionHandler(true)
+  }
+
+  // MARK: - Scene lifecycle
+
+  func sceneDidBecomeActive(_: UIScene) {
+    self.viewModel.inputs.sceneDidBecomeActive()
+  }
+
+  func sceneWillResignActive(_: UIScene) {
+    self.viewModel.inputs.sceneWillResignActive()
+  }
+
+  func sceneWillEnterForeground(_: UIScene) {
+    self.viewModel.inputs.sceneWillEnterForeground()
+  }
+
+  func sceneDidEnterBackground(_: UIScene) {
+    self.viewModel.inputs.sceneDidEnterBackground()
   }
 
   private func handleOpenURLContext(_ urlContext: UIOpenURLContext) {
