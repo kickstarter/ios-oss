@@ -103,6 +103,10 @@ internal final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       if let userActivity = connectionOptions.userActivities.first {
         _ = self?.viewModel.inputs.applicationContinueUserActivity(userActivity)
       }
+
+      if let shortcutItem = connectionOptions.shortcutItem {
+        self?.viewModel.inputs.applicationPerformActionForShortcutItem(shortcutItem)
+      }
     }
   }
 
@@ -113,6 +117,15 @@ internal final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   func scene(_: UIScene, continue userActivity: NSUserActivity) {
     _ = self.viewModel.inputs.applicationContinueUserActivity(userActivity)
+  }
+
+  func windowScene(
+    _: UIWindowScene,
+    performActionFor shortcutItem: UIApplicationShortcutItem,
+    completionHandler: @escaping (Bool) -> Void
+  ) {
+    self.viewModel.inputs.applicationPerformActionForShortcutItem(shortcutItem)
+    completionHandler(true)
   }
 
   private func handleOpenURLContext(_ urlContext: UIOpenURLContext) {
