@@ -122,7 +122,6 @@ extension GraphAPI.ProjectPamphletMainCellPropertiesFragment: HasProjectPamphlet
       locationName: self.location?.displayableName ?? "",
       deadline: TimeInterval(self.deadlineAt ?? "0") ?? 0,
       fxRate: Float(self.fxRate),
-      usdExchangeRate: Float(self.projectUsdExchangeRate),
       projectUsdExchangeRate: Float(self.projectUsdExchangeRate),
       goal: moneyFragmentToMoney(self.goal?.fragments.moneyFragment),
       pledged: moneyFragmentToMoney(self.pledged.fragments.moneyFragment),
