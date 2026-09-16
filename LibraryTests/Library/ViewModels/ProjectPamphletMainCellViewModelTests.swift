@@ -132,6 +132,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10)
       |> Project.lens.stats.projectCurrency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.staticUsdRate .~ 2.0
+      |> Project.lens.stats.usdExchangeRate .~ 2.0
 
     withEnvironment(countryCode: "CA") {
       self.vm.inputs.configureWith(value: (defaultUserCurrency, nil))
