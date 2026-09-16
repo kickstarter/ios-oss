@@ -32,7 +32,6 @@ public struct ProjectPamphletMainCellProperties {
   public let locationName: String
   public let deadline: TimeInterval?
   public let fxRate: Float
-  public let usdExchangeRate: Float
   public let projectUsdExchangeRate: Float
   public let goal: Money
   public let pledged: Money
@@ -62,7 +61,6 @@ public struct ProjectPamphletMainCellProperties {
     locationName: String,
     deadline: TimeInterval?,
     fxRate: Float,
-    usdExchangeRate: Float,
     projectUsdExchangeRate: Float,
     goal: Money,
     pledged: Money,
@@ -91,7 +89,6 @@ public struct ProjectPamphletMainCellProperties {
     self.locationName = locationName
     self.deadline = deadline
     self.fxRate = fxRate
-    self.usdExchangeRate = usdExchangeRate
     self.projectUsdExchangeRate = projectUsdExchangeRate
     self.goal = goal
     self.pledged = pledged
@@ -131,7 +128,6 @@ extension Project: HasProjectPamphletMainCellProperties {
       locationName: self.location?.displayableName ?? "",
       deadline: self.dates.deadline,
       fxRate: self.stats.userCurrencyRate ?? self.stats.staticUsdRate,
-      usdExchangeRate: self.stats.staticUsdRate,
       projectUsdExchangeRate: self.stats.usdExchangeRate ?? self.stats.staticUsdRate,
       goal: (amount: self.stats.goal, currency: self.statsCurrency, symbol: self.country.currencySymbol),
       pledged: (
@@ -158,17 +154,17 @@ extension ProjectPamphletMainCellProperties {
 
   /// Pledged amount converted to USD.
   public var pledgedUsd: Float {
-    floor(Float(self.pledged.amount) * self.usdExchangeRate)
+    floor(Float(self.pledged.amount) * self.projectUsdExchangeRate)
   }
 
   /// Total amount currently pledged to the project, converted to USD, irrespective of the users selected currency
   public var totalAmountPledgedUsdCurrency: Float? {
-    Float(self.pledged.amount) * self.usdExchangeRate
+    Float(self.pledged.amount) * self.projectUsdExchangeRate
   }
 
   /// Goal amount converted to USD.
   public var goalUsd: Float {
-    floor(Float(self.goal.amount) * self.usdExchangeRate)
+    floor(Float(self.goal.amount) * self.projectUsdExchangeRate)
   }
 
   /// Goal amount converted to current currency.
@@ -178,7 +174,7 @@ extension ProjectPamphletMainCellProperties {
 
   /// Goal amount, converted to USD, irrespective of the users selected currency
   public var goalUsdCurrency: Float {
-    Float(self.goal.amount) * (self.usdExchangeRate)
+    Float(self.goal.amount) * self.projectUsdExchangeRate
   }
 
   /// Country determined by current currency.

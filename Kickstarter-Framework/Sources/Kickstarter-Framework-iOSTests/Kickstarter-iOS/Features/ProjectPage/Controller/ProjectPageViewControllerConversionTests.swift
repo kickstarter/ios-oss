@@ -22,6 +22,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
       |> Project.lens.stats.convertedPledgedAmount .~ 21_615
+      |> Project.lens.stats.usdExchangeRate .~ self.cosmicSurgery.stats.staticUsdRate
 
     self.cosmicSurgery = project
 
