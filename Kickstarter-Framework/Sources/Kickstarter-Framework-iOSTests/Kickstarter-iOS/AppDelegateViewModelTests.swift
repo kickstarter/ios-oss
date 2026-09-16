@@ -1170,6 +1170,46 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
+  func testDeepLink_UserDidUpdateNotificationSettings() {
+    self.updateCurrentUserInEnvironment.assertDidNotEmitValue()
+
+    withEnvironment(apiService: MockService()) {
+      let user = User.template
+        |> User.lens.notifications.mobileMessages .~ false
+
+      let env = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
+      AppEnvironment.login(env)
+
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
+
+      self.scheduler.advance(by: .seconds(5))
+
+      self.updateCurrentUserInEnvironment.assertValues([user])
+
+      let updatedUser = user
+        |> User.lens.notifications.mobileMessages .~ true
+
+      let url =
+        "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/settings/notify_mobile_of_messages/true"
+
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(string: url)!,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+
+      self.updateCurrentUserInEnvironment.assertValues([user])
+
+      self.scheduler.advance()
+
+      self.updateCurrentUserInEnvironment.assertValues([user, updatedUser])
+    }
+  }
+
   func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenShouldRequestAuthorizationStatusTrue_RequestAllowed_ShowsConsentDialogAndUpdatesAdId_whenHasSeenOnboardingIsTrue(
   ) {
     let appTrackingTransparency = MockAppTrackingTransparency()
