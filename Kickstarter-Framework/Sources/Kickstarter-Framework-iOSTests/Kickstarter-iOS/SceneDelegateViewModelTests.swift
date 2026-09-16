@@ -24,7 +24,6 @@ final class SceneDelegateViewModelTests: TestCase {
   private let goToMobileSafari = TestObserver<URL, Never>()
   private let goToSearch = TestObserver<(), Never>()
   private let presentViewController = TestObserver<Int, Never>()
-  private let updateCurrentUserInEnvironment = TestObserver<User, Never>()
 
   private var defaultRootCategoriesTemplate: RootCategoriesEnvelope {
     RootCategoriesEnvelope.template
@@ -54,7 +53,6 @@ final class SceneDelegateViewModelTests: TestCase {
     self.vm.outputs.goToSearch.observe(self.goToSearch.observer)
     self.vm.outputs.presentViewController.map { ($0 as! UINavigationController).viewControllers.count }
       .observe(self.presentViewController.observer)
-    self.vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
   }
 
   func testPresentViewController() {
@@ -911,36 +909,5 @@ final class SceneDelegateViewModelTests: TestCase {
     self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
     self.presentViewController.assertValues([], "Do not present controller since the url was unrecognizable.")
     self.goToMobileSafari.assertValues([unrecognizedUrl], "Go to mobile safari for the unrecognized url.")
-  }
-
-  func testDeepLink_UserDidUpdateNotificationSettings() {
-    self.updateCurrentUserInEnvironment.assertDidNotEmitValue()
-
-    withEnvironment(apiService: MockService()) {
-      let user = User.template
-        |> User.lens.notifications.mobileMessages .~ false
-
-      let env = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
-      AppEnvironment.login(env)
-
-      let updatedUser = user
-        |> User.lens.notifications.mobileMessages .~ true
-
-      let url =
-        "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/settings/notify_mobile_of_messages/true"
-
-      let result = self.vm.inputs.applicationOpenUrl(
-        application: UIApplication.shared,
-        url: URL(string: url)!,
-        options: [:]
-      )
-      XCTAssertTrue(result)
-
-      self.updateCurrentUserInEnvironment.assertDidNotEmitValue()
-
-      self.scheduler.advance()
-
-      self.updateCurrentUserInEnvironment.assertValues([updatedUser])
-    }
   }
 }

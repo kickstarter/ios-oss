@@ -53,9 +53,6 @@ public protocol SceneDelegateViewModelOutputs {
 
   /// Emits when a view controller should be presented.
   var presentViewController: Signal<UIViewController, Never> { get }
-
-  /// Emits a fresh user to be updated in the app environment.
-  var updateCurrentUserInEnvironment: Signal<User, Never> { get }
 }
 
 public protocol SceneDelegateViewModelType {
@@ -128,7 +125,6 @@ public final class SceneDelegateViewModel: SceneDelegateViewModelType, SceneDele
     self.goToProfile = deepLinkOutputs.goToProfile
     self.goToSearch = deepLinkOutputs.goToSearch
     self.presentViewController = deepLinkOutputs.presentViewController
-    self.updateCurrentUserInEnvironment = deepLinkOutputs.updateCurrentUserInEnvironment
   }
 
   public var inputs: SceneDelegateViewModelInputs { return self }
@@ -172,7 +168,6 @@ public final class SceneDelegateViewModel: SceneDelegateViewModelType, SceneDele
   public let goToProfile: Signal<(), Never>
   public let goToSearch: Signal<(), Never>
   public let presentViewController: Signal<UIViewController, Never>
-  public let updateCurrentUserInEnvironment: Signal<User, Never>
 }
 
 private func accessTokenFromUrl(_ url: URL?) -> String? {
