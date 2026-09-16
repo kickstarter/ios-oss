@@ -86,13 +86,6 @@ internal final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       .observeForUI()
       .observeValues { [weak self] in self?.findRedirectUrl($0) }
 
-    self.viewModel.outputs.updateCurrentUserInEnvironment
-      .observeForUI()
-      .observeValues { user in
-        AppEnvironment.updateCurrentUser(user)
-        AppEnvironment.current.identify(user: user)
-      }
-
     // Cold launch entry points: the app was not running, so these deep-link sources
     // arrive here instead of via the warm-launch scene delegate methods below. At this point
     // the scene is still `.unattached` and the window/root view controller's view has not
