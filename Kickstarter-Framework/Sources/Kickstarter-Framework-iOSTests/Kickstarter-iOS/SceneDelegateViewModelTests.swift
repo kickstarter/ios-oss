@@ -799,6 +799,29 @@ final class SceneDelegateViewModelTests: TestCase {
     self.goToMobileSafari.assertDidNotEmitValue()
   }
 
+  func testDeepLink_UserDidUpdateNotificationSettings() {
+    withEnvironment(apiService: MockService()) {
+      let user = User.template
+        |> User.lens.notifications.mobileMessages .~ false
+
+      let env = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
+      AppEnvironment.login(env)
+
+      let updatedUser = user
+        |> User.lens.notifications.mobileMessages .~ true
+
+      let url =
+        "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/settings/notify_mobile_of_messages/true"
+
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(string: url)!,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+    }
+  }
+
   func testEmailDeepLinking() {
     withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
       let emailUrl = URL(string: "https://clicks.kickstarter.com/?qs=deadbeef")!
