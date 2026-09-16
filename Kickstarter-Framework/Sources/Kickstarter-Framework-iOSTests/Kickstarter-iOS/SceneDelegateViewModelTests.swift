@@ -982,30 +982,6 @@ final class SceneDelegateViewModelTests: TestCase {
     self.goToMobileSafari.assertValues([unrecognizedUrl], "Go to mobile safari for the unrecognized url.")
   }
 
-  func testApplicationWillEnterForeground_IgnoresSceneConnectionEvent() {
-    // UIKit sends a foreground event while the scene is connecting, which duplicates work that
-    // `applicationDidFinishLaunching` already drives, so it should not be forwarded.
-    self.vm.inputs.sceneWillEnterForeground()
-
-    self.applicationWillEnterForeground.assertValueCount(
-      0,
-      "The foreground event sent while the scene connects is ignored."
-    )
-
-    self.vm.inputs.sceneDidEnterBackground()
-    self.vm.inputs.sceneWillEnterForeground()
-
-    self.applicationWillEnterForeground.assertValueCount(
-      1,
-      "Returning to the foreground from the background emits."
-    )
-
-    self.vm.inputs.sceneDidEnterBackground()
-    self.vm.inputs.sceneWillEnterForeground()
-
-    self.applicationWillEnterForeground.assertValueCount(2, "Each subsequent return emits.")
-  }
-
   func testApplicationDidEnterBackground() {
     self.applicationDidEnterBackground.assertValueCount(0)
 

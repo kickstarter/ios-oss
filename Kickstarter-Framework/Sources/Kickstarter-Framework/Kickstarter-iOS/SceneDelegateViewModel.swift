@@ -175,12 +175,7 @@ public final class SceneDelegateViewModel: SceneDelegateViewModelType, SceneDele
 
     self.applicationDidEnterBackground = self.sceneDidEnterBackgroundProperty.signal
 
-    // UIKit also sends a foreground event while the scene is first connecting, which would duplicate
-    // the work `applicationDidFinishLaunching` already kicks off, so drop it. The app declares no
-    // `UIBackgroundModes` and so is never launched straight into the background, which means the
-    // first event is always that connect-time one.
     self.applicationWillEnterForeground = self.sceneWillEnterForegroundProperty.signal
-      .skip(first: 1)
   }
 
   public var inputs: SceneDelegateViewModelInputs { return self }
@@ -252,26 +247,6 @@ public final class SceneDelegateViewModel: SceneDelegateViewModelType, SceneDele
   public let goToProfile: Signal<(), Never>
   public let goToSearch: Signal<(), Never>
   public let presentViewController: Signal<UIViewController, Never>
-}
-
-// Figures out a `Navigation` to route the user to from a shortcut item.
-private func navigation(fromShortcutItem shortcutItem: ShortcutItem) -> SignalProducer<Navigation?, Never> {
-  switch shortcutItem {
-  case .recommendedForYou:
-    let params = .defaults
-      |> DiscoveryParams.lens.recommended .~ true
-      |> DiscoveryParams.lens.sort .~ .magic
-    return SignalProducer(value: .tab(.discovery(params.queryParams)))
-
-  case .projectsWeLove:
-    let params = .defaults
-      |> DiscoveryParams.lens.staffPicks .~ true
-      |> DiscoveryParams.lens.sort .~ .magic
-    return SignalProducer(value: .tab(.discovery(params.queryParams)))
-
-  case .search:
-    return SignalProducer(value: .tab(.search))
-  }
 }
 
 // Figures out a `Navigation` to route the user to from a shortcut item.
