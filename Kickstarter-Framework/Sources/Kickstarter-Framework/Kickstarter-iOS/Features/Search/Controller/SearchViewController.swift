@@ -268,10 +268,13 @@ internal final class SearchViewController: UITableViewController,
         : Styles.grid(2)
     }
 
-    self.viewModel.inputs.willDisplayRow(
-      self.dataSource.itemIndexAt(indexPath),
-      outOf: self.dataSource.numberOfItems()
-    )
+    if let indexOfProject = self.dataSource.indexOfProject(forCellAtIndexPath: indexPath) {
+      let projectCount = self.dataSource.numberOfItems(in: indexPath.section)
+      self.viewModel.inputs.willDisplayProjectAtRow(
+        indexOfProject,
+        outOf: projectCount
+      )
+    }
   }
 
   override func tableView(_: UITableView, viewForHeaderInSection section: Int) -> UIView? {
