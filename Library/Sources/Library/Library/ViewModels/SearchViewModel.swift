@@ -54,7 +54,7 @@ public protocol SearchViewModelInputs {
    - parameter row:       The 0-based index of the row displaying.
    - parameter totalRows: The total number of rows in the table view.
    */
-  func willDisplayRow(_ row: Int, outOf totalRows: Int)
+  func willDisplayProjectAtRow(_ row: Int, outOf totalProjects: Int)
 }
 
 public protocol SearchViewModelOutputs {
@@ -145,7 +145,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     let requestFirstPageWith: Signal<DiscoveryParams, Never> = queryParams
 
-    let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
+    let isCloseToBottom = self.willDisplayProjectProperty.signal.skipNil()
       .map { row, total in
         row >= total - 3
       }
@@ -388,9 +388,9 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.viewWillAppearAnimatedProperty.value = animated
   }
 
-  fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
-  public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
-    self.willDisplayRowProperty.value = (row, totalRows)
+  fileprivate let willDisplayProjectProperty = MutableProperty<(row: Int, total: Int)?>(nil)
+  public func willDisplayProjectAtRow(_ row: Int, outOf totalRows: Int) {
+    self.willDisplayProjectProperty.value = (row, totalRows)
   }
 
   public func tappedButton(forFilterType type: SearchFilterPill.FilterType) {
