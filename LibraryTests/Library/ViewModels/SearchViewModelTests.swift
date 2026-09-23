@@ -454,7 +454,7 @@ internal final class SearchViewModelTests: TestCase {
         self.segmentTrackingClient.properties.last?["discover_search_term"] as? String
       )
 
-      self.vm.inputs.willDisplayRow(7, outOf: 10)
+      self.vm.inputs.willDisplayProjectAtRow(7, outOf: 10)
       self.scheduler.advance()
 
       XCTAssertEqual(
