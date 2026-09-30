@@ -15,6 +15,9 @@ public protocol SceneDelegateViewModelInputs {
     options: [UIApplication.OpenURLOptionsKey: Any]
   ) -> Bool
 
+  /// Call when the scene receives a request to perform a shortcut action.
+  func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem)
+
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
 }
@@ -63,9 +66,10 @@ public protocol SceneDelegateViewModelType {
   var outputs: SceneDelegateViewModelOutputs { get }
 }
 
-/// Handles everything that arrives through a `UIWindowScene`'s delegate: URL opens and continued user
-/// activities (universal links / Handoff), for now. This is the SceneDelegate's counterpart to
-/// `AppDelegateViewModel`, which instead handles push-notification and Braze deep links.
+/// Handles everything that arrives through a `UIWindowScene`'s delegate: URL opens, continued user
+/// activities (universal links / Handoff), and shortcut-item invocations, for now. This is the
+/// SceneDelegate's counterpart to `AppDelegateViewModel`, which instead handles push-notification and
+/// Braze deep links.
 /// Both funnel their resolved `Navigation` values through the shared `DeepLinkNavigationRouter`
 /// router so the navigation-resolution logic isn't duplicated.
 public final class SceneDelegateViewModel: SceneDelegateViewModelType, SceneDelegateViewModelInputs,
@@ -93,9 +97,17 @@ public final class SceneDelegateViewModel: SceneDelegateViewModelType, SceneDele
 
     let deepLinkFromUrl = deepLinkUrl.map(Navigation.match)
 
+    let performShortcutItem = self.performActionForShortcutItemProperty.signal.skipNil()
+      .map { ShortcutItem(typeString: $0.type) }
+      .skipNil()
+
+    let deepLinkFromShortcut = performShortcutItem
+      .switchMap(navigation(fromShortcutItem:))
+
     let deepLink = Signal
       .merge(
-        deepLinkFromUrl
+        deepLinkFromUrl,
+        deepLinkFromShortcut
       )
       .skipNil()
 
@@ -156,6 +168,11 @@ public final class SceneDelegateViewModel: SceneDelegateViewModelType, SceneDele
     return true
   }
 
+  fileprivate let performActionForShortcutItemProperty = MutableProperty<UIApplicationShortcutItem?>(nil)
+  public func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem) {
+    self.performActionForShortcutItemProperty.value = item
+  }
+
   private let foundRedirectUrlProperty = MutableProperty<URL?>(nil)
   public func foundRedirectUrl(_ url: URL) {
     self.foundRedirectUrlProperty.value = url
@@ -173,6 +190,26 @@ public final class SceneDelegateViewModel: SceneDelegateViewModelType, SceneDele
   public let goToSearch: Signal<(), Never>
   public let presentViewController: Signal<UIViewController, Never>
   public let updateCurrentUserInEnvironment: Signal<User, Never>
+}
+
+// Figures out a `Navigation` to route the user to from a shortcut item.
+private func navigation(fromShortcutItem shortcutItem: ShortcutItem) -> SignalProducer<Navigation?, Never> {
+  switch shortcutItem {
+  case .recommendedForYou:
+    let params = .defaults
+      |> DiscoveryParams.lens.recommended .~ true
+      |> DiscoveryParams.lens.sort .~ .magic
+    return SignalProducer(value: .tab(.discovery(params.queryParams)))
+
+  case .projectsWeLove:
+    let params = .defaults
+      |> DiscoveryParams.lens.staffPicks .~ true
+      |> DiscoveryParams.lens.sort .~ .magic
+    return SignalProducer(value: .tab(.discovery(params.queryParams)))
+
+  case .search:
+    return SignalProducer(value: .tab(.search))
+  }
 }
 
 private func accessTokenFromUrl(_ url: URL?) -> String? {

@@ -32,9 +32,6 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the aplication receives memory warning from the system.
   func applicationDidReceiveMemoryWarning()
 
-  /// Call when the application receives a request to perform a shortcut action.
-  func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem)
-
   /// Call after having invoked AppEnvironment.updateCurrentUser with a fresh user.
   func currentUserUpdatedInEnvironment()
 
@@ -108,9 +105,6 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits a URL when we should open it in the safari browser.
   var goToMobileSafari: Signal<URL, Never> { get }
-
-  /// Emits when the root view controller should navigate to search.
-  var goToSearch: Signal<(), Never> { get }
 
   /// Emits an Notification that should be immediately posted.
   var postNotification: Signal<Notification, Never> { get }
@@ -334,23 +328,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let deepLinkFromBraze = urlFromBraze.map(Navigation.deepLinkMatch)
 
-    let performShortcutItem = Signal.merge(
-      self.performActionForShortcutItemProperty.signal.skipNil(),
-      self.applicationLaunchOptionsProperty.signal
-        .map { $0?.options?[UIApplication.LaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem }
-        .skipNil()
-    )
-    .map { ShortcutItem(typeString: $0.type) }
-    .skipNil()
-
-    let deepLinkFromShortcut = performShortcutItem
-      .switchMap(navigation(fromShortcutItem:))
-
     let deeplinkActivated = Signal
       .merge(
         deepLinkFromNotification,
-        deepLinkFromBraze,
-        deepLinkFromShortcut
+        deepLinkFromBraze
       )
       .skipNil()
 
@@ -375,7 +356,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     )
 
     self.goToMessageThread = deepLinkOutputs.goToMessageThread
-    self.goToSearch = deepLinkOutputs.goToSearch
     self.presentViewController = deepLinkOutputs.presentViewController
 
     self.configureFirebase = self.applicationLaunchOptionsProperty.signal.ignoreValues()
@@ -391,7 +371,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.applicationDidFinishLaunchingReturnValueProperty <~ self.applicationLaunchOptionsProperty.signal
       .skipNil()
-      .map { _, options in options?[UIApplication.LaunchOptionsKey.shortcutItem] == nil }
+      .mapConst(true)
 
     self.applicationIconBadgeNumber = Signal.merge(
       self.applicationWillEnterForegroundProperty.signal,
@@ -486,11 +466,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.applicationDidReceiveMemoryWarningProperty.value = ()
   }
 
-  fileprivate let performActionForShortcutItemProperty = MutableProperty<UIApplicationShortcutItem?>(nil)
-  public func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem) {
-    self.performActionForShortcutItemProperty.value = item
-  }
-
   fileprivate let currentUserUpdatedInEnvironmentProperty = MutableProperty(())
   public func currentUserUpdatedInEnvironment() {
     self.currentUserUpdatedInEnvironmentProperty.value = ()
@@ -572,7 +547,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let goToLoginWithIntent: Signal<LoginIntent, Never>
   public let goToMessageThread: Signal<MessageThread, Never>
   public let goToMobileSafari: Signal<URL, Never>
-  public let goToSearch: Signal<(), Never>
   public let postNotification: Signal<Notification, Never>
   public let presentViewController: Signal<UIViewController, Never>
   public let pushTokenRegistrationStarted: Signal<(), Never>
@@ -667,26 +641,6 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   }
 
   return nil
-}
-
-// Figures out a `Navigation` to route the user to from a shortcut item.
-private func navigation(fromShortcutItem shortcutItem: ShortcutItem) -> SignalProducer<Navigation?, Never> {
-  switch shortcutItem {
-  case .recommendedForYou:
-    let params = .defaults
-      |> DiscoveryParams.lens.recommended .~ true
-      |> DiscoveryParams.lens.sort .~ .magic
-    return SignalProducer(value: .tab(.discovery(params.queryParams)))
-
-  case .projectsWeLove:
-    let params = .defaults
-      |> DiscoveryParams.lens.staffPicks .~ true
-      |> DiscoveryParams.lens.sort .~ .magic
-    return SignalProducer(value: .tab(.discovery(params.queryParams)))
-
-  case .search:
-    return SignalProducer(value: .tab(.search))
-  }
 }
 
 // Figures out which shortcut items to show to a user.
