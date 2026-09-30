@@ -24,6 +24,7 @@ final class SceneDelegateViewModelTests: TestCase {
   private let goToMobileSafari = TestObserver<URL, Never>()
   private let goToSearch = TestObserver<(), Never>()
   private let presentViewController = TestObserver<Int, Never>()
+  private let updateCurrentUserInEnvironment = TestObserver<User, Never>()
 
   private var defaultRootCategoriesTemplate: RootCategoriesEnvelope {
     RootCategoriesEnvelope.template
@@ -53,6 +54,7 @@ final class SceneDelegateViewModelTests: TestCase {
     self.vm.outputs.goToSearch.observe(self.goToSearch.observer)
     self.vm.outputs.presentViewController.map { ($0 as! UINavigationController).viewControllers.count }
       .observe(self.presentViewController.observer)
+    self.vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
   }
 
   func testPresentViewController() {
@@ -800,6 +802,8 @@ final class SceneDelegateViewModelTests: TestCase {
   }
 
   func testDeepLink_UserDidUpdateNotificationSettings() {
+    self.updateCurrentUserInEnvironment.assertDidNotEmitValue()
+
     withEnvironment(apiService: MockService()) {
       let user = User.template
         |> User.lens.notifications.mobileMessages .~ false
@@ -819,6 +823,12 @@ final class SceneDelegateViewModelTests: TestCase {
         options: [:]
       )
       XCTAssertTrue(result)
+
+      self.updateCurrentUserInEnvironment.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.updateCurrentUserInEnvironment.assertValues([updatedUser])
     }
   }
 
