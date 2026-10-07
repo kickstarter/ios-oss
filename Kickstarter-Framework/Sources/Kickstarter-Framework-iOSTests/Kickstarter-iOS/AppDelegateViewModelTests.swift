@@ -586,7 +586,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testOpenNotification_UnrecognizedActivityType() {
-    let categories: [Activity.Category] = [.funding, .unknown, .watch]
+    let categories: [Activity.Category] = [.follow, .funding, .unknown, .watch]
 
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
