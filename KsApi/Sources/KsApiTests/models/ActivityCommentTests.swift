@@ -15,10 +15,10 @@ final class ActivityCommentTests: XCTestCase {
         ],
         "urls": [
           "web": [
-            "user": "https://staging.kickstarter.com/profile/382491714"
+            "user": "https://stg.ksr.io/profile/382491714"
           ],
           "api": [
-            "user": "https://api-staging.kickstarter.com/v1/users/382491714"
+            "user": "https://api.stg.ksr.io/v1/users/382491714"
           ]
         ]
       ],
@@ -44,10 +44,10 @@ final class ActivityCommentTests: XCTestCase {
         ],
         "urls": [
           "web": [
-            "user": "https://staging.kickstarter.com/profile/382491714"
+            "user": "https://stg.ksr.io/profile/382491714"
           ],
           "api": [
-            "user": "https://api-staging.kickstarter.com/v1/users/382491714"
+            "user": "https://api.stg.ksr.io/v1/users/382491714"
           ]
         ]
       ],

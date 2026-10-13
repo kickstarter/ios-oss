@@ -720,7 +720,7 @@ private func backingDictionary() -> [String: Any] {
           "name": "LGBTQIA+"
         }
       ],
-      "url": "https://staging.kickstarter.com/projects/parliament-of-rooks/wee-william-witchling",
+      "url": "https://stg.ksr.io/projects/parliament-of-rooks/wee-william-witchling",
       "usdExchangeRate": 1,
       "video": {
         "__typename": "Video",

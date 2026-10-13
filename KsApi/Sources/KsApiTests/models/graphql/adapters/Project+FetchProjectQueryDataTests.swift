@@ -62,11 +62,11 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     /// Project URLS
     XCTAssertEqual(
       project.urls.web.project,
-      "https://staging.kickstarter.com/projects/theaschneider/thequiet"
+      "https://stg.ksr.io/projects/theaschneider/thequiet"
     )
     XCTAssertEqual(
       project.urls.web.updates,
-      "https://staging.kickstarter.com/projects/theaschneider/thequiet/posts"
+      "https://stg.ksr.io/projects/theaschneider/thequiet/posts"
     )
 
     /// Project Stats

@@ -122,7 +122,7 @@
         "state": "LIVE",
         "stateChangedAt": 1770152111,
         "tags": [],
-        "url": "https://staging.kickstarter.com/projects/amy-at-kickstarter/crossfit-think-tank-cooler",
+        "url": "https://stg.ksr.io/projects/amy-at-kickstarter/crossfit-think-tank-cooler",
         "usdExchangeRate": 1,
         "watchesCount": 0
       },
@@ -274,7 +274,7 @@
         "symbol": "$"
       },
       "status": "pledged",
-      "backingDetailsPageRoute": "https://staging.kickstarter.com/projects/amy-at-kickstarter/crossfit-think-tank-cooler/backing/survey_responses"
+      "backingDetailsPageRoute": "https://stg.ksr.io/projects/amy-at-kickstarter/crossfit-think-tank-cooler/backing/survey_responses"
     }
   }
 }

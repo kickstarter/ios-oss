@@ -280,7 +280,7 @@ public enum FetchAddsOnsQueryTemplate {
                 "name": "LGBTQIA+"
               }
             ],
-            "url": "https://staging.kickstarter.com/projects/peppermintfox/peppermint-fox-press-notebooks-and-stationery",
+            "url": "https://stg.ksr.io/projects/peppermintfox/peppermint-fox-press-notebooks-and-stationery",
             "usdExchangeRate": 0.74641181,
             "story": "API returns this as HTML wrapped in a string. But here HTML breaks testing because the serializer does not recognize escape characters within a string.",
             "environmentalCommitments": [],
