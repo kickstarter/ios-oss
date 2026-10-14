@@ -11,7 +11,7 @@ and read more about our journey to open source [here](https://kickstarter.engine
 
 ## Getting Started
 
-1. Install Xcode. We currently support XCode 14.3 Swift 5.8.
+1. Install Xcode. We currently support Xcode 26.6.
 2. Clone this repository.
 
 &#42; To provide a mock version that serves up hard-coded data immediately, set `KsApi.Secrets.isOSS` = `true`.
