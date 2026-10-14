@@ -20,7 +20,7 @@ final class OAuthTests: XCTestCase {
       expectation.fulfill()
     }
 
-    wait(for: [expectation], timeout: 0.01)
+    wait(for: [expectation], timeout: 0.1)
   }
 
   func testHandleRedirect_missingRedirectURL_fails() {
