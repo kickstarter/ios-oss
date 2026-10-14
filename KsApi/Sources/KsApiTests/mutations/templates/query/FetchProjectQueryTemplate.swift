@@ -180,7 +180,7 @@ public enum FetchProjectQueryTemplate {
           "stateChangedAt":1625118950,
           "sendMetaCapiEvents" : true,
           "tags":[],
-          "url":"https://staging.kickstarter.com/projects/theaschneider/thequiet",
+          "url":"https://stg.ksr.io/projects/theaschneider/thequiet",
           "usdExchangeRate":1.18302594,
           "video": {
             "__typename": "Video",

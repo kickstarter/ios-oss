@@ -77,7 +77,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
       XCTAssertEqual(project.tags!.first!, "LGBTQIA+")
       XCTAssertEqual(
         project.urls.web.updates!,
-        "https://staging.kickstarter.com/projects/bandofbards/final-gamble-issue-1/posts"
+        "https://stg.ksr.io/projects/bandofbards/final-gamble-issue-1/posts"
       )
       XCTAssertEqual(
         project.video?.high,
@@ -510,7 +510,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
          ]
        },
        "risks": "As with any project of this nature, there are always some risks involved with manufacturing and shipping. That's why we're collaborating with the iam8bit team, they have many years of experience producing and delivering all manner of items to destinations all around the world. We do not expect any delays or hiccups with reward fulfillment. But if anything comes up, we will be clear and communicative about what is happening and how it might affect you.",
-       "url":"https://staging.kickstarter.com/projects/bandofbards/final-gamble-issue-1",
+       "url":"https://stg.ksr.io/projects/bandofbards/final-gamble-issue-1",
        "usdExchangeRate":1,
        "video":{
           "__typename":"Video",

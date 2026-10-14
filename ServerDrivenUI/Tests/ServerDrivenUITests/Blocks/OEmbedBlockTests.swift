@@ -390,7 +390,7 @@ private func oembedBlock(
 ) -> some View {
   let block = OEmbedBlock(oembed: oembed)
     .environment(\.richTextStyle, richTextStyle(colorScheme))
-    .environment(\.referrer, URL(string: "https://staging.kickstarter.com/")!)
+    .environment(\.referrer, URL(string: "https://stg.ksr.io/")!)
 
   if let width, let height {
     block.frame(width: width, height: height)
