@@ -260,6 +260,16 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
       }
+    
+    NotificationCenter.default
+      .addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.applicationActive(state: true)
+      }
+    
+    NotificationCenter.default
+      .addObserver(forName: UIApplication.willResignActiveNotification, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.applicationActive(state: false)
+      }
 
     NotificationCenter.default
       .addObserver(
@@ -322,14 +332,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     options _: UIScene.ConnectionOptions
   ) -> UISceneConfiguration {
     return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
-  }
-
-  func applicationDidBecomeActive(_: UIApplication) {
-    self.viewModel.inputs.applicationActive(state: true)
-  }
-
-  func applicationWillResignActive(_: UIApplication) {
-    self.viewModel.inputs.applicationActive(state: false)
   }
 
   func applicationWillEnterForeground(_: UIApplication) {
