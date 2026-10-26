@@ -3,6 +3,7 @@ import KDS
 import KsApi
 import Library
 import Prelude
+import SwiftUI
 import UIKit
 
 internal protocol TabBarControllerScrollable {
@@ -223,6 +224,25 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
 
     profileNav.setViewControllers([profileVC, threadsVC, messageThreadVC], animated: true)
   }
+
+  // MARK: Custom public functions for more complicated navigation.
+
+  public func goToLoginWithIntent(_ intent: LoginIntent) {
+    /// Dismiss OnboardingView if present so that we can correctly present the LoginToutViewController.
+    if let onboardingView = self
+      .presentedViewController as? UIHostingController<OnboardingView> {
+      onboardingView.dismiss(animated: true)
+      AppEnvironment.current.userDefaults.set(true, forKey: AppKeys.hasSeenOnboarding.rawValue)
+    }
+
+    let vc = LoginToutViewController.configuredWith(loginIntent: intent)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
+
+    self.present(nav, animated: true, completion: nil)
+  }
+
+  // MARK: Private functions
 
   private func configureFloatingTabBarItems(with data: TabBarItemsData) {
     guard let items = self.tabBar.items, items.isEmpty == false else { return }

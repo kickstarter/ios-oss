@@ -44,18 +44,7 @@ internal final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     self.viewModel.outputs.goToLoginWithIntent
       .observeForControllerAction()
       .observeValues { [weak self] intent in
-        /// Dismiss OnboardingView if present so that we can correctly present the LoginToutViewController.
-        if let onboardingView = self?.rootTabBarController?
-          .presentedViewController as? UIHostingController<OnboardingView> {
-          onboardingView.dismiss(animated: true)
-          AppEnvironment.current.userDefaults.set(true, forKey: AppKeys.hasSeenOnboarding.rawValue)
-        }
-
-        let vc = LoginToutViewController.configuredWith(loginIntent: intent)
-        let nav = UINavigationController(rootViewController: vc)
-        nav.modalPresentationStyle = .formSheet
-
-        self?.rootTabBarController?.present(nav, animated: true, completion: nil)
+        self?.rootTabBarController?.goToLoginWithIntent(intent)
       }
 
     self.viewModel.outputs.goToMessageThread
