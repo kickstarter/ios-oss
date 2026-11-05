@@ -47,11 +47,6 @@ public func emailFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
     |> \.textContentType .~ .username
 }
 
-public let fbLoginButtonStyle = facebookButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in
-    Strings.login_tout_buttons_log_in_with_facebook()
-  }
-
 public let fbConfirmationMessageLabelStyle = UILabel.lens.textColor .~ LegacyColors.ksr_support_700.uiColor()
   <> UILabel.lens.font .~ .ksr_body()
   <> UILabel.lens

@@ -1,5 +1,4 @@
 import AuthenticationServices
-import FacebookLogin
 import FirebaseCrashlytics
 import Foundation
 import KDS
@@ -22,18 +21,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   private lazy var bringCreativeProjectsToLifeLabel = { UILabel(frame: .zero) }()
   private lazy var contextLabel = { UILabel(frame: .zero) }()
   private lazy var emailLoginStackView = { UIStackView(frame: .zero) }()
-  private lazy var fbLoginButton = { UIButton(type: .custom)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
 
-  private lazy var fbLoginManager: LoginManager = {
-    let manager = LoginManager()
-    manager.defaultAudience = .friends
-    return manager
-  }()
-
-  private lazy var fbLoginStackView = { UIStackView(frame: .zero) }()
-  private lazy var getNotifiedLabel = { UILabel(frame: .zero) }()
   private let helpViewModel = HelpViewModel()
 
   private lazy var signupOrLoginWithOAuthButton = { UIButton(type: .custom)
@@ -75,8 +63,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     self.configureViews()
     self.setupConstraints()
     self.configureTargets()
-
-    self.fbLoginManager.logOut()
 
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
@@ -124,17 +110,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
         self.bringCreativeProjectsToLifeLabel.isHidden ? UIFont.ksr_title2() : UIFont.ksr_subhead()
       }
 
-    _ = self.fbLoginButton
-      |> facebookButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue_with_Facebook() }
-
-    _ = self.getNotifiedLabel
-      |> baseLabelStyle
-      |> UILabel.lens.font %~~ { _, _ in
-        isPad ? UIFont.ksr_subhead() : UIFont.ksr_caption2()
-      }
-      |> UILabel.lens.text %~ { _ in Strings.Get_notified_when_your_friends_back_and_launch_projects() }
-
     self.signupOrLoginWithOAuthButton.applyStyleConfiguration(KSRButtonStyle.green)
     self.signupOrLoginWithOAuthButton
       .setTitle(Strings.login_tout_generic_intent_traditional_signup_or_login_button(), for: .normal)
@@ -159,7 +134,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     _ = self.separatorView
       |> separatorViewStyle
 
-    _ = [self.loginContextStackView, self.fbLoginStackView, self.emailLoginStackView]
+    _ = [self.loginContextStackView, self.emailLoginStackView]
       ||> baseStackViewStyle
   }
 
@@ -178,50 +153,11 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
         self?.viewModel.inputs.environmentLoggedIn()
       }
 
-    self.viewModel.outputs.logIntoEnvironmentWithFacebook
-      .observeValues { [weak self] accessTokenEnv in
-        guard let strongSelf = self else { return }
-
-        AppEnvironment.login(accessTokenEnv)
-
-        strongSelf.viewModel.inputs.environmentLoggedIn()
-      }
-
     self.viewModel.outputs.postNotification
       .observeForUI()
       .observeValues {
         NotificationCenter.default.post($0.0)
         NotificationCenter.default.post($0.1)
-      }
-
-    self.viewModel.outputs.startFacebookConfirmation
-      .observeForControllerAction()
-      .observeValues { [weak self] user, token in
-        self?.pushFacebookConfirmationController(facebookUser: user, facebookToken: token)
-      }
-
-    self.viewModel.outputs.startTwoFactorChallenge
-      .observeForControllerAction()
-      .observeValues { [weak self] token in
-        self?.pushTwoFactorViewController(facebookAccessToken: token)
-      }
-
-    self.viewModel.outputs.attemptFacebookLogin
-      .observeValues { [weak self] _ in self?.attemptFacebookLogin()
-      }
-
-    self.viewModel.outputs.showFacebookErrorAlert
-      .observeForControllerAction()
-      .observeValues { [weak self] error in
-        guard let strongSelf = self else { return }
-
-        strongSelf.present(
-          UIAlertController.alertController(forError: error),
-          animated: true,
-          completion: nil
-        )
-
-        Crashlytics.crashlytics().record(error: error.nsError)
       }
 
     self.viewModel.outputs.dismissViewController
@@ -312,7 +248,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       |> ksr_constrainViewToEdgesInParent()
 
     _ = ([
-      self.loginContextStackView, self.fbLoginStackView, self.separatorView, self.emailLoginStackView
+      self.loginContextStackView, self.appleLoginButton, self.separatorView, self.emailLoginStackView
     ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -322,17 +258,13 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     ], self.loginContextStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.appleLoginButton, self.fbLoginButton, self.getNotifiedLabel], self.fbLoginStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
     self.emailLoginStackView.addArrangedSubview(self.signupOrLoginWithOAuthButton)
   }
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.separatorView.heightAnchor.constraint(equalToConstant: 1),
-      self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-      self.fbLoginButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+      self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
     ])
 
     NSLayoutConstraint.activate([
@@ -344,10 +276,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   private func configureTargets() {
     self.appleLoginButton.addTarget(
       self, action: #selector(self.appleLoginButtonPressed(_:)),
-      for: .touchUpInside
-    )
-    self.fbLoginButton.addTarget(
-      self, action: #selector(self.facebookLoginButtonPressed(_:)),
       for: .touchUpInside
     )
     self.signupOrLoginWithOAuthButton
@@ -399,22 +327,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     }
   }
 
-  fileprivate func pushTwoFactorViewController(facebookAccessToken token: String) {
-    let vc = TwoFactorViewController.configuredWith(facebookAccessToken: token)
-    self.navigationController?.pushViewController(vc, animated: true)
-    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
-  }
-
-  fileprivate func pushFacebookConfirmationController(
-    facebookUser user: ErrorEnvelope.FacebookUser?,
-    facebookToken token: String
-  ) {
-    let vc = FacebookConfirmationViewController
-      .configuredWith(facebookUserEmail: user?.email ?? "", facebookAccessToken: token)
-    self.navigationController?.pushViewController(vc, animated: true)
-    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
-  }
-
   fileprivate func showHelpSheet(helpTypes: [HelpType]) {
     let helpSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
@@ -440,20 +352,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     self.present(helpSheet, animated: true, completion: nil)
   }
 
-  // MARK: - Facebook Login
-
-  fileprivate func attemptFacebookLogin() {
-    self.fbLoginManager.logIn(
-      permissions: ["public_profile", "email", "user_friends"], from: nil
-    ) { result, error in
-      if let error = error {
-        self.viewModel.inputs.facebookLoginFail(error: error)
-      } else if let result = result, !result.isCancelled {
-        self.viewModel.inputs.facebookLoginSuccess(result: result)
-      }
-    }
-  }
-
   // MARK: - Accessors
 
   @objc public func mailComposeController(
@@ -475,10 +373,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
   @objc private func helpButtonPressed() {
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
-  }
-
-  @objc private func facebookLoginButtonPressed(_: UIButton) {
-    self.viewModel.inputs.facebookLoginButtonPressed()
   }
 
   @objc private func signupOrLoginWithOAuthButtonPressed() {

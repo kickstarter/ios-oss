@@ -1,5 +1,4 @@
 import AuthenticationServices
-import FacebookLogin
 import KsApi
 import Prelude
 import ReactiveSwift
@@ -22,15 +21,6 @@ public protocol LoginToutViewModelInputs {
   /// Call when the environment has been logged into
   func environmentLoggedIn()
 
-  /// Call when Faceboook login button is pressed
-  func facebookLoginButtonPressed()
-
-  /// Call when Facebook login completed with error
-  func facebookLoginFail(error: Error?)
-
-  /// Call when Facebook login completed successfully with a result
-  func facebookLoginSuccess(result: LoginManagerLoginResult)
-
   /// Call with login with OAuth button is pressed
   func signupOrLoginWithOAuthButtonPressed()
 
@@ -49,9 +39,6 @@ public protocol LoginToutViewModelOutputs {
   /// Emits when Apple login should start
   var attemptAppleLogin: Signal<Void, Never> { get }
 
-  /// Emits when Facebook login should start
-  var attemptFacebookLogin: Signal<(), Never> { get }
-
   /// Emits when the controller should be dismissed.
   var dismissViewController: Signal<(), Never> { get }
 
@@ -67,9 +54,6 @@ public protocol LoginToutViewModelOutputs {
   /// Emits an access token envelope that can be used to update the environment via Apple.
   var logIntoEnvironmentWithApple: Signal<AccessTokenEnvelope, Never> { get }
 
-  /// Emits an access token envelope that can be used to update the environment via Facebook.
-  var logIntoEnvironmentWithFacebook: Signal<AccessTokenEnvelope, Never> { get }
-
   /// Emits when a login success notification should be posted.
   var postNotification: Signal<(Notification, Notification), Never> { get }
 
@@ -79,17 +63,8 @@ public protocol LoginToutViewModelOutputs {
   /// Emits when we should log a non-fatal Apple error
   var logAppleError: Signal<NSError, Never> { get }
 
-  /// Emits when should show Facebook error alert with AlertError
-  var showFacebookErrorAlert: Signal<AlertError, Never> { get }
-
   /// Emits when OAuth flow should be shown
   var startOAuthSignupOrLogin: Signal<(), Never> { get }
-
-  /// Emits a Facebook user and access token when Facebook login has occurred
-  var startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), Never> { get }
-
-  /// Emits an access token to show 2fa view when Facebook login fails with tfaRequired error
-  var startTwoFactorChallenge: Signal<String, Never> { get }
 }
 
 public protocol LoginToutViewModelType {
@@ -113,56 +88,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     self.isLoading = isLoading.signal.skipRepeats()
     self.startOAuthSignupOrLogin = self.signupOrLoginWithOAuthButtonPressedProperty.signal
-    self.attemptFacebookLogin = self.facebookLoginButtonPressedProperty.signal
     self.attemptAppleLogin = self.appleLoginButtonPressedProperty.signal.ignoreValues()
-
-    let tokenString: Signal<String, Never> = self.facebookLoginSuccessProperty.signal.skipNil()
-      .map { $0.token?.tokenString ?? "" }
-
-    let facebookLogin = tokenString
-      .switchMap { token in
-        AppEnvironment.current.apiService.login(facebookAccessToken: token, code: nil)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .on(
-            starting: {
-              isLoading.value = true
-            },
-            terminated: {
-              isLoading.value = false
-            }
-          )
-          .materialize()
-      }
-
-    let tfaRequiredError = facebookLogin.errors()
-      .filter { $0.ksrCode == .TfaRequired }
-
-    let facebookSignupError = facebookLogin.errors()
-      .filter { $0.ksrCode == .ConfirmFacebookSignup }
-
-    let genericFacebookErrorAlert = facebookLogin.errors()
-      .filter { env in
-        env.ksrCode != .TfaRequired &&
-          env.ksrCode != .ConfirmFacebookSignup &&
-          env.ksrCode != .FacebookInvalidAccessToken
-      }
-      .map { AlertError.genericFacebookError(envelope: $0) }
-
-    let facebookTokenFailAlert = facebookLogin.errors()
-      .filter { $0.ksrCode == .FacebookInvalidAccessToken }
-      .ignoreValues()
-      .mapConst(AlertError.facebookTokenFail)
-
-    let facebookLoginAttemptFailAlert = self.facebookLoginFailProperty.signal
-      .map { $0 as NSError? }
-      .skipNil()
-      .map(AlertError.facebookLoginAttemptFail)
-
-    self.startTwoFactorChallenge = tokenString.takeWhen(tfaRequiredError)
-
-    self.startFacebookConfirmation = tokenString
-      .takePairWhen(facebookSignupError)
-      .map { token, error in (error.facebookUser ?? nil, token) }
 
     self.postNotification = self.environmentLoggedInProperty.signal
       .mapConst((
@@ -179,14 +105,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .filter(isTrue)
       .takeWhen(self.userSessionStartedProperty.signal)
       .ignoreValues()
-
-    self.showFacebookErrorAlert = Signal.merge(
-      facebookTokenFailAlert,
-      facebookLoginAttemptFailAlert,
-      genericFacebookErrorAlert
-    )
-
-    let logIntoEnvironmentWithFacebook = facebookLogin.values()
 
     // MARK: - Sign-in with Apple
 
@@ -261,7 +179,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .skipNil()
 
     self.logIntoEnvironmentWithApple = logIntoEnvironmentWithApple.signal
-    self.logIntoEnvironmentWithFacebook = logIntoEnvironmentWithFacebook.signal
 
     self.viewWillAppearProperty.signal
       .take(first: 1)
@@ -299,21 +216,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.environmentLoggedInProperty.value = ()
   }
 
-  fileprivate let facebookLoginButtonPressedProperty = MutableProperty(())
-  public func facebookLoginButtonPressed() {
-    self.facebookLoginButtonPressedProperty.value = ()
-  }
-
-  fileprivate let facebookLoginFailProperty = MutableProperty<Error?>(nil)
-  public func facebookLoginFail(error: Error?) {
-    self.facebookLoginFailProperty.value = error
-  }
-
-  fileprivate let facebookLoginSuccessProperty = MutableProperty<LoginManagerLoginResult?>(nil)
-  public func facebookLoginSuccess(result: LoginManagerLoginResult) {
-    self.facebookLoginSuccessProperty.value = result
-  }
-
   fileprivate let signupOrLoginWithOAuthButtonPressedProperty = MutableProperty(())
   public func signupOrLoginWithOAuthButtonPressed() {
     self.signupOrLoginWithOAuthButtonPressedProperty.value = ()
@@ -335,19 +237,14 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   }
 
   public let attemptAppleLogin: Signal<(), Never>
-  public let attemptFacebookLogin: Signal<(), Never>
   public let dismissViewController: Signal<(), Never>
   public let headlineLabelHidden: Signal<Bool, Never>
   public let isLoading: Signal<Bool, Never>
   public let logInContextText: Signal<String, Never>
   public let logIntoEnvironmentWithApple: Signal<AccessTokenEnvelope, Never>
-  public let logIntoEnvironmentWithFacebook: Signal<AccessTokenEnvelope, Never>
   public let postNotification: Signal<(Notification, Notification), Never>
-  public let startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), Never>
   public let startOAuthSignupOrLogin: Signal<(), Never>
-  public let startTwoFactorChallenge: Signal<String, Never>
   public let showAppleErrorAlert: Signal<String, Never>
-  public let showFacebookErrorAlert: Signal<AlertError, Never>
   public let logAppleError: Signal<NSError, Never>
 }
 
