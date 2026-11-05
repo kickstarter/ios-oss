@@ -38,7 +38,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
   }()
 
-  private lazy var separatorView: UIView = { UIView(frame: .zero) }()
   private var sessionStartedObserver: Any?
 
   private let viewModel: LoginToutViewModelType = LoginToutViewModel()
@@ -130,9 +129,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       |> baseStackViewStyle
       |> UIStackView.lens.spacing .~ Styles.grid(5)
     applyLoginRootStackViewStyle(self.rootStackView, useLargerMargins: isPad)
-
-    _ = self.separatorView
-      |> separatorViewStyle
 
     _ = [self.loginContextStackView, self.emailLoginStackView]
       ||> baseStackViewStyle
@@ -248,7 +244,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       |> ksr_constrainViewToEdgesInParent()
 
     _ = ([
-      self.loginContextStackView, self.appleLoginButton, self.separatorView, self.emailLoginStackView
+      self.loginContextStackView, self.appleLoginButton, self.emailLoginStackView
     ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -263,7 +259,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.separatorView.heightAnchor.constraint(equalToConstant: 1),
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
     ])
 
@@ -421,12 +416,6 @@ private let logoImageViewStyle: ImageViewStyle = { imageView in
     |> \.contentMode .~ .scaleAspectFit
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.accessibilityLabel %~ { _ in Strings.general_accessibility_kickstarter() }
-}
-
-private let separatorViewStyle: ViewStyle = { view in
-  view
-    |> \.backgroundColor .~ LegacyColors.ksr_support_300.uiColor()
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }
 
 private func applyAppleLoginButtonStyle(_ button: AdaptiveAppleIDButton) {
