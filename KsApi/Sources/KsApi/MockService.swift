@@ -90,12 +90,6 @@
     fileprivate let fetchDiscoveryResponse: DiscoveryEnvelope?
     fileprivate let fetchDiscoveryError: ErrorEnvelope?
 
-    fileprivate let fetchFriendsResponse: FindFriendsEnvelope?
-    fileprivate let fetchFriendsError: ErrorEnvelope?
-
-    fileprivate let fetchFriendStatsResponse: FriendStatsEnvelope?
-    fileprivate let fetchFriendStatsError: ErrorEnvelope?
-
     fileprivate let fetchDraftResponse: UpdateDraft?
     fileprivate let fetchDraftError: ErrorEnvelope?
 
@@ -192,8 +186,6 @@
     fileprivate let signupResponse: AccessTokenEnvelope?
     fileprivate let signupError: ErrorEnvelope?
     fileprivate let tokenExchangeResponse: OAuthTokenExchangeResponse?
-
-    fileprivate let unfollowFriendError: ErrorEnvelope?
 
     fileprivate let updateRewardReceivedResult: Result<Bool, ErrorEnvelope>?
 
@@ -298,10 +290,6 @@
       fetchConfigResponse: Config? = nil,
       fetchDiscoveryResponse: DiscoveryEnvelope? = nil,
       fetchDiscoveryError: ErrorEnvelope? = nil,
-      fetchFriendsResponse: FindFriendsEnvelope? = nil,
-      fetchFriendsError: ErrorEnvelope? = nil,
-      fetchFriendStatsResponse: FriendStatsEnvelope? = nil,
-      fetchFriendStatsError: ErrorEnvelope? = nil,
       fetchDraftResponse: UpdateDraft? = nil,
       fetchDraftError: ErrorEnvelope? = nil,
       fetchGraphUserResult: Result<UserEnvelope<GraphUser>, ErrorEnvelope>? = nil,
@@ -364,7 +352,6 @@
       signInWithAppleResult: Result<SignInWithAppleEnvelope, ErrorEnvelope>? = nil,
       signupResponse: AccessTokenEnvelope? = nil,
       signupError: ErrorEnvelope? = nil,
-      unfollowFriendError: ErrorEnvelope? = nil,
       updateRewardReceivedResult: Result<Bool, ErrorEnvelope>? = nil,
       updateBackingResult: Result<UpdateBackingEnvelope, ErrorEnvelope>? = nil,
       updateDraftError: ErrorEnvelope? = nil,
@@ -473,12 +460,6 @@
       self.fetchDiscoveryResponse = fetchDiscoveryResponse
       self.fetchDiscoveryError = fetchDiscoveryError
 
-      self.fetchFriendsResponse = fetchFriendsResponse
-      self.fetchFriendsError = fetchFriendsError
-
-      self.fetchFriendStatsResponse = fetchFriendStatsResponse
-      self.fetchFriendStatsError = fetchFriendStatsError
-
       self.fetchDraftResponse = fetchDraftResponse
       self.fetchDraftError = fetchDraftError
 
@@ -573,8 +554,6 @@
       self.signupResponse = signupResponse
 
       self.signupError = signupError
-
-      self.unfollowFriendError = unfollowFriendError
 
       self.updateRewardReceivedResult = updateRewardReceivedResult
 
@@ -919,34 +898,6 @@
       return SignalProducer(value: config)
     }
 
-    internal func fetchFriends() -> SignalProducer<FindFriendsEnvelope, ErrorEnvelope> {
-      if let response = fetchFriendsResponse {
-        return SignalProducer(value: response)
-      } else if let error = fetchFriendsError {
-        return SignalProducer(error: error)
-      }
-
-      return SignalProducer(value: .template)
-    }
-
-    internal func fetchFriends(paginationUrl _: String)
-      -> SignalProducer<FindFriendsEnvelope, ErrorEnvelope> {
-      return self.fetchFriends()
-    }
-
-    internal func fetchFriendStats() -> SignalProducer<FriendStatsEnvelope, ErrorEnvelope> {
-      if let response = fetchFriendStatsResponse {
-        return SignalProducer(value: response)
-      } else if let error = fetchFriendStatsError {
-        return SignalProducer(error: error)
-      }
-      return SignalProducer(value: .template)
-    }
-
-    internal func followAllFriends() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
-      return SignalProducer(value: VoidEnvelope())
-    }
-
     internal func followFriend(userId id: Int) -> SignalProducer<User, ErrorEnvelope> {
       if let error = followFriendError {
         return SignalProducer(error: error)
@@ -1069,14 +1020,6 @@
 
       let fetchGraphUserSetupQuery = GraphAPI.FetchUserSetupQuery()
       return client.fetchWithResult(query: fetchGraphUserSetupQuery, result: self.fetchGraphUserSetupResult)
-    }
-
-    internal func unfollowFriend(userId _: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
-      if let error = unfollowFriendError {
-        return SignalProducer(error: error)
-      }
-
-      return SignalProducer(value: VoidEnvelope())
     }
 
     internal func login(_ oauthToken: OauthTokenAuthType) -> MockService {
@@ -1986,10 +1929,6 @@
             fetchConfigResponse: $1.fetchConfigResponse,
             fetchDiscoveryResponse: $1.fetchDiscoveryResponse,
             fetchDiscoveryError: $1.fetchDiscoveryError,
-            fetchFriendsResponse: $1.fetchFriendsResponse,
-            fetchFriendsError: $1.fetchFriendsError,
-            fetchFriendStatsResponse: $1.fetchFriendStatsResponse,
-            fetchFriendStatsError: $1.fetchFriendStatsError,
             fetchDraftResponse: $1.fetchDraftResponse,
             fetchDraftError: $1.fetchDraftError,
             fetchGraphUserResult: $1.fetchGraphUserResult,
@@ -2034,7 +1973,6 @@
             resetPasswordError: $1.resetPasswordError,
             signupResponse: $1.signupResponse,
             signupError: $1.signupError,
-            unfollowFriendError: $1.unfollowFriendError,
             updateBackingResult: $1.updateBackingResult,
             updateDraftError: $1.updateDraftError,
             updatePledgeResult: $1.updatePledgeResult,
