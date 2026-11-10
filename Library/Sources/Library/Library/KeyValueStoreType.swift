@@ -2,8 +2,6 @@ import Foundation
 
 public enum AppKeys: String {
   // swiftformat:disable wrap
-  case closedFacebookConnectInActivity = "com.kickstarter.KeyValueStoreType.closedFacebookConnectInActivity"
-  case closedFindFriendsInActivity = "com.kickstarter.KeyValueStoreType.closedFindFriendsInActivity"
   case deniedNotificationContexts = "com.kickstarter.KeyValueStoreType.deniedNotificationContexts"
   case favoriteCategoryIds = "favorite_category_ids"
   case hasCompletedCategoryPersonalizationFlow = "com.kickstarter.KeyValueStoreType.hasCompletedCategoryPersonalizationFlow"
@@ -36,8 +34,6 @@ public protocol KeyValueStoreType: AnyObject {
   func removeObject(forKey defaultName: String)
   var deniedNotificationContexts: [String] { get set }
   var favoriteCategoryIds: [Int] { get set }
-  var hasClosedFacebookConnectInActivity: Bool { get set }
-  var hasClosedFindFriendsInActivity: Bool { get set }
   var hasCompletedCategoryPersonalizationFlow: Bool { get set }
   var hasDismissedPersonalizationCard: Bool { get set }
   var hasSeenAppRating: Bool { get set }
@@ -85,24 +81,6 @@ extension KeyValueStoreType {
     }
     set {
       self.set(newValue, forKey: AppKeys.hasCompletedCategoryPersonalizationFlow.rawValue)
-    }
-  }
-
-  public var hasClosedFacebookConnectInActivity: Bool {
-    get {
-      return self.object(forKey: AppKeys.closedFacebookConnectInActivity.rawValue) as? Bool ?? false
-    }
-    set {
-      self.set(newValue, forKey: AppKeys.closedFacebookConnectInActivity.rawValue)
-    }
-  }
-
-  public var hasClosedFindFriendsInActivity: Bool {
-    get {
-      return self.object(forKey: AppKeys.closedFindFriendsInActivity.rawValue) as? Bool ?? false
-    }
-    set {
-      self.set(newValue, forKey: AppKeys.closedFindFriendsInActivity.rawValue)
     }
   }
 
