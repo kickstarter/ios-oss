@@ -480,8 +480,7 @@ extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
   }
 
   func emptyStatesViewControllerGoToFriends() {
-    let vc = FindFriendsViewController.configuredWith(source: .discovery)
-    self.navigationController?.pushViewController(vc, animated: true)
+    // TODO(PF-546): Delete this delegate function
   }
 }
 
