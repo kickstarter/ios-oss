@@ -436,19 +436,6 @@ public struct Service: ServiceType {
     return request(.discover(params))
   }
 
-  public func fetchFriends() -> SignalProducer<FindFriendsEnvelope, ErrorEnvelope> {
-    return request(.friends)
-  }
-
-  public func fetchFriends(paginationUrl: String)
-    -> SignalProducer<FindFriendsEnvelope, ErrorEnvelope> {
-    return requestPaginationDecodable(paginationUrl)
-  }
-
-  public func fetchFriendStats() -> SignalProducer<FriendStatsEnvelope, ErrorEnvelope> {
-    return request(.friendStats)
-  }
-
   public func fetchGraphCategories()
     -> SignalProducer<RootCategoriesEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
@@ -834,10 +821,6 @@ public struct Service: ServiceType {
       .eraseToAnyPublisher()
   }
 
-  public func followAllFriends() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
-    return request(.followAllFriends)
-  }
-
   public func followFriend(userId id: Int) -> SignalProducer<User, ErrorEnvelope> {
     return request(.followFriend(userId: id))
   }
@@ -938,10 +921,6 @@ public struct Service: ServiceType {
   public func signup(facebookAccessToken token: String, sendNewsletters: Bool) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
     return request(.facebookSignup(facebookAccessToken: token, sendNewsletters: sendNewsletters))
-  }
-
-  public func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
-    return request(.unfollowFriend(userId: id))
   }
 
   public func updateBacking(input: UpdateBackingInput)
