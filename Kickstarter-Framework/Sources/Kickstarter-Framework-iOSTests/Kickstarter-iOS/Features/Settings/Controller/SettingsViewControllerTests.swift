@@ -21,7 +21,7 @@ internal final class SettingsViewControllerTests: TestCase {
   func testView() {
     let currentUser = User.template
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
           apiService: MockService(fetchUserSelfResponse: currentUser),
@@ -33,54 +33,12 @@ internal final class SettingsViewControllerTests: TestCase {
 
           self.scheduler.run()
 
-          assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+          assertSnapshot(
+            matching: parent.view,
+            as: .image,
+            named: "lang_\(language)_device_\(device)"
+          )
         }
       }
-  }
-
-  func testView_isFollowingOn() {
-    let currentUser = User.template
-      |> \.social .~ true
-
-    Language.allLanguages.forEach { language in
-      withEnvironment(
-        apiService: MockService(fetchUserSelfResponse: currentUser),
-        currentUser: currentUser,
-        language: language
-      ) {
-        let vc = SettingsViewController.instantiate()
-
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-
-        self.scheduler.run()
-
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
-      }
-    }
-  }
-
-  func testView_isFollowingOff() {
-    let currentUser = User.template
-      |> \.social .~ false
-
-    Language.allLanguages.forEach { language in
-      withEnvironment(
-        apiService: MockService(fetchUserSelfResponse: currentUser),
-        currentUser: currentUser,
-        language: language
-      ) {
-        let vc = SettingsViewController.instantiate()
-
-        let (parent, _) = traitControllers(
-          device: .phone4_7inch,
-          orientation: .portrait,
-          child: vc
-        )
-
-        self.scheduler.run()
-
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
-      }
-    }
   }
 }

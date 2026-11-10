@@ -18,7 +18,6 @@ public protocol SettingsViewModelInputs {
 }
 
 public protocol SettingsViewModelOutputs {
-  var findFriendsDisabledProperty: MutableProperty<Bool> { get }
   var goToAppStoreRating: Signal<String, Never> { get }
   var logoutWithParams: Signal<DiscoveryParams, Never> { get }
   var reloadDataWithUser: Signal<User, Never> { get }
@@ -29,8 +28,6 @@ public protocol SettingsViewModelOutputs {
 public protocol SettingsViewModelType {
   var inputs: SettingsViewModelInputs { get }
   var outputs: SettingsViewModelOutputs { get }
-
-  func shouldSelectRow(for cellType: SettingsCellType) -> Bool
 }
 
 public final class SettingsViewModel: SettingsViewModelInputs,
@@ -48,13 +45,7 @@ public final class SettingsViewModel: SettingsViewModelInputs,
     }
     .skipNil()
 
-    let isFollowingEnabled = user
-      .map { $0 |> (\User.social).view }
-      .map { $0 ?? true }
-
-    self.findFriendsDisabledProperty <~ isFollowingEnabled.negate()
-
-    self.reloadDataWithUser = Signal.zip(user, self.findFriendsDisabledProperty.signal).map(first)
+    self.reloadDataWithUser = user
 
     self.showConfirmLogoutPrompt = self.selectedCellTypeProperty.signal
       .skipNil()
@@ -109,7 +100,6 @@ public final class SettingsViewModel: SettingsViewModelInputs,
     self.viewWillAppearProperty.value = ()
   }
 
-  public let findFriendsDisabledProperty = MutableProperty<Bool>(false)
   public let goToAppStoreRating: Signal<String, Never>
   public let logoutWithParams: Signal<DiscoveryParams, Never>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), Never>
@@ -118,21 +108,4 @@ public final class SettingsViewModel: SettingsViewModelInputs,
 
   public var inputs: SettingsViewModelInputs { return self }
   public var outputs: SettingsViewModelOutputs { return self }
-}
-
-// MARK: - Helpers
-
-extension SettingsViewModel {
-  public func shouldSelectRow(for cellType: SettingsCellType) -> Bool {
-    switch cellType {
-    case .findFriends:
-      guard let user = AppEnvironment.current.currentUser else {
-        return true
-      }
-
-      return (user |> User.lens.social.view) ?? true
-    default:
-      return true
-    }
-  }
 }
