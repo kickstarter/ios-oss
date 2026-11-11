@@ -6,8 +6,6 @@ import UIKit
 public enum EmptyState: String {
   case activity
   case recommended
-  case socialNoPledges = "social_no_pledges"
-  case socialDisabled = "social_disabled"
   case starred
 }
 
@@ -34,9 +32,6 @@ public protocol EmptyStatesViewModelOutputs {
 
   /// Emits to notify the delegate to go to Discovery with params.
   var notifyDelegateToGoToDiscovery: Signal<DiscoveryParams?, Never> { get }
-
-  /// Emits to notify the delegate to go to Friends.
-  var notifyDelegateToGoToFriends: Signal<(), Never> { get }
 
   /// Emits the subtitle label text.
   var subtitleLabelText: Signal<String, Never> { get }
@@ -67,16 +62,10 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
 
     self.notifyDelegateToGoToDiscovery = emptyState
       .takeWhen(self.mainButtonTappedProperty.signal)
-      .filter { $0 != .socialDisabled && $0 != .socialNoPledges }
       .map { emptyState -> DiscoveryParams? in
         guard emptyState != .activity else { return nil }
         return DiscoveryParams.defaults |> DiscoveryParams.lens.sort .~ .magic
       }
-
-    self.notifyDelegateToGoToFriends = emptyState
-      .takeWhen(self.mainButtonTappedProperty.signal)
-      .filter { $0 == .socialDisabled || $0 == .socialNoPledges }
-      .ignoreValues()
 
     self.bottomLayoutConstraintConstant = emptyState
       .map { _ in Styles.grid(5) }
@@ -110,7 +99,6 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
   public let bottomLayoutConstraintConstant: Signal<CGFloat, Never>
   public let mainButtonText: Signal<String, Never>
   public let notifyDelegateToGoToDiscovery: Signal<DiscoveryParams?, Never>
-  public let notifyDelegateToGoToFriends: Signal<(), Never>
   public let subtitleLabelText: Signal<String, Never>
   public let titleLabelText: Signal<String, Never>
 
@@ -122,10 +110,6 @@ private func textForSubtitle(emptyState: EmptyState) -> String {
   switch emptyState {
   case .activity:
     return Strings.Find_projects_youll_love_in_art_design_film()
-  case .socialDisabled:
-    return Strings.Follow_your_Facebook_friends_and_keep_up_with_the_projects()
-  case .socialNoPledges:
-    return Strings.Your_friends_havent_backed_any_projects_yet()
   case .recommended:
     return Strings.Once_you_back_a_project_well_share()
   case .starred:
@@ -137,10 +121,6 @@ private func textForTitle(emptyState: EmptyState) -> String {
   switch emptyState {
   case .activity:
     return Strings.Bring_creative_projects_to_life()
-  case .socialDisabled:
-    return Strings.Its_better_with_friends()
-  case .socialNoPledges:
-    return Strings.No_pledges_from_friends_yet()
   case .recommended:
     return Strings.Just_for_you()
   case .starred:
@@ -150,10 +130,6 @@ private func textForTitle(emptyState: EmptyState) -> String {
 
 private func buttonText(emptyState: EmptyState) -> String {
   switch emptyState {
-  case .socialDisabled:
-    return Strings.Find_and_follow_friends()
-  case .socialNoPledges:
-    return Strings.Follow_more_friends()
   case .activity, .recommended, .starred:
     return Strings.Explore_projects()
   }

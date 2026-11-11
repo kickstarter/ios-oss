@@ -9,7 +9,6 @@ internal protocol EmptyStatesViewControllerDelegate: AnyObject {
     _ viewController: EmptyStatesViewController,
     goToDiscoveryWithParams params: DiscoveryParams?
   )
-  func emptyStatesViewControllerGoToFriends()
 }
 
 internal final class EmptyStatesViewController: UIViewController {
@@ -64,12 +63,6 @@ internal final class EmptyStatesViewController: UIViewController {
       .observeValues { [weak self] params in
         guard let _self = self else { return }
         _self.delegate?.emptyStatesViewController(_self, goToDiscoveryWithParams: params)
-      }
-
-    self.viewModel.outputs.notifyDelegateToGoToFriends
-      .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.delegate?.emptyStatesViewControllerGoToFriends()
       }
   }
 

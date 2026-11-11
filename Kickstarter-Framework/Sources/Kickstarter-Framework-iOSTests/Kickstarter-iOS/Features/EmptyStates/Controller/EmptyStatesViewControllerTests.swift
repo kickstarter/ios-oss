@@ -19,9 +19,9 @@ internal final class EmptyStatesViewControllerTests: TestCase {
   }
 
   func testEmptyStates() {
-    let emptyStates = [EmptyState.activity, .recommended, .starred, .socialDisabled, .socialNoPledges]
+    let emptyStates = [EmptyState.activity, .recommended, .starred]
 
-    combos(Language.allLanguages, emptyStates).forEach { language, emptyState in
+    orthogonalCombos(Language.allLanguages, emptyStates).forEach { language, emptyState in
       withEnvironment(language: language) {
         let controller = EmptyStatesViewController.configuredWith(emptyState: emptyState)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
@@ -32,9 +32,9 @@ internal final class EmptyStatesViewControllerTests: TestCase {
   }
 
   func testEmptyStates_iPad() {
-    let emptyStates = [EmptyState.activity, .recommended, .starred, .socialDisabled, .socialNoPledges]
+    let emptyStates = [EmptyState.activity, .recommended, .starred]
 
-    combos(Language.allLanguages, emptyStates).forEach { language, emptyState in
+    orthogonalCombos(Language.allLanguages, emptyStates).forEach { language, emptyState in
       withEnvironment(language: language) {
         let controller = EmptyStatesViewController.configuredWith(emptyState: emptyState)
         let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)

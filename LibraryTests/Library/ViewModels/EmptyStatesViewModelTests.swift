@@ -10,12 +10,10 @@ import XCTest
 internal final class EmptyStatesViewModelTests: TestCase {
   internal let vm: EmptyStatesViewModelType = EmptyStatesViewModel()
   internal let notifyDelegateToGoToDiscovery = TestObserver<DiscoveryParams?, Never>()
-  internal let notifyDelegateToGoToFriends = TestObserver<(), Never>()
 
   internal override func setUp() {
     super.setUp()
     self.vm.outputs.notifyDelegateToGoToDiscovery.observe(self.notifyDelegateToGoToDiscovery.observer)
-    self.vm.outputs.notifyDelegateToGoToFriends.observe(self.notifyDelegateToGoToFriends.observer)
   }
 
   func testGoToDiscovery_Non_Activity() {
@@ -24,7 +22,6 @@ internal final class EmptyStatesViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.mainButtonTapped()
 
-    self.notifyDelegateToGoToFriends.assertValueCount(0)
     self.notifyDelegateToGoToDiscovery.assertValues([params])
   }
 
@@ -33,26 +30,7 @@ internal final class EmptyStatesViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.mainButtonTapped()
 
-    self.notifyDelegateToGoToFriends.assertValueCount(0)
     self.notifyDelegateToGoToDiscovery.assertValues([nil])
-  }
-
-  func testGoToFriends_SocialNoPledges() {
-    self.vm.inputs.configureWith(emptyState: .socialNoPledges)
-    self.vm.inputs.viewWillAppear()
-    self.vm.inputs.mainButtonTapped()
-
-    self.notifyDelegateToGoToFriends.assertValueCount(1)
-    self.notifyDelegateToGoToDiscovery.assertValueCount(0)
-  }
-
-  func testGoToFriends_SocialDisabled() {
-    self.vm.inputs.configureWith(emptyState: .socialDisabled)
-    self.vm.inputs.viewWillAppear()
-    self.vm.inputs.mainButtonTapped()
-
-    self.notifyDelegateToGoToFriends.assertValueCount(1)
-    self.notifyDelegateToGoToDiscovery.assertValueCount(0)
   }
 
   func testMainButtonTapped_TrackingEvents() {

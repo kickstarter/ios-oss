@@ -286,8 +286,6 @@ extension ActivitiesViewController: EmptyStatesViewControllerDelegate {
     guard let tabController = self.tabBarController as? RootTabBarViewController else { return }
     tabController.switchToDiscovery(params: params)
   }
-
-  func emptyStatesViewControllerGoToFriends() {}
 }
 
 extension ActivitiesViewController: PledgeManagerWebViewControllerDelegate {
