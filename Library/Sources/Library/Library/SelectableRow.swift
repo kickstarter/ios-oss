@@ -19,10 +19,6 @@ public struct SelectableRow {
 }
 
 public extension Lens where Whole == SelectableRow, Part == DiscoveryParams {
-  var social: Lens<SelectableRow, Bool?> {
-    return SelectableRow.lens.params .. DiscoveryParams.lens.social
-  }
-
   var staffPicks: Lens<SelectableRow, Bool?> {
     return SelectableRow.lens.params .. DiscoveryParams.lens.staffPicks
   }
