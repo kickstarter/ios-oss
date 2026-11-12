@@ -23,8 +23,6 @@ public extension StatsigExperimentName {
       return NullExperimentWithAnonymousID()
     case .move_no_reward_option_ios:
       return MoveNoRewardOptionExperiment()
-    case .instant_pledge_button_experiment:
-      return InstantPledgeButtonExperiment()
     case .speedy_checkout_experiment:
       return SpeedyCheckoutExperiment()
     }

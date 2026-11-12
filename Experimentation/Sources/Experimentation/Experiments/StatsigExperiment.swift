@@ -41,7 +41,6 @@ public enum StatsigExperimentName: String, CaseIterable {
   case logged_in_aa_experiment
   case logged_out_aa_experiment
   case move_no_reward_option_ios = "move_no-reward_option_ios"
-  case instant_pledge_button_experiment
   case speedy_checkout_experiment = "speedy_checkout_experiment_-_ios"
 }
 

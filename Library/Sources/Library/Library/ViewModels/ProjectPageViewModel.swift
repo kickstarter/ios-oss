@@ -945,16 +945,7 @@ private func fetchProject(
   let param = projectOrParam.param
   let fetcher = ProjectPageFetcher(withService: AppEnvironment.current.apiService)
 
-  let experiment = InstantPledgeButtonExperiment()
-  if experiment.boolValue(forKey: .instant_pledge_enabled) == true {
-    return fetcher.fastFetchProjectPage(
-      projectParam: param.param,
-      includeStoryRichText: featureProjectStoryRichTextEnabled()
-    )
-    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-  }
-
-  return fetcher.fetchProjectPage(
+  return fetcher.fastFetchProjectPage(
     projectParam: param.param,
     includeStoryRichText: featureProjectStoryRichTextEnabled()
   )
