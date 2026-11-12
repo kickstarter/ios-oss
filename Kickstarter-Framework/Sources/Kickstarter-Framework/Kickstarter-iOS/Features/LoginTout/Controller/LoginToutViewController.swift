@@ -415,13 +415,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
-  private func pushFacebookResetPasswordViewController() {
-    let vc = FacebookResetPasswordViewController.instantiate()
-    self.navigationController?.pushViewController(vc, animated: true)
-    self.navigationItem
-      .backBarButtonItem = UIBarButtonItem(title: "Log in", style: .plain, target: nil, action: nil)
-  }
-
   fileprivate func showHelpSheet(helpTypes: [HelpType]) {
     let helpSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 

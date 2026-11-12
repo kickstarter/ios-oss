@@ -120,7 +120,6 @@
 		AAF549112F2445C0001DB5AC /* EmptyStateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5482F2F2445C0001DB5AC /* EmptyStateViewModelTests.swift */; };
 		AAF549122F2445C0001DB5AC /* ErroredBackingViewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548302F2445C0001DB5AC /* ErroredBackingViewViewModelTests.swift */; };
 		AAF549132F2445C0001DB5AC /* FacebookConfirmationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548312F2445C0001DB5AC /* FacebookConfirmationViewModelTests.swift */; };
-		AAF549142F2445C0001DB5AC /* FacebookResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548322F2445C0001DB5AC /* FacebookResetPasswordViewModelTests.swift */; };
 		AAF549152F2445C0001DB5AC /* FeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548332F2445C0001DB5AC /* FeatureFlagToolsViewModelTests.swift */; };
 		AAF5491B2F2445C0001DB5AC /* HelpViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548392F2445C0001DB5AC /* HelpViewModelTests.swift */; };
 		AAF5491C2F2445C0001DB5AC /* KSRSearchBarViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483A2F2445C0001DB5AC /* KSRSearchBarViewModelTests.swift */; };
@@ -485,7 +484,6 @@
 		AAF5482F2F2445C0001DB5AC /* EmptyStateViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548302F2445C0001DB5AC /* ErroredBackingViewViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroredBackingViewViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548312F2445C0001DB5AC /* FacebookConfirmationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookConfirmationViewModelTests.swift; sourceTree = "<group>"; };
-		AAF548322F2445C0001DB5AC /* FacebookResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548332F2445C0001DB5AC /* FeatureFlagToolsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagToolsViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548392F2445C0001DB5AC /* HelpViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5483A2F2445C0001DB5AC /* KSRSearchBarViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRSearchBarViewModelTests.swift; sourceTree = "<group>"; };
@@ -1049,7 +1047,6 @@
 				AAF5482F2F2445C0001DB5AC /* EmptyStateViewModelTests.swift */,
 				AAF548302F2445C0001DB5AC /* ErroredBackingViewViewModelTests.swift */,
 				AAF548312F2445C0001DB5AC /* FacebookConfirmationViewModelTests.swift */,
-				AAF548322F2445C0001DB5AC /* FacebookResetPasswordViewModelTests.swift */,
 				AAF548332F2445C0001DB5AC /* FeatureFlagToolsViewModelTests.swift */,
 				AAF548392F2445C0001DB5AC /* HelpViewModelTests.swift */,
 				AAF5483A2F2445C0001DB5AC /* KSRSearchBarViewModelTests.swift */,
@@ -1758,7 +1755,6 @@
 				AAF549112F2445C0001DB5AC /* EmptyStateViewModelTests.swift in Sources */,
 				AAF549122F2445C0001DB5AC /* ErroredBackingViewViewModelTests.swift in Sources */,
 				AAF549132F2445C0001DB5AC /* FacebookConfirmationViewModelTests.swift in Sources */,
-				AAF549142F2445C0001DB5AC /* FacebookResetPasswordViewModelTests.swift in Sources */,
 				AAF549152F2445C0001DB5AC /* FeatureFlagToolsViewModelTests.swift in Sources */,
 				AAF5491B2F2445C0001DB5AC /* HelpViewModelTests.swift in Sources */,
 				AAF5491C2F2445C0001DB5AC /* KSRSearchBarViewModelTests.swift in Sources */,
