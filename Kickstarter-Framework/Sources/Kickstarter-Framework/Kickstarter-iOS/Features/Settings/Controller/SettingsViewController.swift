@@ -24,7 +24,6 @@ final class SettingsViewController: UIViewController {
     self.tableView.delegate = self
 
     self.tableView.register(nib: .SettingsTableViewCell)
-    self.tableView.register(nib: .FindFriendsCell)
     self.tableView.registerHeaderFooter(nib: .SettingsFooterView)
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
@@ -92,10 +91,6 @@ final class SettingsViewController: UIViewController {
 
   private func shouldHideFooter(for section: Int) -> Bool {
     guard let section = SettingsSectionType(rawValue: section), section.hasSectionFooter else { return true }
-
-    if !self.viewModel.outputs.findFriendsDisabledProperty.value {
-      return true
-    }
 
     return false
   }
@@ -200,7 +195,7 @@ extension SettingsViewController: UITableViewDelegate {
       return false
     }
 
-    return self.viewModel.shouldSelectRow(for: cellType)
+    return true
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -221,8 +216,6 @@ extension SettingsViewController {
       return SettingsAccountViewController.instantiate()
     case .help:
       return HelpViewController.instantiate()
-    case .findFriends:
-      return FindFriendsViewController.configuredWith(source: .settings)
     case .newsletters:
       return SettingsNewslettersViewController.instantiate()
     case .notifications:

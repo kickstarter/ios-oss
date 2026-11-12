@@ -67,8 +67,6 @@ public enum SettingsSectionType: Int, CaseIterable {
   }
 }
 
-// TODO: When the decision to add the Facebook friends feature back in is confirmed, refer to this PR:
-// https://github.com/kickstarter/ios-oss/pull/1655
 public enum SettingsCellType: SettingsCellTypeProtocol {
   case account
   case notifications
@@ -76,7 +74,6 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
   case help
   case logout
   case rateInAppStore
-  case findFriends
 
   public var accessibilityTraits: UIAccessibilityTraits {
     return .button
@@ -96,14 +93,12 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
       return Strings.profile_settings_logout_alert_title()
     case .rateInAppStore:
       return Strings.Rate_us_in_the_App_Store()
-    case .findFriends:
-      return Strings.profile_settings_social_find_friends()
     }
   }
 
   public var showArrowImageView: Bool {
     switch self {
-    case .account, .notifications, .newsletters, .help, .findFriends, .rateInAppStore:
+    case .account, .notifications, .newsletters, .help, .rateInAppStore:
       return true
     default:
       return false

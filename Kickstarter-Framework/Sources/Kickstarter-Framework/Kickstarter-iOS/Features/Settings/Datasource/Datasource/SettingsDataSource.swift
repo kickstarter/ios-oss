@@ -26,8 +26,6 @@ final class SettingsDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as SettingsTableViewCell, value as SettingsCellValue):
       cell.configureWith(value: value)
-    case let (cell as FindFriendsCell, value as SettingsCellValue):
-      cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
     }

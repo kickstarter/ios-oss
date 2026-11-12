@@ -15,7 +15,6 @@ internal final class SettingsViewModelTests: TestCase {
     confirm: "Yes"
   )
 
-  private let findFriendsDisabled = TestObserver<Bool, Never>()
   private let goToAppStoreRating = TestObserver<String, Never>()
   private let logout = TestObserver<DiscoveryParams, Never>()
   private let reloadDataWithUser = TestObserver<User, Never>()
@@ -25,7 +24,6 @@ internal final class SettingsViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
 
-    self.vm.outputs.findFriendsDisabledProperty.signal.observe(self.findFriendsDisabled.observer)
     self.vm.outputs.goToAppStoreRating.observe(self.goToAppStoreRating.observer)
     self.vm.outputs.logoutWithParams.observe(self.logout.observer)
     self.vm.outputs.reloadDataWithUser.observe(self.reloadDataWithUser.observer)
@@ -33,27 +31,14 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.transitionToViewController.observe(self.transitionToViewController.observer)
   }
 
-  func testViewDidLoad_withSocialEnabledUser() {
-    let user = User.template |> \.social .~ true
+  func testViewDidLoad() {
+    let user = User.template
     let mockService = MockService(fetchUserSelfResponse: user)
 
     withEnvironment(apiService: mockService, currentUser: user) {
       self.vm.viewDidLoad()
 
       self.reloadDataWithUser.assertValueCount(2)
-      self.findFriendsDisabled.assertValues([false, false])
-    }
-  }
-
-  func testViewDidLoad_withSocialDisabledUser() {
-    let user = User.template |> \.social .~ false
-    let mockService = MockService(fetchUserSelfResponse: user)
-
-    withEnvironment(apiService: mockService, currentUser: user) {
-      self.vm.viewDidLoad()
-
-      self.reloadDataWithUser.assertValueCount(2)
-      self.findFriendsDisabled.assertValues([true, true])
     }
   }
 
@@ -96,26 +81,6 @@ internal final class SettingsViewModelTests: TestCase {
     self.transitionToViewController.assertValueCount(1)
   }
 
-  func testCellSelection() {
-    XCTAssertTrue(self.vm.shouldSelectRow(for: .newsletters))
-  }
-
-  func testShouldSelectRow_findFriends_FollowingEnabled() {
-    let user = User.template |> \.social .~ true
-
-    withEnvironment(currentUser: user) {
-      XCTAssertTrue(self.vm.shouldSelectRow(for: .findFriends))
-    }
-  }
-
-  func testShouldSelectRow_findFriends_FollowingDisabled() {
-    let user = User.template |> \.social .~ false
-
-    withEnvironment(currentUser: user) {
-      XCTAssertFalse(self.vm.shouldSelectRow(for: .findFriends))
-    }
-  }
-
   func testAppStoreRatingCellTapped() {
     self.goToAppStoreRating.assertValueCount(0)
     self.vm.settingsCellTapped(cellType: .rateInAppStore)
@@ -133,7 +98,6 @@ internal final class SettingsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.reloadDataWithUser.assertValueCount(2)
-      self.findFriendsDisabled.assertValues([true, false])
     }
   }
 }
