@@ -17,9 +17,6 @@ internal enum Route {
   case facebookLogin(facebookAccessToken: String, code: String?)
   case facebookSignup(facebookAccessToken: String, sendNewsletters: Bool)
   case fetchUpdateDraft(forProject: Project)
-  case friends
-  case friendStats
-  case followAllFriends
   case followFriend(userId: Int)
   case incrementVideoCompletion(project: any HasProjectWebURL)
   case incrementVideoStart(project: any HasProjectWebURL)
@@ -41,7 +38,6 @@ internal enum Route {
   case shippingRules(projectId: Int, rewardId: Int)
   case surveyResponse(surveyResponseId: Int)
   case unansweredSurveyResponses
-  case unfollowFriend(userId: Int)
   case update(updateId: Int, projectParam: Param)
   case updateProjectNotification(notification: ProjectNotification)
   case updateUpdateDraft(UpdateDraft, title: String, body: String, isPublic: Bool)
@@ -106,15 +102,6 @@ internal enum Route {
 
       case let .fetchUpdateDraft(project):
         return (.GET, "/v1/projects/\(project.id)/updates/draft", [:], nil)
-
-      case .friends:
-        return (.GET, "v1/users/self/friends/find", [:], nil)
-
-      case .friendStats:
-        return (.GET, "v1/users/self/friends/find", ["count": 0], nil)
-
-      case .followAllFriends:
-        return (.PUT, "v1/users/self/friends/follow_all", [:], nil)
 
       case let .followFriend(userId):
         return (.POST, "v1/users/self/friends", ["followed_id": userId], nil)
@@ -201,9 +188,6 @@ internal enum Route {
 
       case .unansweredSurveyResponses:
         return (.GET, "/v1/users/self/surveys/unanswered", [:], nil)
-
-      case let .unfollowFriend(userId):
-        return (.DELETE, "v1/users/self/friends/\(userId)", [:], nil)
 
       case let .update(id, projectParam):
         return (.GET, "v1/projects/\(projectParam.escapedUrlComponent)/updates/\(id)", [:], nil)

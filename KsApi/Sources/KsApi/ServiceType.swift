@@ -179,15 +179,6 @@ public protocol ServiceType {
   /// Fetch the full discovery envelope with specified discovery params.
   func fetchDiscovery(params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope>
 
-  /// Fetch friends for a user.
-  func fetchFriends() -> SignalProducer<FindFriendsEnvelope, ErrorEnvelope>
-
-  /// Fetch friends from a pagination url.
-  func fetchFriends(paginationUrl: String) -> SignalProducer<FindFriendsEnvelope, ErrorEnvelope>
-
-  /// Fetch friend stats.
-  func fetchFriendStats() -> SignalProducer<FriendStatsEnvelope, ErrorEnvelope>
-
   /// Fetch Categories objects using graphQL.
   func fetchGraphCategories() -> SignalProducer<RootCategoriesEnvelope, ErrorEnvelope>
 
@@ -352,9 +343,6 @@ public protocol ServiceType {
   func updateRewardReceived(backingId: String, rewardReceived: Bool)
     -> AnyPublisher<Bool, ErrorEnvelope>
 
-  /// Follow all friends of current user.
-  func followAllFriends() -> SignalProducer<VoidEnvelope, ErrorEnvelope>
-
   /// Follow a user with their id.
   func followFriend(userId id: Int) -> SignalProducer<User, ErrorEnvelope>
 
@@ -412,9 +400,6 @@ public protocol ServiceType {
   /// Signup with Facebook access token and newsletter bool.
   func signup(facebookAccessToken: String, sendNewsletters: Bool) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
-
-  /// Unfollow a user with their id.
-  func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope>
 
   /// Updates a backing
   func updateBacking(input: UpdateBackingInput) -> SignalProducer<UpdateBackingEnvelope, ErrorEnvelope>

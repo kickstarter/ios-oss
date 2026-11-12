@@ -9,7 +9,6 @@ public enum Storyboard: String {
   case Discovery
   case DiscoveryPage
   case EmptyStates
-  case Friends
   case Help
   case LaunchScreen
   case Login

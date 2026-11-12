@@ -122,10 +122,6 @@
 		AAF549132F2445C0001DB5AC /* FacebookConfirmationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548312F2445C0001DB5AC /* FacebookConfirmationViewModelTests.swift */; };
 		AAF549142F2445C0001DB5AC /* FacebookResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548322F2445C0001DB5AC /* FacebookResetPasswordViewModelTests.swift */; };
 		AAF549152F2445C0001DB5AC /* FeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548332F2445C0001DB5AC /* FeatureFlagToolsViewModelTests.swift */; };
-		AAF549172F2445C0001DB5AC /* FindFriendsFaceookConnectCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548352F2445C0001DB5AC /* FindFriendsFaceookConnectCellViewModelTests.swift */; };
-		AAF549182F2445C0001DB5AC /* FindFriendsFriendFollowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548362F2445C0001DB5AC /* FindFriendsFriendFollowCellViewModelTests.swift */; };
-		AAF549192F2445C0001DB5AC /* FindFriendsStatsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548372F2445C0001DB5AC /* FindFriendsStatsCellViewModelTests.swift */; };
-		AAF5491A2F2445C0001DB5AC /* FindFriendsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548382F2445C0001DB5AC /* FindFriendsViewModelTests.swift */; };
 		AAF5491B2F2445C0001DB5AC /* HelpViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548392F2445C0001DB5AC /* HelpViewModelTests.swift */; };
 		AAF5491C2F2445C0001DB5AC /* KSRSearchBarViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483A2F2445C0001DB5AC /* KSRSearchBarViewModelTests.swift */; };
 		AAF5491D2F2445C0001DB5AC /* LoadingBarButtonItemViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483B2F2445C0001DB5AC /* LoadingBarButtonItemViewModelTests.swift */; };
@@ -491,10 +487,6 @@
 		AAF548312F2445C0001DB5AC /* FacebookConfirmationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookConfirmationViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548322F2445C0001DB5AC /* FacebookResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548332F2445C0001DB5AC /* FeatureFlagToolsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagToolsViewModelTests.swift; sourceTree = "<group>"; };
-		AAF548352F2445C0001DB5AC /* FindFriendsFaceookConnectCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFriendsFaceookConnectCellViewModelTests.swift; sourceTree = "<group>"; };
-		AAF548362F2445C0001DB5AC /* FindFriendsFriendFollowCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFriendsFriendFollowCellViewModelTests.swift; sourceTree = "<group>"; };
-		AAF548372F2445C0001DB5AC /* FindFriendsStatsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFriendsStatsCellViewModelTests.swift; sourceTree = "<group>"; };
-		AAF548382F2445C0001DB5AC /* FindFriendsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFriendsViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548392F2445C0001DB5AC /* HelpViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5483A2F2445C0001DB5AC /* KSRSearchBarViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRSearchBarViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5483B2F2445C0001DB5AC /* LoadingBarButtonItemViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItemViewModelTests.swift; sourceTree = "<group>"; };
@@ -1059,10 +1051,6 @@
 				AAF548312F2445C0001DB5AC /* FacebookConfirmationViewModelTests.swift */,
 				AAF548322F2445C0001DB5AC /* FacebookResetPasswordViewModelTests.swift */,
 				AAF548332F2445C0001DB5AC /* FeatureFlagToolsViewModelTests.swift */,
-				AAF548352F2445C0001DB5AC /* FindFriendsFaceookConnectCellViewModelTests.swift */,
-				AAF548362F2445C0001DB5AC /* FindFriendsFriendFollowCellViewModelTests.swift */,
-				AAF548372F2445C0001DB5AC /* FindFriendsStatsCellViewModelTests.swift */,
-				AAF548382F2445C0001DB5AC /* FindFriendsViewModelTests.swift */,
 				AAF548392F2445C0001DB5AC /* HelpViewModelTests.swift */,
 				AAF5483A2F2445C0001DB5AC /* KSRSearchBarViewModelTests.swift */,
 				AAF5483B2F2445C0001DB5AC /* LoadingBarButtonItemViewModelTests.swift */,
@@ -1772,10 +1760,6 @@
 				AAF549132F2445C0001DB5AC /* FacebookConfirmationViewModelTests.swift in Sources */,
 				AAF549142F2445C0001DB5AC /* FacebookResetPasswordViewModelTests.swift in Sources */,
 				AAF549152F2445C0001DB5AC /* FeatureFlagToolsViewModelTests.swift in Sources */,
-				AAF549172F2445C0001DB5AC /* FindFriendsFaceookConnectCellViewModelTests.swift in Sources */,
-				AAF549182F2445C0001DB5AC /* FindFriendsFriendFollowCellViewModelTests.swift in Sources */,
-				AAF549192F2445C0001DB5AC /* FindFriendsStatsCellViewModelTests.swift in Sources */,
-				AAF5491A2F2445C0001DB5AC /* FindFriendsViewModelTests.swift in Sources */,
 				AAF5491B2F2445C0001DB5AC /* HelpViewModelTests.swift in Sources */,
 				AAF5491C2F2445C0001DB5AC /* KSRSearchBarViewModelTests.swift in Sources */,
 				AAF5491D2F2445C0001DB5AC /* LoadingBarButtonItemViewModelTests.swift in Sources */,
