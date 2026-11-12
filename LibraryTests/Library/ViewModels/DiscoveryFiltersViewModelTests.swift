@@ -21,7 +21,6 @@ private let expandableRowTemplate = ExpandableRow(
 private let allProjectsRow = selectableRowTemplate |> SelectableRow.lens.params.includePOTD .~ true
 private let staffPicksRow = selectableRowTemplate |> SelectableRow.lens.params.staffPicks .~ true
 private let starredRow = selectableRowTemplate |> SelectableRow.lens.params.starred .~ true
-private let socialRow = selectableRowTemplate |> SelectableRow.lens.params.social .~ true
 private let recommendedRow = selectableRowTemplate
   |> SelectableRow.lens.params.recommended .~ true
   |> SelectableRow.lens.params.backed .~ false
@@ -145,18 +144,10 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     XCTAssertEqual(11, segmentTrackingClient.properties.last?["discover_category_id"] as? Int)
     XCTAssertEqual(30, segmentTrackingClient.properties.last?["discover_subcategory_id"] as? Int)
 
-    self.vm.inputs.tapped(selectableRow: socialRow)
-
-    XCTAssertEqual(["CTA Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
-    XCTAssertEqual("discover", segmentTrackingClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("social", segmentTrackingClient.properties.last?["context_type"] as? String)
-    XCTAssertEqual("discover_overlay", segmentTrackingClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("social_home", segmentTrackingClient.properties.last?["discover_ref_tag"] as? String)
-
     self.vm.inputs.tapped(selectableRow: staffPicksRow)
 
     XCTAssertEqual(
-      ["CTA Clicked", "CTA Clicked", "CTA Clicked"],
+      ["CTA Clicked", "CTA Clicked"],
       self.segmentTrackingClient.events
     )
     XCTAssertEqual("discover", self.segmentTrackingClient.properties.last?["context_page"] as? String)
@@ -173,7 +164,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.vm.inputs.tapped(selectableRow: starredRow)
 
     XCTAssertEqual(
-      ["CTA Clicked", "CTA Clicked", "CTA Clicked", "CTA Clicked"],
+      ["CTA Clicked", "CTA Clicked", "CTA Clicked"],
       self.segmentTrackingClient.events
     )
     XCTAssertEqual("discover", self.segmentTrackingClient.properties.last?["context_page"] as? String)
@@ -187,7 +178,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.vm.inputs.tapped(selectableRow: recommendedRow)
 
     XCTAssertEqual(
-      ["CTA Clicked", "CTA Clicked", "CTA Clicked", "CTA Clicked", "CTA Clicked"],
+      ["CTA Clicked", "CTA Clicked", "CTA Clicked", "CTA Clicked"],
       self.segmentTrackingClient.events
     )
     XCTAssertEqual("discover", self.segmentTrackingClient.properties.last?["context_page"] as? String)
@@ -239,35 +230,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
             |> SelectableRow.lens.isSelected .~ true,
           staffPicksRow,
           starredRow,
-          recommendedRow,
-          socialRow
-        ]
-      ],
-      "The top filter rows load immediately with the first one selected."
-    )
-    self.loadTopRowsInitialId.assertValues([nil])
-  }
-
-  func testTopFilters_Logged_In_Social() {
-    AppEnvironment.login(
-      AccessTokenEnvelope(accessToken: "deadbeef", user: .template |> \.social .~ true)
-    )
-
-    self.vm.inputs.configureWith(selectedRow: allProjectsRow)
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewDidAppear()
-
-    self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
-
-    self.loadTopRows.assertValues(
-      [
-        [
-          allProjectsRow
-            |> SelectableRow.lens.isSelected .~ true,
-          staffPicksRow,
-          starredRow,
-          recommendedRow,
-          socialRow
+          recommendedRow
         ]
       ],
       "The top filter rows load immediately with the first one selected."
@@ -295,8 +258,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
           allProjectsRow
             |> SelectableRow.lens.isSelected .~ true,
           staffPicksRow,
-          starredRow,
-          socialRow
+          starredRow
         ]
       ],
       "The top filter rows load immediately with the first one selected."

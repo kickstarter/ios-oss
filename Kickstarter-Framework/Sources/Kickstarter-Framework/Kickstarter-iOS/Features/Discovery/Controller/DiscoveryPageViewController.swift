@@ -478,10 +478,6 @@ extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
       .flatMap { $0 as? RootTabBarViewController }
       .doIfSome { $0.switchToDiscovery(params: params) }
   }
-
-  func emptyStatesViewControllerGoToFriends() {
-    // TODO(PF-546): Delete this delegate function
-  }
 }
 
 extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {

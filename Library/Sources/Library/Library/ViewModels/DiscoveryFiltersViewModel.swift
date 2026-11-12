@@ -289,8 +289,6 @@ private func topFilters(forUser user: User?) -> [DiscoveryParams] {
     )
   }
 
-  filters.append(.defaults |> DiscoveryParams.lens.social .~ true)
-
   return filters
 }
 

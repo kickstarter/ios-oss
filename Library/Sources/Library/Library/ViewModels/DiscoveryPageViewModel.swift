@@ -535,8 +535,6 @@ private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {
     return .starred
   } else if params.recommended == .some(true) {
     return .recommended
-  } else if params.social == .some(true) {
-    return AppEnvironment.current.currentUser?.social == .some(true) ? .socialNoPledges : .socialDisabled
   }
 
   return nil
