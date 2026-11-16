@@ -126,7 +126,6 @@
 		AAF5491E2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483C2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift */; };
 		AAF5491F2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483D2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift */; };
 		AAF549202F2445C0001DB5AC /* LoginToutViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483E2F2445C0001DB5AC /* LoginToutViewModelTests.swift */; };
-		AAF549212F2445C0001DB5AC /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483F2F2445C0001DB5AC /* LoginViewModelTests.swift */; };
 		AAF549222F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548402F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift */; };
 		AAF549232F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548412F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift */; };
 		AAF549242F2445C0001DB5AC /* ManagePledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548422F2445C0001DB5AC /* ManagePledgeViewModelTests.swift */; };
@@ -489,7 +488,6 @@
 		AAF5483C2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButtonViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5483D2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupUseCaseTests.swift; sourceTree = "<group>"; };
 		AAF5483E2F2445C0001DB5AC /* LoginToutViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginToutViewModelTests.swift; sourceTree = "<group>"; };
-		AAF5483F2F2445C0001DB5AC /* LoginViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548402F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgePaymentMethodViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548412F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeSummaryViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548422F2445C0001DB5AC /* ManagePledgeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewModelTests.swift; sourceTree = "<group>"; };
@@ -1051,7 +1049,6 @@
 				AAF5483C2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift */,
 				AAF5483D2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift */,
 				AAF5483E2F2445C0001DB5AC /* LoginToutViewModelTests.swift */,
-				AAF5483F2F2445C0001DB5AC /* LoginViewModelTests.swift */,
 				AAF548402F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift */,
 				AAF548412F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift */,
 				AAF548422F2445C0001DB5AC /* ManagePledgeViewModelTests.swift */,
@@ -1759,7 +1756,6 @@
 				AAF5491E2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift in Sources */,
 				AAF5491F2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift in Sources */,
 				AAF549202F2445C0001DB5AC /* LoginToutViewModelTests.swift in Sources */,
-				AAF549212F2445C0001DB5AC /* LoginViewModelTests.swift in Sources */,
 				AAF549222F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift in Sources */,
 				AAF549232F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift in Sources */,
 				AAF549242F2445C0001DB5AC /* ManagePledgeViewModelTests.swift in Sources */,
