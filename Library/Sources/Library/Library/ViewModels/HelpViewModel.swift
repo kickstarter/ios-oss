@@ -4,7 +4,6 @@ import ReactiveSwift
 
 public enum HelpContext {
   case loginTout
-  case facebookConfirmation
   case settings
   case signup
 
@@ -12,8 +11,6 @@ public enum HelpContext {
     switch self {
     case .loginTout:
       return "Login Tout"
-    case .facebookConfirmation:
-      return "Facebook Confirmation"
     case .settings:
       return "Settings"
     case .signup:
