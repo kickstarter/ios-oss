@@ -932,7 +932,10 @@ final class ProjectPageViewModelTests: TestCase {
   func testConfigurePledgeCTAView_FetchProjectFailure() {
     let config = Config.template
     let project = Project.template
-    let mockService = MockService(fetchProjectPamphletResult: .failure(.couldNotParseJSON))
+    let mockService = MockService(fastFetchProjectPage: (
+      .failure(.couldNotParseJSON),
+      .failure(.couldNotParseJSON)
+    ))
 
     withEnvironment(
       apiService: mockService,
@@ -1850,32 +1853,19 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  func testLoadingPage_whenInstantPledgeExperimentIsOn_UsesFastFetch() {
-    let mockStatsigClient = MockStatsigWrapper()
+  func testLoadingPage_UsesFastFetch() {
+    ProjectPageViewModelTests.mockNetworkRequests {
+      self.vm.configureAndLoad(.right(Param.id(1)))
 
-    let mockExperiment = MockExperiment<InstantPledgeButtonExperiment>(
-      [
-        .instant_pledge_enabled: true
-      ]
-    )
+      self.configureChildViewControllersWithProject.assertDidNotEmitValue()
+      self.configureDataSourceProject.assertDidNotEmitValue()
+      self.configurePledgeCTAView.assertValues([.loading])
 
-    let experiment = InstantPledgeButtonExperiment()
-    mockStatsigClient.overrideExperiment(experiment, withMock: mockExperiment)
+      self.scheduler.advance()
 
-    withEnvironment(statsigClient: mockStatsigClient) {
-      ProjectPageViewModelTests.mockNetworkRequests_newQuery {
-        self.vm.configureAndLoad(.right(Param.id(1)))
-
-        self.configureChildViewControllersWithProject.assertDidNotEmitValue()
-        self.configureDataSourceProject.assertDidNotEmitValue()
-        self.configurePledgeCTAView.assertValues([.loading])
-
-        self.scheduler.advance()
-
-        self.configureChildViewControllersWithProject.assertValueCount(1)
-        self.configureDataSourceProject.assertValueCount(1)
-        self.configurePledgeCTAView.assertValues([.loading, .project(Project.template)])
-      }
+      self.configureChildViewControllersWithProject.assertValueCount(1)
+      self.configureDataSourceProject.assertValueCount(1)
+      self.configurePledgeCTAView.assertValues([.loading, .project(Project.template)])
     }
   }
 
@@ -1987,42 +1977,6 @@ final class ProjectPageViewModelTests: TestCase {
   // MARK: - Functions
 
   static func mockNetworkRequests(
-    project: Project = Project.template,
-    rewards: [Reward] = [Reward.noReward, Reward.template],
-    backing: Backing? = nil,
-    action: () -> Void
-  ) {
-    if let backing {
-      let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: backing.id)
-      let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
-
-      AppEnvironment.pushEnvironment(
-        apiService: MockService(
-          addUserToSecretRewardGroup: .success(EmptyResponseEnvelope()),
-          fetchProjectAndBackingResult: .success(projectAndBacking),
-          fetchProjectPamphletResult: .success(projectPamphletData),
-          fetchProjectRewardsResult: .success(rewards),
-        )
-      )
-
-    } else {
-      let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
-
-      AppEnvironment.pushEnvironment(
-        apiService: MockService(
-          addUserToSecretRewardGroup: .success(EmptyResponseEnvelope()),
-          fetchProjectPamphletResult: .success(projectPamphletData),
-          fetchProjectRewardsResult: .success(rewards)
-        )
-      )
-    }
-
-    action()
-
-    AppEnvironment.popEnvironment()
-  }
-
-  static func mockNetworkRequests_newQuery(
     project: Project = Project.template,
     rewards: [Reward] = [Reward.noReward, Reward.template],
     backing: Backing? = nil,
