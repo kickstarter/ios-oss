@@ -3,16 +3,6 @@ import GraphAPI
 
 extension GraphAPI.UpdateUserAccountInput {
   /**
-   Maps a `CreatePasswordInput` to a `GraphAPI.UpdateUserAccountInput`
-   */
-  static func from(_ input: CreatePasswordInput) -> GraphAPI.UpdateUserAccountInput {
-    return GraphAPI.UpdateUserAccountInput(
-      password: GraphQLNullable.someOrNil(input.password),
-      passwordConfirmation: GraphQLNullable.someOrNil(input.passwordConfirmation)
-    )
-  }
-
-  /**
    Maps a `ChangePasswordInput` to a `GraphAPI.UpdateUserAccountInput`
    */
   static func from(_ input: ChangePasswordInput) -> GraphAPI.UpdateUserAccountInput {

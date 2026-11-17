@@ -105,7 +105,6 @@
 		AAF549022F2445C0001DB5AC /* CommentRepliesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548202F2445C0001DB5AC /* CommentRepliesViewModelTests.swift */; };
 		AAF549032F2445C0001DB5AC /* CommentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548212F2445C0001DB5AC /* CommentsViewModelTests.swift */; };
 		AAF549042F2445C0001DB5AC /* CommentTableViewFooterViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548222F2445C0001DB5AC /* CommentTableViewFooterViewModelTests.swift */; };
-		AAF549052F2445C0001DB5AC /* CreatePasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548232F2445C0001DB5AC /* CreatePasswordViewModelTests.swift */; };
 		AAF549062F2445C0001DB5AC /* CreditCardCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548242F2445C0001DB5AC /* CreditCardCellViewModelTests.swift */; };
 		AAF549072F2445C0001DB5AC /* CuratedProjectsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548252F2445C0001DB5AC /* CuratedProjectsViewModelTests.swift */; };
 		AAF549082F2445C0001DB5AC /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548262F2445C0001DB5AC /* DiscoveryExpandableRowCellViewModelTests.swift */; };
@@ -468,7 +467,6 @@
 		AAF548202F2445C0001DB5AC /* CommentRepliesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548212F2445C0001DB5AC /* CommentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548222F2445C0001DB5AC /* CommentTableViewFooterViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewFooterViewModelTests.swift; sourceTree = "<group>"; };
-		AAF548232F2445C0001DB5AC /* CreatePasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548242F2445C0001DB5AC /* CreditCardCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardCellViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548252F2445C0001DB5AC /* CuratedProjectsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedProjectsViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548262F2445C0001DB5AC /* DiscoveryExpandableRowCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -1030,7 +1028,6 @@
 				AAF548202F2445C0001DB5AC /* CommentRepliesViewModelTests.swift */,
 				AAF548212F2445C0001DB5AC /* CommentsViewModelTests.swift */,
 				AAF548222F2445C0001DB5AC /* CommentTableViewFooterViewModelTests.swift */,
-				AAF548232F2445C0001DB5AC /* CreatePasswordViewModelTests.swift */,
 				AAF548242F2445C0001DB5AC /* CreditCardCellViewModelTests.swift */,
 				AAF548252F2445C0001DB5AC /* CuratedProjectsViewModelTests.swift */,
 				AAF548262F2445C0001DB5AC /* DiscoveryExpandableRowCellViewModelTests.swift */,
@@ -1737,7 +1734,6 @@
 				AAF549022F2445C0001DB5AC /* CommentRepliesViewModelTests.swift in Sources */,
 				AAF549032F2445C0001DB5AC /* CommentsViewModelTests.swift in Sources */,
 				AAF549042F2445C0001DB5AC /* CommentTableViewFooterViewModelTests.swift in Sources */,
-				AAF549052F2445C0001DB5AC /* CreatePasswordViewModelTests.swift in Sources */,
 				AAF549062F2445C0001DB5AC /* CreditCardCellViewModelTests.swift in Sources */,
 				AAF549072F2445C0001DB5AC /* CuratedProjectsViewModelTests.swift in Sources */,
 				AAF549082F2445C0001DB5AC /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */,

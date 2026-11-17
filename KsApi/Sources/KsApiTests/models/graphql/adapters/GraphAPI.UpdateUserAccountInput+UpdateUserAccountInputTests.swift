@@ -4,18 +4,6 @@ import GraphAPI
 import XCTest
 
 class GraphAPI_UpdateUserAccountInput_UpdateUserAccountInputTests: XCTestCase {
-  func testCreatePassword_WithNewPassword_Success() {
-    let input = CreatePasswordInput(
-      password: "pass1",
-      passwordConfirmation: "pass1"
-    )
-
-    let graphInput = GraphAPI.UpdateUserAccountInput.from(input)
-
-    XCTAssertEqual(graphInput.password.unwrapped, input.password)
-    XCTAssertEqual(graphInput.passwordConfirmation.unwrapped, input.passwordConfirmation)
-  }
-
   func testChangePassword_WithCurrentAndNewPassword_Success() {
     let input = ChangePasswordInput(
       currentPassword: "pass0",
