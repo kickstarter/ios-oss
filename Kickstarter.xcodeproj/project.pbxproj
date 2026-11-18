@@ -126,7 +126,6 @@
 		AAF5491E2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483C2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift */; };
 		AAF5491F2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483D2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift */; };
 		AAF549202F2445C0001DB5AC /* LoginToutViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483E2F2445C0001DB5AC /* LoginToutViewModelTests.swift */; };
-		AAF549212F2445C0001DB5AC /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483F2F2445C0001DB5AC /* LoginViewModelTests.swift */; };
 		AAF549222F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548402F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift */; };
 		AAF549232F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548412F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift */; };
 		AAF549242F2445C0001DB5AC /* ManagePledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548422F2445C0001DB5AC /* ManagePledgeViewModelTests.swift */; };
@@ -186,7 +185,6 @@
 		AAF5495A2F2445C0001DB5AC /* ProjectUpdatesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548782F2445C0001DB5AC /* ProjectUpdatesViewModelTests.swift */; };
 		AAF5495B2F2445C0001DB5AC /* RemoteConfigFeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548792F2445C0001DB5AC /* RemoteConfigFeatureFlagToolsViewModelTests.swift */; };
 		AAF5495C2F2445C0001DB5AC /* ReportProjectFormViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5487A2F2445C0001DB5AC /* ReportProjectFormViewModelTests.swift */; };
-		AAF5495D2F2445C0001DB5AC /* ResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5487B2F2445C0001DB5AC /* ResetPasswordViewModelTests.swift */; };
 		AAF5495E2F2445C0001DB5AC /* RewardAddOnCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5487C2F2445C0001DB5AC /* RewardAddOnCardViewModelTests.swift */; };
 		AAF5495F2F2445C0001DB5AC /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5487D2F2445C0001DB5AC /* RewardAddOnSelectionContinueCTAViewModelTests.swift */; };
 		AAF549602F2445C0001DB5AC /* RewardAddOnSelectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5487E2F2445C0001DB5AC /* RewardAddOnSelectionViewModelTests.swift */; };
@@ -489,7 +487,6 @@
 		AAF5483C2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButtonViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5483D2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupUseCaseTests.swift; sourceTree = "<group>"; };
 		AAF5483E2F2445C0001DB5AC /* LoginToutViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginToutViewModelTests.swift; sourceTree = "<group>"; };
-		AAF5483F2F2445C0001DB5AC /* LoginViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548402F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgePaymentMethodViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548412F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeSummaryViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548422F2445C0001DB5AC /* ManagePledgeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewModelTests.swift; sourceTree = "<group>"; };
@@ -549,7 +546,6 @@
 		AAF548782F2445C0001DB5AC /* ProjectUpdatesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectUpdatesViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548792F2445C0001DB5AC /* RemoteConfigFeatureFlagToolsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigFeatureFlagToolsViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5487A2F2445C0001DB5AC /* ReportProjectFormViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModelTests.swift; sourceTree = "<group>"; };
-		AAF5487B2F2445C0001DB5AC /* ResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5487C2F2445C0001DB5AC /* RewardAddOnCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnCardViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5487D2F2445C0001DB5AC /* RewardAddOnSelectionContinueCTAViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionContinueCTAViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5487E2F2445C0001DB5AC /* RewardAddOnSelectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewModelTests.swift; sourceTree = "<group>"; };
@@ -1051,7 +1047,6 @@
 				AAF5483C2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift */,
 				AAF5483D2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift */,
 				AAF5483E2F2445C0001DB5AC /* LoginToutViewModelTests.swift */,
-				AAF5483F2F2445C0001DB5AC /* LoginViewModelTests.swift */,
 				AAF548402F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift */,
 				AAF548412F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift */,
 				AAF548422F2445C0001DB5AC /* ManagePledgeViewModelTests.swift */,
@@ -1112,7 +1107,6 @@
 				AAF548782F2445C0001DB5AC /* ProjectUpdatesViewModelTests.swift */,
 				AAF548792F2445C0001DB5AC /* RemoteConfigFeatureFlagToolsViewModelTests.swift */,
 				AAF5487A2F2445C0001DB5AC /* ReportProjectFormViewModelTests.swift */,
-				AAF5487B2F2445C0001DB5AC /* ResetPasswordViewModelTests.swift */,
 				AAF5487C2F2445C0001DB5AC /* RewardAddOnCardViewModelTests.swift */,
 				AAF5487D2F2445C0001DB5AC /* RewardAddOnSelectionContinueCTAViewModelTests.swift */,
 				AAF5487E2F2445C0001DB5AC /* RewardAddOnSelectionViewModelTests.swift */,
@@ -1759,7 +1753,6 @@
 				AAF5491E2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift in Sources */,
 				AAF5491F2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift in Sources */,
 				AAF549202F2445C0001DB5AC /* LoginToutViewModelTests.swift in Sources */,
-				AAF549212F2445C0001DB5AC /* LoginViewModelTests.swift in Sources */,
 				AAF549222F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift in Sources */,
 				AAF549232F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift in Sources */,
 				AAF549242F2445C0001DB5AC /* ManagePledgeViewModelTests.swift in Sources */,
@@ -1821,7 +1814,6 @@
 				AAF5495A2F2445C0001DB5AC /* ProjectUpdatesViewModelTests.swift in Sources */,
 				AAF5495B2F2445C0001DB5AC /* RemoteConfigFeatureFlagToolsViewModelTests.swift in Sources */,
 				AAF5495C2F2445C0001DB5AC /* ReportProjectFormViewModelTests.swift in Sources */,
-				AAF5495D2F2445C0001DB5AC /* ResetPasswordViewModelTests.swift in Sources */,
 				AAF5495E2F2445C0001DB5AC /* RewardAddOnCardViewModelTests.swift in Sources */,
 				AAF5495F2F2445C0001DB5AC /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */,
 				AAF549602F2445C0001DB5AC /* RewardAddOnSelectionViewModelTests.swift in Sources */,
