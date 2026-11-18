@@ -11,7 +11,6 @@ public enum Storyboard: String {
   case EmptyStates
   case Help
   case LaunchScreen
-  case Login
   case Main
   case Messages
   case PaymentMethods

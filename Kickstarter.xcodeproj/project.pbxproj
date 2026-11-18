@@ -211,7 +211,6 @@
 		AAF549762F2445C0001DB5AC /* SortPagerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548942F2445C0001DB5AC /* SortPagerViewModelTests.swift */; };
 		AAF549772F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548952F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift */; };
 		AAF549782F2445C0001DB5AC /* ThanksViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548962F2445C0001DB5AC /* ThanksViewModelTests.swift */; };
-		AAF549792F2445C0001DB5AC /* TwoFactorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548972F2445C0001DB5AC /* TwoFactorViewModelTests.swift */; };
 		AAF5497A2F2445C0001DB5AC /* UpdateDraftViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548982F2445C0001DB5AC /* UpdateDraftViewModelTests.swift */; };
 		AAF5497B2F2445C0001DB5AC /* VideoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548992F2445C0001DB5AC /* VideoViewModelTests.swift */; };
 		AAF5497C2F2445C0001DB5AC /* WatchProjectViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5489A2F2445C0001DB5AC /* WatchProjectViewModelTests.swift */; };
@@ -572,7 +571,6 @@
 		AAF548942F2445C0001DB5AC /* SortPagerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortPagerViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548952F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksCategoryCellViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548962F2445C0001DB5AC /* ThanksViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksViewModelTests.swift; sourceTree = "<group>"; };
-		AAF548972F2445C0001DB5AC /* TwoFactorViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoFactorViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548982F2445C0001DB5AC /* UpdateDraftViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDraftViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548992F2445C0001DB5AC /* VideoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5489A2F2445C0001DB5AC /* WatchProjectViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProjectViewModelTests.swift; sourceTree = "<group>"; };
@@ -1134,7 +1132,6 @@
 				AAF548942F2445C0001DB5AC /* SortPagerViewModelTests.swift */,
 				AAF548952F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift */,
 				AAF548962F2445C0001DB5AC /* ThanksViewModelTests.swift */,
-				AAF548972F2445C0001DB5AC /* TwoFactorViewModelTests.swift */,
 				AAF548982F2445C0001DB5AC /* UpdateDraftViewModelTests.swift */,
 				AAF548992F2445C0001DB5AC /* VideoViewModelTests.swift */,
 				AAF5489A2F2445C0001DB5AC /* WatchProjectViewModelTests.swift */,
@@ -1842,7 +1839,6 @@
 				AAF549762F2445C0001DB5AC /* SortPagerViewModelTests.swift in Sources */,
 				AAF549772F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift in Sources */,
 				AAF549782F2445C0001DB5AC /* ThanksViewModelTests.swift in Sources */,
-				AAF549792F2445C0001DB5AC /* TwoFactorViewModelTests.swift in Sources */,
 				AAF5497A2F2445C0001DB5AC /* UpdateDraftViewModelTests.swift in Sources */,
 				AAF5497B2F2445C0001DB5AC /* VideoViewModelTests.swift in Sources */,
 				AAF5497C2F2445C0001DB5AC /* WatchProjectViewModelTests.swift in Sources */,
