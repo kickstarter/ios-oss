@@ -162,18 +162,6 @@ public struct Service: ServiceType {
       }
   }
 
-  public func changeEmail(input: ChangeEmailInput) ->
-    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-    return GraphQL.shared.client
-      .perform(
-        mutation: GraphAPI
-          .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
-      )
-      .flatMap { _ in
-        SignalProducer(value: EmptyResponseEnvelope())
-      }
-  }
-
   public func createAttributionEvent(input: GraphAPI.CreateAttributionEventInput) ->
     SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client

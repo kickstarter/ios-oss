@@ -30,8 +30,6 @@
 
     fileprivate let changeCurrencyResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
-    fileprivate let changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
-
     fileprivate let createAttributionEventResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>?
@@ -247,7 +245,6 @@
       blockUserResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       buildPaymentPlanResult: Result<GraphAPI.BuildPaymentPlanQuery.Data, ErrorEnvelope>? = nil,
       cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
-      changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createAttributionEventResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
       completeOnSessionCheckoutResult: Result<
@@ -379,8 +376,6 @@
       self.buildPaymentPlanResult = buildPaymentPlanResult
 
       self.cancelBackingResult = cancelBackingResult
-
-      self.changeEmailResult = changeEmailResult
 
       self.changeCurrencyResult = changeCurrencyResult
 
@@ -644,18 +639,6 @@
         .CancelBackingMutation(input: GraphAPI.CancelBackingInput(id: input.backingId))
 
       return client.performWithResult(mutation: mutation, result: self.cancelBackingResult)
-    }
-
-    internal func changeEmail(input: ChangeEmailInput)
-      -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-      guard let client = self.apolloClient else {
-        return .empty
-      }
-
-      let mutation = GraphAPI
-        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
-
-      return client.performWithResult(mutation: mutation, result: self.changeEmailResult)
     }
 
     internal func facebookConnect(facebookAccessToken _: String)
