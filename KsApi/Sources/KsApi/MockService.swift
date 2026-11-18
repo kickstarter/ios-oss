@@ -51,8 +51,6 @@
 
     fileprivate let createPaymentIntentResult: Result<PaymentIntentEnvelope, ErrorEnvelope>?
 
-    fileprivate let createPasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
-
     fileprivate let createStripeSetupIntentResult: Result<ClientSecretEnvelope, ErrorEnvelope>?
 
     fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
@@ -263,7 +261,6 @@
       createFlaggingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       fetchFlaggingOptionsResult: Result<GraphAPI.FlaggingOptionsQuery.Data, ErrorEnvelope>? = nil,
       createPaymentIntentResult: Result<PaymentIntentEnvelope, ErrorEnvelope>? = nil,
-      createPasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createStripeSetupIntentResult: Result<ClientSecretEnvelope, ErrorEnvelope>? = nil,
       changeCurrencyResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
@@ -406,8 +403,6 @@
       self.fetchFlaggingOptionsResult = fetchFlaggingOptionsResult
 
       self.createPaymentIntentResult = createPaymentIntentResult
-
-      self.createPasswordResult = createPasswordResult
 
       self.createStripeSetupIntentResult = createStripeSetupIntentResult
 
@@ -786,18 +781,6 @@
         ))
 
       return client.performWithResult(mutation: mutation, result: self.createPaymentIntentResult)
-    }
-
-    internal func createPassword(input: CreatePasswordInput)
-      -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-      guard let client = self.apolloClient else {
-        return .empty
-      }
-
-      let mutation = GraphAPI
-        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
-
-      return client.performWithResult(mutation: mutation, result: self.createPasswordResult)
     }
 
     internal func createStripeSetupIntent(input: CreateSetupIntentInput)
