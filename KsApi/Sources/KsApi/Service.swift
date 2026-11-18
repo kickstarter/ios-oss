@@ -174,18 +174,6 @@ public struct Service: ServiceType {
       }
   }
 
-  public func changePassword(input: ChangePasswordInput) ->
-    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-    return GraphQL.shared.client
-      .perform(
-        mutation: GraphAPI
-          .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
-      )
-      .flatMap { _ in
-        SignalProducer(value: EmptyResponseEnvelope())
-      }
-  }
-
   public func createAttributionEvent(input: GraphAPI.CreateAttributionEventInput) ->
     SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client

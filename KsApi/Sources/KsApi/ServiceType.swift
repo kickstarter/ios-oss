@@ -75,10 +75,6 @@ public protocol ServiceType {
   func changeEmail(input: ChangeEmailInput) ->
     SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
-  /// Changes the password on a user account
-  func changePassword(input: ChangePasswordInput) ->
-    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
-
   /// Changes the currency code on a user profile
   func changeCurrency(input: ChangeCurrencyInput) ->
     SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
