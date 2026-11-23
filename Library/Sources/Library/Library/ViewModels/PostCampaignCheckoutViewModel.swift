@@ -471,11 +471,11 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
         GraphAPI
           .CompleteOnSessionCheckoutInput(
+            applePay: nil,
             checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
             paymentIntentClientSecret: clientSecret,
             paymentSourceId: GraphQLNullable.someOrNil(selectedCard.savedCreditCardId),
-            paymentSourceReusable: true,
-            applePay: nil
+            paymentSourceReusable: true
           )
       }
 
@@ -489,17 +489,17 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         ) -> GraphAPI.CompleteOnSessionCheckoutInput in
         GraphAPI
           .CompleteOnSessionCheckoutInput(
+            /* We are no longer sending ApplePay parameters to the backend, because Stripe Tokens are
+             considered deprecated and are incompatible with PaymentIntent-based payments.
+
+             In the future, we may use the other parameters in the ApplePayParams object, but for now,
+             send nil.
+             */
+            applePay: nil,
             checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
             paymentIntentClientSecret: clientSecret,
             paymentSourceId: nil,
-            paymentSourceReusable: false,
-            /* We are no longer sending ApplePay parameters to the backend, because Stripe Tokens are
-              considered deprecated and are incompatible with PaymentIntent-based payments.
-
-              In the future, we may use the other parameters in the ApplePayParams object, but for now,
-              send nil.
-              */
-            applePay: nil
+            paymentSourceReusable: false
           )
       }
 

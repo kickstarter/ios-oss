@@ -740,8 +740,8 @@
             projectId: input.projectId,
             amount: GraphQLNullable.someOrNil(input.amount),
             locationId: GraphQLNullable.someOrNil(input.locationId),
-            rewardIds: GraphQLNullable.someOrNil(input.rewardIds),
-            refParam: GraphQLNullable.someOrNil(input.refParam)
+            refParam: GraphQLNullable.someOrNil(input.refParam),
+            rewardIds: GraphQLNullable.someOrNil(input.rewardIds)
           )
       )
 
@@ -780,9 +780,9 @@
 
       let mutation = GraphAPI
         .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput(
-          projectId: input.projectId,
           amount: input.amountDollars,
-          digitalMarketingAttributed: GraphQLNullable.someOrNil(input.digitalMarketingAttributed)
+          digitalMarketingAttributed: GraphQLNullable.someOrNil(input.digitalMarketingAttributed),
+          projectId: input.projectId,
         ))
 
       return client.performWithResult(mutation: mutation, result: self.createPaymentIntentResult)
