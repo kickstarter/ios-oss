@@ -27,7 +27,8 @@ public class UpdateUserAccountMutation: GraphQLMutation {
       .field("updateUserAccount", UpdateUserAccount?.self, arguments: ["input": .variable("input")]),
     ] }
 
-    /// Update user account
+    /// Deprecated: legacy account update mutation retained for client compatibility and disabled.
+    @available(*, deprecated, message: "Deprecated and disabled. Use beginEmailChange and passwordlessChangeEmail instead.")
     public var updateUserAccount: UpdateUserAccount? { __data["updateUserAccount"] }
 
     public init(

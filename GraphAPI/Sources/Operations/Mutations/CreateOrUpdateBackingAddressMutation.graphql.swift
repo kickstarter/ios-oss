@@ -27,6 +27,7 @@ public class CreateOrUpdateBackingAddressMutation: GraphQLMutation {
       .field("createOrUpdateBackingAddress", CreateOrUpdateBackingAddress?.self, arguments: ["input": .variable("input")]),
     ] }
 
+    /// Sets the delivery address of a backing, creating it if needed
     public var createOrUpdateBackingAddress: CreateOrUpdateBackingAddress? { __data["createOrUpdateBackingAddress"] }
 
     public init(
@@ -56,6 +57,7 @@ public class CreateOrUpdateBackingAddressMutation: GraphQLMutation {
         .field("success", Bool.self),
       ] }
 
+      /// Whether the backing now has the given address as its delivery address
       public var success: Bool { __data["success"] }
 
       public init(

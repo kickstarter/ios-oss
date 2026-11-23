@@ -12,37 +12,40 @@ public struct CreateAttributionEventInput: InputObject {
   }
 
   public init(
+    clientMutationId: GraphQLNullable<String> = nil,
     eventName: String,
-    eventProperties: GraphQLNullable<JSON> = nil,
-    projectId: GraphQLNullable<ID> = nil,
-    clientMutationId: GraphQLNullable<String> = nil
+    eventPropertiesJson: GraphQLNullable<JSON> = nil,
+    projectId: GraphQLNullable<ID> = nil
   ) {
     __data = InputDict([
+      "clientMutationId": clientMutationId,
       "eventName": eventName,
-      "eventProperties": eventProperties,
-      "projectId": projectId,
-      "clientMutationId": clientMutationId
+      "eventPropertiesJson": eventPropertiesJson,
+      "projectId": projectId
     ])
-  }
-
-  public var eventName: String {
-    get { __data["eventName"] }
-    set { __data["eventName"] = newValue }
-  }
-
-  public var eventProperties: GraphQLNullable<JSON> {
-    get { __data["eventProperties"] }
-    set { __data["eventProperties"] = newValue }
-  }
-
-  public var projectId: GraphQLNullable<ID> {
-    get { __data["projectId"] }
-    set { __data["projectId"] = newValue }
   }
 
   /// A unique identifier for the client performing the mutation.
   public var clientMutationId: GraphQLNullable<String> {
     get { __data["clientMutationId"] }
     set { __data["clientMutationId"] = newValue }
+  }
+
+  /// The name of the attribution event
+  public var eventName: String {
+    get { __data["eventName"] }
+    set { __data["eventName"] = newValue }
+  }
+
+  /// Properties to attach to the event
+  public var eventPropertiesJson: GraphQLNullable<JSON> {
+    get { __data["eventPropertiesJson"] }
+    set { __data["eventPropertiesJson"] = newValue }
+  }
+
+  /// The ID of the project whose properties are attached to the event
+  public var projectId: GraphQLNullable<ID> {
+    get { __data["projectId"] }
+    set { __data["projectId"] = newValue }
   }
 }

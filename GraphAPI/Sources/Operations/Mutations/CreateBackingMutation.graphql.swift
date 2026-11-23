@@ -58,6 +58,7 @@ public class CreateBackingMutation: GraphQLMutation {
         .field("checkout", Checkout?.self),
       ] }
 
+      /// The checkout created for the backing
       public var checkout: Checkout? { __data["checkout"] }
 
       public init(

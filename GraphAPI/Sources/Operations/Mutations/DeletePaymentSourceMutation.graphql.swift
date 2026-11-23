@@ -58,6 +58,7 @@ public class DeletePaymentSourceMutation: GraphQLMutation {
         .field("user", User?.self),
       ] }
 
+      /// The user the payment source was deleted from
       public var user: User? { __data["user"] }
 
       public init(
@@ -119,6 +120,7 @@ public class DeletePaymentSourceMutation: GraphQLMutation {
 
           /// A list of nodes.
           public var nodes: [Node?]? { __data["nodes"] }
+          /// Total number of items in the connection.
           public var totalCount: Int { __data["totalCount"] }
 
           public struct Fragments: FragmentContainer {

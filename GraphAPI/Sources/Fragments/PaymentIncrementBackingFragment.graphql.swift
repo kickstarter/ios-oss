@@ -26,6 +26,7 @@ public struct PaymentIncrementBackingFragment: GraphAPI.SelectionSet, Fragment {
   public var amount: Amount { __data["amount"] }
   /// If the payment increment has a backing, return human-readable information about the status of the payment increment
   public var badge: Badge? { __data["badge"] }
+  /// When the increment will be collected
   public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
   /// The state of the payment increment
   public var state: GraphQLEnum<GraphAPI.PaymentIncrementState> { __data["state"] }

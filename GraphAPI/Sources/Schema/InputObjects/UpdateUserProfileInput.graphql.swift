@@ -12,44 +12,48 @@ public struct UpdateUserProfileInput: InputObject {
   }
 
   public init(
-    name: GraphQLNullable<String> = nil,
+    clientMutationId: GraphQLNullable<String> = nil,
     biography: GraphQLNullable<String> = nil,
-    locationId: GraphQLNullable<ID> = nil,
     chosenCurrency: GraphQLNullable<GraphQLEnum<CurrencyCode>> = nil,
-    clientMutationId: GraphQLNullable<String> = nil
+    locationId: GraphQLNullable<ID> = nil,
+    name: GraphQLNullable<String> = nil
   ) {
     __data = InputDict([
-      "name": name,
+      "clientMutationId": clientMutationId,
       "biography": biography,
-      "locationId": locationId,
       "chosenCurrency": chosenCurrency,
-      "clientMutationId": clientMutationId
+      "locationId": locationId,
+      "name": name
     ])
-  }
-
-  public var name: GraphQLNullable<String> {
-    get { __data["name"] }
-    set { __data["name"] = newValue }
-  }
-
-  public var biography: GraphQLNullable<String> {
-    get { __data["biography"] }
-    set { __data["biography"] = newValue }
-  }
-
-  public var locationId: GraphQLNullable<ID> {
-    get { __data["locationId"] }
-    set { __data["locationId"] = newValue }
-  }
-
-  public var chosenCurrency: GraphQLNullable<GraphQLEnum<CurrencyCode>> {
-    get { __data["chosenCurrency"] }
-    set { __data["chosenCurrency"] = newValue }
   }
 
   /// A unique identifier for the client performing the mutation.
   public var clientMutationId: GraphQLNullable<String> {
     get { __data["clientMutationId"] }
     set { __data["clientMutationId"] = newValue }
+  }
+
+  /// The user's biography
+  public var biography: GraphQLNullable<String> {
+    get { __data["biography"] }
+    set { __data["biography"] = newValue }
+  }
+
+  /// The currency the user prefers to see amounts in
+  public var chosenCurrency: GraphQLNullable<GraphQLEnum<CurrencyCode>> {
+    get { __data["chosenCurrency"] }
+    set { __data["chosenCurrency"] = newValue }
+  }
+
+  /// The ID of the user's location
+  public var locationId: GraphQLNullable<ID> {
+    get { __data["locationId"] }
+    set { __data["locationId"] = newValue }
+  }
+
+  /// The user's name
+  public var name: GraphQLNullable<String> {
+    get { __data["name"] }
+    set { __data["name"] = newValue }
   }
 }

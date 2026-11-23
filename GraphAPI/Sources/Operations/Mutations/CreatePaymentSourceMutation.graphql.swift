@@ -62,7 +62,9 @@ public class CreatePaymentSourceMutation: GraphQLMutation {
 
       /// A unique identifier for the client performing the mutation.
       public var clientMutationId: String? { __data["clientMutationId"] }
+      /// Whether the payment source was created successfully.
       public var isSuccessful: Bool { __data["isSuccessful"] }
+      /// The newly created payment source.
       public var paymentSource: PaymentSource? { __data["paymentSource"] }
 
       public init(
@@ -161,6 +163,7 @@ public class CreatePaymentSourceMutation: GraphQLMutation {
 
           /// When the credit card expires.
           public var expirationDate: GraphAPI.Date { __data["expirationDate"] }
+          /// The ID of the bank account
           public var id: String { __data["id"] }
           /// The last four digits of the account number.
           public var lastFour: String { __data["lastFour"] }

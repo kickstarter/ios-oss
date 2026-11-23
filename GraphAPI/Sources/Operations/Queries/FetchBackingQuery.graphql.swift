@@ -1260,6 +1260,7 @@ public class FetchBackingQuery: GraphQLQuery {
 
         /// The payment increment amount represented in various formats
         public var amount: Amount { __data["amount"] }
+        /// When the increment will be collected
         public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
 
         public struct Fragments: FragmentContainer {

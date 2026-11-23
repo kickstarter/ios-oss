@@ -12,23 +12,23 @@ public struct PostCommentInput: InputObject {
   }
 
   public init(
-    commentableId: ID,
+    clientMutationId: GraphQLNullable<String> = nil,
     body: String,
-    parentId: GraphQLNullable<ID> = nil,
-    clientMutationId: GraphQLNullable<String> = nil
+    commentableId: ID,
+    parentId: GraphQLNullable<ID> = nil
   ) {
     __data = InputDict([
-      "commentableId": commentableId,
+      "clientMutationId": clientMutationId,
       "body": body,
-      "parentId": parentId,
-      "clientMutationId": clientMutationId
+      "commentableId": commentableId,
+      "parentId": parentId
     ])
   }
 
-  /// The ID of the object you are commenting on
-  public var commentableId: ID {
-    get { __data["commentableId"] }
-    set { __data["commentableId"] = newValue }
+  /// A unique identifier for the client performing the mutation.
+  public var clientMutationId: GraphQLNullable<String> {
+    get { __data["clientMutationId"] }
+    set { __data["clientMutationId"] = newValue }
   }
 
   /// The body of the comment
@@ -37,15 +37,15 @@ public struct PostCommentInput: InputObject {
     set { __data["body"] = newValue }
   }
 
+  /// The ID of the object you are commenting on
+  public var commentableId: ID {
+    get { __data["commentableId"] }
+    set { __data["commentableId"] = newValue }
+  }
+
   /// The ID of the comment you are replying to
   public var parentId: GraphQLNullable<ID> {
     get { __data["parentId"] }
     set { __data["parentId"] = newValue }
-  }
-
-  /// A unique identifier for the client performing the mutation.
-  public var clientMutationId: GraphQLNullable<String> {
-    get { __data["clientMutationId"] }
-    set { __data["clientMutationId"] = newValue }
   }
 }

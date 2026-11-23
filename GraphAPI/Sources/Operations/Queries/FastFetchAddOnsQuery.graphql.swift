@@ -36,6 +36,7 @@ public class FastFetchAddOnsQuery: GraphQLQuery {
       .field("reward", Reward?.self, arguments: ["id": .variable("baseRewardId")]),
     ] }
 
+    /// Fetches a reward given its id.
     public var reward: Reward? { __data["reward"] }
 
     public init(
@@ -311,12 +312,19 @@ public class FastFetchAddOnsQuery: GraphQLQuery {
                 .fragment(SimpleShippingRuleFragment.self),
               ] }
 
+              /// The cost of shipping to this location.
               public var cost: String? { __data["cost"] }
+              /// The estimated minimum shipping cost.
               public var estimatedMin: String? { __data["estimatedMin"] }
+              /// The estimated maximum shipping cost.
               public var estimatedMax: String? { __data["estimatedMax"] }
+              /// The currency the cost is expressed in.
               public var currency: String? { __data["currency"] }
+              /// The ID of the destination location.
               public var locationId: GraphAPI.ID? { __data["locationId"] }
+              /// The localized name of the destination location.
               public var locationName: String? { __data["locationName"] }
+              /// The country code of the destination.
               public var country: String { __data["country"] }
 
               public struct Fragments: FragmentContainer {

@@ -17,6 +17,7 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
     .include(if: "storyRichText", .field("items", [Item].self)),
   ] }
 
+  /// The rich text items that make up this component.
   public var items: [Item]? { __data["items"] }
 
   public init(
@@ -92,9 +93,13 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
         .field("children", [Child]?.self),
       ] }
 
+      /// Nested rich text segments inside this block.
       public var children: [Child]? { __data["children"] }
+      /// The text content of this segment.
       public var text: String? { __data["text"] }
+      /// The URL this text links to, if it is a link.
       public var link: String? { __data["link"] }
+      /// The styles applied to this text: STRONG, EMPHASIS, or HEADING_1..HEADING_4.
       public var styles: [String]? { __data["styles"] }
 
       public struct Fragments: FragmentContainer {
@@ -184,8 +189,11 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichText.Child.self
           ] }
 
+          /// The text content of this segment.
           public var text: String? { __data["text"] }
+          /// The URL this text links to, if it is a link.
           public var link: String? { __data["link"] }
+          /// The styles applied to this text: STRONG, EMPHASIS, or HEADING_1..HEADING_4.
           public var styles: [String]? { __data["styles"] }
 
           public struct Fragments: FragmentContainer {
@@ -231,8 +239,11 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichText.Child.self
           ] }
 
+          /// The text content of this segment.
           public var text: String? { __data["text"] }
+          /// The URL this text links to, if it is a link.
           public var link: String? { __data["link"] }
+          /// The styles applied to this text: STRONG, EMPHASIS, or HEADING_1..HEADING_4.
           public var styles: [String]? { __data["styles"] }
 
           public struct Fragments: FragmentContainer {
@@ -278,8 +289,11 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichText.Child.self
           ] }
 
+          /// The text content of this segment.
           public var text: String? { __data["text"] }
+          /// The URL this text links to, if it is a link.
           public var link: String? { __data["link"] }
+          /// The styles applied to this text: STRONG, EMPHASIS, or HEADING_1..HEADING_4.
           public var styles: [String]? { __data["styles"] }
 
           public struct Fragments: FragmentContainer {
@@ -409,8 +423,11 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichText.Child.self
           ] }
 
+          /// Alternative text describing the asset.
           public var altText: String { __data["altText"] }
+          /// The photo asset.
           public var asset: Asset? { __data["asset"] }
+          /// The caption displayed with the asset.
           public var caption: String { __data["caption"] }
 
           public struct Fragments: FragmentContainer {
@@ -458,9 +475,13 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichText.Child.self
           ] }
 
+          /// Alternative text describing the asset.
           public var altText: String { __data["altText"] }
+          /// The audio asset.
           public var asset: Asset? { __data["asset"] }
+          /// The caption displayed with the asset.
           public var caption: String { __data["caption"] }
+          /// The URL of the audio file.
           public var url: String { __data["url"] }
 
           public struct Fragments: FragmentContainer {
@@ -510,9 +531,13 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichText.Child.self
           ] }
 
+          /// Alternative text describing the asset.
           public var altText: String { __data["altText"] }
+          /// The video asset.
           public var asset: Asset? { __data["asset"] }
+          /// The caption displayed with the asset.
           public var caption: String { __data["caption"] }
+          /// The URL of the video file.
           public var url: String { __data["url"] }
 
           public struct Fragments: FragmentContainer {
@@ -629,9 +654,13 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
         .field("children", [Child]?.self),
       ] }
 
+      /// Nested rich text segments inside this block.
       public var children: [Child]? { __data["children"] }
+      /// The text content of this segment.
       public var text: String? { __data["text"] }
+      /// The URL this text links to, if it is a link.
       public var link: String? { __data["link"] }
+      /// The styles applied to this text: STRONG, EMPHASIS, or HEADING_1..HEADING_4.
       public var styles: [String]? { __data["styles"] }
 
       public struct Fragments: FragmentContainer {
@@ -721,8 +750,11 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichTextHeader.Child.self
           ] }
 
+          /// The text content of this segment.
           public var text: String? { __data["text"] }
+          /// The URL this text links to, if it is a link.
           public var link: String? { __data["link"] }
+          /// The styles applied to this text: STRONG, EMPHASIS, or HEADING_1..HEADING_4.
           public var styles: [String]? { __data["styles"] }
 
           public struct Fragments: FragmentContainer {
@@ -768,8 +800,11 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichTextHeader.Child.self
           ] }
 
+          /// The text content of this segment.
           public var text: String? { __data["text"] }
+          /// The URL this text links to, if it is a link.
           public var link: String? { __data["link"] }
+          /// The styles applied to this text: STRONG, EMPHASIS, or HEADING_1..HEADING_4.
           public var styles: [String]? { __data["styles"] }
 
           public struct Fragments: FragmentContainer {
@@ -815,8 +850,11 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichTextHeader.Child.self
           ] }
 
+          /// The text content of this segment.
           public var text: String? { __data["text"] }
+          /// The URL this text links to, if it is a link.
           public var link: String? { __data["link"] }
+          /// The styles applied to this text: STRONG, EMPHASIS, or HEADING_1..HEADING_4.
           public var styles: [String]? { __data["styles"] }
 
           public struct Fragments: FragmentContainer {
@@ -946,8 +984,11 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichTextHeader.Child.self
           ] }
 
+          /// Alternative text describing the asset.
           public var altText: String { __data["altText"] }
+          /// The photo asset.
           public var asset: Asset? { __data["asset"] }
+          /// The caption displayed with the asset.
           public var caption: String { __data["caption"] }
 
           public struct Fragments: FragmentContainer {
@@ -995,9 +1036,13 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichTextHeader.Child.self
           ] }
 
+          /// Alternative text describing the asset.
           public var altText: String { __data["altText"] }
+          /// The audio asset.
           public var asset: Asset? { __data["asset"] }
+          /// The caption displayed with the asset.
           public var caption: String { __data["caption"] }
+          /// The URL of the audio file.
           public var url: String { __data["url"] }
 
           public struct Fragments: FragmentContainer {
@@ -1047,9 +1092,13 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichTextHeader.Child.self
           ] }
 
+          /// Alternative text describing the asset.
           public var altText: String { __data["altText"] }
+          /// The video asset.
           public var asset: Asset? { __data["asset"] }
+          /// The caption displayed with the asset.
           public var caption: String { __data["caption"] }
+          /// The URL of the video file.
           public var url: String { __data["url"] }
 
           public struct Fragments: FragmentContainer {
@@ -1166,9 +1215,13 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
         .field("children", [Child]?.self),
       ] }
 
+      /// Nested rich text segments inside this block.
       public var children: [Child]? { __data["children"] }
+      /// The text content of this segment.
       public var text: String? { __data["text"] }
+      /// The URL this text links to, if it is a link.
       public var link: String? { __data["link"] }
+      /// The styles applied to this text: STRONG, EMPHASIS, or HEADING_1..HEADING_4.
       public var styles: [String]? { __data["styles"] }
 
       public struct Fragments: FragmentContainer {
@@ -1258,8 +1311,11 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichTextListItem.Child.self
           ] }
 
+          /// The text content of this segment.
           public var text: String? { __data["text"] }
+          /// The URL this text links to, if it is a link.
           public var link: String? { __data["link"] }
+          /// The styles applied to this text: STRONG, EMPHASIS, or HEADING_1..HEADING_4.
           public var styles: [String]? { __data["styles"] }
 
           public struct Fragments: FragmentContainer {
@@ -1305,8 +1361,11 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichTextListItem.Child.self
           ] }
 
+          /// The text content of this segment.
           public var text: String? { __data["text"] }
+          /// The URL this text links to, if it is a link.
           public var link: String? { __data["link"] }
+          /// The styles applied to this text: STRONG, EMPHASIS, or HEADING_1..HEADING_4.
           public var styles: [String]? { __data["styles"] }
 
           public struct Fragments: FragmentContainer {
@@ -1352,8 +1411,11 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichTextListItem.Child.self
           ] }
 
+          /// The text content of this segment.
           public var text: String? { __data["text"] }
+          /// The URL this text links to, if it is a link.
           public var link: String? { __data["link"] }
+          /// The styles applied to this text: STRONG, EMPHASIS, or HEADING_1..HEADING_4.
           public var styles: [String]? { __data["styles"] }
 
           public struct Fragments: FragmentContainer {
@@ -1483,8 +1545,11 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichTextListItem.Child.self
           ] }
 
+          /// Alternative text describing the asset.
           public var altText: String { __data["altText"] }
+          /// The photo asset.
           public var asset: Asset? { __data["asset"] }
+          /// The caption displayed with the asset.
           public var caption: String { __data["caption"] }
 
           public struct Fragments: FragmentContainer {
@@ -1532,9 +1597,13 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichTextListItem.Child.self
           ] }
 
+          /// Alternative text describing the asset.
           public var altText: String { __data["altText"] }
+          /// The audio asset.
           public var asset: Asset? { __data["asset"] }
+          /// The caption displayed with the asset.
           public var caption: String { __data["caption"] }
+          /// The URL of the audio file.
           public var url: String { __data["url"] }
 
           public struct Fragments: FragmentContainer {
@@ -1584,9 +1653,13 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
             RichTextComponentFragment.Item.AsRichTextListItem.Child.self
           ] }
 
+          /// Alternative text describing the asset.
           public var altText: String { __data["altText"] }
+          /// The video asset.
           public var asset: Asset? { __data["asset"] }
+          /// The caption displayed with the asset.
           public var caption: String { __data["caption"] }
+          /// The URL of the video file.
           public var url: String { __data["url"] }
 
           public struct Fragments: FragmentContainer {
@@ -1788,8 +1861,11 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
         RichTextItemFragment.AsRichTextPhoto.self
       ] }
 
+      /// Alternative text describing the asset.
       public var altText: String { __data["altText"] }
+      /// The photo asset.
       public var asset: Asset? { __data["asset"] }
+      /// The caption displayed with the asset.
       public var caption: String { __data["caption"] }
 
       public struct Fragments: FragmentContainer {
@@ -1837,9 +1913,13 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
         RichTextItemFragment.AsRichTextAudio.self
       ] }
 
+      /// Alternative text describing the asset.
       public var altText: String { __data["altText"] }
+      /// The audio asset.
       public var asset: Asset? { __data["asset"] }
+      /// The caption displayed with the asset.
       public var caption: String { __data["caption"] }
+      /// The URL of the audio file.
       public var url: String { __data["url"] }
 
       public struct Fragments: FragmentContainer {
@@ -1889,9 +1969,13 @@ public struct RichTextComponentFragment: GraphAPI.SelectionSet, Fragment {
         RichTextItemFragment.AsRichTextVideo.self
       ] }
 
+      /// Alternative text describing the asset.
       public var altText: String { __data["altText"] }
+      /// The video asset.
       public var asset: Asset? { __data["asset"] }
+      /// The caption displayed with the asset.
       public var caption: String { __data["caption"] }
+      /// The URL of the video file.
       public var url: String { __data["url"] }
 
       public struct Fragments: FragmentContainer {

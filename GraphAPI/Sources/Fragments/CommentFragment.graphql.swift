@@ -95,6 +95,7 @@ public struct CommentFragment: GraphAPI.SelectionSet, Fragment {
       .field("totalCount", Int.self),
     ] }
 
+    /// Total number of items in the connection.
     public var totalCount: Int { __data["totalCount"] }
 
     public init(

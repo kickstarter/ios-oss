@@ -12,47 +12,35 @@ public struct CreatePaymentIntentInput: InputObject {
   }
 
   public init(
-    projectId: ID,
+    clientMutationId: GraphQLNullable<String> = nil,
     amount: String,
-    paymentIntentContext: GraphQLNullable<GraphQLEnum<StripeIntentContextTypes>> = nil,
-    digitalMarketingAttributed: GraphQLNullable<Bool> = nil,
     backingId: GraphQLNullable<ID> = nil,
     checkoutId: GraphQLNullable<ID> = nil,
-    clientMutationId: GraphQLNullable<String> = nil
+    digitalMarketingAttributed: GraphQLNullable<Bool> = nil,
+    paymentIntentContext: GraphQLNullable<GraphQLEnum<StripeIntentContextTypes>> = nil,
+    projectId: ID
   ) {
     __data = InputDict([
-      "projectId": projectId,
+      "clientMutationId": clientMutationId,
       "amount": amount,
-      "paymentIntentContext": paymentIntentContext,
-      "digitalMarketingAttributed": digitalMarketingAttributed,
       "backingId": backingId,
       "checkoutId": checkoutId,
-      "clientMutationId": clientMutationId
+      "digitalMarketingAttributed": digitalMarketingAttributed,
+      "paymentIntentContext": paymentIntentContext,
+      "projectId": projectId
     ])
   }
 
-  /// kickstarter project id
-  public var projectId: ID {
-    get { __data["projectId"] }
-    set { __data["projectId"] = newValue }
+  /// A unique identifier for the client performing the mutation.
+  public var clientMutationId: GraphQLNullable<String> {
+    get { __data["clientMutationId"] }
+    set { __data["clientMutationId"] = newValue }
   }
 
   /// total amount to be paid (eg. 10.55)
   public var amount: String {
     get { __data["amount"] }
     set { __data["amount"] = newValue }
-  }
-
-  /// Context in which this stripe intent is created
-  public var paymentIntentContext: GraphQLNullable<GraphQLEnum<StripeIntentContextTypes>> {
-    get { __data["paymentIntentContext"] }
-    set { __data["paymentIntentContext"] = newValue }
-  }
-
-  /// if the payment is attributed to digital marketing (default: false)
-  public var digitalMarketingAttributed: GraphQLNullable<Bool> {
-    get { __data["digitalMarketingAttributed"] }
-    set { __data["digitalMarketingAttributed"] = newValue }
   }
 
   /// Current backing id for tracking purposes
@@ -67,9 +55,21 @@ public struct CreatePaymentIntentInput: InputObject {
     set { __data["checkoutId"] = newValue }
   }
 
-  /// A unique identifier for the client performing the mutation.
-  public var clientMutationId: GraphQLNullable<String> {
-    get { __data["clientMutationId"] }
-    set { __data["clientMutationId"] = newValue }
+  /// if the payment is attributed to digital marketing (default: false)
+  public var digitalMarketingAttributed: GraphQLNullable<Bool> {
+    get { __data["digitalMarketingAttributed"] }
+    set { __data["digitalMarketingAttributed"] = newValue }
+  }
+
+  /// Context in which this stripe intent is created
+  public var paymentIntentContext: GraphQLNullable<GraphQLEnum<StripeIntentContextTypes>> {
+    get { __data["paymentIntentContext"] }
+    set { __data["paymentIntentContext"] = newValue }
+  }
+
+  /// kickstarter project id
+  public var projectId: ID {
+    get { __data["projectId"] }
+    set { __data["projectId"] = newValue }
   }
 }

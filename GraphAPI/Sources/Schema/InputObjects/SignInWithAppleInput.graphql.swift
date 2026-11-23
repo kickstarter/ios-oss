@@ -12,44 +12,48 @@ public struct SignInWithAppleInput: InputObject {
   }
 
   public init(
-    firstName: GraphQLNullable<String> = nil,
-    lastName: GraphQLNullable<String> = nil,
+    clientMutationId: GraphQLNullable<String> = nil,
     authCode: String,
+    firstName: GraphQLNullable<String> = nil,
     iosAppId: String,
-    clientMutationId: GraphQLNullable<String> = nil
+    lastName: GraphQLNullable<String> = nil
   ) {
     __data = InputDict([
-      "firstName": firstName,
-      "lastName": lastName,
+      "clientMutationId": clientMutationId,
       "authCode": authCode,
+      "firstName": firstName,
       "iosAppId": iosAppId,
-      "clientMutationId": clientMutationId
+      "lastName": lastName
     ])
-  }
-
-  public var firstName: GraphQLNullable<String> {
-    get { __data["firstName"] }
-    set { __data["firstName"] = newValue }
-  }
-
-  public var lastName: GraphQLNullable<String> {
-    get { __data["lastName"] }
-    set { __data["lastName"] = newValue }
-  }
-
-  public var authCode: String {
-    get { __data["authCode"] }
-    set { __data["authCode"] = newValue }
-  }
-
-  public var iosAppId: String {
-    get { __data["iosAppId"] }
-    set { __data["iosAppId"] = newValue }
   }
 
   /// A unique identifier for the client performing the mutation.
   public var clientMutationId: GraphQLNullable<String> {
     get { __data["clientMutationId"] }
     set { __data["clientMutationId"] = newValue }
+  }
+
+  /// Authorization code issued by Apple
+  public var authCode: String {
+    get { __data["authCode"] }
+    set { __data["authCode"] = newValue }
+  }
+
+  /// First name supplied by Apple on first sign in
+  public var firstName: GraphQLNullable<String> {
+    get { __data["firstName"] }
+    set { __data["firstName"] = newValue }
+  }
+
+  /// Apple client ID of the iOS app
+  public var iosAppId: String {
+    get { __data["iosAppId"] }
+    set { __data["iosAppId"] = newValue }
+  }
+
+  /// Last name supplied by Apple on first sign in
+  public var lastName: GraphQLNullable<String> {
+    get { __data["lastName"] }
+    set { __data["lastName"] = newValue }
   }
 }

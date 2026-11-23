@@ -60,6 +60,7 @@ public class CreateCheckoutMutation: GraphQLMutation {
 
       /// A unique identifier for the client performing the mutation.
       public var clientMutationId: String? { __data["clientMutationId"] }
+      /// The checkout that was created
       public var checkout: Checkout? { __data["checkout"] }
 
       public init(
@@ -94,6 +95,7 @@ public class CreateCheckoutMutation: GraphQLMutation {
         ] }
 
         public var id: GraphAPI.ID { __data["id"] }
+        /// The path to the page where the backer enters payment details
         public var paymentUrl: String? { __data["paymentUrl"] }
         /// The backing that the checkout is modifying.
         public var backing: Backing { __data["backing"] }

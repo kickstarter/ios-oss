@@ -276,6 +276,7 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
         .field("hls", Hls?.self),
       ] }
 
+      /// HLS streaming source
       public var hls: Hls? { __data["hls"] }
 
       public init(
@@ -305,6 +306,7 @@ public struct ProjectVideoFeedFragment: GraphAPI.SelectionSet, Fragment {
           .field("src", String?.self),
         ] }
 
+        /// The URL of the video source
         public var src: String? { __data["src"] }
 
         public init(

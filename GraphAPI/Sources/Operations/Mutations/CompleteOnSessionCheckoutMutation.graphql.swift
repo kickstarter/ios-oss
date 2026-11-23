@@ -58,6 +58,7 @@ public class CompleteOnSessionCheckoutMutation: GraphQLMutation {
         .field("checkout", Checkout?.self),
       ] }
 
+      /// The completed checkout
       public var checkout: Checkout? { __data["checkout"] }
 
       public init(

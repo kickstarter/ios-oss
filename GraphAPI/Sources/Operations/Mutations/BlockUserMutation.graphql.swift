@@ -57,6 +57,7 @@ public class BlockUserMutation: GraphQLMutation {
         .field("success", Bool.self),
       ] }
 
+      /// Whether the user was blocked
       public var success: Bool { __data["success"] }
 
       public init(

@@ -58,6 +58,7 @@ public class PostCommentMutation: GraphQLMutation {
         .field("comment", Comment?.self),
       ] }
 
+      /// The newly created comment
       public var comment: Comment? { __data["comment"] }
 
       public init(

@@ -57,6 +57,7 @@ public class TriggerThirdPartyEventMutation: GraphQLMutation {
         .field("success", Bool.self),
       ] }
 
+      /// Whether a Google Analytics or Conversions API request succeeded; true if neither was configured.
       public var success: Bool { __data["success"] }
 
       public init(

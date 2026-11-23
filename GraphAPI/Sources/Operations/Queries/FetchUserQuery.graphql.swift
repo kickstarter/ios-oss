@@ -68,7 +68,8 @@ public class FetchUserQuery: GraphQLQuery {
       public var createdProjects: CreatedProjects? { __data["createdProjects"] }
       /// A user's email address.
       public var email: String? { __data["email"] }
-      /// Whether or not the user has a password.
+      /// Deprecated. This field is no longer used and always returns false.
+      @available(*, deprecated, message: "This field is no longer used and always returns false.")
       public var hasPassword: Bool? { __data["hasPassword"] }
       /// Whether or not a user has unread messages.
       public var hasUnreadMessages: Bool? { __data["hasUnreadMessages"] }
@@ -270,6 +271,7 @@ public class FetchUserQuery: GraphQLQuery {
 
         /// A list of nodes.
         public var nodes: [Node?]? { __data["nodes"] }
+        /// Total number of items in the connection.
         public var totalCount: Int { __data["totalCount"] }
 
         public struct Fragments: FragmentContainer {

@@ -12,30 +12,32 @@ public struct CreateOrUpdateBackingAddressInput: InputObject {
   }
 
   public init(
-    backingId: ID,
+    clientMutationId: GraphQLNullable<String> = nil,
     addressId: ID,
-    clientMutationId: GraphQLNullable<String> = nil
+    backingId: ID
   ) {
     __data = InputDict([
-      "backingId": backingId,
+      "clientMutationId": clientMutationId,
       "addressId": addressId,
-      "clientMutationId": clientMutationId
+      "backingId": backingId
     ])
-  }
-
-  public var backingId: ID {
-    get { __data["backingId"] }
-    set { __data["backingId"] = newValue }
-  }
-
-  public var addressId: ID {
-    get { __data["addressId"] }
-    set { __data["addressId"] = newValue }
   }
 
   /// A unique identifier for the client performing the mutation.
   public var clientMutationId: GraphQLNullable<String> {
     get { __data["clientMutationId"] }
     set { __data["clientMutationId"] = newValue }
+  }
+
+  /// The address to use as the delivery address for the backing
+  public var addressId: ID {
+    get { __data["addressId"] }
+    set { __data["addressId"] = newValue }
+  }
+
+  /// The backing to set the delivery address on
+  public var backingId: ID {
+    get { __data["backingId"] }
+    set { __data["backingId"] = newValue }
   }
 }

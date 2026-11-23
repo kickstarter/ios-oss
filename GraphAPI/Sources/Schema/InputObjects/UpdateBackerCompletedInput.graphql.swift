@@ -12,30 +12,32 @@ public struct UpdateBackerCompletedInput: InputObject {
   }
 
   public init(
-    id: ID,
+    clientMutationId: GraphQLNullable<String> = nil,
     backerCompleted: Bool,
-    clientMutationId: GraphQLNullable<String> = nil
+    id: ID
   ) {
     __data = InputDict([
-      "id": id,
+      "clientMutationId": clientMutationId,
       "backerCompleted": backerCompleted,
-      "clientMutationId": clientMutationId
+      "id": id
     ])
-  }
-
-  public var id: ID {
-    get { __data["id"] }
-    set { __data["id"] = newValue }
-  }
-
-  public var backerCompleted: Bool {
-    get { __data["backerCompleted"] }
-    set { __data["backerCompleted"] = newValue }
   }
 
   /// A unique identifier for the client performing the mutation.
   public var clientMutationId: GraphQLNullable<String> {
     get { __data["clientMutationId"] }
     set { __data["clientMutationId"] = newValue }
+  }
+
+  /// Whether the backing should be marked as completed by the backer
+  public var backerCompleted: Bool {
+    get { __data["backerCompleted"] }
+    set { __data["backerCompleted"] = newValue }
+  }
+
+  /// ID of the backing to update
+  public var id: ID {
+    get { __data["id"] }
+    set { __data["id"] = newValue }
   }
 }

@@ -3,6 +3,7 @@
 
 import ApolloAPI
 
+/// The state of a payment increment
 public enum PaymentIncrementState: String, EnumType {
   /// The initial state of the payment increment; payment source has not been charged
   case unattempted = "UNATTEMPTED"

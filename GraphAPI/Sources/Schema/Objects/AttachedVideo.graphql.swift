@@ -4,6 +4,7 @@
 import ApolloAPI
 
 public extension Objects {
+  /// A video asset attached to a project, post, reward, or survey
   static let AttachedVideo = ApolloAPI.Object(
     typename: "AttachedVideo",
     implementedInterfaces: [Interfaces.Node.self]

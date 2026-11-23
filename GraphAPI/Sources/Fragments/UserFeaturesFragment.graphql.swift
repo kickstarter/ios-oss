@@ -17,6 +17,7 @@ public struct UserFeaturesFragment: GraphAPI.SelectionSet, Fragment {
     .field("enabledFeatures", [GraphQLEnum<GraphAPI.Feature>].self),
   ] }
 
+  /// The features enabled for the user; empty unless viewed by the user themself or an admin
   public var enabledFeatures: [GraphQLEnum<GraphAPI.Feature>] { __data["enabledFeatures"] }
 
   public init(

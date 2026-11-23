@@ -12,37 +12,40 @@ public struct CreateFlaggingInput: InputObject {
   }
 
   public init(
+    clientMutationId: GraphQLNullable<String> = nil,
     contentId: ID,
-    kind: GraphQLEnum<NonDeprecatedFlaggingKind>,
     details: GraphQLNullable<String> = nil,
-    clientMutationId: GraphQLNullable<String> = nil
+    kind: GraphQLEnum<NonDeprecatedFlaggingKind>
   ) {
     __data = InputDict([
+      "clientMutationId": clientMutationId,
       "contentId": contentId,
-      "kind": kind,
       "details": details,
-      "clientMutationId": clientMutationId
+      "kind": kind
     ])
-  }
-
-  public var contentId: ID {
-    get { __data["contentId"] }
-    set { __data["contentId"] = newValue }
-  }
-
-  public var kind: GraphQLEnum<NonDeprecatedFlaggingKind> {
-    get { __data["kind"] }
-    set { __data["kind"] = newValue }
-  }
-
-  public var details: GraphQLNullable<String> {
-    get { __data["details"] }
-    set { __data["details"] = newValue }
   }
 
   /// A unique identifier for the client performing the mutation.
   public var clientMutationId: GraphQLNullable<String> {
     get { __data["clientMutationId"] }
     set { __data["clientMutationId"] = newValue }
+  }
+
+  /// The ID of the content being flagged.
+  public var contentId: ID {
+    get { __data["contentId"] }
+    set { __data["contentId"] = newValue }
+  }
+
+  /// Additional details from the reporter about the flag.
+  public var details: GraphQLNullable<String> {
+    get { __data["details"] }
+    set { __data["details"] = newValue }
+  }
+
+  /// The reason the content is being flagged.
+  public var kind: GraphQLEnum<NonDeprecatedFlaggingKind> {
+    get { __data["kind"] }
+    set { __data["kind"] = newValue }
   }
 }

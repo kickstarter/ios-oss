@@ -12,15 +12,21 @@ public struct CancelBackingInput: InputObject {
   }
 
   public init(
+    clientMutationId: GraphQLNullable<String> = nil,
     id: ID,
-    note: GraphQLNullable<String> = nil,
-    clientMutationId: GraphQLNullable<String> = nil
+    note: GraphQLNullable<String> = nil
   ) {
     __data = InputDict([
+      "clientMutationId": clientMutationId,
       "id": id,
-      "note": note,
-      "clientMutationId": clientMutationId
+      "note": note
     ])
+  }
+
+  /// A unique identifier for the client performing the mutation.
+  public var clientMutationId: GraphQLNullable<String> {
+    get { __data["clientMutationId"] }
+    set { __data["clientMutationId"] = newValue }
   }
 
   /// ID of the backing being canceled
@@ -33,11 +39,5 @@ public struct CancelBackingInput: InputObject {
   public var note: GraphQLNullable<String> {
     get { __data["note"] }
     set { __data["note"] = newValue }
-  }
-
-  /// A unique identifier for the client performing the mutation.
-  public var clientMutationId: GraphQLNullable<String> {
-    get { __data["clientMutationId"] }
-    set { __data["clientMutationId"] = newValue }
   }
 }

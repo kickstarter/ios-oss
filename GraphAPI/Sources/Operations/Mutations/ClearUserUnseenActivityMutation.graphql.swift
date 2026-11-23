@@ -27,6 +27,7 @@ public class ClearUserUnseenActivityMutation: GraphQLMutation {
       .field("clearUserUnseenActivity", ClearUserUnseenActivity?.self, arguments: ["input": .variable("input")]),
     ] }
 
+    /// Marks the current user's activity feed as seen
     public var clearUserUnseenActivity: ClearUserUnseenActivity? { __data["clearUserUnseenActivity"] }
 
     public init(
@@ -59,6 +60,7 @@ public class ClearUserUnseenActivityMutation: GraphQLMutation {
 
       /// A unique identifier for the client performing the mutation.
       public var clientMutationId: String? { __data["clientMutationId"] }
+      /// Number of unseen activity items remaining after clearing
       public var activityIndicatorCount: Int { __data["activityIndicatorCount"] }
 
       public init(

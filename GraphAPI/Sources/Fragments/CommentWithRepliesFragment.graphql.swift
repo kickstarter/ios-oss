@@ -104,6 +104,7 @@ public struct CommentWithRepliesFragment: GraphAPI.SelectionSet, Fragment {
     public var edges: [Edge?]? { __data["edges"] }
     /// Information to aid in pagination.
     public var pageInfo: PageInfo { __data["pageInfo"] }
+    /// Total number of items in the connection.
     public var totalCount: Int { __data["totalCount"] }
 
     public init(

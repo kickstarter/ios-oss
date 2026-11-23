@@ -99,6 +99,7 @@ public class BuildPaymentPlanQuery: GraphQLQuery {
 
         /// Amount is enough to qualify for pledge over time, if project allows
         public var amountIsPledgeOverTimeEligible: Bool { __data["amountIsPledgeOverTimeEligible"] }
+        /// The increments in which the pledge will be paid over time
         public var paymentIncrements: [PaymentIncrement]? { __data["paymentIncrements"] }
 
         public init(
@@ -132,6 +133,7 @@ public class BuildPaymentPlanQuery: GraphQLQuery {
 
           /// The payment increment amount represented in various formats
           public var amount: Amount { __data["amount"] }
+          /// When the increment will be collected
           public var scheduledCollection: GraphAPI.ISO8601DateTime { __data["scheduledCollection"] }
 
           public struct Fragments: FragmentContainer {

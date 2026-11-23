@@ -105,6 +105,7 @@ public class RichTextExampleProjectBySlugQuery: GraphQLQuery {
           .fragment(RichTextComponentFragment.self),
         ] }
 
+        /// The rich text items that make up this component.
         public var items: [Item]? { __data["items"] }
 
         public struct Fragments: FragmentContainer {

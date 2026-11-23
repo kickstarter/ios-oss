@@ -12,23 +12,24 @@ public struct BlockUserInput: InputObject {
   }
 
   public init(
-    blockUserId: ID,
-    clientMutationId: GraphQLNullable<String> = nil
+    clientMutationId: GraphQLNullable<String> = nil,
+    blockUserId: ID
   ) {
     __data = InputDict([
-      "blockUserId": blockUserId,
-      "clientMutationId": clientMutationId
+      "clientMutationId": clientMutationId,
+      "blockUserId": blockUserId
     ])
-  }
-
-  public var blockUserId: ID {
-    get { __data["blockUserId"] }
-    set { __data["blockUserId"] = newValue }
   }
 
   /// A unique identifier for the client performing the mutation.
   public var clientMutationId: GraphQLNullable<String> {
     get { __data["clientMutationId"] }
     set { __data["clientMutationId"] = newValue }
+  }
+
+  /// The uid of the user to block (not a Relay ID)
+  public var blockUserId: ID {
+    get { __data["blockUserId"] }
+    set { __data["blockUserId"] = newValue }
   }
 }

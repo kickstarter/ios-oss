@@ -4,6 +4,7 @@
 import ApolloAPI
 
 public extension Objects {
+  /// An investigation into a project.
   static let ProjectInvestigation = ApolloAPI.Object(
     typename: "ProjectInvestigation",
     implementedInterfaces: [Interfaces.Node.self]
