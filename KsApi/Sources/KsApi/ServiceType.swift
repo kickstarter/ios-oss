@@ -71,14 +71,6 @@ public protocol ServiceType {
   func cancelBacking(input: CancelBackingInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
-  /// Changes the email on a user account
-  func changeEmail(input: ChangeEmailInput) ->
-    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
-
-  /// Changes the password on a user account
-  func changePassword(input: ChangePasswordInput) ->
-    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
-
   /// Changes the currency code on a user profile
   func changeCurrency(input: ChangeCurrencyInput) ->
     SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
@@ -114,10 +106,6 @@ public protocol ServiceType {
   /// Sends report project data for a specific project
   func createPaymentIntentInput(input: CreatePaymentIntentInput)
     -> SignalProducer<PaymentIntentEnvelope, ErrorEnvelope>
-
-  /// Creates the password on a user account
-  func createPassword(input: CreatePasswordInput) ->
-    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
   /// Create Stripe setup intent for use with Stripe payment sheet
   func createStripeSetupIntent(input: CreateSetupIntentInput) ->

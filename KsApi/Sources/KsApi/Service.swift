@@ -162,30 +162,6 @@ public struct Service: ServiceType {
       }
   }
 
-  public func changeEmail(input: ChangeEmailInput) ->
-    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-    return GraphQL.shared.client
-      .perform(
-        mutation: GraphAPI
-          .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
-      )
-      .flatMap { _ in
-        SignalProducer(value: EmptyResponseEnvelope())
-      }
-  }
-
-  public func changePassword(input: ChangePasswordInput) ->
-    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-    return GraphQL.shared.client
-      .perform(
-        mutation: GraphAPI
-          .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
-      )
-      .flatMap { _ in
-        SignalProducer(value: EmptyResponseEnvelope())
-      }
-  }
-
   public func createAttributionEvent(input: GraphAPI.CreateAttributionEventInput) ->
     SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
@@ -272,18 +248,6 @@ public struct Service: ServiceType {
           ))
       )
       .flatMap(PaymentIntentEnvelope.envelopeProducer(from:))
-  }
-
-  public func createPassword(input: CreatePasswordInput)
-    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-    return GraphQL.shared.client
-      .perform(
-        mutation: GraphAPI
-          .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
-      )
-      .flatMap { _ in
-        SignalProducer(value: EmptyResponseEnvelope())
-      }
   }
 
   public func createStripeSetupIntent(input: CreateSetupIntentInput) ->

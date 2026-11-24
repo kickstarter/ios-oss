@@ -51,12 +51,9 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
   override func bindViewModel() {
     self.viewModel.outputs.reloadData
       .observeForUI()
-      .observeValues { [weak self] currency, email,
-        shouldHideEmailWarning, shouldHideEmailPasswordSection, isAppleConnectedAccount in
+      .observeValues { [weak self] currency, email, isAppleConnectedAccount in
         self?.dataSource.configureRows(
           currency: currency,
-          shouldHideEmailWarning: shouldHideEmailWarning,
-          shouldHideEmailPasswordSection: shouldHideEmailPasswordSection,
           isAppleConnected: isAppleConnectedAccount
         )
 
@@ -72,8 +69,6 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
       .observeValues { [weak self] in
         self?.dataSource.configureRows(
           currency: nil,
-          shouldHideEmailWarning: true,
-          shouldHideEmailPasswordSection: false,
           isAppleConnected: false
         )
 
@@ -142,57 +137,22 @@ extension SettingsAccountViewController: UITableViewDelegate {
     return SettingsSectionType.sectionHeaderHeight
   }
 
-  func tableView(_: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    guard let data = self.viewModel.outputs.shouldShowCreatePasswordFooter() else {
-      return 0.1
-    }
-
-    let (shouldShow, _) = data
-
-    guard section == SettingsAccountSectionType.createPassword.rawValue, shouldShow else {
-      return 0.1
-    }
-
-    return UITableView.automaticDimension
+  func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
+    return 0.1
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection _: Int) -> UIView? {
     return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
   }
 
-  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    guard let data = self.viewModel.outputs.shouldShowCreatePasswordFooter() else {
-      return nil
-    }
-
-    let (shouldShowCreatePasswordFooter, anEmail) = data
-
-    guard let email = anEmail, shouldShowCreatePasswordFooter,
-          section == SettingsAccountSectionType.createPassword.rawValue else {
-      return nil
-    }
-
-    let footerView = tableView.dequeueReusableHeaderFooterView(
-      withClass: SettingsGroupedFooterView.self
-    ) as? SettingsGroupedFooterView
-
-    let text = Strings.Youre_connected_via_Facebook_email_Create_a_password_for_this_account(email: email)
-    footerView?.label.text = text
-
-    return footerView
+  func tableView(_: UITableView, viewForFooterInSection _: Int) -> UIView? {
+    return nil
   }
 }
 
 extension SettingsAccountViewController {
   static func viewController(for cellType: SettingsAccountCellType, currency: Currency) -> UIViewController? {
     switch cellType {
-    case .createPassword:
-      return CreatePasswordViewController.instantiate()
-    case .changeEmail:
-      let changeEmailView = ChangeEmailView()
-      return UIHostingController(rootView: changeEmailView)
-    case .changePassword:
-      return ChangePasswordViewController.instantiate()
     case .paymentMethods:
       return PaymentMethodSettingsViewController.instantiate()
     case .privacy:

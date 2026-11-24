@@ -58,8 +58,8 @@ public final class KSRAnalytics {
     case checkout // // PledgeViewController
     case creatorDashboard = "creator_dashboard" // DashboardViewController
     case discovery = "discover" // DiscoveryViewController
-    case forgotPassword = "forgot_password" // ResetPasswordViewController
-    case login = "log_in" // LoginViewController
+    case forgotPassword = "forgot_password" // deprecated ResetPasswordViewController
+    case login = "log_in" // deprecated LoginViewController
     case loginTout = "log_in_sign_up" // LoginToutViewController
     case managePledgeScreen = "manage_pledge" // ManagePledgeViewController
     case messages // MessagesViewController
@@ -74,7 +74,7 @@ public final class KSRAnalytics {
     case settingsAddNewCard = "settings_add_new_card"
     case signup = "sign_up" // SignupViewController
     case thanks // ThanksViewController
-    case twoFactorAuth = "two_factor_auth" // TwoFactorViewController
+    case twoFactorAuth = "two_factor_auth" // deprecated TwoFactorViewController
     case updatePledge = "update_pledge" // PledgeViewController
     case videoFeed = "video_feed" // VideoFeedViewController
   }

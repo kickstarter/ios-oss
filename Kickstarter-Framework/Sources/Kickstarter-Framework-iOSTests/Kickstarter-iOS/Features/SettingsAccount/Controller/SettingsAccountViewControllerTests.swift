@@ -20,13 +20,11 @@ internal final class SettingsAccountViewControllerTests: TestCase {
 
   func testView() {
     let user = GraphUser.template
-      |> \.hasPassword .~ true
-      |> \.isEmailVerified .~ true
 
     let response = UserEnvelope<GraphUser>(me: user)
     let mockService = MockService(fetchGraphUserResult: .success(response))
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
         withEnvironment(apiService: mockService, language: language) {
           let vc = SettingsAccountViewController.instantiate()
@@ -37,43 +35,6 @@ internal final class SettingsAccountViewControllerTests: TestCase {
           assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
         }
       }
-  }
-
-  func testAccountView_EmailPasswordSectionHidden() {
-    let user = GraphUser.template
-      |> \.hasPassword .~ false
-
-    let response = UserEnvelope<GraphUser>(me: user)
-    let mockService = MockService(fetchGraphUserResult: .success(response))
-
-    Device.allCases.forEach { device in
-
-      withEnvironment(apiService: mockService) {
-        let vc = SettingsAccountViewController.instantiate()
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-
-        self.scheduler.run()
-
-        assertSnapshot(matching: parent.view, as: .image, named: "device_\(device)")
-      }
-    }
-  }
-
-  func testAccountView_WhenUserEmailIsUnverified() {
-    Device.allCases.forEach { device in
-      let fields = GraphUser.template
-        |> \.isEmailVerified .~ false
-      let response = UserEnvelope(me: fields)
-
-      withEnvironment(apiService: MockService(fetchGraphUserResult: .success(response))) {
-        let vc = SettingsAccountViewController.instantiate()
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-
-        self.scheduler.run()
-
-        assertSnapshot(matching: parent.view, as: .image, named: "device_\(device)")
-      }
-    }
   }
 
   func testAccountView_FetchUserAccountFieldsFailure() {

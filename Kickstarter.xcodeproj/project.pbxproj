@@ -97,15 +97,12 @@
 		AAF548FA2F2445C0001DB5AC /* CategoryCollectionViewSectionHeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548182F2445C0001DB5AC /* CategoryCollectionViewSectionHeaderViewModelTests.swift */; };
 		AAF548FB2F2445C0001DB5AC /* CategoryPillCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548192F2445C0001DB5AC /* CategoryPillCellViewModelTests.swift */; };
 		AAF548FC2F2445C0001DB5AC /* CategorySelectionHeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481A2F2445C0001DB5AC /* CategorySelectionHeaderViewModelTests.swift */; };
-		AAF548FD2F2445C0001DB5AC /* ChangeEmailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481B2F2445C0001DB5AC /* ChangeEmailViewModelTests.swift */; };
-		AAF548FE2F2445C0001DB5AC /* ChangePasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481C2F2445C0001DB5AC /* ChangePasswordViewModelTests.swift */; };
 		AAF548FF2F2445C0001DB5AC /* CommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481D2F2445C0001DB5AC /* CommentCellViewModelTests.swift */; };
 		AAF549002F2445C0001DB5AC /* CommentComposerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481E2F2445C0001DB5AC /* CommentComposerViewModelTests.swift */; };
 		AAF549012F2445C0001DB5AC /* CommentDialogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481F2F2445C0001DB5AC /* CommentDialogViewModelTests.swift */; };
 		AAF549022F2445C0001DB5AC /* CommentRepliesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548202F2445C0001DB5AC /* CommentRepliesViewModelTests.swift */; };
 		AAF549032F2445C0001DB5AC /* CommentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548212F2445C0001DB5AC /* CommentsViewModelTests.swift */; };
 		AAF549042F2445C0001DB5AC /* CommentTableViewFooterViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548222F2445C0001DB5AC /* CommentTableViewFooterViewModelTests.swift */; };
-		AAF549052F2445C0001DB5AC /* CreatePasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548232F2445C0001DB5AC /* CreatePasswordViewModelTests.swift */; };
 		AAF549062F2445C0001DB5AC /* CreditCardCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548242F2445C0001DB5AC /* CreditCardCellViewModelTests.swift */; };
 		AAF549072F2445C0001DB5AC /* CuratedProjectsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548252F2445C0001DB5AC /* CuratedProjectsViewModelTests.swift */; };
 		AAF549082F2445C0001DB5AC /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548262F2445C0001DB5AC /* DiscoveryExpandableRowCellViewModelTests.swift */; };
@@ -126,7 +123,6 @@
 		AAF5491E2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483C2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift */; };
 		AAF5491F2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483D2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift */; };
 		AAF549202F2445C0001DB5AC /* LoginToutViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483E2F2445C0001DB5AC /* LoginToutViewModelTests.swift */; };
-		AAF549212F2445C0001DB5AC /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5483F2F2445C0001DB5AC /* LoginViewModelTests.swift */; };
 		AAF549222F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548402F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift */; };
 		AAF549232F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548412F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift */; };
 		AAF549242F2445C0001DB5AC /* ManagePledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548422F2445C0001DB5AC /* ManagePledgeViewModelTests.swift */; };
@@ -186,7 +182,6 @@
 		AAF5495A2F2445C0001DB5AC /* ProjectUpdatesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548782F2445C0001DB5AC /* ProjectUpdatesViewModelTests.swift */; };
 		AAF5495B2F2445C0001DB5AC /* RemoteConfigFeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548792F2445C0001DB5AC /* RemoteConfigFeatureFlagToolsViewModelTests.swift */; };
 		AAF5495C2F2445C0001DB5AC /* ReportProjectFormViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5487A2F2445C0001DB5AC /* ReportProjectFormViewModelTests.swift */; };
-		AAF5495D2F2445C0001DB5AC /* ResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5487B2F2445C0001DB5AC /* ResetPasswordViewModelTests.swift */; };
 		AAF5495E2F2445C0001DB5AC /* RewardAddOnCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5487C2F2445C0001DB5AC /* RewardAddOnCardViewModelTests.swift */; };
 		AAF5495F2F2445C0001DB5AC /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5487D2F2445C0001DB5AC /* RewardAddOnSelectionContinueCTAViewModelTests.swift */; };
 		AAF549602F2445C0001DB5AC /* RewardAddOnSelectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5487E2F2445C0001DB5AC /* RewardAddOnSelectionViewModelTests.swift */; };
@@ -213,7 +208,6 @@
 		AAF549762F2445C0001DB5AC /* SortPagerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548942F2445C0001DB5AC /* SortPagerViewModelTests.swift */; };
 		AAF549772F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548952F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift */; };
 		AAF549782F2445C0001DB5AC /* ThanksViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548962F2445C0001DB5AC /* ThanksViewModelTests.swift */; };
-		AAF549792F2445C0001DB5AC /* TwoFactorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548972F2445C0001DB5AC /* TwoFactorViewModelTests.swift */; };
 		AAF5497A2F2445C0001DB5AC /* UpdateDraftViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548982F2445C0001DB5AC /* UpdateDraftViewModelTests.swift */; };
 		AAF5497B2F2445C0001DB5AC /* VideoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548992F2445C0001DB5AC /* VideoViewModelTests.swift */; };
 		AAF5497C2F2445C0001DB5AC /* WatchProjectViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5489A2F2445C0001DB5AC /* WatchProjectViewModelTests.swift */; };
@@ -460,15 +454,12 @@
 		AAF548182F2445C0001DB5AC /* CategoryCollectionViewSectionHeaderViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewSectionHeaderViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548192F2445C0001DB5AC /* CategoryPillCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPillCellViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5481A2F2445C0001DB5AC /* CategorySelectionHeaderViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionHeaderViewModelTests.swift; sourceTree = "<group>"; };
-		AAF5481B2F2445C0001DB5AC /* ChangeEmailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModelTests.swift; sourceTree = "<group>"; };
-		AAF5481C2F2445C0001DB5AC /* ChangePasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5481D2F2445C0001DB5AC /* CommentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCellViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5481E2F2445C0001DB5AC /* CommentComposerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5481F2F2445C0001DB5AC /* CommentDialogViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDialogViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548202F2445C0001DB5AC /* CommentRepliesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548212F2445C0001DB5AC /* CommentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548222F2445C0001DB5AC /* CommentTableViewFooterViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewFooterViewModelTests.swift; sourceTree = "<group>"; };
-		AAF548232F2445C0001DB5AC /* CreatePasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548242F2445C0001DB5AC /* CreditCardCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardCellViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548252F2445C0001DB5AC /* CuratedProjectsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedProjectsViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548262F2445C0001DB5AC /* DiscoveryExpandableRowCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -489,7 +480,6 @@
 		AAF5483C2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButtonViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5483D2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupUseCaseTests.swift; sourceTree = "<group>"; };
 		AAF5483E2F2445C0001DB5AC /* LoginToutViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginToutViewModelTests.swift; sourceTree = "<group>"; };
-		AAF5483F2F2445C0001DB5AC /* LoginViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548402F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgePaymentMethodViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548412F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeSummaryViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548422F2445C0001DB5AC /* ManagePledgeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewModelTests.swift; sourceTree = "<group>"; };
@@ -549,7 +539,6 @@
 		AAF548782F2445C0001DB5AC /* ProjectUpdatesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectUpdatesViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548792F2445C0001DB5AC /* RemoteConfigFeatureFlagToolsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigFeatureFlagToolsViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5487A2F2445C0001DB5AC /* ReportProjectFormViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModelTests.swift; sourceTree = "<group>"; };
-		AAF5487B2F2445C0001DB5AC /* ResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5487C2F2445C0001DB5AC /* RewardAddOnCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnCardViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5487D2F2445C0001DB5AC /* RewardAddOnSelectionContinueCTAViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionContinueCTAViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5487E2F2445C0001DB5AC /* RewardAddOnSelectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewModelTests.swift; sourceTree = "<group>"; };
@@ -576,7 +565,6 @@
 		AAF548942F2445C0001DB5AC /* SortPagerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortPagerViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548952F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksCategoryCellViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548962F2445C0001DB5AC /* ThanksViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksViewModelTests.swift; sourceTree = "<group>"; };
-		AAF548972F2445C0001DB5AC /* TwoFactorViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoFactorViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548982F2445C0001DB5AC /* UpdateDraftViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDraftViewModelTests.swift; sourceTree = "<group>"; };
 		AAF548992F2445C0001DB5AC /* VideoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5489A2F2445C0001DB5AC /* WatchProjectViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProjectViewModelTests.swift; sourceTree = "<group>"; };
@@ -1022,15 +1010,12 @@
 				AAF548182F2445C0001DB5AC /* CategoryCollectionViewSectionHeaderViewModelTests.swift */,
 				AAF548192F2445C0001DB5AC /* CategoryPillCellViewModelTests.swift */,
 				AAF5481A2F2445C0001DB5AC /* CategorySelectionHeaderViewModelTests.swift */,
-				AAF5481B2F2445C0001DB5AC /* ChangeEmailViewModelTests.swift */,
-				AAF5481C2F2445C0001DB5AC /* ChangePasswordViewModelTests.swift */,
 				AAF5481D2F2445C0001DB5AC /* CommentCellViewModelTests.swift */,
 				AAF5481E2F2445C0001DB5AC /* CommentComposerViewModelTests.swift */,
 				AAF5481F2F2445C0001DB5AC /* CommentDialogViewModelTests.swift */,
 				AAF548202F2445C0001DB5AC /* CommentRepliesViewModelTests.swift */,
 				AAF548212F2445C0001DB5AC /* CommentsViewModelTests.swift */,
 				AAF548222F2445C0001DB5AC /* CommentTableViewFooterViewModelTests.swift */,
-				AAF548232F2445C0001DB5AC /* CreatePasswordViewModelTests.swift */,
 				AAF548242F2445C0001DB5AC /* CreditCardCellViewModelTests.swift */,
 				AAF548252F2445C0001DB5AC /* CuratedProjectsViewModelTests.swift */,
 				AAF548262F2445C0001DB5AC /* DiscoveryExpandableRowCellViewModelTests.swift */,
@@ -1051,7 +1036,6 @@
 				AAF5483C2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift */,
 				AAF5483D2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift */,
 				AAF5483E2F2445C0001DB5AC /* LoginToutViewModelTests.swift */,
-				AAF5483F2F2445C0001DB5AC /* LoginViewModelTests.swift */,
 				AAF548402F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift */,
 				AAF548412F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift */,
 				AAF548422F2445C0001DB5AC /* ManagePledgeViewModelTests.swift */,
@@ -1112,7 +1096,6 @@
 				AAF548782F2445C0001DB5AC /* ProjectUpdatesViewModelTests.swift */,
 				AAF548792F2445C0001DB5AC /* RemoteConfigFeatureFlagToolsViewModelTests.swift */,
 				AAF5487A2F2445C0001DB5AC /* ReportProjectFormViewModelTests.swift */,
-				AAF5487B2F2445C0001DB5AC /* ResetPasswordViewModelTests.swift */,
 				AAF5487C2F2445C0001DB5AC /* RewardAddOnCardViewModelTests.swift */,
 				AAF5487D2F2445C0001DB5AC /* RewardAddOnSelectionContinueCTAViewModelTests.swift */,
 				AAF5487E2F2445C0001DB5AC /* RewardAddOnSelectionViewModelTests.swift */,
@@ -1140,7 +1123,6 @@
 				AAF548942F2445C0001DB5AC /* SortPagerViewModelTests.swift */,
 				AAF548952F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift */,
 				AAF548962F2445C0001DB5AC /* ThanksViewModelTests.swift */,
-				AAF548972F2445C0001DB5AC /* TwoFactorViewModelTests.swift */,
 				AAF548982F2445C0001DB5AC /* UpdateDraftViewModelTests.swift */,
 				AAF548992F2445C0001DB5AC /* VideoViewModelTests.swift */,
 				AAF5489A2F2445C0001DB5AC /* WatchProjectViewModelTests.swift */,
@@ -1729,15 +1711,12 @@
 				AAF548FA2F2445C0001DB5AC /* CategoryCollectionViewSectionHeaderViewModelTests.swift in Sources */,
 				AAF548FB2F2445C0001DB5AC /* CategoryPillCellViewModelTests.swift in Sources */,
 				AAF548FC2F2445C0001DB5AC /* CategorySelectionHeaderViewModelTests.swift in Sources */,
-				AAF548FD2F2445C0001DB5AC /* ChangeEmailViewModelTests.swift in Sources */,
-				AAF548FE2F2445C0001DB5AC /* ChangePasswordViewModelTests.swift in Sources */,
 				AAF548FF2F2445C0001DB5AC /* CommentCellViewModelTests.swift in Sources */,
 				AAF549002F2445C0001DB5AC /* CommentComposerViewModelTests.swift in Sources */,
 				AAF549012F2445C0001DB5AC /* CommentDialogViewModelTests.swift in Sources */,
 				AAF549022F2445C0001DB5AC /* CommentRepliesViewModelTests.swift in Sources */,
 				AAF549032F2445C0001DB5AC /* CommentsViewModelTests.swift in Sources */,
 				AAF549042F2445C0001DB5AC /* CommentTableViewFooterViewModelTests.swift in Sources */,
-				AAF549052F2445C0001DB5AC /* CreatePasswordViewModelTests.swift in Sources */,
 				AAF549062F2445C0001DB5AC /* CreditCardCellViewModelTests.swift in Sources */,
 				AAF549072F2445C0001DB5AC /* CuratedProjectsViewModelTests.swift in Sources */,
 				AAF549082F2445C0001DB5AC /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */,
@@ -1759,7 +1738,6 @@
 				AAF5491E2F2445C0001DB5AC /* LoadingButtonViewModelTests.swift in Sources */,
 				AAF5491F2F2445C0001DB5AC /* LoginSignupUseCaseTests.swift in Sources */,
 				AAF549202F2445C0001DB5AC /* LoginToutViewModelTests.swift in Sources */,
-				AAF549212F2445C0001DB5AC /* LoginViewModelTests.swift in Sources */,
 				AAF549222F2445C0001DB5AC /* ManagePledgePaymentMethodViewModelTests.swift in Sources */,
 				AAF549232F2445C0001DB5AC /* ManagePledgeSummaryViewModelTests.swift in Sources */,
 				AAF549242F2445C0001DB5AC /* ManagePledgeViewModelTests.swift in Sources */,
@@ -1821,7 +1799,6 @@
 				AAF5495A2F2445C0001DB5AC /* ProjectUpdatesViewModelTests.swift in Sources */,
 				AAF5495B2F2445C0001DB5AC /* RemoteConfigFeatureFlagToolsViewModelTests.swift in Sources */,
 				AAF5495C2F2445C0001DB5AC /* ReportProjectFormViewModelTests.swift in Sources */,
-				AAF5495D2F2445C0001DB5AC /* ResetPasswordViewModelTests.swift in Sources */,
 				AAF5495E2F2445C0001DB5AC /* RewardAddOnCardViewModelTests.swift in Sources */,
 				AAF5495F2F2445C0001DB5AC /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */,
 				AAF549602F2445C0001DB5AC /* RewardAddOnSelectionViewModelTests.swift in Sources */,
@@ -1850,7 +1827,6 @@
 				AAF549762F2445C0001DB5AC /* SortPagerViewModelTests.swift in Sources */,
 				AAF549772F2445C0001DB5AC /* ThanksCategoryCellViewModelTests.swift in Sources */,
 				AAF549782F2445C0001DB5AC /* ThanksViewModelTests.swift in Sources */,
-				AAF549792F2445C0001DB5AC /* TwoFactorViewModelTests.swift in Sources */,
 				AAF5497A2F2445C0001DB5AC /* UpdateDraftViewModelTests.swift in Sources */,
 				AAF5497B2F2445C0001DB5AC /* VideoViewModelTests.swift in Sources */,
 				AAF5497C2F2445C0001DB5AC /* WatchProjectViewModelTests.swift in Sources */,
@@ -2052,7 +2028,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 5.38.0;
+				MARKETING_VERSION = 5.39.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D INTERNAL_BUILD";
@@ -2087,7 +2063,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.38.0;
+				MARKETING_VERSION = 5.39.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.beta;
@@ -2120,7 +2096,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.38.0;
+				MARKETING_VERSION = 5.39.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.debug;
@@ -2152,7 +2128,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.38.0;
+				MARKETING_VERSION = 5.39.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
@@ -2223,7 +2199,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 5.38.0;
+				MARKETING_VERSION = 5.39.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
@@ -2290,7 +2266,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 5.38.0;
+				MARKETING_VERSION = 5.39.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D RELEASE";
@@ -2501,7 +2477,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 5.38.0;
+				MARKETING_VERSION = 5.39.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D INTERNAL_BUILD";
@@ -2534,7 +2510,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.38.0;
+				MARKETING_VERSION = 5.39.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.kickalpha;
