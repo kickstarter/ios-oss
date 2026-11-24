@@ -20,7 +20,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   private lazy var backgroundImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var bringCreativeProjectsToLifeLabel = { UILabel(frame: .zero) }()
   private lazy var contextLabel = { UILabel(frame: .zero) }()
-  private lazy var emailLoginStackView = { UIStackView(frame: .zero) }()
+  private lazy var loginStackView = { UIStackView(frame: .zero) }()
 
   private let helpViewModel = HelpViewModel()
 
@@ -130,7 +130,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       |> UIStackView.lens.spacing .~ Styles.grid(5)
     applyLoginRootStackViewStyle(self.rootStackView, useLargerMargins: isPad)
 
-    _ = [self.loginContextStackView, self.emailLoginStackView]
+    _ = [self.loginContextStackView, self.loginStackView]
       ||> baseStackViewStyle
   }
 
@@ -244,7 +244,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       |> ksr_constrainViewToEdgesInParent()
 
     _ = ([
-      self.loginContextStackView, self.appleLoginButton, self.emailLoginStackView
+      self.loginContextStackView, self.loginStackView
     ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -254,7 +254,10 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     ], self.loginContextStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.emailLoginStackView.addArrangedSubview(self.signupOrLoginWithOAuthButton)
+    self.loginStackView.addArrangedSubviews(
+      self.appleLoginButton,
+      self.signupOrLoginWithOAuthButton
+    )
   }
 
   private func setupConstraints() {
