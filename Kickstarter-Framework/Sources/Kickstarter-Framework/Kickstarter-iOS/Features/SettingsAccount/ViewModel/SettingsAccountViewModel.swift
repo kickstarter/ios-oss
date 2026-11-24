@@ -11,8 +11,6 @@ import UIKit
 public typealias SettingsAccountData = (
   currency: Currency,
   email: String?,
-  shouldHideEmailWarning: Bool,
-  shouldHideEmailPasswordSection: Bool,
   isAppleConnectedAccount: Bool
 )
 
@@ -26,8 +24,6 @@ public protocol SettingsAccountViewModelOutputs {
   var fetchAccountFieldsError: Signal<Void, Never> { get }
   var reloadData: Signal<SettingsAccountData, Never> { get }
   var transitionToViewController: Signal<UIViewController, Never> { get }
-
-  func shouldShowCreatePasswordFooter() -> (Bool, String?)?
 }
 
 public protocol SettingsAccountViewModelType {
@@ -53,35 +49,7 @@ public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
 
     let user = userAccountFields.values().map(\.me)
 
-    let shouldHideEmailWarning = user
-      .map { user -> Bool in
-        if user.isAppleConnected == .some(true) {
-          return true
-        }
-
-        guard let isEmailVerified = user.isEmailVerified,
-              let isDeliverable = user.isDeliverable else {
-          return true
-        }
-
-        return isEmailVerified && isDeliverable
-      }
-
-    let shouldHideEmailPasswordSection = user
-      .map { $0.hasPassword == .some(false) || $0.isAppleConnected == .some(true) }
-
-    let shouldShowCreatePasswordFooter = user
-      .map { user -> (Bool, String?) in
-        let isAppleConnected = user.isAppleConnected == .some(true)
-        let userHasPassword = user.hasPassword == .some(true)
-        let shouldShow = !userHasPassword && !isAppleConnected
-
-        return (shouldShow, user.email)
-      }
-
     let isAppleConnectedAccount = user.map { $0.isAppleConnected == .some(true) }
-
-    self.shouldShowCreatePasswordFooterAndEmailProperty <~ shouldShowCreatePasswordFooter
 
     let chosenCurrency = user
       .map { Currency(rawValue: $0.chosenCurrency ?? Currency.USD.rawValue) ?? Currency.USD }
@@ -89,8 +57,6 @@ public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
     self.reloadData = Signal.zip(
       chosenCurrency,
       user.map(\.email),
-      shouldHideEmailWarning,
-      shouldHideEmailPasswordSection,
       isAppleConnectedAccount
     ).map { $0 as SettingsAccountData }
 
@@ -114,11 +80,6 @@ public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
-  }
-
-  fileprivate let shouldShowCreatePasswordFooterAndEmailProperty = MutableProperty<(Bool, String?)?>(nil)
-  public func shouldShowCreatePasswordFooter() -> (Bool, String?)? {
-    return self.shouldShowCreatePasswordFooterAndEmailProperty.value
   }
 
   public let fetchAccountFieldsError: Signal<Void, Never>
