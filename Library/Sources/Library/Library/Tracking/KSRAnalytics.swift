@@ -74,7 +74,7 @@ public final class KSRAnalytics {
     case settingsAddNewCard = "settings_add_new_card"
     case signup = "sign_up" // SignupViewController
     case thanks // ThanksViewController
-    case twoFactorAuth = "two_factor_auth" // TwoFactorViewController
+    case twoFactorAuth = "two_factor_auth" // deprecated TwoFactorViewController
     case updatePledge = "update_pledge" // PledgeViewController
     case videoFeed = "video_feed" // VideoFeedViewController
   }
