@@ -58,8 +58,8 @@ public final class KSRAnalytics {
     case checkout // // PledgeViewController
     case creatorDashboard = "creator_dashboard" // DashboardViewController
     case discovery = "discover" // DiscoveryViewController
-    case forgotPassword = "forgot_password" // ResetPasswordViewController
-    case login = "log_in" // LoginViewController
+    case forgotPassword = "forgot_password" // deprecated ResetPasswordViewController
+    case login = "log_in" // deprecated LoginViewController
     case loginTout = "log_in_sign_up" // LoginToutViewController
     case managePledgeScreen = "manage_pledge" // ManagePledgeViewController
     case messages // MessagesViewController
