@@ -274,18 +274,6 @@ public struct Service: ServiceType {
       .flatMap(PaymentIntentEnvelope.envelopeProducer(from:))
   }
 
-  public func createPassword(input: CreatePasswordInput)
-    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-    return GraphQL.shared.client
-      .perform(
-        mutation: GraphAPI
-          .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
-      )
-      .flatMap { _ in
-        SignalProducer(value: EmptyResponseEnvelope())
-      }
-  }
-
   public func createStripeSetupIntent(input: CreateSetupIntentInput) ->
     SignalProducer<ClientSecretEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
