@@ -8,9 +8,9 @@ public extension Objects {
   static let FreeformPost = ApolloAPI.Object(
     typename: "FreeformPost",
     implementedInterfaces: [
-      Interfaces.Postable.self,
       Interfaces.Commentable.self,
-      Interfaces.Node.self
+      Interfaces.Node.self,
+      Interfaces.Postable.self
     ]
   )
 }

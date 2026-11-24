@@ -12,23 +12,35 @@ public struct CompleteOnSessionCheckoutInput: InputObject {
   }
 
   public init(
+    clientMutationId: GraphQLNullable<String> = nil,
+    applePay: GraphQLNullable<ApplePayInput> = nil,
     checkoutId: ID,
     paymentIntentClientSecret: String,
     paymentSourceId: GraphQLNullable<String> = nil,
     paymentSourceReusable: GraphQLNullable<Bool> = nil,
-    applePay: GraphQLNullable<ApplePayInput> = nil,
-    refParam: GraphQLNullable<String> = nil,
-    clientMutationId: GraphQLNullable<String> = nil
+    refParam: GraphQLNullable<String> = nil
   ) {
     __data = InputDict([
+      "clientMutationId": clientMutationId,
+      "applePay": applePay,
       "checkoutId": checkoutId,
       "paymentIntentClientSecret": paymentIntentClientSecret,
       "paymentSourceId": paymentSourceId,
       "paymentSourceReusable": paymentSourceReusable,
-      "applePay": applePay,
-      "refParam": refParam,
-      "clientMutationId": clientMutationId
+      "refParam": refParam
     ])
+  }
+
+  /// A unique identifier for the client performing the mutation.
+  public var clientMutationId: GraphQLNullable<String> {
+    get { __data["clientMutationId"] }
+    set { __data["clientMutationId"] = newValue }
+  }
+
+  /// Apple pay attributes for creating a payment source (optional)
+  public var applePay: GraphQLNullable<ApplePayInput> {
+    get { __data["applePay"] }
+    set { __data["applePay"] = newValue }
   }
 
   /// The graphql relay id of the checkout (base64 encoded)
@@ -55,20 +67,9 @@ public struct CompleteOnSessionCheckoutInput: InputObject {
     set { __data["paymentSourceReusable"] = newValue }
   }
 
-  /// Apple pay attributes for creating a payment source (optional)
-  public var applePay: GraphQLNullable<ApplePayInput> {
-    get { __data["applePay"] }
-    set { __data["applePay"] = newValue }
-  }
-
+  /// The referral param used to attribute the checkout to a referrer
   public var refParam: GraphQLNullable<String> {
     get { __data["refParam"] }
     set { __data["refParam"] = newValue }
-  }
-
-  /// A unique identifier for the client performing the mutation.
-  public var clientMutationId: GraphQLNullable<String> {
-    get { __data["clientMutationId"] }
-    set { __data["clientMutationId"] = newValue }
   }
 }

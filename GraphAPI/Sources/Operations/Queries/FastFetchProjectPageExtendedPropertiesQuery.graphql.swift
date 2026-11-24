@@ -79,6 +79,7 @@ public class FastFetchProjectPageExtendedPropertiesQuery: GraphQLQuery {
       public var video: Video? { __data["video"] }
       /// A report by the current user for the project.
       public var flagging: Flagging? { __data["flagging"] }
+      /// The project's AI disclosure.
       public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
       /// The environmental commitments of the project.
       public var environmentalCommitments: [EnvironmentalCommitment?]? { __data["environmentalCommitments"] }
@@ -233,6 +234,7 @@ public class FastFetchProjectPageExtendedPropertiesQuery: GraphQLQuery {
 
         public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextComponent }
 
+        /// The rich text items that make up this component.
         public var items: [Item]? { __data["items"] }
 
         public struct Fragments: FragmentContainer {
@@ -270,6 +272,7 @@ public class FastFetchProjectPageExtendedPropertiesQuery: GraphQLQuery {
 
         public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextComponent }
 
+        /// The rich text items that make up this component.
         public var items: [Item]? { __data["items"] }
 
         public struct Fragments: FragmentContainer {

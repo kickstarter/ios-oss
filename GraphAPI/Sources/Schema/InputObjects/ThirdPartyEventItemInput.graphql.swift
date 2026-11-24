@@ -3,6 +3,7 @@
 
 import ApolloAPI
 
+/// An item associated with a third party event
 public struct ThirdPartyEventItemInput: InputObject {
   public private(set) var __data: InputDict
 

@@ -9,14 +9,14 @@ public extension Unions {
     name: "RichTextItem",
     possibleTypes: [
       Objects.RichText.self,
+      Objects.RichTextAudio.self,
       Objects.RichTextHeader.self,
+      Objects.RichTextListClose.self,
       Objects.RichTextListItem.self,
       Objects.RichTextListOpen.self,
-      Objects.RichTextListClose.self,
+      Objects.RichTextOembed.self,
       Objects.RichTextPhoto.self,
-      Objects.RichTextAudio.self,
-      Objects.RichTextVideo.self,
-      Objects.RichTextOembed.self
+      Objects.RichTextVideo.self
     ]
   )
 }

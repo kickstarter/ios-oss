@@ -12,93 +12,104 @@ public struct TriggerThirdPartyEventInput: InputObject {
   }
 
   public init(
+    clientMutationId: GraphQLNullable<String> = nil,
+    appData: GraphQLNullable<AppDataInput> = nil,
     deviceId: String,
     eventName: String,
-    firebaseScreen: GraphQLNullable<String> = nil,
     firebasePreviousScreen: GraphQLNullable<String> = nil,
+    firebaseScreen: GraphQLNullable<String> = nil,
     items: GraphQLNullable<[ThirdPartyEventItemInput]> = nil,
-    projectId: ID,
     pledgeAmount: GraphQLNullable<Double> = nil,
+    projectId: ID,
     shipping: GraphQLNullable<Double> = nil,
     transactionId: GraphQLNullable<String> = nil,
-    userId: GraphQLNullable<String> = nil,
-    appData: GraphQLNullable<AppDataInput> = nil,
-    clientMutationId: GraphQLNullable<String> = nil
+    userId: GraphQLNullable<String> = nil
   ) {
     __data = InputDict([
+      "clientMutationId": clientMutationId,
+      "appData": appData,
       "deviceId": deviceId,
       "eventName": eventName,
-      "firebaseScreen": firebaseScreen,
       "firebasePreviousScreen": firebasePreviousScreen,
+      "firebaseScreen": firebaseScreen,
       "items": items,
-      "projectId": projectId,
       "pledgeAmount": pledgeAmount,
+      "projectId": projectId,
       "shipping": shipping,
       "transactionId": transactionId,
-      "userId": userId,
-      "appData": appData,
-      "clientMutationId": clientMutationId
+      "userId": userId
     ])
-  }
-
-  public var deviceId: String {
-    get { __data["deviceId"] }
-    set { __data["deviceId"] = newValue }
-  }
-
-  public var eventName: String {
-    get { __data["eventName"] }
-    set { __data["eventName"] = newValue }
-  }
-
-  public var firebaseScreen: GraphQLNullable<String> {
-    get { __data["firebaseScreen"] }
-    set { __data["firebaseScreen"] = newValue }
-  }
-
-  public var firebasePreviousScreen: GraphQLNullable<String> {
-    get { __data["firebasePreviousScreen"] }
-    set { __data["firebasePreviousScreen"] = newValue }
-  }
-
-  public var items: GraphQLNullable<[ThirdPartyEventItemInput]> {
-    get { __data["items"] }
-    set { __data["items"] = newValue }
-  }
-
-  public var projectId: ID {
-    get { __data["projectId"] }
-    set { __data["projectId"] = newValue }
-  }
-
-  public var pledgeAmount: GraphQLNullable<Double> {
-    get { __data["pledgeAmount"] }
-    set { __data["pledgeAmount"] = newValue }
-  }
-
-  public var shipping: GraphQLNullable<Double> {
-    get { __data["shipping"] }
-    set { __data["shipping"] = newValue }
-  }
-
-  public var transactionId: GraphQLNullable<String> {
-    get { __data["transactionId"] }
-    set { __data["transactionId"] = newValue }
-  }
-
-  public var userId: GraphQLNullable<String> {
-    get { __data["userId"] }
-    set { __data["userId"] = newValue }
-  }
-
-  public var appData: GraphQLNullable<AppDataInput> {
-    get { __data["appData"] }
-    set { __data["appData"] = newValue }
   }
 
   /// A unique identifier for the client performing the mutation.
   public var clientMutationId: GraphQLNullable<String> {
     get { __data["clientMutationId"] }
     set { __data["clientMutationId"] = newValue }
+  }
+
+  /// Additional app data sent to the Conversions API.
+  public var appData: GraphQLNullable<AppDataInput> {
+    get { __data["appData"] }
+    set { __data["appData"] = newValue }
+  }
+
+  /// A unique identifier for the device that triggered the event.
+  public var deviceId: String {
+    get { __data["deviceId"] }
+    set { __data["deviceId"] = newValue }
+  }
+
+  /// The name of the event being tracked.
+  public var eventName: String {
+    get { __data["eventName"] }
+    set { __data["eventName"] = newValue }
+  }
+
+  /// Unused. The previous Firebase screen name.
+  public var firebasePreviousScreen: GraphQLNullable<String> {
+    get { __data["firebasePreviousScreen"] }
+    set { __data["firebasePreviousScreen"] = newValue }
+  }
+
+  /// Unused. The current Firebase screen name.
+  public var firebaseScreen: GraphQLNullable<String> {
+    get { __data["firebaseScreen"] }
+    set { __data["firebaseScreen"] = newValue }
+  }
+
+  /// The items associated with the event.
+  public var items: GraphQLNullable<[ThirdPartyEventItemInput]> {
+    get { __data["items"] }
+    set { __data["items"] = newValue }
+  }
+
+  /// The pledge amount associated with the event.
+  public var pledgeAmount: GraphQLNullable<Double> {
+    get { __data["pledgeAmount"] }
+    set { __data["pledgeAmount"] = newValue }
+  }
+
+  /// The ID of the project the event relates to.
+  public var projectId: ID {
+    get { __data["projectId"] }
+    set { __data["projectId"] = newValue }
+  }
+
+  /// The shipping amount associated with the event.
+  public var shipping: GraphQLNullable<Double> {
+    get { __data["shipping"] }
+    set { __data["shipping"] = newValue }
+  }
+
+  /// A unique identifier for the transaction.
+  public var transactionId: GraphQLNullable<String> {
+    get { __data["transactionId"] }
+    set { __data["transactionId"] = newValue }
+  }
+
+  /// An identifier for the user who triggered the event.
+  public var userId: GraphQLNullable<String> {
+    get { __data["userId"] }
+    set { __data["userId"] = newValue }
   }
 }

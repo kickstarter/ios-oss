@@ -5,16 +5,16 @@ extension GraphAPI.CreatePaymentSourceInput {
   static func from(_ input: CreatePaymentSourceInput) -> GraphAPI.CreatePaymentSourceInput {
     return GraphAPI.CreatePaymentSourceInput(
       paymentType: GraphQLEnum.caseOrNil(.creditCard),
-      stripeToken: GraphQLNullable.someOrNil(input.stripeToken),
+      reusable: GraphQLNullable.someOrNil(input.reusable),
       stripeCardId: GraphQLNullable.someOrNil(input.stripeCardId),
-      reusable: GraphQLNullable.someOrNil(input.reusable)
+      stripeToken: GraphQLNullable.someOrNil(input.stripeToken)
     )
   }
 
   static func from(_ input: CreatePaymentSourceSetupIntentInput) -> GraphAPI.CreatePaymentSourceInput {
     return GraphAPI.CreatePaymentSourceInput(
-      reusable: GraphQLNullable.someOrNil(input.reuseable),
-      intentClientSecret: GraphQLNullable.someOrNil(input.intentClientSecret)
+      intentClientSecret: GraphQLNullable.someOrNil(input.intentClientSecret),
+      reusable: GraphQLNullable.someOrNil(input.reuseable)
     )
   }
 }

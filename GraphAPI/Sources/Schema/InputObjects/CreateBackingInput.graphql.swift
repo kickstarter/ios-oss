@@ -12,38 +12,39 @@ public struct CreateBackingInput: InputObject {
   }
 
   public init(
-    projectId: ID,
+    clientMutationId: GraphQLNullable<String> = nil,
     amount: GraphQLNullable<String> = nil,
+    projectId: ID,
     locationId: GraphQLNullable<String> = nil,
-    rewardId: GraphQLNullable<ID> = nil,
-    rewardIds: GraphQLNullable<[ID]> = nil,
     paymentType: GraphQLNullable<String> = nil,
     refParam: GraphQLNullable<String> = nil,
-    paymentSourceId: GraphQLNullable<String> = nil,
-    setupIntentClientSecret: GraphQLNullable<String> = nil,
+    rewardId: GraphQLNullable<ID> = nil,
+    rewardIds: GraphQLNullable<[ID]> = nil,
     applePay: GraphQLNullable<ApplePayInput> = nil,
     incremental: GraphQLNullable<Bool> = nil,
-    clientMutationId: GraphQLNullable<String> = nil
+    paymentSourceId: GraphQLNullable<String> = nil,
+    setupIntentClientSecret: GraphQLNullable<String> = nil
   ) {
     __data = InputDict([
-      "projectId": projectId,
+      "clientMutationId": clientMutationId,
       "amount": amount,
+      "projectId": projectId,
       "locationId": locationId,
-      "rewardId": rewardId,
-      "rewardIds": rewardIds,
       "paymentType": paymentType,
       "refParam": refParam,
-      "paymentSourceId": paymentSourceId,
-      "setupIntentClientSecret": setupIntentClientSecret,
+      "rewardId": rewardId,
+      "rewardIds": rewardIds,
       "applePay": applePay,
       "incremental": incremental,
-      "clientMutationId": clientMutationId
+      "paymentSourceId": paymentSourceId,
+      "setupIntentClientSecret": setupIntentClientSecret
     ])
   }
 
-  public var projectId: ID {
-    get { __data["projectId"] }
-    set { __data["projectId"] = newValue }
+  /// A unique identifier for the client performing the mutation.
+  public var clientMutationId: GraphQLNullable<String> {
+    get { __data["clientMutationId"] }
+    set { __data["clientMutationId"] = newValue }
   }
 
   /// Optional, will default to combined reward minimums + shipping
@@ -52,9 +53,28 @@ public struct CreateBackingInput: InputObject {
     set { __data["amount"] = newValue }
   }
 
+  /// Relay encoded ID of the project to back
+  public var projectId: ID {
+    get { __data["projectId"] }
+    set { __data["projectId"] = newValue }
+  }
+
+  /// ID of the location the rewards will ship to
   public var locationId: GraphQLNullable<String> {
     get { __data["locationId"] }
     set { __data["locationId"] = newValue }
+  }
+
+  /// Deprecated and unused
+  public var paymentType: GraphQLNullable<String> {
+    get { __data["paymentType"] }
+    set { __data["paymentType"] = newValue }
+  }
+
+  /// Referral param used to attribute the backing to a referrer
+  public var refParam: GraphQLNullable<String> {
+    get { __data["refParam"] }
+    set { __data["refParam"] = newValue }
   }
 
   /// Relay encoded Reward ID - legacy - mutually exclusive with reward_ids
@@ -69,39 +89,27 @@ public struct CreateBackingInput: InputObject {
     set { __data["rewardIds"] = newValue }
   }
 
-  public var paymentType: GraphQLNullable<String> {
-    get { __data["paymentType"] }
-    set { __data["paymentType"] = newValue }
-  }
-
-  public var refParam: GraphQLNullable<String> {
-    get { __data["refParam"] }
-    set { __data["refParam"] = newValue }
-  }
-
-  public var paymentSourceId: GraphQLNullable<String> {
-    get { __data["paymentSourceId"] }
-    set { __data["paymentSourceId"] = newValue }
-  }
-
-  public var setupIntentClientSecret: GraphQLNullable<String> {
-    get { __data["setupIntentClientSecret"] }
-    set { __data["setupIntentClientSecret"] = newValue }
-  }
-
+  /// Apple Pay payment details. Exactly one of applePay, paymentSourceId, or setupIntentClientSecret is required
   public var applePay: GraphQLNullable<ApplePayInput> {
     get { __data["applePay"] }
     set { __data["applePay"] = newValue }
   }
 
+  /// Whether to pay in increments with Pledge Over Time
   public var incremental: GraphQLNullable<Bool> {
     get { __data["incremental"] }
     set { __data["incremental"] = newValue }
   }
 
-  /// A unique identifier for the client performing the mutation.
-  public var clientMutationId: GraphQLNullable<String> {
-    get { __data["clientMutationId"] }
-    set { __data["clientMutationId"] = newValue }
+  /// Database ID of an existing payment source. Exactly one of applePay, paymentSourceId, or setupIntentClientSecret is required
+  public var paymentSourceId: GraphQLNullable<String> {
+    get { __data["paymentSourceId"] }
+    set { __data["paymentSourceId"] = newValue }
+  }
+
+  /// Stripe SetupIntent client secret. Exactly one of applePay, paymentSourceId, or setupIntentClientSecret is required
+  public var setupIntentClientSecret: GraphQLNullable<String> {
+    get { __data["setupIntentClientSecret"] }
+    set { __data["setupIntentClientSecret"] = newValue }
   }
 }

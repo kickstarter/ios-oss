@@ -4,6 +4,7 @@
 import ApolloAPI
 
 public extension Objects {
+  /// A scheduled payment increment of a pledge
   static let PaymentIncrement = ApolloAPI.Object(
     typename: "PaymentIncrement",
     implementedInterfaces: []

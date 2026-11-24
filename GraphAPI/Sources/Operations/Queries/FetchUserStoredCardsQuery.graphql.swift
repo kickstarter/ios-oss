@@ -106,6 +106,7 @@ public class FetchUserStoredCardsQuery: GraphQLQuery {
 
         /// A list of nodes.
         public var nodes: [Node?]? { __data["nodes"] }
+        /// Total number of items in the connection.
         public var totalCount: Int { __data["totalCount"] }
 
         public init(

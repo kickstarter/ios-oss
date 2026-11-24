@@ -12,51 +12,56 @@ public struct CreateCheckoutInput: InputObject {
   }
 
   public init(
+    clientMutationId: GraphQLNullable<String> = nil,
     projectId: ID,
     amount: GraphQLNullable<String> = nil,
     locationId: GraphQLNullable<String> = nil,
-    rewardIds: GraphQLNullable<[ID]> = nil,
     refParam: GraphQLNullable<String> = nil,
-    clientMutationId: GraphQLNullable<String> = nil
+    rewardIds: GraphQLNullable<[ID]> = nil
   ) {
     __data = InputDict([
+      "clientMutationId": clientMutationId,
       "projectId": projectId,
       "amount": amount,
       "locationId": locationId,
-      "rewardIds": rewardIds,
       "refParam": refParam,
-      "clientMutationId": clientMutationId
+      "rewardIds": rewardIds
     ])
-  }
-
-  public var projectId: ID {
-    get { __data["projectId"] }
-    set { __data["projectId"] = newValue }
-  }
-
-  public var amount: GraphQLNullable<String> {
-    get { __data["amount"] }
-    set { __data["amount"] = newValue }
-  }
-
-  public var locationId: GraphQLNullable<String> {
-    get { __data["locationId"] }
-    set { __data["locationId"] = newValue }
-  }
-
-  public var rewardIds: GraphQLNullable<[ID]> {
-    get { __data["rewardIds"] }
-    set { __data["rewardIds"] = newValue }
-  }
-
-  public var refParam: GraphQLNullable<String> {
-    get { __data["refParam"] }
-    set { __data["refParam"] = newValue }
   }
 
   /// A unique identifier for the client performing the mutation.
   public var clientMutationId: GraphQLNullable<String> {
     get { __data["clientMutationId"] }
     set { __data["clientMutationId"] = newValue }
+  }
+
+  /// The ID of the project being backed
+  public var projectId: ID {
+    get { __data["projectId"] }
+    set { __data["projectId"] = newValue }
+  }
+
+  /// Optional, will default to combined reward minimums + shipping
+  public var amount: GraphQLNullable<String> {
+    get { __data["amount"] }
+    set { __data["amount"] = newValue }
+  }
+
+  /// The ID of the shipping location for the backing
+  public var locationId: GraphQLNullable<String> {
+    get { __data["locationId"] }
+    set { __data["locationId"] = newValue }
+  }
+
+  /// The referral tracking parameter for the backing
+  public var refParam: GraphQLNullable<String> {
+    get { __data["refParam"] }
+    set { __data["refParam"] = newValue }
+  }
+
+  /// The IDs of the rewards being pledged for
+  public var rewardIds: GraphQLNullable<[ID]> {
+    get { __data["rewardIds"] }
+    set { __data["rewardIds"] = newValue }
   }
 }

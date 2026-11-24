@@ -175,6 +175,7 @@ public class FetchProjectByParamQuery: GraphQLQuery {
       public var launchedAt: GraphAPI.DateTime? { __data["launchedAt"] }
       /// The last time a project's state changed, time since epoch
       public var stateChangedAt: GraphAPI.DateTime { __data["stateChangedAt"] }
+      /// The project's AI disclosure.
       public var aiDisclosure: AiDisclosure? { __data["aiDisclosure"] }
       /// The environmental commitments of the project.
       public var environmentalCommitments: [EnvironmentalCommitment?]? { __data["environmentalCommitments"] }
@@ -895,6 +896,7 @@ public class FetchProjectByParamQuery: GraphQLQuery {
 
         public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextComponent }
 
+        /// The rich text items that make up this component.
         public var items: [Item]? { __data["items"] }
 
         public struct Fragments: FragmentContainer {
@@ -932,6 +934,7 @@ public class FetchProjectByParamQuery: GraphQLQuery {
 
         public static var __parentType: ApolloAPI.ParentType { GraphAPI.Objects.RichTextComponent }
 
+        /// The rich text items that make up this component.
         public var items: [Item]? { __data["items"] }
 
         public struct Fragments: FragmentContainer {

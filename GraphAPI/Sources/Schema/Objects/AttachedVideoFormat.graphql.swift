@@ -4,6 +4,7 @@
 import ApolloAPI
 
 public extension Objects {
+  /// A video encoding of an attached video
   static let AttachedVideoFormat = ApolloAPI.Object(
     typename: "AttachedVideoFormat",
     implementedInterfaces: []

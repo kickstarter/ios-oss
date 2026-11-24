@@ -12,17 +12,29 @@ public struct ApplePayInput: InputObject {
   }
 
   public init(
-    token: String,
     paymentInstrumentName: String,
     paymentNetwork: String,
+    token: String,
     transactionIdentifier: String
   ) {
     __data = InputDict([
-      "token": token,
       "paymentInstrumentName": paymentInstrumentName,
       "paymentNetwork": paymentNetwork,
+      "token": token,
       "transactionIdentifier": transactionIdentifier
     ])
+  }
+
+  /// Name of the payment instrument used in Apple Pay
+  public var paymentInstrumentName: String {
+    get { __data["paymentInstrumentName"] }
+    set { __data["paymentInstrumentName"] = newValue }
+  }
+
+  /// Payment network of the card used in Apple Pay
+  public var paymentNetwork: String {
+    get { __data["paymentNetwork"] }
+    set { __data["paymentNetwork"] = newValue }
   }
 
   /// Stripe token
@@ -31,16 +43,7 @@ public struct ApplePayInput: InputObject {
     set { __data["token"] = newValue }
   }
 
-  public var paymentInstrumentName: String {
-    get { __data["paymentInstrumentName"] }
-    set { __data["paymentInstrumentName"] = newValue }
-  }
-
-  public var paymentNetwork: String {
-    get { __data["paymentNetwork"] }
-    set { __data["paymentNetwork"] = newValue }
-  }
-
+  /// Apple Pay transaction identifier
   public var transactionIdentifier: String {
     get { __data["transactionIdentifier"] }
     set { __data["transactionIdentifier"] = newValue }

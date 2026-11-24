@@ -12,17 +12,29 @@ public struct CreateSetupIntentInput: InputObject {
   }
 
   public init(
-    setupIntentContext: GraphQLNullable<GraphQLEnum<StripeIntentContextTypes>> = nil,
+    clientMutationId: GraphQLNullable<String> = nil,
     projectId: GraphQLNullable<ID> = nil,
-    sepaEligible: GraphQLNullable<Bool> = nil,
-    clientMutationId: GraphQLNullable<String> = nil
+    setupIntentContext: GraphQLNullable<GraphQLEnum<StripeIntentContextTypes>> = nil,
+    sepaEligible: GraphQLNullable<Bool> = nil
   ) {
     __data = InputDict([
-      "setupIntentContext": setupIntentContext,
+      "clientMutationId": clientMutationId,
       "projectId": projectId,
-      "sepaEligible": sepaEligible,
-      "clientMutationId": clientMutationId
+      "setupIntentContext": setupIntentContext,
+      "sepaEligible": sepaEligible
     ])
+  }
+
+  /// A unique identifier for the client performing the mutation.
+  public var clientMutationId: GraphQLNullable<String> {
+    get { __data["clientMutationId"] }
+    set { __data["clientMutationId"] = newValue }
+  }
+
+  /// Project the setup intent is for, used to determine SEPA eligibility
+  public var projectId: GraphQLNullable<ID> {
+    get { __data["projectId"] }
+    set { __data["projectId"] = newValue }
   }
 
   /// Context in which this stripe intent is created
@@ -31,20 +43,9 @@ public struct CreateSetupIntentInput: InputObject {
     set { __data["setupIntentContext"] = newValue }
   }
 
-  public var projectId: GraphQLNullable<ID> {
-    get { __data["projectId"] }
-    set { __data["projectId"] = newValue }
-  }
-
   /// If sepa should be added to the payment method types
   public var sepaEligible: GraphQLNullable<Bool> {
     get { __data["sepaEligible"] }
     set { __data["sepaEligible"] = newValue }
-  }
-
-  /// A unique identifier for the client performing the mutation.
-  public var clientMutationId: GraphQLNullable<String> {
-    get { __data["clientMutationId"] }
-    set { __data["clientMutationId"] = newValue }
   }
 }

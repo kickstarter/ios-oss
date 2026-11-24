@@ -12,19 +12,25 @@ public struct AddUserToSecretRewardGroupInput: InputObject {
   }
 
   public init(
+    clientMutationId: GraphQLNullable<String> = nil,
     secretRewardToken: String,
-    projectId: GraphQLNullable<ID> = nil,
     pid: GraphQLNullable<Int> = nil,
-    slug: GraphQLNullable<String> = nil,
-    clientMutationId: GraphQLNullable<String> = nil
+    projectId: GraphQLNullable<ID> = nil,
+    slug: GraphQLNullable<String> = nil
   ) {
     __data = InputDict([
+      "clientMutationId": clientMutationId,
       "secretRewardToken": secretRewardToken,
-      "projectId": projectId,
       "pid": pid,
-      "slug": slug,
-      "clientMutationId": clientMutationId
+      "projectId": projectId,
+      "slug": slug
     ])
+  }
+
+  /// A unique identifier for the client performing the mutation.
+  public var clientMutationId: GraphQLNullable<String> {
+    get { __data["clientMutationId"] }
+    set { __data["clientMutationId"] = newValue }
   }
 
   /// Secret reward token shared by the creator
@@ -33,27 +39,21 @@ public struct AddUserToSecretRewardGroupInput: InputObject {
     set { __data["secretRewardToken"] = newValue }
   }
 
-  /// ID of the project with secret rewards
-  public var projectId: GraphQLNullable<ID> {
-    get { __data["projectId"] }
-    set { __data["projectId"] = newValue }
-  }
-
   /// Project ID of the project with secret rewards
   public var pid: GraphQLNullable<Int> {
     get { __data["pid"] }
     set { __data["pid"] = newValue }
   }
 
+  /// ID of the project with secret rewards
+  public var projectId: GraphQLNullable<ID> {
+    get { __data["projectId"] }
+    set { __data["projectId"] = newValue }
+  }
+
   /// Slug of the project with secret rewards
   public var slug: GraphQLNullable<String> {
     get { __data["slug"] }
     set { __data["slug"] = newValue }
-  }
-
-  /// A unique identifier for the client performing the mutation.
-  public var clientMutationId: GraphQLNullable<String> {
-    get { __data["clientMutationId"] }
-    set { __data["clientMutationId"] = newValue }
   }
 }

@@ -63,6 +63,7 @@ public class FetchRootCategoriesQuery: GraphQLQuery {
       public var analyticsName: String { __data["analyticsName"] }
       /// Subcategories.
       public var subcategories: Subcategories? { __data["subcategories"] }
+      /// Number of live projects in this category and its subcategories (cached hourly).
       public var totalProjectCount: Int { __data["totalProjectCount"] }
 
       public init(
@@ -103,6 +104,7 @@ public class FetchRootCategoriesQuery: GraphQLQuery {
 
         /// A list of nodes.
         public var nodes: [Node?]? { __data["nodes"] }
+        /// Total number of items in the connection.
         public var totalCount: Int { __data["totalCount"] }
 
         public init(
@@ -138,6 +140,7 @@ public class FetchRootCategoriesQuery: GraphQLQuery {
 
           /// Parent id of the category.
           public var parentId: GraphAPI.ID? { __data["parentId"] }
+          /// Number of live projects in this category and its subcategories (cached hourly).
           public var totalProjectCount: Int { __data["totalProjectCount"] }
           public var id: GraphAPI.ID { __data["id"] }
           /// Category name.

@@ -63,12 +63,19 @@ public class FlaggingOptionsQuery: GraphQLQuery {
         .field("placeholder", String?.self),
       ] }
 
+      /// Slash-separated path identifying this node in the flagging tree.
       public var id: String { __data["id"] }
+      /// The id of the parent node, or null for a top-level node.
       public var parentId: String? { __data["parentId"] }
+      /// The kind of flagging this option represents. Null for groups.
       public var kind: GraphQLEnum<GraphAPI.NonDeprecatedFlaggingKind>? { __data["kind"] }
+      /// Whether this node is a selectable option or a group of options.
       public var nodeType: GraphQLEnum<GraphAPI.FlaggingNodeKind> { __data["nodeType"] }
+      /// The localized title of this node.
       public var title: String { __data["title"] }
+      /// The localized subtitle of this node, if any.
       public var subtitle: String? { __data["subtitle"] }
+      /// The localized placeholder text for this node, if any.
       public var placeholder: String? { __data["placeholder"] }
 
       public init(

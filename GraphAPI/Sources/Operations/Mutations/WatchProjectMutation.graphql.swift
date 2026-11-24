@@ -27,6 +27,7 @@ public class WatchProjectMutation: GraphQLMutation {
       .field("watchProject", WatchProject?.self, arguments: ["input": .variable("input")]),
     ] }
 
+    /// Watch a project
     public var watchProject: WatchProject? { __data["watchProject"] }
 
     public init(
@@ -59,6 +60,7 @@ public class WatchProjectMutation: GraphQLMutation {
 
       /// A unique identifier for the client performing the mutation.
       public var clientMutationId: String? { __data["clientMutationId"] }
+      /// The watched project
       public var project: Project? { __data["project"] }
 
       public init(

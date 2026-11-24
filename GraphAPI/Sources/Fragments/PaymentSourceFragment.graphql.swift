@@ -106,6 +106,7 @@ public struct PaymentSourceFragment: GraphAPI.SelectionSet, Fragment {
       .field("bankName", String?.self),
     ] }
 
+    /// The ID of the bank account
     public var id: String { __data["id"] }
     /// The last four digits of the account number.
     public var lastFour: String { __data["lastFour"] }

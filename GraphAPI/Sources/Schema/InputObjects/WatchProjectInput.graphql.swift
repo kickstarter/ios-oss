@@ -12,30 +12,32 @@ public struct WatchProjectInput: InputObject {
   }
 
   public init(
+    clientMutationId: GraphQLNullable<String> = nil,
     id: ID,
-    trackingContext: GraphQLNullable<String> = nil,
-    clientMutationId: GraphQLNullable<String> = nil
+    trackingContext: GraphQLNullable<String> = nil
   ) {
     __data = InputDict([
+      "clientMutationId": clientMutationId,
       "id": id,
-      "trackingContext": trackingContext,
-      "clientMutationId": clientMutationId
+      "trackingContext": trackingContext
     ])
-  }
-
-  public var id: ID {
-    get { __data["id"] }
-    set { __data["id"] = newValue }
-  }
-
-  public var trackingContext: GraphQLNullable<String> {
-    get { __data["trackingContext"] }
-    set { __data["trackingContext"] = newValue }
   }
 
   /// A unique identifier for the client performing the mutation.
   public var clientMutationId: GraphQLNullable<String> {
     get { __data["clientMutationId"] }
     set { __data["clientMutationId"] = newValue }
+  }
+
+  /// The ID of the project to watch
+  public var id: ID {
+    get { __data["id"] }
+    set { __data["id"] = newValue }
+  }
+
+  /// The context in which the watch happened, used for tracking
+  public var trackingContext: GraphQLNullable<String> {
+    get { __data["trackingContext"] }
+    set { __data["trackingContext"] = newValue }
   }
 }

@@ -57,6 +57,7 @@ public class CreateAttributionEventMutation: GraphQLMutation {
         .field("successful", Bool.self),
       ] }
 
+      /// Whether the event was recorded
       public var successful: Bool { __data["successful"] }
 
       public init(

@@ -491,7 +491,9 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
         .field("high", High?.self),
       ] }
 
+      /// HLS streaming source
       public var hls: Hls? { __data["hls"] }
+      /// High quality H.264 source
       public var high: High? { __data["high"] }
 
       public init(
@@ -523,6 +525,7 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
           .field("src", String?.self),
         ] }
 
+        /// The URL of the video source
         public var src: String? { __data["src"] }
 
         public init(
@@ -553,6 +556,7 @@ public struct ProjectPamphletMainCellPropertiesFragment: GraphAPI.SelectionSet, 
           .field("src", String?.self),
         ] }
 
+        /// The URL of the video source
         public var src: String? { __data["src"] }
 
         public init(

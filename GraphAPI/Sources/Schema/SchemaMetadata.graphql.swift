@@ -25,48 +25,47 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "Mutation": return GraphAPI.Objects.Mutation
     case "UpdateBackingPayload": return GraphAPI.Objects.UpdateBackingPayload
     case "Checkout": return GraphAPI.Objects.Checkout
-    case "User": return GraphAPI.Objects.User
-    case "UserUrl": return GraphAPI.Objects.UserUrl
-    case "Location": return GraphAPI.Objects.Location
-    case "Task": return GraphAPI.Objects.Task
-    case "Project": return GraphAPI.Objects.Project
-    case "CreatorInterview": return GraphAPI.Objects.CreatorInterview
-    case "FreeformPost": return GraphAPI.Objects.FreeformPost
-    case "Comment": return GraphAPI.Objects.Comment
-    case "Backing": return GraphAPI.Objects.Backing
     case "Address": return GraphAPI.Objects.Address
-    case "RewardItem": return GraphAPI.Objects.RewardItem
-    case "Reward": return GraphAPI.Objects.Reward
-    case "Photo": return GraphAPI.Objects.Photo
-    case "ShippingRule": return GraphAPI.Objects.ShippingRule
-    case "Conversation": return GraphAPI.Objects.Conversation
-    case "Message": return GraphAPI.Objects.Message
-    case "Order": return GraphAPI.Objects.Order
-    case "Refund": return GraphAPI.Objects.Refund
     case "AdjustmentSummary": return GraphAPI.Objects.AdjustmentSummary
+    case "AiDisclosure": return GraphAPI.Objects.AiDisclosure
     case "AttachedAudio": return GraphAPI.Objects.AttachedAudio
     case "AttachedVideo": return GraphAPI.Objects.AttachedVideo
-    case "AiDisclosure": return GraphAPI.Objects.AiDisclosure
+    case "Backing": return GraphAPI.Objects.Backing
     case "Category": return GraphAPI.Objects.Category
+    case "ChangeLog": return GraphAPI.Objects.ChangeLog
+    case "Comment": return GraphAPI.Objects.Comment
+    case "Conversation": return GraphAPI.Objects.Conversation
+    case "CreatorInterview": return GraphAPI.Objects.CreatorInterview
+    case "FreeformPost": return GraphAPI.Objects.FreeformPost
+    case "Project": return GraphAPI.Objects.Project
+    case "CreatorPrompt": return GraphAPI.Objects.CreatorPrompt
+    case "CuratedPage": return GraphAPI.Objects.CuratedPage
+    case "Flagging": return GraphAPI.Objects.Flagging
+    case "InterviewAnswer": return GraphAPI.Objects.InterviewAnswer
+    case "InterviewQuestion": return GraphAPI.Objects.InterviewQuestion
+    case "Location": return GraphAPI.Objects.Location
+    case "Message": return GraphAPI.Objects.Message
+    case "Order": return GraphAPI.Objects.Order
+    case "Organization": return GraphAPI.Objects.Organization
+    case "Photo": return GraphAPI.Objects.Photo
+    case "ProjectInvestigation": return GraphAPI.Objects.ProjectInvestigation
     case "ProjectProfile": return GraphAPI.Objects.ProjectProfile
+    case "Refund": return GraphAPI.Objects.Refund
+    case "Reward": return GraphAPI.Objects.Reward
+    case "RewardItem": return GraphAPI.Objects.RewardItem
+    case "SavedSearchSegment": return GraphAPI.Objects.SavedSearchSegment
+    case "ShipStationConfiguration": return GraphAPI.Objects.ShipStationConfiguration
+    case "ShippingRule": return GraphAPI.Objects.ShippingRule
+    case "Survey": return GraphAPI.Objects.Survey
     case "Tag": return GraphAPI.Objects.Tag
+    case "Task": return GraphAPI.Objects.Task
+    case "User": return GraphAPI.Objects.User
+    case "UserSettings": return GraphAPI.Objects.UserSettings
+    case "UserUrl": return GraphAPI.Objects.UserUrl
+    case "VersionHistory": return GraphAPI.Objects.VersionHistory
     case "Video": return GraphAPI.Objects.Video
     case "VideoTrack": return GraphAPI.Objects.VideoTrack
     case "VideoTrackCue": return GraphAPI.Objects.VideoTrackCue
-    case "Flagging": return GraphAPI.Objects.Flagging
-    case "ChangeLog": return GraphAPI.Objects.ChangeLog
-    case "VersionHistory": return GraphAPI.Objects.VersionHistory
-    case "CreatorPrompt": return GraphAPI.Objects.CreatorPrompt
-    case "InterviewQuestion": return GraphAPI.Objects.InterviewQuestion
-    case "InterviewAnswer": return GraphAPI.Objects.InterviewAnswer
-    case "ShipStationConfiguration": return GraphAPI.Objects.ShipStationConfiguration
-    case "ZendeskTicket": return GraphAPI.Objects.ZendeskTicket
-    case "Organization": return GraphAPI.Objects.Organization
-    case "CuratedPage": return GraphAPI.Objects.CuratedPage
-    case "UserSettings": return GraphAPI.Objects.UserSettings
-    case "SavedSearchSegment": return GraphAPI.Objects.SavedSearchSegment
-    case "ProjectInvestigation": return GraphAPI.Objects.ProjectInvestigation
-    case "Survey": return GraphAPI.Objects.Survey
     case "PostCommentPayload": return GraphAPI.Objects.PostCommentPayload
     case "CommentConnection": return GraphAPI.Objects.CommentConnection
     case "CompleteOnSessionCheckoutPayload": return GraphAPI.Objects.CompleteOnSessionCheckoutPayload
@@ -124,14 +123,14 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "PaymentIncrementAmount": return GraphAPI.Objects.PaymentIncrementAmount
     case "RichTextComponent": return GraphAPI.Objects.RichTextComponent
     case "RichText": return GraphAPI.Objects.RichText
+    case "RichTextAudio": return GraphAPI.Objects.RichTextAudio
     case "RichTextHeader": return GraphAPI.Objects.RichTextHeader
+    case "RichTextListClose": return GraphAPI.Objects.RichTextListClose
     case "RichTextListItem": return GraphAPI.Objects.RichTextListItem
     case "RichTextListOpen": return GraphAPI.Objects.RichTextListOpen
-    case "RichTextListClose": return GraphAPI.Objects.RichTextListClose
-    case "RichTextPhoto": return GraphAPI.Objects.RichTextPhoto
-    case "RichTextAudio": return GraphAPI.Objects.RichTextAudio
-    case "RichTextVideo": return GraphAPI.Objects.RichTextVideo
     case "RichTextOembed": return GraphAPI.Objects.RichTextOembed
+    case "RichTextPhoto": return GraphAPI.Objects.RichTextPhoto
+    case "RichTextVideo": return GraphAPI.Objects.RichTextVideo
     case "AttachedVideoFormat": return GraphAPI.Objects.AttachedVideoFormat
     case "CategorySubcategoriesConnection": return GraphAPI.Objects.CategorySubcategoriesConnection
     case "PaymentPlan": return GraphAPI.Objects.PaymentPlan

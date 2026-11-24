@@ -27,6 +27,7 @@ public class UnwatchProjectMutation: GraphQLMutation {
       .field("unwatchProject", alias: "watchProject", WatchProject?.self, arguments: ["input": .variable("input")]),
     ] }
 
+    /// Stop watching a project.
     public var watchProject: WatchProject? { __data["watchProject"] }
 
     public init(
@@ -59,6 +60,7 @@ public class UnwatchProjectMutation: GraphQLMutation {
 
       /// A unique identifier for the client performing the mutation.
       public var clientMutationId: String? { __data["clientMutationId"] }
+      /// The unwatched project.
       public var project: Project? { __data["project"] }
 
       public init(

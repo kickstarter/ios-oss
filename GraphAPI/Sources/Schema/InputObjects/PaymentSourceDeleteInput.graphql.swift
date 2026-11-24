@@ -12,23 +12,24 @@ public struct PaymentSourceDeleteInput: InputObject {
   }
 
   public init(
-    paymentSourceId: String,
-    clientMutationId: GraphQLNullable<String> = nil
+    clientMutationId: GraphQLNullable<String> = nil,
+    paymentSourceId: String
   ) {
     __data = InputDict([
-      "paymentSourceId": paymentSourceId,
-      "clientMutationId": clientMutationId
+      "clientMutationId": clientMutationId,
+      "paymentSourceId": paymentSourceId
     ])
-  }
-
-  public var paymentSourceId: String {
-    get { __data["paymentSourceId"] }
-    set { __data["paymentSourceId"] = newValue }
   }
 
   /// A unique identifier for the client performing the mutation.
   public var clientMutationId: GraphQLNullable<String> {
     get { __data["clientMutationId"] }
     set { __data["clientMutationId"] = newValue }
+  }
+
+  /// The ID of the payment source to delete
+  public var paymentSourceId: String {
+    get { __data["paymentSourceId"] }
+    set { __data["paymentSourceId"] = newValue }
   }
 }

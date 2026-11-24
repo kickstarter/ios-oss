@@ -493,7 +493,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         let propsString = AttributionTracking.eventParametersString(refInfo: refInfo)
         let input = GraphAPI.CreateAttributionEventInput(
           eventName: eventName,
-          eventProperties: GraphQLNullable.someOrNil(propsString),
+          eventPropertiesJson: GraphQLNullable.someOrNil(propsString),
           projectId: GraphQLNullable.someOrNil(graphId)
         )
         return AppEnvironment.current.apiService.createAttributionEvent(input: input)

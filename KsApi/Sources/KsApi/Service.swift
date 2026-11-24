@@ -192,8 +192,8 @@ public struct Service: ServiceType {
             projectId: input.projectId,
             amount: GraphQLNullable.someOrNil(input.amount),
             locationId: GraphQLNullable.someOrNil(input.locationId),
-            rewardIds: GraphQLNullable.someOrNil(input.rewardIds),
-            refParam: GraphQLNullable.someOrNil(input.refParam)
+            refParam: GraphQLNullable.someOrNil(input.refParam),
+            rewardIds: GraphQLNullable.someOrNil(input.rewardIds)
           )
       ))
       .flatMap(CreateCheckoutEnvelope.producer(from:))
@@ -240,11 +240,11 @@ public struct Service: ServiceType {
       .perform(
         mutation: GraphAPI
           .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput(
-            projectId: input.projectId,
             amount: input.amountDollars,
-            paymentIntentContext: GraphQLEnum.caseOrNil(input.paymentIntentContext),
+            checkoutId: GraphQLNullable.someOrNil(input.checkoutId),
             digitalMarketingAttributed: GraphQLNullable.someOrNil(input.digitalMarketingAttributed),
-            checkoutId: GraphQLNullable.someOrNil(input.checkoutId)
+            paymentIntentContext: GraphQLEnum.caseOrNil(input.paymentIntentContext),
+            projectId: input.projectId
           ))
       )
       .flatMap(PaymentIntentEnvelope.envelopeProducer(from:))
@@ -774,7 +774,7 @@ public struct Service: ServiceType {
     backingId: String,
     rewardReceived: Bool
   ) -> AnyPublisher<Bool, ErrorEnvelope> {
-    let input = GraphAPI.UpdateBackerCompletedInput(id: backingId, backerCompleted: rewardReceived)
+    let input = GraphAPI.UpdateBackerCompletedInput(backerCompleted: rewardReceived, id: backingId)
     let mutation = GraphAPI.UpdateBackerCompletedMutation(input: input)
     return GraphQL.shared.client
       .perform(mutation: mutation)
@@ -960,7 +960,7 @@ public struct Service: ServiceType {
     backingId: String,
     addressId: String
   ) -> AnyPublisher<Bool, ErrorEnvelope> {
-    let input = GraphAPI.CreateOrUpdateBackingAddressInput(backingId: backingId, addressId: addressId)
+    let input = GraphAPI.CreateOrUpdateBackingAddressInput(addressId: addressId, backingId: backingId)
     let mutation = GraphAPI.CreateOrUpdateBackingAddressMutation(input: input)
     return GraphQL.shared.client
       .perform(mutation: mutation)

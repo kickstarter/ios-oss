@@ -57,6 +57,7 @@ public class UpdateBackerCompletedMutation: GraphQLMutation {
         .field("backing", Backing?.self),
       ] }
 
+      /// The updated backing
       public var backing: Backing? { __data["backing"] }
 
       public init(

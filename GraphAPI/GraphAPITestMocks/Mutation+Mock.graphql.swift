@@ -29,10 +29,11 @@ public class Mutation: MockObject {
     @Field<TriggerThirdPartyEventPayload>("triggerThirdPartyEvent") public var triggerThirdPartyEvent
     @Field<UpdateBackerCompletedPayload>("updateBackerCompleted") public var updateBackerCompleted
     @Field<UpdateBackingPayload>("updateBacking") public var updateBacking
+    @available(*, deprecated, message: "Deprecated and disabled. Use beginEmailChange and passwordlessChangeEmail instead.")
     @Field<UpdateUserAccountPayload>("updateUserAccount") public var updateUserAccount
     @Field<UpdateUserProfilePayload>("updateUserProfile") public var updateUserProfile
     @Field<UserSendEmailVerificationPayload>("userSendEmailVerification") public var userSendEmailVerification
-    @Field<UnwatchProjectPayload>("watchProject") public var watchProject
+    @Field<WatchProjectPayload>("watchProject") public var watchProject
   }
 }
 

@@ -57,6 +57,7 @@ public class CreateSetupIntentMutation: GraphQLMutation {
         .field("clientSecret", String.self),
       ] }
 
+      /// Client secret of the created Stripe SetupIntent
       public var clientSecret: String { __data["clientSecret"] }
 
       public init(

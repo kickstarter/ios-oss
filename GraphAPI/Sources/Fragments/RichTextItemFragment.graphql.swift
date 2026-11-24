@@ -63,8 +63,11 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
       .field("styles", [String]?.self),
     ] }
 
+    /// The text content of this segment.
     public var text: String? { __data["text"] }
+    /// The URL this text links to, if it is a link.
     public var link: String? { __data["link"] }
+    /// The styles applied to this text: STRONG, EMPHASIS, or HEADING_1..HEADING_4.
     public var styles: [String]? { __data["styles"] }
 
     public init(
@@ -102,8 +105,11 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
       .field("styles", [String]?.self),
     ] }
 
+    /// The text content of this segment.
     public var text: String? { __data["text"] }
+    /// The URL this text links to, if it is a link.
     public var link: String? { __data["link"] }
+    /// The styles applied to this text: STRONG, EMPHASIS, or HEADING_1..HEADING_4.
     public var styles: [String]? { __data["styles"] }
 
     public init(
@@ -141,8 +147,11 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
       .field("styles", [String]?.self),
     ] }
 
+    /// The text content of this segment.
     public var text: String? { __data["text"] }
+    /// The URL this text links to, if it is a link.
     public var link: String? { __data["link"] }
+    /// The styles applied to this text: STRONG, EMPHASIS, or HEADING_1..HEADING_4.
     public var styles: [String]? { __data["styles"] }
 
     public init(
@@ -244,8 +253,11 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
       .field("caption", String.self),
     ] }
 
+    /// Alternative text describing the asset.
     public var altText: String { __data["altText"] }
+    /// The photo asset.
     public var asset: Asset? { __data["asset"] }
+    /// The caption displayed with the asset.
     public var caption: String { __data["caption"] }
 
     public init(
@@ -319,9 +331,13 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
       .field("url", String.self),
     ] }
 
+    /// Alternative text describing the asset.
     public var altText: String { __data["altText"] }
+    /// The audio asset.
     public var asset: Asset? { __data["asset"] }
+    /// The caption displayed with the asset.
     public var caption: String { __data["caption"] }
+    /// The URL of the audio file.
     public var url: String { __data["url"] }
 
     public init(
@@ -392,9 +408,13 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
       .field("url", String.self),
     ] }
 
+    /// Alternative text describing the asset.
     public var altText: String { __data["altText"] }
+    /// The video asset.
     public var asset: Asset? { __data["asset"] }
+    /// The caption displayed with the asset.
     public var caption: String { __data["caption"] }
+    /// The URL of the video file.
     public var url: String { __data["url"] }
 
     public init(
@@ -436,6 +456,7 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
       public var id: GraphAPI.ID { __data["id"] }
       /// Image preview url
       public var poster: String? { __data["poster"] }
+      /// The available encoded formats of the video
       public var formats: [Format?]? { __data["formats"] }
 
       public init(
@@ -473,10 +494,15 @@ public struct RichTextItemFragment: GraphAPI.SelectionSet, Fragment {
           .field("url", String.self),
         ] }
 
+        /// The MIME type, including codecs, of the encoded video
         public var encoding: String { __data["encoding"] }
+        /// The height of the video in pixels
         public var height: String { __data["height"] }
+        /// The width of the video in pixels
         public var width: String { __data["width"] }
+        /// The encoding profile of the video
         public var profile: String { __data["profile"] }
+        /// The URL of the video file
         public var url: String { __data["url"] }
 
         public init(

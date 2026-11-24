@@ -3,6 +3,7 @@
 
 import ApolloAPI
 
+/// Background color variant of a payment increment badge
 public enum PaymentIncrementBadgeVariant: String, EnumType {
   /// Background color for emphasizing important information
   case purple = "PURPLE"

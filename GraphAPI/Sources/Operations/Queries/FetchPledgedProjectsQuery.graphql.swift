@@ -105,6 +105,7 @@ public class FetchPledgedProjectsQuery: GraphQLQuery {
           .field("pageInfo", PageInfo.self),
         ] }
 
+        /// Total number of items in the connection.
         public var totalCount: Int { __data["totalCount"] }
         /// A list of edges.
         public var edges: [Edge?]? { __data["edges"] }

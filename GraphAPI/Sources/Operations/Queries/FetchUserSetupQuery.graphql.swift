@@ -56,6 +56,7 @@ public class FetchUserSetupQuery: GraphQLQuery {
 
       /// A user's email address.
       public var email: String? { __data["email"] }
+      /// The features enabled for the user; empty unless viewed by the user themself or an admin
       public var enabledFeatures: [GraphQLEnum<GraphAPI.Feature>] { __data["enabledFeatures"] }
       /// Whether backer has any action in PPO
       public var ppoHasAction: Bool? { __data["ppoHasAction"] }

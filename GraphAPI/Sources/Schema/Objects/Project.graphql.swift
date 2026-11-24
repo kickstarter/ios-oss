@@ -8,8 +8,8 @@ public extension Objects {
   static let Project = ApolloAPI.Object(
     typename: "Project",
     implementedInterfaces: [
-      Interfaces.Node.self,
-      Interfaces.Commentable.self
+      Interfaces.Commentable.self,
+      Interfaces.Node.self
     ]
   )
 }

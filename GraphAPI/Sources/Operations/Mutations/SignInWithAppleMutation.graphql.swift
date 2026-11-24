@@ -58,7 +58,9 @@ public class SignInWithAppleMutation: GraphQLMutation {
         .field("user", User?.self),
       ] }
 
+      /// API access token for the signed in user
       public var apiAccessToken: String? { __data["apiAccessToken"] }
+      /// The signed in user
       public var user: User? { __data["user"] }
 
       public init(

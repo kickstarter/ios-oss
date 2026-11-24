@@ -17,6 +17,7 @@ public class User: MockObject {
     @Field<UserCreatedProjectsConnection>("createdProjects") public var createdProjects
     @Field<String>("email") public var email
     @Field<[GraphQLEnum<GraphAPI.Feature>]>("enabledFeatures") public var enabledFeatures
+    @available(*, deprecated, message: "This field is no longer used and always returns false.")
     @Field<Bool>("hasPassword") public var hasPassword
     @Field<Bool>("hasUnreadMessages") public var hasUnreadMessages
     @Field<Bool>("hasUnseenActivity") public var hasUnseenActivity

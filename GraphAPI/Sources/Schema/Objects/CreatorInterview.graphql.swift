@@ -8,9 +8,9 @@ public extension Objects {
   static let CreatorInterview = ApolloAPI.Object(
     typename: "CreatorInterview",
     implementedInterfaces: [
-      Interfaces.Postable.self,
       Interfaces.Commentable.self,
-      Interfaces.Node.self
+      Interfaces.Node.self,
+      Interfaces.Postable.self
     ]
   )
 }

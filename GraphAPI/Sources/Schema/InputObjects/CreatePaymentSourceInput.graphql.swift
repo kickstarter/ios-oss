@@ -12,51 +12,56 @@ public struct CreatePaymentSourceInput: InputObject {
   }
 
   public init(
-    paymentType: GraphQLNullable<GraphQLEnum<PaymentTypes>> = nil,
-    stripeToken: GraphQLNullable<String> = nil,
-    stripeCardId: GraphQLNullable<String> = nil,
-    reusable: GraphQLNullable<Bool> = nil,
+    clientMutationId: GraphQLNullable<String> = nil,
     intentClientSecret: GraphQLNullable<String> = nil,
-    clientMutationId: GraphQLNullable<String> = nil
+    paymentType: GraphQLNullable<GraphQLEnum<PaymentTypes>> = nil,
+    reusable: GraphQLNullable<Bool> = nil,
+    stripeCardId: GraphQLNullable<String> = nil,
+    stripeToken: GraphQLNullable<String> = nil
   ) {
     __data = InputDict([
-      "paymentType": paymentType,
-      "stripeToken": stripeToken,
-      "stripeCardId": stripeCardId,
-      "reusable": reusable,
+      "clientMutationId": clientMutationId,
       "intentClientSecret": intentClientSecret,
-      "clientMutationId": clientMutationId
+      "paymentType": paymentType,
+      "reusable": reusable,
+      "stripeCardId": stripeCardId,
+      "stripeToken": stripeToken
     ])
-  }
-
-  public var paymentType: GraphQLNullable<GraphQLEnum<PaymentTypes>> {
-    get { __data["paymentType"] }
-    set { __data["paymentType"] = newValue }
-  }
-
-  public var stripeToken: GraphQLNullable<String> {
-    get { __data["stripeToken"] }
-    set { __data["stripeToken"] = newValue }
-  }
-
-  public var stripeCardId: GraphQLNullable<String> {
-    get { __data["stripeCardId"] }
-    set { __data["stripeCardId"] = newValue }
-  }
-
-  public var reusable: GraphQLNullable<Bool> {
-    get { __data["reusable"] }
-    set { __data["reusable"] = newValue }
-  }
-
-  public var intentClientSecret: GraphQLNullable<String> {
-    get { __data["intentClientSecret"] }
-    set { __data["intentClientSecret"] = newValue }
   }
 
   /// A unique identifier for the client performing the mutation.
   public var clientMutationId: GraphQLNullable<String> {
     get { __data["clientMutationId"] }
     set { __data["clientMutationId"] = newValue }
+  }
+
+  /// The client secret of a Stripe SetupIntent to create the payment source from.
+  public var intentClientSecret: GraphQLNullable<String> {
+    get { __data["intentClientSecret"] }
+    set { __data["intentClientSecret"] = newValue }
+  }
+
+  /// The type of payment source to create.
+  public var paymentType: GraphQLNullable<GraphQLEnum<PaymentTypes>> {
+    get { __data["paymentType"] }
+    set { __data["paymentType"] = newValue }
+  }
+
+  /// Whether the payment source can be reused for future payments. Defaults to true.
+  public var reusable: GraphQLNullable<Bool> {
+    get { __data["reusable"] }
+    set { __data["reusable"] = newValue }
+  }
+
+  /// The Stripe card ID to create the payment source from.
+  public var stripeCardId: GraphQLNullable<String> {
+    get { __data["stripeCardId"] }
+    set { __data["stripeCardId"] = newValue }
+  }
+
+  /// The Stripe token to create the payment source from.
+  public var stripeToken: GraphQLNullable<String> {
+    get { __data["stripeToken"] }
+    set { __data["stripeToken"] = newValue }
   }
 }

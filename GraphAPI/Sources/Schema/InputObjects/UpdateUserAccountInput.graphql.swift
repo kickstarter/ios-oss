@@ -12,47 +12,48 @@ public struct UpdateUserAccountInput: InputObject {
   }
 
   public init(
+    clientMutationId: GraphQLNullable<String> = nil,
     currentPassword: GraphQLNullable<String> = nil,
-    password: GraphQLNullable<String> = nil,
-    passwordConfirmation: GraphQLNullable<String> = nil,
     email: GraphQLNullable<Email> = nil,
-    clientMutationId: GraphQLNullable<String> = nil
+    password: GraphQLNullable<String> = nil,
+    passwordConfirmation: GraphQLNullable<String> = nil
   ) {
     __data = InputDict([
+      "clientMutationId": clientMutationId,
       "currentPassword": currentPassword,
-      "password": password,
-      "passwordConfirmation": passwordConfirmation,
       "email": email,
-      "clientMutationId": clientMutationId
+      "password": password,
+      "passwordConfirmation": passwordConfirmation
     ])
-  }
-
-  /// Deprecated: only used when changing a password.
-  public var currentPassword: GraphQLNullable<String> {
-    get { __data["currentPassword"] }
-    set { __data["currentPassword"] = newValue }
-  }
-
-  /// Deprecated: new password for legacy password changes.
-  public var password: GraphQLNullable<String> {
-    get { __data["password"] }
-    set { __data["password"] = newValue }
-  }
-
-  /// Deprecated: confirmation for the password field.
-  public var passwordConfirmation: GraphQLNullable<String> {
-    get { __data["passwordConfirmation"] }
-    set { __data["passwordConfirmation"] = newValue }
-  }
-
-  public var email: GraphQLNullable<Email> {
-    get { __data["email"] }
-    set { __data["email"] = newValue }
   }
 
   /// A unique identifier for the client performing the mutation.
   public var clientMutationId: GraphQLNullable<String> {
     get { __data["clientMutationId"] }
     set { __data["clientMutationId"] = newValue }
+  }
+
+  /// Deprecated: legacy field retained for client compatibility and ignored.
+  public var currentPassword: GraphQLNullable<String> {
+    get { __data["currentPassword"] }
+    set { __data["currentPassword"] = newValue }
+  }
+
+  /// The new email address for the account
+  public var email: GraphQLNullable<Email> {
+    get { __data["email"] }
+    set { __data["email"] = newValue }
+  }
+
+  /// Deprecated: legacy field retained for client compatibility and ignored.
+  public var password: GraphQLNullable<String> {
+    get { __data["password"] }
+    set { __data["password"] = newValue }
+  }
+
+  /// Deprecated: legacy field retained for client compatibility and ignored.
+  public var passwordConfirmation: GraphQLNullable<String> {
+    get { __data["passwordConfirmation"] }
+    set { __data["passwordConfirmation"] = newValue }
   }
 }
