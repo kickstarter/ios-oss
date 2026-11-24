@@ -98,7 +98,6 @@
 		AAF548FB2F2445C0001DB5AC /* CategoryPillCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF548192F2445C0001DB5AC /* CategoryPillCellViewModelTests.swift */; };
 		AAF548FC2F2445C0001DB5AC /* CategorySelectionHeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481A2F2445C0001DB5AC /* CategorySelectionHeaderViewModelTests.swift */; };
 		AAF548FD2F2445C0001DB5AC /* ChangeEmailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481B2F2445C0001DB5AC /* ChangeEmailViewModelTests.swift */; };
-		AAF548FE2F2445C0001DB5AC /* ChangePasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481C2F2445C0001DB5AC /* ChangePasswordViewModelTests.swift */; };
 		AAF548FF2F2445C0001DB5AC /* CommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481D2F2445C0001DB5AC /* CommentCellViewModelTests.swift */; };
 		AAF549002F2445C0001DB5AC /* CommentComposerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481E2F2445C0001DB5AC /* CommentComposerViewModelTests.swift */; };
 		AAF549012F2445C0001DB5AC /* CommentDialogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF5481F2F2445C0001DB5AC /* CommentDialogViewModelTests.swift */; };
@@ -460,7 +459,6 @@
 		AAF548192F2445C0001DB5AC /* CategoryPillCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPillCellViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5481A2F2445C0001DB5AC /* CategorySelectionHeaderViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionHeaderViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5481B2F2445C0001DB5AC /* ChangeEmailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModelTests.swift; sourceTree = "<group>"; };
-		AAF5481C2F2445C0001DB5AC /* ChangePasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5481D2F2445C0001DB5AC /* CommentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCellViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5481E2F2445C0001DB5AC /* CommentComposerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewModelTests.swift; sourceTree = "<group>"; };
 		AAF5481F2F2445C0001DB5AC /* CommentDialogViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDialogViewModelTests.swift; sourceTree = "<group>"; };
@@ -1021,7 +1019,6 @@
 				AAF548192F2445C0001DB5AC /* CategoryPillCellViewModelTests.swift */,
 				AAF5481A2F2445C0001DB5AC /* CategorySelectionHeaderViewModelTests.swift */,
 				AAF5481B2F2445C0001DB5AC /* ChangeEmailViewModelTests.swift */,
-				AAF5481C2F2445C0001DB5AC /* ChangePasswordViewModelTests.swift */,
 				AAF5481D2F2445C0001DB5AC /* CommentCellViewModelTests.swift */,
 				AAF5481E2F2445C0001DB5AC /* CommentComposerViewModelTests.swift */,
 				AAF5481F2F2445C0001DB5AC /* CommentDialogViewModelTests.swift */,
@@ -1727,7 +1724,6 @@
 				AAF548FB2F2445C0001DB5AC /* CategoryPillCellViewModelTests.swift in Sources */,
 				AAF548FC2F2445C0001DB5AC /* CategorySelectionHeaderViewModelTests.swift in Sources */,
 				AAF548FD2F2445C0001DB5AC /* ChangeEmailViewModelTests.swift in Sources */,
-				AAF548FE2F2445C0001DB5AC /* ChangePasswordViewModelTests.swift in Sources */,
 				AAF548FF2F2445C0001DB5AC /* CommentCellViewModelTests.swift in Sources */,
 				AAF549002F2445C0001DB5AC /* CommentComposerViewModelTests.swift in Sources */,
 				AAF549012F2445C0001DB5AC /* CommentDialogViewModelTests.swift in Sources */,

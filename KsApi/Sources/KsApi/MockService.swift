@@ -32,8 +32,6 @@
 
     fileprivate let changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
-    fileprivate let changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
-
     fileprivate let createAttributionEventResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>?
@@ -250,7 +248,6 @@
       buildPaymentPlanResult: Result<GraphAPI.BuildPaymentPlanQuery.Data, ErrorEnvelope>? = nil,
       cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
-      changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createAttributionEventResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
       completeOnSessionCheckoutResult: Result<
@@ -386,8 +383,6 @@
       self.changeEmailResult = changeEmailResult
 
       self.changeCurrencyResult = changeCurrencyResult
-
-      self.changePasswordResult = changePasswordResult
 
       self.clearUserUnseenActivityResult = clearUserUnseenActivityResult
 
@@ -677,18 +672,6 @@
           |> \.id .~ 1
           |> \.facebookConnected .~ true
       )
-    }
-
-    internal func changePassword(input: ChangePasswordInput)
-      -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-      guard let client = self.apolloClient else {
-        return .empty
-      }
-
-      let mutation = GraphAPI
-        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
-
-      return client.performWithResult(mutation: mutation, result: self.changePasswordResult)
     }
 
     public func createAttributionEvent(input: GraphAPI.CreateAttributionEventInput) ->
